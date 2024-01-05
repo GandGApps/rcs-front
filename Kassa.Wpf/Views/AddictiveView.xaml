@@ -1,0 +1,167 @@
+﻿<rxui:ReactiveUserControl
+    x:Class="Kassa.Wpf.Views.AddictiveView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Kassa.Wpf.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Kassa.Wpf.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rxui="http://reactiveui.net"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:vm="clr-namespace:Kassa.RxUI;assembly=Kassa.RxUI"
+    x:Name="root"
+    x:TypeArguments="vm:AddictiveViewModel"
+    Foreground="{StaticResource SolidPrimaryTextColor}"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <sys:Double x:Key="NotAvailableFontSize">11</sys:Double>
+        <sys:Double x:Key="CountFontSize">14</sys:Double>
+        <sys:Double x:Key="NameFontSize">16</sys:Double>
+        <Thickness x:Key="NameMargin">0,5,0,0</Thickness>
+    </UserControl.Resources>
+
+    <d:DesignProperties.DataContext>
+        <local:DesignerAddictiveViewModel
+            Name="Сыр Чедер"
+            Count="15"
+            IsAdded="False"
+            IsAvailable="False"
+            Measure="гр"
+            Price="15" />
+    </d:DesignProperties.DataContext>
+
+    <UserControl.Template>
+        <ControlTemplate TargetType="UserControl">
+
+            <controls:ButtonWithCornerRaduis
+                x:Name="Border"
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                Margin="{TemplateBinding Margin}"
+                Padding="{TemplateBinding Padding}"
+                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                HorizontalContentAlignment="Stretch"
+                VerticalContentAlignment="Stretch"
+                Background="{TemplateBinding Background}"
+                Command="{TemplateBinding local:AddictiveView.Command}"
+                CornerRadius="11">
+
+                <ContentPresenter
+                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                    Content="{TemplateBinding Content}" />
+
+            </controls:ButtonWithCornerRaduis>
+
+        </ControlTemplate>
+    </UserControl.Template>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Column="1" FontSize="{DynamicResource CountFontSize}">
+            <Path
+                Width="11"
+                Height="11"
+                Margin="0,0,4,0"
+                Data="{StaticResource AcceptIcon}"
+                Fill="#00BA00">
+                <Path.Style>
+                    <Style BasedOn="{StaticResource {x:Type Path}}" TargetType="Path">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsAdded}" Value="True">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+                            <DataTrigger Binding="{Binding IsAdded}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Path.Style>
+            </Path><Run Text="{Binding Count}" /><Run Text="{Binding Measure}" />
+        </TextBlock>
+
+        <TextBlock
+            Grid.Column="2"
+            HorizontalAlignment="Right"
+            FontSize="{DynamicResource NotAvailableFontSize}"
+            Foreground="{StaticResource SolidSoftRed}"
+            Text="Нет в наличии">
+            <TextBlock.Style>
+                <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsAvailable}" Value="False">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+
+                        <DataTrigger Binding="{Binding IsAvailable}" Value="True">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TextBlock.Style>
+        </TextBlock>
+
+        <TextBlock
+            Grid.Row="1"
+            Grid.Column="1"
+            Grid.ColumnSpan="2"
+            Margin="{DynamicResource NameMargin}"
+            VerticalAlignment="Bottom"
+            FontSize="{DynamicResource NameFontSize}"
+            Foreground="Black"
+            Text="{Binding Name}" />
+
+        <Path
+            Grid.RowSpan="2"
+            Width="17"
+            Height="21"
+            Margin="0,0,11,0"
+            Data="{StaticResource AdditivesIcon}"
+            Fill="{StaticResource FooterColorColor}">
+            <Path.Style>
+                <Style BasedOn="{StaticResource {x:Type Path}}" TargetType="Path">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding HasAddictiveIcon, RelativeSource={RelativeSource AncestorType={x:Type local:AddictiveView}}}" Value="True">
+                            <Setter Property="Visibility" Value="Visible" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding HasAddictiveIcon, RelativeSource={RelativeSource AncestorType={x:Type local:AddictiveView}}}" Value="False">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Path.Style>
+        </Path>
+
+    </Grid>
+
+    <UserControl.Style>
+
+        <Style BasedOn="{StaticResource {x:Type UserControl}}" TargetType="UserControl">
+            <Setter Property="Background" Value="{DynamicResource SolidPrimaryButtonColor}" />
+            <Setter Property="Padding" Value="13" />
+            <Setter Property="Margin" Value="1" />
+            <Setter Property="HorizontalAlignment" Value="Stretch" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding IsAvailable}" Value="False">
+                    <Setter Property="Background" Value="{DynamicResource SolidSoftRedTransparent}" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding IsAdded}" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource SolidPrimaryAccentColor}" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Style>
+
+</rxui:ReactiveUserControl>

@@ -1,0 +1,77 @@
+﻿<UserControl
+    x:Class="Kassa.Wpf.Controls.Keyboard"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Kassa.Wpf.Controls"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <Style
+                x:Key="KeyButtonStyle"
+                BasedOn="{StaticResource {x:Type Button}}"
+                TargetType="Button">
+                <Setter Property="TextBlock.FontSize" Value="28" />
+                <Setter Property="Foreground" Value="{StaticResource SolidPrimaryTextColor}" />
+                <Setter Property="Background" Value="{StaticResource SolidPrimaryButtonColor}" />
+                <Setter Property="Padding" Value="10" />
+                <Setter Property="Margin" Value="1.3" />
+
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}"
+                                Margin="{TemplateBinding Margin}"
+                                Padding="{TemplateBinding Padding}"
+                                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                                Background="{TemplateBinding Background}"
+                                CornerRadius="11">
+                                <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <Path
+                                        x:Name="Backspace"
+                                        Data="{StaticResource BackspaceIcon}"
+                                        Fill="{StaticResource SolidPrimaryTextColor}" />
+                                    <Path
+                                        x:Name="Clear"
+                                        Data="{StaticResource Clear}"
+                                        Fill="{StaticResource SolidPrimaryTextColor}" Margin="0,0,15,0"
+                                        />
+
+                                    <ContentPresenter Grid.Column="1" Content="{TemplateBinding Content}" VerticalAlignment="Center" />
+                                </Grid>
+
+                            </Border>
+
+                            <ControlTemplate.Triggers>
+                                <DataTrigger Binding="{Binding IsBackspace}" Value="True">
+                                    <Setter TargetName="Backspace" Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsBackspace}" Value="False">
+                                    <Setter TargetName="Backspace" Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsClear}" Value="True">
+                                    <Setter TargetName="Clear" Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding IsClear}" Value="False">
+                                    <Setter TargetName="Clear" Property="Visibility" Value="Collapsed" />
+                                </DataTrigger>
+                            </ControlTemplate.Triggers>
+
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <StackPanel x:Name="stack" />
+</UserControl>

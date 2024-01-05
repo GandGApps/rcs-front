@@ -1,0 +1,301 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Kassa.Wpf.Controls">
+
+    <Style TargetType="TextBlock">
+        <Setter Property="FontFamily" Value="{DynamicResource Montseratt}" />
+    </Style>
+
+    <Style TargetType="TextBox">
+        <Setter Property="FontFamily" Value="{DynamicResource Montseratt}" />
+        <Setter Property="Foreground" Value="{DynamicResource SolidPrimaryTextColor}" />
+    </Style>
+
+    <Style TargetType="Button">
+        <Setter Property="FontFamily" Value="{DynamicResource Montseratt}" />
+    </Style>
+
+    <Style
+        x:Key="PrimaryTextBlock"
+        BasedOn="{StaticResource {x:Type TextBlock}}"
+        TargetType="TextBlock">
+        <Setter Property="Foreground" Value="{StaticResource SolidPrimaryTextColor}" />
+    </Style>
+
+    <Style
+        x:Key="IconButton"
+        BasedOn="{StaticResource {x:Type Button}}"
+        TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource ClickableBg}" />
+        <Setter Property="BorderThickness" Value="0" />
+    </Style>
+
+    <Style TargetType="Path">
+        <Setter Property="Stretch" Value="Uniform" />
+    </Style>
+
+    <Style
+        x:Key="Header"
+        BasedOn="{StaticResource {x:Type TextBlock}}"
+        TargetType="TextBlock">
+        <Setter Property="FontSize" Value="28" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="LineHeight" Value="39" />
+    </Style>
+
+    <Style
+        x:Key="Large"
+        BasedOn="{StaticResource {x:Type TextBlock}}"
+        TargetType="TextBlock">
+        <Setter Property="FontSize" Value="16" />
+    </Style>
+
+    <Style
+        x:Key="ExtraLarge"
+        BasedOn="{StaticResource {x:Type TextBlock}}"
+        TargetType="TextBlock">
+        <Setter Property="FontSize" Value="24" />
+    </Style>
+
+    <Style
+        x:Key="SubHeader"
+        BasedOn="{StaticResource {x:Type TextBlock}}"
+        TargetType="TextBlock">
+        <Setter Property="FontSize" Value="14.4" />
+        <Setter Property="Foreground" Value="{StaticResource SolidSubHeaderColor}" />
+    </Style>
+
+    <Style
+        x:Key="Header2"
+        BasedOn="{StaticResource {x:Type TextBlock}}"
+        TargetType="TextBlock">
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="LineHeight" Value="28" />
+    </Style>
+
+    <Style
+        x:Key="SmallTextBlock"
+        BasedOn="{StaticResource PrimaryTextBlock}"
+        TargetType="TextBlock">
+        <Setter Property="FontSize" Value="11" />
+    </Style>
+
+    <Style x:Key="PrimaryButton" TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource SolidPrimaryColor}" />
+        <Setter Property="MinWidth" Value="240" />
+        <Setter Property="Padding" Value="16" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="MinHeight" Value="56" />
+        <Setter Property="Template">
+            <Setter.Value>
+
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        Width="{TemplateBinding Width}"
+                        Height="{TemplateBinding Height}"
+                        HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="36">
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type local:ButtonWithIcon}">
+
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="Background" Value="{StaticResource ClickableBg}" />
+        <Setter Property="CornerRadius" Value="6.4" />
+        <Setter Property="FontFamily" Value="./Assets/Fonts/Montseratt/#Montserrat" />
+        <Setter Property="BorderThickness" Value="1" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type local:ButtonWithIcon}">
+                    <Grid>
+                        <Border
+                            x:Name="_topShadow"
+                            Margin="{TemplateBinding Margin}"
+                            BorderBrush="{DynamicResource TopShadow}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                            <Border.Effect>
+                                <BlurEffect Radius="3.2" />
+                            </Border.Effect>
+                        </Border>
+                        <Border
+                            x:Name="_bottomShadow"
+                            Margin="{TemplateBinding Margin}"
+                            BorderBrush="{DynamicResource BottomShadow}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                            <Border.Effect>
+                                <BlurEffect Radius="2.7" />
+                            </Border.Effect>
+                        </Border>
+                        <Border
+                            x:Name="_border"
+                            Margin="{TemplateBinding Margin}"
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            ClipToBounds="True"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+                            <Grid>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="28" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <Path
+                                    Data="{TemplateBinding Icon}"
+                                    Fill="{TemplateBinding Foreground}"
+                                    Stretch="Uniform" />
+                                <ContentPresenter
+                                    Grid.Column="1"
+                                    Margin="10.4,5,0,0"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Center"
+                                    Content="{TemplateBinding Content}"
+                                    TextBlock.FontSize="{TemplateBinding FontSize}"
+                                    TextBlock.Foreground="{TemplateBinding Foreground}" />
+
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter TargetName="_topShadow" Property="BorderThickness" Value="2,2,0,0" />
+                            <Setter TargetName="_bottomShadow" Property="BorderThickness" Value="0,0,2,2" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+
+            </Setter.Value>
+
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource ClickableBg}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BackToMain" TargetType="CheckBox">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="Background" Value="{StaticResource ClickableBg}" />
+        <Setter Property="BorderThickness" Value="0" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Grid>
+                        <Border
+                            x:Name="_topShadow"
+                            Margin="{TemplateBinding Margin}"
+                            BorderThickness="2,2,0,0"
+                            CornerRadius="6.4">
+                            <Border.Effect>
+                                <BlurEffect Radius="3.2" />
+                            </Border.Effect>
+                        </Border>
+                        <Border
+                            x:Name="_bottomShadow"
+                            Margin="{TemplateBinding Margin}"
+                            BorderThickness="0,0,2,2"
+                            CornerRadius="6.4">
+                            <Border.Effect>
+                                <BlurEffect Radius="2.7" />
+                            </Border.Effect>
+                        </Border>
+                        <Border
+                            x:Name="_border"
+                            Margin="{TemplateBinding Margin}"
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="6.4">
+                            <ContentPresenter
+                                Grid.Column="1"
+                                Content="{TemplateBinding Content}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                TextBlock.FontSize="{TemplateBinding FontSize}"
+                                TextBlock.Foreground="{TemplateBinding Foreground}" />
+                        </Border>
+                    </Grid>
+
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="True">
+                            <Setter TargetName="_topShadow" Property="BorderBrush" Value="{DynamicResource TopShadow}" />
+                            <Setter TargetName="_bottomShadow" Property="BorderBrush" Value="{DynamicResource BottomShadow}" />
+                        </Trigger>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter TargetName="_topShadow" Property="BorderBrush" Value="{DynamicResource BottomShadow}" />
+                            <Setter TargetName="_bottomShadow" Property="BorderBrush" Value="{DynamicResource TopShadow}" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+
+                </ControlTemplate>
+
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="local:ButtonWithCornerRaduis">
+        <Setter Property="TextBlock.FontSize" Value="28" />
+        <Setter Property="Foreground" Value="{StaticResource SolidPrimaryTextColor}" />
+        <Setter Property="Background" Value="{StaticResource SolidPrimaryButtonColor}" />
+        <Setter Property="CornerRadius" Value="40" />
+        <Setter Property="Padding" Value="10" />
+        <Setter Property="Margin" Value="1.3" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:ButtonWithCornerRaduis">
+                    <Border
+                        Width="{TemplateBinding Width}"
+                        Height="{TemplateBinding Height}"
+                        HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+                        <ContentPresenter
+                            Margin="{TemplateBinding Padding}"
+                            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                            Content="{TemplateBinding Content}" />
+                    </Border>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style
+        x:Key="Card"
+        BasedOn="{StaticResource {x:Type local:ButtonWithCornerRaduis}}"
+        TargetType="local:ButtonWithCornerRaduis">
+        <Setter Property="Width" Value="235" />
+        <Setter Property="Background" Value="{StaticResource SolidPrimaryButtonColor}" />
+        <Setter Property="Foreground" Value="Black" />
+        <Setter Property="CornerRadius" Value="11" />
+
+    </Style>
+
+</ResourceDictionary>
