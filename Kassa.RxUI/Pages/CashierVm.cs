@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -87,7 +88,7 @@ public class CashierVm : PageViewModel
 
         CreateTotalCommentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await MainViewModel.DialogOpenCommand.Execute(new CommentDialogViewModel(this)).FirstAsync();
+            await mainViewModel.DialogOpenCommand.Execute(new CommentDialogViewModel(this)).FirstAsync();
         });
 
         CreatePromocodeCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -97,7 +98,7 @@ public class CashierVm : PageViewModel
             {
                 DiscountAccesser = x;
             });
-            await MainViewModel.DialogOpenCommand.Execute(promo).FirstAsync();
+            await mainViewModel.DialogOpenCommand.Execute(promo).FirstAsync();
 
         });
 
@@ -105,7 +106,7 @@ public class CashierVm : PageViewModel
         {
 
             var addictiveDialog = new SearchAddictiveDialogViewModel(mainViewModel);
-            await MainViewModel.DialogOpenCommand.Execute(addictiveDialog).FirstAsync();
+            await mainViewModel.DialogOpenCommand.Execute(addictiveDialog).FirstAsync();
 
 
             if (addictiveDialog.SelectedAddictve is not null)
@@ -130,7 +131,10 @@ public class CashierVm : PageViewModel
                 }
             }
         });
+    }
 
+    protected override sealed void OnActivated(CompositeDisposable disposables)
+    {
         this.WhenAnyValue(x => x.DiscountAccesser)
             .Subscribe(x =>
             {
@@ -156,7 +160,8 @@ public class CashierVm : PageViewModel
                 }
 
 
-            });
+            })
+            .DisposeWith(disposables);
     }
 
     public ShoppingListViewModel ShoppingList

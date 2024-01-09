@@ -11,7 +11,7 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Dialogs;
 public class CommentDialogViewModel : DialogViewModel
 {
-    public CommentDialogViewModel(CashierVm cashierVm) : base(null!)
+    public CommentDialogViewModel(CashierVm cashierVm) : base()
     {
         CashierVm = cashierVm;
 

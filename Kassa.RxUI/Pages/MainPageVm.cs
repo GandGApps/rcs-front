@@ -56,7 +56,7 @@ public class MainPageVm : PageViewModel
     {
         CloseCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await MainViewModel.DialogOpenCommand.Execute(new TurnOffDialogViewModel(mainViewModel)).FirstAsync();
+            await mainViewModel.DialogOpenCommand.Execute(new TurnOffDialogViewModel(mainViewModel)).FirstAsync();
         });
 
         OpenProfileDialog = CreateOpenDialogCommand(() => new ProfileDialogViewModel(mainViewModel));
@@ -68,12 +68,12 @@ public class MainPageVm : PageViewModel
 
         GoToCashier = ReactiveCommand.Create(() =>
         {
-            MainViewModel.Router.Navigate.Execute(new CashierVm(mainViewModel));
+            mainViewModel.Router.Navigate.Execute(new CashierVm(mainViewModel));
         });
     }
 
     private ReactiveCommand<Unit,Unit> CreateOpenDialogCommand(Func<DialogViewModel> dialogViewModel) => ReactiveCommand.CreateFromTask(async () =>
     {
-        await MainViewModel.DialogOpenCommand.Execute(dialogViewModel()).FirstAsync();
+        await MainViewModel!.DialogOpenCommand.Execute(dialogViewModel()).FirstAsync();
     });
 }

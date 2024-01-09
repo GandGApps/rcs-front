@@ -31,7 +31,7 @@ public partial class CashierPage : ReactiveUserControl<CashierVm>
             this.OneWayBind(ViewModel, x => x.FastAddictives, x => x.FastAddictives.ItemsSource)
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x => x.MainViewModel.Router.NavigateBack, x => x.NavigateBackButton)
+            this.BindCommand(ViewModel, x => x.GoBackCommand, x => x.NavigateBackButton)
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, x => x.CurrentProductViewModels, x => x.ProductsHost.ItemsSource)

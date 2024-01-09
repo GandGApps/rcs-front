@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -50,6 +51,11 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
 
         FilteredAddcitves = new(_addictives);
 
+        
+    }
+
+    protected override void OnActivated(CompositeDisposable disposables)
+    {
         this.WhenAnyValue(x => x.SearchedText)
             .Skip(2) // fixing first blinking
             .Throttle(TimeSpan.FromMilliseconds(500))
@@ -65,7 +71,8 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
                 var filtered = Addictives.Where(x => x.Name.Contains(SearchedText, StringComparison.CurrentCultureIgnoreCase));
                 FilteredAddcitves.Clear();
                 FilteredAddcitves.AddRange(filtered);
-            });
+            })
+            .DisposeWith(disposables);
     }
 
     [Reactive]

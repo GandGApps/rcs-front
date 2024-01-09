@@ -31,32 +31,28 @@ public class HintDialogViewModel : DialogViewModel
 
         OkCommand = ReactiveCommand.Create(() =>
         {
-            if(Step == hintVms.Count)
+            if (Step == hintVms.Count)
             {
                 Close();
                 return;
             }
-            Step ++;
+            Step++;
 
         }, canExecuteOkCommand);
+    }
 
-        this.WhenActivated(disposables =>
-        {
-            this.WhenAnyValue(x => x.Step)
+    protected override sealed void OnActivated(CompositeDisposable disposables)
+    {
+        this.WhenAnyValue(x => x.Step)
                 .Subscribe(x =>
                 {
-                    var hint = Hints[x-1];
+                    var hint = Hints[x - 1];
 
                     Target = hint.Target;
                     Root = hint.Root;
                     Text = hint.Hint;
                 })
                 .DisposeWith(disposables);
-
-        });
-
-
-        
     }
 
     [Reactive]
@@ -88,9 +84,9 @@ public class HintDialogViewModel : DialogViewModel
         get;
     }
 
-    public ReactiveCommand<Unit,Unit> OkCommand
+    public ReactiveCommand<Unit, Unit> OkCommand
     {
-        get; 
+        get;
     }
 
 }
