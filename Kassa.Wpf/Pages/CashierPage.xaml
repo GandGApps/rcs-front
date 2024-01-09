@@ -204,7 +204,7 @@
                         </Grid.ColumnDefinitions>
 
                         <CheckBox
-                            x:Name="MultiSelectButton"
+                            x:Name="MultiSelectCheckbox"
                             Margin="-12,-12,0,-12"
                             HorizontalAlignment="Left">
                             <CheckBox.Style>

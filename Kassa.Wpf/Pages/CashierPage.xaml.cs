@@ -57,6 +57,9 @@ public partial class CashierPage : ReactiveUserControl<CashierVm>
 
             this.BindCommand(ViewModel, x => x.SearchAddictiveCommand, x => x.SearchAddictivesButton)
                 .DisposeWith(disposables);
+
+            this.Bind(ViewModel, x => x.ShoppingList.IsMultiSelect, x => x.MultiSelectCheckbox.IsChecked)
+                .DisposeWith(disposables);
         });
     }
 }
