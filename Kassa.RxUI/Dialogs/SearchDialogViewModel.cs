@@ -38,6 +38,24 @@ public class SearchDialogViewModel : DialogViewModel
 
         data.Bind(out _addictives)
             .Subscribe();
+
+        FilteredAddcitves = new(_addictives);
+
+        this.WhenAnyValue(x => x.SearchedText)
+            .Throttle(TimeSpan.FromMilliseconds(500))
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(x =>
+            {
+                if (string.IsNullOrWhiteSpace(x))
+                {
+                    FilteredAddcitves.Clear();
+                    FilteredAddcitves.AddRange(Addictives);
+                    return;
+                }
+                var filtered = Addictives.Where(x => x.Name.Contains(SearchedText, StringComparison.CurrentCultureIgnoreCase));
+                FilteredAddcitves.Clear();
+                FilteredAddcitves.AddRange(filtered);
+            });
     }
 
     [Reactive]
@@ -54,4 +72,9 @@ public class SearchDialogViewModel : DialogViewModel
 
     public ReadOnlyObservableCollection<AddictiveViewModel> Addictives => _addictives;
     private readonly ReadOnlyObservableCollection<AddictiveViewModel> _addictives;
+
+    public ObservableCollection<AddictiveViewModel> FilteredAddcitves
+    {
+        get; 
+    }
 }

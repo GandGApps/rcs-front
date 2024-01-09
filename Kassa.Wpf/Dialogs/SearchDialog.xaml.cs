@@ -55,7 +55,7 @@ public partial class SearchDialog : ClosableDialog<SearchDialogViewModel>
                 x => x ? "Вкл" : "Выкл"
             ).DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.Addictives, v => v.Addictives.ItemsSource)
+            this.OneWayBind(ViewModel, x => x.FilteredAddcitves, v => v.Addictives.ItemsSource)
                 .DisposeWith(disposables);
 
         });
