@@ -75,7 +75,7 @@
                 Width="136"
                 Height="105"
                 Data="{StaticResource MessageIcon}"
-                Fill="#F2F2F7" />
+                Fill="{StaticResource SolidSecondaryBackground}" />
 
             <controls:Keyboard
                 x:Name="Keyboard"
