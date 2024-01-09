@@ -42,7 +42,7 @@
                 BorderThickness="0">
 
                 <Grid>
- 
+
 
                     <StackPanel VerticalAlignment="Center">
 
@@ -147,8 +147,8 @@
                 Padding="0"
                 HorizontalContentAlignment="Stretch"
                 VerticalContentAlignment="Stretch"
-                BorderBrush="{x:Null}"
                 Background="{StaticResource ClickableBg}"
+                BorderBrush="{x:Null}"
                 BorderThickness="0">
                 <Grid>
 
@@ -386,7 +386,11 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <Button x:Name="IncreaseButton" Style="{StaticResource ShoppingListButton}">
+                            <Button
+                                x:Name="IncreaseButton"
+                                HorizontalAlignment="Stretch"
+                                VerticalAlignment="Stretch"
+                                Style="{StaticResource ShoppingListButton}">
                                 <Path Data="{StaticResource PlusIcon}" Style="{StaticResource ButtonContent}" />
                             </Button>
 
