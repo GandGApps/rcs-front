@@ -37,15 +37,12 @@
                 Padding="0"
                 HorizontalContentAlignment="Stretch"
                 VerticalContentAlignment="Stretch"
+                Background="{StaticResource ClickableBg}"
                 BorderBrush="{x:Null}"
                 BorderThickness="0">
 
                 <Grid>
-
-                    <Border
-                        Panel.ZIndex="1"
-                        Background="{StaticResource SolidGreenColor}"
-                        Opacity="0.5" />
+ 
 
                     <StackPanel VerticalAlignment="Center">
 
@@ -72,14 +69,10 @@
                 Padding="0"
                 HorizontalContentAlignment="Stretch"
                 VerticalContentAlignment="Stretch"
+                Background="{StaticResource ClickableBg}"
                 BorderBrush="{x:Null}"
                 BorderThickness="0">
                 <Grid>
-
-                    <Border
-                        Panel.ZIndex="1"
-                        Background="{StaticResource SolidRedColor}"
-                        Opacity="0.5" />
 
                     <StackPanel VerticalAlignment="Center">
 
@@ -155,13 +148,10 @@
                 HorizontalContentAlignment="Stretch"
                 VerticalContentAlignment="Stretch"
                 BorderBrush="{x:Null}"
+                Background="{StaticResource ClickableBg}"
                 BorderThickness="0">
                 <Grid>
 
-                    <Border
-                        Panel.ZIndex="1"
-                        Background="{StaticResource SolidGreenColor}"
-                        Opacity="0.5" />
 
                     <StackPanel VerticalAlignment="Center">
 
