@@ -104,7 +104,7 @@ public class CashierVm : PageViewModel
         SearchAddictiveCommand = ReactiveCommand.CreateFromTask(async () =>
         {
 
-            var promo = new SearchDialogViewModel(mainViewModel);
+            var promo = new SearchAddictiveDialogViewModel(mainViewModel);
             await MainViewModel.DialogOpenCommand.Execute(promo).FirstAsync();
 
         });

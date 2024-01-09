@@ -12,9 +12,9 @@ using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI.Dialogs;
 
-public class SearchDialogViewModel : DialogViewModel
+public class SearchAddictiveDialogViewModel : DialogViewModel
 {
-    public SearchDialogViewModel(MainViewModel mainViewModel) : base(mainViewModel)
+    public SearchAddictiveDialogViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         IsKeyboardVisible = false;
 

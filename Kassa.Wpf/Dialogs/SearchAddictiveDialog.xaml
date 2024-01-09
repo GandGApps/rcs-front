@@ -1,5 +1,5 @@
 ﻿<local:ClosableDialog
-    x:Class="Kassa.Wpf.Dialogs.SearchDialog"
+    x:Class="Kassa.Wpf.Dialogs.SearchAddictiveDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:Kassa.Wpf.Controls"
@@ -9,10 +9,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rxui="http://reactiveui.net"
     xmlns:view="clr-namespace:Kassa.Wpf.Views"
-    d:DataContext="{d:DesignInstance Type=dialogs:SearchDialogViewModel}"
+    d:DataContext="{d:DesignInstance Type=dialogs:SearchAddictiveDialogViewModel}"
     d:DesignHeight="700"
     d:DesignWidth="1380"
-    x:TypeArguments="dialogs:SearchDialogViewModel"
+    x:TypeArguments="dialogs:SearchAddictiveDialogViewModel"
     mc:Ignorable="d">
     <Border
         Width="1320"

@@ -64,7 +64,7 @@ public class MainPageVm : PageViewModel
         OpenDeliviryDialog = CreateOpenDialogCommand(() => new DeliviryDialogViewModel(mainViewModel));
         OpenPersonnelDialog = CreateOpenDialogCommand(() => new PersonnelDialogViewModel(mainViewModel));
         OpenServicesDialog = CreateOpenDialogCommand(() => new ServicesDialogViewModel(mainViewModel));
-        OpenSearchDialog = CreateOpenDialogCommand(() => new SearchDialogViewModel(mainViewModel));
+        OpenSearchDialog = CreateOpenDialogCommand(() => new SearchAddictiveDialogViewModel(mainViewModel));
 
         GoToCashier = ReactiveCommand.Create(() =>
         {

@@ -18,11 +18,11 @@ using ReactiveUI;
 
 namespace Kassa.Wpf.Dialogs;
 /// <summary>
-/// Логика взаимодействия для SearchDialog.xaml
+/// Логика взаимодействия для SearchAddictiveDialog.xaml
 /// </summary>
-public partial class SearchDialog : ClosableDialog<SearchDialogViewModel>
+public partial class SearchAddictiveDialog : ClosableDialog<SearchAddictiveDialogViewModel>
 {
-    public SearchDialog()
+    public SearchAddictiveDialog()
     {
         InitializeComponent();
 
