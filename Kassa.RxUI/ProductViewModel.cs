@@ -10,6 +10,10 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI;
 public class ProductViewModel : ReactiveObject
 {
+    public int Id
+    {
+        get; set;
+    }
     [Reactive]
     public string Name
     {

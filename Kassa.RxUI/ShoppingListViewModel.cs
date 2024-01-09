@@ -44,6 +44,13 @@ public class ShoppingListViewModel : ReactiveObject
             .ToCollection()
             .Select(list => list.Sum(item => item.SubtotalSum))
             .Subscribe(x => Subtotal = x);
+
+        AddictiveViewModels
+            .ToObservableChangeSet()
+            .AutoRefresh(x => x.SubtotalSum)
+            .ToCollection()
+            .Select(list => list.Sum(item => item.SubtotalSum * (item.HasDiscount ? item.Discount : 1)))
+            .Subscribe(x => Total = x);
     }
 
     public ObservableCollection<ShoppingListItemViewModel> AddictiveViewModels
@@ -68,6 +75,12 @@ public class ShoppingListViewModel : ReactiveObject
 
     [Reactive]
     public bool IsMultiSelect
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public double Discount
     {
         get; set;
     }

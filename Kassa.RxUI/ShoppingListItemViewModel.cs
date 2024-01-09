@@ -15,6 +15,10 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI;
 public class ShoppingListItemViewModel : ReactiveObject, IShoppingListItem
 {
+    public int Id
+    {
+        get; set;
+    }
     /// <summary>
     /// Need's for design time
     /// </summary>

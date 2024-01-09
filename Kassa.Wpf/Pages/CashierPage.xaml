@@ -32,6 +32,7 @@
             </Grid.ColumnDefinitions>
 
             <Button
+                x:Name="TotalCommentButton"
                 Grid.Column="0"
                 Padding="0"
                 HorizontalContentAlignment="Stretch"
@@ -66,6 +67,7 @@
             </Button>
 
             <Button
+                x:Name="SearchAddictivesButton"
                 Grid.Column="1"
                 Padding="0"
                 HorizontalContentAlignment="Stretch"

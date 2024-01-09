@@ -20,7 +20,17 @@
             CurrencySymbol="₽"
             HasAddictiveInfo="True"
             HasDiscount="True"
-            Price="50" />
+            Price="50">
+            <vm:ShoppingListItemViewModel.Addictives>
+                <vm:AddictiveForShoppingListItem
+                    Count="12"
+                    CurrencySymbol="₽"
+                    Discount="0.1"
+                    HasDiscount="True"
+                    Measure="гр"
+                    Price="33" Name="Пармехано " />
+            </vm:ShoppingListItemViewModel.Addictives>
+        </vm:ShoppingListItemViewModel>
     </d:DesignProperties.DataContext>
 
     <UserControl.Resources>
