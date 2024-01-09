@@ -101,6 +101,14 @@ public class CashierVm : PageViewModel
 
         });
 
+        SearchAddictiveCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+
+            var promo = new SearchDialogViewModel(mainViewModel);
+            await MainViewModel.DialogOpenCommand.Execute(promo).FirstAsync();
+
+        });
+
         this.WhenAnyValue(x => x.DiscountAccesser)
             .Subscribe(x =>
             {
@@ -141,6 +149,11 @@ public class CashierVm : PageViewModel
     } = string.Empty;
 
     public ReactiveCommand<Unit, Unit> CreateTotalCommentCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> SearchAddictiveCommand
     {
         get;
     }

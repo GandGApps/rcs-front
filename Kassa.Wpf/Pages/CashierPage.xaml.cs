@@ -55,7 +55,7 @@ public partial class CashierPage : ReactiveUserControl<CashierVm>
             this.BindCommand(ViewModel, x => x.CreateTotalCommentCommand, x => x.TotalCommentButton)
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x => x.CreatePromocodeCommand, x => x.SearchAddictivesButton)
+            this.BindCommand(ViewModel, x => x.SearchAddictiveCommand, x => x.SearchAddictivesButton)
                 .DisposeWith(disposables);
         });
     }
