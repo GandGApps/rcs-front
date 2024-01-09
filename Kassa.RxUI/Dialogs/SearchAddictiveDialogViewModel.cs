@@ -39,10 +39,19 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
         data.Bind(out _addictives)
             .Subscribe();
 
+        foreach (var addictive in _addictives)
+        {
+            addictive.AddToShoppingListCommand = ReactiveCommand.Create(() =>
+            {
+                SelectedAddictve = addictive;
+                Close();
+            });
+        }
+
         FilteredAddcitves = new(_addictives);
 
         this.WhenAnyValue(x => x.SearchedText)
-            .Skip(1) // fixing first blinking
+            .Skip(2) // fixing first blinking
             .Throttle(TimeSpan.FromMilliseconds(500))
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(x =>
@@ -76,6 +85,15 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
 
     public ObservableCollection<AddictiveViewModel> FilteredAddcitves
     {
-        get; 
+        get;
+    }
+
+    /// <summary>
+    /// if it's null then user canceled dialog
+    /// </summary>
+    [Reactive]
+    public AddictiveViewModel? SelectedAddictve
+    {
+        get; set;
     }
 }

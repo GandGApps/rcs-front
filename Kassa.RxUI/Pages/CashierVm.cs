@@ -104,9 +104,31 @@ public class CashierVm : PageViewModel
         SearchAddictiveCommand = ReactiveCommand.CreateFromTask(async () =>
         {
 
-            var promo = new SearchAddictiveDialogViewModel(mainViewModel);
-            await MainViewModel.DialogOpenCommand.Execute(promo).FirstAsync();
+            var addictiveDialog = new SearchAddictiveDialogViewModel(mainViewModel);
+            await MainViewModel.DialogOpenCommand.Execute(addictiveDialog).FirstAsync();
 
+
+            if (addictiveDialog.SelectedAddictve is not null)
+            {
+
+                foreach (var item in ShoppingList.CurrentItems.OfType<ShoppingListItemViewModel>())
+                {
+
+                    var addictive = new AddictiveForShoppingListItem()
+                    {
+                        Name = addictiveDialog.SelectedAddictve.Name,
+                        Count = 1,
+                        Price = addictiveDialog.SelectedAddictve.Price,
+                        Measure = addictiveDialog.SelectedAddictve.Measure,
+                        ShoppingListViewModel = ShoppingList
+                    };
+                    addictive.RemoveCommand = ReactiveCommand.Create(() =>
+                    {
+                        item.Addictives.Remove(addictive);
+                    });
+                    item.Addictives.Add(addictive);
+                }
+            }
         });
 
         this.WhenAnyValue(x => x.DiscountAccesser)
