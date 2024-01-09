@@ -42,6 +42,7 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
         FilteredAddcitves = new(_addictives);
 
         this.WhenAnyValue(x => x.SearchedText)
+            .Skip(1) // fixing first blinking
             .Throttle(TimeSpan.FromMilliseconds(500))
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(x =>
