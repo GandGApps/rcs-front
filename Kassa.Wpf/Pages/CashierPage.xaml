@@ -358,10 +358,9 @@
                                         x:Key="ShoppingListButton"
                                         BasedOn="{StaticResource {x:Type Button}}"
                                         TargetType="Button">
-                                        <Setter Property="Margin" Value="18" />
                                         <Setter Property="BorderThickness" Value="0" />
                                         <Setter Property="Background" Value="{StaticResource ClickableBg}" />
-                                        <Setter Property="Padding" Value="0" />
+                                        <Setter Property="Padding" Value="18" />
                                         <Setter Property="VerticalAlignment" Value="Center" />
                                         <Setter Property="HorizontalAlignment" Value="Center" />
                                     </Style>
