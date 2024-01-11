@@ -7,14 +7,14 @@ using DynamicData;
 using Kassa.DataAccess;
 
 namespace Kassa.BuisnessLogic;
-internal class CashierService : ICashierService
+internal class MockCashierService : ICashierService
 {
     public SourceCache<Product, int> RuntimeProducts
     {
         get;
     }
 
-    public CashierService()
+    public MockCashierService()
     {
         RuntimeProducts = new(x => x.Id);
 

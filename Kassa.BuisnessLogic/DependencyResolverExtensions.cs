@@ -6,7 +6,7 @@ public static class DependencyResolverExtensions
 {
     public static void RegisterBuisnessLogic(this IMutableDependencyResolver services)
     {
-        services.RegisterLazySingleton<ICashierService>(() => new CashierService());
+        services.RegisterLazySingleton<ICashierService>(() => new MockCashierService());
     }
 
     public static T GetRequiredService<T>(this IReadonlyDependencyResolver services)
