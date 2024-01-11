@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Media;
 using ReactiveUI;
 using Splat;
+using Kassa.BuisnessLogic;
 
 namespace Kassa.Wpf;
 /// <summary>
@@ -16,6 +17,7 @@ public partial class App : Application
     public App()
     {
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
+        Locator.CurrentMutable.RegisterBuisnessLogic();
     }
 }
 
