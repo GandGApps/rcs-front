@@ -38,10 +38,10 @@ public record Product
         get; set;
     } = null!;
 
-    public string Category
+    public string[] Categories
     {
         get; set;
-    } = null!;
+    } = [];
 
     public string Icon
     {

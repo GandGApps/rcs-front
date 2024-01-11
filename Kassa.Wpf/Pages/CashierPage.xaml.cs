@@ -60,6 +60,24 @@ public partial class CashierPage : ReactiveUserControl<CashierVm>
 
             this.Bind(ViewModel, x => x.ShoppingList.IsMultiSelect, x => x.MultiSelectCheckbox.IsChecked)
                 .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, x => x.SelectCategoryCommand, x => x.AllCategories)
+                .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, x => x.SelectCategoryCommand, x => x.FastFoodCategory)
+                .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, x => x.SelectCategoryCommand, x => x.DrinksCategory)
+                .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, x => x.SelectCategoryCommand, x => x.FavoriteCategory1)
+                .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, x => x.SelectCategoryCommand, x => x.FavoriteCategory2)
+                .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, x => x.SelectCategoryCommand, x => x.FavoriteCategory3)
+                .DisposeWith(disposables);
         });
     }
 }

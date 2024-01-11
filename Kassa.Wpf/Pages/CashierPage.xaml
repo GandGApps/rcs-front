@@ -528,6 +528,7 @@
                             </controls:ButtonWithCornerRaduis>
 
                             <RadioButton
+                                x:Name="AllCategories"
                                 Width="100"
                                 Margin="0,-13,0,-13"
                                 HorizontalContentAlignment="Center"
@@ -557,10 +558,12 @@
                                     Fill="White" />
                             </RadioButton>
                             <RadioButton
+                                x:Name="FastFoodCategory"
                                 Width="100"
                                 Margin="0,-13,0,-13"
                                 HorizontalContentAlignment="Center"
                                 VerticalContentAlignment="Center"
+                                CommandParameter="фаст фуд"
                                 GroupName="A">
                                 <RadioButton.Resources>
                                     <ResourceDictionary>
@@ -585,10 +588,12 @@
                                     Fill="White" />
                             </RadioButton>
                             <RadioButton
+                                x:Name="DrinksCategory"
                                 Width="100"
                                 Margin="0,-13,0,-13"
                                 HorizontalContentAlignment="Center"
                                 VerticalContentAlignment="Center"
+                                CommandParameter="напитки"
                                 GroupName="A">
                                 <RadioButton.Resources>
                                     <ResourceDictionary>
@@ -620,10 +625,12 @@
                             Margin="1"
                             Orientation="Horizontal">
                             <RadioButton
+                                x:Name="FavoriteCategory1"
                                 Width="100"
                                 Margin="0,-13,0,-13"
                                 HorizontalContentAlignment="Center"
                                 VerticalContentAlignment="Center"
+                                CommandParameter="избранное1"
                                 GroupName="A"
                                 IsChecked="False"
                                 Style="{StaticResource CashierTabPanel}">
@@ -647,10 +654,12 @@
                                     RadiusX="1.452" />
                             </RadioButton>
                             <RadioButton
+                                x:Name="FavoriteCategory2"
                                 Width="100"
                                 Margin="0,-13,0,-13"
                                 HorizontalContentAlignment="Center"
                                 VerticalContentAlignment="Center"
+                                CommandParameter="избранное2"
                                 GroupName="A"
                                 Style="{StaticResource CashierTabPanel}">
                                 <RadioButton.Resources>
@@ -687,10 +696,12 @@
                                 </StackPanel>
                             </RadioButton>
                             <RadioButton
+                                x:Name="FavoriteCategory3"
                                 Width="100"
                                 Margin="0,-13,0,-13"
                                 HorizontalContentAlignment="Center"
                                 VerticalContentAlignment="Center"
+                                CommandParameter="избранное3"
                                 GroupName="A"
                                 Style="{StaticResource CashierTabPanel}">
                                 <RadioButton.Resources>

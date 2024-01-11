@@ -72,10 +72,10 @@ public class ProductViewModel : ReactiveObject, IActivatableViewModel
     }
 
     [Reactive]
-    public string Category
+    public string[] Categories
     {
         get; set;
-    } = null!;
+    } = [];
 
     [EditorBrowsable(EditorBrowsableState.Never)]
     /// <summary>
@@ -99,7 +99,7 @@ public class ProductViewModel : ReactiveObject, IActivatableViewModel
         Price = product.Price;
         Count = product.Count;
         Measure = product.Measure;
-        Category = product.Category;
+        Categories = product.Categories;
         Icon = product.Icon;
 
         this.WhenActivated(Activate);

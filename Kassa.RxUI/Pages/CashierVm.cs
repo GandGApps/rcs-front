@@ -110,7 +110,7 @@ public class CashierVm : PageViewModel
 
         SelectCategoryCommand = ReactiveCommand.Create<string>(x =>
         {
-
+            Category = x;
         });
     }
 
@@ -146,6 +146,13 @@ public class CashierVm : PageViewModel
 
         ReadOnlyObservableCollection<ProductViewModel> productVms;
 
+        var filterCondition = this.WhenAnyValue(x => x.Category)
+            .Select(category => 
+                          new Func<ProductViewModel, bool>(
+                              vm => string.IsNullOrEmpty(category) || vm.Categories.Contains(category)
+                          )
+            );
+
         _cashierService.RuntimeProducts.Connect()
             .Transform(x =>
             {
@@ -166,6 +173,7 @@ public class CashierVm : PageViewModel
 
                 return vm;
             })
+            .Filter(filterCondition)
             .ObserveOn(RxApp.MainThreadScheduler)
             .Bind(out productVms)
             .Subscribe()
@@ -184,6 +192,12 @@ public class CashierVm : PageViewModel
     {
         get; set;
     } = string.Empty;
+
+    [Reactive]
+    public string? Category
+    {
+        get; set;
+    }
 
     public ReactiveCommand<Unit, Unit> CreateTotalCommentCommand
     {
