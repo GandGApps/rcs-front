@@ -36,19 +36,53 @@ internal class CashierService : ICashierService
 
     public Task DecreaseProductCount(Product product)
     {
-        RuntimeProducts.AddOrUpdate(product with
-        {
-            Count = product.Count - 1
-        });
-
-        return Task.CompletedTask;
+        return DecreaseProductCount(product.Id);
     }
 
     public Task IncreaseProductCount(Product product)
     {
-        RuntimeProducts.AddOrUpdate(product with
+        return IncreaseProductCount(product.Id);
+    }
+
+    public Task DecreaseProductCount(int productId)
+    {
+        var productOptional = RuntimeProducts.Lookup(productId);
+
+        if (!productOptional.HasValue)
         {
-            Count = product.Count + 1
+            throw new InvalidOperationException($"Product with id {productId} not found");
+        }
+
+        var product = productOptional.Value;
+
+        RuntimeProducts.Edit(updater =>
+        {
+            updater.AddOrUpdate(product with
+            {
+
+                Count = product.Count - 1
+            });
+        });
+
+        return Task.CompletedTask;
+    }
+    public Task IncreaseProductCount(int productId)
+    {
+        var productOptional = RuntimeProducts.Lookup(productId);
+
+        if (!productOptional.HasValue)
+        {
+            throw new InvalidOperationException($"Product with id {productId} not found");
+        }
+
+        var product = productOptional.Value;
+
+        RuntimeProducts.Edit(updater =>
+        {
+            updater.AddOrUpdate(product with
+            {
+                Count = product.Count + 1
+            });
         });
 
         return Task.CompletedTask;

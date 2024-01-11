@@ -18,5 +18,8 @@ public interface ICashierService
         get;
     }
 
+    public Task DecreaseProductCount(int productId);
     public Task DecreaseProductCount(Product product);
+    public Task IncreaseProductCount(int productId);
+    public Task IncreaseProductCount(Product product);
 }

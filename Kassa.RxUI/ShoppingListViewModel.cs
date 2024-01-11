@@ -6,24 +6,38 @@ using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using DynamicData.Aggregation;
+using Kassa.BuisnessLogic;
+using Splat;
 
 namespace Kassa.RxUI;
 public class ShoppingListViewModel : ReactiveObject
 {
+    private readonly ICashierService _cashierService = Locator.Current.GetRequiredService<ICashierService>();
+
     public ShoppingListViewModel()
     {
-        IncreaseCommand = ReactiveCommand.Create(() =>
+        IncreaseCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             foreach (var item in CurrentItems)
             {
+                if (item is ShoppingListItemViewModel itemViewModel)
+                {
+                    // Take product from storage
+                    await _cashierService.DecreaseProductCount(itemViewModel.Id);
+                }
                 item.Count++;
             }
         });
 
-        DecreaseCommand = ReactiveCommand.Create(() =>
+        DecreaseCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             foreach (var item in CurrentItems)
             {
+                if (item is ShoppingListItemViewModel itemViewModel)
+                {
+                    // Return product to storage
+                    await _cashierService.IncreaseProductCount(itemViewModel.Id);
+                }
                 item.Count--;
             }
         });
