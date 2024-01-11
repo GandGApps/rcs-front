@@ -16,12 +16,22 @@ public class ShoppingListViewModel : ReactiveObject
 
     public ShoppingListViewModel()
     {
+
+
         IncreaseCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             foreach (var item in CurrentItems)
             {
                 if (item is ShoppingListItemViewModel itemViewModel)
                 {
+                    var product = await _cashierService.GetProductById(itemViewModel.Id);
+
+                    // Check if product is available
+                    if (product is null || product.Count == 0)
+                    {
+                        continue;
+                    }
+
                     // Take product from storage
                     await _cashierService.DecreaseProductCount(itemViewModel.Id);
                 }
@@ -35,6 +45,11 @@ public class ShoppingListViewModel : ReactiveObject
             {
                 if (item is ShoppingListItemViewModel itemViewModel)
                 {
+                    if (item.Count == 1)
+                    {
+                        await item.RemoveCommand.Execute();
+                    }
+
                     // Return product to storage
                     await _cashierService.IncreaseProductCount(itemViewModel.Id);
                 }

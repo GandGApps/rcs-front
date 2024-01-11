@@ -9,12 +9,15 @@ using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
+using Kassa.BuisnessLogic;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Splat;
 
 namespace Kassa.RxUI;
 public class ShoppingListItemViewModel : ReactiveObject, IShoppingListItem
 {
+    private readonly ICashierService _cashierService = Locator.Current.GetRequiredService<ICashierService>();
     public int Id
     {
         get; set;
@@ -80,8 +83,20 @@ public class ShoppingListItemViewModel : ReactiveObject, IShoppingListItem
         Id = productViewModel.Id;
 
 
-        RemoveCommand = ReactiveCommand.Create(() =>
+        RemoveCommand = ReactiveCommand.CreateFromTask(async () =>
         {
+            var product = await _cashierService.GetProductById(Id);
+
+            if (product is null)
+            {
+                throw new InvalidOperationException($"Product with id {Id} not found");
+            }
+
+            await _cashierService.UpdateProduct(product with
+            {
+                Count = product.Count + Count
+            });
+
             ShoppingListViewModel.AddictiveViewModels.Remove(this);
         });
     }

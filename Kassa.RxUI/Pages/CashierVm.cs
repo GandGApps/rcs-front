@@ -151,8 +151,16 @@ public class CashierVm : PageViewModel
             {
                 var vm = new ProductViewModel(x);
 
-                vm.AddToShoppingListCommand = ReactiveCommand.Create(() =>
+                vm.AddToShoppingListCommand = ReactiveCommand.CreateFromTask(async () =>
                 {
+                    if (x.Count == 0)
+                    {
+                        return;
+                    }
+
+                    // Take product from storage
+                    await _cashierService.DecreaseProductCount(x);
+
                     ShoppingList.AddictiveViewModels.Add(new(ShoppingList, vm));
                 }, vm.WhenAnyValue(x => x.IsAvailable));
 

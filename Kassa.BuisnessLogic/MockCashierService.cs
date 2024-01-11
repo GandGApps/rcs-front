@@ -87,4 +87,23 @@ internal class MockCashierService : ICashierService
 
         return Task.CompletedTask;
     }
+
+    public ValueTask<Product?> GetProductById(int productId)
+    {
+        var productOptional = RuntimeProducts.Lookup(productId);
+
+        if (!productOptional.HasValue)
+        {
+            return ValueTask.FromResult<Product?>(null);
+        }
+
+        return new(productOptional.Value);
+    }
+
+    public Task UpdateProduct(Product product)
+    {
+        RuntimeProducts.AddOrUpdate(product);
+
+        return Task.CompletedTask;
+    }
 }
