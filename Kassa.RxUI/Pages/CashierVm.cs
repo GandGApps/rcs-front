@@ -7,15 +7,18 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DynamicData;
 using Kassa.BuisnessLogic;
 using Kassa.RxUI.Dialogs;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Splat;
 
 namespace Kassa.RxUI.Pages;
 public class CashierVm : PageViewModel
 {
     private readonly Dictionary<object, IEnumerable<ProductViewModel>> _categories = [];
+    private readonly ICashierService _cashierService = Locator.Current.GetRequiredService<ICashierService>();
     public CashierVm(MainViewModel mainViewModel) : base(mainViewModel)
     {
         ShoppingList = new();
@@ -32,36 +35,6 @@ public class CashierVm : PageViewModel
             new() { Name = "Сыр пармезан", Count = 15, Measure = "гр", IsAvailable = false },
         ]);
 
-        CurrentProductViewModels = new([
-            new() { Id = 1, Name = "Холодные напитки “Криспи Гриль”", Price = 1299, Count = 1, Measure = "шт", IsAvailable = true },
-            new() { Id = 2, Name = "", Price = 1299, Count = 1, Measure = "шт", IsAvailable = true },
-            new() { Id = 3, Name = "Холодные напитки “Криспи Гриль”", Price = 1299, Count = 1, Measure = "шт", IsAvailable = false },
-            new() { Id = 4, Name = "Холодные напитки “Криспи Гриль”", Price = 443, Count = 1, Measure = "шт", IsAvailable = true },
-            new() { Id = 5, Name = "Холодные напитки “Криспи Гриль”", Price = 312, Count = 1, Measure = "шт", IsAvailable = true },
-            new() { Id = 6, Name = "Холодные напитки “Криспи Гриль”", Price = 33, Count = 1, Measure = "шт", IsAvailable = true },
-            new() { Id = 7, Name = "Холодные напитки “Криспи Гриль”", Price = 123, Count = 1, Measure = "шт", IsAvailable = true },
-            new() { Id = 8, Name = "Холодные напитки “Криспи Гриль”", Price = 732, Count = 1, Measure = "шт", IsAvailable = false },
-            new() { Id = 9, Name = "Холодные напитки “Криспи Гриль”", Price = 1299, Count = 1, Measure = "шт", IsAvailable = true },
-            new() { Id = 10, Name = "Холодные напитки “Криспи Гриль”", Price = 1299, Count = 1, Measure = "шт", IsAvailable = true },
-            new() { Id = 11, Name = "Холодные напитки “Криспи Гриль”", Price = 1231, Count = 1, Measure = "шт", IsAvailable = true },
-        ]);
-
-        foreach (var item in CurrentProductViewModels)
-        {
-
-            item.AddToShoppingListCommand = ReactiveCommand.Create(() =>
-            {
-                ShoppingList.AddictiveViewModels.Add(new(ShoppingList)
-                {
-                    Id = item.Id,
-                    Name = item.Name,
-                    Count = 1,
-                    Price = item.Price,
-                    Measure = item.Measure,
-                    CurrencySymbol = item.CurrencySymbol,
-                });
-            }, item.WhenAnyValue(x => x.IsAvailable));
-        }
 
         foreach (var item in _fastAddictives)
         {
@@ -135,9 +108,9 @@ public class CashierVm : PageViewModel
             }
         });
 
-        SelectCategoryCommand = ReactiveCommand.Create<object>(x =>
+        SelectCategoryCommand = ReactiveCommand.Create<string>(x =>
         {
-            CurrentProductViewModels = new([]);
+
         });
     }
 
@@ -170,6 +143,27 @@ public class CashierVm : PageViewModel
 
             })
             .DisposeWith(disposables);
+
+        ReadOnlyObservableCollection<ProductViewModel> productVms;
+
+        _cashierService.RuntimeProducts.Connect()
+            .Transform(x =>
+            {
+                var vm = new ProductViewModel(x);
+
+                vm.AddToShoppingListCommand = ReactiveCommand.Create(() =>
+                {
+                    ShoppingList.AddictiveViewModels.Add(new(ShoppingList, vm));
+                }, vm.WhenAnyValue(x => x.IsAvailable));
+
+                return vm;
+            })
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Bind(out productVms)
+            .Subscribe()
+            .DisposeWith(disposables);
+
+        CurrentProductViewModels = productVms;
     }
 
     public ShoppingListViewModel ShoppingList
@@ -198,7 +192,7 @@ public class CashierVm : PageViewModel
         get;
     }
 
-    public ReactiveCommand<object, Unit> SelectCategoryCommand
+    public ReactiveCommand<string, Unit> SelectCategoryCommand
     {
         get;
     }
@@ -215,7 +209,6 @@ public class CashierVm : PageViewModel
     [Reactive]
     public ReadOnlyObservableCollection<ProductViewModel> CurrentProductViewModels
     {
-        get;
-        set;
+        get; set;
     }
 }

@@ -8,4 +8,9 @@ public static class DependencyResolverExtensions
     {
         services.RegisterLazySingleton<ICashierService>(() => new CashierService());
     }
+
+    public static T GetRequiredService<T>(this IReadonlyDependencyResolver services)
+    {
+        return services.GetService<T>() ?? throw new InvalidOperationException($"The service of type {typeof(T)} is not registered.");
+    }
 }

@@ -23,12 +23,12 @@ public class ShoppingListItemViewModel : ReactiveObject, IShoppingListItem
     /// Need's for design time
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public ShoppingListItemViewModel() : this(new ShoppingListViewModel())
+    public ShoppingListItemViewModel() : this(new ShoppingListViewModel(), new())
     {
 
     }
 
-    public ShoppingListItemViewModel(ShoppingListViewModel shoppingListViewModel)
+    public ShoppingListItemViewModel(ShoppingListViewModel shoppingListViewModel, ProductViewModel productViewModel)
     {
         ShoppingListViewModel = shoppingListViewModel;
 
@@ -71,6 +71,14 @@ public class ShoppingListItemViewModel : ReactiveObject, IShoppingListItem
             .ToCollection()
             .Select(list => list.Sum(item => item.Price))
             .Subscribe(x => AddictiveSubtotalSum = x);
+
+        Count = 1;
+        Price = productViewModel.Price;
+        Measure = productViewModel.Measure;
+        Name = productViewModel.Name;
+        CurrencySymbol = productViewModel.CurrencySymbol;
+        Id = productViewModel.Id;
+
 
         RemoveCommand = ReactiveCommand.Create(() =>
         {
