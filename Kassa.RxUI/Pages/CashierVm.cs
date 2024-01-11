@@ -15,6 +15,7 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Pages;
 public class CashierVm : PageViewModel
 {
+    private readonly Dictionary<object, IEnumerable<ProductViewModel>> _categories = [];
     public CashierVm(MainViewModel mainViewModel) : base(mainViewModel)
     {
         ShoppingList = new();
@@ -98,16 +99,18 @@ public class CashierVm : PageViewModel
             {
                 DiscountAccesser = x;
             });
-            await mainViewModel.DialogOpenCommand.Execute(promo).FirstAsync();
+            var dialog = await mainViewModel.DialogOpenCommand.Execute(promo).FirstAsync();
 
+            await dialog.WaitDialogClose();
         });
 
         SearchAddictiveCommand = ReactiveCommand.CreateFromTask(async () =>
         {
 
             var addictiveDialog = new SearchAddictiveDialogViewModel(mainViewModel);
-            await mainViewModel.DialogOpenCommand.Execute(addictiveDialog).FirstAsync();
+            var dialog = await mainViewModel.DialogOpenCommand.Execute(addictiveDialog).FirstAsync();
 
+            await dialog.WaitDialogClose();
 
             if (addictiveDialog.SelectedAddictve is not null)
             {
@@ -130,6 +133,11 @@ public class CashierVm : PageViewModel
                     item.Addictives.Add(addictive);
                 }
             }
+        });
+
+        SelectCategoryCommand = ReactiveCommand.Create<object>(x =>
+        {
+            CurrentProductViewModels = new([]);
         });
     }
 
@@ -186,6 +194,11 @@ public class CashierVm : PageViewModel
     }
 
     public ReactiveCommand<Unit, Unit> CreatePromocodeCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<object, Unit> SelectCategoryCommand
     {
         get;
     }

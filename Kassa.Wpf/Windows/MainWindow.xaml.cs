@@ -1,4 +1,5 @@
 ﻿using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -39,30 +40,18 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
         InitializeComponent();
 
         RoutedViewHost.Router = ViewModel.Router;
+        DialogHost.Router = new();
 
         var viewLocator = Locator.Current.GetService<IViewLocator>() ??
             throw new NullReferenceException($"Service IViewLocator not found!");
 
-        ViewModel.DialogOpenCommand = ReactiveCommand.CreateFromTask(async (DialogViewModel x) =>
+        ViewModel.DialogOpenCommand = ReactiveCommand.Create((DialogViewModel x) =>
         {
-            var dialogView = viewLocator.ResolveView(x);
-            dialogView!.ViewModel = x;
-
-            if (dialogView is not Control dialogControl)
+            DialogHost.Router.Navigate.Execute(x);
+            x.CloseCommand.FirstAsync().Subscribe(_ =>
             {
-                return x;
-            }
-
-            DialogOverlay.Child = dialogControl;
-
-            ContentBlur.Radius = 10;
-            DialogOverlay.Visibility = Visibility.Visible;
-
-            await x.WaitDialogClose();
-
-            ContentBlur.Radius = 0;
-            DialogOverlay.Visibility = Visibility.Collapsed;
-
+                DialogHost.Router.NavigationStack.Remove(x);
+            });
             return x;
         });
 
@@ -78,12 +67,29 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
                                       PageFooter.Content = footer;
                                       footer.DataContext = ViewModel.Router.GetCurrentViewModel();
                                   }
-                                  
-                                  
+
+
                               }
-                              
+
                           })
                           .DisposeWith(disposables);
+
+            DialogHost.Router.WhenAnyValue(x => x.NavigationStack.Count)
+                .Subscribe(x =>
+                {
+                    if (x == 0)
+                    {
+                        DialogOverlay.Visibility = Visibility.Collapsed;
+                        ContentBlur.Radius = 0;
+                    }
+                    else
+                    {
+
+                        DialogOverlay.Visibility = Visibility.Visible;
+                        ContentBlur.Radius = 10;
+                    }
+                })
+                .DisposeWith(disposables);
 
             ViewModel.CloseCommand
                      .Subscribe(x =>
@@ -97,7 +103,7 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
 
         });
 
-        
+
     }
     public static void SetPageFooter(UIElement element, object? value)
     {
