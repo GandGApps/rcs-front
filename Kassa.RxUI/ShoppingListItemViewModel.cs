@@ -85,12 +85,8 @@ public class ShoppingListItemViewModel : ReactiveObject, IShoppingListItem
 
         RemoveCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var product = await _cashierService.GetProductById(Id);
-
-            if (product is null)
-            {
-                throw new InvalidOperationException($"Product with id {Id} not found");
-            }
+            var product = await _cashierService.GetProductById(Id) 
+                ?? throw new InvalidOperationException($"Product with id {Id} not found");
 
             await _cashierService.UpdateProduct(product with
             {
