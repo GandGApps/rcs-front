@@ -19,7 +19,7 @@ public class ButtonWithIcon : Button
 {
 
     public static readonly DependencyProperty IconProperty =
-        DependencyProperty.Register(nameof(Icon), typeof(StreamGeometry), typeof(ButtonWithIcon));
+        DependencyProperty.Register(nameof(Icon), typeof(Geometry), typeof(ButtonWithIcon));
 
     public static readonly DependencyProperty CornerRadiusProperty =
         DependencyProperty.Register(nameof(CornerRadius), typeof(CornerRadius), typeof(ButtonWithIcon));
@@ -29,9 +29,9 @@ public class ButtonWithIcon : Button
         DefaultStyleKeyProperty.OverrideMetadata(typeof(ButtonWithIcon), new FrameworkPropertyMetadata(typeof(ButtonWithIcon)));
     }
 
-    public StreamGeometry Icon
+    public Geometry Icon
     {
-        get => (StreamGeometry)GetValue(IconProperty);
+        get => (Geometry)GetValue(IconProperty);
         set => SetValue(IconProperty, value);
     }
 

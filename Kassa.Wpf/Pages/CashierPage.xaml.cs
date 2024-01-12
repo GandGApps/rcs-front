@@ -84,6 +84,9 @@ public partial class CashierPage : ReactiveUserControl<CashierVm>
 
             this.BindCommand(ViewModel, x => x.OpenMoreDialogCommand, x => x.MoreButton)
                 .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, x => x.OpenDiscountsAndSurchargesDialog, x => x.PricingDetailsButton)
+                .DisposeWith(disposables);
         });
     }
 }

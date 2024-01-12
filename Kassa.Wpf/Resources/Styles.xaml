@@ -118,14 +118,17 @@
         <Setter Property="CornerRadius" Value="6.4" />
         <Setter Property="FontFamily" Value="./Assets/Fonts/Montseratt/#Montserrat" />
         <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
 
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type local:ButtonWithIcon}">
-                    <Grid>
+                    <Grid Width="{TemplateBinding Width}" Height="{TemplateBinding Height}">
                         <Border
                             x:Name="_topShadow"
-                            Margin="{TemplateBinding Margin}"
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
+                            Padding="{TemplateBinding Padding}"
                             BorderBrush="{DynamicResource TopShadow}"
                             CornerRadius="{TemplateBinding CornerRadius}">
                             <Border.Effect>
@@ -134,7 +137,9 @@
                         </Border>
                         <Border
                             x:Name="_bottomShadow"
-                            Margin="{TemplateBinding Margin}"
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
+                            Padding="{TemplateBinding Padding}"
                             BorderBrush="{DynamicResource BottomShadow}"
                             CornerRadius="{TemplateBinding CornerRadius}">
                             <Border.Effect>
@@ -143,7 +148,8 @@
                         </Border>
                         <Border
                             x:Name="_border"
-                            Margin="{TemplateBinding Margin}"
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
                             Padding="{TemplateBinding Padding}"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
@@ -154,7 +160,7 @@
 
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="28" />
-                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
                                 <Path
@@ -163,9 +169,9 @@
                                     Stretch="Uniform" />
                                 <ContentPresenter
                                     Grid.Column="1"
-                                    Margin="10.4,5,0,0"
-                                    HorizontalAlignment="Stretch"
-                                    VerticalAlignment="Center"
+                                    Margin="10.4,0,0,0"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                     Content="{TemplateBinding Content}"
                                     TextBlock.FontSize="{TemplateBinding FontSize}"
                                     TextBlock.Foreground="{TemplateBinding Foreground}" />

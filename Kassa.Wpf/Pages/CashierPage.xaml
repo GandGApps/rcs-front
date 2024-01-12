@@ -304,9 +304,11 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <Border
+                        <controls:ButtonWithCornerRaduis
+                            x:Name="PricingDetailsButton"
                             Grid.RowSpan="2"
                             Padding="12"
+                            HorizontalContentAlignment="Stretch"
                             Background="White"
                             CornerRadius="11">
                             <StackPanel>
@@ -335,7 +337,7 @@
                                     Text="Надбавка" />
 
                             </StackPanel>
-                        </Border>
+                        </controls:ButtonWithCornerRaduis>
 
                         <Border
                             x:Name="SubtotalBorder"

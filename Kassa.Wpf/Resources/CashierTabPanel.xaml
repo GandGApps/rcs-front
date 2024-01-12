@@ -18,11 +18,13 @@
                         x:Name="RootGrid"
                         Width="{TemplateBinding Width}"
                         Height="{TemplateBinding Height}"
-                        Margin="{TemplateBinding Margin}"
                         Background="{TemplateBinding Background}">
 
                         <Border
                             x:Name="CheckedBorder"
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
+                            Padding="{TemplateBinding Padding}"
                             Panel.ZIndex="3"
                             Background="{DynamicResource SolidPrimaryAccentColor}"
                             CornerRadius="5.5">
@@ -59,7 +61,8 @@
                         <Border
                             x:Name="Host"
                             Width="{TemplateBinding Width}"
-                            Height="{TemplateBinding Height}">
+                            Height="{TemplateBinding Height}"
+                            Padding="{TemplateBinding Padding}">
                             <ContentPresenter
                                 HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                 VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
