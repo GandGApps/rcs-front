@@ -159,6 +159,16 @@ public class CashierVm : PageViewModel
                        }
                    }
                });
+
+        OpenMoreDialogCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+
+            var dialog = new MoreCashierDialogViewModel(this);
+
+            await mainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
+
+            await dialog.WaitDialogClose();
+        });
     }
 
     protected override sealed void OnActivated(CompositeDisposable disposables)
@@ -272,6 +282,11 @@ public class CashierVm : PageViewModel
     }
 
     public ReactiveCommand<Unit, Unit> CreateCommentCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> OpenMoreDialogCommand
     {
         get;
     }

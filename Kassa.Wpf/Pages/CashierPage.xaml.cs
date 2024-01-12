@@ -82,6 +82,8 @@ public partial class CashierPage : ReactiveUserControl<CashierVm>
             this.BindCommand(ViewModel, x => x.SearchProductCommand, x => x.SearchFoodButton)
                 .DisposeWith(disposables);
 
+            this.BindCommand(ViewModel, x => x.OpenMoreDialogCommand, x => x.MoreButton)
+                .DisposeWith(disposables);
         });
     }
 }

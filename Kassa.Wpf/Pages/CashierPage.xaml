@@ -449,7 +449,10 @@
                                 <Path Data="{StaticResource DicountIcon}" Style="{StaticResource ButtonContent}" />
                             </Button>
 
-                            <Button Grid.Column="5" Style="{StaticResource ShoppingListButton}">
+                            <Button
+                                x:Name="MoreButton"
+                                Grid.Column="5"
+                                Style="{StaticResource ShoppingListButton}">
                                 <Image Source="{StaticResource OptionsIcon}" Style="{StaticResource ButtonContent}" />
                             </Button>
 
