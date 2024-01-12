@@ -53,6 +53,7 @@
                 Grid.Row="2"
                 HorizontalContentAlignment="Stretch"
                 HorizontalScrollBarVisibility="Disabled"
+                IsDeferredScrollingEnabled="True"
                 Style="{StaticResource PrimaryScrollViewer}">
 
                 <ItemsControl x:Name="Products" BorderThickness="0">

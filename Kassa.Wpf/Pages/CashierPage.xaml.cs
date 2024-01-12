@@ -37,6 +37,12 @@ public partial class CashierPage : ReactiveUserControl<CashierVm>
             this.OneWayBind(ViewModel, x => x.CurrentProductViewModels, x => x.ProductsHost.ItemsSource)
                 .DisposeWith(disposables);
 
+            this.WhenAnyValue(x => x.ProductsHost.ItemsSource)
+                .Subscribe(x =>
+                {
+
+                });
+
             this.OneWayBind(ViewModel, x => x.ShoppingList.AddictiveViewModels, x => x.ShoppingListItems.ItemsSource)
                 .DisposeWith(disposables);
 
