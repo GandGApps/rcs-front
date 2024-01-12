@@ -23,12 +23,13 @@
             Price="50">
             <vm:ShoppingListItemViewModel.Addictives>
                 <vm:AddictiveForShoppingListItem
+                    Name="Пармехано "
                     Count="12"
                     CurrencySymbol="₽"
                     Discount="0.1"
                     HasDiscount="True"
                     Measure="гр"
-                    Price="33" Name="Пармехано " />
+                    Price="33" />
             </vm:ShoppingListItemViewModel.Addictives>
         </vm:ShoppingListItemViewModel>
     </d:DesignProperties.DataContext>

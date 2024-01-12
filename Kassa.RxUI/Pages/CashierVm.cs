@@ -62,7 +62,16 @@ public class CashierVm : PageViewModel
 
         CreateTotalCommentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await mainViewModel.DialogOpenCommand.Execute(new CommentDialogViewModel(this)).FirstAsync();
+            var dialog = new CommentDialogViewModel(this);
+
+            await mainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
+
+            await dialog.WaitDialogClose();
+
+            if (dialog.IsPublished)
+            {
+                TotalComment = dialog.Comment;
+            }
         });
 
         CreatePromocodeCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -130,6 +139,26 @@ public class CashierVm : PageViewModel
 
             ShoppingList.AddictiveViewModels.Add(new ShoppingListItemViewModel(ShoppingList, product));
         });
+
+        CreateCommentCommand = ReactiveCommand.CreateFromTask(async () =>
+               {
+
+                   var dialog = new CommentDialogViewModel(this);
+
+                   await mainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
+
+                   await dialog.WaitDialogClose();
+
+                   if (dialog.IsPublished)
+                   {
+
+                       foreach (var item in ShoppingList.CurrentItems.OfType<ShoppingListItemViewModel>())
+                       {
+
+                           item.AddictiveInfo = dialog.Comment;
+                       }
+                   }
+               });
     }
 
     protected override sealed void OnActivated(CompositeDisposable disposables)
@@ -206,10 +235,10 @@ public class CashierVm : PageViewModel
     }
 
     [Reactive]
-    public string TotalComment
+    public string? TotalComment
     {
         get; set;
-    } = string.Empty;
+    }
 
     [Reactive]
     public string? Category
@@ -238,6 +267,11 @@ public class CashierVm : PageViewModel
     }
 
     public ReactiveCommand<Unit, Unit> SearchProductCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> CreateCommentCommand
     {
         get;
     }

@@ -19,10 +19,10 @@ public class CommentDialogViewModel : DialogViewModel
 
         PublishCommentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            cashierVm.TotalComment = Comment ?? string.Empty;
+            IsPublished = true;
 
             await CloseAsync();
-
+            
             return Comment;
         });
     }
@@ -33,13 +33,18 @@ public class CommentDialogViewModel : DialogViewModel
     }
 
     [Reactive]
-    public string Comment
+    public string? Comment
     {
         get; set;
     }
 
     [Reactive]
     public bool IsKeyboardVisible
+    {
+        get; set;
+    }
+
+    public bool IsPublished
     {
         get; set;
     }

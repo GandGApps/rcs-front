@@ -17,7 +17,7 @@ using Splat;
 namespace Kassa.RxUI;
 public class ShoppingListItemViewModel : ReactiveObject, IShoppingListItem
 {
-    private readonly ICashierService _cashierService = Locator.Current.GetRequiredService<ICashierService>();
+    private readonly ICashierService _cashierService;
     public int Id
     {
         get; set;
@@ -26,13 +26,15 @@ public class ShoppingListItemViewModel : ReactiveObject, IShoppingListItem
     /// Need's for design time
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public ShoppingListItemViewModel() : this(new ShoppingListViewModel(), new())
+    public ShoppingListItemViewModel() 
     {
 
     }
 
     public ShoppingListItemViewModel(ShoppingListViewModel shoppingListViewModel, ProductViewModel productViewModel)
     {
+        _cashierService = Locator.Current.GetRequiredService<ICashierService>();
+
         ShoppingListViewModel = shoppingListViewModel;
 
 
@@ -63,6 +65,10 @@ public class ShoppingListItemViewModel : ReactiveObject, IShoppingListItem
                     }
                 }
             });
+
+        this.WhenAnyValue(x => x.AddictiveInfo)
+            .Select(x => !string.IsNullOrEmpty(x))
+            .Subscribe(x => HasAddictiveInfo = x);
 
         this.WhenAnyValue(x => x.Count, x => x.Price, x => x.AddictiveSubtotalSum)
             .Select(x => (x.Item1 * x.Item2) + x.Item3)
