@@ -17,10 +17,11 @@ public class CommentDialogViewModel : DialogViewModel
 
         Comment = cashierVm.TotalComment;
 
-        PublishCommentCommand = ReactiveCommand.Create(() =>
+        PublishCommentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             cashierVm.TotalComment = Comment ?? string.Empty;
-            Close();
+
+            await CloseAsync();
 
             return Comment;
         });

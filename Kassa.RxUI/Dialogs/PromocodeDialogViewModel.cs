@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
@@ -14,7 +15,7 @@ public class PromocodeDialogViewModel : DialogViewModel
 {
     public PromocodeDialogViewModel(CashierVm cashierVm) : base(null!)
     {
-        ApplyCommand = ReactiveCommand.Create<Unit, IDiscountAccesser?>(x =>
+        ApplyCommand = ReactiveCommand.CreateFromTask<Unit, IDiscountAccesser?>(async x =>
         {
             if (string.IsNullOrWhiteSpace(Promocode))
             {
@@ -29,7 +30,8 @@ public class PromocodeDialogViewModel : DialogViewModel
 
             var discount = IDiscountAccesser.CreateMock(discounts, 25);
 
-            Close();    
+            await CloseAsync();
+
             return discount;
         });
     }

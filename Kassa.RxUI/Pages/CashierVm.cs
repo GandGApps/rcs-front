@@ -112,6 +112,24 @@ public class CashierVm : PageViewModel
         {
             Category = x;
         });
+
+        SearchProductCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+
+            var searchProductDialog = new SearchProductDialogViewModel();
+            var dialog = await mainViewModel.DialogOpenCommand.Execute(searchProductDialog).FirstAsync();
+
+            await dialog.WaitDialogClose();
+
+            var product = searchProductDialog.SelectedProduct;
+
+            if (product is null)
+            {
+                return;
+            }
+
+            ShoppingList.AddictiveViewModels.Add(new ShoppingListItemViewModel(ShoppingList, product));
+        });
     }
 
     protected override sealed void OnActivated(CompositeDisposable disposables)
@@ -147,7 +165,7 @@ public class CashierVm : PageViewModel
         ReadOnlyObservableCollection<ProductViewModel> productVms;
 
         var filterCondition = this.WhenAnyValue(x => x.Category)
-            .Select(category => 
+            .Select(category =>
                           new Func<ProductViewModel, bool>(
                               vm => string.IsNullOrEmpty(category) || vm.Categories.Contains(category)
                           )
@@ -215,6 +233,11 @@ public class CashierVm : PageViewModel
     }
 
     public ReactiveCommand<string, Unit> SelectCategoryCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> SearchProductCommand
     {
         get;
     }

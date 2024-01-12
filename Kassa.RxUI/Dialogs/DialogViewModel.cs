@@ -48,12 +48,18 @@ public abstract class DialogViewModel : BaseViewModel, IRoutableViewModel
         get;
     }
 
-    public virtual void Close()
+    /// <summary>
+    /// Do not call this method directly. Use <see cref="CloseAsync"/> instead.
+    /// Or use <see cref="CloseCommand"/> if you want to close dialog from view.
+    /// </summary>
+    protected virtual void Close()
     {
         _taskCompletionSource.SetResult();
         _onClose.OnNext(false);
         _onClose.Dispose();
     }
+
+    public async Task CloseAsync() => await CloseCommand.Execute().FirstAsync();
 
     public Task WaitDialogClose()
     {

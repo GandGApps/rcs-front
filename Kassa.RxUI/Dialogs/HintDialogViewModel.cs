@@ -29,11 +29,11 @@ public class HintDialogViewModel : DialogViewModel
 
         var canExecuteOkCommand = this.WhenAnyValue(x => x.Step).Select(x => x <= hintVms.Count);
 
-        OkCommand = ReactiveCommand.Create(() =>
+        OkCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             if (Step == hintVms.Count)
             {
-                Close();
+                await CloseAsync();
                 return;
             }
             Step++;

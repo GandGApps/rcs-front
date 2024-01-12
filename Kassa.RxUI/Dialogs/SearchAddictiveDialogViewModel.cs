@@ -42,16 +42,14 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
 
         foreach (var addictive in _addictives)
         {
-            addictive.AddToShoppingListCommand = ReactiveCommand.Create(() =>
+            addictive.AddToShoppingListCommand = ReactiveCommand.CreateFromTask(async () =>
             {
                 SelectedAddictve = addictive;
-                Close();
+                await CloseAsync();
             });
         }
 
         FilteredAddcitves = new(_addictives);
-
-        
     }
 
     protected override void OnActivated(CompositeDisposable disposables)
@@ -93,7 +91,7 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
     public ObservableCollection<AddictiveViewModel> FilteredAddcitves
     {
         get;
-    }
+    } 
 
     /// <summary>
     /// if it's null then user canceled dialog
