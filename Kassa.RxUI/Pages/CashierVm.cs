@@ -219,7 +219,7 @@ public class CashierVm : PageViewModel
                           )
             );
 
-        _cashierService.RuntimeProducts.Connect()
+        Locator.Current.GetRequiredService<IProductService>().RuntimeProducts.Connect()
             .Transform(x =>
             {
                 var vm = new ProductViewModel(x);
