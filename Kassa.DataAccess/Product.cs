@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Kassa.DataAccess;
-public record Product
+public record Product : ICategoryItem
 {
     public int Id
     {
@@ -38,13 +38,23 @@ public record Product
         get; set;
     } = null!;
 
+    /// <summary>
+    /// Need to be removed, as soon as possible
+    /// </summary>
+    [Obsolete]
     public string[] Categories
     {
         get; set;
     } = [];
 
+
     public string Icon
     {
         get; set;
     } = null!;
+    public int CategoryId
+    {
+        get; set;
+    }
+    public ICollection<ICategoryItem>? Items => null;
 }
