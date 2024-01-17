@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
+using DynamicData.PLinq;
 using Kassa.DataAccess;
 
 namespace Kassa.BuisnessLogic;
@@ -31,20 +33,36 @@ internal class CashierService(IProductService productService, ICategoryService c
 
     public Category? CurrentCategory
     {
-        get; private set;
+        get => _currentCategory;
+        set
+        {
+            if (_currentCategory == value)
+            {
+                return;
+            }
+
+            _currentCategory = value;
+            PropertyChanged?.Invoke(this, new(nameof(CurrentCategory)));
+        }
     }
+    private Category? _currentCategory;
+
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     public IDisposable BindSelectedCategoryItems(out ReadOnlyObservableCollection<ICategoryItem> categoryItems)
     {
         this.ThrowIfNotInitialized();
 
+        var filterCondition = this.WhenPropertyChanged(cashierService => cashierService.CurrentCategory)
+            .Select(category => new Func<ICategoryItem, bool>(item => item.CategoryId == category.Value?.Id));
+
         var categoryStream = categoryService.RuntimeCategories.Connect()
-            .Filter(category => category.CategoryId == CurrentCategory?.Id)
-            .Transform(product => (ICategoryItem)product);
+            .Transform(product => (ICategoryItem)product)
+            .Filter(filterCondition);
 
         var productStream = productService.RuntimeProducts.Connect()
-            .Filter(product => product.CategoryId == CurrentCategory?.Id)
-            .Transform(product => (ICategoryItem)product);
+            .Transform(product => (ICategoryItem)product)
+            .Filter(filterCondition);
 
         var stream = categoryStream.Merge(productStream)
             .Sort(SortExpressionComparer<ICategoryItem>.Ascending(x =>

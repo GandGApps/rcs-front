@@ -1,9 +1,10 @@
 ﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using DynamicData;
 using Kassa.DataAccess;
 
 namespace Kassa.BuisnessLogic;
-public interface ICashierService: IInitializableService
+public interface ICashierService: IInitializableService, INotifyPropertyChanged
 {
     public Category? CurrentCategory
     {
