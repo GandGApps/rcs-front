@@ -6,7 +6,7 @@ public static class DependencyResolverExtensions
 {
     public static void RegisterBuisnessLogic(this IMutableDependencyResolver services)
     {
-        services.RegisterLazySingleton<ICashierService>(() =>
+        services.Register<ICashierService>(() =>
         {
             var productService = Locator.Current.GetRequiredService<IProductService>();
             var categoryService = Locator.Current.GetRequiredService<ICategoryService>();

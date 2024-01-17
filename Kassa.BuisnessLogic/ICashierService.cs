@@ -3,8 +3,13 @@ using DynamicData;
 using Kassa.DataAccess;
 
 namespace Kassa.BuisnessLogic;
-public interface ICashierService
+public interface ICashierService: IInitializableService
 {
+    public Category? CurrentCategory
+    {
+        get;
+    }
+
     public IReadOnlyList<Category> CategoriesStack
     {
         get;
@@ -26,5 +31,5 @@ public interface ICashierService
     /// Select the previos category in the list.
     /// </summary>
     /// <returns> true if the previous category exists</returns>
-    public Task<bool> SelectPreviosCategory();
+    public ValueTask<bool> SelectPreviosCategory();
 }
