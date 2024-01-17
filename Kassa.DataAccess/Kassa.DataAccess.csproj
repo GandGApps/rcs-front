@@ -17,4 +17,8 @@
     <EmbeddedResource Include="MockProducts.json" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Splat" Version="14.7.1" />
+  </ItemGroup>
+
 </Project>

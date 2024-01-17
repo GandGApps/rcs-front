@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Kassa.DataAccess;
 public interface IRepository<T> where T : class, IModel
 {
-    public Task<T> Get(int categoryId);
+    public Task<T?> Get(int categoryId);
     public Task<IEnumerable<T>> GetAll();
     public Task Add(T item);
     public Task Update(T item);
@@ -20,13 +20,13 @@ public interface IRepository<T> where T : class, IModel
         var assembly = typeof(IRepository<>).Assembly;
         var json = assembly.GetManifestResourceStream($"Kassa.DataAccess.{jsonResourceName}");
         var items = JsonSerializer.Deserialize<IEnumerable<T>>(json!);
-        return new MockRepository(items.ToDictionary(x => x.Id));
+        return new MockRepository(items?.ToDictionary(x => x.Id) ?? []);
     }
 
     internal class MockRepository(Dictionary<int, T> items): IRepository<T>
     {
 
-        public Task<T> Get(int categoryId) => Task.FromResult(items[categoryId]);
+        public Task<T?> Get(int categoryId) => Task.FromResult(items.TryGetValue(categoryId, out var value) ? value : null);
 
         public Task<IEnumerable<T>> GetAll() => Task.FromResult(items.Values.AsEnumerable());
 
