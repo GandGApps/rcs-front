@@ -7,7 +7,7 @@ using DynamicData;
 using Kassa.DataAccess;
 
 namespace Kassa.BuisnessLogic;
-public interface ICategoryService
+public interface ICategoryService: IInitializableService
 {
     /// <summary>
     /// <para>

@@ -7,17 +7,10 @@ using DynamicData;
 using Kassa.DataAccess;
 
 namespace Kassa.BuisnessLogic;
-internal class CashierService : ICashierService
+internal class CashierService(IProductService productService, ICategoryService categoryService) : ICashierService
 {
     public SourceCache<Product, int> RuntimeProducts
     {
         get;
-    }
-
-    public CashierService(IProductService productService, ICategoryService categoryService)
-    {
-        RuntimeProducts = new(x => x.Id);
-    }
-
-    
+    } = new(x => x.Id);
 }
