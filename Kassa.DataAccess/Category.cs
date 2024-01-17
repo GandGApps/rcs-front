@@ -1,19 +1,18 @@
 ﻿namespace Kassa.DataAccess;
 
-public class Category
+public record Category
 {
     public int Id
     {
         get; set;
     }
 
-
     public string Name
     {
         get; set;
     }
 
-    public string Icon
+    public string? Icon
     {
         get; set;
     }

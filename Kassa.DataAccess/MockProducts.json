@@ -1,0 +1,868 @@
+[
+  {
+    "Id": 1,
+    "Name": "Кола",
+    "Price": 324,
+    "Count": 6,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1,
+      2
+    ],
+    "CategoryId": 5
+  },
+  {
+    "Id": 2,
+    "Name": "Вино",
+    "Price": 1324,
+    "Count": 10,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "CategoryId": 3
+  },
+  {
+    "Id": 3,
+    "Name": "Печенье",
+    "Price": 50,
+    "Count": 15,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 11
+  },
+  {
+    "Id": 4,
+    "Name": "Колбаса",
+    "Price": 200,
+    "Count": 4,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1
+    ],
+    "CategoryId": 13
+  },
+  {
+    "Id": 5,
+    "Name": "Стейк",
+    "Price": 300,
+    "Count": 2,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      2
+    ],
+    "CategoryId": 14
+  },
+  {
+    "Id": 6,
+    "Name": "Бананы",
+    "Price": 80,
+    "Count": 6,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      3
+    ],
+    "CategoryId": 18
+  },
+  {
+    "Id": 7,
+    "Name": "Помидоры",
+    "Price": 60,
+    "Count": 8,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 20
+  },
+  {
+    "Id": 8,
+    "Name": "Огурцы",
+    "Price": 55,
+    "Count": 10,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1
+    ],
+    "CategoryId": 21
+  },
+  {
+    "Id": 9,
+    "Name": "Шоколад",
+    "Price": 100,
+    "Count": 12,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 9
+  },
+  {
+    "Id": 10,
+    "Name": "Чай",
+    "Price": 150,
+    "Count": 10,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      2
+    ],
+    "CategoryId": 7
+  },
+  {
+    "Id": 11,
+    "Name": "Яблоки",
+    "Price": 70,
+    "Count": 5,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 17
+  },
+  {
+    "Id": 12,
+    "Name": "Томатный сок",
+    "Price": 120,
+    "Count": 7,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1
+    ],
+    "CategoryId": 4
+  },
+  {
+    "Id": 13,
+    "Name": "Печенье",
+    "Price": 50,
+    "Count": 15,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 11
+  },
+  {
+    "Id": 14,
+    "Name": "Колбаса",
+    "Price": 200,
+    "Count": 4,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 13
+  },
+  {
+    "Id": 15,
+    "Name": "Стейк",
+    "Price": 300,
+    "Count": 2,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      2
+    ],
+    "CategoryId": 14
+  },
+  {
+    "Id": 16,
+    "Name": "Бананы",
+    "Price": 80,
+    "Count": 6,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1
+    ],
+    "CategoryId": 18
+  },
+  {
+    "Id": 17,
+    "Name": "Помидоры",
+    "Price": 60,
+    "Count": 8,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 20
+  },
+  {
+    "Id": 18,
+    "Name": "Огурцы",
+    "Price": 55,
+    "Count": 10,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      3
+    ],
+    "CategoryId": 21
+  },
+  {
+    "Id": 19,
+    "Name": "Шоколад",
+    "Price": 100,
+    "Count": 12,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 9
+  },
+  {
+    "Id": 20,
+    "Name": "Чай",
+    "Price": 150,
+    "Count": 10,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1
+    ],
+    "CategoryId": 7
+  },
+  {
+    "Id": 21,
+    "Name": "Яблоки",
+    "Price": 70,
+    "Count": 5,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 17
+  },
+  {
+    "Id": 22,
+    "Name": "Томатный сок",
+    "Price": 120,
+    "Count": 7,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 4
+  },
+  {
+    "Id": 23,
+    "Name": "Печенье",
+    "Price": 50,
+    "Count": 15,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 11
+  },
+  {
+    "Id": 24,
+    "Name": "Колбаса",
+    "Price": 200,
+    "Count": 4,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1
+    ],
+    "CategoryId": 13
+  },
+  {
+    "Id": 25,
+    "Name": "Стейк",
+    "Price": 300,
+    "Count": 2,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      2
+    ],
+    "CategoryId": 14
+  },
+  {
+    "Id": 26,
+    "Name": "Бананы",
+    "Price": 80,
+    "Count": 6,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 18
+  },
+  {
+    "Id": 27,
+    "Name": "Помидоры",
+    "Price": 60,
+    "Count": 8,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 20
+  },
+  {
+    "Id": 28,
+    "Name": "Огурцы",
+    "Price": 55,
+    "Count": 10,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1
+    ],
+    "CategoryId": 21
+  },
+  {
+    "Id": 29,
+    "Name": "Шоколад",
+    "Price": 100,
+    "Count": 12,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 9
+  },
+  {
+    "Id": 30,
+    "Name": "Чай",
+    "Price": 150,
+    "Count": 10,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      2
+    ],
+    "CategoryId": 7
+  },
+  {
+    "Id": 31,
+    "Name": "Яблоки",
+    "Price": 70,
+    "Count": 5,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 17
+  },
+  {
+    "Id": 32,
+    "Name": "Томатный сок",
+    "Price": 120,
+    "Count": 7,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1
+    ],
+    "CategoryId": 4
+  },
+  {
+    "Id": 33,
+    "Name": "Печенье",
+    "Price": 50,
+    "Count": 15,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 11
+  },
+  {
+    "Id": 34,
+    "Name": "Колбаса",
+    "Price": 200,
+    "Count": 4,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 13
+  },
+  {
+    "Id": 35,
+    "Name": "Стейк",
+    "Price": 300,
+    "Count": 2,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      2
+    ],
+    "CategoryId": 14
+  },
+  {
+    "Id": 36,
+    "Name": "Бананы",
+    "Price": 80,
+    "Count": 6,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1
+    ],
+    "CategoryId": 18
+  },
+  {
+    "Id": 37,
+    "Name": "Помидоры",
+    "Price": 60,
+    "Count": 8,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 20
+  },
+  {
+    "Id": 38,
+    "Name": "Огурцы",
+    "Price": 55,
+    "Count": 10,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 21
+  },
+  {
+    "Id": 39,
+    "Name": "Шоколад",
+    "Price": 100,
+    "Count": 12,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 9
+  },
+  {
+    "Id": 40,
+    "Name": "Чай",
+    "Price": 150,
+    "Count": 10,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1
+    ],
+    "CategoryId": 7
+  },
+  {
+    "Id": 41,
+    "Name": "Яблоки",
+    "Price": 70,
+    "Count": 5,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 17
+  },
+  {
+    "Id": 42,
+    "Name": "Томатный сок",
+    "Price": 120,
+    "Count": 7,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      3
+    ],
+    "CategoryId": 4
+  },
+  {
+    "Id": 43,
+    "Name": "Печенье",
+    "Price": 50,
+    "Count": 15,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 11
+  },
+  {
+    "Id": 44,
+    "Name": "Колбаса",
+    "Price": 200,
+    "Count": 4,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1
+    ],
+    "CategoryId": 13
+  },
+  {
+    "Id": 45,
+    "Name": "Стейк",
+    "Price": 300,
+    "Count": 2,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      2
+    ],
+    "CategoryId": 14
+  },
+  {
+    "Id": 46,
+    "Name": "Бананы",
+    "Price": 80,
+    "Count": 6,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 18
+  },
+  {
+    "Id": 47,
+    "Name": "Помидоры",
+    "Price": 60,
+    "Count": 8,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 20
+  },
+  {
+    "Id": 48,
+    "Name": "Огурцы",
+    "Price": 55,
+    "Count": 10,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1
+    ],
+    "CategoryId": 21
+  },
+  {
+    "Id": 49,
+    "Name": "Шоколад",
+    "Price": 100,
+    "Count": 12,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 9
+  },
+  {
+    "Id": 50,
+    "Name": "Чай",
+    "Price": 150,
+    "Count": 10,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      2
+    ],
+    "CategoryId": 7
+  },
+  {
+    "Id": 51,
+    "Name": "Яблоки",
+    "Price": 70,
+    "Count": 5,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 17
+  },
+  {
+    "Id": 52,
+    "Name": "Томатный сок",
+    "Price": 120,
+    "Count": 7,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1
+    ],
+    "CategoryId": 4
+  },
+  {
+    "Id": 53,
+    "Name": "Печенье",
+    "Price": 50,
+    "Count": 15,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 11
+  },
+  {
+    "Id": 54,
+    "Name": "Колбаса",
+    "Price": 200,
+    "Count": 4,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      3
+    ],
+    "CategoryId": 13
+  },
+  {
+    "Id": 55,
+    "Name": "Стейк",
+    "Price": 300,
+    "Count": 2,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      2
+    ],
+    "CategoryId": 14
+  },
+  {
+    "Id": 56,
+    "Name": "Бананы",
+    "Price": 80,
+    "Count": 6,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1
+    ],
+    "CategoryId": 18
+  },
+  {
+    "Id": 57,
+    "Name": "Помидоры",
+    "Price": 60,
+    "Count": 8,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 20
+  },
+  {
+    "Id": 58,
+    "Name": "Огурцы",
+    "Price": 55,
+    "Count": 10,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 21
+  },
+  {
+    "Id": 59,
+    "Name": "Шоколад",
+    "Price": 100,
+    "Count": 12,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 9
+  },
+  {
+    "Id": 60,
+    "Name": "Чай",
+    "Price": 150,
+    "Count": 10,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1
+    ],
+    "CategoryId": 7
+  },
+  {
+    "Id": 61,
+    "Name": "Яблоки",
+    "Price": 70,
+    "Count": 5,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 17
+  },
+  {
+    "Id": 62,
+    "Name": "Томатный сок",
+    "Price": 120,
+    "Count": 7,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 4
+  },
+  {
+    "Id": 63,
+    "Name": "Печенье",
+    "Price": 50,
+    "Count": 15,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 11
+  },
+  {
+    "Id": 64,
+    "Name": "Колбаса",
+    "Price": 200,
+    "Count": 4,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1
+    ],
+    "CategoryId": 13
+  },
+  {
+    "Id": 65,
+    "Name": "Стейк",
+    "Price": 300,
+    "Count": 2,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      2
+    ],
+    "CategoryId": 14
+  },
+  {
+    "Id": 66,
+    "Name": "Бананы",
+    "Price": 80,
+    "Count": 6,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      3
+    ],
+    "CategoryId": 18
+  },
+  {
+    "Id": 67,
+    "Name": "Помидоры",
+    "Price": 60,
+    "Count": 8,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 20
+  },
+  {
+    "Id": 68,
+    "Name": "Огурцы",
+    "Price": 55,
+    "Count": 10,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1
+    ],
+    "CategoryId": 21
+  },
+  {
+    "Id": 69,
+    "Name": "Шоколад",
+    "Price": 100,
+    "Count": 12,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 9
+  },
+  {
+    "Id": 70,
+    "Name": "Чай",
+    "Price": 150,
+    "Count": 10,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      2
+    ],
+    "CategoryId": 7
+  },
+  {
+    "Id": 71,
+    "Name": "Яблоки",
+    "Price": 70,
+    "Count": 5,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 17
+  },
+  {
+    "Id": 72,
+    "Name": "Томатный сок",
+    "Price": 120,
+    "Count": 7,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1
+    ],
+    "CategoryId": 4
+  },
+  {
+    "Id": 73,
+    "Name": "Печенье",
+    "Price": 50,
+    "Count": 15,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 11
+  },
+  {
+    "Id": 74,
+    "Name": "Колбаса",
+    "Price": 200,
+    "Count": 4,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 13
+  },
+  {
+    "Id": 75,
+    "Name": "Стейк",
+    "Price": 300,
+    "Count": 2,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      2
+    ],
+    "CategoryId": 14
+  },
+  {
+    "Id": 76,
+    "Name": "Бананы",
+    "Price": 80,
+    "Count": 6,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      1
+    ],
+    "CategoryId": 18
+  },
+  {
+    "Id": 77,
+    "Name": "Помидоры",
+    "Price": 60,
+    "Count": 8,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 20
+  },
+  {
+    "Id": 78,
+    "Name": "Огурцы",
+    "Price": 55,
+    "Count": 10,
+    "Measure": "шт",
+    "CurrencySymbol": "₽",
+    "Favourites": [
+      3
+    ],
+    "CategoryId": 21
+  },
+  {
+    "Id": 79,
+    "Name": "Шоколад",
+    "Price": 100,
+    "Count": 12,
+    "Measure": "кг",
+    "CurrencySymbol": "₽",
+    "Favourites": [],
+    "CategoryId": 9
+  }
+]

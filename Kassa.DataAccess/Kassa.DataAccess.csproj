@@ -7,4 +7,14 @@
     <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="MockCategories.json" />
+    <None Remove="MockProducts.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="MockCategories.json" />
+    <Resource Include="MockProducts.json" />
+  </ItemGroup>
+
 </Project>

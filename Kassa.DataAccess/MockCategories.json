@@ -1,0 +1,103 @@
+[
+  {
+    "Id": 1,
+    "Name": "Напитки"
+  },
+  {
+    "Id": 2,
+    "Name": "Сладости"
+  },
+  {
+    "Id": 3,
+    "Name": "Холодные",
+    "CategoryId": 1
+  },
+  {
+    "Id": 4,
+    "Name": "Соки",
+    "CategoryId": 3
+  },
+  {
+    "Id": 5,
+    "Name": "Газированные напитки",
+    "CategoryId": 3
+  },
+  {
+    "Id": 6,
+    "Name": "Горячие",
+    "CategoryId": 1
+  },
+  {
+    "Id": 7,
+    "Name": "Чай",
+    "CategoryId": 6
+  },
+  {
+    "Id": 8,
+    "Name": "Кофе",
+    "CategoryId": 6
+  },
+  {
+    "Id": 9,
+    "Name": "Шоколад",
+    "CategoryId": 2
+  },
+  {
+    "Id": 10,
+    "Name": "Конфеты",
+    "CategoryId": 2
+  },
+  {
+    "Id": 11,
+    "Name": "Печенье",
+    "CategoryId": 2
+  },
+  {
+    "Id": 12,
+    "Name": "Мясные продукты"
+  },
+  {
+    "Id": 13,
+    "Name": "Колбасы",
+    "CategoryId": 12
+  },
+  {
+    "Id": 14,
+    "Name": "Стейки",
+    "CategoryId": 12
+  },
+  {
+    "Id": 15,
+    "Name": "Овощи и фрукты"
+  },
+  {
+    "Id": 16,
+    "Name": "Фрукты",
+    "CategoryId": 15
+  },
+  {
+    "Id": 17,
+    "Name": "Яблоки",
+    "CategoryId": 16
+  },
+  {
+    "Id": 18,
+    "Name": "Бананы",
+    "CategoryId": 16
+  },
+  {
+    "Id": 19,
+    "Name": "Овощи",
+    "CategoryId": 15
+  },
+  {
+    "Id": 20,
+    "Name": "Помидоры",
+    "CategoryId": 19
+  },
+  {
+    "Id": 21,
+    "Name": "Огурцы",
+    "CategoryId": 19
+  }
+]

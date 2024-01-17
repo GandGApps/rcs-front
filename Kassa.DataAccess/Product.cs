@@ -39,6 +39,22 @@ public record Product : ICategoryItem
     } = null!;
 
     /// <summary>
+    /// <para>
+    /// Posible values: 1,2,3
+    /// </para>
+    /// <para>
+    /// If the array is not empty, then it indicates which favorite category the product is in. 
+    /// </para>
+    /// <para>
+    /// There are only 3 favorite categories, this is 1,2,3
+    /// </para>
+    /// </summary>
+    public int[] Favourites
+    {
+        get; set;
+    } = [];
+
+    /// <summary>
     /// Need to be removed, as soon as possible
     /// </summary>
     [Obsolete]
