@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="MockCategories.json" />
-    <Resource Include="MockProducts.json" />
+    <EmbeddedResource Include="MockCategories.json" />
+    <EmbeddedResource Include="MockProducts.json" />
   </ItemGroup>
 
 </Project>

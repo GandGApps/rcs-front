@@ -5,12 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Kassa.DataAccess;
-public interface ICategoryItem
+public interface ICategoryItem: IModel
 {
-    public int Id
-    {
-        get;
-    }
     public int CategoryId
     {
         get;

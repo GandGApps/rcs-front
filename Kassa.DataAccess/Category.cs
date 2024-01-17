@@ -1,6 +1,6 @@
 ﻿namespace Kassa.DataAccess;
 
-public record Category
+public record Category: IModel
 {
     public int Id
     {

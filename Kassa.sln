@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kassa.DataAccess", "Kassa.D
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Kassa.Wpf.Setup", "Kassa.Wpf.Setup\Kassa.Wpf.Setup.vdproj", "{4DDDAB15-6462-4EAB-B0F2-7507C2734AB2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kassa.Tests", "Kassa.Tests\Kassa.Tests.csproj", "{B1AB5FB1-ED76-4D69-B35A-12C8F0F920D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -58,6 +60,14 @@ Global
 		{4DDDAB15-6462-4EAB-B0F2-7507C2734AB2}.Debug|x64.Build.0 = Debug
 		{4DDDAB15-6462-4EAB-B0F2-7507C2734AB2}.Release|Any CPU.ActiveCfg = Release
 		{4DDDAB15-6462-4EAB-B0F2-7507C2734AB2}.Release|x64.ActiveCfg = Release
+		{B1AB5FB1-ED76-4D69-B35A-12C8F0F920D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1AB5FB1-ED76-4D69-B35A-12C8F0F920D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1AB5FB1-ED76-4D69-B35A-12C8F0F920D4}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B1AB5FB1-ED76-4D69-B35A-12C8F0F920D4}.Debug|x64.Build.0 = Debug|Any CPU
+		{B1AB5FB1-ED76-4D69-B35A-12C8F0F920D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1AB5FB1-ED76-4D69-B35A-12C8F0F920D4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1AB5FB1-ED76-4D69-B35A-12C8F0F920D4}.Release|x64.ActiveCfg = Release|Any CPU
+		{B1AB5FB1-ED76-4D69-B35A-12C8F0F920D4}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
