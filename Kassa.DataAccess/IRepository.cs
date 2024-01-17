@@ -20,10 +20,10 @@ public interface IRepository<T> where T : class, IModel
         var assembly = typeof(IRepository<>).Assembly;
         var json = assembly.GetManifestResourceStream($"Kassa.DataAccess.{jsonResourceName}");
         var items = JsonSerializer.Deserialize<IEnumerable<T>>(json!);
-        return new MockRepository<T>(items.ToDictionary(x => x.Id));
+        return new MockRepository(items.ToDictionary(x => x.Id));
     }
 
-    internal class MockRepository<T>(Dictionary<int, T> items) : IRepository<T> where T : class, IModel
+    internal class MockRepository(Dictionary<int, T> items): IRepository<T>
     {
 
         public Task<T> Get(int categoryId) => Task.FromResult(items[categoryId]);
