@@ -8,8 +8,13 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI;
-public class BaseViewModel : ReactiveObject, IActivatableViewModel, IDisposable
+public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable, IInitializableViewModel
 {
+    protected CompositeDisposable InternalDisposables
+    {
+        get;
+    } = [];
+
     [Reactive]
     public bool IsDisposed
     {
@@ -41,11 +46,23 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, IDisposable
     {
         if (!IsDisposed)
         {
+            InternalDisposables.Dispose();
+
             if (disposing)
             {
             }
             IsDisposed = true;
         }
+    }
+
+    public ValueTask InitializeAsync()
+    {
+        return InitializeAsync(InternalDisposables);
+    }
+
+    protected virtual ValueTask InitializeAsync(CompositeDisposable disposables)
+    {
+        return ValueTask.CompletedTask;
     }
 
     protected virtual void OnActivated(CompositeDisposable disposables)

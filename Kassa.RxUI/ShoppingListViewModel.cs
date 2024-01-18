@@ -12,12 +12,10 @@ using Splat;
 namespace Kassa.RxUI;
 public class ShoppingListViewModel : ReactiveObject
 {
-    private readonly ICashierService _cashierService = Locator.Current.GetRequiredService<ICashierService>();
+    private readonly ICashierService _cashierService;
 
     public ShoppingListViewModel()
     {
-
-
         IncreaseCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             foreach (var item in CurrentItems)
