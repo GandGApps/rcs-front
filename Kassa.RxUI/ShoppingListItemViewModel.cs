@@ -18,6 +18,7 @@ namespace Kassa.RxUI;
 public class ShoppingListItemViewModel : ReactiveObject, IShoppingListItem
 {
     private readonly ICashierService _cashierService;
+    private readonly IProductService _productService;
     public int Id
     {
         get; set;
@@ -91,15 +92,7 @@ public class ShoppingListItemViewModel : ReactiveObject, IShoppingListItem
 
         RemoveCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var product = await _cashierService.GetProductById(Id) 
-                ?? throw new InvalidOperationException($"Product with id {Id} not found");
-
-            await _cashierService.UpdateProduct(product with
-            {
-                Count = product.Count + Count
-            });
-
-            ShoppingListViewModel.AddictiveViewModels.Remove(this);
+            _productService
         });
     }
 

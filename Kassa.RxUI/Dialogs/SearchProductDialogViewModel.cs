@@ -41,24 +41,6 @@ public class SearchProductDialogViewModel : DialogViewModel
 
     protected override void OnActivated(CompositeDisposable disposables)
     {
-        _cashierService.RuntimeProducts.Connect()
-            .Transform(x =>
-            {
-                var vm = new ProductViewModel(x);
-
-                vm.AddToShoppingListCommand = ReactiveCommand.CreateFromTask(async () =>
-                {
-                    SelectedProduct = vm;
-
-                    await CloseAsync();
-                });
-
-                return vm;
-            })
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Bind(out _products)
-            .Subscribe()
-            .DisposeWith(disposables);
 
         var sharedTextSearch = this.WhenAnyValue(x => x.SearchedText)
             .Skip(2) // fixing first blinking

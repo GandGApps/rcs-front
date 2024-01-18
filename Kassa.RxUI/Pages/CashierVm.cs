@@ -209,43 +209,6 @@ public class CashierVm : PageViewModel
 
             })
             .DisposeWith(disposables);
-
-        ReadOnlyObservableCollection<ProductViewModel> productVms;
-
-        var filterCondition = this.WhenAnyValue(x => x.Category)
-            .Select(category =>
-                          new Func<ProductViewModel, bool>(
-                              vm => string.IsNullOrEmpty(category) || vm.Categories.Contains(category)
-                          )
-            );
-
-        Locator.Current.GetRequiredService<IProductService>().RuntimeProducts.Connect()
-            .Transform(x =>
-            {
-                var vm = new ProductViewModel(x);
-
-                vm.AddToShoppingListCommand = ReactiveCommand.CreateFromTask(async () =>
-                {
-                    if (x.Count == 0)
-                    {
-                        return;
-                    }
-
-                    // Take product from storage
-                    await _cashierService.DecreaseProductCount(x);
-
-                    ShoppingList.AddictiveViewModels.Add(new(ShoppingList, vm));
-                }, vm.WhenAnyValue(x => x.IsAvailable));
-
-                return vm;
-            })
-            .Filter(filterCondition)
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Bind(out productVms)
-            .Subscribe()
-            .DisposeWith(disposables);
-
-        CurrentProductViewModels = productVms;
     }
 
     public ShoppingListViewModel ShoppingList
