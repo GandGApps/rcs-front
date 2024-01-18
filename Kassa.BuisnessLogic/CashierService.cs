@@ -45,6 +45,10 @@ internal class CashierService(IProductService productService, ICategoryService c
             PropertyChanged?.Invoke(this, new(nameof(CurrentCategory)));
         }
     }
+
+    public ICategoryService CategoryService => categoryService;
+    public IProductService ProductService => productService;
+
     private Category? _currentCategory;
 
     public event PropertyChangedEventHandler? PropertyChanged;

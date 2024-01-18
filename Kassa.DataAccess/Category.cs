@@ -1,6 +1,6 @@
 ﻿namespace Kassa.DataAccess;
 
-public record Category: IModel
+public record Category: ICategoryItem
 {
     public int Id
     {
@@ -30,5 +30,10 @@ public record Category: IModel
     public virtual ICollection<Product> Products
     {
         get; set;
+    }
+
+    public ICollection<ICategoryItem>? Items
+    {
+        get;
     }
 }

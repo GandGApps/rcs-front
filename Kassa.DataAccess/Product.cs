@@ -68,7 +68,7 @@ public record Product : ICategoryItem
     {
         get; set;
     } = null!;
-    public int CategoryId
+    public int? CategoryId
     {
         get; set;
     }

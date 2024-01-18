@@ -1,4 +1,5 @@
-﻿using Splat;
+﻿using Kassa.DataAccess;
+using Splat;
 
 namespace Kassa.BuisnessLogic;
 
@@ -12,6 +13,20 @@ public static class DependencyResolverExtensions
             var categoryService = Locator.Current.GetRequiredService<ICategoryService>();
 
             return new CashierService(productService, categoryService);
+        });
+
+        services.Register<IProductService>(() =>
+        {
+            var repository = Locator.Current.GetRequiredService<IRepository<Product>>();
+
+            return new ProductService(repository);
+        });
+
+        services.Register<ICategoryService>(() =>
+        {
+            var repository = Locator.Current.GetRequiredService<IRepository<Category>>();
+
+            return new CategoryService(repository);
         });
     }
 

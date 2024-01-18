@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Kassa.DataAccess;
 public interface ICategoryItem: IModel
 {
-    public int CategoryId
+    public int? CategoryId
     {
         get;
     }
