@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
 using Kassa.BuisnessLogic;
+using Kassa.DataAccess;
 using Kassa.RxUI.Dialogs;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -18,7 +19,11 @@ namespace Kassa.RxUI.Pages;
 public class CashierVm : PageViewModel
 {
     private readonly Dictionary<object, IEnumerable<ProductViewModel>> _categories = [];
-    private readonly ICashierService _cashierService = Locator.Current.GetRequiredService<ICashierService>();
+
+    private ICashierService? _cashierService;
+    private IProductService? _productService;
+    private ICategoryService? _categoryService;
+
     public CashierVm(MainViewModel mainViewModel) : base(mainViewModel)
     {
         ShoppingList = new();
@@ -211,6 +216,16 @@ public class CashierVm : PageViewModel
             .DisposeWith(disposables);
     }
 
+    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    {
+        _cashierService = await GetInitializedService<ICashierService>();
+        _productService = await GetInitializedService<IProductService>();
+        _categoryService = await GetInitializedService<ICategoryService>();
+
+        _cashierService.BindSelectedCategoryItems(out var categoryItems)
+                       .DisposeWith(disposables);
+    }
+
     public ShoppingListViewModel ShoppingList
     {
         get;
@@ -278,7 +293,7 @@ public class CashierVm : PageViewModel
     private readonly ReadOnlyObservableCollection<AddictiveViewModel> _fastAddictives;
 
     [Reactive]
-    public ReadOnlyObservableCollection<ProductViewModel> CurrentProductViewModels
+    public ReadOnlyObservableCollection<ICategoryItem>? CurrentCategoryItems
     {
         get; set;
     }

@@ -4,11 +4,13 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.BuisnessLogic;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Splat;
 
 namespace Kassa.RxUI;
-public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable, IInitializableViewModel
+public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable, IInitializableViewModel, IAsyncDisposable
 {
     protected CompositeDisposable InternalDisposables
     {
@@ -70,9 +72,37 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
 
     }
 
+    /// <summary>
+    /// Don't use DisposeWith() for services which method returns
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <returns></returns>
+    protected async ValueTask<T> GetInitializedService<T>() where T : class, IInitializableService
+    {
+        var services = await Locator.Current.GetInitializedService<T>();
+
+        services.DisposeWith(InternalDisposables);
+
+        return services;
+    }
+
     public void Dispose()
     {
         Dispose(disposing: true);
+        GC.SuppressFinalize(this);
+    }
+
+    protected virtual ValueTask DisposeAsyncCore()
+    {
+        return ValueTask.CompletedTask;
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await DisposeAsyncCore();
+
+        Dispose(false);
+
         GC.SuppressFinalize(this);
     }
 }
