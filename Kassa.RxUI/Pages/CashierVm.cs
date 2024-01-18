@@ -224,6 +224,8 @@ public class CashierVm : PageViewModel
 
         _cashierService.BindSelectedCategoryItems(out var categoryItems)
                        .DisposeWith(disposables);
+
+        CurrentCategoryItems = categoryItems;
     }
 
     public ShoppingListViewModel ShoppingList

@@ -92,7 +92,7 @@ public class ShoppingListItemViewModel : ReactiveObject, IShoppingListItem
 
         RemoveCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            _productService
+
         });
     }
 

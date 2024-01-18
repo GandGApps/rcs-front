@@ -126,4 +126,13 @@ internal sealed class ProductService(IRepository<Product> repository) : IProduct
         Dispose();
         return ValueTask.CompletedTask;
     }
+
+    public async Task RemoveProduct(Product product)
+    {
+        this.ThrowIfNotInitialized();
+
+        await repository.Delete(product);
+
+        RuntimeProducts.Remove(product);
+    }
 }
