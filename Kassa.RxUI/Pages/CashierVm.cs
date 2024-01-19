@@ -299,4 +299,30 @@ public class CashierVm : PageViewModel
     {
         get; set;
     }
+
+    protected override void Dispose(bool disposing)
+    {
+        if (IsDisposed)
+        {
+            return;
+        }
+
+        base.Dispose(disposing);
+
+        _cashierService = null;
+        _productService = null;
+        _categoryService = null;
+    }
+
+    protected async override ValueTask DisposeAsyncCore()
+    {
+        if (IsDisposed)
+        {
+            return;
+        }
+
+        await _cashierService!.DisposeAsync();
+        await _productService!.DisposeAsync();
+        await _categoryService!.DisposeAsync();
+    }
 }

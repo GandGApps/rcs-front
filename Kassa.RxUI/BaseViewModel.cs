@@ -48,12 +48,12 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
     {
         if (!IsDisposed)
         {
-            InternalDisposables.Dispose();
-
+            
             if (disposing)
             {
+                InternalDisposables.Dispose();
             }
-            IsDisposed = true;
+            
         }
     }
 
@@ -94,6 +94,7 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
     public void Dispose()
     {
         Dispose(disposing: true);
+        IsDisposed = true;
         GC.SuppressFinalize(this);
     }
 
@@ -107,6 +108,7 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
         await DisposeAsyncCore();
 
         Dispose(false);
+        IsDisposed = true;
 
         GC.SuppressFinalize(this);
     }
