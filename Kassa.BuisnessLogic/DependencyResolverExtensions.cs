@@ -1,4 +1,5 @@
-﻿using Kassa.DataAccess;
+﻿using System.Runtime.InteropServices;
+using Kassa.DataAccess;
 using Splat;
 
 namespace Kassa.BuisnessLogic;
@@ -9,25 +10,22 @@ public static class DependencyResolverExtensions
     {
         services.Register<ICashierService>(() =>
         {
-            var productService = Locator.Current.GetRequiredService<IProductService>();
-            var categoryService = Locator.Current.GetRequiredService<ICategoryService>();
+            var productService = Locator.Current.GetNotInitializedService<IProductService>();
+            var categoryService = Locator.Current.GetNotInitializedService<ICategoryService>();
 
             return new CashierService(productService, categoryService);
         });
 
-        services.Register<IProductService>(() =>
-        {
-            var repository = Locator.Current.GetRequiredService<IRepository<Product>>();
+        SplatRegistrations.Register<ICategoryService, CategoryService>();
+        RegisterInitializableServiceFactory<ICategoryService>(services);
 
-            return new ProductService(repository);
-        });
+        SplatRegistrations.Register<IProductService, ProductService>();
+        RegisterInitializableServiceFactory<IProductService>(services);
+    }
 
-        services.Register<ICategoryService>(() =>
-        {
-            var repository = Locator.Current.GetRequiredService<IRepository<Category>>();
-
-            return new CategoryService(repository);
-        });
+    public static void RegisterInitializableServiceFactory<T>(this IMutableDependencyResolver services) where T : class, IInitializableService
+    {
+        services.RegisterConstant<IInitializableServiceFactory<T>>(new InitializableServiceFactory<T>());
     }
 
     public static T GetRequiredService<T>(this IReadonlyDependencyResolver services)
@@ -35,12 +33,17 @@ public static class DependencyResolverExtensions
         return services.GetService<T>() ?? throw new InvalidOperationException($"The service of type {typeof(T)} is not registered.");
     }
 
-    public static async ValueTask<T> GetInitializedService<T>(this IReadonlyDependencyResolver services) where T : IInitializableService
+    public static ValueTask<T> GetInitializedService<T>(this IReadonlyDependencyResolver services) where T : class, IInitializableService
     {
-        var service = services.GetRequiredService<T>();
+        var serviceFactory = services.GetRequiredService<IInitializableServiceFactory<T>>();
 
-        await service.Initialize();
+        return serviceFactory.GetService();
+    }
 
-        return service;
+    public static T GetNotInitializedService<T>(this IReadonlyDependencyResolver services) where T : class, IInitializableService
+    {
+        var serviceFactory = services.GetRequiredService<IInitializableServiceFactory<T>>();
+
+        return serviceFactory.GetNotInitializedService();
     }
 }
