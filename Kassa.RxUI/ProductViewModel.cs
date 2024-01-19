@@ -11,7 +11,36 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI;
-public class ProductViewModel : ReactiveObject, IActivatableViewModel
+public class ProductViewModel(Product product) : ReactiveObject
+{
+    private readonly Product product = product;
+    public int Id => product.Id;
+
+    public string Name => product.Name;
+
+    public string CurrencySymbol => product.CurrencySymbol;
+    public double Price => product.Price;
+
+    /// <summary>
+    /// Need implement by ICashierService
+    /// </summary>
+    public bool IsAdded => false;
+
+    public double Count => product.Count;
+
+    public string Measure => product.Measure;
+
+    [Reactive]
+    public bool IsAvailable
+    {
+        get; private set;
+    } = product.Count > 0;
+
+    public string Icon => product.Icon;
+}
+
+[EditorBrowsable(EditorBrowsableState.Never)]
+public class DesignerProductViewModel: ReactiveObject
 {
     public int Id
     {
@@ -76,49 +105,4 @@ public class ProductViewModel : ReactiveObject, IActivatableViewModel
     {
         get; set;
     } = [];
-
-    [EditorBrowsable(EditorBrowsableState.Never)]
-    /// <summary>
-    /// Needs for design-time data.
-    /// Don't use it in code.
-    /// </summary>
-    public ProductViewModel()
-    {
-        Activator = new();
-
-        this.WhenActivated(Activate);
-    }
-
-    public ProductViewModel(Product product)
-    {
-        Activator = new();
-
-        Id = product.Id;
-        Name = product.Name;
-        CurrencySymbol = product.CurrencySymbol;
-        Price = product.Price;
-        Count = product.Count;
-        Measure = product.Measure;
-        Categories = product.Categories;
-        Icon = product.Icon;
-
-        this.WhenActivated(Activate);
-    }
-
-    private void Activate(CompositeDisposable disposables)
-    {
-        this.WhenAnyValue(x => x.Count)
-            .Subscribe(x =>
-            {
-                if (x <= 0)
-                {
-                    IsAvailable = false;
-                }
-                else
-                {
-                    IsAvailable = true;
-                }
-            })
-            .DisposeWith(disposables);
-    }
 }

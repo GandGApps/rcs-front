@@ -16,7 +16,7 @@
     mc:Ignorable="d">
 
     <d:DesignProperties.DataContext>
-        <vm:ProductViewModel Name="Холодные напитки “Криспи Гриль”" Price="1299" />
+        <vm:DesignerProductViewModel Name="Холодные напитки “Криспи Гриль”" Price="1299" />
     </d:DesignProperties.DataContext>
 
     <Grid>
@@ -52,7 +52,7 @@
                 VerticalAlignment="Center"
                 FontSize="16"
                 Foreground="Black"
-                Text="{Binding Name}"
+                Text="{Binding Name, Mode=OneTime}"
                 TextWrapping="Wrap" />
         </Grid>
 
@@ -92,7 +92,7 @@
                         </Style.Triggers>
                     </Style>
                 </TextBlock.Style>
-                <Run x:Name="Price" Text="{Binding Price}" /><Run Text="{Binding CurrencySymbol}" />
+                <Run x:Name="Price" Text="{Binding Price, Mode=OneTime}" /><Run Text="{Binding CurrencySymbol, Mode=OneTime}" />
             </TextBlock>
         </Border>
 

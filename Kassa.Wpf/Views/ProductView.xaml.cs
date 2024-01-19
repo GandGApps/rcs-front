@@ -30,26 +30,22 @@ public partial class ProductView : ButtonUserControl<Product>
 
         this.WhenActivated(disposables =>
         {
-            DataContext = new ProductViewModel(ViewModel);
+            DataContext = new ProductViewModel(ViewModel!);
 
-            ViewModel.WhenAnyValue(x => x.Icon)
-                     .Subscribe(icon =>
-                     {
-                         if (icon is not null)
-                         {
-                             var resource = Application.Current.TryFindResource(icon);
+            if (ViewModel!.Icon is not null)
+            {
+                var resource = Application.Current.TryFindResource(ViewModel!.Icon);
 
-                             if (resource is Geometry geometry)
-                             {
-                                 ProductIcon.Data = geometry;
-                             }
+                if (resource is Geometry geometry)
+                {
+                    ProductIcon.Data = geometry;
+                }
 
-                             return;
-                         }
+                return;
+            }
 
-                         ProductIcon.Data = Application.Current.TryFindResource("CupOfTeaIcon") as Geometry;
-                     })
-                     .DisposeWith(disposables);
+            ProductIcon.Data = Application.Current.TryFindResource("CupOfTeaIcon") as Geometry;
+
         });
     }
 }

@@ -17,10 +17,6 @@ public abstract class ButtonUserControl<T> : ButtonWithCornerRaduis, IActivatabl
 
     public ButtonUserControl()
     {
-        this.WhenActivated(disposables =>
-        {
-            DataContext = ViewModel;
-        });
     }
 
     public T? ViewModel
