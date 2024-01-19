@@ -771,6 +771,11 @@
                     Margin="0,11,0,0"
                     Style="{StaticResource PrimaryScrollViewer}"
                     VerticalScrollBarVisibility="Auto">
+
+                    <i:Interaction.Behaviors>
+                        <behaviors:ScrollViewerFixingBehavior />
+                    </i:Interaction.Behaviors>
+
                     <ItemsControl x:Name="ProductsHost">
                         <d:ItemsControl.ItemTemplate>
                             <DataTemplate>
