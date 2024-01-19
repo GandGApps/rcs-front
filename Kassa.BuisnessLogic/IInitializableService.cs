@@ -1,4 +1,5 @@
-﻿using Splat; // need's for comment
+﻿using System.Reactive.Disposables;
+using Splat; // need's for comment
 
 namespace Kassa.BuisnessLogic;
 
@@ -28,14 +29,9 @@ namespace Kassa.BuisnessLogic;
 /// new instance each time, while the <see cref="IInitializableServiceFactory{T}"/> handles scoping.
 /// </para>
 /// </summary>
-public interface IInitializableService : IDisposable, IAsyncDisposable
+public interface IInitializableService : ICancelable, IAsyncDisposable
 {
     public bool IsInitialized
-    {
-        get;
-    }
-
-    public bool IsDisposed
     {
         get;
     }
