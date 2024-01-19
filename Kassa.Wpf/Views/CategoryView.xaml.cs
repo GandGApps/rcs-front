@@ -27,9 +27,13 @@ public partial class CategoryView : ButtonUserControl<Category>
     {
         InitializeComponent();
 
+        Command = CategoryViewModel.MoveToCategoryCommand;
+
         this.WhenActivated(disposables =>
         {
             DataContext = new CategoryViewModel(ViewModel!);
+
+            CommandParameter = ViewModel;
         });
     }
 }

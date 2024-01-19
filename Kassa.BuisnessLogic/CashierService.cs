@@ -136,6 +136,7 @@ internal class CashierService(IProductService productService, ICategoryService c
         }
 
         _categoriesStack.Add(category);
+        CurrentCategory = category;
     }
     public ValueTask<bool> SelectPreviosCategory()
     {
