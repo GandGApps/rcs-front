@@ -19,6 +19,7 @@ public static class DependencyResolverExtensions
 
             return new CashierService(productService, categoryService);
         });
+        RegisterInitializableServiceFactory<ICashierService>(services);
 
         SplatRegistrations.Register<ICategoryService, CategoryService>();
         RegisterInitializableServiceFactory<ICategoryService>(services);
@@ -65,9 +66,9 @@ public static class DependencyResolverExtensions
     /// <param name="services">The read-only dependency resolver from which to retrieve the service.</param>
     /// <returns>A value task containing the initialized service of type T.</returns>
     /// <remarks>
-    /// The initialization process is managed by the InitializableServiceFactory registered for T.
+    /// The initialization process is managed by the <see cref="IInitializableServiceFactory{T}"/> registered for T.
     /// This ensures that the service is properly prepared and ready for use, following the 
-    /// initialization logic defined in IInitializableService.
+    /// initialization logic defined in <see cref="IInitializableService"/>.
     /// </remarks>
     public static ValueTask<T> GetInitializedService<T>(this IReadonlyDependencyResolver services) where T : class, IInitializableService
     {

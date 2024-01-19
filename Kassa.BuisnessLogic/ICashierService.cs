@@ -6,17 +6,6 @@ using Kassa.DataAccess;
 namespace Kassa.BuisnessLogic;
 public interface ICashierService : IInitializableService, INotifyPropertyChanged
 {
-    public ICategoryService CategoryService
-    {
-        get;
-    }
-
-    public IProductService ProductService
-    {
-
-        get;
-    }
-
     public Category? CurrentCategory
     {
         get;
