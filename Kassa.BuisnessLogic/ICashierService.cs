@@ -26,6 +26,7 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
     /// <returns></returns>
     public IDisposable BindSelectedCategoryItems(out ReadOnlyObservableCollection<ICategoryItem> categoryItems);
 
+    public IDisposable BindShoppingListItems(out ReadOnlyObservableCollection<IShoppingListItem> shoppingListItems);
     public Task SelectCategory(int categoryId);
 
     /// <summary>
