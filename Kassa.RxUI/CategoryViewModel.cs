@@ -19,6 +19,13 @@ public class CategoryViewModel : ReactiveObject
         await cashierService.SelectCategory(category.Id);
     });
 
+    public static readonly ReactiveCommand<Unit, Unit> NavigateBackCategoryCommand = ReactiveCommand.CreateFromTask(async () =>
+    {
+        var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
+
+        await cashierService.SelectPreviosCategory();
+    });
+
     private readonly Category _category;
     public CategoryViewModel(Category category)
     {

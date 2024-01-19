@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kassa.RxUI;
 using Kassa.RxUI.Pages;
 using ReactiveUI;
 
@@ -29,10 +30,9 @@ public partial class CashierPage : ReactiveUserControl<CashierVm>
 
         this.WhenActivated(disposables =>
         {
-            this.OneWayBind(ViewModel, x => x.FastAddictives, x => x.FastAddictives.ItemsSource)
-                .DisposeWith(disposables);
+            NavigateBackButton.Command = CategoryViewModel.NavigateBackCategoryCommand;
 
-            this.BindCommand(ViewModel, x => x.GoBackCommand, x => x.NavigateBackButton)
+            this.OneWayBind(ViewModel, x => x.FastAddictives, x => x.FastAddictives.ItemsSource)
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, x => x.CurrentCategoryItems, x => x.ProductsHost.ItemsSource)

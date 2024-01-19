@@ -149,6 +149,16 @@ internal class CashierService(IProductService productService, ICategoryService c
 
         _categoriesStack.RemoveAt(_categoriesStack.Count - 1);
 
+        if (_categoriesStack.Count == 0)
+        {
+            CurrentCategory = null;
+        }
+        else
+        {
+
+            CurrentCategory = _categoriesStack[^1];
+        }
+
         return new(true);
     }
 }
