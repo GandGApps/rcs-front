@@ -12,6 +12,14 @@ public static class DependencyResolverExtensions
     /// <param name="services">The mutable dependency resolver to which the services will be registered.</param>
     public static void RegisterBuisnessLogic(this IMutableDependencyResolver services)
     {
+        SplatRegistrations.SetupIOC();
+
+        SplatRegistrations.Register<ICategoryService, CategoryService>();
+        RegisterInitializableServiceFactory<ICategoryService>(services);
+
+        SplatRegistrations.Register<IProductService, ProductService>();
+        RegisterInitializableServiceFactory<IProductService>(services);
+
         services.Register<ICashierService>(() =>
         {
             var productService = Locator.Current.GetNotInitializedService<IProductService>();
@@ -20,12 +28,6 @@ public static class DependencyResolverExtensions
             return new CashierService(productService, categoryService);
         });
         RegisterInitializableServiceFactory<ICashierService>(services);
-
-        SplatRegistrations.Register<ICategoryService, CategoryService>();
-        RegisterInitializableServiceFactory<ICategoryService>(services);
-
-        SplatRegistrations.Register<IProductService, ProductService>();
-        RegisterInitializableServiceFactory<IProductService>(services);
     }
 
     /// <summary>

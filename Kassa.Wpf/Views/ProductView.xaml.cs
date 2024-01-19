@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kassa.DataAccess;
 using Kassa.RxUI;
 using Kassa.Wpf.Controls;
 using ReactiveUI;
@@ -21,7 +22,7 @@ namespace Kassa.Wpf.Views;
 /// <summary>
 /// Логика взаимодействия для ProductView.xaml
 /// </summary>
-public partial class ProductView : ButtonUserControl<ProductViewModel>
+public partial class ProductView : ButtonUserControl<Product>
 {
     public ProductView() : base()
     {
@@ -29,11 +30,7 @@ public partial class ProductView : ButtonUserControl<ProductViewModel>
 
         this.WhenActivated(disposables =>
         {
-            DataContext = ViewModel;
-
-            ObserveDataContext(disposables);
-            ObserveViewModel(disposables);
-
+            DataContext = new ProductViewModel(ViewModel);
 
             ViewModel.WhenAnyValue(x => x.Icon)
                      .Subscribe(icon =>
