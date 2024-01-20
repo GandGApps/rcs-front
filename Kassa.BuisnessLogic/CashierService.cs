@@ -29,6 +29,27 @@ internal class CashierService(IProductService productService, ICategoryService c
         private set;
     }
 
+    public bool IsMultiSelect
+    {
+        get => _isMultiSelect;
+        set
+        {
+            if (_isMultiSelect == value)
+            {
+                return;
+            }
+
+            _isMultiSelect = value;
+            PropertyChanged?.Invoke(this, new(nameof(IsMultiSelect)));
+
+            if (!_isMultiSelect)
+            {
+                ClearSelectedShoppingListItems();
+            }
+        }
+    }
+    private bool _isMultiSelect;
+
     public IReadOnlyList<Category> CategoriesStack => _categoriesStack;
 
     public Category? CurrentCategory
@@ -220,6 +241,11 @@ internal class CashierService(IProductService productService, ICategoryService c
             throw new ArgumentNullException(nameof(shoppingListItemDto));
         }
 
+        if (!IsMultiSelect)
+        {
+            ClearSelectedShoppingListItems();
+        }
+
         SelectedShoppingListItems.AddOrUpdate(shoppingListItemDto);
 
         if (shoppingListItemDto is ShoppingListItemDto shoppingListItem)
@@ -235,7 +261,6 @@ internal class CashierService(IProductService productService, ICategoryService c
 
     public async Task RemoveShoppingListItem(IShoppingListItemDto shoppingListItemDto)
     {
-
         this.ThrowIfNotInitialized();
 
         if (shoppingListItemDto is null)
@@ -244,7 +269,7 @@ internal class CashierService(IProductService productService, ICategoryService c
             throw new ArgumentNullException(nameof(shoppingListItemDto));
         }
 
-        
+
 
         if (shoppingListItemDto is ShoppingListItemDto shoppingListItem)
         {
@@ -259,6 +284,48 @@ internal class CashierService(IProductService productService, ICategoryService c
             {
                 IsSelected = false
             });
+        }
+    }
+
+    public Task UnselectShoppingListItem(IShoppingListItemDto shoppingListItemDto)
+    {
+        this.ThrowIfNotInitialized();
+
+        if (shoppingListItemDto is null)
+        {
+            throw new ArgumentNullException(nameof(shoppingListItemDto));
+        }
+
+        SelectedShoppingListItems.Remove(shoppingListItemDto);
+
+        if (shoppingListItemDto is ShoppingListItemDto shoppingListItem)
+        {
+
+            ShoppingListItems.AddOrUpdate(shoppingListItem with
+            {
+                IsSelected = false
+            });
+        }
+
+        return Task.CompletedTask;
+    }
+
+    private void ClearSelectedShoppingListItems()
+    {
+        this.ThrowIfNotInitialized();
+
+        foreach (var shoppingListItem in SelectedShoppingListItems.Items)
+        {
+
+            if (shoppingListItem is ShoppingListItemDto shoppingListItemDto)
+            {
+
+                ShoppingListItems.AddOrUpdate(shoppingListItemDto with
+                {
+
+                    IsSelected = false
+                });
+            }
         }
     }
 }

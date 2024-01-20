@@ -21,8 +21,8 @@ public class CashierVm : PageViewModel
     private readonly Dictionary<object, IEnumerable<ProductViewModel>> _categories = [];
 
     private ICashierService? _cashierService;
-    private IProductService? _productService;
-    private ICategoryService? _categoryService;
+
+    private Action<bool>? _isMultiSelectSetter;
 
     public CashierVm(MainViewModel mainViewModel) : base(mainViewModel)
     {
@@ -219,8 +219,6 @@ public class CashierVm : PageViewModel
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
         _cashierService = await GetInitializedService<ICashierService>();
-        _productService = await GetInitializedService<IProductService>();
-        _categoryService = await GetInitializedService<ICategoryService>();
 
         _cashierService.BindSelectedCategoryItems(out var categoryItems)
                        .DisposeWith(disposables);
@@ -228,8 +226,28 @@ public class CashierVm : PageViewModel
         _cashierService.BindShoppingListItems(out var shoppingListItems)
                        .DisposeWith(disposables);
 
+        IsMultiSelect = _cashierService.IsMultiSelect;
+        _isMultiSelectSetter = x => _cashierService.IsMultiSelect = x;
+
         CurrentCategoryItems = categoryItems;
         ShoppingListItems = shoppingListItems;
+    }
+
+    public bool IsMultiSelect
+    {
+
+        get => ShoppingList.IsMultiSelect;
+        set
+        {
+            if (value == ShoppingList.IsMultiSelect)
+            {
+                return;
+            }
+            ShoppingList.IsMultiSelect = value;
+            _isMultiSelectSetter?.Invoke(value);
+
+            this.RaisePropertyChanged();
+        }
     }
 
     public ShoppingListViewModel ShoppingList
@@ -320,8 +338,6 @@ public class CashierVm : PageViewModel
         base.Dispose(disposing);
 
         _cashierService = null;
-        _productService = null;
-        _categoryService = null;
     }
 
     protected async override ValueTask DisposeAsyncCore()
@@ -332,7 +348,5 @@ public class CashierVm : PageViewModel
         }
 
         await _cashierService!.DisposeAsync();
-        await _productService!.DisposeAsync();
-        await _categoryService!.DisposeAsync();
     }
 }

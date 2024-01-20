@@ -12,7 +12,6 @@ using Splat;
 namespace Kassa.RxUI;
 public class ShoppingListViewModel : ReactiveObject
 {
-    private readonly ICashierService _cashierService;
 
     public ShoppingListViewModel()
     {
@@ -33,20 +32,6 @@ public class ShoppingListViewModel : ReactiveObject
                 await item.RemoveCommand.Execute();
             }
         });
-
-        AddictiveViewModels
-            .ToObservableChangeSet()
-            .AutoRefresh(x => x.SubtotalSum)
-            .ToCollection()
-            .Select(list => list.Sum(item => item.SubtotalSum))
-            .Subscribe(x => Subtotal = x);
-
-        AddictiveViewModels
-            .ToObservableChangeSet()
-            .AutoRefresh(x => x.SubtotalSum)
-            .ToCollection()
-            .Select(list => list.Sum(item => item.SubtotalSum * (item.HasDiscount ? item.Discount : 1)))
-            .Subscribe(x => Total = x);
     }
 
     public ObservableCollection<ShoppingListItemViewModel> AddictiveViewModels

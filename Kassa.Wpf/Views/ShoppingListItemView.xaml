@@ -40,7 +40,6 @@
             <Setter Property="VerticalAlignment" Value="Top" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="Padding" Value="16" />
-            <Setter Property="IsEnabled" Value="False" />
             <Setter Property="Template" Value="{StaticResource ListItemTemplate}" />
 
             <Style.Triggers>
@@ -70,7 +69,10 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <CheckBox Grid.ColumnSpan="2" IsChecked="{Binding IsSelected, Mode=OneWay}">
+        <CheckBox
+            x:Name="ProductCheckbox"
+            Grid.ColumnSpan="2"
+            IsChecked="{Binding IsSelected, Mode=OneWay}">
 
             <Grid>
 

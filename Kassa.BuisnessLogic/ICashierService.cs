@@ -17,6 +17,11 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
         get;
     }
 
+    public bool IsMultiSelect
+    {
+        get; set;
+    }
+
     /// <summary>
     /// Bind the current category to ObservableCollection, that will be updated when the category changes.
     /// <para>
@@ -28,11 +33,12 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
     public IDisposable BindSelectedCategoryItems(out ReadOnlyObservableCollection<ICategoryItem> categoryItems);
     public IDisposable BindShoppingListItems(out ReadOnlyObservableCollection<ShoppingListItemDto> shoppingListItems);
     public IDisposable BindSelectedShoppingListItems(out ReadOnlyObservableCollection<IShoppingListItemDto> shoppingListItems);
-    
+
     public Task AddProductToShoppingList(int productId);
 
     public Task SelectCategory(int categoryId);
     public Task SelectShoppingListItem(IShoppingListItemDto shoppingListItemDto);
+    public Task UnselectShoppingListItem(IShoppingListItemDto shoppingListItemDto);
 
     /// <summary>
     /// Select the previos category in the list.
