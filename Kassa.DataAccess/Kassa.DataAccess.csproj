@@ -8,11 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="MockAdditive.json" />
     <None Remove="MockCategories.json" />
     <None Remove="MockProducts.json" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="MockAdditive.json" />
     <EmbeddedResource Include="MockCategories.json" />
     <EmbeddedResource Include="MockProducts.json" />
   </ItemGroup>

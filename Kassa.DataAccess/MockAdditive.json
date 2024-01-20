@@ -1,0 +1,1122 @@
+[
+    {
+        "Id": 1,
+        "Name": "Маршмеллоу",
+        "Price": 137,
+        "Count": 6,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            18
+        ]
+    },
+    {
+        "Id": 2,
+        "Name": "Шоколадные стружки",
+        "Price": 254,
+        "Count": 7,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            18,
+            6,
+            27,
+            29
+        ]
+    },
+    {
+        "Id": 3,
+        "Name": "Взбитые сливки",
+        "Price": 359,
+        "Count": 9,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            18,
+            24,
+            25,
+            26
+        ]
+    },
+    {
+        "Id": 4,
+        "Name": "Сироп карамельный",
+        "Price": 393,
+        "Count": 6,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            19,
+            24,
+            25,
+            26
+        ]
+    },
+    {
+        "Id": 5,
+        "Name": "Сироп ванильный",
+        "Price": 300,
+        "Count": 16,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            19,
+            24,
+            25,
+            26
+        ]
+    },
+    {
+        "Id": 6,
+        "Name": "Сироп шоколадный",
+        "Price": 240,
+        "Count": 16,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            19,
+            24,
+            25,
+            26
+        ]
+    },
+    {
+        "Id": 7,
+        "Name": "Орехи ассорти",
+        "Price": 145,
+        "Count": 20,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            6,
+            27,
+            29
+        ]
+    },
+    {
+        "Id": 8,
+        "Name": "Изюм",
+        "Price": 260,
+        "Count": 19,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            6,
+            27,
+            29
+        ]
+    },
+    {
+        "Id": 9,
+        "Name": "Кокосовая стружка",
+        "Price": 56,
+        "Count": 13,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            6,
+            27,
+            29
+        ]
+    },
+    {
+        "Id": 10,
+        "Name": "Сливки для кофе",
+        "Price": 365,
+        "Count": 18,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            4
+        ]
+    },
+    {
+        "Id": 11,
+        "Name": "Сахарный песок",
+        "Price": 382,
+        "Count": 17,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            4
+        ]
+    },
+    {
+        "Id": 12,
+        "Name": "Коричневый сахар",
+        "Price": 43,
+        "Count": 18,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            4
+        ]
+    },
+    {
+        "Id": 13,
+        "Name": "Соус барбекю",
+        "Price": 443,
+        "Count": 19,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 14,
+        "Name": "Горчица дижонская",
+        "Price": 169,
+        "Count": 9,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 15,
+        "Name": "Соус чесночный",
+        "Price": 436,
+        "Count": 6,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 16,
+        "Name": "Карамельные кусочки",
+        "Price": 254,
+        "Count": 20,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            6,
+            27,
+            29
+        ]
+    },
+    {
+        "Id": 17,
+        "Name": "Миндальные лепестки",
+        "Price": 308,
+        "Count": 9,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            6,
+            27,
+            29
+        ]
+    },
+    {
+        "Id": 18,
+        "Name": "Клубничный сироп",
+        "Price": 250,
+        "Count": 19,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            18,
+            24,
+            25,
+            26
+        ]
+    },
+    {
+        "Id": 19,
+        "Name": "Мятный сироп",
+        "Price": 440,
+        "Count": 6,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            19,
+            24,
+            25,
+            26
+        ]
+    },
+    {
+        "Id": 20,
+        "Name": "Лимонный сок",
+        "Price": 209,
+        "Count": 13,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            10,
+            11
+        ]
+    },
+    {
+        "Id": 21,
+        "Name": "Имбирь",
+        "Price": 383,
+        "Count": 6,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            3,
+            20
+        ]
+    },
+    {
+        "Id": 22,
+        "Name": "Мед",
+        "Price": 104,
+        "Count": 10,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            3,
+            20,
+            7,
+            8
+        ]
+    },
+    {
+        "Id": 23,
+        "Name": "Корица",
+        "Price": 427,
+        "Count": 16,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            3,
+            20,
+            6
+        ]
+    },
+    {
+        "Id": 24,
+        "Name": "Сушеная клюква",
+        "Price": 367,
+        "Count": 12,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            6,
+            27,
+            29
+        ]
+    },
+    {
+        "Id": 25,
+        "Name": "Арахисовая паста",
+        "Price": 421,
+        "Count": 13,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            6,
+            27,
+            29
+        ]
+    },
+    {
+        "Id": 26,
+        "Name": "Соевый соус",
+        "Price": 414,
+        "Count": 19,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 27,
+        "Name": "Терияки соус",
+        "Price": 271,
+        "Count": 13,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 28,
+        "Name": "Сырный соус",
+        "Price": 374,
+        "Count": 6,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 29,
+        "Name": "Перец чили",
+        "Price": 259,
+        "Count": 6,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 30,
+        "Name": "Луковые колечки",
+        "Price": 475,
+        "Count": 20,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 31,
+        "Name": "Кетчуп",
+        "Price": 449,
+        "Count": 6,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 32,
+        "Name": "Майонез",
+        "Price": 396,
+        "Count": 15,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 33,
+        "Name": "Гранатовый сироп",
+        "Price": 287,
+        "Count": 7,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            18,
+            24,
+            25,
+            26
+        ]
+    },
+    {
+        "Id": 34,
+        "Name": "Кедровые орешки",
+        "Price": 197,
+        "Count": 18,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            6,
+            27,
+            29
+        ]
+    },
+    {
+        "Id": 35,
+        "Name": "Сушеные абрикосы",
+        "Price": 354,
+        "Count": 17,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            6,
+            27,
+            29
+        ]
+    },
+    {
+        "Id": 36,
+        "Name": "Ванильный экстракт",
+        "Price": 211,
+        "Count": 14,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            18,
+            6,
+            27,
+            29
+        ]
+    },
+    {
+        "Id": 37,
+        "Name": "Ореховый крем",
+        "Price": 287,
+        "Count": 7,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            6,
+            27,
+            29
+        ]
+    },
+    {
+        "Id": 38,
+        "Name": "Лавандовый сироп",
+        "Price": 84,
+        "Count": 14,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            19,
+            24,
+            25,
+            26
+        ]
+    },
+    {
+        "Id": 39,
+        "Name": "Тростниковый сахар",
+        "Price": 190,
+        "Count": 7,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            4
+        ]
+    },
+    {
+        "Id": 40,
+        "Name": "Соус хойсин",
+        "Price": 402,
+        "Count": 20,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 41,
+        "Name": "Соус сатэ",
+        "Price": 122,
+        "Count": 12,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 42,
+        "Name": "Томатный соус",
+        "Price": 484,
+        "Count": 8,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 43,
+        "Name": "Соус песто",
+        "Price": 157,
+        "Count": 11,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 44,
+        "Name": "Зеленый лук",
+        "Price": 29,
+        "Count": 20,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 45,
+        "Name": "Чеснок молотый",
+        "Price": 453,
+        "Count": 17,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 46,
+        "Name": "Паприка",
+        "Price": 258,
+        "Count": 15,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 47,
+        "Name": "Сыр пармезан",
+        "Price": 264,
+        "Count": 10,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 48,
+        "Name": "Базилик",
+        "Price": 129,
+        "Count": 15,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 49,
+        "Name": "Тимьян",
+        "Price": 353,
+        "Count": 15,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 50,
+        "Name": "Розмарин",
+        "Price": 497,
+        "Count": 20,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 51,
+        "Name": "Майоран",
+        "Price": 205,
+        "Count": 20,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 52,
+        "Name": "Уксус бальзамический",
+        "Price": 152,
+        "Count": 12,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 53,
+        "Name": "Соус чили",
+        "Price": 491,
+        "Count": 20,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 54,
+        "Name": "Маринованные огурцы",
+        "Price": 366,
+        "Count": 17,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            39,
+            40,
+            41
+        ]
+    },
+    {
+        "Id": 55,
+        "Name": "Соленые каперсы",
+        "Price": 306,
+        "Count": 9,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            39,
+            40,
+            41
+        ]
+    },
+    {
+        "Id": 56,
+        "Name": "Смесь итальянских трав",
+        "Price": 243,
+        "Count": 15,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 57,
+        "Name": "Лимонная цедра",
+        "Price": 202,
+        "Count": 13,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            18,
+            24,
+            25,
+            26
+        ]
+    },
+    {
+        "Id": 58,
+        "Name": "Апельсиновая цедра",
+        "Price": 202,
+        "Count": 13,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            18,
+            24,
+            25,
+            26
+        ]
+    },
+    {
+        "Id": 59,
+        "Name": "Коньяк",
+        "Price": 220,
+        "Count": 9,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 60,
+        "Name": "Виски",
+        "Price": 154,
+        "Count": 12,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 61,
+        "Name": "Красное вино",
+        "Price": 398,
+        "Count": 14,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 62,
+        "Name": "Белое вино",
+        "Price": 199,
+        "Count": 6,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 63,
+        "Name": "Соевые проростки",
+        "Price": 83,
+        "Count": 7,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 64,
+        "Name": "Семена кунжута",
+        "Price": 482,
+        "Count": 8,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 65,
+        "Name": "Соус табаско",
+        "Price": 279,
+        "Count": 10,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 66,
+        "Name": "Оливковое масло",
+        "Price": 225,
+        "Count": 11,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 67,
+        "Name": "Соус вустерширский",
+        "Price": 298,
+        "Count": 9,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 68,
+        "Name": "Соус рыбный",
+        "Price": 117,
+        "Count": 20,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 69,
+        "Name": "Листья мяты",
+        "Price": 469,
+        "Count": 14,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            18,
+            24,
+            25,
+            26
+        ]
+    },
+    {
+        "Id": 70,
+        "Name": "Шафран",
+        "Price": 123,
+        "Count": 17,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 71,
+        "Name": "Лавровый лист",
+        "Price": 97,
+        "Count": 5,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 72,
+        "Name": "Корень имбиря",
+        "Price": 118,
+        "Count": 9,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 73,
+        "Name": "Клюквенный соус",
+        "Price": 325,
+        "Count": 6,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 74,
+        "Name": "Черный перец горошком",
+        "Price": 48,
+        "Count": 7,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 75,
+        "Name": "Сливочное масло",
+        "Price": 274,
+        "Count": 6,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 76,
+        "Name": "Зелень петрушки",
+        "Price": 25,
+        "Count": 8,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 77,
+        "Name": "Смесь перцев",
+        "Price": 401,
+        "Count": 12,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 78,
+        "Name": "Жгучий красный перец",
+        "Price": 449,
+        "Count": 9,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 79,
+        "Name": "Карри",
+        "Price": 287,
+        "Count": 14,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 80,
+        "Name": "Корица палочками",
+        "Price": 130,
+        "Count": 12,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 81,
+        "Name": "Анис звездчатый",
+        "Price": 161,
+        "Count": 16,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 82,
+        "Name": "Кардамон",
+        "Price": 368,
+        "Count": 19,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 83,
+        "Name": "Гвоздика",
+        "Price": 191,
+        "Count": 14,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 84,
+        "Name": "Мускатный орех целый",
+        "Price": 427,
+        "Count": 6,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 85,
+        "Name": "Тмин",
+        "Price": 409,
+        "Count": 8,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    },
+    {
+        "Id": 86,
+        "Name": "Кориандр",
+        "Price": 102,
+        "Count": 20,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            42,
+            43,
+            44
+        ]
+    }
+]
