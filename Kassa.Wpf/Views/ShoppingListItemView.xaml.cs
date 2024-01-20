@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kassa.BuisnessLogic;
 using Kassa.RxUI;
 using ReactiveUI;
 
@@ -19,7 +20,7 @@ namespace Kassa.Wpf.Views;
 /// <summary>
 /// Логика взаимодействия для ShoppingListItemView.xaml
 /// </summary>
-public partial class ShoppingListItemView : ReactiveUserControl<ShoppingListItemViewModel>
+public partial class ShoppingListItemView : ReactiveUserControl<ShoppingListItemDto>
 {
     public ShoppingListItemView()
     {

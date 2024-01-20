@@ -13,6 +13,11 @@ public record ShoppingListItemDto : IShoppingListItemDto
     {
         ItemId = product.Id;
         Name = product.Name;
+        Price = product.Price;
+        CurrencySymbol = product.CurrencySymbol;
+        Measure = product.Measure;
+        Count = 1;
+        Discount = 1;
 
         IsSelected = isSelected;
     }
@@ -36,4 +41,34 @@ public record ShoppingListItemDto : IShoppingListItemDto
     {
         get;
     }
+
+    public double Count
+    {
+        get; init;
+    }
+    public string CurrencySymbol
+    {
+        get;
+    }
+    public double Discount
+    {
+        get;
+        init;
+    }
+    public bool HasDiscount
+    {
+        get;
+        set;
+    }
+    public string Measure
+    {
+        get;
+    }
+    public double Price
+    {
+        get;
+        init;
+    }
+    public double SubtotalSum => Price * Count;
+    public double TotalSum => SubtotalSum * Discount;
 }
