@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
 using DynamicData;
 using Kassa.DataAccess;
 
@@ -26,7 +27,11 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
     /// <returns></returns>
     public IDisposable BindSelectedCategoryItems(out ReadOnlyObservableCollection<ICategoryItem> categoryItems);
 
-    public IDisposable BindShoppingListItems(out ReadOnlyObservableCollection<IShoppingListItem> shoppingListItems);
+    public IDisposable BindShoppingListItems(out ReadOnlyObservableCollection<ShoppingListItemDto> shoppingListItems);
+    public IDisposable BindSelectedShoppingListItems(out ReadOnlyObservableCollection<IShoppingListItemDto> shoppingListItems);
+    
+    public Task AddProductToShoppingList(int productId);
+
     public Task SelectCategory(int categoryId);
 
     /// <summary>

@@ -6,19 +6,33 @@ using System.Threading.Tasks;
 using Kassa.DataAccess;
 
 namespace Kassa.BuisnessLogic;
-public record ShoppingListItemDto
+public record ShoppingListItemDto : IShoppingListItemDto
 {
 
-    public ShoppingListItemDto(Product product)
+    public ShoppingListItemDto(Product product, bool isSelected = true)
     {
+        ItemId = product.Id;
+        Name = product.Name;
+
+        IsSelected = isSelected;
     }
 
-    public int Id
+    public int ItemId
     {
-        get; 
+        get;
+    }
+
+    public Guid Id
+    {
+        get; init;
     }
 
     public string Name
+    {
+        get;
+    }
+
+    public bool IsSelected
     {
         get;
     }

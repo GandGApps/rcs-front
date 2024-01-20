@@ -22,4 +22,13 @@ public class MockTests
 
         Assert.AreEqual(1, products.First(x => x.Id == 1).Id);
     }
+
+    [TestMethod]
+    public async Task MockRepositoryTests3()
+    {
+        var repository = IRepository<Additive>.CreateMock("MockAdditive.json");
+        var receipts = await repository.GetAll();
+
+        Assert.AreEqual(1, receipts.First(x => x.Id == 1).Id);
+    }
 }

@@ -46,8 +46,15 @@ internal class CashierService(IProductService productService, ICategoryService c
         }
     }
 
-    public ICategoryService CategoryService => categoryService;
-    public IProductService ProductService => productService;
+    public SourceCache<ShoppingListItemDto, Guid> ShoppingListItems
+    {
+        get;
+    } = new(x => x.Id);
+
+    public SourceCache<IShoppingListItemDto, Guid> SelectedShoppingListItems
+    {
+        get;
+    } = new(x => x.Id);
 
     private Category? _currentCategory;
 
@@ -82,6 +89,27 @@ internal class CashierService(IProductService productService, ICategoryService c
                 }
             }))
             .Bind(out categoryItems);
+
+        return stream.Subscribe();
+    }
+
+    public IDisposable BindShoppingListItems(out ReadOnlyObservableCollection<ShoppingListItemDto> shoppingListItems)
+    {
+        this.ThrowIfNotInitialized();
+
+        var stream = ShoppingListItems.Connect()
+            .Bind(out shoppingListItems);
+
+        return stream.Subscribe();
+    }
+
+    public IDisposable BindSelectedShoppingListItems(out ReadOnlyObservableCollection<IShoppingListItemDto> shoppingListItems)
+    {
+
+        this.ThrowIfNotInitialized();
+
+        var stream = SelectedShoppingListItems.Connect()
+            .Bind(out shoppingListItems);
 
         return stream.Subscribe();
     }
@@ -160,5 +188,26 @@ internal class CashierService(IProductService productService, ICategoryService c
         }
 
         return new(true);
+    }
+
+    public async Task AddProductToShoppingList(int productId)
+    {
+        var product = await productService.GetProductById(productId);
+
+        if (product is null)
+        {
+            throw new InvalidOperationException($"Product with id {productId} not found.");
+        }
+
+        await productService.DecreaseProductCount(product.Id);
+
+        product = await productService.GetProductById(product.Id);
+
+        var shoppingListItem = new ShoppingListItemDto(product)
+        {
+            Id = Guid.NewGuid()
+        };
+
+        ShoppingListItems.AddOrUpdate(shoppingListItem);
     }
 }
