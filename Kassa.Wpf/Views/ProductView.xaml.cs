@@ -32,6 +32,9 @@ public partial class ProductView : ButtonUserControl<Product>
         {
             DataContext = new ProductViewModel(ViewModel!);
 
+            Command = ProductViewModel.AddToShoppingListCommand;
+            CommandParameter = ViewModel;
+
             if (ViewModel!.Icon is not null)
             {
                 var resource = Application.Current.TryFindResource(ViewModel!.Icon);

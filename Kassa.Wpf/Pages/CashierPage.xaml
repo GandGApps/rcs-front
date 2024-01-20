@@ -777,14 +777,6 @@
                     </i:Interaction.Behaviors>
 
                     <ItemsControl x:Name="ProductsHost">
-                        <d:ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <rxui:ViewModelViewHost ViewModel="{Binding .}" />
-                            </DataTemplate>
-                        </d:ItemsControl.ItemTemplate>
-                        <d:ItemsControl.Items>
-                            <vm:ProductViewModel Name="Холодные напитки “Криспи Гриль”" />
-                        </d:ItemsControl.Items>
                         <ItemsControl.ItemsPanel>
                             <ItemsPanelTemplate>
                                 <controls:FixedColumnsPanel Columns="4" Orientation="Horizontal" />

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -71,4 +72,18 @@ public record ShoppingListItemDto : IShoppingListItemDto
     }
     public double SubtotalSum => Price * Count;
     public double TotalSum => SubtotalSum * Discount;
+
+    public bool HasAdditives => Additives.Count > 0;
+
+    public bool HasAdditiveInfo => !string.IsNullOrWhiteSpace(AdditiveInfo);
+
+    public List<Additive> Additives
+    {
+        get;
+    } = [];
+
+    public string? AdditiveInfo
+    {
+        get; init;
+    } 
 }

@@ -225,12 +225,22 @@ public class CashierVm : PageViewModel
         _cashierService.BindSelectedCategoryItems(out var categoryItems)
                        .DisposeWith(disposables);
 
+        _cashierService.BindShoppingListItems(out var shoppingListItems)
+                       .DisposeWith(disposables);
+
         CurrentCategoryItems = categoryItems;
+        ShoppingListItems = shoppingListItems;
     }
 
     public ShoppingListViewModel ShoppingList
     {
         get;
+    }
+
+    [Reactive]
+    public ReadOnlyObservableCollection<ShoppingListItemDto> ShoppingListItems
+    {
+        get; set;
     }
 
     [Reactive]

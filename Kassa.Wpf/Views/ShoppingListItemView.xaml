@@ -13,28 +13,6 @@
     x:TypeArguments="bl:ShoppingListItemDto"
     mc:Ignorable="d">
 
-    <d:DesignProperties.DataContext>
-        <vm:ShoppingListItemViewModel
-            Name="0.5л  Coca-Cola"
-            AddictiveInfo="Клиент попросил свернуть в трубочку и завернуть кое-что особенное, как сюрприз на день рождения."
-            Count="2"
-            CurrencySymbol="₽"
-            HasAddictiveInfo="True"
-            HasDiscount="True"
-            Price="50">
-            <vm:ShoppingListItemViewModel.Addictives>
-                <vm:AddictiveForShoppingListItem
-                    Name="Пармехано "
-                    Count="12"
-                    CurrencySymbol="₽"
-                    Discount="0.1"
-                    HasDiscount="True"
-                    Measure="гр"
-                    Price="33" />
-            </vm:ShoppingListItemViewModel.Addictives>
-        </vm:ShoppingListItemViewModel>
-    </d:DesignProperties.DataContext>
-
     <UserControl.Resources>
         <ControlTemplate x:Key="ListItemTemplate" TargetType="RadioButton">
             <Border
@@ -52,7 +30,7 @@
             </Border>
         </ControlTemplate>
 
-        <Style x:Key="AddictiveBorder" TargetType="Border">
+        <Style x:Key="AdditiveBorder" TargetType="Border">
             <Setter Property="Padding" Value="13" />
             <Setter Property="VerticalAlignment" Value="Top" />
         </Style>
@@ -93,7 +71,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <RadioButton Grid.ColumnSpan="2" IsChecked="{Binding IsChecked}">
+        <RadioButton Grid.ColumnSpan="2" IsChecked="{Binding IsChecked, Mode=OneTime}">
 
             <Grid>
 
@@ -103,7 +81,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock FontSize="16" Text="{Binding Count}" />
+                <TextBlock FontSize="16" Text="{Binding Count, Mode=OneTime}" />
 
                 <TextBlock
                     Grid.Column="1"
@@ -119,11 +97,11 @@
                                 </Style.Triggers>
                             </Style>
                         </Run.Style>
-                    </Run><Run Text="{Binding Name}" />
+                    </Run><Run Text="{Binding Name, Mode=OneTime}" />
                 </TextBlock>
 
                 <TextBlock Grid.Column="2" FontSize="16">
-                    <Run Text="{Binding Price}" /> <Run Text="{Binding CurrencySymbol}" />
+                    <Run Text="{Binding Price, Mode=OneTime}" /> <Run Text="{Binding CurrencySymbol, Mode=OneTime}" />
                 </TextBlock>
 
             </Grid>
@@ -143,8 +121,8 @@
                     <Style.Triggers>
                         <MultiDataTrigger>
                             <MultiDataTrigger.Conditions>
-                                <Condition Binding="{Binding Addictives.Count}" Value="0" />
-                                <Condition Binding="{Binding HasAddictiveInfo}" Value="False" />
+                                <Condition Binding="{Binding Additives.Count}" Value="0" />
+                                <Condition Binding="{Binding HasAdditiveInfo}" Value="False" />
                             </MultiDataTrigger.Conditions>
                             <Setter Property="Visibility" Value="Collapsed" />
                         </MultiDataTrigger>
@@ -162,10 +140,10 @@
                 Padding="13"
                 Background="White"
                 CornerRadius="11"
-                Visibility="{Binding HasAddictiveInfo, Converter={StaticResource BoolToVisibilityConverter}}">
+                Visibility="{Binding HasAdditiveInfo, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneTime}">
 
                 <Border.Style>
-                    <Style BasedOn="{StaticResource AddictiveBorder}" TargetType="Border" />
+                    <Style BasedOn="{StaticResource AdditiveBorder}" TargetType="Border" />
                 </Border.Style>
 
                 <Grid>
@@ -193,20 +171,20 @@
                         FontSize="13"
                         Foreground="{StaticResource SolidHintTextColor}"
                         TextTrimming="CharacterEllipsis">
-                        <Run Text="{Binding AddictiveInfo}" /><Run FontSize="16" />
+                        <Run Text="{Binding AdditiveInfo, Mode=OneTime}" /><Run FontSize="16" />
                     </TextBlock>
 
                 </Grid>
 
             </Border>
 
-            <ItemsControl ItemsSource="{Binding Addictives}">
+            <ItemsControl ItemsSource="{Binding Additives, Mode=OneTime}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <RadioButton
                             Margin="0,3"
                             Padding="13"
-                            IsChecked="{Binding IsChecked}">
+                            IsChecked="{Binding IsChecked, Mode=OneTime}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="14" />
@@ -232,14 +210,14 @@
                                     Margin="6,0,0,0"
                                     FontSize="13"
                                     TextTrimming="CharacterEllipsis">
-                                    <Run Text="{Binding Name}" /> <Run Text="{Binding Count}" /><Run Text="{Binding Measure}" />
+                                    <Run Text="{Binding Name, Mode=OneTime}" /> <Run Text="{Binding Count, Mode=OneTime}" /><Run Text="{Binding Measure, Mode=OneTime}" />
                                 </TextBlock>
 
                                 <TextBlock
                                     Grid.Column="2"
                                     Margin="6,0,0,0"
                                     FontSize="16">
-                                    <Run Text="{Binding Price}" /><Run Text="{Binding CurrencySymbol}" />
+                                    <Run Text="{Binding Price, Mode=OneTime}" /><Run Text="{Binding CurrencySymbo, Mode=OneTime}" />
                                 </TextBlock>
 
                             </Grid>
