@@ -10,7 +10,7 @@ namespace Kassa.BuisnessLogic;
 public record ShoppingListItemDto : IShoppingListItemDto
 {
 
-    public ShoppingListItemDto(Product product, bool isSelected = true)
+    public ShoppingListItemDto(Product product)
     {
         ItemId = product.Id;
         Name = product.Name;
@@ -20,7 +20,7 @@ public record ShoppingListItemDto : IShoppingListItemDto
         Count = 1;
         Discount = 1;
 
-        IsSelected = isSelected;
+        IsSelected = false;
     }
 
     public int ItemId
@@ -40,7 +40,7 @@ public record ShoppingListItemDto : IShoppingListItemDto
 
     public bool IsSelected
     {
-        get;
+        get; set;
     }
 
     public double Count

@@ -26,13 +26,13 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
     /// <param name="categoryItems"></param>
     /// <returns></returns>
     public IDisposable BindSelectedCategoryItems(out ReadOnlyObservableCollection<ICategoryItem> categoryItems);
-
     public IDisposable BindShoppingListItems(out ReadOnlyObservableCollection<ShoppingListItemDto> shoppingListItems);
     public IDisposable BindSelectedShoppingListItems(out ReadOnlyObservableCollection<IShoppingListItemDto> shoppingListItems);
     
     public Task AddProductToShoppingList(int productId);
 
     public Task SelectCategory(int categoryId);
+    public Task SelectShoppingListItem(IShoppingListItemDto shoppingListItemDto);
 
     /// <summary>
     /// Select the previos category in the list.

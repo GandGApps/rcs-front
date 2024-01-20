@@ -210,4 +210,55 @@ internal class CashierService(IProductService productService, ICategoryService c
 
         ShoppingListItems.AddOrUpdate(shoppingListItem);
     }
+
+    public Task SelectShoppingListItem(IShoppingListItemDto shoppingListItemDto)
+    {
+        this.ThrowIfNotInitialized();
+
+        if (shoppingListItemDto is null)
+        {
+            throw new ArgumentNullException(nameof(shoppingListItemDto));
+        }
+
+        SelectedShoppingListItems.AddOrUpdate(shoppingListItemDto);
+
+        if (shoppingListItemDto is ShoppingListItemDto shoppingListItem)
+        {
+            ShoppingListItems.AddOrUpdate(shoppingListItem with
+            {
+                IsSelected = true
+            });
+        }
+
+        return Task.CompletedTask;
+    }
+
+    public async Task RemoveShoppingListItem(IShoppingListItemDto shoppingListItemDto)
+    {
+
+        this.ThrowIfNotInitialized();
+
+        if (shoppingListItemDto is null)
+        {
+
+            throw new ArgumentNullException(nameof(shoppingListItemDto));
+        }
+
+        
+
+        if (shoppingListItemDto is ShoppingListItemDto shoppingListItem)
+        {
+            var product = await productService.GetProductById(shoppingListItem.ItemId);
+            if (product != null)
+            {
+
+            }
+
+            SelectedShoppingListItems.Remove(shoppingListItemDto);
+            ShoppingListItems.Remove(shoppingListItem with
+            {
+                IsSelected = false
+            });
+        }
+    }
 }
