@@ -40,7 +40,7 @@ public class Additive : IModel
     /// <summary>
     /// Identifier of the product to which this additive belongs.
     /// </summary>
-    public int ProductId
+    public int[] ProductIds
     {
         get; set;
     }

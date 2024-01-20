@@ -12,5 +12,10 @@ public static class DependencyResolverExtensions
     {
         services.RegisterConstant(IRepository<Product>.CreateMock("MockProducts.json"));
         services.RegisterConstant(IRepository<Category>.CreateMock("MockCategories.json"));
+        services.RegisterConstant<IAdditiveRepository>(
+            new IAdditiveRepository.MockAdditveRepository(
+                IRepository<Additive>.CreateMock("MockAdditive.json")
+            )
+        );
     }
 }

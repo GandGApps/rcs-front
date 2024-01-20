@@ -77,6 +77,11 @@ internal class CashierService(IProductService productService, ICategoryService c
         get;
     } = new(x => x.Id);
 
+    public SourceCache<Additive, int> AdditivesForSelectedProduct
+    {
+        get;
+    } = new(x => x.Id);
+
     private Category? _currentCategory;
 
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -131,6 +136,17 @@ internal class CashierService(IProductService productService, ICategoryService c
 
         var stream = SelectedShoppingListItems.Connect()
             .Bind(out shoppingListItems);
+
+        return stream.Subscribe();
+    }
+
+    public IDisposable BindAdditives(out ReadOnlyObservableCollection<Additive> additives)
+    {
+
+        this.ThrowIfNotInitialized();
+
+        var stream = AdditivesForSelectedProduct.Connect()
+                    .Bind(out additives);
 
         return stream.Subscribe();
     }
@@ -232,7 +248,7 @@ internal class CashierService(IProductService productService, ICategoryService c
         ShoppingListItems.AddOrUpdate(shoppingListItem);
     }
 
-    public Task SelectShoppingListItem(IShoppingListItemDto shoppingListItemDto)
+    public async Task SelectShoppingListItem(IShoppingListItemDto shoppingListItemDto)
     {
         this.ThrowIfNotInitialized();
 
@@ -256,7 +272,7 @@ internal class CashierService(IProductService productService, ICategoryService c
             });
         }
 
-        return Task.CompletedTask;
+        await UpdateAdditivesForSelectedProduct();
     }
 
     public async Task RemoveShoppingListItem(IShoppingListItemDto shoppingListItemDto)
@@ -287,7 +303,7 @@ internal class CashierService(IProductService productService, ICategoryService c
         }
     }
 
-    public Task UnselectShoppingListItem(IShoppingListItemDto shoppingListItemDto)
+    public async Task UnselectShoppingListItem(IShoppingListItemDto shoppingListItemDto)
     {
         this.ThrowIfNotInitialized();
 
@@ -307,7 +323,7 @@ internal class CashierService(IProductService productService, ICategoryService c
             });
         }
 
-        return Task.CompletedTask;
+        await UpdateAdditivesForSelectedProduct();
     }
 
     private void ClearSelectedShoppingListItems()
@@ -325,6 +341,28 @@ internal class CashierService(IProductService productService, ICategoryService c
 
                     IsSelected = false
                 });
+
+
+            }
+        }
+        AdditivesForSelectedProduct.Clear();
+    }
+
+    private async ValueTask UpdateAdditivesForSelectedProduct()
+    {
+
+        this.ThrowIfNotInitialized();
+
+        AdditivesForSelectedProduct.Clear();
+
+        foreach (var shoppingListItem in SelectedShoppingListItems.Items)
+        {
+
+            if (shoppingListItem is ShoppingListItemDto shoppingListItemDto)
+            {
+                var additives = await productService.GetAdditivesByProductId(shoppingListItemDto.ItemId);
+
+                AdditivesForSelectedProduct.AddOrUpdate(additives);
             }
         }
     }

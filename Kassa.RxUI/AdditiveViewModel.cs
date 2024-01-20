@@ -4,57 +4,61 @@ using System.Linq;
 using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.DataAccess;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI;
-public class AddictiveViewModel : ReactiveObject
+public class AdditiveViewModel : ReactiveObject
 {
 
-    [Reactive]
+    public AdditiveViewModel(Additive additive, bool isAdded = false)
+    {
+        Name = additive.Name;
+        СurrencySymbol = additive.CurrencySymbol;
+        Price = additive.Price;
+        IsAdded = isAdded;
+        Measure = additive.Measure;
+        IsAvailable = additive.Count > 0;
+        AddToShoppingListCommand = ReactiveCommand.Create(() => { });
+    }
+
     public string Name
     {
-        get; set;
+        get; 
     }
 
-    [Reactive]
     public string СurrencySymbol
     {
-        get; set;
+        get; 
     }
-
-    [Reactive]
     public double Price
     {
-        get; set;
+        get; 
     }
 
-    [Reactive]
     public bool IsAdded
     {
-        get; set;
+        get; 
     }
 
-    [Reactive]
     public double Count
     {
-        get; set;
+        get; 
     }
 
     /// <summary>
     /// Measure of addictive, for example, kg, l, etc.
     /// </summary>
-    [Reactive]
     public string Measure
     {
-        get; set;
+        get; 
     }
 
 
-    [Reactive]
     public bool IsAvailable
     {
-        get; set;
+        get; 
     }
 
     [Reactive]

@@ -2,15 +2,17 @@
     x:Class="Kassa.Wpf.Views.AddictiveView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:bl="clr-namespace:Kassa.BuisnessLogic;assembly=Kassa.BuisnessLogic"
     xmlns:controls="clr-namespace:Kassa.Wpf.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:data="clr-namespace:Kassa.DataAccess;assembly=Kassa.DataAccess"
     xmlns:local="clr-namespace:Kassa.Wpf.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:rxui="http://reactiveui.net"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:vm="clr-namespace:Kassa.RxUI;assembly=Kassa.RxUI"
     x:Name="root"
-    x:TypeArguments="vm:AddictiveViewModel"
+    x:TypeArguments="data:Additive"
     Foreground="{StaticResource SolidPrimaryTextColor}"
     mc:Ignorable="d">
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,14 +15,16 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kassa.DataAccess;
 using Kassa.RxUI;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.Wpf.Views;
 /// <summary>
 /// Interaction logic for AddictiveView.xaml
 /// </summary>
-public partial class AddictiveView : ReactiveUserControl<AddictiveViewModel>
+public partial class AddictiveView : ReactiveUserControl<Additive>
 {
 
     public static readonly DependencyProperty HasAddictiveIconProperty = DependencyProperty.Register(
@@ -48,17 +51,60 @@ public partial class AddictiveView : ReactiveUserControl<AddictiveViewModel>
 
         this.WhenActivated(disposabels =>
         {
-            DataContext = ViewModel;
-
-            this.OneWayBind(ViewModel, vm => vm.AddToShoppingListCommand, v => v.Command)
-                .DisposeWith(disposabels);
+            DataContext = new AdditiveViewModel(ViewModel!);
         });
     }
 }
 [EditorBrowsable(EditorBrowsableState.Never)]
-public class DesignerAddictiveViewModel : AddictiveViewModel
+public class DesignerAddictiveViewModel
 {
-    public DesignerAddictiveViewModel() : base()
+
+    [Reactive]
+    public string Name
     {
+        get; set;
+    }
+
+    [Reactive]
+    public string СurrencySymbol
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public double Price
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public bool IsAdded
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public double Count
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public string Measure
+    {
+        get; set;
+    }
+
+
+    [Reactive]
+    public bool IsAvailable
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public ReactiveCommand<Unit, Unit> AddToShoppingListCommand
+    {
+        get; set;
     }
 }

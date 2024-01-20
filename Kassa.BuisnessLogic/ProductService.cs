@@ -7,7 +7,7 @@ using DynamicData;
 using Kassa.DataAccess;
 
 namespace Kassa.BuisnessLogic;
-internal sealed class ProductService(IRepository<Product> repository) : IProductService
+internal sealed class ProductService(IRepository<Product> productRepository, IAdditiveRepository additiveRepository) : IProductService
 {
     private bool _isInitialized;
     private bool _isDisposed;
@@ -29,7 +29,7 @@ internal sealed class ProductService(IRepository<Product> repository) : IProduct
         }
         try
         {
-            var products = await repository.GetAll();
+            var products = await productRepository.GetAll();
 
             RuntimeProducts.AddOrUpdate(products);
 
@@ -55,7 +55,7 @@ internal sealed class ProductService(IRepository<Product> repository) : IProduct
     {
         this.ThrowIfNotInitialized();
 
-        var product = await repository.Get(productId);
+        var product = await productRepository.Get(productId);
 
         if (product == null)
         {
@@ -72,7 +72,7 @@ internal sealed class ProductService(IRepository<Product> repository) : IProduct
     {
         this.ThrowIfNotInitialized();
 
-        var product = await repository.Get(productId);
+        var product = await productRepository.Get(productId);
 
         if (product == null)
         {
@@ -90,7 +90,7 @@ internal sealed class ProductService(IRepository<Product> repository) : IProduct
     {
         this.ThrowIfNotInitialized();
 
-        var product = await repository.Get(productId);
+        var product = await productRepository.Get(productId);
         if (product is not null)
         {
             UpdateRuntimeProducts(product);
@@ -103,7 +103,7 @@ internal sealed class ProductService(IRepository<Product> repository) : IProduct
     {
         this.ThrowIfNotInitialized();
 
-        await repository.Update(product);
+        await productRepository.Update(product);
 
         UpdateRuntimeProducts(product);
     }
@@ -131,8 +131,15 @@ internal sealed class ProductService(IRepository<Product> repository) : IProduct
     {
         this.ThrowIfNotInitialized();
 
-        await repository.Delete(product);
+        await productRepository.Delete(product);
 
         RuntimeProducts.Remove(product);
+    }
+
+    public async ValueTask<IEnumerable<Additive>> GetAdditivesByProductId(int productId)
+    {
+        this.ThrowIfNotInitialized();
+
+        return await additiveRepository.GetAdditivesByProductId(productId);
     }
 }

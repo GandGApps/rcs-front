@@ -28,43 +28,6 @@ public class CashierVm : PageViewModel
     {
         ShoppingList = new();
 
-        // Mock data
-
-        _fastAddictives = new([
-            new() { Name = "Сыр чеддер", Count = 15, Price = 18, СurrencySymbol = "₽", Measure = "гр", IsAvailable = true },
-            new() { Name = "Сыр моцарелла", Count = 15, Price = 28, СurrencySymbol = "₽", Measure = "гр", IsAvailable = true },
-            new() { Name = "Сыр пармезан", Count = 15, Price = 38, СurrencySymbol = "₽", Measure = "гр", IsAvailable = true },
-            new() { Name = "Сыр пармезан", Count = 15, Price = 8, СurrencySymbol = "₽", Measure = "гр", IsAvailable = true },
-            new() { Name = "Сыр пармезан", Count = 15, Price = 3, СurrencySymbol = "₽", Measure = "гр", IsAvailable = true },
-            new() { Name = "Сыр пармезан", Count = 15, Price = 1, СurrencySymbol = "₽", Measure = "гр", IsAvailable = false },
-            new() { Name = "Сыр пармезан", Count = 15, Measure = "гр", IsAvailable = false },
-        ]);
-
-
-        foreach (var item in _fastAddictives)
-        {
-            item.AddToShoppingListCommand = ReactiveCommand.Create(() =>
-            {
-                foreach (var currentItem in ShoppingList.CurrentItems.OfType<ShoppingListItemViewModel>())
-                {
-                    var addictive = new AddictiveForShoppingListItem()
-                    {
-                        Name = item.Name,
-                        Count = 1,
-                        Price = item.Price,
-                        Measure = item.Measure,
-                        ShoppingListViewModel = ShoppingList
-                    };
-                    addictive.RemoveCommand = ReactiveCommand.Create(() =>
-                    {
-                        currentItem.Addictives.Remove(addictive);
-                    })
-                    ;
-                    currentItem.Addictives.Add(addictive);
-                }
-            }, item.WhenAnyValue(x => x.IsAvailable));
-        }
-
         CreateTotalCommentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             var dialog = new CommentDialogViewModel(this);
@@ -226,11 +189,15 @@ public class CashierVm : PageViewModel
         _cashierService.BindShoppingListItems(out var shoppingListItems)
                        .DisposeWith(disposables);
 
+        _cashierService.BindAdditives(out var fastAdditives)
+                       .DisposeWith(disposables);
+
         IsMultiSelect = _cashierService.IsMultiSelect;
         _isMultiSelectSetter = x => _cashierService.IsMultiSelect = x;
 
         CurrentCategoryItems = categoryItems;
         ShoppingListItems = shoppingListItems;
+        FastAdditives = fastAdditives;
     }
 
     public bool IsMultiSelect
@@ -257,6 +224,12 @@ public class CashierVm : PageViewModel
 
     [Reactive]
     public ReadOnlyObservableCollection<ShoppingListItemDto> ShoppingListItems
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public ReadOnlyObservableCollection<Additive> FastAdditives
     {
         get; set;
     }
@@ -319,8 +292,8 @@ public class CashierVm : PageViewModel
         get; set;
     }
 
-    public ReadOnlyObservableCollection<AddictiveViewModel> FastAddictives => _fastAddictives;
-    private readonly ReadOnlyObservableCollection<AddictiveViewModel> _fastAddictives;
+    public ReadOnlyObservableCollection<AdditiveViewModel> FastAddictives => _fastAddictives;
+    private readonly ReadOnlyObservableCollection<AdditiveViewModel> _fastAddictives;
 
     [Reactive]
     public ReadOnlyObservableCollection<ICategoryItem>? CurrentCategoryItems

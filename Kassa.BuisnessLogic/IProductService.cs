@@ -35,4 +35,6 @@ public interface IProductService: IInitializableService
     public Task IncreaseProductCount(Product product);
 
     public ValueTask<Product?> GetProductById(int productId);
+
+    public ValueTask<IEnumerable<Additive>> GetAdditivesByProductId(int productId);
 }

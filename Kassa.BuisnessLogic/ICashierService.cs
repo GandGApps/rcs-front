@@ -33,6 +33,7 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
     public IDisposable BindSelectedCategoryItems(out ReadOnlyObservableCollection<ICategoryItem> categoryItems);
     public IDisposable BindShoppingListItems(out ReadOnlyObservableCollection<ShoppingListItemDto> shoppingListItems);
     public IDisposable BindSelectedShoppingListItems(out ReadOnlyObservableCollection<IShoppingListItemDto> shoppingListItems);
+    public IDisposable BindAdditives(out ReadOnlyObservableCollection<Additive> additives);
 
     public Task AddProductToShoppingList(int productId);
 

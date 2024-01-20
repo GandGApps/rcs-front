@@ -18,38 +18,6 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
     public SearchAddictiveDialogViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         IsKeyboardVisible = false;
-
-        var data = new AddictiveViewModel[]
-        {
-            new() { Name = "Сыр чеддер", Count = 15, Measure = "гр", IsAvailable = true},
-            new() { Name = "Сыр моцарелла", Count = 15, Measure = "гр", IsAvailable = true},
-            new() { Name = "Сыр пармезан", Count = 15, Measure = "гр", IsAvailable = true},
-            new() { Name = "Сыр дор блю", Count = 15, Measure = "гр", IsAvailable = true},
-            new() { Name = "Сыр фета", Count = 15, Measure = "гр", IsAvailable = false},
-            new() { Name = "Сыр гауда", Count = 15, Measure = "гр", IsAvailable = true},
-            new() { Name = "Сыр бри", Count = 15, Measure = "гр", IsAvailable = true},
-            new() { Name = "Сыр голландский", Count = 15, Measure = "гр", IsAvailable = true},
-            new() { Name = "Сыр голландский", Count = 15, Measure = "гр", IsAvailable = true},
-            new() { Name = "Онигиро", Count = 15, Measure = "гр", IsAvailable = true},
-            new() { Name = "Кетчуп", Count = 25, Measure = "гр", IsAvailable = true},
-            new() { Name = "Майонез", Count = 25, Measure = "гр", IsAvailable = true},
-            new() { Name = "Соус терияки", Count = 10, Measure = "гр", IsAvailable = false},
-        }
-        .AsObservableChangeSet();
-
-        data.Bind(out _addictives)
-            .Subscribe();
-
-        foreach (var addictive in _addictives)
-        {
-            addictive.AddToShoppingListCommand = ReactiveCommand.CreateFromTask(async () =>
-            {
-                SelectedAddictve = addictive;
-                await CloseAsync();
-            });
-        }
-
-        FilteredAddcitves = new(_addictives);
     }
 
     protected override void OnActivated(CompositeDisposable disposables)
@@ -85,10 +53,10 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
         get; set;
     }
 
-    public ReadOnlyObservableCollection<AddictiveViewModel> Addictives => _addictives;
-    private readonly ReadOnlyObservableCollection<AddictiveViewModel> _addictives;
+    public ReadOnlyObservableCollection<AdditiveViewModel> Addictives => _addictives;
+    private readonly ReadOnlyObservableCollection<AdditiveViewModel> _addictives;
 
-    public ObservableCollection<AddictiveViewModel> FilteredAddcitves
+    public ObservableCollection<AdditiveViewModel> FilteredAddcitves
     {
         get;
     } 
@@ -97,7 +65,7 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
     /// if it's null then user canceled dialog
     /// </summary>
     [Reactive]
-    public AddictiveViewModel? SelectedAddictve
+    public AdditiveViewModel? SelectedAddictve
     {
         get; set;
     }
