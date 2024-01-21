@@ -32,7 +32,7 @@ public partial class CashierPage : ReactiveUserControl<CashierVm>
         {
             NavigateBackButton.Command = CategoryViewModel.NavigateBackCategoryCommand;
 
-            this.OneWayBind(ViewModel, x => x.FastAddictives, x => x.FastAddictives.ItemsSource)
+            this.OneWayBind(ViewModel, x => x.FastAdditives, x => x.FastAddictives.ItemsSource)
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, x => x.CurrentCategoryItems, x => x.ProductsHost.ItemsSource)

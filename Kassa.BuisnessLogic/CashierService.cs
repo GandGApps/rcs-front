@@ -345,6 +345,7 @@ internal class CashierService(IProductService productService, ICategoryService c
 
             }
         }
+        SelectedShoppingListItems.Clear();
         AdditivesForSelectedProduct.Clear();
     }
 

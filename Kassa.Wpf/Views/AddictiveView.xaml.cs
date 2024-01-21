@@ -51,7 +51,18 @@ public partial class AddictiveView : ReactiveUserControl<Additive>
 
         this.WhenActivated(disposabels =>
         {
-            DataContext = new AdditiveViewModel(ViewModel!);
+            this.WhenAnyValue(x => x.ViewModel)
+                .Subscribe(x =>
+                {
+                    if (x is null)
+                    {
+                        DataContext = null;
+                    }
+                    else
+                    {
+                        DataContext = new AdditiveViewModel(x);
+                    }
+                });
         });
     }
 }
