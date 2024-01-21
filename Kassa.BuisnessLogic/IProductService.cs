@@ -37,4 +37,5 @@ public interface IProductService: IInitializableService
     public ValueTask<Product?> GetProductById(int productId);
 
     public ValueTask<IEnumerable<Additive>> GetAdditivesByProductId(int productId);
+    ValueTask<Additive> GetAdditiveById(int additiveId);
 }

@@ -46,4 +46,6 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
     /// </summary>
     /// <returns> true if the previous category exists</returns>
     public ValueTask<bool> SelectPreviosCategory();
+
+    public Task AddAdditiveToProduc(int additiveId);
 }

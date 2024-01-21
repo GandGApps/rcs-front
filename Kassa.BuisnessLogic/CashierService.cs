@@ -367,4 +367,20 @@ internal class CashierService(IProductService productService, ICategoryService c
             }
         }
     }
+
+    public async Task AddAdditiveToProduct(int additiveId)
+    {
+
+        this.ThrowIfNotInitialized();
+
+        var additive = await productService.GetAdditiveById(additiveId);
+
+        if (additive is null)
+        {
+
+            throw new InvalidOperationException($"Additive with id {additiveId} not found.");
+        }
+
+
+    }
 }

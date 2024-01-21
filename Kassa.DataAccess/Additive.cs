@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Kassa.DataAccess;
-public class Additive : IModel
+public record Additive : IModel
 {
     public int Id
     {
