@@ -44,4 +44,9 @@ public class Additive : IModel
     {
         get; set;
     }
+
+    public int Portion
+    {
+        get; set;
+    }
 }

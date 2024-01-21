@@ -17,6 +17,7 @@ public class AdditiveViewModel : ReactiveObject
         Name = additive.Name;
         СurrencySymbol = additive.CurrencySymbol;
         Price = additive.Price;
+        Portion = additive.Portion;
         IsAdded = isAdded;
         Measure = additive.Measure;
         IsAvailable = additive.Count > 0;
@@ -42,7 +43,7 @@ public class AdditiveViewModel : ReactiveObject
         get; 
     }
 
-    public double Count
+    public double Portion
     {
         get; 
     }

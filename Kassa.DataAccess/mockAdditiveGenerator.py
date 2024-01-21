@@ -102,6 +102,7 @@ for addition_name, product_ids in updated_additions.items():
         "Name": addition_name,
         "Price": random.randint(10, 500),
         "Count": random.randint(5, 20),
+        "Portion": random.randint(1, 5),
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": product_ids

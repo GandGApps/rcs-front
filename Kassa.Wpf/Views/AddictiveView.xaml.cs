@@ -95,7 +95,7 @@ public class DesignerAddictiveViewModel
     }
 
     [Reactive]
-    public double Count
+    public double Portion
     {
         get; set;
     }

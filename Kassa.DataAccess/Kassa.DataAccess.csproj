@@ -6,13 +6,7 @@
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="MockAdditive.json" />
-    <None Remove="MockCategories.json" />
-    <None Remove="MockProducts.json" />
-  </ItemGroup>
-
+  
   <ItemGroup>
     <EmbeddedResource Include="MockAdditive.json" />
     <EmbeddedResource Include="MockCategories.json" />

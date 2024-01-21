@@ -26,10 +26,10 @@
     <d:DesignProperties.DataContext>
         <local:DesignerAddictiveViewModel
             Name="Сыр Чедер"
-            Count="15"
             IsAdded="False"
             IsAvailable="False"
             Measure="гр"
+            Portion="15"
             Price="15" />
     </d:DesignProperties.DataContext>
 
@@ -90,7 +90,7 @@
                         </Style.Triggers>
                     </Style>
                 </Path.Style>
-            </Path><Run Text="{Binding Count, Mode=OneTime}" /><Run Text="{Binding Measure, Mode=OneTime}" />
+            </Path><Run Text="{Binding Portion, Mode=OneTime}" /><Run Text="{Binding Measure, Mode=OneTime}" />
         </TextBlock>
 
         <TextBlock
