@@ -44,7 +44,7 @@
             <Path
                 x:Name="ProductIcon"
                 d:Data="{StaticResource CupOfTeaIcon}"
-                Fill="{StaticResource FooterColorColor}" />
+                Fill="{DynamicResource SolidFooterColor}" />
             <TextBlock
                 x:Name="ProductName"
                 Grid.Column="1"
@@ -67,10 +67,10 @@
                 <Style TargetType="Border">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsAvailable}" Value="True">
-                            <Setter Property="Background" Value="{StaticResource SolidPrimaryAccentColor}" />
+                            <Setter Property="Background" Value="{DynamicResource SolidPrimaryAccentColor}" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsAvailable}" Value="False">
-                            <Setter Property="Background" Value="{StaticResource SolidSoftRedTransparent}" />
+                            <Setter Property="Background" Value="{DynamicResource SolidSoftRedTransparent}" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -84,10 +84,10 @@
                     <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsAvailable}" Value="True">
-                                <Setter Property="Foreground" Value="{StaticResource SolidPrimaryTextColor}" />
+                                <Setter Property="Foreground" Value="{DynamicResource SolidPrimaryTextColor}" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsAvailable}" Value="False">
-                                <Setter Property="Foreground" Value="{StaticResource SolidSoftRed}" />
+                                <Setter Property="Foreground" Value="{DynamicResource SolidSoftRed}" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -126,17 +126,17 @@
             <Setter Property="Padding" Value="0" />
             <Setter Property="Margin" Value="0" />
             <Setter Property="ClipToBounds" Value="True" />
-            <Setter Property="Background" Value="{StaticResource SolidPrimaryButtonColor}" />
+            <Setter Property="Background" Value="{DynamicResource SolidPrimaryButtonColor}" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="VerticalContentAlignment" Value="Stretch" />
             <Setter Property="MinHeight" Value="104" />
 
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsAvailable}" Value="True">
-                    <Setter Property="Background" Value="{StaticResource SolidPrimaryButtonColor}" />
+                    <Setter Property="Background" Value="{DynamicResource SolidPrimaryButtonColor}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding IsAvailable}" Value="False">
-                    <Setter Property="Background" Value="{StaticResource SolidSoftRedTransparent}" />
+                    <Setter Property="Background" Value="{DynamicResource SolidSoftRedTransparent}" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>

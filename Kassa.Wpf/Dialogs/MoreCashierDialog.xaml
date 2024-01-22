@@ -30,7 +30,7 @@
                             Height="23"
                             Margin="0,0,17,0"
                             Data="{StaticResource OperationsIcon}"
-                            Fill="{StaticResource SolidPrimaryTextColor}" />
+                            Fill="{DynamicResource SolidPrimaryTextColor}" />
                         <TextBlock
                             Grid.Column="1"
                             VerticalAlignment="Center"
@@ -45,9 +45,9 @@
                 x:Name="AddCommentToProductButton"
                 Content="Добавить комментарий к блюду"
                 Style="{StaticResource MenuButton}" />
-            <Border Style="{StaticResource Separator}" />
+            <Border Style="{DynamicResource Separator}" />
             <Button Content="Стоп-лист" Style="{StaticResource MenuButton}" />
-            <Border Style="{StaticResource Separator}" />
+            <Border Style="{DynamicResource Separator}" />
             <Button Content="Показать цены блюд" Style="{StaticResource MenuButton}">
                 <Button.Resources>
                     <Style TargetType="Border">

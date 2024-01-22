@@ -48,7 +48,7 @@
                 </Grid>
             </Border>
             <Button Content="Личная страница" Style="{StaticResource MenuButton}" />
-            <Border Style="{StaticResource Separator}" />
+            <Border Style="{DynamicResource Separator}" />
             <Button Content="Сообщения" Style="{StaticResource MenuButton}">
                 <Button.Resources>
                     <Style TargetType="Border">

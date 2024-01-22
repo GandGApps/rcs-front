@@ -74,7 +74,7 @@
                 Width="136"
                 Height="105"
                 Data="{StaticResource MessageIcon}"
-                Fill="{StaticResource SolidSecondaryBackground}" />
+                Fill="{DynamicResource SolidSecondaryBackground}" />
 
             <controls:Keyboard
                 x:Name="Keyboard"

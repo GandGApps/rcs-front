@@ -38,11 +38,11 @@
 
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="{StaticResource StartMenu}" />
+                        <Setter Property="CornerRadius" Value="{DynamicResource StartMenu}" />
                     </Style>
                 </Button.Resources>
             </Button>
-            <Border Style="{StaticResource Separator}" />
+            <Border Style="{DynamicResource Separator}" />
             <Button Style="{StaticResource NotCenteredMenyButton}">
                 <Grid>
 
@@ -65,7 +65,7 @@
 
                 </Grid>
             </Button>
-            <Border Style="{StaticResource Separator}" />
+            <Border Style="{DynamicResource Separator}" />
             <Button x:Name="TurnOffButton" Style="{StaticResource NotCenteredMenyButton}">
 
                 <Grid>

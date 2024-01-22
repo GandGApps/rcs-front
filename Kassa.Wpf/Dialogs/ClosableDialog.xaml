@@ -104,7 +104,7 @@
 
     <Style x:Key="DialogFooter" TargetType="Border">
         <Setter Property="CornerRadius" Value="38" />
-        <Setter Property="Background" Value="{StaticResource FooterColorColor}" />
+        <Setter Property="Background" Value="{DynamicResource SolidFooterColor}" />
         <Setter Property="Padding" Value="20,4,20,4" />
     </Style>
 

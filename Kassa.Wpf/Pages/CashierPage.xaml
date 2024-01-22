@@ -52,12 +52,12 @@
                             Width="44"
                             Height="34"
                             Data="{StaticResource MessageIcon}"
-                            Fill="{StaticResource FooterColorColor}" />
+                            Fill="{DynamicResource SolidFooterColor}" />
 
                         <TextBlock
                             Margin="0,3,0,0"
                             HorizontalAlignment="Center"
-                            Style="{StaticResource SmallTextBlock}"
+                            Style="{DynamicResource SmallTextBlock}"
                             Text="Общий ком." />
 
                     </StackPanel>
@@ -82,12 +82,12 @@
                             Width="44"
                             Height="34"
                             Data="{StaticResource AdditivesIcon}"
-                            Fill="{StaticResource FooterColorColor}" />
+                            Fill="{DynamicResource SolidFooterColor}" />
 
                         <TextBlock
                             Margin="0,3,0,0"
                             HorizontalAlignment="Center"
-                            Style="{StaticResource SmallTextBlock}"
+                            Style="{DynamicResource SmallTextBlock}"
                             Text="Добавки" />
 
                     </StackPanel>
@@ -158,12 +158,12 @@
                             Width="44"
                             Height="34"
                             Data="{StaticResource DeliveryTruck}"
-                            Fill="{StaticResource FooterColorColor}" />
+                            Fill="{DynamicResource SolidFooterColor}" />
 
                         <TextBlock
                             Margin="0,3,0,0"
                             HorizontalAlignment="Center"
-                            Style="{StaticResource SmallTextBlock}"
+                            Style="{DynamicResource SmallTextBlock}"
                             Text="Доставка" />
 
                     </StackPanel>
@@ -189,7 +189,7 @@
                     Height="{Binding ActualHeight, ElementName=CashierTabPanel}"
                     Margin="0,3,0,0"
                     Padding="12"
-                    Background="{StaticResource FooterColorColor}"
+                    Background="{DynamicResource SolidFooterColor}"
                     ClipToBounds="True"
                     CornerRadius="11"
                     TextBlock.Foreground="White">
@@ -226,7 +226,7 @@
 
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsChecked" Value="True">
-                                                        <Setter Property="Background" Value="{StaticResource SolidSecondaryBackground}" />
+                                                        <Setter Property="Background" Value="{DynamicResource SolidSecondaryBackground}" />
                                                         <Setter TargetName="CheckIcon" Property="Source" Value="{StaticResource NegativeCheckListIcon}" />
                                                     </Trigger>
                                                 </ControlTemplate.Triggers>
@@ -288,7 +288,7 @@
                 <Border
                     Grid.Row="2"
                     Padding="4"
-                    Background="{StaticResource FooterColorColor}"
+                    Background="{DynamicResource SolidFooterColor}"
                     CornerRadius="11">
                     <Grid>
 
@@ -318,13 +318,13 @@
                                     Text="0,00%" />
                                 <TextBlock
                                     HorizontalAlignment="Center"
-                                    Style="{StaticResource SmallTextBlock}"
+                                    Style="{DynamicResource SmallTextBlock}"
                                     Text="Скидка" />
 
                                 <Border
                                     Height="1"
                                     Margin="0,4,0,6.4"
-                                    Background="{StaticResource FooterColorColor}" />
+                                    Background="{DynamicResource SolidFooterColor}" />
 
                                 <TextBlock
                                     HorizontalAlignment="Center"
@@ -332,7 +332,7 @@
                                     Text="0,00%" />
                                 <TextBlock
                                     HorizontalAlignment="Center"
-                                    Style="{StaticResource SmallTextBlock}"
+                                    Style="{DynamicResource SmallTextBlock}"
                                     Text="Надбавка" />
 
                             </StackPanel>
@@ -366,8 +366,8 @@
                             Grid.Column="1"
                             Height="{Binding ActualHeight, ElementName=SubtotalBorder, Mode=OneWay}"
                             Margin="7,4,0,0"
-                            Background="{StaticResource SolidHintButtonColor}"
-                            BorderBrush="{StaticResource SolidHintButtonColor}"
+                            Background="{DynamicResource SolidHintButtonColor}"
+                            BorderBrush="{DynamicResource SolidHintButtonColor}"
                             BorderThickness="1"
                             CornerRadius="52"
                             TextBlock.Foreground="White">
@@ -423,7 +423,7 @@
                                 x:Name="IncreaseButton"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
-                                Style="{StaticResource ShoppingListButton}">
+                                Style="{DynamicResource ShoppingListButton}">
                                 <Path Data="{StaticResource PlusIcon}" Style="{StaticResource ButtonContent}" />
                             </Button>
 
@@ -433,34 +433,34 @@
                                 Width="0.6"
                                 Height="23"
                                 d:IsLocked="True"
-                                Background="{StaticResource SolidSecondaryBackground}" />
+                                Background="{DynamicResource SolidSecondaryBackground}" />
 
                             <Button
                                 x:Name="DecreaseButton"
                                 Grid.Column="2"
-                                Style="{StaticResource ShoppingListButton}">
+                                Style="{DynamicResource ShoppingListButton}">
                                 <Image Source="{StaticResource MinusIcon}" Style="{StaticResource ButtonContent}" />
                             </Button>
 
-                            <Button Grid.Column="3" Style="{StaticResource ShoppingListButton}">
+                            <Button Grid.Column="3" Style="{DynamicResource ShoppingListButton}">
                                 <Path Data="{StaticResource NumberKeyboardIcon}" Style="{StaticResource ButtonContent}" />
                             </Button>
 
-                            <Button Grid.Column="4" Style="{StaticResource ShoppingListButton}">
+                            <Button Grid.Column="4" Style="{DynamicResource ShoppingListButton}">
                                 <Path Data="{StaticResource DicountIcon}" Style="{StaticResource ButtonContent}" />
                             </Button>
 
                             <Button
                                 x:Name="MoreButton"
                                 Grid.Column="5"
-                                Style="{StaticResource ShoppingListButton}">
+                                Style="{DynamicResource ShoppingListButton}">
                                 <Image Source="{StaticResource OptionsIcon}" Style="{StaticResource ButtonContent}" />
                             </Button>
 
                             <Button
                                 x:Name="RemoveButton"
                                 Grid.Column="6"
-                                Style="{StaticResource ShoppingListButton}">
+                                Style="{DynamicResource ShoppingListButton}">
                                 <Path Data="{StaticResource CircleXIcon}" Style="{StaticResource ButtonContent}" />
                             </Button>
 
@@ -481,14 +481,14 @@
                 <Border
                     Grid.RowSpan="2"
                     Margin="0,3,0,0"
-                    Background="{StaticResource SolidSecondaryBackground}"
+                    Background="{DynamicResource SolidSecondaryBackground}"
                     CornerRadius="11" />
 
                 <Border
                     x:Name="CashierTabPanel"
                     Margin="0,3,0,0"
                     Padding="12,12,12,12"
-                    Background="{DynamicResource FooterColorColor}"
+                    Background="{DynamicResource SolidFooterColor}"
                     CornerRadius="11"
                     TextBlock.Foreground="White">
                     <Grid>
@@ -526,7 +526,7 @@
                                 <Path
                                     Width="27"
                                     Height="27"
-                                    Data="{StaticResource SearchIcon}"
+                                    Data="{DynamicResource SearchIcon}"
                                     Fill="White" />
                             </controls:ButtonWithCornerRaduis>
 
@@ -546,7 +546,7 @@
                                                     Width="38"
                                                     Height="28"
                                                     Data="{StaticResource TrayIcon}"
-                                                    Fill="{StaticResource SolidPrimaryTextColor}" />
+                                                    Fill="{DynamicResource SolidPrimaryTextColor}" />
                                             </Grid>
                                         </DataTemplate>
                                     </ResourceDictionary>
@@ -576,7 +576,7 @@
                                                     Width="57"
                                                     Height="45"
                                                     Data="{StaticResource FastFoodIcon}"
-                                                    Fill="{StaticResource SolidPrimaryTextColor}" />
+                                                    Fill="{DynamicResource SolidPrimaryTextColor}" />
                                             </Grid>
                                         </DataTemplate>
                                     </ResourceDictionary>
@@ -606,7 +606,7 @@
                                                     Width="38"
                                                     Height="48"
                                                     Data="{StaticResource DrinksIcon}"
-                                                    Fill="{StaticResource SolidPrimaryTextColor}" />
+                                                    Fill="{DynamicResource SolidPrimaryTextColor}" />
                                             </Grid>
                                         </DataTemplate>
                                     </ResourceDictionary>
@@ -644,7 +644,7 @@
                                                 <Rectangle
                                                     Width="2.904"
                                                     Height="21.649"
-                                                    Fill="{StaticResource SolidPrimaryTextColor}"
+                                                    Fill="{DynamicResource SolidPrimaryTextColor}"
                                                     RadiusX="1.452" />
                                             </Grid>
                                         </DataTemplate>
@@ -672,13 +672,13 @@
                                                 <Rectangle
                                                     Width="2.904"
                                                     Height="21.649"
-                                                    Fill="{StaticResource SolidPrimaryTextColor}"
+                                                    Fill="{DynamicResource SolidPrimaryTextColor}"
                                                     RadiusX="1.452" />
                                                 <Rectangle
                                                     Width="2.904"
                                                     Height="21.649"
                                                     Margin="5.952,0,0,0"
-                                                    Fill="{StaticResource SolidPrimaryTextColor}"
+                                                    Fill="{DynamicResource SolidPrimaryTextColor}"
                                                     RadiusX="1.452" />
                                             </StackPanel>
                                         </DataTemplate>
@@ -715,19 +715,19 @@
                                                     <Rectangle
                                                         Width="2.904"
                                                         Height="21.649"
-                                                        Fill="{StaticResource SolidPrimaryTextColor}"
+                                                        Fill="{DynamicResource SolidPrimaryTextColor}"
                                                         RadiusX="1.452" />
                                                     <Rectangle
                                                         Width="2.904"
                                                         Height="21.649"
                                                         Margin="5.952,0,0,0"
-                                                        Fill="{StaticResource SolidPrimaryTextColor}"
+                                                        Fill="{DynamicResource SolidPrimaryTextColor}"
                                                         RadiusX="1.452" />
                                                     <Rectangle
                                                         Width="2.904"
                                                         Height="21.649"
                                                         Margin="5.952,0,0,0"
-                                                        Fill="{StaticResource SolidPrimaryTextColor}"
+                                                        Fill="{DynamicResource SolidPrimaryTextColor}"
                                                         RadiusX="1.452" />
                                                 </StackPanel>
                                             </Grid>

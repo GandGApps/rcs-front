@@ -27,7 +27,7 @@
             </Grid.ColumnDefinitions>
             <RepeatButton Command="ScrollBar.LineLeftCommand" Style="{StaticResource PrimaryScrollbarRepeatButton}">
                 <Path
-                    Data="{StaticResource ScrollBarIcon}"
+                    Data="{DynamicResource ScrollBarIcon}"
                     Fill="Black"
                     Opacity="0.1"
                     RenderTransformOrigin="0.5 0.5">
@@ -44,7 +44,7 @@
                 Command="ScrollBar.LineRightCommand"
                 Style="{StaticResource PrimaryScrollbarRepeatButton}">
                 <Path
-                    Data="{StaticResource ScrollBarIcon}"
+                    Data="{DynamicResource ScrollBarIcon}"
                     Fill="Black"
                     Opacity="0.1"
                     RenderTransformOrigin="0.5 0.5">
@@ -67,7 +67,7 @@
 
             <RepeatButton Command="ScrollBar.LineUpCommand" Style="{StaticResource PrimaryScrollbarRepeatButton}">
                 <Path
-                    Data="{StaticResource ScrollBarIcon}"
+                    Data="{DynamicResource ScrollBarIcon}"
                     Fill="Black"
                     Opacity="0.1" />
             </RepeatButton>
@@ -79,7 +79,7 @@
                 Command="ScrollBar.LineDownCommand"
                 Style="{StaticResource PrimaryScrollbarRepeatButton}">
                 <Path
-                    Data="{StaticResource ScrollBarIcon}"
+                    Data="{DynamicResource ScrollBarIcon}"
                     Fill="Black"
                     Opacity="0.1"
                     RenderTransformOrigin="0.5 0.5">

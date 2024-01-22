@@ -151,12 +151,12 @@
                                 VerticalAlignment="Center"
                                 BorderThickness="0"
                                 FontSize="20"
-                                Foreground="{StaticResource FooterColorColor}" />
+                                Foreground="{DynamicResource SolidFooterColor}" />
 
                             <Path
                                 Grid.Column="1"
-                                Data="{StaticResource SearchIcon}"
-                                Fill="{StaticResource FooterColorColor}" />
+                                Data="{DynamicResource SearchIcon}"
+                                Fill="{DynamicResource SolidFooterColor}" />
 
                         </Grid>
                     </Border>

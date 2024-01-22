@@ -45,11 +45,11 @@
             <Style.Triggers>
 
                 <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Background" Value="{StaticResource SolidPrimaryAccentColor}" />
+                    <Setter Property="Background" Value="{DynamicResource SolidPrimaryAccentColor}" />
                 </Trigger>
 
                 <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                    <Setter Property="Background" Value="{StaticResource SolidPrimaryAccentColor}" />
+                    <Setter Property="Background" Value="{DynamicResource SolidPrimaryAccentColor}" />
                 </DataTrigger>
 
             </Style.Triggers>
@@ -88,7 +88,7 @@
                     Grid.Column="1"
                     Margin="16,0,0,0"
                     FontSize="16">
-                    <Run Foreground="{StaticResource SolidHintTextColor}">
+                    <Run Foreground="{DynamicResource SolidHintTextColor}">
                         <Run.Style>
                             <Style TargetType="Run">
                                 <Style.Triggers>
@@ -116,7 +116,7 @@
             Margin="14,3,3,0"
             VerticalAlignment="Top"
             Data="{StaticResource CurvedArrowIcon}"
-            Fill="{StaticResource SolidPrimaryAccentColor}">
+            Fill="{DynamicResource SolidPrimaryAccentColor}">
             <Path.Style>
                 <Style BasedOn="{StaticResource {x:Type Path}}" TargetType="Path">
                     <Style.Triggers>
@@ -157,7 +157,7 @@
                         Width="14"
                         Height="11"
                         Data="{StaticResource MessageIcon}"
-                        Fill="{StaticResource SolidHintTextColor}"
+                        Fill="{DynamicResource SolidHintTextColor}"
                         RenderTransformOrigin="0.5,0.5">
                         <Path.RenderTransform>
                             <TransformGroup>
@@ -170,7 +170,7 @@
                         Grid.Column="1"
                         Margin="6,0,0,0"
                         FontSize="13"
-                        Foreground="{StaticResource SolidHintTextColor}"
+                        Foreground="{DynamicResource SolidHintTextColor}"
                         TextTrimming="CharacterEllipsis">
                         <Run Text="{Binding AdditiveInfo, Mode=OneTime}" /><Run FontSize="16" />
                     </TextBlock>

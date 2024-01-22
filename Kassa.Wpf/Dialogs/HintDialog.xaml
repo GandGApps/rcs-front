@@ -80,7 +80,7 @@
                         x:Name="StepsText"
                         Grid.Row="1"
                         VerticalAlignment="Center"
-                        Foreground="{StaticResource SolidHintTextColor}"
+                        Foreground="{DynamicResource SolidHintTextColor}"
                         Style="{StaticResource Header2}"
                         Text="Шаг 1 из 20" />
 

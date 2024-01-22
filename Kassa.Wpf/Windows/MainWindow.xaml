@@ -45,7 +45,7 @@
             <Border
                 Grid.Row="2"
                 Padding="20,10"
-                Background="{DynamicResource FooterColorColor}"
+                Background="{DynamicResource SolidFooterColor}"
                 CornerRadius="14,14,0,0">
                 <Grid>
 

@@ -37,7 +37,7 @@
             <Path
                 x:Name="ProductIcon"
                 d:Data="{StaticResource CupOfTeaIcon}"
-                Fill="{StaticResource FooterColorColor}" />
+                Fill="{DynamicResource SolidFooterColor}" />
             <TextBlock
                 x:Name="ProductName"
                 Grid.Column="1"
@@ -58,7 +58,7 @@
             <Setter Property="Padding" Value="0" />
             <Setter Property="Margin" Value="0" />
             <Setter Property="ClipToBounds" Value="True" />
-            <Setter Property="Background" Value="{StaticResource SolidPrimaryButtonColor}" />
+            <Setter Property="Background" Value="{DynamicResource SolidPrimaryButtonColor}" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="VerticalContentAlignment" Value="Stretch" />
             <Setter Property="MinHeight" Value="104" />

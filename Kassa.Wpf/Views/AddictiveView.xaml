@@ -13,7 +13,7 @@
     xmlns:vm="clr-namespace:Kassa.RxUI;assembly=Kassa.RxUI"
     x:Name="root"
     x:TypeArguments="data:Additive"
-    Foreground="{StaticResource SolidPrimaryTextColor}"
+    Foreground="{DynamicResource SolidPrimaryTextColor}"
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -97,7 +97,7 @@
             Grid.Column="2"
             HorizontalAlignment="Right"
             FontSize="{DynamicResource NotAvailableFontSize}"
-            Foreground="{StaticResource SolidSoftRed}"
+            Foreground="{DynamicResource SolidSoftRed}"
             Text="Нет в наличии">
             <TextBlock.Style>
                 <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
@@ -130,7 +130,7 @@
             Height="21"
             Margin="0,0,11,0"
             Data="{StaticResource AdditivesIcon}"
-            Fill="{StaticResource FooterColorColor}">
+            Fill="{DynamicResource SolidFooterColor}">
             <Path.Style>
                 <Style BasedOn="{StaticResource {x:Type Path}}" TargetType="Path">
                     <Style.Triggers>
