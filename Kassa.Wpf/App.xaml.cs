@@ -14,11 +14,11 @@ namespace Kassa.Wpf;
 /// </summary>
 public partial class App : Application
 {
-    public static void SetColor(string colorName, Color color)
+    public static void SetSolidBrush(string brushKey, Color color)
     {
         var app = (App)Current;
         var merged = app.Resources.MergedDictionaries[0];
-        merged[colorName] = color;
+        merged[brushKey] = new SolidColorBrush(color);
     }
     public App()
     {

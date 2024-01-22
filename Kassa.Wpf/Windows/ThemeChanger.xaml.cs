@@ -36,6 +36,6 @@ public partial class ThemeChanger : Window
             return;
         }
 
-        App.SetColor(portableColorPicker.Tag.ToString(), portableColorPicker.SelectedColor);
+        App.SetSolidBrush($"Solid{portableColorPicker.Tag}", portableColorPicker.SelectedColor);
     }
 }
