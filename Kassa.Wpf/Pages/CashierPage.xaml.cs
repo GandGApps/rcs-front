@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Kassa.RxUI;
 using Kassa.RxUI.Pages;
+using Kassa.Wpf.Windows;
 using ReactiveUI;
 
 namespace Kassa.Wpf.Pages;
@@ -93,5 +94,14 @@ public partial class CashierPage : ReactiveUserControl<CashierVm>
                 .Subscribe()
                 .DisposeWith(disposables);
         });
+    }
+
+    private void OpenColorChanger(object sender, RoutedEventArgs e)
+    {
+        var themeWindow = new ThemeChanger
+        {
+            Topmost = true
+        };
+        themeWindow.Show();
     }
 }

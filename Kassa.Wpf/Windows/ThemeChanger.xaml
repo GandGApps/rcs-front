@@ -1,0 +1,179 @@
+﻿<Window
+    x:Class="Kassa.Wpf.Windows.ThemeChanger"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:colorpicker="clr-namespace:ColorPicker;assembly=ColorPicker"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Kassa.Wpf.Windows"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="ThemeChanger"
+    Width="800"
+    Height="300"
+    mc:Ignorable="d">
+
+
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="85" />
+
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="85" />
+
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="85" />
+
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="85" />
+
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <!--  Цвета 1-я строка  -->
+        <Label Grid.Row="0" Grid.Column="0">TitleBarColor</Label>
+        <colorpicker:PortableColorPicker
+            Grid.Row="0"
+            Grid.Column="1"
+            SelectedColor="{DynamicResource TitleBarColor}"
+            Tag="TitleBarColor" />
+
+        <Label Grid.Row="0" Grid.Column="2">ThemeColor</Label>
+        <colorpicker:PortableColorPicker
+            Grid.Row="0"
+            Grid.Column="3"
+            SelectedColor="{DynamicResource ThemeColor}"
+            Tag="ThemeColor" />
+
+        <Label Grid.Row="0" Grid.Column="4">FooterColor</Label>
+        <colorpicker:PortableColorPicker
+            Grid.Row="0"
+            Grid.Column="5"
+            SelectedColor="{DynamicResource FooterColor}"
+            Tag="FooterColor" />
+
+        <Label Grid.Row="0" Grid.Column="6">OrderColor</Label>
+        <colorpicker:PortableColorPicker
+            Grid.Row="0"
+            Grid.Column="7"
+            SelectedColor="{DynamicResource OrderColor}"
+            Tag="OrderColor" />
+
+        <!--  Цвета 2-я строка  -->
+        <Label Grid.Row="1" Grid.Column="0">BlurColor</Label>
+        <colorpicker:PortableColorPicker
+            Grid.Row="1"
+            Grid.Column="1"
+            SelectedColor="{DynamicResource BlurColor}"
+            Tag="BlurColor" />
+
+        <Label Grid.Row="1" Grid.Column="2">SubHeaderColor</Label>
+        <colorpicker:PortableColorPicker
+            Grid.Row="1"
+            Grid.Column="3"
+            SelectedColor="{DynamicResource SubHeaderColor}"
+            Tag="SubHeaderColor" />
+
+        <Label Grid.Row="1" Grid.Column="4">HintTextColor</Label>
+        <colorpicker:PortableColorPicker
+            Grid.Row="1"
+            Grid.Column="5"
+            SelectedColor="{DynamicResource HintTextColor}"
+            Tag="HintTextColor" />
+
+        <Label Grid.Row="1" Grid.Column="6">PrimaryAccentColor</Label>
+        <colorpicker:PortableColorPicker
+            Grid.Row="1"
+            Grid.Column="7"
+            SelectedColor="{DynamicResource PrimaryAccentColor}"
+            Tag="PrimaryAccentColor" />
+
+        <!--  Цвета 3-я строка  -->
+        <Label Grid.Row="2" Grid.Column="0">HintButtonColor</Label>
+        <colorpicker:PortableColorPicker
+            Grid.Row="2"
+            Grid.Column="1"
+            SelectedColor="{DynamicResource HintButtonColor}"
+            Tag="HintButtonColor" />
+
+        <Label Grid.Row="2" Grid.Column="2">PrimaryColor</Label>
+        <colorpicker:PortableColorPicker
+            Grid.Row="2"
+            Grid.Column="3"
+            SelectedColor="{DynamicResource PrimaryColor}"
+            Tag="PrimaryColor" />
+
+        <Label Grid.Row="2" Grid.Column="4">PrimaryTextColor</Label>
+        <colorpicker:PortableColorPicker
+            Grid.Row="2"
+            Grid.Column="5"
+            SelectedColor="{DynamicResource PrimaryTextColor}"
+            Tag="PrimaryTextColor" />
+
+        <Label Grid.Row="2" Grid.Column="6">PrimaryButtonColor</Label>
+        <colorpicker:PortableColorPicker
+            Grid.Row="2"
+            Grid.Column="7"
+            SelectedColor="{DynamicResource PrimaryButtonColor}"
+            Tag="PrimaryButtonColor" />
+
+        <!--  Цвета 4-я строка  -->
+        <Label Grid.Row="3" Grid.Column="0">GreenColor</Label>
+        <colorpicker:PortableColorPicker
+            Grid.Row="3"
+            Grid.Column="1"
+            SelectedColor="{DynamicResource GreenColor}"
+            Tag="GreenColor" />
+
+        <Label Grid.Row="3" Grid.Column="2">RedColor</Label>
+        <colorpicker:PortableColorPicker
+            Grid.Row="3"
+            Grid.Column="3"
+            SelectedColor="{DynamicResource RedColor}"
+            Tag="RedColor" />
+
+        <Label Grid.Row="3" Grid.Column="4">SoftRed</Label>
+        <colorpicker:PortableColorPicker
+            Grid.Row="3"
+            Grid.Column="5"
+            SelectedColor="{DynamicResource SoftRed}"
+            Tag="SoftRed" />
+
+        <Label Grid.Row="3" Grid.Column="6">SecondaryBackground</Label>
+        <colorpicker:PortableColorPicker
+            Grid.Row="3"
+            Grid.Column="7"
+            SelectedColor="{DynamicResource SecondaryBackground}"
+            Tag="SecondaryBackground" />
+    </Grid>
+
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/ColorPicker;component/Styles/DefaultColorPickerStyle.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <Style BasedOn="{StaticResource DefaultColorPickerStyle}" TargetType="colorpicker:PortableColorPicker">
+                <Setter Property="Width" Value="40" />
+                <Setter Property="Height" Value="40" />
+                <Setter Property="Margin" Value="0,10" />
+                <EventSetter Event="ColorChanged" Handler="PortableColorPicker_ColorChanged" />
+            </Style>
+
+            <Style TargetType="Label">
+                <Setter Property="VerticalAlignment" Value="Center" />
+            </Style>
+
+        </ResourceDictionary>
+
+    </Window.Resources>
+
+
+</Window>

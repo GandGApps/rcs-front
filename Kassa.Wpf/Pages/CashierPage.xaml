@@ -106,14 +106,6 @@
                 </i:Interaction.Behaviors>
 
                 <ItemsControl Name="FastAddictives">
-                    <d:ItemsControl.Items>
-                        <views:DesignerAddictiveViewModel
-                            Name="213"
-                            Count="12"
-                            IsAvailable="True"
-                            Measure="gr" />
-                        <views:DesignerAddictiveViewModel IsAvailable="True" />
-                    </d:ItemsControl.Items>
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <StackPanel Orientation="Horizontal" />
@@ -155,7 +147,8 @@
                 VerticalContentAlignment="Stretch"
                 Background="{StaticResource ClickableBg}"
                 BorderBrush="{x:Null}"
-                BorderThickness="0">
+                BorderThickness="0"
+                Click="OpenColorChanger">
                 <Grid>
 
 
@@ -488,14 +481,14 @@
                 <Border
                     Grid.RowSpan="2"
                     Margin="0,3,0,0"
-                    Background="White"
+                    Background="{StaticResource SolidSecondaryBackground}"
                     CornerRadius="11" />
 
                 <Border
                     x:Name="CashierTabPanel"
                     Margin="0,3,0,0"
                     Padding="12,12,12,12"
-                    Background="{StaticResource FooterColorColor}"
+                    Background="{DynamicResource FooterColorColor}"
                     CornerRadius="11"
                     TextBlock.Foreground="White">
                     <Grid>

@@ -20,7 +20,7 @@
 
     <SolidColorBrush x:Key="SolidTitleBarColor" Color="{DynamicResource TitleBarColor}" />
     <SolidColorBrush x:Key="SolidThemeColor" Color="{DynamicResource ThemeColor}" />
-    <SolidColorBrush x:Key="FooterColorColor" Color="{DynamicResource FooterColor}" />
+    <SolidColorBrush x:Key="SolidFooterColor" Color="{DynamicResource FooterColor}" />
     <SolidColorBrush x:Key="SolidOrderColor" Color="{DynamicResource OrderColor}" />
     <SolidColorBrush
         x:Key="SolidBlurColor"
