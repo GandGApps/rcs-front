@@ -135,11 +135,4 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
 
         RuntimeProducts.Remove(product);
     }
-
-    public async ValueTask<IEnumerable<Additive>> GetAdditivesByProductId(int productId)
-    {
-        this.ThrowIfNotInitialized();
-
-        return await additiveRepository.GetAdditivesByProductId(productId);
-    }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -9,6 +10,7 @@ namespace Kassa.BuisnessLogic;
 public static class BuisnessLogicExtensions
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [Conditional("DEBUG")]
     public static void ThrowIfNotInitialized<T>(this T service) where T: IInitializableService
     {
         if (!service.IsInitialized)

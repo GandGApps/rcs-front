@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 using Kassa.DataAccess;
 
 namespace Kassa.BuisnessLogic;
-public record ShoppingListItemDto : IShoppingListItemDto
+public record ProductShoppingListItemDto : IShoppingListItemDto
 {
 
-    public ShoppingListItemDto(Product product)
+    public ProductShoppingListItemDto(Product product)
     {
         ItemId = product.Id;
         Name = product.Name;
@@ -77,10 +77,10 @@ public record ShoppingListItemDto : IShoppingListItemDto
 
     public bool HasAdditiveInfo => !string.IsNullOrWhiteSpace(AdditiveInfo);
 
-    public List<Additive> Additives
+    public ICollection<Additive> Additives
     {
-        get;
-    } = [];
+        get; 
+    } = new List<Additive>();
 
     public string? AdditiveInfo
     {

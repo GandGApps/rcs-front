@@ -20,4 +20,5 @@ public interface IAdditiveService: IInitializableService
     public Task UpdateAdditive(Additive additive);
 
     public ValueTask<Additive?> GetAdditiveById(int additiveId);
+    public ValueTask<IEnumerable<Additive>> GetAdditivesByProductId(int id);
 }

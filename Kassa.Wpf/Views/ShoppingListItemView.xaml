@@ -11,7 +11,7 @@
     d:DataContext="bl:ShoppingListItemDto"
     d:DesignHeight="450"
     d:DesignWidth="500"
-    x:TypeArguments="bl:ShoppingListItemDto"
+    x:TypeArguments="bl:ProductShoppingListItemDto"
     mc:Ignorable="d">
 
     <UserControl.Resources>

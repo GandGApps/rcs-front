@@ -22,7 +22,7 @@ namespace Kassa.Wpf.Views;
 /// <summary>
 /// Логика взаимодействия для ShoppingListItemView.xaml
 /// </summary>
-public partial class ShoppingListItemView : ReactiveUserControl<ShoppingListItemDto>
+public partial class ShoppingListItemView : ReactiveUserControl<ProductShoppingListItemDto>
 {
     public static readonly ReactiveCommand<IShoppingListItemDto, Unit> SelectShoppingListItemCommand = ReactiveCommand.CreateFromTask<IShoppingListItemDto>(async shoppingListItem =>
     {

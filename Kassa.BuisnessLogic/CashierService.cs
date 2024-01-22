@@ -13,7 +13,7 @@ using DynamicData.PLinq;
 using Kassa.DataAccess;
 
 namespace Kassa.BuisnessLogic;
-internal class CashierService(IProductService productService, ICategoryService categoryService) : ICashierService
+internal class CashierService(IProductService productService, ICategoryService categoryService, IAdditiveService additiveService) : ICashierService
 {
     private readonly List<Category> _categoriesStack = [];
 
@@ -67,7 +67,7 @@ internal class CashierService(IProductService productService, ICategoryService c
         }
     }
 
-    public SourceCache<ShoppingListItemDto, Guid> ShoppingListItems
+    public SourceCache<ProductShoppingListItemDto, Guid> ShoppingListItems
     {
         get;
     } = new(x => x.Id);
@@ -119,7 +119,7 @@ internal class CashierService(IProductService productService, ICategoryService c
         return stream.Subscribe();
     }
 
-    public IDisposable BindShoppingListItems(out ReadOnlyObservableCollection<ShoppingListItemDto> shoppingListItems)
+    public IDisposable BindShoppingListItems(out ReadOnlyObservableCollection<ProductShoppingListItemDto> shoppingListItems)
     {
         this.ThrowIfNotInitialized();
 
@@ -185,6 +185,7 @@ internal class CashierService(IProductService productService, ICategoryService c
 
         await productService.Initialize();
         await categoryService.Initialize();
+        await additiveService.Initialize();
 
         IsInitialized = true;
     }
@@ -240,7 +241,7 @@ internal class CashierService(IProductService productService, ICategoryService c
 
         product = await productService.GetProductById(product.Id);
 
-        var shoppingListItem = new ShoppingListItemDto(product)
+        var shoppingListItem = new ProductShoppingListItemDto(product)
         {
             Id = Guid.NewGuid()
         };
@@ -264,7 +265,7 @@ internal class CashierService(IProductService productService, ICategoryService c
 
         SelectedShoppingListItems.AddOrUpdate(shoppingListItemDto);
 
-        if (shoppingListItemDto is ShoppingListItemDto shoppingListItem)
+        if (shoppingListItemDto is ProductShoppingListItemDto shoppingListItem)
         {
             ShoppingListItems.AddOrUpdate(shoppingListItem with
             {
@@ -287,7 +288,7 @@ internal class CashierService(IProductService productService, ICategoryService c
 
 
 
-        if (shoppingListItemDto is ShoppingListItemDto shoppingListItem)
+        if (shoppingListItemDto is ProductShoppingListItemDto shoppingListItem)
         {
             var product = await productService.GetProductById(shoppingListItem.ItemId);
             if (product != null)
@@ -314,7 +315,7 @@ internal class CashierService(IProductService productService, ICategoryService c
 
         SelectedShoppingListItems.Remove(shoppingListItemDto);
 
-        if (shoppingListItemDto is ShoppingListItemDto shoppingListItem)
+        if (shoppingListItemDto is ProductShoppingListItemDto shoppingListItem)
         {
 
             ShoppingListItems.AddOrUpdate(shoppingListItem with
@@ -333,7 +334,7 @@ internal class CashierService(IProductService productService, ICategoryService c
         foreach (var shoppingListItem in SelectedShoppingListItems.Items)
         {
 
-            if (shoppingListItem is ShoppingListItemDto shoppingListItemDto)
+            if (shoppingListItem is ProductShoppingListItemDto shoppingListItemDto)
             {
 
                 ShoppingListItems.AddOrUpdate(shoppingListItemDto with
@@ -351,7 +352,6 @@ internal class CashierService(IProductService productService, ICategoryService c
 
     private async ValueTask UpdateAdditivesForSelectedProduct()
     {
-
         this.ThrowIfNotInitialized();
 
         AdditivesForSelectedProduct.Clear();
@@ -359,9 +359,9 @@ internal class CashierService(IProductService productService, ICategoryService c
         foreach (var shoppingListItem in SelectedShoppingListItems.Items)
         {
 
-            if (shoppingListItem is ShoppingListItemDto shoppingListItemDto)
+            if (shoppingListItem is ProductShoppingListItemDto shoppingListItemDto)
             {
-                var additives = await productService.GetAdditivesByProductId(shoppingListItemDto.ItemId);
+                var additives = await additiveService.GetAdditivesByProductId(shoppingListItemDto.ItemId);
 
                 AdditivesForSelectedProduct.AddOrUpdate(additives);
             }
@@ -373,14 +373,23 @@ internal class CashierService(IProductService productService, ICategoryService c
 
         this.ThrowIfNotInitialized();
 
-        var additive = await productService.GetAdditiveById(additiveId);
+        var additive = await additiveService.GetAdditiveById(additiveId);
 
         if (additive is null)
         {
-
             throw new InvalidOperationException($"Additive with id {additiveId} not found.");
         }
 
+        foreach (var shoppingListItem in SelectedShoppingListItems.Items)
+        {
+            if (additive.ProductIds.Contains(shoppingListItem.ItemId) && 
+                additive.Count > 0 && 
+                shoppingListItem is ProductShoppingListItemDto product)
+            {
+                await additiveService.DecreaseAddtiveCount(additive);
 
+                product.Additives.Add(additive);
+            }
+        }
     }
 }
