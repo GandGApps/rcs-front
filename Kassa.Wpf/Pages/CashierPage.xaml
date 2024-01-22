@@ -13,6 +13,7 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:views="clr-namespace:Kassa.Wpf.Views"
     xmlns:vm="clr-namespace:Kassa.RxUI;assembly=Kassa.RxUI"
+    x:Name="Root"
     Padding="5"
     d:DataContext="{d:DesignInstance Type=pages:CashierVm}"
     d:DesignHeight="840"
@@ -174,8 +175,21 @@
         </Grid>
 
         <Grid Grid.Row="1">
+
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="490" />
+                <ColumnDefinition>
+                    <ColumnDefinition.Style>
+                        <Style TargetType="ColumnDefinition">
+                            <Setter Property="Width" Value="0.5*" />
+
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ActualWidth, ElementName=Root, Converter={StaticResource IsValueLessThanParameter}, ConverterParameter=1000}" Value="True">
+                                    <Setter Property="Width" Value="280" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </ColumnDefinition.Style>
+                </ColumnDefinition>
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 

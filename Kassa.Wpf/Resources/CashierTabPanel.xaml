@@ -10,6 +10,7 @@
         <Setter Property="Width" Value="96" />
         <Setter Property="Height" Value="84" />
         <Setter Property="Background" Value="{StaticResource ClickableBg}" />
+
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RadioButton">

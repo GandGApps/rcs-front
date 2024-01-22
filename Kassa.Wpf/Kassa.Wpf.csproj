@@ -31,8 +31,4 @@
     <Resource Include="Assets\Fonts\**" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Converters\" />
-  </ItemGroup>
-
 </Project>

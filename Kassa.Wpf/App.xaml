@@ -2,6 +2,7 @@
     x:Class="Kassa.Wpf.App"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:Kassa.Wpf.Converters"
     StartupUri="Windows/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
@@ -18,6 +19,7 @@
             <FontFamily x:Key="Montseratt">./Assets/Fonts/Montseratt/#Montserrat</FontFamily>
 
             <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <converters:IsValueLessThanParameter x:Key="IsValueLessThanParameter" />
 
         </ResourceDictionary>
     </Application.Resources>
