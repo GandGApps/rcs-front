@@ -1,0 +1,158 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="Theme" Color="#F2F2F7" />
+    <SolidColorBrush x:Key="SecondaryBackground" Color="#FFF" />
+    <SolidColorBrush x:Key="SurfaceBrush" Color="#658399" />
+    <SolidColorBrush x:Key="DisabledBrush" Color="#54748A" />
+    <SolidColorBrush x:Key="AccentBrush" Color="#2A9BEC" />
+    <SolidColorBrush x:Key="AccentBrush2" Color="#C0DAED" />
+    <SolidColorBrush x:Key="AccentBrush3" Color="#BFDAED" />
+    <SolidColorBrush x:Key="SecondaryBrush" Color="#E2EBF1" />
+    <SolidColorBrush x:Key="PrimaryForeground" Color="Black" />
+    <SolidColorBrush x:Key="AlternateForeground" Color="#FFF" />
+    <SolidColorBrush x:Key="SecondaryForeground" Color="#153750" />
+    <SolidColorBrush x:Key="DangerBrush" Color="#F42E2E" />
+    <SolidColorBrush x:Key="DangerBrushAlpha" Color="#33F42E2E" />
+    <SolidColorBrush x:Key="SuccessBrush" Color="#00BA00" />
+    <SolidColorBrush x:Key="TopShadowBrush" Color="#E528343D" />
+    <SolidColorBrush x:Key="BottomShadowBrush" Color="#E5A2D2F5" />
+
+    <!--#region ProductView-->
+
+    <!--#region Default State-->
+    <DynamicResource x:Key="DefaultProductViewBackground" ResourceKey="SecondaryBrush" />
+    <DynamicResource x:Key="DefaultProductViewForeground" ResourceKey="PrimaryForeground" />
+    <DynamicResource x:Key="DefaultProdcutViewPriceForeground" ResourceKey="SecondaryForeground" />
+    <DynamicResource x:Key="DefaultProductViewPriceBackground" ResourceKey="AccentBrush2" />
+    <DynamicResource x:Key="DefaultProductViewIconFill" ResourceKey="SurfaceBrush" />
+    <!--#endregion-->
+
+    <!--#region Not Available State-->
+    <DynamicResource x:Key="NotAvailableProductViewBackground" ResourceKey="DangerBrushAlpha" />
+    <DynamicResource x:Key="NotAvailableProductProductViewForeground" ResourceKey="PrimaryForeground" />
+    <DynamicResource x:Key="NotAvailableProdcutViewPriceForeground" ResourceKey="DangerBrush" />
+    <DynamicResource x:Key="NotAvailableProductViewPriceBackground" ResourceKey="DangerBrushAlpha" />
+    <DynamicResource x:Key="NotAvailableProductViewIconFill" ResourceKey="SurfaceBrush" />
+    <DynamicResource x:Key="NotAvailableTextProductView" ResourceKey="DangerBrush" />
+    <!--#endregion-->
+
+    <!--#region Selected State-->
+    <DynamicResource x:Key="SelectedProductViewBackground" ResourceKey="AccentBrush2" />
+    <DynamicResource x:Key="SelectedProductViewForeground" ResourceKey="PrimaryForeground" />
+    <DynamicResource x:Key="SelecteProdcutViewPriceForeground" ResourceKey="SecondaryForeground" />
+    <DynamicResource x:Key="SelecteProductViewPriceBackground" ResourceKey="AccentBrush2" />
+    <DynamicResource x:Key="SelecteProductViewIconFill" ResourceKey="SurfaceBrush" />
+    <!--#endregion-->
+
+    <!--#endregion-->
+
+    <!--#region AdditiveView-->
+
+    <!--#region Default State-->
+    <DynamicResource x:Key="DefaultAdditiveViewBackground" ResourceKey="SecondaryBackground" />
+    <DynamicResource x:Key="DefaultAdditiveViewForeground" ResourceKey="PrimaryForeground" />
+    <DynamicResource x:Key="DefaultAdditiveViewIconFill" ResourceKey="SurfaceBrush" />
+    <DynamicResource x:Key="DefaultAdditveViewMeasureForeground" ResourceKey="SecondaryForeground" />
+    <!--#endregion-->
+
+    <!--#region Not Available State-->
+    <DynamicResource x:Key="NotAvailbaleAdditiveViewBackground" ResourceKey="DangerBrushAlpha" />
+    <DynamicResource x:Key="NotAvailbaleAdditiveViewForeground" ResourceKey="PrimaryForeground" />
+    <DynamicResource x:Key="NotAvailbaleAdditiveViewIconFill" ResourceKey="SurfaceBrush" />
+    <DynamicResource x:Key="NotAvailbaleAdditveViewMeasureForeground" ResourceKey="SecondaryForeground" />
+    <DynamicResource x:Key="NotAvailbaleTextAdditveView" ResourceKey="DangerBrush" />
+    <!--#endregion-->
+
+    <!--#region Selected State-->
+    <DynamicResource x:Key="SelectedAdditiveViewBackground" ResourceKey="AccentBrush2" />
+    <DynamicResource x:Key="SelectedAdditiveViewForeground" ResourceKey="PrimaryForeground" />
+    <DynamicResource x:Key="SelectedAdditiveViewIconFill" ResourceKey="SurfaceBrush" />
+    <DynamicResource x:Key="SelectedAdditveViewMeasureForeground" ResourceKey="SecondaryForeground" />
+    <!--#endregion-->
+
+    <!--#endregion-->
+
+    <!--#region ScrollBar-->
+    <SolidColorBrush x:Key="ScrollBarButton" Color="#19000000" />
+    <!--#endregion-->
+
+    <!--#region Buttons-->
+
+    <!--#region Default State-->
+    <DynamicResource x:Key="DefaultButtonBackground" ResourceKey="AccentBrush" />
+    <DynamicResource x:Key="DefaultButtonForeground" ResourceKey="AlternateForeground" />
+    <!--#endregion-->
+
+    <!--#region Disabled-->
+    <DynamicResource x:Key="DisabledButtonBackground" ResourceKey="DisabledBrush" />
+    <!--#endregion-->
+
+    <!--#region Hover-->
+    <SolidColorBrush x:Key="HoverButtonBackground" Color="#2ac2ec" />
+    <!--#endregion-->
+
+    <!--#endregion-->
+
+    <!--#region CashierPage-->
+    <DynamicResource x:Key="TopBarForegeround" ResourceKey="SecondaryForeground" />
+    <DynamicResource x:Key="TopBarIconFill" ResourceKey="SurfaceBrush" />
+    <DynamicResource x:Key="TopBarSeparator" ResourceKey="SurfaceBrush" />
+
+    <DynamicResource x:Key="IconOnlyButtonIconFill" ResourceKey="AlternateForeground" />
+
+    <DynamicResource x:Key="PricingDetailsButtonBackground" ResourceKey="SecondaryBackground" />
+    <DynamicResource x:Key="PricingDetailsButtonForeground" ResourceKey="PrimaryForeground" />
+
+    <SolidColorBrush x:Key="SubtotalButtonBackground" Color="Transparent" />
+    <DynamicResource x:Key="SubtotalButtonBorderBrush" ResourceKey="Theme" />
+    <DynamicResource x:Key="SubtotalSeparator" ResourceKey="Theme" />
+
+    <DynamicResource x:Key="ProductHostBackground" ResourceKey="SecondaryBackground" />
+    <DynamicResource x:Key="ProductHostForeground" ResourceKey="PrimaryForeground" />
+
+    <DynamicResource x:Key="ShoppingListTopMenu" ResourceKey="SurfaceBrush" />
+
+    <DynamicResource x:Key="MultiSelectCheckBoxForeground" ResourceKey="AlternateForeground" />
+    <DynamicResource x:Key="MultiSelectCheckBoxCheckedBackground" ResourceKey="SecondaryBackground" />
+
+    <DynamicResource x:Key="WorkingShiftForeground" ResourceKey="AlternateForeground" />
+
+    <DynamicResource x:Key="ReceiptNumberForeground" ResourceKey="AlternateForeground" />
+
+    <DynamicResource x:Key="UserForeground" ResourceKey="AlternateForeground" />
+    <!--#endregion-->
+
+    <!--#region DownMenu-->
+    <DynamicResource x:Key="DownMenuBackground" ResourceKey="SurfaceBrush" />
+    <DynamicResource x:Key="DownMenuBackButtonForeground" ResourceKey="AlternateForeground" />
+    <DynamicResource x:Key="DownMenuSelectedBrush" ResourceKey="AlternateForeground" />
+    <SolidColorBrush x:Key="DownMenuButtonBackground" Color="Transparent" />
+    <!--#endregion-->
+
+    <!--#region TabPanel-->
+
+    <DynamicResource x:Key="AccentTabPanel" ResourceKey="AccentBrush2" />
+    <DynamicResource x:Key="AccentTabPanelIconFill" ResourceKey="SecondaryForeground" />
+
+    <DynamicResource x:Key="TabPanelIconFill" ResourceKey="AlternateForeground" />
+
+    <!--#endregion-->
+
+    <!--#region Keyboard-->
+    <DynamicResource x:Key="KeyBackground" ResourceKey="SecondaryBrush" />
+    <DynamicResource x:Key="KeyForeground" ResourceKey="SecondaryForeground" />
+    <!--#endregion-->
+
+    <!--#region Dialog-->
+    <DynamicResource x:Key="DialogBackground" ResourceKey="SecondaryBackground" />
+    <DynamicResource x:Key="DialogHeaderBackground" ResourceKey="SecondaryBrush" />
+    <DynamicResource x:Key="DialogButtonHover" ResourceKey="AccentBrush2" />
+    <DynamicResource x:Key="DialogSubheaderForeground" ResourceKey="SecondaryForeground" />
+    <DynamicResource x:Key="DialogForeground" ResourceKey="SecondaryBackground" />
+    <SolidColorBrush x:Key="DialogNewDocumentButton" Color="#C76060" />
+    <DynamicResource x:Key="DialogTurnOffDevice" ResourceKey="DangerBrush" />
+    <SolidColorBrush x:Key="DialogExitFromAccountIconFill" Color="#E08700" />
+    <DynamicResource x:Key="DialogOptionsIconFill" ResourceKey="SuccessBrush" />
+    <!--#endregion-->
+
+</ResourceDictionary>

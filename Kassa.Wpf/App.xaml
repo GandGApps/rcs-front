@@ -21,6 +21,11 @@
             <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <converters:IsValueLessThanParameter x:Key="IsValueLessThanParameter" />
 
+            <SolidColorBrush
+                x:Key="ClickableBg"
+                Opacity="0.001"
+                Color="White" />
+
         </ResourceDictionary>
     </Application.Resources>
 </Application>
