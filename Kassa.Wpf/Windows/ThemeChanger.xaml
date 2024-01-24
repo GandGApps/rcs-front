@@ -6,28 +6,24 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:local="clr-namespace:Kassa.Wpf.Windows"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     Title="ThemeChanger"
-    Width="800"
-    Height="300"
+    Width="900"
+    Height="350"
     mc:Ignorable="d">
 
 
     <Grid>
 
         <Grid.ColumnDefinitions>
-
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="85" />
-
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="85" />
-
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="85" />
-
             <ColumnDefinition Width="*" />
             <ColumnDefinition Width="85" />
-
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
@@ -35,124 +31,141 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <!--  Цвета 1-я строка  -->
-        <Label Grid.Row="0" Grid.Column="0">TitleBarColor</Label>
+        <Label Grid.Row="0" Grid.Column="0">Theme</Label>
         <colorpicker:PortableColorPicker
             Grid.Row="0"
             Grid.Column="1"
-            SelectedColor="{DynamicResource TitleBarColor}"
-            Tag="TitleBarColor" />
+            SelectedColor="{mx:ThemeColorExntension ColorKey=Theme}"
+            Tag="Theme" />
 
-        <Label Grid.Row="0" Grid.Column="2">ThemeColor</Label>
+        <Label Grid.Row="0" Grid.Column="2">SecondaryBackground</Label>
         <colorpicker:PortableColorPicker
             Grid.Row="0"
             Grid.Column="3"
-            SelectedColor="{DynamicResource ThemeColor}"
-            Tag="ThemeColor" />
+            SelectedColor="{mx:ThemeColorExntension ColorKey=SecondaryBackground}"
+            Tag="SecondaryBackground" />
 
-        <Label Grid.Row="0" Grid.Column="4">FooterColor</Label>
+        <Label Grid.Row="0" Grid.Column="4">SurfaceBrush</Label>
         <colorpicker:PortableColorPicker
             Grid.Row="0"
             Grid.Column="5"
-            SelectedColor="{DynamicResource FooterColor}"
-            Tag="FooterColor" />
+            SelectedColor="{mx:ThemeColorExntension ColorKey=SurfaceBrush}"
+            Tag="SurfaceBrush" />
 
-        <Label Grid.Row="0" Grid.Column="6">OrderColor</Label>
+        <Label Grid.Row="0" Grid.Column="6">DisabledBrush</Label>
         <colorpicker:PortableColorPicker
             Grid.Row="0"
             Grid.Column="7"
-            SelectedColor="{DynamicResource OrderColor}"
-            Tag="OrderColor" />
+            SelectedColor="{mx:ThemeColorExntension ColorKey=DisabledBrush}"
+            Tag="DisabledBrush" />
 
         <!--  Цвета 2-я строка  -->
-        <Label Grid.Row="1" Grid.Column="0">BlurColor</Label>
+        <Label Grid.Row="1" Grid.Column="0">AccentBrush</Label>
         <colorpicker:PortableColorPicker
             Grid.Row="1"
             Grid.Column="1"
-            SelectedColor="{DynamicResource BlurColor}"
-            Tag="BlurColor" />
+            SelectedColor="{mx:ThemeColorExntension ColorKey=AccentBrush}"
+            Tag="AccentBrush" />
 
-        <Label Grid.Row="1" Grid.Column="2">SubHeaderColor</Label>
+        <Label Grid.Row="1" Grid.Column="2">AccentBrush2</Label>
         <colorpicker:PortableColorPicker
             Grid.Row="1"
             Grid.Column="3"
-            SelectedColor="{DynamicResource SubHeaderColor}"
-            Tag="SubHeaderColor" />
+            SelectedColor="{mx:ThemeColorExntension ColorKey=AccentBrush2}"
+            Tag="AccentBrush2" />
 
-        <Label Grid.Row="1" Grid.Column="4">HintTextColor</Label>
+        <Label Grid.Row="1" Grid.Column="4">AccentBrush3</Label>
         <colorpicker:PortableColorPicker
             Grid.Row="1"
             Grid.Column="5"
-            SelectedColor="{DynamicResource HintTextColor}"
-            Tag="HintTextColor" />
+            SelectedColor="{mx:ThemeColorExntension ColorKey=AccentBrush3}"
+            Tag="AccentBrush3" />
 
-        <Label Grid.Row="1" Grid.Column="6">PrimaryAccentColor</Label>
+        <Label Grid.Row="1" Grid.Column="6">SecondaryBrush</Label>
         <colorpicker:PortableColorPicker
             Grid.Row="1"
             Grid.Column="7"
-            SelectedColor="{DynamicResource PrimaryAccentColor}"
-            Tag="PrimaryAccentColor" />
+            SelectedColor="{mx:ThemeColorExntension ColorKey=SecondaryBrush}"
+            Tag="SecondaryBrush" />
 
         <!--  Цвета 3-я строка  -->
-        <Label Grid.Row="2" Grid.Column="0">HintButtonColor</Label>
+        <Label Grid.Row="2" Grid.Column="0">PrimaryForeground</Label>
         <colorpicker:PortableColorPicker
             Grid.Row="2"
             Grid.Column="1"
-            SelectedColor="{DynamicResource HintButtonColor}"
-            Tag="HintButtonColor" />
+            SelectedColor="{mx:ThemeColorExntension ColorKey=PrimaryForeground}"
+            Tag="PrimaryForeground" />
 
-        <Label Grid.Row="2" Grid.Column="2">PrimaryColor</Label>
+        <Label Grid.Row="2" Grid.Column="2">AlternateForeground</Label>
         <colorpicker:PortableColorPicker
             Grid.Row="2"
             Grid.Column="3"
-            SelectedColor="{DynamicResource PrimaryColor}"
-            Tag="PrimaryColor" />
+            SelectedColor="{mx:ThemeColorExntension ColorKey=AlternateForeground}"
+            Tag="AlternateForeground" />
 
-        <Label Grid.Row="2" Grid.Column="4">PrimaryTextColor</Label>
+        <Label Grid.Row="2" Grid.Column="4">SecondaryForeground</Label>
         <colorpicker:PortableColorPicker
             Grid.Row="2"
             Grid.Column="5"
-            SelectedColor="{DynamicResource PrimaryTextColor}"
-            Tag="PrimaryTextColor" />
+            SelectedColor="{mx:ThemeColorExntension ColorKey=SecondaryForeground}"
+            Tag="SecondaryForeground" />
 
-        <Label Grid.Row="2" Grid.Column="6">PrimaryButtonColor</Label>
+        <Label Grid.Row="2" Grid.Column="6">DangerBrush</Label>
         <colorpicker:PortableColorPicker
             Grid.Row="2"
             Grid.Column="7"
-            SelectedColor="{DynamicResource PrimaryButtonColor}"
-            Tag="PrimaryButtonColor" />
+            SelectedColor="{mx:ThemeColorExntension ColorKey=DangerBrush}"
+            Tag="DangerBrush" />
 
         <!--  Цвета 4-я строка  -->
-        <Label Grid.Row="3" Grid.Column="0">GreenColor</Label>
+        <Label Grid.Row="3" Grid.Column="0">DangerBrushAlpha</Label>
         <colorpicker:PortableColorPicker
             Grid.Row="3"
             Grid.Column="1"
-            SelectedColor="{DynamicResource GreenColor}"
-            Tag="GreenColor" />
+            SelectedColor="{mx:ThemeColorExntension ColorKey=DangerBrushAlpha}"
+            Tag="DangerBrushAlpha" />
 
-        <Label Grid.Row="3" Grid.Column="2">RedColor</Label>
+        <Label Grid.Row="3" Grid.Column="2">SuccessBrush</Label>
         <colorpicker:PortableColorPicker
             Grid.Row="3"
             Grid.Column="3"
-            SelectedColor="{DynamicResource RedColor}"
-            Tag="RedColor" />
+            SelectedColor="{mx:ThemeColorExntension ColorKey=SuccessBrush}"
+            Tag="SuccessBrush" />
 
-        <Label Grid.Row="3" Grid.Column="4">SoftRed</Label>
+        <Label Grid.Row="3" Grid.Column="4">TopShadowBrush</Label>
         <colorpicker:PortableColorPicker
             Grid.Row="3"
             Grid.Column="5"
-            SelectedColor="{DynamicResource SoftRed}"
-            Tag="SoftRed" />
+            SelectedColor="{mx:ThemeColorExntension ColorKey=TopShadowBrush}"
+            Tag="TopShadowBrush" />
 
-        <Label Grid.Row="3" Grid.Column="6">SecondaryBackground</Label>
+        <Label Grid.Row="3" Grid.Column="6">BottomShadowBrush</Label>
         <colorpicker:PortableColorPicker
             Grid.Row="3"
             Grid.Column="7"
-            SelectedColor="{DynamicResource SecondaryBackground}"
-            Tag="SecondaryBackground" />
+            SelectedColor="{mx:ThemeColorExntension ColorKey=BottomShadowBrush}"
+            Tag="BottomShadowBrush" />
+
+        <!--  Цвета 5-я строка  -->
+        <Label Grid.Row="4" Grid.Column="0">AccentBorderBrush</Label>
+        <colorpicker:PortableColorPicker
+            Grid.Row="4"
+            Grid.Column="1"
+            SelectedColor="{mx:ThemeColorExntension ColorKey=AccentBorderBrush}"
+            Tag="AccentBorderBrush" />
+
+        <Label Grid.Row="4" Grid.Column="2">BlurColor</Label>
+        <colorpicker:PortableColorPicker
+            Grid.Row="4"
+            Grid.Column="3"
+            SelectedColor="{mx:ThemeColorExntension ColorKey=BlurColor}"
+            Tag="BlurColor" />
     </Grid>
+
 
     <Window.Resources>
         <ResourceDictionary>

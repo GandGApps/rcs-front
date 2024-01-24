@@ -316,8 +316,8 @@
 
     <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="local:ButtonWithCornerRaduis">
         <Setter Property="TextBlock.FontSize" Value="28" />
-        <Setter Property="Foreground" Value="{DynamicResource DefaultButtonBackground}" />
-        <Setter Property="Background" Value="{DynamicResource DefaultButtonForeground}" />
+        <Setter Property="Foreground" Value="{DynamicResource DefaultButtonForeground}" />
+        <Setter Property="Background" Value="{DynamicResource DefaultButtonBackground}" />
         <Setter Property="CornerRadius" Value="40" />
         <Setter Property="Padding" Value="10" />
         <Setter Property="Margin" Value="1.3" />
