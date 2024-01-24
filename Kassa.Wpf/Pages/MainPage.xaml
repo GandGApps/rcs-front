@@ -21,7 +21,7 @@
                 <Setter Property="VerticalAlignment" Value="Center" />
                 <Setter Property="Width" Value="360" />
                 <Setter Property="Height" Value="260" />
-                <Setter Property="Background" Value="White" />
+                <Setter Property="Background" Value="{DynamicResource DefaultMainButton}" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
@@ -266,7 +266,7 @@
             Click="ButtonWithIcon_Click"
             Command="{Binding OpenSearchDialog}"
             Content="Текущий заказ"
-            Foreground="{DynamicResource SolidOrderColor}"
+            Foreground="{DynamicResource DownMenuOrderBrush}"
             Icon="{StaticResource OrderIcon}">
             <controls:ButtonWithIcon.Style>
                 <Style BasedOn="{StaticResource {x:Type controls:ButtonWithIcon}}" TargetType="controls:ButtonWithIcon">
@@ -275,7 +275,7 @@
                             <Setter Property="BorderBrush" Value="{StaticResource ClickableBg}" />
                         </Trigger>
                         <Trigger Property="IsPressed" Value="False">
-                            <Setter Property="BorderBrush" Value="{DynamicResource SolidOrderColor}" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource DownMenuOrderBrush}" />
                         </Trigger>
                     </Style.Triggers>
                 </Style>

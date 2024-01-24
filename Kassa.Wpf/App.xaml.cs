@@ -22,11 +22,14 @@ public partial class App : Application
     }
     public App()
     {
-        InitializeComponent();
-
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
         Locator.CurrentMutable.RegisterMockDataAccess(); // TODO: Replace with real data access
         Locator.CurrentMutable.RegisterBuisnessLogic();
+    }
+
+    protected override void OnActivated(EventArgs e)
+    {
+        base.OnActivated(e);
     }
 }
 

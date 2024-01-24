@@ -6,9 +6,8 @@
     StartupUri="Windows/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
-
             <ResourceDictionary.MergedDictionaries>
-                <ResourceDictionary Source="Resources/Colors.xaml" />
+                <ResourceDictionary Source="Themes/LightGenerated.xaml" />
                 <ResourceDictionary Source="Resources/Styles.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary Source="/Dialogs/ClosableDialog.xaml" />
@@ -20,12 +19,6 @@
 
             <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <converters:IsValueLessThanParameter x:Key="IsValueLessThanParameter" />
-
-            <SolidColorBrush
-                x:Key="ClickableBg"
-                Opacity="0.001"
-                Color="White" />
-
         </ResourceDictionary>
     </Application.Resources>
 </Application>

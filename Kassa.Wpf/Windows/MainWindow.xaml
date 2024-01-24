@@ -12,7 +12,7 @@
     d:DesignHeight="860"
     d:DesignWidth="1530"
     x:TypeArguments="vm:MainViewModel"
-    Background="{DynamicResource SolidThemeColor}"
+    Background="{StaticResource Theme}"
     ResizeMode="NoResize"
     WindowState="Maximized"
     WindowStyle="None"
@@ -23,7 +23,7 @@
             x:Name="DialogOverlay"
             Grid.RowSpan="2"
             Panel.ZIndex="10"
-            Background="{DynamicResource SolidBlurColor}"
+            Background="{DynamicResource BlurColor}"
             Visibility="Collapsed">
             <rxui:RoutedViewHost x:Name="DialogHost" />
         </Border>
@@ -45,7 +45,7 @@
             <Border
                 Grid.Row="2"
                 Padding="20,10"
-                Background="{DynamicResource SolidFooterColor}"
+                Background="{StaticResource SurfaceBrush}"
                 CornerRadius="14,14,0,0">
                 <Grid>
 

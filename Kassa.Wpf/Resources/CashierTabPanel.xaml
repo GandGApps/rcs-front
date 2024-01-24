@@ -27,7 +27,7 @@
                             Height="{TemplateBinding Height}"
                             Padding="{TemplateBinding Padding}"
                             Panel.ZIndex="3"
-                            Background="{DynamicResource SolidPrimaryAccentColor}"
+                            Background="{DynamicResource AccentTabPanel}"
                             CornerRadius="5.5">
                             <Border.Effect>
                                 <DropShadowEffect
@@ -46,7 +46,7 @@
                                     Height="7"
                                     VerticalAlignment="Top"
                                     Data="{DynamicResource CashierTabPanelBottomPointerIcon}"
-                                    Fill="{DynamicResource SolidPrimaryAccentColor}"
+                                    Fill="{DynamicResource AccentTabPanel}"
                                     RenderTransformOrigin="0.5,1">
                                     <Path.RenderTransform>
                                         <TranslateTransform Y="{Binding ActualHeight, ElementName=RootGrid}" />

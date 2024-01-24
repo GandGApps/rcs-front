@@ -9,7 +9,7 @@
 
     <Style TargetType="TextBox">
         <Setter Property="FontFamily" Value="{DynamicResource Montseratt}" />
-        <Setter Property="Foreground" Value="{DynamicResource SolidPrimaryTextColor}" />
+        <Setter Property="Foreground" Value="{DynamicResource SecondaryForeground}" />
     </Style>
 
     <Style TargetType="Button">
@@ -20,7 +20,7 @@
         x:Key="PrimaryTextBlock"
         BasedOn="{StaticResource {x:Type TextBlock}}"
         TargetType="TextBlock">
-        <Setter Property="Foreground" Value="{DynamicResource SolidPrimaryTextColor}" />
+        <Setter Property="Foreground" Value="{DynamicResource SecondaryForeground}" />
     </Style>
 
     <Style
@@ -63,7 +63,7 @@
         BasedOn="{StaticResource {x:Type TextBlock}}"
         TargetType="TextBlock">
         <Setter Property="FontSize" Value="14.4" />
-        <Setter Property="Foreground" Value="{DynamicResource SolidSubHeaderColor}" />
+        <Setter Property="Foreground" Value="{DynamicResource SurfaceBrush}" />
     </Style>
 
     <Style
@@ -83,12 +83,12 @@
     </Style>
 
     <Style x:Key="PrimaryButton" TargetType="Button">
-        <Setter Property="Background" Value="{DynamicResource SolidPrimaryColor}" />
+        <Setter Property="Background" Value="{DynamicResource DefaultButtonBackground}" />
         <Setter Property="MinWidth" Value="240" />
         <Setter Property="Padding" Value="16" />
         <Setter Property="FontSize" Value="20" />
         <Setter Property="FontWeight" Value="Medium" />
-        <Setter Property="Foreground" Value="White" />
+        <Setter Property="Foreground" Value="{DynamicResource DefaultButtonForeground}" />
         <Setter Property="MinHeight" Value="56" />
         <Setter Property="Template">
             <Setter.Value>
@@ -129,7 +129,7 @@
                             Width="{TemplateBinding Width}"
                             Height="{TemplateBinding Height}"
                             Padding="{TemplateBinding Padding}"
-                            BorderBrush="{DynamicResource TopShadow}"
+                            BorderBrush="{DynamicResource TopShadowBrush}"
                             CornerRadius="{TemplateBinding CornerRadius}">
                             <Border.Effect>
                                 <BlurEffect Radius="3.2" />
@@ -140,7 +140,7 @@
                             Width="{TemplateBinding Width}"
                             Height="{TemplateBinding Height}"
                             Padding="{TemplateBinding Padding}"
-                            BorderBrush="{DynamicResource BottomShadow}"
+                            BorderBrush="{DynamicResource BottomShadowBrush}"
                             CornerRadius="{TemplateBinding CornerRadius}">
                             <Border.Effect>
                                 <BlurEffect Radius="2.7" />
@@ -249,12 +249,12 @@
 
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsChecked" Value="True">
-                            <Setter TargetName="_topShadow" Property="BorderBrush" Value="{DynamicResource TopShadow}" />
-                            <Setter TargetName="_bottomShadow" Property="BorderBrush" Value="{DynamicResource BottomShadow}" />
+                            <Setter TargetName="_topShadow" Property="BorderBrush" Value="{DynamicResource TopShadowBrush}" />
+                            <Setter TargetName="_bottomShadow" Property="BorderBrush" Value="{DynamicResource BottomShadowBrush}" />
                         </Trigger>
                         <Trigger Property="IsChecked" Value="False">
-                            <Setter TargetName="_topShadow" Property="BorderBrush" Value="{DynamicResource BottomShadow}" />
-                            <Setter TargetName="_bottomShadow" Property="BorderBrush" Value="{DynamicResource TopShadow}" />
+                            <Setter TargetName="_topShadow" Property="BorderBrush" Value="{DynamicResource BottomShadowBrush}" />
+                            <Setter TargetName="_bottomShadow" Property="BorderBrush" Value="{DynamicResource TopShadowBrush}" />
                         </Trigger>
                     </ControlTemplate.Triggers>
 
@@ -266,8 +266,8 @@
 
     <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="local:ButtonWithCornerRaduis">
         <Setter Property="TextBlock.FontSize" Value="28" />
-        <Setter Property="Foreground" Value="{DynamicResource SolidPrimaryTextColor}" />
-        <Setter Property="Background" Value="{DynamicResource SolidPrimaryButtonColor}" />
+        <Setter Property="Foreground" Value="{DynamicResource DefaultButtonBackground}" />
+        <Setter Property="Background" Value="{DynamicResource DefaultButtonForeground}" />
         <Setter Property="CornerRadius" Value="40" />
         <Setter Property="Padding" Value="10" />
         <Setter Property="Margin" Value="1.3" />
@@ -299,7 +299,7 @@
         BasedOn="{StaticResource {x:Type local:ButtonWithCornerRaduis}}"
         TargetType="local:ButtonWithCornerRaduis">
         <Setter Property="Width" Value="235" />
-        <Setter Property="Background" Value="{DynamicResource SolidPrimaryButtonColor}" />
+        <Setter Property="Background" Value="{DynamicResource DefaultCardBackground}" />
         <Setter Property="Foreground" Value="Black" />
         <Setter Property="CornerRadius" Value="11" />
 

@@ -52,7 +52,7 @@
                     Width="76"
                     Height="76"
                     Data="{StaticResource Close}"
-                    Fill="White" />
+                    Fill="{DynamicResource AlternateForeground}" />
             </Button>
 
 
@@ -66,12 +66,12 @@
 
     <Style x:Key="PrimaryMenu" TargetType="Border">
         <Setter Property="Width" Value="500" />
-        <Setter Property="Background" Value="White" />
+        <Setter Property="Background" Value="{DynamicResource DialogBackground}" />
         <Setter Property="CornerRadius" Value="12" />
     </Style>
 
     <Style x:Key="HeaderMenu" TargetType="Border">
-        <Setter Property="Background" Value="#E2EBF1" />
+        <Setter Property="Background" Value="{DynamicResource DialogHeaderBackground}" />
         <Setter Property="CornerRadius" Value="{DynamicResource StartMenu}" />
         <Setter Property="Padding" Value="20,24,20,13" />
     </Style>
@@ -104,7 +104,7 @@
 
     <Style x:Key="DialogFooter" TargetType="Border">
         <Setter Property="CornerRadius" Value="38" />
-        <Setter Property="Background" Value="{DynamicResource SolidFooterColor}" />
+        <Setter Property="Background" Value="{DynamicResource DialogFooterBrush}" />
         <Setter Property="Padding" Value="20,4,20,4" />
     </Style>
 
