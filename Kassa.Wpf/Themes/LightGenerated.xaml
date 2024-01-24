@@ -162,4 +162,9 @@
     <SolidColorBrush x:Key="DefaultMainButton" Color="#FFF" />
     <!--#endregion-->
 
+    <!--#region CategoryView-->
+    <SolidColorBrush x:Key="CategoryViewIconFill" Color="#658399" />
+    <SolidColorBrush x:Key="CategoryViewBackground" Color="#E2EBF1" />
+    <!--#endregion-->
+
 </ResourceDictionary>

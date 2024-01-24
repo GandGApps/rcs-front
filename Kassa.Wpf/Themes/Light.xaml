@@ -173,4 +173,9 @@
     <StaticResource x:Key="DefaultMainButton" ResourceKey="AlternateForeground" />
     <!--#endregion-->
 
+    <!--#region CategoryView-->
+    <StaticResource x:Key="CategoryViewIconFill" ResourceKey="SurfaceBrush" />
+    <StaticResource x:Key="CategoryViewBackground" ResourceKey="SecondaryBrush" />
+    <!--#endregion-->
+
 </ResourceDictionary>

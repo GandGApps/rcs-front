@@ -44,7 +44,7 @@
             <Path
                 x:Name="ProductIcon"
                 d:Data="{StaticResource CupOfTeaIcon}"
-                Fill="{DynamicResource SolidFooterColor}" />
+                Fill="{DynamicResource DefaultProductViewIconFill}" />
             <TextBlock
                 x:Name="ProductName"
                 Grid.Column="1"
@@ -67,10 +67,10 @@
                 <Style TargetType="Border">
                     <Style.Triggers>
                         <DataTrigger Binding="{Binding IsAvailable}" Value="True">
-                            <Setter Property="Background" Value="{DynamicResource SolidPrimaryAccentColor}" />
+                            <Setter Property="Background" Value="{DynamicResource DefaultProductViewPriceBackground}" />
                         </DataTrigger>
                         <DataTrigger Binding="{Binding IsAvailable}" Value="False">
-                            <Setter Property="Background" Value="{DynamicResource SolidSoftRedTransparent}" />
+                            <Setter Property="Background" Value="{DynamicResource NotAvailableProductViewPriceBackground}" />
                         </DataTrigger>
                     </Style.Triggers>
                 </Style>
@@ -84,10 +84,10 @@
                     <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding IsAvailable}" Value="True">
-                                <Setter Property="Foreground" Value="{DynamicResource SolidPrimaryTextColor}" />
+                                <Setter Property="Foreground" Value="{DynamicResource DefaultProdcutViewPriceForeground}" />
                             </DataTrigger>
                             <DataTrigger Binding="{Binding IsAvailable}" Value="False">
-                                <Setter Property="Foreground" Value="{DynamicResource SolidSoftRed}" />
+                                <Setter Property="Foreground" Value="{DynamicResource NotAvailableProdcutViewPriceForeground}" />
                             </DataTrigger>
                         </Style.Triggers>
                     </Style>
@@ -102,7 +102,7 @@
             Margin="0,0,0,2"
             HorizontalAlignment="Center"
             FontSize="11"
-            Foreground="{DynamicResource SolidSoftRed}"
+            Foreground="{DynamicResource NotAvailableTextProductView}"
             Text="Нет в наличии">
             <TextBlock.Style>
                 <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
@@ -126,17 +126,17 @@
             <Setter Property="Padding" Value="0" />
             <Setter Property="Margin" Value="0" />
             <Setter Property="ClipToBounds" Value="True" />
-            <Setter Property="Background" Value="{DynamicResource SolidPrimaryButtonColor}" />
+            <Setter Property="Background" Value="{DynamicResource DefaultProductViewBackground}" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="VerticalContentAlignment" Value="Stretch" />
             <Setter Property="MinHeight" Value="104" />
 
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsAvailable}" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource SolidPrimaryButtonColor}" />
+                    <Setter Property="Background" Value="{DynamicResource DefaultProductViewBackground}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding IsAvailable}" Value="False">
-                    <Setter Property="Background" Value="{DynamicResource SolidSoftRedTransparent}" />
+                    <Setter Property="Background" Value="{DynamicResource NotAvailableProductViewBackground}" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>

@@ -13,7 +13,7 @@
     xmlns:vm="clr-namespace:Kassa.RxUI;assembly=Kassa.RxUI"
     x:Name="root"
     x:TypeArguments="data:Additive"
-    Foreground="{DynamicResource SolidPrimaryTextColor}"
+    Foreground="{DynamicResource DefaultAdditiveViewForeground}"
     mc:Ignorable="d">
 
     <UserControl.Resources>
@@ -97,7 +97,7 @@
             Grid.Column="2"
             HorizontalAlignment="Right"
             FontSize="{DynamicResource NotAvailableFontSize}"
-            Foreground="{DynamicResource SolidSoftRed}"
+            Foreground="{DynamicResource NotAvailbaleTextAdditveView}"
             Text="Нет в наличии">
             <TextBlock.Style>
                 <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
@@ -130,7 +130,7 @@
             Height="21"
             Margin="0,0,11,0"
             Data="{StaticResource AdditivesIcon}"
-            Fill="{DynamicResource SolidFooterColor}">
+            Fill="{DynamicResource DefaultAdditiveViewIconFill}">
             <Path.Style>
                 <Style BasedOn="{StaticResource {x:Type Path}}" TargetType="Path">
                     <Style.Triggers>
@@ -150,17 +150,17 @@
     <UserControl.Style>
 
         <Style BasedOn="{StaticResource {x:Type UserControl}}" TargetType="UserControl">
-            <Setter Property="Background" Value="{DynamicResource SolidPrimaryButtonColor}" />
+            <Setter Property="Background" Value="{DynamicResource DefaultAdditiveViewBackground}" />
             <Setter Property="Padding" Value="13" />
             <Setter Property="Margin" Value="1" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsAvailable}" Value="False">
-                    <Setter Property="Background" Value="{DynamicResource SolidSoftRedTransparent}" />
+                    <Setter Property="Background" Value="{DynamicResource NotAvailbaleAdditiveViewBackground}" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding IsAdded}" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource SolidPrimaryAccentColor}" />
+                    <Setter Property="Background" Value="{DynamicResource SelectedAdditiveViewBackground}" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
