@@ -53,7 +53,7 @@
                             Width="44"
                             Height="34"
                             Data="{StaticResource MessageIcon}"
-                            Fill="{DynamicResource SolidFooterColor}" />
+                            Fill="{DynamicResource TopBarIconFill}" />
 
                         <TextBlock
                             Margin="0,3,0,0"
@@ -83,7 +83,7 @@
                             Width="44"
                             Height="34"
                             Data="{StaticResource AdditivesIcon}"
-                            Fill="{DynamicResource SolidFooterColor}" />
+                            Fill="{DynamicResource TopBarIconFill}" />
 
                         <TextBlock
                             Margin="0,3,0,0"
@@ -159,7 +159,7 @@
                             Width="44"
                             Height="34"
                             Data="{StaticResource DeliveryTruck}"
-                            Fill="{DynamicResource SolidFooterColor}" />
+                            Fill="{DynamicResource TopBarIconFill}" />
 
                         <TextBlock
                             Margin="0,3,0,0"
@@ -203,7 +203,7 @@
                     Height="{Binding ActualHeight, ElementName=CashierTabPanel}"
                     Margin="0,3,0,0"
                     Padding="12"
-                    Background="{DynamicResource SolidFooterColor}"
+                    Background="{DynamicResource ShoppingListTopMenu}"
                     ClipToBounds="True"
                     CornerRadius="11"
                     TextBlock.Foreground="White">
@@ -240,7 +240,7 @@
 
                                                 <ControlTemplate.Triggers>
                                                     <Trigger Property="IsChecked" Value="True">
-                                                        <Setter Property="Background" Value="{DynamicResource SolidSecondaryBackground}" />
+                                                        <Setter Property="Background" Value="{DynamicResource MultiSelectCheckBoxCheckedBackground}" />
                                                         <Setter TargetName="CheckIcon" Property="Source" Value="{StaticResource NegativeCheckListIcon}" />
                                                     </Trigger>
                                                 </ControlTemplate.Triggers>
@@ -302,7 +302,7 @@
                 <Border
                     Grid.Row="2"
                     Padding="4"
-                    Background="{DynamicResource SolidFooterColor}"
+                    Background="{DynamicResource SurfaceBrush}"
                     CornerRadius="11">
                     <Grid>
 
@@ -338,7 +338,7 @@
                                 <Border
                                     Height="1"
                                     Margin="0,4,0,6.4"
-                                    Background="{DynamicResource SolidFooterColor}" />
+                                    Background="{DynamicResource SubtotalSeparator}" />
 
                                 <TextBlock
                                     HorizontalAlignment="Center"
@@ -380,8 +380,8 @@
                             Grid.Column="1"
                             Height="{Binding ActualHeight, ElementName=SubtotalBorder, Mode=OneWay}"
                             Margin="7,4,0,0"
-                            Background="{DynamicResource SolidHintButtonColor}"
-                            BorderBrush="{DynamicResource SolidHintButtonColor}"
+                            Background="{DynamicResource AccentBrush}"
+                            BorderBrush="{DynamicResource AccentBrush}"
                             BorderThickness="1"
                             CornerRadius="52"
                             TextBlock.Foreground="White">
@@ -416,7 +416,7 @@
                                     <Style x:Key="ButtonContent" TargetType="FrameworkElement">
                                         <Setter Property="Width" Value="33" />
                                         <Setter Property="Height" Value="33" />
-                                        <Setter Property="Path.Fill" Value="White" />
+                                        <Setter Property="Path.Fill" Value="{DynamicResource IconOnlyButtonIconFill}" />
                                         <Setter Property="Path.Stretch" Value="Uniform" />
                                         <Setter Property="Image.Stretch" Value="Uniform" />
                                     </Style>
@@ -447,7 +447,7 @@
                                 Width="0.6"
                                 Height="23"
                                 d:IsLocked="True"
-                                Background="{DynamicResource SolidSecondaryBackground}" />
+                                Background="{DynamicResource SubtotalSeparator}" />
 
                             <Button
                                 x:Name="DecreaseButton"
@@ -495,14 +495,14 @@
                 <Border
                     Grid.RowSpan="2"
                     Margin="0,3,0,0"
-                    Background="{DynamicResource SolidSecondaryBackground}"
+                    Background="{DynamicResource ProductHostBackground}"
                     CornerRadius="11" />
 
                 <Border
                     x:Name="CashierTabPanel"
                     Margin="0,3,0,0"
                     Padding="12,12,12,12"
-                    Background="{DynamicResource SolidFooterColor}"
+                    Background="{DynamicResource SurfaceBrush}"
                     CornerRadius="11"
                     TextBlock.Foreground="White">
                     <Grid>
@@ -560,7 +560,7 @@
                                                     Width="38"
                                                     Height="28"
                                                     Data="{StaticResource TrayIcon}"
-                                                    Fill="{DynamicResource SolidPrimaryTextColor}" />
+                                                    Fill="{DynamicResource AccentTabPanelIconFill}" />
                                             </Grid>
                                         </DataTemplate>
                                     </ResourceDictionary>
@@ -590,7 +590,7 @@
                                                     Width="57"
                                                     Height="45"
                                                     Data="{StaticResource FastFoodIcon}"
-                                                    Fill="{DynamicResource SolidPrimaryTextColor}" />
+                                                    Fill="{DynamicResource AccentTabPanelIconFill}" />
                                             </Grid>
                                         </DataTemplate>
                                     </ResourceDictionary>
@@ -620,7 +620,7 @@
                                                     Width="38"
                                                     Height="48"
                                                     Data="{StaticResource DrinksIcon}"
-                                                    Fill="{DynamicResource SolidPrimaryTextColor}" />
+                                                    Fill="{DynamicResource AccentTabPanelIconFill}" />
                                             </Grid>
                                         </DataTemplate>
                                     </ResourceDictionary>
@@ -658,7 +658,7 @@
                                                 <Rectangle
                                                     Width="2.904"
                                                     Height="21.649"
-                                                    Fill="{DynamicResource SolidPrimaryTextColor}"
+                                                    Fill="{DynamicResource AccentTabPanelIconFill}"
                                                     RadiusX="1.452" />
                                             </Grid>
                                         </DataTemplate>
@@ -686,13 +686,13 @@
                                                 <Rectangle
                                                     Width="2.904"
                                                     Height="21.649"
-                                                    Fill="{DynamicResource SolidPrimaryTextColor}"
+                                                    Fill="{DynamicResource AccentTabPanelIconFill}"
                                                     RadiusX="1.452" />
                                                 <Rectangle
                                                     Width="2.904"
                                                     Height="21.649"
                                                     Margin="5.952,0,0,0"
-                                                    Fill="{DynamicResource SolidPrimaryTextColor}"
+                                                    Fill="{DynamicResource AccentTabPanelIconFill}"
                                                     RadiusX="1.452" />
                                             </StackPanel>
                                         </DataTemplate>
@@ -729,19 +729,19 @@
                                                     <Rectangle
                                                         Width="2.904"
                                                         Height="21.649"
-                                                        Fill="{DynamicResource SolidPrimaryTextColor}"
+                                                        Fill="{DynamicResource AccentTabPanelIconFill}"
                                                         RadiusX="1.452" />
                                                     <Rectangle
                                                         Width="2.904"
                                                         Height="21.649"
                                                         Margin="5.952,0,0,0"
-                                                        Fill="{DynamicResource SolidPrimaryTextColor}"
+                                                        Fill="{DynamicResource AccentTabPanelIconFill}"
                                                         RadiusX="1.452" />
                                                     <Rectangle
                                                         Width="2.904"
                                                         Height="21.649"
                                                         Margin="5.952,0,0,0"
-                                                        Fill="{DynamicResource SolidPrimaryTextColor}"
+                                                        Fill="{DynamicResource AccentTabPanelIconFill}"
                                                         RadiusX="1.452" />
                                                 </StackPanel>
                                             </Grid>
