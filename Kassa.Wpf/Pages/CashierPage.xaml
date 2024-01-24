@@ -329,6 +329,7 @@
 
                                 <TextBlock
                                     HorizontalAlignment="Center"
+                                    Foreground="{DynamicResource PricingDetailsButtonForeground}"
                                     Style="{StaticResource Header2}"
                                     Text="0,00%" />
                                 <TextBlock
@@ -343,6 +344,7 @@
 
                                 <TextBlock
                                     HorizontalAlignment="Center"
+                                    Foreground="{DynamicResource PricingDetailsButtonForeground}"
                                     Style="{StaticResource Header2}"
                                     Text="0,00%" />
                                 <TextBlock

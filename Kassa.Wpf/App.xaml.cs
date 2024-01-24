@@ -18,7 +18,7 @@ public partial class App : Application
 {
     { "Theme", new[] { "SubtotalButtonBorderBrush", "SubtotalSeparator" } },
     { "SecondaryBackground", new[] { "DefaultAdditiveViewBackground", "PricingDetailsButtonBackground", "ProductHostBackground", "MultiSelectCheckBoxCheckedBackground" } },
-    { "SurfaceBrush", new[] { "DefaultProductViewIconFill", "NotAvailableProductViewIconFill", "SelecteProductViewIconFill", "DefaultAdditiveViewIconFill", "NotAvailbaleAdditiveViewIconFill", "SelectedAdditiveViewIconFill", "TopBarIconFill", "CategoryViewIconFill" } },
+    { "SurfaceBrush", new[] { "DefaultProductViewIconFill", "NotAvailableProductViewIconFill", "SelecteProductViewIconFill", "DefaultAdditiveViewIconFill", "NotAvailbaleAdditiveViewIconFill", "SelectedAdditiveViewIconFill", "TopBarIconFill", "CategoryViewIconFill", "ShoppingListTopMenu" } },
     { "DisabledBrush", new[] { "DisabledButtonBackground" } },
     { "AccentBrush", new[] { "DefaultButtonBackground", "DialogButtonHover" } },
     { "AccentBrush2", new[] { "SelectedProductViewBackground", "SelecteProductViewPriceBackground", "SelectedAdditiveViewBackground", "AccentTabPanel" } },
