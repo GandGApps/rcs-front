@@ -13,9 +13,6 @@
     d:DesignWidth="1530"
     x:TypeArguments="vm:MainViewModel"
     Background="{StaticResource Theme}"
-    ResizeMode="NoResize"
-    WindowState="Maximized"
-    WindowStyle="None"
     mc:Ignorable="d">
 
     <Grid>

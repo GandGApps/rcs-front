@@ -1,4 +1,7 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions">
 
     <DataTemplate x:Key="CashierTabPanelCheckedContnet">
         <TextBlock Text="Checked" />
@@ -83,5 +86,13 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+
+        <Style.Triggers>
+            <DataTrigger Binding="{mx:AdaptiveMarkup Breakpoint=Medium}" Value="True">
+                <Setter Property="Width" Value="66" />
+                <Setter Property="Height" Value="58" />
+            </DataTrigger>
+        </Style.Triggers>
+
     </Style>
 </ResourceDictionary>

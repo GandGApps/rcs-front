@@ -8,6 +8,7 @@
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:Kassa.Wpf.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     xmlns:pages="clr-namespace:Kassa.RxUI.Pages;assembly=Kassa.RxUI"
     xmlns:rxui="http://reactiveui.net"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
@@ -22,16 +23,16 @@
     mc:Ignorable="d">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="75" />
+            <RowDefinition Height="{mx:AdaptiveSize Size=75}" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
         <Grid>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="75" />
-                <ColumnDefinition Width="75" />
+                <ColumnDefinition Width="{mx:AdaptiveSize Size=75}" />
+                <ColumnDefinition Width="{mx:AdaptiveSize Size=75}" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="75" />
+                <ColumnDefinition Width="{mx:AdaptiveSize Size=75}" />
             </Grid.ColumnDefinitions>
 
             <Button
@@ -50,8 +51,8 @@
                     <StackPanel VerticalAlignment="Center">
 
                         <Path
-                            Width="44"
-                            Height="34"
+                            Width="{mx:AdaptiveSize Size=44}"
+                            Height="{mx:AdaptiveSize Size=34}"
                             Data="{StaticResource MessageIcon}"
                             Fill="{DynamicResource TopBarIconFill}" />
 
@@ -80,8 +81,8 @@
                     <StackPanel VerticalAlignment="Center">
 
                         <Path
-                            Width="44"
-                            Height="34"
+                            Width="{mx:AdaptiveSize Size=44}"
+                            Height="{mx:AdaptiveSize Size=34}"
                             Data="{StaticResource AdditivesIcon}"
                             Fill="{DynamicResource TopBarIconFill}" />
 
@@ -156,8 +157,8 @@
                     <StackPanel VerticalAlignment="Center">
 
                         <Path
-                            Width="44"
-                            Height="34"
+                            Width="{mx:AdaptiveSize Size=44}"
+                            Height="{mx:AdaptiveSize Size=34}"
                             Data="{StaticResource DeliveryTruck}"
                             Fill="{DynamicResource TopBarIconFill}" />
 
@@ -359,7 +360,7 @@
                             Margin="7,0,0,0"
                             BorderBrush="White"
                             BorderThickness="1"
-                            CornerRadius="52"
+                            CornerRadius="27"
                             TextBlock.Foreground="White">
                             <TextBlock
                                 HorizontalAlignment="Center"
@@ -371,7 +372,7 @@
                                     FontWeight="Bold"
                                     Text="0,00 р" />
                                 <LineBreak />
-                                <Run FontSize="11" Text="Подытог" />
+                                <Run FontSize="{mx:AdaptiveSize Size=11}" Text="Подытог" />
                             </TextBlock>
                         </Border>
 
@@ -383,12 +384,12 @@
                             Background="{DynamicResource AccentBrush}"
                             BorderBrush="{DynamicResource AccentBrush}"
                             BorderThickness="1"
-                            CornerRadius="52"
+                            CornerRadius="27"
                             TextBlock.Foreground="White">
                             <TextBlock
                                 HorizontalAlignment="Center"
                                 VerticalAlignment="Center"
-                                FontSize="36"
+                                FontSize="{mx:AdaptiveSize Size=36}"
                                 Style="{StaticResource ExtraLarge}"
                                 TextAlignment="Center">
                                 <Run
@@ -411,14 +412,30 @@
                                         <Setter Property="Padding" Value="18" />
                                         <Setter Property="VerticalAlignment" Value="Center" />
                                         <Setter Property="HorizontalAlignment" Value="Center" />
+
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{mx:AdaptiveMarkup Breakpoint=Medium}" Value="True">
+                                                <Setter Property="Padding" Value="12.4" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+
                                     </Style>
 
                                     <Style x:Key="ButtonContent" TargetType="FrameworkElement">
+
                                         <Setter Property="Width" Value="33" />
                                         <Setter Property="Height" Value="33" />
                                         <Setter Property="Path.Fill" Value="{DynamicResource IconOnlyButtonIconFill}" />
                                         <Setter Property="Path.Stretch" Value="Uniform" />
                                         <Setter Property="Image.Stretch" Value="Uniform" />
+
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{mx:AdaptiveMarkup Breakpoint=Medium}" Value="True">
+                                                <Setter Property="Width" Value="22" />
+                                                <Setter Property="Height" Value="22" />
+                                            </DataTrigger>
+                                        </Style.Triggers>
+
                                     </Style>
                                 </ResourceDictionary>
                             </Grid.Resources>
@@ -501,7 +518,7 @@
                 <Border
                     x:Name="CashierTabPanel"
                     Margin="0,3,0,0"
-                    Padding="12,12,12,12"
+                    Padding="12,0,12,0"
                     Background="{DynamicResource SurfaceBrush}"
                     CornerRadius="11"
                     TextBlock.Foreground="White">
@@ -512,6 +529,14 @@
                         </Grid.ColumnDefinitions>
 
                         <StackPanel Margin="1" Orientation="Horizontal">
+
+                            <StackPanel.Resources>
+
+                                <Style BasedOn="{StaticResource CashierTabPanel}" TargetType="RadioButton" />
+
+
+                            </StackPanel.Resources>
+
                             <controls:ButtonWithCornerRaduis
                                 x:Name="NavigateBackButton"
                                 Height="55"
@@ -546,8 +571,6 @@
 
                             <RadioButton
                                 x:Name="AllCategories"
-                                Width="100"
-                                Margin="0,-13,0,-13"
                                 HorizontalContentAlignment="Center"
                                 VerticalContentAlignment="Center"
                                 GroupName="A"
@@ -557,27 +580,22 @@
                                         <DataTemplate x:Key="CashierTabPanelCheckedContnet">
                                             <Grid>
                                                 <Path
-                                                    Width="38"
-                                                    Height="28"
+                                                    Width="{mx:AdaptiveSize Size=38}"
+                                                    Height="{mx:AdaptiveSize Size=28}"
                                                     Data="{StaticResource TrayIcon}"
                                                     Fill="{DynamicResource AccentTabPanelIconFill}" />
                                             </Grid>
                                         </DataTemplate>
                                     </ResourceDictionary>
                                 </RadioButton.Resources>
-                                <RadioButton.Style>
-                                    <StaticResource ResourceKey="CashierTabPanel" />
-                                </RadioButton.Style>
                                 <Path
-                                    Width="38"
-                                    Height="28"
+                                    Width="{mx:AdaptiveSize Size=38}"
+                                    Height="{mx:AdaptiveSize Size=28}"
                                     Data="{StaticResource TrayIcon}"
                                     Fill="White" />
                             </RadioButton>
                             <RadioButton
                                 x:Name="FastFoodCategory"
-                                Width="100"
-                                Margin="0,-13,0,-13"
                                 HorizontalContentAlignment="Center"
                                 VerticalContentAlignment="Center"
                                 CommandParameter="фаст фуд"
@@ -587,27 +605,22 @@
                                         <DataTemplate x:Key="CashierTabPanelCheckedContnet">
                                             <Grid>
                                                 <Path
-                                                    Width="57"
-                                                    Height="45"
+                                                    Width="{mx:AdaptiveSize Size=57}"
+                                                    Height="{mx:AdaptiveSize Size=45}"
                                                     Data="{StaticResource FastFoodIcon}"
                                                     Fill="{DynamicResource AccentTabPanelIconFill}" />
                                             </Grid>
                                         </DataTemplate>
                                     </ResourceDictionary>
                                 </RadioButton.Resources>
-                                <RadioButton.Style>
-                                    <StaticResource ResourceKey="CashierTabPanel" />
-                                </RadioButton.Style>
                                 <Path
-                                    Width="57"
-                                    Height="45"
+                                    Width="{mx:AdaptiveSize Size=57}"
+                                    Height="{mx:AdaptiveSize Size=45}"
                                     Data="{StaticResource FastFoodIcon}"
                                     Fill="White" />
                             </RadioButton>
                             <RadioButton
                                 x:Name="DrinksCategory"
-                                Width="100"
-                                Margin="0,-13,0,-13"
                                 HorizontalContentAlignment="Center"
                                 VerticalContentAlignment="Center"
                                 CommandParameter="напитки"
@@ -617,20 +630,17 @@
                                         <DataTemplate x:Key="CashierTabPanelCheckedContnet">
                                             <Grid>
                                                 <Path
-                                                    Width="38"
-                                                    Height="48"
+                                                    Width="{mx:AdaptiveSize Size=38}"
+                                                    Height="{mx:AdaptiveSize Size=48}"
                                                     Data="{StaticResource DrinksIcon}"
                                                     Fill="{DynamicResource AccentTabPanelIconFill}" />
                                             </Grid>
                                         </DataTemplate>
                                     </ResourceDictionary>
                                 </RadioButton.Resources>
-                                <RadioButton.Style>
-                                    <StaticResource ResourceKey="CashierTabPanel" />
-                                </RadioButton.Style>
                                 <Path
-                                    Width="38"
-                                    Height="48"
+                                    Width="{mx:AdaptiveSize Size=38}"
+                                    Height="{mx:AdaptiveSize Size=48}"
                                     Data="{StaticResource DrinksIcon}"
                                     Fill="White" />
                             </RadioButton>
@@ -641,16 +651,20 @@
                             Grid.Column="1"
                             Margin="1"
                             Orientation="Horizontal">
+
+                            <StackPanel.Resources>
+
+                                <Style BasedOn="{StaticResource CashierTabPanel}" TargetType="RadioButton" />
+
+                            </StackPanel.Resources>
+
                             <RadioButton
                                 x:Name="FavoriteCategory1"
-                                Width="100"
-                                Margin="0,-13,0,-13"
                                 HorizontalContentAlignment="Center"
                                 VerticalContentAlignment="Center"
                                 CommandParameter="избранное1"
                                 GroupName="A"
-                                IsChecked="False"
-                                Style="{StaticResource CashierTabPanel}">
+                                IsChecked="False">
                                 <RadioButton.Resources>
                                     <ResourceDictionary>
                                         <DataTemplate x:Key="CashierTabPanelCheckedContnet">
@@ -672,13 +686,10 @@
                             </RadioButton>
                             <RadioButton
                                 x:Name="FavoriteCategory2"
-                                Width="100"
-                                Margin="0,-13,0,-13"
                                 HorizontalContentAlignment="Center"
                                 VerticalContentAlignment="Center"
                                 CommandParameter="избранное2"
-                                GroupName="A"
-                                Style="{StaticResource CashierTabPanel}">
+                                GroupName="A">
                                 <RadioButton.Resources>
                                     <ResourceDictionary>
                                         <DataTemplate x:Key="CashierTabPanelCheckedContnet">
@@ -714,13 +725,10 @@
                             </RadioButton>
                             <RadioButton
                                 x:Name="FavoriteCategory3"
-                                Width="100"
-                                Margin="0,-13,0,-13"
                                 HorizontalContentAlignment="Center"
                                 VerticalContentAlignment="Center"
                                 CommandParameter="избранное3"
-                                GroupName="A"
-                                Style="{StaticResource CashierTabPanel}">
+                                GroupName="A">
                                 <RadioButton.Resources>
                                     <ResourceDictionary>
                                         <DataTemplate x:Key="CashierTabPanelCheckedContnet">
@@ -768,6 +776,7 @@
                                         RadiusX="1.452" />
                                 </StackPanel>
                             </RadioButton>
+
                         </StackPanel>
 
                     </Grid>

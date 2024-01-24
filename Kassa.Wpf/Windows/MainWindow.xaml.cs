@@ -31,8 +31,15 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
         get; private set;
     }
 
+    public static MainWindow Instance
+    {
+        get; private set;
+    } = null!;
+
     public MainWindow()
     {
+        Instance = this;
+
         Root = RootBody;
 
         ViewModel = new();

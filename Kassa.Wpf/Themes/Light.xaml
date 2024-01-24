@@ -178,4 +178,7 @@
     <StaticResource x:Key="CategoryViewBackground" ResourceKey="SecondaryBrush" />
     <!--#endregion-->
 
+    <!--#region ShoppingListItemView-->
+    <!--#endregion-->
+
 </ResourceDictionary>

@@ -29,7 +29,6 @@ public class MainViewModel : ReactiveObject, IScreen
         get; set;
     }
 
-    [Reactive]
     public ReactiveCommand<Unit, Unit> BackToMenuCommand
     {
         get;
