@@ -98,7 +98,10 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
                      })
                      .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, vm => vm.IsMainPage, v => v.IsMainPageCheckBox.IsChecked)
+            this.Bind(ViewModel, vm => vm.IsMainPage, v => v.IsMainPageCheckBox.IsChecked)
+                .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, vm => vm.BackToMenuCommand, v => v.IsMainPageCheckBox)
                 .DisposeWith(disposables);
 
         });

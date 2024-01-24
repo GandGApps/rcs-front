@@ -30,6 +30,12 @@ public class MainViewModel : ReactiveObject, IScreen
     }
 
     [Reactive]
+    public ReactiveCommand<Unit, Unit> BackToMenuCommand
+    {
+        get;
+    }
+
+    [Reactive]
     public bool IsMainPage
     {
         get; set;
@@ -49,5 +55,25 @@ public class MainViewModel : ReactiveObject, IScreen
             IsMainPage = x is MainPageVm;
         });
 
+        BackToMenuCommand = ReactiveCommand.Create(() =>
+        {
+            // Remove all from stack except MainPage
+            while (Router.NavigationStack.Count > 1)
+            {
+                Router.NavigationStack.RemoveAt(1);
+            }
+
+            IsMainPage = true;
+        });
+
+
+        this.WhenAnyValue(x => x.IsMainPage)
+            .Subscribe(x =>
+            {
+                if (x && Router.GetCurrentViewModel() is not MainPageVm)
+                {
+                    IsMainPage = true;
+                }
+            });
     }
 }
