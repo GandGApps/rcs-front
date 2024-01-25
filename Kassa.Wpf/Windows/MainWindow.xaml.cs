@@ -31,7 +31,7 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
         get; private set;
     }
 
-    public static MainWindow Instance
+    public static MainWindow? Instance
     {
         get; private set;
     } = null!;

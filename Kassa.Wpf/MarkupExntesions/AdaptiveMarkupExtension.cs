@@ -13,6 +13,32 @@ namespace Kassa.Wpf.MarkupExntesions;
 [MarkupExtensionReturnType(typeof(Binding))]
 public class AdaptiveMarkupExtension : MarkupExtension
 {
+    public const double MediumBreakpoint = 1200;
+    public const double MeduimCoeficient = 0.69;
+
+    public static AdaptiveBreakpoint GetBreakpoint(double width)
+    {
+
+        if (width <= MediumBreakpoint)
+        {
+
+            return AdaptiveBreakpoint.Medium;
+        }
+
+        return AdaptiveBreakpoint.Large;
+    }
+
+    public static double GetAdaptiveSize(double size, double width)
+    {
+
+        if (GetBreakpoint(width) == AdaptiveBreakpoint.Medium)
+        {
+            return size * MeduimCoeficient;
+        }
+
+        return size;
+    }
+
 
     [DefaultValue(AdaptiveBreakpoint.Medium)]
     public AdaptiveBreakpoint Breakpoint
@@ -21,10 +47,10 @@ public class AdaptiveMarkupExtension : MarkupExtension
     }
 
     [DefaultValue(null)]
-    public object Source
+    public object? Source
     {
         get; set;
-    }
+    } = null;
 
     public override object ProvideValue(IServiceProvider serviceProvider)
     {

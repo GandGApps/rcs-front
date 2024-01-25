@@ -20,8 +20,8 @@
             <Style x:Key="MainButton" TargetType="Button">
                 <Setter Property="HorizontalAlignment" Value="Center" />
                 <Setter Property="VerticalAlignment" Value="Center" />
-                <Setter Property="Width" Value="360" />
-                <Setter Property="Height" Value="260" />
+                <Setter Property="Width" Value="{mx:AdaptiveSize 360}" />
+                <Setter Property="Height" Value="{mx:AdaptiveSize 260}" />
                 <Setter Property="Background" Value="{DynamicResource DefaultMainButton}" />
                 <Setter Property="Template">
                     <Setter.Value>
@@ -38,13 +38,6 @@
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
-
-                <Style.Triggers>
-                    <DataTrigger Binding="{mx:AdaptiveMarkup Breakpoint=Medium}" Value="True">
-                        <Setter Property="Width" Value="250" />
-                        <Setter Property="Height" Value="180" />
-                    </DataTrigger>
-                </Style.Triggers>
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -53,26 +46,26 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="390" />
+            <ColumnDefinition Width="{mx:AdaptiveSize 390}" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="120" />
-            <RowDefinition Height="286" />
+            <RowDefinition Height="{mx:AdaptiveSize 120}" />
+            <RowDefinition Height="{mx:AdaptiveSize 275}" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
         <Button
             x:Name="CloseButton"
             Grid.Column="3"
-            Margin="0,36,36,0"
+            Margin="{mx:AdaptiveSize Thickness='0,36,36,0'}"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Style="{StaticResource IconButton}">
             <Path
-                Width="41"
-                Height="41"
+                Width="{mx:AdaptiveSize 41}"
+                Height="{mx:AdaptiveSize 41}"
                 Data="{StaticResource TurnOffIcon}"
                 Fill="Black"
                 Stretch="Uniform" />
@@ -93,9 +86,9 @@
 
                 <Image
                     Grid.Row="0"
-                    Width="100"
-                    Height="100"
-                    Margin="0,60,0,0"
+                    Width="{mx:AdaptiveSize 100}"
+                    Height="{mx:AdaptiveSize 100}"
+                    Margin="{mx:AdaptiveSize Thickness='0,60,0,0'}"
                     Source="/Assets/Profile.png"
                     Stretch="Uniform" />
 
@@ -125,9 +118,9 @@
 
                 <Image
                     Grid.Row="0"
-                    Width="100"
-                    Height="100"
-                    Margin="0,60,0,0"
+                    Width="{mx:AdaptiveSize 100}"
+                    Height="{mx:AdaptiveSize 100}"
+                    Margin="{mx:AdaptiveSize Thickness='0,60,0,0'}"
                     Source="/Assets/Kassa.png"
                     Stretch="Uniform" />
 
@@ -158,9 +151,9 @@
 
                 <Image
                     Grid.Row="0"
-                    Width="93"
-                    Height="100"
-                    Margin="16,60,0,0"
+                    Width="{mx:AdaptiveSize 93}"
+                    Height="{mx:AdaptiveSize 100}"
+                    Margin="{mx:AdaptiveSize Thickness='16,60,0,0'}"
                     Source="/Assets/Service.png"
                     Stretch="Uniform" />
 
@@ -190,9 +183,9 @@
 
                 <Image
                     Grid.Row="0"
-                    Width="214"
-                    Height="140"
-                    Margin="0,20,0,0"
+                    Width="{mx:AdaptiveSize 214}"
+                    Height="{mx:AdaptiveSize 140}"
+                    Margin="{mx:AdaptiveSize Thickness='0,20,0,0'}"
                     Source="/Assets/Deliviry.png"
                     Stretch="Uniform" />
 
@@ -219,9 +212,9 @@
 
                 <Image
                     Grid.Row="0"
-                    Width="220"
-                    Height="115"
-                    Margin="20,45,0,0"
+                    Width="{mx:AdaptiveSize 220}"
+                    Height="{mx:AdaptiveSize 115}"
+                    Margin="{mx:AdaptiveSize Thickness='20,45,0,0'}"
                     Source="/Assets/Personal.png"
                     Stretch="Uniform" />
 
@@ -252,8 +245,8 @@
 
                 <Image
                     Grid.Row="0"
-                    Width="192"
-                    Height="160"
+                    Width="{mx:AdaptiveSize 192}"
+                    Height="{mx:AdaptiveSize 160}"
                     Source="/Assets/Documents.png"
                     Stretch="Uniform" />
 
