@@ -185,7 +185,7 @@
                             <Setter Property="Width" Value="0.5*" />
 
                             <Style.Triggers>
-                                <DataTrigger Binding="{mx:AdaptiveMarkup Breakpoint=Medium}" Value="True">
+                                <DataTrigger Binding="{mx:AdaptiveMarkup}" Value="True">
                                     <Setter Property="Width" Value="0.4*" />
                                 </DataTrigger>
                             </Style.Triggers>
@@ -417,7 +417,7 @@
                                         <Setter Property="HorizontalAlignment" Value="Center" />
 
                                         <Style.Triggers>
-                                            <DataTrigger Binding="{mx:AdaptiveMarkup Breakpoint=Medium}" Value="True">
+                                            <DataTrigger Binding="{mx:AdaptiveMarkup}" Value="True">
                                                 <Setter Property="Padding" Value="12.4" />
                                             </DataTrigger>
                                         </Style.Triggers>
@@ -426,18 +426,11 @@
 
                                     <Style x:Key="ButtonContent" TargetType="FrameworkElement">
 
-                                        <Setter Property="Width" Value="33" />
-                                        <Setter Property="Height" Value="33" />
+                                        <Setter Property="Width" Value="{mx:AdaptiveSize 33}" />
+                                        <Setter Property="Height" Value="{mx:AdaptiveSize 33}" />
                                         <Setter Property="Path.Fill" Value="{DynamicResource IconOnlyButtonIconFill}" />
                                         <Setter Property="Path.Stretch" Value="Uniform" />
                                         <Setter Property="Image.Stretch" Value="Uniform" />
-
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{mx:AdaptiveMarkup Breakpoint=Medium}" Value="True">
-                                                <Setter Property="Width" Value="22" />
-                                                <Setter Property="Height" Value="22" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
 
                                     </Style>
                                 </ResourceDictionary>

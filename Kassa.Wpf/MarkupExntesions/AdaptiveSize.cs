@@ -39,14 +39,35 @@ public class AdaptiveSizeExtension : MarkupExtension
 
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
+        var valueTargetProvider = serviceProvider?.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
 
-        var targetProperty = serviceProvider?.GetService(typeof(IProvideValueTarget)) is IProvideValueTarget target ? target.TargetProperty : null;
+        var targetProperty = valueTargetProvider?.TargetProperty;
+        var targetObject = valueTargetProvider?.TargetObject;
+
         Binding binding;
 
         if (targetProperty is DependencyProperty property)
         {
             if (property.PropertyType == typeof(Thickness))
             {
+                binding = new Binding
+                {
+                    Source = MainWindow.Instance,
+                    Path = new("ActualWidth"),
+                    Converter = new AdaptiveSizeConverter(),
+                    ConverterParameter = Thickness,
+                    FallbackValue = Thickness
+                };
+
+                return binding.ProvideValue(serviceProvider);
+            }
+        }
+
+        if (targetObject is Setter setter)
+        {
+            if (setter.Property.PropertyType == typeof(Thickness))
+            {
+
                 binding = new Binding
                 {
                     Source = MainWindow.Instance,

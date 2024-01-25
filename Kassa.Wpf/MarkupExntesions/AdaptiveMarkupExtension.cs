@@ -44,7 +44,7 @@ public class AdaptiveMarkupExtension : MarkupExtension
     public AdaptiveBreakpoint Breakpoint
     {
         get; set;
-    }
+    } = AdaptiveBreakpoint.Medium;
 
     [DefaultValue(null)]
     public object? Source

@@ -13,12 +13,7 @@
     d:DesignWidth="1380"
     x:TypeArguments="dialogs:SearchProductDialogViewModel"
     mc:Ignorable="d">
-    <Border
-        Width="1320"
-        Height="670"
-        Padding="17,24,17,0"
-        VerticalAlignment="Center"
-        Style="{StaticResource PrimaryMenu}">
+    <Border Style="{StaticResource WideDialog}">
         <Grid>
 
             <Grid.RowDefinitions>
