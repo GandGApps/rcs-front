@@ -7,6 +7,7 @@
     xmlns:dialogs="clr-namespace:Kassa.RxUI.Dialogs;assembly=Kassa.RxUI"
     xmlns:local="clr-namespace:Kassa.Wpf.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     xmlns:rxui="http://reactiveui.net"
     xmlns:view="clr-namespace:Kassa.Wpf.Views"
     d:DataContext="{d:DesignInstance Type=dialogs:SearchAddictiveDialogViewModel}"
@@ -32,7 +33,7 @@
                     Margin="22,0,0,10"
                     VerticalAlignment="Center"
                     Data="{StaticResource AdditivesIcon}"
-                    Fill="{DynamicResource SolidPrimaryTextColor}" />
+                    Fill="{DynamicResource SecondaryForeground}" />
                 <TextBlock
                     Margin="24,0,0,0"
                     VerticalAlignment="Center"
@@ -84,7 +85,7 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <controls:ButtonWithCornerRaduis Padding="0,15,0,15" Background="Transparent">
+                    <controls:ButtonWithCornerRaduis Padding="{mx:AdaptiveSize Thickness='0,15,0,15'}" Background="Transparent">
                         <StackPanel Orientation="Horizontal">
                             <Path
                                 Width="13"
@@ -104,21 +105,21 @@
                     <CheckBox
                         x:Name="IsKeyboardEnabled"
                         Grid.Column="1"
-                        Width="136"
-                        Height="50"
+                        Width="{mx:AdaptiveSize 136}"
+                        Height="{mx:AdaptiveSize 50}"
                         Margin="0,0,18,0"
-                        Padding="3,6,3,3"
+                        Padding="3,0,3,0"
                         HorizontalAlignment="Right"
                         HorizontalContentAlignment="Center"
                         Style="{StaticResource BackToMain}">
-                        <StackPanel>
+                        <StackPanel VerticalAlignment="Center">
                             <Path
-                                Height="25"
+                                Height="{mx:AdaptiveSize 23}"
                                 Data="{StaticResource Keyboard}"
                                 Fill="White" />
                             <TextBlock
                                 VerticalAlignment="Center"
-                                FontSize="12"
+                                FontSize="{mx:AdaptiveSize 11}"
                                 Foreground="White"
                                 TextAlignment="Center">
                                 <Run Text="Клавиатура" />
@@ -130,8 +131,8 @@
 
                     <Border
                         Grid.Column="2"
-                        Width="430"
-                        Padding="20,14,13,14"
+                        Width="{mx:AdaptiveSize 430}"
+                        Padding="{mx:AdaptiveSize Thickness='20,14,13,14'}"
                         Background="White"
                         CornerRadius="30">
                         <Grid VerticalAlignment="Center">
@@ -145,13 +146,14 @@
                                 x:Name="SearchTextBox"
                                 VerticalAlignment="Center"
                                 BorderThickness="0"
-                                FontSize="20"
-                                Foreground="{DynamicResource SolidFooterColor}" />
+                                FontSize="{mx:AdaptiveSize 20}"
+                                Foreground="{DynamicResource SecondaryForeground}" />
 
                             <Path
                                 Grid.Column="1"
+                                Height="{mx:AdaptiveSize 34}"
                                 Data="{DynamicResource SearchIcon}"
-                                Fill="{DynamicResource SolidFooterColor}" />
+                                Fill="{DynamicResource SecondaryForeground}" />
 
                         </Grid>
                     </Border>
@@ -164,8 +166,8 @@
                         Background="{StaticResource ClickableBg}"
                         MouseDown="ClearSearchText">
                         <Path
-                            Width="32"
-                            Height="32"
+                            Width="{mx:AdaptiveSize 32}"
+                            Height="{mx:AdaptiveSize 32}"
                             Data="{StaticResource CancelIcon}"
                             Fill="White"
                             Opacity="0.5" />

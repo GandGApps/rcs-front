@@ -263,7 +263,6 @@
                     <Grid>
                         <Border
                             x:Name="_topShadow"
-                            Margin="{TemplateBinding Margin}"
                             BorderThickness="2,2,0,0"
                             CornerRadius="6.4">
                             <Border.Effect>
@@ -272,7 +271,6 @@
                         </Border>
                         <Border
                             x:Name="_bottomShadow"
-                            Margin="{TemplateBinding Margin}"
                             BorderThickness="0,0,2,2"
                             CornerRadius="6.4">
                             <Border.Effect>
@@ -281,7 +279,6 @@
                         </Border>
                         <Border
                             x:Name="_border"
-                            Margin="{TemplateBinding Margin}"
                             Padding="{TemplateBinding Padding}"
                             Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"

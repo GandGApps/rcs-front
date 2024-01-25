@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kassa.Wpf.MarkupExntesions;
 using ReactiveUI;
 
 namespace Kassa.Wpf.Controls;
@@ -195,8 +196,15 @@ public partial class Keyboard : UserControl, IActivatableView
 
                             button.Command = key.Command;
                         }
-                        lineGrid.Width = (x.LineWidth / 13) * (size) + (size * 2);
-                        lineGrid.Height = x.KeyHeight + 4;
+                        var adaptiveWidth = new AdaptiveSizeExtension((x.LineWidth / 13) * (size) + (size * 2));
+                        var bindingWidth = (BindingBase)adaptiveWidth.ProvideValue(null!);
+
+                        var adaptiveHeight = new AdaptiveSizeExtension(x.KeyHeight + 4);
+                        var bindingHeight = (BindingBase)adaptiveHeight.ProvideValue(null!);
+
+                        lineGrid.SetBinding(WidthProperty, bindingWidth);
+                        lineGrid.SetBinding(HeightProperty, bindingHeight);
+
                         stack.Children.Add(lineGrid);
                     }
                 })

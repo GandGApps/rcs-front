@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.ComponentModel.Design;
 using System.Globalization;
 using System.Linq;
 using System.Text;
@@ -11,7 +12,6 @@ using System.Windows.Markup;
 
 namespace Kassa.Wpf.MarkupExntesions;
 
-[MarkupExtensionReturnType(typeof(Binding))]
 public class AdaptiveSizeExtension : MarkupExtension
 {
 
@@ -45,6 +45,7 @@ public class AdaptiveSizeExtension : MarkupExtension
         var targetObject = valueTargetProvider?.TargetObject;
 
         Binding binding;
+        var source = GetSource(serviceProvider);
 
         if (targetProperty is DependencyProperty property)
         {
@@ -52,7 +53,7 @@ public class AdaptiveSizeExtension : MarkupExtension
             {
                 binding = new Binding
                 {
-                    Source = MainWindow.Instance,
+                    Source = source,
                     Path = new("ActualWidth"),
                     Converter = new AdaptiveSizeConverter(),
                     ConverterParameter = Thickness,
@@ -70,7 +71,7 @@ public class AdaptiveSizeExtension : MarkupExtension
 
                 binding = new Binding
                 {
-                    Source = MainWindow.Instance,
+                    Source = source,
                     Path = new("ActualWidth"),
                     Converter = new AdaptiveSizeConverter(),
                     ConverterParameter = Thickness,
@@ -83,7 +84,7 @@ public class AdaptiveSizeExtension : MarkupExtension
 
         binding = new Binding
         {
-            Source = MainWindow.Instance,
+            Source = source,
             Path = new("ActualWidth"),
             Converter = new AdaptiveSizeConverter(),
             ConverterParameter = Size,
@@ -91,6 +92,24 @@ public class AdaptiveSizeExtension : MarkupExtension
         };
 
         return binding.ProvideValue(serviceProvider);
+    }
+
+    private static object GetSource(IServiceProvider serviceProvider)
+    {
+
+        var designerHost = serviceProvider?.GetService(typeof(IDesignerHost)) as IDesignerHost;
+
+        if (designerHost is not null)
+        {
+            return designerHost.RootComponent;
+        }
+
+        if (MainWindow.Instance is not null)
+        {
+            return MainWindow.Instance;
+        }
+
+        return null!;
     }
 
     internal class AdaptiveSizeConverter : IValueConverter
