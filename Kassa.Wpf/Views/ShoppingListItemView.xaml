@@ -45,11 +45,11 @@
             <Style.Triggers>
 
                 <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource SolidPrimaryAccentColor}" />
+                    <Setter Property="Background" Value="{DynamicResource SelectedShoppingListItemViewBackground}" />
                 </Trigger>
 
                 <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource SolidPrimaryAccentColor}" />
+                    <Setter Property="Background" Value="{DynamicResource SelectedShoppingListItemViewBackground}" />
                 </DataTrigger>
 
             </Style.Triggers>
@@ -88,7 +88,7 @@
                     Grid.Column="1"
                     Margin="16,0,0,0"
                     FontSize="16">
-                    <Run Foreground="{DynamicResource SolidHintTextColor}">
+                    <Run Foreground="{DynamicResource ShoppingListItemViewDiscountForeground}">
                         <Run.Style>
                             <Style TargetType="Run">
                                 <Style.Triggers>
@@ -116,7 +116,7 @@
             Margin="14,3,3,0"
             VerticalAlignment="Top"
             Data="{StaticResource CurvedArrowIcon}"
-            Fill="{DynamicResource SolidPrimaryAccentColor}">
+            Fill="{DynamicResource ShoppingListItemViewCurvedArrowIconFill}">
             <Path.Style>
                 <Style BasedOn="{StaticResource {x:Type Path}}" TargetType="Path">
                     <Style.Triggers>
@@ -157,7 +157,7 @@
                         Width="14"
                         Height="11"
                         Data="{StaticResource MessageIcon}"
-                        Fill="{DynamicResource SolidHintTextColor}"
+                        Fill="{DynamicResource ShoppingListItemViewComment}"
                         RenderTransformOrigin="0.5,0.5">
                         <Path.RenderTransform>
                             <TransformGroup>
@@ -170,7 +170,7 @@
                         Grid.Column="1"
                         Margin="6,0,0,0"
                         FontSize="13"
-                        Foreground="{DynamicResource SolidHintTextColor}"
+                        Foreground="{DynamicResource ShoppingListItemViewComment}"
                         TextTrimming="CharacterEllipsis">
                         <Run Text="{Binding AdditiveInfo, Mode=OneTime}" /><Run FontSize="16" />
                     </TextBlock>

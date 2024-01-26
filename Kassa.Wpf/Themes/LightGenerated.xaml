@@ -168,6 +168,10 @@
     <!--#endregion-->
 
     <!--#region ShoppingListItemView-->
+    <SolidColorBrush x:Key="SelectedShoppingListItemViewBackground" Color="#C0DAED" />
+    <SolidColorBrush x:Key="ShoppingListItemViewCurvedArrowIconFill" Color="#C0DAED" />
+    <SolidColorBrush x:Key="ShoppingListItemViewDiscountForeground" Color="#2072AC" />
+    <SolidColorBrush x:Key="ShoppingListItemViewComment" Color="#2072AC" />
     <!--#endregion-->
 
     <!--#region SearchTextBoxBorder-->

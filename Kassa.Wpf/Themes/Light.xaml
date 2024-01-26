@@ -179,6 +179,10 @@
     <!--#endregion-->
 
     <!--#region ShoppingListItemView-->
+    <StaticResource x:Key="SelectedShoppingListItemViewBackground" ResourceKey="AccentBrush2" />
+    <StaticResource x:Key="ShoppingListItemViewCurvedArrowIconFill" ResourceKey="AccentBrush2" />
+    <SolidColorBrush x:Key="ShoppingListItemViewDiscountForeground" Color="#2072AC" />
+    <SolidColorBrush x:Key="ShoppingListItemViewComment" Color="#2072AC" />
     <!--#endregion-->
 
     <!--#region SearchTextBoxBorder-->
