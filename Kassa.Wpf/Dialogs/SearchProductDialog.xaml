@@ -7,6 +7,7 @@
     xmlns:dialogs="clr-namespace:Kassa.RxUI.Dialogs;assembly=Kassa.RxUI"
     xmlns:local="clr-namespace:Kassa.Wpf.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     xmlns:rxui="http://reactiveui.net"
     d:DataContext="{d:DesignInstance Type=dialogs:SearchProductDialogViewModel}"
     d:DesignHeight="700"
@@ -102,36 +103,17 @@
                     <CheckBox
                         x:Name="IsKeyboardEnabled"
                         Grid.Column="1"
-                        Width="136"
-                        Height="50"
-                        Margin="0,0,18,0"
-                        Padding="3,6,3,3"
-                        HorizontalAlignment="Right"
-                        HorizontalContentAlignment="Center"
-                        Style="{StaticResource BackToMain}">
-                        <StackPanel>
-                            <Path
-                                Height="25"
-                                Data="{StaticResource Keyboard}"
-                                Fill="White" />
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                FontSize="12"
-                                Foreground="White"
-                                TextAlignment="Center">
+                        Style="{StaticResource KeyboardCheckbox}">
+                        <StackPanel VerticalAlignment="Center">
+                            <Path Style="{StaticResource KeyboardCheckboxIcon}" />
+                            <TextBlock Style="{StaticResource KeyboardCheckboxText}">
                                 <Run Text="Клавиатура" />
                                 <Run x:Name="KeyboardVisibilityText" Text="Выкл" />
                             </TextBlock>
                         </StackPanel>
-
                     </CheckBox>
 
-                    <Border
-                        Grid.Column="2"
-                        Width="430"
-                        Padding="20,14,13,14"
-                        Background="White"
-                        CornerRadius="30">
+                    <Border Grid.Column="2" Style="{StaticResource SearchTextBoxBorder}">
                         <Grid VerticalAlignment="Center">
 
                             <Grid.ColumnDefinitions>
@@ -139,34 +121,15 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <TextBox
-                                x:Name="SearchTextBox"
-                                VerticalAlignment="Center"
-                                BorderThickness="0"
-                                FontSize="20"
-                                Foreground="{DynamicResource SolidFooterColor}" />
+                            <TextBox x:Name="SearchTextBox" Style="{StaticResource SearchTextBox}" />
 
-                            <Path
-                                Grid.Column="1"
-                                Data="{DynamicResource SearchIcon}"
-                                Fill="{DynamicResource SolidFooterColor}" />
+                            <Path Grid.Column="1" Style="{StaticResource SearchTextBoxIcon}" />
 
                         </Grid>
                     </Border>
 
-                    <Border
-                        Grid.Column="3"
-                        Margin="25,0,0,0"
-                        HorizontalAlignment="Left"
-                        VerticalAlignment="Center"
-                        Background="{StaticResource ClickableBg}"
-                        MouseDown="ClearSearchText">
-                        <Path
-                            Width="32"
-                            Height="32"
-                            Data="{StaticResource CancelIcon}"
-                            Fill="White"
-                            Opacity="0.5" />
+                    <Border MouseDown="ClearSearchText" Style="{StaticResource ClearSearchTextBorder}">
+                        <Path Style="{StaticResource ClearSearchTextIcon}" />
                     </Border>
 
 

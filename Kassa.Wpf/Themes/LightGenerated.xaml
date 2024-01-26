@@ -22,7 +22,7 @@
     <SolidColorBrush x:Key="TopShadowBrush" Color="#E528343D" />
     <SolidColorBrush x:Key="BottomShadowBrush" Color="#E5A2D2F5" />
     <SolidColorBrush x:Key="AccentBorderBrush" Color="#00F0FF" />
-    <SolidColorBrush x:Key="BlurColor" Color="#4C6475" />
+    <SolidColorBrush x:Key="BlurColor" Color="#664C6475" />
 
     <!--#region ProductView-->
 
@@ -165,6 +165,13 @@
     <!--#region CategoryView-->
     <SolidColorBrush x:Key="CategoryViewIconFill" Color="#658399" />
     <SolidColorBrush x:Key="CategoryViewBackground" Color="#E2EBF1" />
+    <!--#endregion-->
+
+    <!--#region ShoppingListItemView-->
+    <!--#endregion-->
+
+    <!--#region SearchTextBoxBorder-->
+    <SolidColorBrush x:Key="SearchTextBoxBorderBackground" Color="#FFF" />
     <!--#endregion-->
 
 </ResourceDictionary>

@@ -7,6 +7,7 @@
     xmlns:dialogs="clr-namespace:Kassa.RxUI.Dialogs;assembly=Kassa.RxUI"
     xmlns:local="clr-namespace:Kassa.Wpf.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     d:DataContext="{d:DesignInstance Type=dialogs:CommentDialogViewModel}"
     d:DesignHeight="700"
     d:DesignWidth="1380"
@@ -115,33 +116,22 @@
                     <CheckBox
                         x:Name="IsKeyboardEnabled"
                         Grid.Column="1"
-                        Width="136"
-                        Height="50"
-                        Padding="3,6,3,3"
+                        Margin="0"
                         HorizontalAlignment="Center"
-                        HorizontalContentAlignment="Center"
-                        Style="{StaticResource BackToMain}">
-                        <StackPanel>
-                            <Path
-                                Height="25"
-                                Data="{StaticResource Keyboard}"
-                                Fill="White" />
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                FontSize="12"
-                                Foreground="White"
-                                TextAlignment="Center">
+                        Style="{StaticResource KeyboardCheckbox}">
+                        <StackPanel VerticalAlignment="Center">
+                            <Path Style="{StaticResource KeyboardCheckboxIcon}" />
+                            <TextBlock Style="{StaticResource KeyboardCheckboxText}">
                                 <Run Text="Клавиатура" />
                                 <Run x:Name="KeyboardVisibilityText" Text="Выкл" />
                             </TextBlock>
                         </StackPanel>
-
                     </CheckBox>
 
                     <Button
                         x:Name="PublishCommentButton"
                         Grid.Column="2"
-                        Width="220"
+                        Width="{mx:AdaptiveSize 220}"
                         Margin="0,-2,0,-2"
                         HorizontalAlignment="Right"
                         Style="{StaticResource PrimaryButton}">

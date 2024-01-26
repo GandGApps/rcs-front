@@ -114,27 +114,16 @@
                     <CheckBox
                         x:Name="IsKeyboardEnabled"
                         Grid.Column="1"
-                        Width="136"
-                        Height="50"
-                        Padding="3,6,3,3"
+                        Margin="0"
                         HorizontalAlignment="Center"
-                        HorizontalContentAlignment="Center"
-                        Style="{StaticResource BackToMain}">
-                        <StackPanel>
-                            <Path
-                                Height="25"
-                                Data="{StaticResource Keyboard}"
-                                Fill="White" />
-                            <TextBlock
-                                VerticalAlignment="Center"
-                                FontSize="12"
-                                Foreground="White"
-                                TextAlignment="Center">
+                        Style="{StaticResource KeyboardCheckbox}">
+                        <StackPanel VerticalAlignment="Center">
+                            <Path Style="{StaticResource KeyboardCheckboxIcon}" />
+                            <TextBlock Style="{StaticResource KeyboardCheckboxText}">
                                 <Run Text="Клавиатура" />
                                 <Run x:Name="KeyboardVisibilityText" Text="Выкл" />
                             </TextBlock>
                         </StackPanel>
-
                     </CheckBox>
 
                     <Button
