@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using DynamicData;
 
 namespace Kassa.BuisnessLogic;
 public static class BuisnessLogicExtensions
@@ -17,5 +18,16 @@ public static class BuisnessLogicExtensions
         {
             throw new InvalidOperationException($"Service {service.GetType().Name} is not initialized");
         }
+    }
+
+    public static IObservable<IChangeSet<T,TKey>> TransfromAndBind<T,TSource,TKey>(this IObservable<IChangeSet<TSource,TKey>> changes, Func<TSource,T> create) 
+        where T: class, IReactiveToChangeSet<TKey, TSource> 
+        where TKey: notnull 
+        where TSource: notnull
+    {
+        return changes.TransformWithInlineUpdate(create, (transformed, source) =>
+        {
+            transformed.Source = source;
+        });
     }
 }
