@@ -1,0 +1,192 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush
+        x:Key="ClickableBg"
+        Opacity="0.001"
+        Color="White" />
+
+    <SolidColorBrush x:Key="Theme" Color="#F2F2F7" />
+    <SolidColorBrush x:Key="SecondaryBackground" Color="#FFF" />
+    <SolidColorBrush x:Key="SurfaceBrush" Color="#3A3A45" />
+    <SolidColorBrush x:Key="DisabledBrush" Color="#54748A" />
+    <SolidColorBrush x:Key="AccentBrush" Color="#2A9BEC" />
+    <SolidColorBrush x:Key="AccentBrush2" Color="#FF9900" />
+    <SolidColorBrush x:Key="AccentBrush3" Color="#BFDAED" />
+    <SolidColorBrush x:Key="SecondaryBrush" Color="#E2EBF1" />
+    <SolidColorBrush x:Key="PrimaryForeground" Color="Black" />
+    <SolidColorBrush x:Key="AlternateForeground" Color="#FFF" />
+    <SolidColorBrush x:Key="SecondaryForeground" Color="#153750" />
+    <SolidColorBrush x:Key="DangerBrush" Color="#F42E2E" />
+    <SolidColorBrush x:Key="DangerBrushAlpha" Color="#33F42E2E" />
+    <SolidColorBrush x:Key="SuccessBrush" Color="#00BA00" />
+    <SolidColorBrush x:Key="TopShadowBrush" Color="#E528343D" />
+    <SolidColorBrush x:Key="BottomShadowBrush" Color="#E5A2D2F5" />
+    <SolidColorBrush x:Key="AccentBorderBrush" Color="#00F0FF" />
+    <SolidColorBrush x:Key="BlurColor" Color="#664C6475" />
+
+    <!--#region ProductView-->
+
+    <!--#region Default State-->
+    <StaticResource x:Key="DefaultProductViewBackground" ResourceKey="SecondaryBrush" />
+    <StaticResource x:Key="DefaultProductViewForeground" ResourceKey="PrimaryForeground" />
+    <StaticResource x:Key="DefaultProdcutViewPriceForeground" ResourceKey="SecondaryForeground" />
+    <StaticResource x:Key="DefaultProductViewPriceBackground" ResourceKey="AccentBrush2" />
+    <StaticResource x:Key="DefaultProductViewIconFill" ResourceKey="SurfaceBrush" />
+    <!--#endregion-->
+
+    <!--#region Not Available State-->
+    <StaticResource x:Key="NotAvailableProductViewBackground" ResourceKey="DangerBrushAlpha" />
+    <StaticResource x:Key="NotAvailableProductProductViewForeground" ResourceKey="PrimaryForeground" />
+    <StaticResource x:Key="NotAvailableProdcutViewPriceForeground" ResourceKey="DangerBrush" />
+    <StaticResource x:Key="NotAvailableProductViewPriceBackground" ResourceKey="DangerBrushAlpha" />
+    <StaticResource x:Key="NotAvailableProductViewIconFill" ResourceKey="SurfaceBrush" />
+    <StaticResource x:Key="NotAvailableTextProductView" ResourceKey="DangerBrush" />
+    <!--#endregion-->
+
+    <!--#region Selected State-->
+    <StaticResource x:Key="SelectedProductViewBackground" ResourceKey="AccentBrush2" />
+    <StaticResource x:Key="SelectedProductViewForeground" ResourceKey="PrimaryForeground" />
+    <StaticResource x:Key="SelecteProdcutViewPriceForeground" ResourceKey="SecondaryForeground" />
+    <StaticResource x:Key="SelecteProductViewPriceBackground" ResourceKey="AccentBrush2" />
+    <StaticResource x:Key="SelecteProductViewIconFill" ResourceKey="SurfaceBrush" />
+    <!--#endregion-->
+
+    <!--#endregion-->
+
+    <!--#region AdditiveView-->
+
+    <!--#region Default State-->
+    <StaticResource x:Key="DefaultAdditiveViewBackground" ResourceKey="SecondaryBackground" />
+    <StaticResource x:Key="DefaultAdditiveViewForeground" ResourceKey="PrimaryForeground" />
+    <StaticResource x:Key="DefaultAdditiveViewIconFill" ResourceKey="SurfaceBrush" />
+    <StaticResource x:Key="DefaultAdditveViewMeasureForeground" ResourceKey="SecondaryForeground" />
+    <!--#endregion-->
+
+    <!--#region Not Available State-->
+    <StaticResource x:Key="NotAvailbaleAdditiveViewBackground" ResourceKey="DangerBrushAlpha" />
+    <StaticResource x:Key="NotAvailbaleAdditiveViewForeground" ResourceKey="PrimaryForeground" />
+    <StaticResource x:Key="NotAvailbaleAdditiveViewIconFill" ResourceKey="SurfaceBrush" />
+    <StaticResource x:Key="NotAvailbaleAdditveViewMeasureForeground" ResourceKey="SecondaryForeground" />
+    <StaticResource x:Key="NotAvailbaleTextAdditveView" ResourceKey="DangerBrush" />
+    <!--#endregion-->
+
+    <!--#region Selected State-->
+    <StaticResource x:Key="SelectedAdditiveViewBackground" ResourceKey="AccentBrush2" />
+    <StaticResource x:Key="SelectedAdditiveViewForeground" ResourceKey="PrimaryForeground" />
+    <StaticResource x:Key="SelectedAdditiveViewIconFill" ResourceKey="SurfaceBrush" />
+    <StaticResource x:Key="SelectedAdditveViewMeasureForeground" ResourceKey="SecondaryForeground" />
+    <!--#endregion-->
+
+    <!--#endregion-->
+
+    <!--#region ScrollBar-->
+    <SolidColorBrush x:Key="ScrollBarButton" Color="#19000000" />
+    <!--#endregion-->
+
+    <!--#region Buttons-->
+
+    <!--#region Default State-->
+    <StaticResource x:Key="DefaultButtonBackground" ResourceKey="AccentBrush" />
+    <StaticResource x:Key="DefaultButtonForeground" ResourceKey="AlternateForeground" />
+    <!--#endregion-->
+
+    <!--#region Disabled-->
+    <StaticResource x:Key="DisabledButtonBackground" ResourceKey="DisabledBrush" />
+    <!--#endregion-->
+
+    <!--#region  Card-->
+    <StaticResource x:Key="DefaultCardBackground" ResourceKey="SecondaryBrush" />
+    <!--#endregion-->
+
+    <!--#region Hover-->
+    <SolidColorBrush x:Key="HoverButtonBackground" Color="#2ac2ec" />
+    <!--#endregion-->
+
+    <!--#endregion-->
+
+    <!--#region CashierPage-->
+    <StaticResource x:Key="TopBarForegeround" ResourceKey="SecondaryForeground" />
+    <StaticResource x:Key="TopBarIconFill" ResourceKey="SurfaceBrush" />
+    <StaticResource x:Key="TopBarSeparator" ResourceKey="SurfaceBrush" />
+
+    <StaticResource x:Key="IconOnlyButtonIconFill" ResourceKey="AlternateForeground" />
+
+    <StaticResource x:Key="PricingDetailsButtonBackground" ResourceKey="SecondaryBackground" />
+    <StaticResource x:Key="PricingDetailsButtonForeground" ResourceKey="PrimaryForeground" />
+
+    <SolidColorBrush x:Key="SubtotalButtonBackground" Color="Transparent" />
+    <StaticResource x:Key="SubtotalButtonBorderBrush" ResourceKey="Theme" />
+    <StaticResource x:Key="SubtotalSeparator" ResourceKey="Theme" />
+
+    <StaticResource x:Key="ProductHostBackground" ResourceKey="SecondaryBackground" />
+    <StaticResource x:Key="ProductHostForeground" ResourceKey="PrimaryForeground" />
+
+    <StaticResource x:Key="ShoppingListTopMenu" ResourceKey="SurfaceBrush" />
+
+    <StaticResource x:Key="MultiSelectCheckBoxForeground" ResourceKey="AlternateForeground" />
+    <StaticResource x:Key="MultiSelectCheckBoxCheckedBackground" ResourceKey="SecondaryBackground" />
+
+    <StaticResource x:Key="WorkingShiftForeground" ResourceKey="AlternateForeground" />
+
+    <StaticResource x:Key="ReceiptNumberForeground" ResourceKey="AlternateForeground" />
+
+    <StaticResource x:Key="UserForeground" ResourceKey="AlternateForeground" />
+    <!--#endregion-->
+
+    <!--#region DownMenu-->
+    <StaticResource x:Key="DownMenuBackground" ResourceKey="SurfaceBrush" />
+    <StaticResource x:Key="DownMenuBackButtonForeground" ResourceKey="AlternateForeground" />
+    <StaticResource x:Key="DownMenuSelectedBrush" ResourceKey="AlternateForeground" />
+    <SolidColorBrush x:Key="DownMenuButtonBackground" Color="Transparent" />
+    <StaticResource x:Key="DownMenuOrderBrush" ResourceKey="AccentBorderBrush" />
+    <StaticResource x:Key="DownMenuIconFillBrush" ResourceKey="AlternateForeground" />
+    <!--#endregion-->
+
+    <!--#region TabPanel-->
+
+    <StaticResource x:Key="AccentTabPanel" ResourceKey="AccentBrush2" />
+    <StaticResource x:Key="AccentTabPanelIconFill" ResourceKey="SecondaryForeground" />
+
+    <StaticResource x:Key="TabPanelIconFill" ResourceKey="AlternateForeground" />
+
+    <!--#endregion-->
+
+    <!--#region Keyboard-->
+    <StaticResource x:Key="KeyBackground" ResourceKey="SecondaryBrush" />
+    <StaticResource x:Key="KeyForeground" ResourceKey="SecondaryForeground" />
+    <!--#endregion-->
+
+    <!--#region Dialog-->
+    <StaticResource x:Key="DialogBackground" ResourceKey="SecondaryBackground" />
+    <StaticResource x:Key="DialogHeaderBackground" ResourceKey="SecondaryBrush" />
+    <StaticResource x:Key="DialogButtonHover" ResourceKey="AccentBrush2" />
+    <StaticResource x:Key="DialogSubheaderForeground" ResourceKey="SecondaryForeground" />
+    <StaticResource x:Key="DialogForeground" ResourceKey="SecondaryBackground" />
+    <SolidColorBrush x:Key="DialogNewDocumentButton" Color="#C76060" />
+    <StaticResource x:Key="DialogTurnOffDevice" ResourceKey="DangerBrush" />
+    <SolidColorBrush x:Key="DialogExitFromAccountIconFill" Color="#E08700" />
+    <StaticResource x:Key="DialogOptionsIconFill" ResourceKey="SuccessBrush" />
+    <StaticResource x:Key="DialogFooterBrush" ResourceKey="SurfaceBrush" />
+    <!--#endregion-->
+
+    <!--#region MainButton-->
+    <StaticResource x:Key="DefaultMainButton" ResourceKey="AlternateForeground" />
+    <!--#endregion-->
+
+    <!--#region CategoryView-->
+    <StaticResource x:Key="CategoryViewIconFill" ResourceKey="SurfaceBrush" />
+    <StaticResource x:Key="CategoryViewBackground" ResourceKey="SecondaryBrush" />
+    <!--#endregion-->
+
+    <!--#region ShoppingListItemView-->
+    <StaticResource x:Key="SelectedShoppingListItemViewBackground" ResourceKey="AccentBrush2" />
+    <SolidColorBrush x:Key="ShoppingListItemViewCurvedArrowIconFill" Color="White" />
+    <SolidColorBrush x:Key="ShoppingListItemViewDiscountForeground" Color="#00BA00" />
+    <SolidColorBrush x:Key="ShoppingListItemViewComment" Color="Black" />
+    <!--#endregion-->
+
+    <!--#region SearchTextBoxBorder-->
+    <StaticResource x:Key="SearchTextBoxBorderBackground" ResourceKey="AlternateForeground" />
+    <!--#endregion-->
+
+</ResourceDictionary>

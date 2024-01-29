@@ -14,7 +14,6 @@ namespace Kassa.Wpf.MarkupExntesions;
 
 public class AdaptiveSizeExtension : MarkupExtension
 {
-
     public AdaptiveSizeExtension()
     {
         Size = 0;
@@ -37,12 +36,37 @@ public class AdaptiveSizeExtension : MarkupExtension
         get; set;
     }
 
+    public GridLength GridLength
+    {
+        get; set;
+    }
+
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
         var valueTargetProvider = serviceProvider?.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
 
         var targetProperty = valueTargetProvider?.TargetProperty;
         var targetObject = valueTargetProvider?.TargetObject;
+
+        if (targetObject is DependencyObject dependencyObject)
+        {
+            if (DesignerProperties.GetIsInDesignMode(dependencyObject))
+            {
+                if (targetProperty is DependencyProperty dProperty)
+                {
+                    if (dProperty.PropertyType == typeof(Thickness))
+                    {
+
+                        return Thickness;
+                    }
+                    if (dProperty.PropertyType == typeof(GridLength))
+                    {
+                        return GridLength;
+                    }
+                }
+                return Size;
+            }
+        }
 
         Binding binding;
         var source = GetSource(serviceProvider);
@@ -58,6 +82,21 @@ public class AdaptiveSizeExtension : MarkupExtension
                     Converter = new AdaptiveSizeConverter(),
                     ConverterParameter = Thickness,
                     FallbackValue = Thickness
+                };
+
+                return binding.ProvideValue(serviceProvider);
+            }
+
+            if (property.PropertyType == typeof(GridLength))
+            {
+                binding = new Binding
+                {
+
+                    Source = source,
+                    Path = new("ActualWidth"),
+                    Converter = new AdaptiveSizeConverter(),
+                    ConverterParameter = GridLength,
+                    FallbackValue = GridLength
                 };
 
                 return binding.ProvideValue(serviceProvider);
@@ -130,6 +169,19 @@ public class AdaptiveSizeExtension : MarkupExtension
                     AdaptiveMarkupExtension.GetAdaptiveSize(thickness.Bottom, width)
                 );
             }
+
+            if (parameter is GridLength gridLength)
+            {
+                if (gridLength.GridUnitType == GridUnitType.Pixel)
+                {
+                    return new GridLength(
+                        AdaptiveMarkupExtension.GetAdaptiveSize(gridLength.Value, width),
+                        gridLength.GridUnitType
+                    );
+                }
+                return gridLength;
+            }
+
             var size = (double)parameter;
 
             return AdaptiveMarkupExtension.GetAdaptiveSize(size, width);

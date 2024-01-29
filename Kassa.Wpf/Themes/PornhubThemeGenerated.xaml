@@ -1,0 +1,181 @@
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush
+        x:Key="ClickableBg"
+        Opacity="0.001"
+        Color="White" />
+
+    <SolidColorBrush x:Key="Theme" Color="#F2F2F7" />
+    <SolidColorBrush x:Key="SecondaryBackground" Color="#FFF" />
+    <SolidColorBrush x:Key="SurfaceBrush" Color="#658399" />
+    <SolidColorBrush x:Key="DisabledBrush" Color="#54748A" />
+    <SolidColorBrush x:Key="AccentBrush" Color="#2A9BEC" />
+    <SolidColorBrush x:Key="AccentBrush2" Color="#C0DAED" />
+    <SolidColorBrush x:Key="AccentBrush3" Color="#BFDAED" />
+    <SolidColorBrush x:Key="SecondaryBrush" Color="#E2EBF1" />
+    <SolidColorBrush x:Key="PrimaryForeground" Color="Black" />
+    <SolidColorBrush x:Key="AlternateForeground" Color="#FFF" />
+    <SolidColorBrush x:Key="SecondaryForeground" Color="#153750" />
+    <SolidColorBrush x:Key="DangerBrush" Color="#F42E2E" />
+    <SolidColorBrush x:Key="DangerBrushAlpha" Color="#33F42E2E" />
+    <SolidColorBrush x:Key="SuccessBrush" Color="#00BA00" />
+    <SolidColorBrush x:Key="TopShadowBrush" Color="#E528343D" />
+    <SolidColorBrush x:Key="BottomShadowBrush" Color="#E5A2D2F5" />
+    <SolidColorBrush x:Key="AccentBorderBrush" Color="#00F0FF" />
+    <SolidColorBrush x:Key="BlurColor" Color="#664C6475" />
+
+    <!--#region ProductView-->
+
+    <!--#region Default State-->
+    <SolidColorBrush x:Key="DefaultProductViewBackground" Color="#E2EBF1" />
+    <SolidColorBrush x:Key="DefaultProductViewForeground" Color="Black" />
+    <SolidColorBrush x:Key="DefaultProdcutViewPriceForeground" Color="#153750" />
+    <SolidColorBrush x:Key="DefaultProductViewPriceBackground" Color="#C0DAED" />
+    <SolidColorBrush x:Key="DefaultProductViewIconFill" Color="#658399" />
+    <!--#endregion-->
+
+    <!--#region Not Available State-->
+    <SolidColorBrush x:Key="NotAvailableProductViewBackground" Color="#33F42E2E" />
+    <SolidColorBrush x:Key="NotAvailableProductProductViewForeground" Color="Black" />
+    <SolidColorBrush x:Key="NotAvailableProdcutViewPriceForeground" Color="#F42E2E" />
+    <SolidColorBrush x:Key="NotAvailableProductViewPriceBackground" Color="#33F42E2E" />
+    <SolidColorBrush x:Key="NotAvailableProductViewIconFill" Color="#658399" />
+    <SolidColorBrush x:Key="NotAvailableTextProductView" Color="#F42E2E" />
+    <!--#endregion-->
+
+    <!--#region Selected State-->
+    <SolidColorBrush x:Key="SelectedProductViewBackground" Color="#C0DAED" />
+    <SolidColorBrush x:Key="SelectedProductViewForeground" Color="Black" />
+    <SolidColorBrush x:Key="SelecteProdcutViewPriceForeground" Color="#153750" />
+    <SolidColorBrush x:Key="SelecteProductViewPriceBackground" Color="#C0DAED" />
+    <SolidColorBrush x:Key="SelecteProductViewIconFill" Color="#658399" />
+    <!--#endregion-->
+
+    <!--#endregion-->
+
+    <!--#region AdditiveView-->
+
+    <!--#region Default State-->
+    <SolidColorBrush x:Key="DefaultAdditiveViewBackground" Color="#FFF" />
+    <SolidColorBrush x:Key="DefaultAdditiveViewForeground" Color="Black" />
+    <SolidColorBrush x:Key="DefaultAdditiveViewIconFill" Color="#658399" />
+    <SolidColorBrush x:Key="DefaultAdditveViewMeasureForeground" Color="#153750" />
+    <!--#endregion-->
+
+    <!--#region Not Available State-->
+    <SolidColorBrush x:Key="NotAvailbaleAdditiveViewBackground" Color="#33F42E2E" />
+    <SolidColorBrush x:Key="NotAvailbaleAdditiveViewForeground" Color="Black" />
+    <SolidColorBrush x:Key="NotAvailbaleAdditiveViewIconFill" Color="#658399" />
+    <SolidColorBrush x:Key="NotAvailbaleAdditveViewMeasureForeground" Color="#153750" />
+    <SolidColorBrush x:Key="NotAvailbaleTextAdditveView" Color="#F42E2E" />
+    <!--#endregion-->
+
+    <!--#region Selected State-->
+    <SolidColorBrush x:Key="SelectedAdditiveViewBackground" Color="#C0DAED" />
+    <SolidColorBrush x:Key="SelectedAdditiveViewForeground" Color="Black" />
+    <SolidColorBrush x:Key="SelectedAdditiveViewIconFill" Color="#658399" />
+    <SolidColorBrush x:Key="SelectedAdditveViewMeasureForeground" Color="#153750" />
+    <!--#endregion-->
+
+    <!--#endregion-->
+
+    <!--#region ScrollBar-->
+    <SolidColorBrush x:Key="ScrollBarButton" Color="#19000000" />
+    <!--#endregion-->
+
+    <!--#region Buttons-->
+
+    <!--#region Default State-->
+    <SolidColorBrush x:Key="DefaultButtonBackground" Color="#2A9BEC" />
+    <SolidColorBrush x:Key="DefaultButtonForeground" Color="#FFF" />
+    <!--#endregion-->
+
+    <!--#region Disabled-->
+    <SolidColorBrush x:Key="DisabledButtonBackground" Color="#54748A" />
+    <!--#endregion-->
+
+    <!--#region  Card-->
+    <SolidColorBrush x:Key="DefaultCardBackground" Color="#E2EBF1" />
+    <!--#endregion-->
+
+    <!--#region Hover-->
+    <SolidColorBrush x:Key="HoverButtonBackground" Color="#2ac2ec" />
+    <!--#endregion-->
+
+    <!--#endregion-->
+
+    <!--#region CashierPage-->
+    <SolidColorBrush x:Key="TopBarForegeround" Color="#153750" />
+    <SolidColorBrush x:Key="TopBarIconFill" Color="#658399" />
+    <SolidColorBrush x:Key="TopBarSeparator" Color="#658399" />
+    <SolidColorBrush x:Key="IconOnlyButtonIconFill" Color="#FFF" />
+    <SolidColorBrush x:Key="PricingDetailsButtonBackground" Color="#FFF" />
+    <SolidColorBrush x:Key="PricingDetailsButtonForeground" Color="Black" />
+    <SolidColorBrush x:Key="SubtotalButtonBackground" Color="Transparent" />
+    <SolidColorBrush x:Key="SubtotalButtonBorderBrush" Color="#F2F2F7" />
+    <SolidColorBrush x:Key="SubtotalSeparator" Color="#F2F2F7" />
+    <SolidColorBrush x:Key="ProductHostBackground" Color="#FFF" />
+    <SolidColorBrush x:Key="ProductHostForeground" Color="Black" />
+    <SolidColorBrush x:Key="ShoppingListTopMenu" Color="#658399" />
+    <SolidColorBrush x:Key="MultiSelectCheckBoxForeground" Color="#FFF" />
+    <SolidColorBrush x:Key="MultiSelectCheckBoxCheckedBackground" Color="#FFF" />
+    <SolidColorBrush x:Key="WorkingShiftForeground" Color="#FFF" />
+    <SolidColorBrush x:Key="ReceiptNumberForeground" Color="#FFF" />
+    <SolidColorBrush x:Key="UserForeground" Color="#FFF" />
+    <!--#endregion-->
+
+    <!--#region DownMenu-->
+    <SolidColorBrush x:Key="DownMenuBackground" Color="#658399" />
+    <SolidColorBrush x:Key="DownMenuBackButtonForeground" Color="#FFF" />
+    <SolidColorBrush x:Key="DownMenuSelectedBrush" Color="#FFF" />
+    <SolidColorBrush x:Key="DownMenuButtonBackground" Color="Transparent" />
+    <SolidColorBrush x:Key="DownMenuOrderBrush" Color="#00F0FF" />
+    <SolidColorBrush x:Key="DownMenuIconFillBrush" Color="#FFF" />
+    <!--#endregion-->
+
+    <!--#region TabPanel-->
+
+    <SolidColorBrush x:Key="AccentTabPanel" Color="#C0DAED" />
+    <SolidColorBrush x:Key="AccentTabPanelIconFill" Color="#153750" />
+    <SolidColorBrush x:Key="TabPanelIconFill" Color="#FFF" />
+    <!--#endregion-->
+
+    <!--#region Keyboard-->
+    <SolidColorBrush x:Key="KeyBackground" Color="#E2EBF1" />
+    <SolidColorBrush x:Key="KeyForeground" Color="#153750" />
+    <!--#endregion-->
+
+    <!--#region Dialog-->
+    <SolidColorBrush x:Key="DialogBackground" Color="#FFF" />
+    <SolidColorBrush x:Key="DialogHeaderBackground" Color="#E2EBF1" />
+    <SolidColorBrush x:Key="DialogButtonHover" Color="#C0DAED" />
+    <SolidColorBrush x:Key="DialogSubheaderForeground" Color="#153750" />
+    <SolidColorBrush x:Key="DialogForeground" Color="#FFF" />
+    <SolidColorBrush x:Key="DialogNewDocumentButton" Color="#C76060" />
+    <SolidColorBrush x:Key="DialogTurnOffDevice" Color="#F42E2E" />
+    <SolidColorBrush x:Key="DialogExitFromAccountIconFill" Color="#E08700" />
+    <SolidColorBrush x:Key="DialogOptionsIconFill" Color="#00BA00" />
+    <SolidColorBrush x:Key="DialogFooterBrush" Color="#658399" />
+    <!--#endregion-->
+
+    <!--#region MainButton-->
+    <SolidColorBrush x:Key="DefaultMainButton" Color="#FFF" />
+    <!--#endregion-->
+
+    <!--#region CategoryView-->
+    <SolidColorBrush x:Key="CategoryViewIconFill" Color="#658399" />
+    <SolidColorBrush x:Key="CategoryViewBackground" Color="#E2EBF1" />
+    <!--#endregion-->
+
+    <!--#region ShoppingListItemView-->
+    <SolidColorBrush x:Key="SelectedShoppingListItemViewBackground" Color="#C0DAED" />
+    <SolidColorBrush x:Key="ShoppingListItemViewCurvedArrowIconFill" Color="#C0DAED" />
+    <SolidColorBrush x:Key="ShoppingListItemViewDiscountForeground" Color="#2072AC" />
+    <SolidColorBrush x:Key="ShoppingListItemViewComment" Color="#2072AC" />
+    <!--#endregion-->
+
+    <!--#region SearchTextBoxBorder-->
+    <SolidColorBrush x:Key="SearchTextBoxBorderBackground" Color="#FFF" />
+    <!--#endregion-->
+
+</ResourceDictionary>

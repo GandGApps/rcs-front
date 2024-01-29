@@ -57,7 +57,7 @@
 
             <Grid.RowDefinitions>
                 <RowDefinition />
-                <RowDefinition Height="{mx:AdaptiveSize 70}" />
+                <RowDefinition Height="{mx:AdaptiveSize GridLength=70}" />
             </Grid.RowDefinitions>
 
             <rxui:RoutedViewHost x:Name="RoutedViewHost" Grid.Row="0" />

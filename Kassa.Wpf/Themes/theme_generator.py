@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import sys
 from token import OP
 from lxml import etree
 import re
@@ -27,13 +28,19 @@ def replace_static_resource(xml_content):
     # Возвращение обновленного XML
     return etree.tostring(root, pretty_print=True, encoding='unicode')
 
-with open('Light.xaml', 'r') as file:
+file_path = sys.argv[1]
+
+print(file_path)
+
+with open(file_path, 'r') as file:
     lines = file.readlines()
     
     filtered_lines = [line for line in lines if "<!-- This Light.xaml file serves as a template." not in line]
     xml_content = "".join(filtered_lines)
 
     xml_content = replace_static_resource(xml_content)
-    
-with open('LightGenerated.xaml', 'w') as file:
+
+generated_file_name = file_path.replace('.xaml', 'Generated.xaml')
+
+with open(generated_file_name, 'w') as file:
     file.write(xml_content)

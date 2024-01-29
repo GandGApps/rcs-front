@@ -5,12 +5,12 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Markup;
 
 namespace Kassa.Wpf.MarkupExntesions;
 
-[MarkupExtensionReturnType(typeof(Binding))]
 public class AdaptiveMarkupExtension : MarkupExtension
 {
     public const double MediumBreakpoint = 1200;
@@ -54,6 +54,16 @@ public class AdaptiveMarkupExtension : MarkupExtension
 
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
+        var valueProdiver = serviceProvider.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
+
+        if (valueProdiver is DependencyObject dependencyObject)
+        {
+            if (DesignerProperties.GetIsInDesignMode(dependencyObject))
+            {
+                return false;
+            }
+        }
+
         var binding = new Binding
         {
             Source = Source ?? MainWindow.Instance,
@@ -62,29 +72,37 @@ public class AdaptiveMarkupExtension : MarkupExtension
             ConverterParameter = Breakpoint
         };
 
-        return binding;
+        return binding.ProvideValue(serviceProvider);
     }
 
     internal class AdaptiveConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var breakpoint = (AdaptiveBreakpoint)parameter;
-
-            if (value is double width)
+            try
             {
-                if (width <= 1200 && breakpoint == AdaptiveBreakpoint.Medium)
+
+                var breakpoint = (AdaptiveBreakpoint)parameter;
+
+                if (value is double width)
                 {
-                    return true;
+                    if (width <= 1200 && breakpoint == AdaptiveBreakpoint.Medium)
+                    {
+                        return true;
+                    }
+
+                    if (width > 1200 && breakpoint == AdaptiveBreakpoint.Large)
+                    {
+                        return true;
+                    }
                 }
 
-                if (width > 1200 && breakpoint == AdaptiveBreakpoint.Large)
-                {
-                    return true;
-                }
+                return false;
             }
-
-            return false;
+            catch
+            {
+                return false;
+            }
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
