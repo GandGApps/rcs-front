@@ -15,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Kassa.RxUI.Dialogs;
+using Kassa.Wpf.MarkupExntesions;
 using ReactiveUI;
 
 namespace Kassa.Wpf.Dialogs;
@@ -95,6 +96,8 @@ public partial class HintDialog : ReactiveUserControl<HintDialogViewModel>
             new(TargetRect.Width, TargetRect.Height),
             out var margin);
 
+
+
         Canvas.SetLeft(Obloko, cornerInfo.Left);
         Canvas.SetTop(Obloko, cornerInfo.Top);
 
@@ -133,21 +136,47 @@ public partial class HintDialog : ReactiveUserControl<HintDialogViewModel>
         {
             if (requiredMargin.X + (-point.X) + elementSize.X > containerSize.X)
             {
+                // need a new corner info, where Top = element.Size - 49 and Left = element.Size - 117
                 margin = new((-point.X) - Math.Abs(elementSize.X - targetSize.X) - requiredMargin.X, (-point.Y) - requiredMargin.Y + Math.Abs(elementSize.Y - targetSize.Y), 0, 0);
-                return LeftTop;
+                var adapted = new CornerInfo(
+                    Math.Abs(elementSize.X - 117),
+                    Math.Abs(elementSize.Y - 49),
+                    LeftTop.ScaleX,
+                    LeftTop.ScaleY
+                );
+
+                return adapted;
             }
             else
             {
+                // need a new corner info, where Top = element.Size - 49
                 margin = new((-point.X) + requiredMargin.X, (-point.Y) - requiredMargin.Y + Math.Abs(elementSize.Y - targetSize.Y), 0, 0);
-                return RightTop;
+                var adapted = new CornerInfo(
+                    RightTop.Left,
+                    Math.Abs(elementSize.Y-49),
+                    RightTop.ScaleX,
+                    RightTop.ScaleY
+                );
+
+                return adapted;
             }
         }
         else
         {
+            // need a new corner info, where Left = element.Size - 117
             if (requiredMargin.X + (-point.X) + elementSize.X > containerSize.X)
             {
                 margin = new((-point.X) - Math.Abs(elementSize.X - targetSize.X)- requiredMargin.X, requiredMargin.Y + (-point.Y), 0, 0);
-                return LeftBottom;
+                var adapted = new CornerInfo(
+                    Math.Abs(elementSize.X-117),
+                    AdaptiveMarkupExtension.GetAdaptiveSize(LeftBottom.Top, MainWindow.Instance!.Width),
+                    LeftBottom.ScaleX,
+                    LeftBottom.ScaleY
+                );
+
+                
+                
+                return adapted;
             }
             else
             {

@@ -54,7 +54,8 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
 
         ViewModel.DialogOpenCommand = ReactiveCommand.Create((DialogViewModel x) =>
         {
-            DialogHost.Router.Navigate.Execute(x);
+            DialogHost.Router.Navigate.Execute(x).Subscribe();
+
             x.CloseCommand.FirstAsync().Subscribe(_ =>
             {
                 DialogHost.Router.NavigationStack.Remove(x);
@@ -74,7 +75,6 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
                                       PageFooter.Content = footer;
                                       footer.DataContext = ViewModel.Router.GetCurrentViewModel();
                                   }
-
 
                               }
 
@@ -122,6 +122,8 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
 
     public static object? GetPageFooter(UIElement element)
     {
+        var fe = new FrameworkElement();
+
         return element.GetValue(PageFooterProperty);
     }
 

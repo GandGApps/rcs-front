@@ -6,6 +6,7 @@
     xmlns:dialogs="clr-namespace:Kassa.RxUI.Dialogs;assembly=Kassa.RxUI"
     xmlns:local="clr-namespace:Kassa.Wpf.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     xmlns:rxui="http://reactiveui.net"
     d:DataContext="{d:DesignInstance Type=dialogs:HintDialogViewModel}"
     d:DesignHeight="450"
@@ -29,8 +30,8 @@
 
         <Canvas
             x:Name="Hint"
-            Width="560"
-            Height="200"
+            Width="{mx:AdaptiveSize 560}"
+            Height="{mx:AdaptiveSize 200}"
             HorizontalAlignment="Left"
             VerticalAlignment="Top">
             <Path
@@ -50,9 +51,9 @@
                 </Path.RenderTransform>
             </Path>
             <Border
-                Width="560"
-                Height="200"
-                Padding="20"
+                Width="{mx:AdaptiveSize 560}"
+                Height="{mx:AdaptiveSize 200}"
+                Padding="{mx:AdaptiveSize Thickness=20}"
                 Background="White"
                 CornerRadius="21,21,21,21">
                 <Grid>
@@ -71,7 +72,7 @@
                         x:Name="HintText"
                         Grid.ColumnSpan="2"
                         FontFamily="Montserrat"
-                        FontSize="23"
+                        FontSize="{mx:AdaptiveSize 23}"
                         Style="{StaticResource Header2}"
                         Text="Это раздел кассового аппарата, здесь проводятся все транзакции между клиентом и кассиром"
                         TextWrapping="Wrap" />

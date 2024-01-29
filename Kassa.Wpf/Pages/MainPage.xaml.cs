@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -51,7 +52,7 @@ public partial class MainPage : ReactiveUserControl<MainPageVm>
                 .DisposeWith(disposables);
 
 
-            /*ViewModel!.MainViewModel.DialogOpenCommand.Execute(
+            ViewModel!.MainViewModel.DialogOpenCommand.Execute(
                 new HintDialogViewModel(ViewModel.MainViewModel, [
                     new("Labu labu dab", Profile, MainWindow.Root),
                     new("asdasdads", Cashbox, MainWindow.Root),
@@ -60,7 +61,7 @@ public partial class MainPage : ReactiveUserControl<MainPageVm>
                     new("Я в своем познании настолько преисполнился, что я как будто бы уже сто триллионов миллиардов лет проживаю на триллионах и триллионах таких же планет, как эта Земля, мне этот мир абсолютно nпонятен", Personnel, MainWindow.Root),
                     new("!", Documents, MainWindow.Root),
                 ])
-            );*/
+            ).Subscribe();
         });
     }
 
