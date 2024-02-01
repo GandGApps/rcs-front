@@ -91,7 +91,6 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
                     }
                     else
                     {
-
                         DialogOverlay.Visibility = Visibility.Visible;
                         ContentBlur.Radius = 10;
                     }

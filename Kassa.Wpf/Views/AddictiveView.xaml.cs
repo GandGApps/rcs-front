@@ -33,6 +33,9 @@ public partial class AddictiveView : ReactiveUserControl<Additive>
     public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(
                nameof(Command), typeof(ICommand), typeof(AddictiveView), new PropertyMetadata(default(ICommand)));
 
+    public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register(
+               nameof(CommandParameter), typeof(object), typeof(AddictiveView), new PropertyMetadata(default(object)));
+
     public bool HasAddictiveIcon
     {
         get => (bool)GetValue(HasAddictiveIconProperty);
@@ -45,12 +48,23 @@ public partial class AddictiveView : ReactiveUserControl<Additive>
         set => SetValue(CommandProperty, value);
     }
 
+    public object CommandParameter
+    {
+        get => GetValue(CommandParameterProperty);
+        set => SetValue(CommandParameterProperty, value);
+    }
+
     public AddictiveView()
     {
         InitializeComponent();
 
+        
+
         this.WhenActivated(disposabels =>
         {
+            Command = AdditiveViewModel.AddAdditveToProduct;
+            CommandParameter = ViewModel!;
+
             this.WhenAnyValue(x => x.ViewModel)
                 .Subscribe(x =>
                 {

@@ -10,7 +10,7 @@ namespace Kassa.BuisnessLogic;
 public record ProductShoppingListItemDto : IShoppingListItemDto
 {
 
-    public ProductShoppingListItemDto(Product product)
+    public ProductShoppingListItemDto(ProductDto product)
     {
         ItemId = product.Id;
         Name = product.Name;
@@ -80,7 +80,7 @@ public record ProductShoppingListItemDto : IShoppingListItemDto
     public ICollection<Additive> Additives
     {
         get; 
-    } = new List<Additive>();
+    } = new ObservableCollection<Additive>();
 
     public string? AdditiveInfo
     {

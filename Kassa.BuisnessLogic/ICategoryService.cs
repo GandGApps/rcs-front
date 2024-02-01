@@ -18,19 +18,19 @@ public interface ICategoryService: IInitializableService
     /// Every change in the database will be reflected in this cache.
     /// </para>
     /// <para>
-    /// Don't use this property to update categories. Use <see cref="UpdateCategory(Category)"/> instead. 
+    /// Don't use this property to update categories. Use <see cref="UpdateCategory(CategoryDto)"/> instead. 
     /// Use this property only for connect.
     /// </para>
     /// </summary>
-    public SourceCache<Category, int> RuntimeCategories
+    public SourceCache<CategoryDto, int> RuntimeCategories
     {
         get;
     }
 
-    public Task UpdateCategory(Category category);
-    public Task AddCategory(Category category);
-    public Task RemoveCategory(Category category);
+    public Task UpdateCategory(CategoryDto category);
+    public Task AddCategory(CategoryDto category);
+    public Task RemoveCategory(CategoryDto category);
 
-    public ValueTask<Category?> GetCategoryById(int categoryId);
+    public ValueTask<CategoryDto?> GetCategoryById(int categoryId);
 
 }

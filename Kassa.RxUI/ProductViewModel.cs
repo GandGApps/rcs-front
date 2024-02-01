@@ -14,16 +14,14 @@ using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.RxUI;
-public class ProductViewModel(Product product) : ReactiveObject
+public class ProductViewModel(ProductDto product) : ReactiveObject
 {
-    public static readonly ReactiveCommand<Product, Unit> AddToShoppingListCommand = ReactiveCommand.CreateFromTask<Product>(async product =>
+    public static readonly ReactiveCommand<ProductDto, Unit> AddToShoppingListCommand = ReactiveCommand.CreateFromTask<ProductDto>(async product =>
     {
         var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
 
         await cashierService.AddProductToShoppingList(product.Id);
     });
-
-    private readonly Product product = product;
     public int Id => product.Id;
 
     public string Name => product.Name;
@@ -34,7 +32,7 @@ public class ProductViewModel(Product product) : ReactiveObject
     /// <summary>
     /// Need implement by ICashierService
     /// </summary>
-    public bool IsAdded => false;
+    public bool IsAdded => product.IsAdded;
 
     public double Count => product.Count;
 

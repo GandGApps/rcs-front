@@ -7,12 +7,12 @@ using Kassa.DataAccess;
 namespace Kassa.BuisnessLogic;
 public interface ICashierService : IInitializableService, INotifyPropertyChanged
 {
-    public Category? CurrentCategory
+    public CategoryDto? CurrentCategory
     {
         get;
     }
 
-    public IReadOnlyList<Category> CategoriesStack
+    public IReadOnlyList<CategoryDto> CategoriesStack
     {
         get;
     }
@@ -30,7 +30,7 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
     /// </summary>
     /// <param name="categoryItems"></param>
     /// <returns></returns>
-    public IDisposable BindSelectedCategoryItems(out ReadOnlyObservableCollection<ICategoryItem> categoryItems);
+    public IDisposable BindSelectedCategoryItems(out ReadOnlyObservableCollection<ICategoryItemDto> categoryItems);
     public IDisposable BindShoppingListItems(out ReadOnlyObservableCollection<ProductShoppingListItemDto> shoppingListItems);
     public IDisposable BindSelectedShoppingListItems(out ReadOnlyObservableCollection<IShoppingListItemDto> shoppingListItems);
     public IDisposable BindAdditives(out ReadOnlyObservableCollection<Additive> additives);

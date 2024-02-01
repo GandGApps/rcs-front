@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
@@ -12,7 +14,7 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
     private bool _isInitialized;
     private bool _isDisposed;
 
-    public SourceCache<Product, int> RuntimeProducts
+    public SourceCache<ProductDto, int> RuntimeProducts
     {
         get;
     } = new(x => x.Id);
@@ -31,7 +33,7 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
         {
             var products = await productRepository.GetAll();
 
-            RuntimeProducts.AddOrUpdate(products);
+            RuntimeProducts.AddOrUpdate(products.Select(x => ToProductDto(x)));
 
             _isInitialized = true;
         }
@@ -41,12 +43,12 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
         }
     }
 
-    public Task DecreaseProductCount(Product product)
+    public Task DecreaseProductCount(ProductDto product)
     {
         return DecreaseProductCount(product.Id);
     }
 
-    public Task IncreaseProductCount(Product product)
+    public Task IncreaseProductCount(ProductDto product)
     {
         return IncreaseProductCount(product.Id);
     }
@@ -62,10 +64,11 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
             throw new InvalidOperationException($"Product with id {productId} not found");
         }
 
-        await UpdateProduct(product with
-        {
-            Count = product.Count - 1
-        });
+        product.Count--;
+
+        await productRepository.Update(product);
+
+        await UpdateProduct(ToProductDto(product));
     }
 
     public async Task IncreaseProductCount(int productId)
@@ -79,40 +82,52 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
             throw new InvalidOperationException($"Product with id {productId} not found");
         }
 
-        await UpdateProduct(product with
-        {
-            Count = product.Count + 1
-        });
+        product.Count++;
+
+        await productRepository.Update(product);
+
+        await UpdateProduct(ToProductDto(product));
 
     }
 
-    public async ValueTask<Product?> GetProductById(int productId)
+    public async ValueTask<ProductDto?> GetProductById(int productId)
     {
         this.ThrowIfNotInitialized();
 
         var product = await productRepository.Get(productId);
-        if (product is not null)
+        var productDto = ToProductDto(product);
+
+        if (productDto is not null)
         {
-            UpdateRuntimeProducts(product);
+            UpdateRuntimeProducts(productDto);
         }
 
-        return product;
+        return productDto;
     }
 
-    public async Task UpdateProduct(Product product)
+    public async Task UpdateProduct(ProductDto productDto)
     {
         this.ThrowIfNotInitialized();
 
+        var product = await GetProductOrThrow(productDto, productRepository);
+
+        if (product == null)
+        {
+            throw new InvalidOperationException($"Product with id {productDto.Id} not found");
+        }
+
+        product = ProductDto.ToProduct(productDto);
+        
         await productRepository.Update(product);
 
-        UpdateRuntimeProducts(product);
+        UpdateRuntimeProducts(productDto);
     }
 
-    private void UpdateRuntimeProducts(Product product)
+    private void UpdateRuntimeProducts(ProductDto productDto)
     {
         RuntimeProducts.Edit(updater =>
         {
-            updater.AddOrUpdate(product);
+            updater.AddOrUpdate(productDto);
         });
     }
 
@@ -127,12 +142,34 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
         return ValueTask.CompletedTask;
     }
 
-    public async Task RemoveProduct(Product product)
+    public async Task RemoveProduct(ProductDto productDto)
     {
         this.ThrowIfNotInitialized();
 
+        var product = await GetProductOrThrow(productDto, productRepository);
+
         await productRepository.Delete(product);
 
-        RuntimeProducts.Remove(product);
+        RuntimeProducts.Remove(productDto);
     }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [return: NotNullIfNotNull(nameof(product))]
+    private static ProductDto? ToProductDto(Product? product) => ProductDto.FromProduct(product);
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static async Task<Product> GetProductOrThrow(int id, IRepository<Product> repository)
+    {
+        var product = await repository.Get(id);
+
+        if (product == null)
+        {
+            throw new InvalidOperationException($"Product with id {id} not found");
+        }
+
+        return product;
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private static Task<Product> GetProductOrThrow(ProductDto productDto, IRepository<Product> repository) => GetProductOrThrow(productDto.Id, repository);
 }

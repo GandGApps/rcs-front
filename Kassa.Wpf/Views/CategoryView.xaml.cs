@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kassa.BuisnessLogic;
 using Kassa.DataAccess;
 using Kassa.RxUI;
 using Kassa.Wpf.Controls;
@@ -21,7 +22,7 @@ namespace Kassa.Wpf.Views;
 /// <summary>
 /// Логика взаимодействия для CategoryView.xaml
 /// </summary>
-public partial class CategoryView : ButtonUserControl<Category>
+public partial class CategoryView : ButtonUserControl<CategoryDto>
 {
     public CategoryView()
     {

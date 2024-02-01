@@ -12,7 +12,7 @@ using Splat;
 namespace Kassa.RxUI;
 public class CategoryViewModel : ReactiveObject
 {
-    public static readonly ReactiveCommand<Category, Unit> MoveToCategoryCommand = ReactiveCommand.CreateFromTask<Category>(async (category) =>
+    public static readonly ReactiveCommand<CategoryDto, Unit> MoveToCategoryCommand = ReactiveCommand.CreateFromTask<CategoryDto>(async (category) =>
     {
         var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
 
@@ -26,8 +26,8 @@ public class CategoryViewModel : ReactiveObject
         await cashierService.SelectPreviosCategory();
     });
 
-    private readonly Category _category;
-    public CategoryViewModel(Category category)
+    private readonly CategoryDto _category;
+    public CategoryViewModel(CategoryDto category)
     {
         _category = category;
     }

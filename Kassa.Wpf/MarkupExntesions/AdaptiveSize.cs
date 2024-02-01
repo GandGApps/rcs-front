@@ -48,6 +48,7 @@ public class AdaptiveSizeExtension : MarkupExtension
         var targetProperty = valueTargetProvider?.TargetProperty;
         var targetObject = valueTargetProvider?.TargetObject;
 
+
         if (targetObject is DependencyObject dependencyObject)
         {
             if (DesignerProperties.GetIsInDesignMode(dependencyObject))
@@ -68,8 +69,44 @@ public class AdaptiveSizeExtension : MarkupExtension
             }
         }
 
+        if (MainWindow.Instance == null)
+        {
+            if (targetObject is Setter dSetter)
+            {
+                if (dSetter.Property.PropertyType == typeof(Thickness))
+                {
+                    return Thickness;
+                }
+
+                if (dSetter.Property.PropertyType == typeof(GridLength))
+                {
+                    return GridLength;
+                }
+
+                return Size;
+            }
+        }
+
         Binding binding;
         var source = GetSource(serviceProvider);
+
+        if (targetObject is Setter setter)
+        {
+            if (setter.Property.PropertyType == typeof(Thickness))
+            {
+
+                binding = new Binding
+                {
+                    Source = source,
+                    Path = new("ActualWidth"),
+                    Converter = new AdaptiveSizeConverter(),
+                    ConverterParameter = Thickness,
+                    FallbackValue = Thickness
+                };
+
+                return binding.ProvideValue(serviceProvider);
+            }
+        }
 
         if (targetProperty is DependencyProperty property)
         {
@@ -103,23 +140,7 @@ public class AdaptiveSizeExtension : MarkupExtension
             }
         }
 
-        if (targetObject is Setter setter)
-        {
-            if (setter.Property.PropertyType == typeof(Thickness))
-            {
 
-                binding = new Binding
-                {
-                    Source = source,
-                    Path = new("ActualWidth"),
-                    Converter = new AdaptiveSizeConverter(),
-                    ConverterParameter = Thickness,
-                    FallbackValue = Thickness
-                };
-
-                return binding.ProvideValue(serviceProvider);
-            }
-        }
 
         binding = new Binding
         {

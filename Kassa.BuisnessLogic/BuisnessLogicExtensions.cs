@@ -20,7 +20,7 @@ public static class BuisnessLogicExtensions
         }
     }
 
-    public static IObservable<IChangeSet<T,TKey>> TransfromAndBind<T,TSource,TKey>(this IObservable<IChangeSet<TSource,TKey>> changes, Func<TSource,T> create) 
+    public static IObservable<IChangeSet<T,TKey>> TransformAndBind<T,TSource,TKey>(this IObservable<IChangeSet<TSource,TKey>> changes, Func<TSource,T> create) 
         where T: class, IReactiveToChangeSet<TKey, TSource> 
         where TKey: notnull 
         where TSource: notnull

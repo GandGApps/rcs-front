@@ -1,12 +1,11 @@
-﻿using System.Configuration;
-using System.Data;
-using System.Reflection;
+﻿using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
-using ReactiveUI;
-using Splat;
 using Kassa.BuisnessLogic;
 using Kassa.DataAccess;
+using Kassa.Wpf.Themes;
+using ReactiveUI;
+using Splat;
 
 namespace Kassa.Wpf;
 /// <summary>
@@ -48,6 +47,59 @@ public partial class App : Application
 
         merged[brushKey] = new SolidColorBrush(color);
     }
+
+    public static void SetThemeResource(string key, object value)
+    {
+        var app = (App)Current;
+        var merged = app.Resources.MergedDictionaries[0];
+
+        merged[key] = value;
+    }
+
+    public static object GetThemeResource(string key)
+    {
+
+        var app = (App)Current;
+        var merged = app.Resources.MergedDictionaries[0];
+
+        return merged[key];
+    }
+
+    public static void SwitchTheme(Theme theme) => SwitchTheme(theme.ToString());
+
+    public static void SwitchTheme(string themeName)
+    {
+        var app = (App)Current;
+
+        var theme = new ResourceDictionary
+        {
+            Source = new Uri($"Themes/{themeName}Generated.xaml", UriKind.Relative)
+        };
+
+        app.Resources.MergedDictionaries.Insert(0,theme);
+        app.Resources.MergedDictionaries.RemoveAt(1);
+    }
+
+
+    /// <summary>
+    /// Get current theme name
+    /// </summary>
+    /// <returns>$"Themes/{themeName}Generated.xaml" theme name</returns>
+    public static Theme GetCurrentThemeName()
+    {
+        var app = (App)Current;
+        var merged = app.Resources.MergedDictionaries[0];
+
+        var themeName = merged.Source.OriginalString.Split('/').LastOrDefault()?.Split('.').FirstOrDefault();
+
+        if (string.IsNullOrEmpty(themeName))
+            throw new Exception("Theme name is null or empty");
+
+        themeName = themeName[..^"Generated".Length];
+
+        return Enum.Parse<Theme>(themeName);
+    }
+
     public App()
     {
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());

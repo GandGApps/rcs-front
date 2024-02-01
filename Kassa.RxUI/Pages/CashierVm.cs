@@ -296,7 +296,7 @@ public class CashierVm : PageViewModel
     private readonly ReadOnlyObservableCollection<AdditiveViewModel> _fastAddictives;
 
     [Reactive]
-    public ReadOnlyObservableCollection<ICategoryItem>? CurrentCategoryItems
+    public ReadOnlyObservableCollection<ICategoryItemDto>? CurrentCategoryItems
     {
         get; set;
     }

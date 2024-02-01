@@ -15,7 +15,7 @@ using Kassa.DataAccess;
 namespace Kassa.BuisnessLogic;
 internal class CashierService(IProductService productService, ICategoryService categoryService, IAdditiveService additiveService) : ICashierService
 {
-    private readonly List<Category> _categoriesStack = [];
+    private readonly List<CategoryDto> _categoriesStack = [];
 
     public bool IsInitialized
     {
@@ -50,9 +50,9 @@ internal class CashierService(IProductService productService, ICategoryService c
     }
     private bool _isMultiSelect;
 
-    public IReadOnlyList<Category> CategoriesStack => _categoriesStack;
+    public IReadOnlyList<CategoryDto> CategoriesStack => _categoriesStack;
 
-    public Category? CurrentCategory
+    public CategoryDto? CurrentCategory
     {
         get => _currentCategory;
         set
@@ -82,29 +82,29 @@ internal class CashierService(IProductService productService, ICategoryService c
         get;
     } = new(x => x.Id);
 
-    private Category? _currentCategory;
+    private CategoryDto? _currentCategory;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
-    public IDisposable BindSelectedCategoryItems(out ReadOnlyObservableCollection<ICategoryItem> categoryItems)
+    public IDisposable BindSelectedCategoryItems(out ReadOnlyObservableCollection<ICategoryItemDto> categoryItems)
     {
         this.ThrowIfNotInitialized();
 
         var filterCondition = this.WhenPropertyChanged(cashierService => cashierService.CurrentCategory)
-            .Select(category => new Func<ICategoryItem, bool>(item => item.CategoryId == category.Value?.Id));
+            .Select(category => new Func<ICategoryItemDto, bool>(item => item.CategoryId == category.Value?.Id));
 
         var categoryStream = categoryService.RuntimeCategories.Connect()
-            .Transform(product => (ICategoryItem)product)
+            .Transform(category => (ICategoryItemDto)category)
             .Filter(filterCondition);
 
         var productStream = productService.RuntimeProducts.Connect()
-            .Transform(product => (ICategoryItem)product)
+            .Transform(product => (ICategoryItemDto)product)
             .Filter(filterCondition);
 
         var stream = categoryStream.Merge(productStream)
-            .Sort(SortExpressionComparer<ICategoryItem>.Ascending(x =>
+            .Sort(SortExpressionComparer<ICategoryItemDto>.Ascending(x =>
             {
-                if (x is Product)
+                if (x is ProductDto)
                 {
                     return 1;
                 }
@@ -237,9 +237,36 @@ internal class CashierService(IProductService productService, ICategoryService c
             throw new InvalidOperationException($"Product with id {productId} not found.");
         }
 
+        if (product.Count == 0)
+        {
+            return;
+        }
+
         await productService.DecreaseProductCount(product.Id);
 
-        product = await productService.GetProductById(product.Id);
+        product = (await productService.GetProductById(productId))!;
+
+        var existItem = ShoppingListItems.Items.FirstOrDefault(x => x.ItemId == product.Id);
+
+        if (existItem != null)
+        {
+            ShoppingListItems.AddOrUpdate(existItem with
+            {
+                Count = existItem.Count + 1
+            });
+
+            productService.RuntimeProducts.AddOrUpdate(product with
+            {
+                IsAdded = true
+            });
+
+            return;
+        }
+
+        productService.RuntimeProducts.AddOrUpdate(product with
+        {
+            IsAdded = true
+        });
 
         var shoppingListItem = new ProductShoppingListItemDto(product)
         {
@@ -282,7 +309,6 @@ internal class CashierService(IProductService productService, ICategoryService c
 
         if (shoppingListItemDto is null)
         {
-
             throw new ArgumentNullException(nameof(shoppingListItemDto));
         }
 
@@ -293,14 +319,14 @@ internal class CashierService(IProductService productService, ICategoryService c
             var product = await productService.GetProductById(shoppingListItem.ItemId);
             if (product != null)
             {
-
+                await productService.IncreaseProductCount(product.Id);
+                productService.RuntimeProducts.AddOrUpdate(product with
+                {
+                    IsAdded = false
+                });
             }
 
             SelectedShoppingListItems.Remove(shoppingListItemDto);
-            ShoppingListItems.Remove(shoppingListItem with
-            {
-                IsSelected = false
-            });
         }
     }
 
@@ -382,14 +408,17 @@ internal class CashierService(IProductService productService, ICategoryService c
 
         foreach (var shoppingListItem in SelectedShoppingListItems.Items)
         {
-            if (additive.ProductIds.Contains(shoppingListItem.ItemId) && 
-                additive.Count > 0 && 
+            if (additive.ProductIds.Contains(shoppingListItem.ItemId) &&
+                additive.Count > 0 &&
                 shoppingListItem is ProductShoppingListItemDto product)
             {
                 await additiveService.DecreaseAddtiveCount(additive);
 
                 product.Additives.Add(additive);
+
+                ShoppingListItems.Refresh(product);
             }
         }
+
     }
 }

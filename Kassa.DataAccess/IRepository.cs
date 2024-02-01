@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Kassa.DataAccess;
 public interface IRepository<T> where T : class, IModel
 {
-    public Task<T?> Get(int categoryId);
+    public Task<T?> Get(int id);
     public Task<IEnumerable<T>> GetAll();
     public Task Add(T item);
     public Task Update(T item);

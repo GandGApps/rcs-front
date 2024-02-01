@@ -4,14 +4,21 @@ using System.Linq;
 using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.BuisnessLogic;
 using Kassa.DataAccess;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Splat;
 
 namespace Kassa.RxUI;
 public class AdditiveViewModel : ReactiveObject
 {
+    public static readonly ReactiveCommand<Additive, Unit> AddAdditveToProduct = ReactiveCommand.CreateFromTask<Additive>(async additive =>
+    {
+        var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
 
+        await cashierService.AddAdditiveToProduct(additive.Id);
+    });
     public AdditiveViewModel(Additive additive, bool isAdded = false)
     {
         Name = additive.Name;
@@ -26,26 +33,26 @@ public class AdditiveViewModel : ReactiveObject
 
     public string Name
     {
-        get; 
+        get;
     }
 
     public string СurrencySymbol
     {
-        get; 
+        get;
     }
     public double Price
     {
-        get; 
+        get;
     }
 
     public bool IsAdded
     {
-        get; 
+        get;
     }
 
     public double Portion
     {
-        get; 
+        get;
     }
 
     /// <summary>
@@ -53,17 +60,17 @@ public class AdditiveViewModel : ReactiveObject
     /// </summary>
     public string Measure
     {
-        get; 
+        get;
     }
 
 
     public bool IsAvailable
     {
-        get; 
+        get;
     }
 
     [Reactive]
-    public ReactiveCommand<Unit,Unit> AddToShoppingListCommand
+    public ReactiveCommand<Unit, Unit> AddToShoppingListCommand
     {
         get; set;
     }
