@@ -15,24 +15,17 @@
     d:DesignWidth="1530"
     x:TypeArguments="vm:MainViewModel"
     Background="{DynamicResource BackgroundMenu}"
+    ResizeMode="NoResize"
+    WindowState="Maximized"
     WindowStyle="None"
     mc:Ignorable="d">
 
     <Window.Resources>
-        <mc:AlternateContent>
-            <mc:Choice Requires="debug">
-                <Style TargetType="Window">
-                    <Setter Property="ResizeMode" Value="CanResize" />
-                    <Setter Property="WindowState" Value="Normal" />
-                </Style>
-            </mc:Choice>
-            <mc:Fallback>
-                <Style TargetType="Window">
-                    <Setter Property="ResizeMode" Value="NoResize" />
-                    <Setter Property="WindowState" Value="Maximized" />
-                </Style>
-            </mc:Fallback>
-        </mc:AlternateContent>
+
+        <Style TargetType="Window">
+            <Setter Property="ResizeMode" Value="NoResize" />
+            <Setter Property="WindowState" Value="Maximized" />
+        </Style>
 
     </Window.Resources>
 
