@@ -292,12 +292,10 @@
             <Trigger Property="IsChecked" Value="True">
                 <Setter TargetName="_topShadow" Property="BorderBrush" Value="{DynamicResource TopShadowBrush}" />
                 <Setter TargetName="_bottomShadow" Property="BorderBrush" Value="{DynamicResource BottomShadowBrush}" />
-                <Setter Property="Background" Value="{DynamicResource PressedBackToMenuBackground}" />
             </Trigger>
             <Trigger Property="IsChecked" Value="False">
                 <Setter TargetName="_topShadow" Property="BorderBrush" Value="{DynamicResource BottomShadowBrush}" />
                 <Setter TargetName="_bottomShadow" Property="BorderBrush" Value="{DynamicResource TopShadowBrush}" />
-                <Setter Property="Background" Value="{DynamicResource ClickableBg}" />
             </Trigger>
         </ControlTemplate.Triggers>
 
@@ -321,9 +319,11 @@
         <Style.Triggers>
             <Trigger Property="IsChecked" Value="True">
                 <Setter Property="ContentTemplate" Value="{DynamicResource PressedMainMenuIcon}" />
+                <Setter Property="Background" Value="{DynamicResource PressedBackToMenuBackground}" />
             </Trigger>
             <Trigger Property="IsChecked" Value="False">
                 <Setter Property="ContentTemplate" Value="{DynamicResource MainMenuIcon}" />
+                <Setter Property="Background" Value="{DynamicResource ClickableBg}" />
             </Trigger>
         </Style.Triggers>
 

@@ -54,10 +54,7 @@
                 <ItemsControl x:Name="Products" BorderThickness="0">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <controls:FixedColumnsPanel
-                                HorizontalAlignment="Stretch"
-                                Columns="4"
-                                Orientation="Horizontal" />
+                            <UniformGrid VerticalAlignment="Top" Columns="4" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>

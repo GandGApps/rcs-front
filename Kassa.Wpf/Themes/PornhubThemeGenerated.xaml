@@ -150,12 +150,12 @@
     <!--#endregion-->
 
     <!--#region Keyboard-->
-    <SolidColorBrush x:Key="KeyBackground" Color="#E2EBF1" />
-    <SolidColorBrush x:Key="KeyForeground" Color="#153750" />
+    <SolidColorBrush x:Key="KeyBackground" Color="#DEDEDE" />
+    <SolidColorBrush x:Key="KeyForeground" Color="Black" />
     <!--#endregion-->
 
     <!--#region Dialog-->
-    <SolidColorBrush x:Key="DialogBackground" Color="#404049" />
+    <SolidColorBrush x:Key="DialogBackground" Color="#FFF" />
     <SolidColorBrush x:Key="DialogHeaderBackground" Color="#E2EBF1" />
     <SolidColorBrush x:Key="DialogButtonHover" Color="#FF9900" />
     <SolidColorBrush x:Key="DialogSubheaderForeground" Color="#153750" />

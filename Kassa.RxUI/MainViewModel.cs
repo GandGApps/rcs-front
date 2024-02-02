@@ -47,7 +47,12 @@ public class MainViewModel : ReactiveObject, IScreen
 
         CloseCommand = ReactiveCommand.Create((ReactiveObject sender) => sender);
 
-        DialogOpenCommand = ReactiveCommand.Create((DialogViewModel dialog) => dialog);
+        DialogOpenCommand = ReactiveCommand.CreateFromTask(async (DialogViewModel dialog) =>
+        {
+            await dialog.InitializeAsync();
+
+            return dialog;
+        });
 
         Router.CurrentViewModel.Subscribe(x =>
         {

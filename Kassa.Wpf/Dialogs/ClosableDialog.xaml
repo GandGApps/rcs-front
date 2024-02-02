@@ -121,7 +121,7 @@
 
     <Style
         x:Key="KeyboardCheckbox"
-        BasedOn="{StaticResource BackToMain}"
+        BasedOn="{StaticResource PrimaryCheckbox}"
         TargetType="CheckBox">
         <Setter Property="Width" Value="{mx:AdaptiveSize 136}" />
         <Setter Property="Height" Value="{mx:AdaptiveSize 50}" />
@@ -129,6 +129,12 @@
         <Setter Property="Padding" Value="3,0,3,0" />
         <Setter Property="HorizontalAlignment" Value="Right" />
         <Setter Property="HorizontalContentAlignment" Value="Center" />
+
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="BorderThickness" Value="0" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style

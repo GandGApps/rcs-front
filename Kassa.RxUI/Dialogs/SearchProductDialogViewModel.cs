@@ -10,7 +10,7 @@ using Splat;
 namespace Kassa.RxUI.Dialogs;
 public class SearchProductDialogViewModel : DialogViewModel
 {
-    private readonly ICashierService _cashierService = Locator.Current.GetRequiredService<ICashierService>();
+    private IProductService _productService;
 
     [Reactive]
     public ProductViewModel? SelectedProduct
@@ -30,58 +30,40 @@ public class SearchProductDialogViewModel : DialogViewModel
         get; set;
     }
 
-    [Reactive]
-    public IList<ProductViewModel> FilteredProducts
+    public ReadOnlyObservableCollection<ProductDto>? FilteredProducts => _filteredProducts;
+    private ReadOnlyObservableCollection<ProductDto>? _filteredProducts;
+
+    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        get; private set;
-    } = [];
+        _productService = await GetInitializedService<IProductService>();
 
-    private ReadOnlyObservableCollection<ProductViewModel>? _products;
-    public ReadOnlyObservableCollection<ProductViewModel>? Products => _products;
+        // Splitting the search text stream into immediate first item and throttled subsequent items
+        var searchTextStream = this.WhenAnyValue(x => x.SearchedText).Publish();
 
-    protected override void OnActivated(CompositeDisposable disposables)
-    {
+        var firstItemStream = searchTextStream
+            .Take(1)
+            .ObserveOn(RxApp.MainThreadScheduler);
 
-        var sharedTextSearch = this.WhenAnyValue(x => x.SearchedText)
-            .Skip(2) // fixing first blinking
+        var throttledStream = searchTextStream
+            .Skip(1)
             .Throttle(TimeSpan.FromMilliseconds(500))
             .ObserveOn(RxApp.MainThreadScheduler)
-            .Publish()
-            .RefCount();
+            .Merge(firstItemStream) // Merging the immediate first item with the throttled stream
+            .DistinctUntilChanged();
 
-        sharedTextSearch.FirstAsync().Subscribe(text =>
-        {
-            FilteredProducts = new ObservableCollection<ProductViewModel>();
+        var searchFilter = throttledStream
+            .Select(text => new Func<ProductDto, bool>(product =>
+                string.IsNullOrWhiteSpace(text) || product.Name.Contains(text.Trim(), StringComparison.OrdinalIgnoreCase)));
 
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                FilteredProducts.Clear();
-                FilteredProducts.AddRange(Products == null ? Array.Empty<ProductViewModel>() : Products);
-            }
-            else
-            {
-                FilteredProducts.Clear();
-                FilteredProducts.AddRange(Products?.Where(x => x.Name.Contains(text, StringComparison.OrdinalIgnoreCase)) ?? []);
-            }
-        })
-        .DisposeWith(disposables);
+        _productService.RuntimeProducts
+            .Connect()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Filter(searchFilter)
+            .Bind(out _filteredProducts)
+            .Subscribe()
+            .DisposeWith(disposables);
 
-        sharedTextSearch.Subscribe(text =>
-        {
-
-            if (string.IsNullOrWhiteSpace(text))
-            {
-                FilteredProducts.Clear();
-                FilteredProducts.AddRange(Products == null ? Array.Empty<ProductViewModel>() : Products);
-            }
-            else
-            {
-                FilteredProducts.Clear();
-                FilteredProducts.AddRange(Products?.Where(x => x.Name.Contains(text, StringComparison.OrdinalIgnoreCase)) ?? []);
-            }
-        })
-        .DisposeWith(disposables);
-
-        FilteredProducts = _products;
+        searchTextStream.Connect().DisposeWith(disposables);
     }
+
 }

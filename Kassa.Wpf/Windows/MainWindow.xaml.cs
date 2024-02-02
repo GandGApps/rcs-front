@@ -52,8 +52,10 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
         var viewLocator = Locator.Current.GetService<IViewLocator>() ??
             throw new NullReferenceException($"Service IViewLocator not found!");
 
-        ViewModel.DialogOpenCommand = ReactiveCommand.Create((DialogViewModel x) =>
+        ViewModel.DialogOpenCommand = ReactiveCommand.CreateFromTask(async (DialogViewModel x) =>
         {
+            await x.InitializeAsync();
+
             DialogHost.Router.Navigate.Execute(x).Subscribe();
 
             x.CloseCommand.FirstAsync().Subscribe(_ =>

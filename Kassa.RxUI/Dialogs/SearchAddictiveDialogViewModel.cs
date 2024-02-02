@@ -8,6 +8,8 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
+using Kassa.BuisnessLogic;
+using Kassa.DataAccess;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -15,30 +17,46 @@ namespace Kassa.RxUI.Dialogs;
 
 public class SearchAddictiveDialogViewModel : DialogViewModel
 {
+    private IAdditiveService _additiveService;
+
     public SearchAddictiveDialogViewModel(MainViewModel mainViewModel) : base(mainViewModel)
     {
         IsKeyboardVisible = false;
     }
 
-    protected override void OnActivated(CompositeDisposable disposables)
+
+    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        this.WhenAnyValue(x => x.SearchedText)
-            .Skip(2) // fixing first blinking
+        _additiveService = await GetInitializedService<IAdditiveService>();
+
+        // Splitting the search text stream into immediate first item and throttled subsequent items
+        var searchTextStream = this.WhenAnyValue(x => x.SearchedText).Publish();
+
+        var firstItemStream = searchTextStream
+            .Take(1)
+            .ObserveOn(RxApp.MainThreadScheduler);
+
+        var throttledStream = searchTextStream
+            .Skip(1)
             .Throttle(TimeSpan.FromMilliseconds(500))
             .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(x =>
-            {
-                if (string.IsNullOrWhiteSpace(x))
-                {
-                    FilteredAddcitves.Clear();
-                    FilteredAddcitves.AddRange(Addictives);
-                    return;
-                }
-                var filtered = Addictives.Where(x => x.Name.Contains(SearchedText, StringComparison.CurrentCultureIgnoreCase));
-                FilteredAddcitves.Clear();
-                FilteredAddcitves.AddRange(filtered);
-            })
+            .Merge(firstItemStream) // Merging the immediate first item with the throttled stream
+            .DistinctUntilChanged();
+
+        var searchFilter = throttledStream
+            .Select(text => new Func<Additive, bool>(addictive =>
+                           string.IsNullOrWhiteSpace(text) || addictive.Name.Contains(text.Trim(), StringComparison.OrdinalIgnoreCase)));
+
+        _additiveService.RuntimeAdditives
+            .Connect()
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Filter(searchFilter)
+            .Bind(out _filteredAdditives)
+            .DisposeMany()
+            .Subscribe()
             .DisposeWith(disposables);
+
+        searchTextStream.Connect().DisposeWith(disposables);
     }
 
     [Reactive]
@@ -53,13 +71,8 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
         get; set;
     }
 
-    public ReadOnlyObservableCollection<AdditiveViewModel> Addictives => _addictives;
-    private readonly ReadOnlyObservableCollection<AdditiveViewModel> _addictives;
-
-    public ObservableCollection<AdditiveViewModel> FilteredAddcitves
-    {
-        get;
-    } 
+    public ReadOnlyObservableCollection<Additive> FilteredAddcitves => _filteredAdditives;
+    private ReadOnlyObservableCollection<Additive> _filteredAdditives;
 
     /// <summary>
     /// if it's null then user canceled dialog

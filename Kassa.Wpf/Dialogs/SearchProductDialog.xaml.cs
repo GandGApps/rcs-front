@@ -26,6 +26,8 @@ public partial class SearchProductDialog : ClosableDialog<SearchProductDialogVie
     {
         InitializeComponent();
 
+        var loaded = false;
+
         this.WhenActivated(disposables =>
         {
             this.OneWayBind(ViewModel,
@@ -55,8 +57,19 @@ public partial class SearchProductDialog : ClosableDialog<SearchProductDialogVie
                 x => x ? "Вкл" : "Выкл"
             ).DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.FilteredProducts, v => v.Products.ItemsSource)
-                .DisposeWith(disposables);
+            LayoutUpdated += async (sender, args) =>
+            {
+                if (!loaded && (ActualHeight > 0 || ActualWidth > 0))
+                {
+
+                    await Task.Delay(300);
+
+                    this.OneWayBind(ViewModel, x => x.FilteredProducts, x => x.Products.ItemsSource)
+                        .DisposeWith(disposables);
+
+                    loaded = true;
+                }
+            };
 
         });
     }

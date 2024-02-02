@@ -161,12 +161,12 @@
     <!--#endregion-->
 
     <!--#region Keyboard-->
-    <StaticResource x:Key="KeyBackground" ResourceKey="SecondaryBrush" />
-    <StaticResource x:Key="KeyForeground" ResourceKey="SecondaryForeground" />
+    <StaticResource x:Key="KeyBackground" ResourceKey="Theme" />
+    <StaticResource x:Key="KeyForeground" ResourceKey="PrimaryForeground" />
     <!--#endregion-->
 
     <!--#region Dialog-->
-    <StaticResource x:Key="DialogBackground" ResourceKey="SecondaryBackground" />
+    <StaticResource x:Key="DialogBackground" ResourceKey="AlternateForeground" />
     <StaticResource x:Key="DialogHeaderBackground" ResourceKey="SecondaryBrush" />
     <StaticResource x:Key="DialogButtonHover" ResourceKey="AccentBrush2" />
     <StaticResource x:Key="DialogSubheaderForeground" ResourceKey="SecondaryForeground" />
