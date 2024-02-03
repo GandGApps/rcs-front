@@ -8,10 +8,12 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
+using DynamicData.Alias;
 using DynamicData.Binding;
 using DynamicData.PLinq;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess;
+using ReactiveUI;
 
 namespace Kassa.BuisnessLogic.Services;
 internal class CashierService(IProductService productService, ICategoryService categoryService, IAdditiveService additiveService) : ICashierService
@@ -141,15 +143,17 @@ internal class CashierService(IProductService productService, ICategoryService c
         return stream.Subscribe();
     }
 
-    public IDisposable BindAdditives(out ReadOnlyObservableCollection<AdditiveDto> additives)
+    public IDisposable BindAdditivesForSelectedProduct(out ReadOnlyObservableCollection<AdditiveDto> additives)
     {
-
         this.ThrowIfNotInitialized();
 
-        var stream = AdditivesForSelectedProduct.Connect()
-                    .Bind(out additives);
-
-        return stream.Subscribe();
+        ShoppingListItems.Connect()
+            .TransformAsync(async x =>
+            {
+                return await additiveService.GetAdditivesByProductId(x.ItemId);
+            });
+        additives = new([]);
+        return Disposable.Create(() => { });
     }
 
     public void Dispose()
@@ -415,7 +419,15 @@ internal class CashierService(IProductService productService, ICategoryService c
             {
                 await additiveService.DecreaseAddtiveCount(additive);
 
-                product.Additives.Add(additive);
+                var updatedAdditive = additive with
+                {
+                    IsAdded = true
+                };
+
+                product.Additives.Add(updatedAdditive);
+                await additiveService.UpdateAdditive(updatedAdditive);
+                AdditivesForSelectedProduct.AddOrUpdate(updatedAdditive);
+                
 
                 ShoppingListItems.Refresh(product);
             }

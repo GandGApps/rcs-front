@@ -38,12 +38,21 @@ public class AdditiveService(IAdditiveRepository repository) : IAdditiveService,
             throw new ArgumentException("Additive count must be greater than zero.", nameof(additiveDto));
         }
 
-        await UpdateAdditive(additiveDto);
+        var foundedAdditive = await repository.Get(additiveDto.Id);
 
-        RuntimeAdditives.AddOrUpdate(additiveDto with
+        if (foundedAdditive is null)
         {
-            Count = additiveDto.Count - 1
+            throw new InvalidOperationException($"Additive with id {additiveDto.Id} not found");
+        }
+
+        var updatedAdditive = AdditiveDto.FromModel(foundedAdditive with
+        {
+            Count = foundedAdditive.Count - 1
         });
+
+        additiveDto.Count--;
+
+        await UpdateAdditive(updatedAdditive);
     }
     public void Dispose()
     {
@@ -88,10 +97,13 @@ public class AdditiveService(IAdditiveRepository repository) : IAdditiveService,
             throw new InvalidOperationException($"Additive with id {additiveDto.Id} not found");
         }
 
+        additiveDto.Count++;
         additiveDto = AdditiveDto.FromModel(foundedAdditive with
         {
             Count = foundedAdditive.Count + 1
         });
+
+
 
         await UpdateAdditive(additiveDto);
     }

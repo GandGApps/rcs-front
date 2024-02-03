@@ -10,10 +10,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="ReactiveUI" Version="19.5.1" />
-    <PackageReference Include="ReactiveUI.Fody" Version="19.5.1" />
-    <PackageReference Include="ReactiveUI.Blend" Version="19.5.1" />
-    <PackageReference Include="ReactiveUI.WPF" Version="19.5.1" />
+    <PackageReference Include="ReactiveUI" Version="19.5.41" />
+    <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
+    <PackageReference Include="ReactiveUI.Blend" Version="19.5.41" />
+    <PackageReference Include="ReactiveUI.WPF" Version="19.5.41" />
     <PackageReference Include="PixiEditor.ColorPicker" Version="3.4.1" />
   </ItemGroup>
 

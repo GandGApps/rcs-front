@@ -49,11 +49,11 @@ internal static class RuntimeDtoProviderExtensions
         where TDto : class, IDto<TModel, TDto>
     {
         var dtoFounded = await provider.GetDtoByIdOrThrow(dto.Id);
-        var model = TDto.ToModel(dtoFounded);
+        var model = TDto.ToModel(dto);
 
         await provider.Repository.Update(model);
 
-        provider.RuntimeDtos.AddOrUpdate(dtoFounded);
+        provider.RuntimeDtos.AddOrUpdate(dto);
     }
 
 

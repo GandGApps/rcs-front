@@ -212,14 +212,14 @@
                                     Margin="6,0,0,0"
                                     FontSize="13"
                                     TextTrimming="CharacterEllipsis">
-                                    <Run Text="{Binding Name, Mode=OneTime}" /> <Run Text="{Binding Count, Mode=OneTime}" /><Run Text="{Binding Measure, Mode=OneTime}" />
+                                    <Run Text="{Binding Name}" /> <Run Text="{Binding Portion}" /><Run Text="{Binding Measure}" />
                                 </TextBlock>
 
                                 <TextBlock
                                     Grid.Column="2"
                                     Margin="6,0,0,0"
                                     FontSize="16">
-                                    <Run Text="{Binding Price, Mode=OneTime}" /><Run Text="{Binding CurrencySymbo, Mode=OneTime}" />
+                                    <Run Text="{Binding Price}" /><Run Text="{Binding CurrencySymbo}" />
                                 </TextBlock>
 
                             </Grid>
