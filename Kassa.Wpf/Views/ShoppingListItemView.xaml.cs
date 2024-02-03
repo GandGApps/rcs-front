@@ -1,5 +1,7 @@
 ﻿using System.Reactive;
 using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.Dto;
+using Kassa.BuisnessLogic.Services;
 using ReactiveUI;
 using Splat;
 

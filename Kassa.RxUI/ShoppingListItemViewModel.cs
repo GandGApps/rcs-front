@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
 using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.Services;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;

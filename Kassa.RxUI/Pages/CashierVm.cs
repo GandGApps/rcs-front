@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
 using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.Dto;
+using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess;
 using Kassa.RxUI.Dialogs;
 using ReactiveUI;
@@ -229,7 +231,7 @@ public class CashierVm : PageViewModel
     }
 
     [Reactive]
-    public ReadOnlyObservableCollection<Additive> FastAdditives
+    public ReadOnlyObservableCollection<AdditiveDto> FastAdditives
     {
         get; set;
     }

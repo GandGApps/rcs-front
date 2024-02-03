@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Splat;
 
-namespace Kassa.BuisnessLogic;
+namespace Kassa.BuisnessLogic.Services;
 internal class InitializableServiceFactory<T> : IInitializableServiceFactory<T> where T : class, IInitializableService
 {
     private T? _service;

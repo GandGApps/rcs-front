@@ -10,9 +10,10 @@ using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
 using DynamicData.PLinq;
+using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess;
 
-namespace Kassa.BuisnessLogic;
+namespace Kassa.BuisnessLogic.Services;
 internal class CashierService(IProductService productService, ICategoryService categoryService, IAdditiveService additiveService) : ICashierService
 {
     private readonly List<CategoryDto> _categoriesStack = [];
@@ -77,7 +78,7 @@ internal class CashierService(IProductService productService, ICategoryService c
         get;
     } = new(x => x.Id);
 
-    public SourceCache<Additive, int> AdditivesForSelectedProduct
+    public SourceCache<AdditiveDto, int> AdditivesForSelectedProduct
     {
         get;
     } = new(x => x.Id);
@@ -140,7 +141,7 @@ internal class CashierService(IProductService productService, ICategoryService c
         return stream.Subscribe();
     }
 
-    public IDisposable BindAdditives(out ReadOnlyObservableCollection<Additive> additives)
+    public IDisposable BindAdditives(out ReadOnlyObservableCollection<AdditiveDto> additives)
     {
 
         this.ThrowIfNotInitialized();

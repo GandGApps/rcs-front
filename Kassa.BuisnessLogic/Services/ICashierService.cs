@@ -2,9 +2,10 @@
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using DynamicData;
+using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess;
 
-namespace Kassa.BuisnessLogic;
+namespace Kassa.BuisnessLogic.Services;
 public interface ICashierService : IInitializableService, INotifyPropertyChanged
 {
     public CategoryDto? CurrentCategory
@@ -33,7 +34,7 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
     public IDisposable BindSelectedCategoryItems(out ReadOnlyObservableCollection<ICategoryItemDto> categoryItems);
     public IDisposable BindShoppingListItems(out ReadOnlyObservableCollection<ProductShoppingListItemDto> shoppingListItems);
     public IDisposable BindSelectedShoppingListItems(out ReadOnlyObservableCollection<IShoppingListItemDto> shoppingListItems);
-    public IDisposable BindAdditives(out ReadOnlyObservableCollection<Additive> additives);
+    public IDisposable BindAdditives(out ReadOnlyObservableCollection<AdditiveDto> additives);
 
     public Task AddProductToShoppingList(int productId);
 

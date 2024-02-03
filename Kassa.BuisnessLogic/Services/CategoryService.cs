@@ -6,9 +6,10 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
+using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess;
 
-namespace Kassa.BuisnessLogic;
+namespace Kassa.BuisnessLogic.Services;
 public sealed class CategoryService(IRepository<Category> repository) : ICategoryService
 {
     public SourceCache<CategoryDto, int> RuntimeCategories

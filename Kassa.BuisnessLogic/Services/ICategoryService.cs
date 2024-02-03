@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
+using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess;
 
-namespace Kassa.BuisnessLogic;
-public interface ICategoryService: IInitializableService
+namespace Kassa.BuisnessLogic.Services;
+public interface ICategoryService : IInitializableService
 {
     /// <summary>
     /// <para>

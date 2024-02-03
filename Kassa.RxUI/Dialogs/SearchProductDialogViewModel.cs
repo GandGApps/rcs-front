@@ -2,7 +2,8 @@
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using DynamicData;
-using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.Dto;
+using Kassa.BuisnessLogic.Services;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;

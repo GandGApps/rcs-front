@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.DataAccess;
 
-namespace Kassa.BuisnessLogic;
+namespace Kassa.BuisnessLogic.Dto;
 public record ProductShoppingListItemDto : IShoppingListItemDto
 {
 
@@ -77,13 +77,13 @@ public record ProductShoppingListItemDto : IShoppingListItemDto
 
     public bool HasAdditiveInfo => !string.IsNullOrWhiteSpace(AdditiveInfo);
 
-    public ICollection<Additive> Additives
+    public ICollection<AdditiveDto> Additives
     {
-        get; 
-    } = new ObservableCollection<Additive>();
+        get;
+    } = new ObservableCollection<AdditiveDto>();
 
     public string? AdditiveInfo
     {
         get; init;
-    } 
+    }
 }

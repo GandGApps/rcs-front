@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.DataAccess;
 
-namespace Kassa.BuisnessLogic;
+namespace Kassa.BuisnessLogic.Dto;
 public interface ICategoryItemDto
 {
     public int? CategoryId

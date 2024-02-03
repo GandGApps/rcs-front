@@ -7,8 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.DataAccess;
 
-namespace Kassa.BuisnessLogic;
-public record ProductDto : ICategoryItemDto
+namespace Kassa.BuisnessLogic.Dto;
+public record ProductDto : ICategoryItemDto, IDto<Product, ProductDto>
 {
     public int Id
     {
@@ -85,6 +85,9 @@ public record ProductDto : ICategoryItemDto
         get;
     } = null;
 
+    [return: NotNullIfNotNull("model")]
+    public static ProductDto? FromModel(Product? model) =>  FromProduct(model);
+
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [return: NotNullIfNotNull(nameof(product))]
@@ -100,6 +103,8 @@ public record ProductDto : ICategoryItemDto
         Icon = product.Icon,
         CategoryId = product.CategoryId,
     };
+    [return: NotNullIfNotNull("dto")]
+    public static Product? ToModel(ProductDto? dto) => ToProduct(dto);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [return: NotNullIfNotNull(nameof(productDto))]

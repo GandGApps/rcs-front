@@ -1,7 +1,7 @@
 ﻿using System.Reactive.Disposables;
 using Splat; // need's for comment
 
-namespace Kassa.BuisnessLogic;
+namespace Kassa.BuisnessLogic.Services;
 
 /// <summary>
 /// <para>

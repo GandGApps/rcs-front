@@ -15,6 +15,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess;
 using Kassa.RxUI;
 using ReactiveUI;
@@ -24,7 +25,7 @@ namespace Kassa.Wpf.Views;
 /// <summary>
 /// Interaction logic for AddictiveView.xaml
 /// </summary>
-public partial class AddictiveView : ReactiveUserControl<Additive>
+public partial class AddictiveView : ReactiveUserControl<AdditiveDto>
 {
 
     public static readonly DependencyProperty HasAddictiveIconProperty = DependencyProperty.Register(

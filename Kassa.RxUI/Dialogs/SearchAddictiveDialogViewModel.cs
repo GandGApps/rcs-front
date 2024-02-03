@@ -8,7 +8,8 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
-using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.Dto;
+using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -44,7 +45,7 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
             .DistinctUntilChanged();
 
         var searchFilter = throttledStream
-            .Select(text => new Func<Additive, bool>(addictive =>
+            .Select(text => new Func<AdditiveDto, bool>(addictive =>
                            string.IsNullOrWhiteSpace(text) || addictive.Name.Contains(text.Trim(), StringComparison.OrdinalIgnoreCase)));
 
         _additiveService.RuntimeAdditives
@@ -71,8 +72,8 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
         get; set;
     }
 
-    public ReadOnlyObservableCollection<Additive> FilteredAddcitves => _filteredAdditives;
-    private ReadOnlyObservableCollection<Additive> _filteredAdditives;
+    public ReadOnlyObservableCollection<AdditiveDto> FilteredAddcitves => _filteredAdditives;
+    private ReadOnlyObservableCollection<AdditiveDto> _filteredAdditives;
 
     /// <summary>
     /// if it's null then user canceled dialog

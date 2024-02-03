@@ -1,5 +1,4 @@
-﻿
-namespace Kassa.BuisnessLogic;
+﻿namespace Kassa.BuisnessLogic.Services;
 
 public interface IInitializableServiceFactory<T> where T : class, IInitializableService
 {

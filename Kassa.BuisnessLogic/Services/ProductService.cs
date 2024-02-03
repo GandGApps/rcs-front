@@ -6,10 +6,11 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
+using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess;
 
-namespace Kassa.BuisnessLogic;
-internal sealed class ProductService(IRepository<Product> productRepository, IAdditiveRepository additiveRepository) : IProductService
+namespace Kassa.BuisnessLogic.Services;
+internal sealed class ProductService(IRepository<Product> productRepository, IAdditiveRepository additiveRepository) : IProductService, IRuntimeDtoProvider<ProductDto, int, Product>
 {
     private bool _isInitialized;
     private bool _isDisposed;
@@ -22,6 +23,10 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
     public bool IsInitialized => _isInitialized;
 
     public bool IsDisposed => _isDisposed;
+
+    SourceCache<ProductDto, int> IRuntimeDtoProvider<ProductDto, int, Product>.RuntimeDtos => RuntimeProducts;
+    IRepository<Product> IRuntimeDtoProvider<ProductDto, int, Product>.Repository => productRepository;
+
 
     public async ValueTask Initialize()
     {
@@ -39,7 +44,7 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
         }
         catch (Exception e)
         {
-            throw new InvalidOperationException("Failed to initialize repository", e);
+            throw new InvalidOperationException("Failed to initialize service", e);
         }
     }
 
@@ -117,7 +122,7 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
         }
 
         product = ProductDto.ToProduct(productDto);
-        
+
         await productRepository.Update(product);
 
         UpdateRuntimeProducts(productDto);

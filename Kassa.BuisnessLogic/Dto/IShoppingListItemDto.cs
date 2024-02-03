@@ -1,4 +1,4 @@
-﻿namespace Kassa.BuisnessLogic;
+﻿namespace Kassa.BuisnessLogic.Dto;
 
 public interface IShoppingListItemDto
 {
@@ -43,7 +43,7 @@ public interface IShoppingListItemDto
 
     public string Measure
     {
-        get; 
+        get;
     }
     public double Price
     {
@@ -51,10 +51,10 @@ public interface IShoppingListItemDto
     }
     public double SubtotalSum
     {
-        get; 
+        get;
     }
     public double TotalSum
     {
-        get; 
+        get;
     }
 }

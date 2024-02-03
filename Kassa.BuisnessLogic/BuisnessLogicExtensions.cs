@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
+using Kassa.BuisnessLogic.Services;
 
 namespace Kassa.BuisnessLogic;
 public static class BuisnessLogicExtensions

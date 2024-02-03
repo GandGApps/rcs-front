@@ -5,6 +5,7 @@ using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.Services;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;

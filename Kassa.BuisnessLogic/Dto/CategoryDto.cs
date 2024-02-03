@@ -7,8 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.DataAccess;
 
-namespace Kassa.BuisnessLogic;
-public class CategoryDto: ICategoryItemDto
+namespace Kassa.BuisnessLogic.Dto;
+public class CategoryDto : ICategoryItemDto
 {
     public int Id
     {
