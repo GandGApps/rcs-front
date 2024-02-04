@@ -63,28 +63,6 @@ public class CashierVm : PageViewModel
             var dialog = await mainViewModel.DialogOpenCommand.Execute(addictiveDialog).FirstAsync();
 
             await dialog.WaitDialogClose();
-
-            if (addictiveDialog.SelectedAddictve is not null)
-            {
-
-                foreach (var item in ShoppingList.CurrentItems.OfType<ShoppingListItemViewModel>())
-                {
-
-                    var addictive = new AddictiveForShoppingListItem()
-                    {
-                        Name = addictiveDialog.SelectedAddictve.Name,
-                        Count = 1,
-                        Price = addictiveDialog.SelectedAddictve.Price,
-                        Measure = addictiveDialog.SelectedAddictve.Measure,
-                        ShoppingListViewModel = ShoppingList
-                    };
-                    addictive.RemoveCommand = ReactiveCommand.Create(() =>
-                    {
-                        item.Addictives.Remove(addictive);
-                    });
-                    item.Addictives.Add(addictive);
-                }
-            }
         });
 
         SelectCategoryCommand = ReactiveCommand.Create<string>(x =>
@@ -94,20 +72,10 @@ public class CashierVm : PageViewModel
 
         SearchProductCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-
             var searchProductDialog = new SearchProductDialogViewModel();
             var dialog = await mainViewModel.DialogOpenCommand.Execute(searchProductDialog).FirstAsync();
 
             await dialog.WaitDialogClose();
-
-            var product = searchProductDialog.SelectedProduct;
-
-            if (product is null)
-            {
-                return;
-            }
-
-            ShoppingList.AddictiveViewModels.Add(new ShoppingListItemViewModel(ShoppingList, product));
         });
 
         CreateCommentCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -122,7 +90,7 @@ public class CashierVm : PageViewModel
                    if (dialog.IsPublished)
                    {
 
-                       foreach (var item in ShoppingList.CurrentItems.OfType<ShoppingListItemViewModel>())
+                       foreach (var item in ShoppingList.CurrentItems.OfType<ProductShoppingListItemViewModel>())
                        {
 
                            item.AddictiveInfo = dialog.Comment;
@@ -188,7 +156,7 @@ public class CashierVm : PageViewModel
         _cashierService.BindSelectedCategoryItems(out var categoryItems)
                        .DisposeWith(disposables);
 
-        _cashierService.BindShoppingListItems(out var shoppingListItems)
+        _cashierService.BindShoppingListItems(x => new ProductShoppingListItemViewModel(x),out var shoppingListItems)
                        .DisposeWith(disposables);
 
         _cashierService.BindAdditivesForSelectedProduct(x => new AdditiveViewModel(x), out var fastAdditives)
@@ -225,7 +193,7 @@ public class CashierVm : PageViewModel
     }
 
     [Reactive]
-    public ReadOnlyObservableCollection<ProductShoppingListItemDto> ShoppingListItems
+    public ReadOnlyObservableCollection<ProductShoppingListItemViewModel> ShoppingListItems
     {
         get; set;
     }

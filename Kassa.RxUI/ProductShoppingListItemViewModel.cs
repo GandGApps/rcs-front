@@ -10,16 +10,15 @@ using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
 using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.RxUI;
-public class ShoppingListItemViewModel : ReactiveObject, IShoppingListItem
+public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListItem, IReactiveToChangeSet<int, ProductShoppingListItemDto>
 {
-    private readonly ICashierService _cashierService;
-    private readonly IProductService _productService;
     public int Id
     {
         get; set;
@@ -28,44 +27,26 @@ public class ShoppingListItemViewModel : ReactiveObject, IShoppingListItem
     /// Need's for design time
     /// </summary>
     [EditorBrowsable(EditorBrowsableState.Never)]
-    public ShoppingListItemViewModel() 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    public ProductShoppingListItemViewModel()
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     {
 
     }
 
-    public ShoppingListItemViewModel(ShoppingListViewModel shoppingListViewModel, ProductViewModel productViewModel)
+    public ProductShoppingListItemViewModel(ProductShoppingListItemDto product)
     {
-        _cashierService = Locator.Current.GetRequiredService<ICashierService>();
+        Source = product;
 
-        ShoppingListViewModel = shoppingListViewModel;
+        Additives = product.Additives;
 
+        this.WhenAnyValue(x => x.Source)
+            .Subscribe(Update);
 
-        this.WhenAnyValue(x => x.IsChecked)
+        this.WhenAnyValue(x => x.IsSelected)
             .Subscribe(x =>
             {
-                if (ShoppingListViewModel.IsMultiSelect)
-                {
-                    if (!x)
-                    {
-                        ShoppingListViewModel.CurrentItems.Remove(this);
-                    }
-                    else
-                    {
-                        ShoppingListViewModel.CurrentItems.Add(this);
-                    }
-                }
-                else
-                {
-                    if (!x)
-                    {
-                        ShoppingListViewModel.CurrentItems.Remove(this);
-                    }
-                    else
-                    {
-                        ShoppingListViewModel.CurrentItems.Clear();
-                        ShoppingListViewModel.CurrentItems.Add(this);
-                    }
-                }
+
             });
 
         this.WhenAnyValue(x => x.AddictiveInfo)
@@ -76,19 +57,18 @@ public class ShoppingListItemViewModel : ReactiveObject, IShoppingListItem
             .Select(x => (x.Item1 * x.Item2) + x.Item3)
             .Subscribe(x => SubtotalSum = x);
 
-        Addictives
+        Additives
             .ToObservableChangeSet()
-            .AutoRefresh(x => x.Price)
             .ToCollection()
             .Select(list => list.Sum(item => item.Price))
             .Subscribe(x => AddictiveSubtotalSum = x);
 
         Count = 1;
-        Price = productViewModel.Price;
-        Measure = productViewModel.Measure;
-        Name = productViewModel.Name;
-        CurrencySymbol = productViewModel.CurrencySymbol;
-        Id = productViewModel.Id;
+        Price = product.Price;
+        Measure = product.Measure;
+        Name = product.Name;
+        CurrencySymbol = product.CurrencySymbol;
+        Id = product.ItemId;
 
 
         RemoveCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -101,7 +81,7 @@ public class ShoppingListItemViewModel : ReactiveObject, IShoppingListItem
     public ShoppingListViewModel ShoppingListViewModel
     {
         get; set;
-    }
+    } = null!;
 
     [Reactive]
     public bool HasDiscount
@@ -151,9 +131,9 @@ public class ShoppingListItemViewModel : ReactiveObject, IShoppingListItem
         get; set;
     } = null!;
 
-    public ObservableCollection<AddictiveForShoppingListItem> Addictives
+    public ObservableCollection<AdditiveDto> Additives
     {
-        get;
+        get; 
     } = [];
 
     [Reactive]
@@ -162,7 +142,7 @@ public class ShoppingListItemViewModel : ReactiveObject, IShoppingListItem
         get; set;
     }
     [Reactive]
-    public bool IsChecked
+    public bool IsSelected
     {
         get; set;
     }
@@ -187,5 +167,27 @@ public class ShoppingListItemViewModel : ReactiveObject, IShoppingListItem
     public ReactiveCommand<Unit, Unit> RemoveCommand
     {
         get;
+    }
+
+    public ProductShoppingListItemDto Source
+    {
+        get => _source;
+        set
+        {
+            _source = value;
+            this.RaisePropertyChanged();
+        }
+    }
+    private ProductShoppingListItemDto _source;
+
+    private void Update(ProductShoppingListItemDto product)
+    {
+        Count = product.Count;
+        Price = product.Price;
+        Measure = product.Measure;
+        Name = product.Name;
+        CurrencySymbol = product.CurrencySymbol;
+        Id = product.ItemId;
+        IsSelected = product.IsSelected;
     }
 }

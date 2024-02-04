@@ -26,7 +26,7 @@ public interface IShoppingListItem
         get;
         set;
     }
-    bool IsChecked
+    bool IsSelected
     {
         get;
         set;

@@ -9,14 +9,14 @@
     xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     xmlns:rxui="http://reactiveui.net"
     xmlns:vm="clr-namespace:Kassa.RxUI;assembly=Kassa.RxUI"
-    d:DataContext="bl:ShoppingListItemDto"
+    d:DataContext="{d:DesignInstance Type=vm:ProductShoppingListItemViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="500"
-    x:TypeArguments="bl:ProductShoppingListItemDto"
+    x:TypeArguments="vm:ProductShoppingListItemViewModel"
     mc:Ignorable="d">
 
     <UserControl.Resources>
-        <ControlTemplate x:Key="ListItemTemplate" TargetType="CheckBox">
+        <ControlTemplate x:Key="ListItemTemplate" TargetType="Button">
             <Border
                 Width="{TemplateBinding Width}"
                 Height="{TemplateBinding Height}"
@@ -37,17 +37,14 @@
             <Setter Property="VerticalAlignment" Value="Top" />
         </Style>
 
-        <Style TargetType="CheckBox">
+        <Style TargetType="Button">
             <Setter Property="VerticalAlignment" Value="Top" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness=16}" />
             <Setter Property="Template" Value="{StaticResource ListItemTemplate}" />
+            <Setter Property="Background" Value="White" />
 
             <Style.Triggers>
-
-                <Trigger Property="IsChecked" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource SelectedShoppingListItemViewBackground}" />
-                </Trigger>
 
                 <DataTrigger Binding="{Binding IsSelected}" Value="True">
                     <Setter Property="Background" Value="{DynamicResource SelectedShoppingListItemViewBackground}" />
@@ -70,10 +67,7 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <CheckBox
-            x:Name="ProductCheckbox"
-            Grid.ColumnSpan="2"
-            IsChecked="{Binding IsSelected}">
+        <Button x:Name="ProductCheckbox" Grid.ColumnSpan="2">
 
             <Grid>
 
@@ -83,7 +77,7 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock FontSize="16" Text="{Binding Count, Mode=OneTime}" />
+                <TextBlock FontSize="16" Text="{Binding Count}" />
 
                 <TextBlock
                     Grid.Column="1"
@@ -99,16 +93,16 @@
                                 </Style.Triggers>
                             </Style>
                         </Run.Style>
-                    </Run><Run Text="{Binding Name, Mode=OneTime}" />
+                    </Run><Run Text="{Binding Name}" />
                 </TextBlock>
 
                 <TextBlock Grid.Column="2" FontSize="16">
-                    <Run Text="{Binding Price, Mode=OneTime}" /> <Run Text="{Binding CurrencySymbol, Mode=OneTime}" />
+                    <Run Text="{Binding Price}" /> <Run Text="{Binding CurrencySymbol}" />
                 </TextBlock>
 
             </Grid>
 
-        </CheckBox>
+        </Button>
 
         <Path
             Grid.Row="1"
@@ -142,7 +136,7 @@
                 Padding="13"
                 Background="White"
                 CornerRadius="11"
-                Visibility="{Binding HasAdditiveInfo, Converter={StaticResource BoolToVisibilityConverter}, Mode=OneTime}">
+                Visibility="{Binding HasAdditiveInfo, Converter={StaticResource BoolToVisibilityConverter}}">
 
                 <Border.Style>
                     <Style BasedOn="{StaticResource AdditiveBorder}" TargetType="Border" />
@@ -173,7 +167,7 @@
                         FontSize="13"
                         Foreground="{DynamicResource ShoppingListItemViewComment}"
                         TextTrimming="CharacterEllipsis">
-                        <Run Text="{Binding AdditiveInfo, Mode=OneTime}" /><Run FontSize="16" />
+                        <Run Text="{Binding AdditiveInfo}" /><Run FontSize="16" />
                     </TextBlock>
 
                 </Grid>
@@ -183,10 +177,7 @@
             <ItemsControl ItemsSource="{Binding Additives}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <CheckBox
-                            Margin="0,3"
-                            Padding="13"
-                            IsChecked="{Binding IsSelected}">
+                        <Button Margin="0,3" Padding="13">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="14" />
@@ -223,7 +214,7 @@
                                 </TextBlock>
 
                             </Grid>
-                        </CheckBox>
+                        </Button>
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
             </ItemsControl>

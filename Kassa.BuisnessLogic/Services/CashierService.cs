@@ -120,11 +120,12 @@ internal class CashierService(IProductService productService, ICategoryService c
         return stream.Subscribe();
     }
 
-    public IDisposable BindShoppingListItems(out ReadOnlyObservableCollection<ProductShoppingListItemDto> shoppingListItems)
+    public IDisposable BindShoppingListItems<T>(Func<ProductShoppingListItemDto, T> creator, out ReadOnlyObservableCollection<T> shoppingListItems) where T : class, IReactiveToChangeSet<int, ProductShoppingListItemDto>
     {
         this.ThrowIfNotInitialized();
 
         var stream = ShoppingListItems.Connect()
+            .TransformWithInlineUpdate(x => creator(x), (x, source) => x.Source = source)
             .Bind(out shoppingListItems);
 
         return stream.Subscribe();
@@ -308,8 +309,6 @@ internal class CashierService(IProductService productService, ICategoryService c
                 IsSelected = true
             });
         }
-
-        //await UpdateAdditivesForSelectedProduct();
     }
 
     public async Task RemoveShoppingListItem(IShoppingListItemDto shoppingListItemDto)
@@ -429,10 +428,6 @@ internal class CashierService(IProductService productService, ICategoryService c
 
                 product.Additives.Add(updatedAdditive);
                 await additiveService.UpdateAdditive(updatedAdditive);
-
-
-                ShoppingListItems.Refresh(product);
-                SelectedShoppingListItems.Refresh(product);
             }
         }
 

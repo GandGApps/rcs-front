@@ -73,11 +73,7 @@ public record ProductShoppingListItemDto : IShoppingListItemDto
     public double SubtotalSum => Price * Count;
     public double TotalSum => SubtotalSum * Discount;
 
-    public bool HasAdditives => Additives.Count > 0;
-
-    public bool HasAdditiveInfo => !string.IsNullOrWhiteSpace(AdditiveInfo);
-
-    public ICollection<AdditiveDto> Additives
+    public ObservableCollection<AdditiveDto> Additives
     {
         get;
     } = new ObservableCollection<AdditiveDto>();

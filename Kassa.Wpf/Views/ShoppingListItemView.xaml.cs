@@ -2,6 +2,7 @@
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
+using Kassa.RxUI;
 using ReactiveUI;
 using Splat;
 
@@ -9,20 +10,20 @@ namespace Kassa.Wpf.Views;
 /// <summary>
 /// Логика взаимодействия для ShoppingListItemView.xaml
 /// </summary>
-public partial class ShoppingListItemView : ReactiveUserControl<ProductShoppingListItemDto>
+public partial class ShoppingListItemView : ReactiveUserControl<ProductShoppingListItemViewModel>
 {
-    public static readonly ReactiveCommand<IShoppingListItemDto, Unit> SelectShoppingListItemCommand = ReactiveCommand.CreateFromTask<IShoppingListItemDto>(async shoppingListItem =>
+    public static readonly ReactiveCommand<ProductShoppingListItemViewModel, Unit> UpdateSelectionShoppingListItemCommand = ReactiveCommand.CreateFromTask<ProductShoppingListItemViewModel>(async vm =>
     {
         var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
 
-        await cashierService.SelectShoppingListItem(shoppingListItem);
-    });
-
-    public static readonly ReactiveCommand<IShoppingListItemDto, Unit> UnselectShoppingListItemCommand = ReactiveCommand.CreateFromTask<IShoppingListItemDto>(async shoppingListItem =>
-    {
-        var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
-
-        await cashierService.UnselectShoppingListItem(shoppingListItem);
+        if (vm.IsSelected)
+        {
+            await cashierService.UnselectShoppingListItem(vm.Source);
+        }
+        else
+        {
+            await cashierService.SelectShoppingListItem(vm.Source);
+        }
     });
 
     public ShoppingListItemView()
@@ -31,7 +32,7 @@ public partial class ShoppingListItemView : ReactiveUserControl<ProductShoppingL
 
         this.WhenActivated(disposables =>
         {
-            ProductCheckbox.Command = ViewModel!.IsSelected ? UnselectShoppingListItemCommand : SelectShoppingListItemCommand;
+            ProductCheckbox.Command = UpdateSelectionShoppingListItemCommand;
 
             ProductCheckbox.CommandParameter = ViewModel;
         });

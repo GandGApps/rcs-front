@@ -34,7 +34,7 @@ public class ShoppingListViewModel : ReactiveObject
         });
     }
 
-    public ObservableCollection<ShoppingListItemViewModel> AddictiveViewModels
+    public ObservableCollection<ProductShoppingListItemViewModel> AddictiveViewModels
     {
         get;
     } = [];

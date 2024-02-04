@@ -14,7 +14,7 @@ public class AddictiveForShoppingListItem : ReactiveObject, IShoppingListItem
 
     public AddictiveForShoppingListItem()
     {
-        this.WhenAnyValue(x => x.IsChecked)
+        this.WhenAnyValue(x => x.IsSelected)
             .Subscribe(x =>
             {
                 if (ShoppingListViewModel is null)
@@ -91,7 +91,7 @@ public class AddictiveForShoppingListItem : ReactiveObject, IShoppingListItem
     } = null!;
 
     [Reactive]
-    public bool IsChecked
+    public bool IsSelected
     {
         get; set;
     }
