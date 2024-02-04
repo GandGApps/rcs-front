@@ -25,7 +25,7 @@ namespace Kassa.Wpf.Views;
 /// <summary>
 /// Interaction logic for AddictiveView.xaml
 /// </summary>
-public partial class AddictiveView : ReactiveUserControl<AdditiveDto>
+public partial class AddictiveView : ReactiveUserControl<AdditiveViewModel>
 {
 
     public static readonly DependencyProperty HasAddictiveIconProperty = DependencyProperty.Register(
@@ -75,7 +75,7 @@ public partial class AddictiveView : ReactiveUserControl<AdditiveDto>
                     }
                     else
                     {
-                        DataContext = new AdditiveViewModel(x);
+                        DataContext = x;
                     }
                 });
         });

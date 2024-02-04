@@ -191,7 +191,7 @@ public class CashierVm : PageViewModel
         _cashierService.BindShoppingListItems(out var shoppingListItems)
                        .DisposeWith(disposables);
 
-        _cashierService.BindAdditivesForSelectedProduct(out var fastAdditives)
+        _cashierService.BindAdditivesForSelectedProduct(x => new AdditiveViewModel(x), out var fastAdditives)
                        .DisposeWith(disposables);
 
         IsMultiSelect = _cashierService.IsMultiSelect;
@@ -231,7 +231,7 @@ public class CashierVm : PageViewModel
     }
 
     [Reactive]
-    public ReadOnlyObservableCollection<AdditiveDto> FastAdditives
+    public ReadOnlyObservableCollection<AdditiveViewModel> FastAdditives
     {
         get; set;
     }

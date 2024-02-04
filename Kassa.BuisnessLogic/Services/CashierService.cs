@@ -8,9 +8,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
-using DynamicData.Alias;
 using DynamicData.Binding;
-using DynamicData.PLinq;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess;
 using ReactiveUI;
@@ -143,17 +141,23 @@ internal class CashierService(IProductService productService, ICategoryService c
         return stream.Subscribe();
     }
 
-    public IDisposable BindAdditivesForSelectedProduct(out ReadOnlyObservableCollection<AdditiveDto> additives)
+    public IDisposable BindAdditivesForSelectedProduct<T>(Func<AdditiveDto, T> creator, out ReadOnlyObservableCollection<T> additives) where T : class, IReactiveToChangeSet<int, AdditiveDto>
     {
         this.ThrowIfNotInitialized();
 
-        ShoppingListItems.Connect()
+        var subscribe = ShoppingListItems.Connect()
+            .Filter(x => x.IsSelected)
             .TransformAsync(async x =>
             {
                 return await additiveService.GetAdditivesByProductId(x.ItemId);
-            });
-        additives = new([]);
-        return Disposable.Create(() => { });
+            })
+            .TransformMany(x => x, x => x.Id)
+            .TransformWithInlineUpdate(x => creator(x), (x, source) => x.Source = source)
+            .Bind(out additives)
+            .Subscribe();
+
+
+        return subscribe;
     }
 
     public void Dispose()
@@ -305,7 +309,7 @@ internal class CashierService(IProductService productService, ICategoryService c
             });
         }
 
-        await UpdateAdditivesForSelectedProduct();
+        //await UpdateAdditivesForSelectedProduct();
     }
 
     public async Task RemoveShoppingListItem(IShoppingListItemDto shoppingListItemDto)
@@ -421,17 +425,23 @@ internal class CashierService(IProductService productService, ICategoryService c
 
                 var updatedAdditive = additive with
                 {
-                    IsAdded = true
                 };
 
                 product.Additives.Add(updatedAdditive);
                 await additiveService.UpdateAdditive(updatedAdditive);
-                AdditivesForSelectedProduct.AddOrUpdate(updatedAdditive);
-                
+
 
                 ShoppingListItems.Refresh(product);
+                SelectedShoppingListItems.Refresh(product);
             }
         }
 
+    }
+
+    public bool IsAdditiveAdded(int additiveId)
+    {
+        this.ThrowIfNotInitialized();
+
+        return ShoppingListItems.Items.Any(x => x.Additives.Any(x => x.Id == additiveId));
     }
 }

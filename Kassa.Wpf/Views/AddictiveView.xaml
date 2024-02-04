@@ -12,7 +12,7 @@
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:vm="clr-namespace:Kassa.RxUI;assembly=Kassa.RxUI"
     x:Name="root"
-    x:TypeArguments="bl:AdditiveDto"
+    x:TypeArguments="vm:AdditiveViewModel"
     Foreground="{DynamicResource DefaultAdditiveViewForeground}"
     mc:Ignorable="d">
 

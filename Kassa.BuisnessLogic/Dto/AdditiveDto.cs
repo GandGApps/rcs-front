@@ -49,10 +49,6 @@ public record AdditiveDto : IDto<Additive, AdditiveDto>
         get; set;
     }
 
-    public bool IsAdded
-    {
-        get; set;
-    }
 
     [return: NotNullIfNotNull(nameof(model))]
     public static AdditiveDto? FromModel(Additive? model) => model is null ? null : new AdditiveDto

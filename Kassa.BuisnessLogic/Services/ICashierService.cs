@@ -34,7 +34,7 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
     public IDisposable BindSelectedCategoryItems(out ReadOnlyObservableCollection<ICategoryItemDto> categoryItems);
     public IDisposable BindShoppingListItems(out ReadOnlyObservableCollection<ProductShoppingListItemDto> shoppingListItems);
     public IDisposable BindSelectedShoppingListItems(out ReadOnlyObservableCollection<IShoppingListItemDto> shoppingListItems);
-    public IDisposable BindAdditivesForSelectedProduct(out ReadOnlyObservableCollection<AdditiveDto> additives);
+    public IDisposable BindAdditivesForSelectedProduct<T>(Func<AdditiveDto,T> creator, out ReadOnlyObservableCollection<T> additives) where T : class, IReactiveToChangeSet<int, AdditiveDto>;
 
     public Task AddProductToShoppingList(int productId);
 
@@ -49,4 +49,6 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
     public ValueTask<bool> SelectPreviosCategory();
 
     public Task AddAdditiveToProduct(int additiveId);
+
+    public bool IsAdditiveAdded(int additiveId);
 }
