@@ -80,6 +80,12 @@ public record ProductDto : ICategoryItemDto, IDto<Product, ProductDto>
     {
         get; set;
     }
+
+    public bool IsAvailable
+    {
+        get; set;
+    }
+
     public ICollection<ICategoryItem>? Items
     {
         get;

@@ -530,6 +530,7 @@ internal class CashierService(IProductService productService, ICategoryService c
                     AdditiveInfo = comment
                 };
                 ShoppingListItems.AddOrUpdate(product);
+                SelectedShoppingListItems.AddOrUpdate(product);
             }
         }
 
