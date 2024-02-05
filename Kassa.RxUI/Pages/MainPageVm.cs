@@ -66,9 +66,9 @@ public class MainPageVm : PageViewModel
         OpenServicesDialog = CreateOpenDialogCommand(() => new ServicesDialogViewModel(mainViewModel));
         OpenSearchDialog = CreateOpenDialogCommand(() => new SearchAddictiveDialogViewModel(mainViewModel));
 
-        GoToCashier = ReactiveCommand.Create(() =>
+        GoToCashier = ReactiveCommand.CreateFromTask(async () =>
         {
-            mainViewModel.Router.Navigate.Execute(new CashierVm(mainViewModel));
+            await mainViewModel.GoToPageCommand.Execute(new CashierVm(mainViewModel)).FirstAsync();
         });
     }
 

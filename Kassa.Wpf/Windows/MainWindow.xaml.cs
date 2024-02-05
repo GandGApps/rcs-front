@@ -58,10 +58,12 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
 
             DialogHost.Router.Navigate.Execute(x).Subscribe();
 
-            x.CloseCommand.FirstAsync().Subscribe(_ =>
-            {
-                DialogHost.Router.NavigationStack.Remove(x);
-            });
+            await x.CloseCommand.FirstAsync();
+
+            DialogHost.Router.NavigationStack.Remove(x);
+
+            await x.DisposeAsync();
+
             return x;
         });
 

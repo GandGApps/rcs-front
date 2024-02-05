@@ -518,7 +518,7 @@ internal class CashierService(IProductService productService, ICategoryService c
                 .Subscribe();
     }
 
-    public async Task WriteCommentToSelectedItems(string? comment)
+    public Task WriteCommentToSelectedItems(string? comment)
     {
         this.ThrowIfNotInitialized();
 
@@ -535,5 +535,76 @@ internal class CashierService(IProductService productService, ICategoryService c
                 ShoppingListItems.AddOrUpdate(product);
             }
         }
+
+        return Task.CompletedTask;
+    }
+
+    public async Task IncreaseSelectedProductShoppingListItem()
+    {
+        this.ThrowIfNotInitialized();
+
+        foreach (var shoppingListItem in SelectedShoppingListItems.Items)
+        {
+            if (shoppingListItem is ProductShoppingListItemDto product)
+            {
+
+                await IncreaseProductShoppingListItem(product);
+            }
+        }
+    }
+
+    public async Task DecreaseSelectedProductShoppingListItem()
+    {
+        this.ThrowIfNotInitialized();
+
+        foreach (var shoppingListItem in SelectedShoppingListItems.Items)
+        {
+
+            if (shoppingListItem is ProductShoppingListItemDto product)
+            {
+                await DecreaseProductShoppingListItem(product);
+            }
+        }
+    }
+
+    private async Task IncreaseProductShoppingListItem(ProductShoppingListItemDto item)
+    {
+        this.ThrowIfNotInitialized();
+
+        var product = await productService.GetProductById(item.ItemId);
+
+        if (product is null)
+        {
+            throw new InvalidOperationException($"Product with id {item.ItemId} not found.");
+        }
+
+        await productService.DecreaseProductCount(product.Id);
+
+        ShoppingListItems.AddOrUpdate(item with
+        {
+            Count = item.Count + 1
+        });
+    }
+
+    private async Task DecreaseProductShoppingListItem(ProductShoppingListItemDto item)
+    {
+
+        this.ThrowIfNotInitialized();
+
+        var product = await productService.GetProductById(item.ItemId);
+
+        if (product is null)
+        {
+
+            throw new InvalidOperationException($"Product with id {item.ItemId} not found.");
+        }
+
+        await productService.IncreaseProductCount(product.Id);
+
+        ShoppingListItems.AddOrUpdate(item with
+        {
+
+            Count = item.Count - 1
+        });
     }
 }

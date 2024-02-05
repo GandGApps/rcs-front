@@ -52,4 +52,8 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
     public Task AddAdditiveToProduct(int additiveId);
     public Task WriteCommentToSelectedItems(string? comment);
     public bool IsAdditiveAdded(int additiveId);
+
+
+    public Task IncreaseSelectedProductShoppingListItem();
+    public Task DecreaseSelectedProductShoppingListItem();
 }

@@ -1,4 +1,5 @@
 ﻿using System.Reactive;
+using System.Reactive.Linq;
 using System.Windows.Input;
 using Kassa.RxUI.Dialogs;
 using Kassa.RxUI.Pages;
@@ -9,6 +10,12 @@ namespace Kassa.RxUI;
 
 public class MainViewModel : ReactiveObject, IScreen
 {
+    /// <summary>
+    /// Don't use directly for routing, use <see cref="GoToPageCommand"/> instead.
+    /// </summary>
+    /// <remarks>
+    /// It's public for binding to the view, but don't use it for routing.
+    /// </remarks>
     public RoutingState Router
     {
         get;
@@ -16,7 +23,7 @@ public class MainViewModel : ReactiveObject, IScreen
 
     /// <summary>
     /// Subcribe to this command, and implement close logic
-    /// TParam, and TResult it's dialog whic called CloseCommand
+    /// TParam, and TResult it's dialog which called CloseCommand
     /// </summary>
     public ReactiveCommand<ReactiveObject, ReactiveObject> CloseCommand
     {
@@ -30,6 +37,16 @@ public class MainViewModel : ReactiveObject, IScreen
     }
 
     public ReactiveCommand<Unit, Unit> BackToMenuCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<PageViewModel, PageViewModel> GoToPageCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> GoBackCommand
     {
         get;
     }
@@ -59,15 +76,49 @@ public class MainViewModel : ReactiveObject, IScreen
             IsMainPage = x is MainPageVm;
         });
 
-        BackToMenuCommand = ReactiveCommand.Create(() =>
+        BackToMenuCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             // Remove all from stack except MainPage
             while (Router.NavigationStack.Count > 1)
             {
-                Router.NavigationStack.RemoveAt(1);
+                var currentPage = Router.NavigationStack[^1];
+
+                Router.NavigationStack.Remove(currentPage);
+
+                if (currentPage is PageViewModel pageVm)
+                {
+                    pageVm.Activator.Deactivate();
+
+                    await pageVm.DisposeAsync();
+                }
             }
 
             IsMainPage = true;
+        });
+
+        GoToPageCommand = ReactiveCommand.CreateFromTask(async (PageViewModel pageVm) =>
+        {
+            await pageVm.InitializeAsync();
+
+            await Router.Navigate.Execute(pageVm).FirstAsync();
+
+            return pageVm;
+        });
+
+        GoBackCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            if (Router.NavigationStack.Count > 1)
+            {
+                var currentPage = Router.NavigationStack[^1];
+                Router.NavigationStack.Remove(currentPage);
+
+                if (currentPage is PageViewModel pageVm)
+                {
+                    pageVm.Activator.Deactivate();
+
+                    await pageVm.DisposeAsync();
+                }
+            }
         });
 
 

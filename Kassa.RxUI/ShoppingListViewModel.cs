@@ -8,19 +8,22 @@ using ReactiveUI.Fody.Helpers;
 using DynamicData.Aggregation;
 using Kassa.BuisnessLogic;
 using Splat;
+using Kassa.BuisnessLogic.Services;
 
 namespace Kassa.RxUI;
 public class ShoppingListViewModel : ReactiveObject
 {
 
-    public ShoppingListViewModel()
+    public ShoppingListViewModel(ICashierService cashierService)
     {
         IncreaseCommand = ReactiveCommand.CreateFromTask(async () =>
         {
+            await cashierService.IncreaseSelectedProductShoppingListItem();
         });
 
         DecreaseCommand = ReactiveCommand.CreateFromTask(async () =>
         {
+            await cashierService.DecreaseSelectedProductShoppingListItem();
         });
 
         RemoveCommand = ReactiveCommand.CreateFromTask(async () =>
