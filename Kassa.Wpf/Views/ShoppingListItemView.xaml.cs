@@ -12,19 +12,22 @@ namespace Kassa.Wpf.Views;
 /// </summary>
 public partial class ShoppingListItemView : ReactiveUserControl<ProductShoppingListItemViewModel>
 {
-    public static readonly ReactiveCommand<ProductShoppingListItemViewModel, Unit> UpdateSelectionShoppingListItemCommand = ReactiveCommand.CreateFromTask<ProductShoppingListItemViewModel>(async vm =>
+    public static readonly ReactiveCommand<IShoppingListItem, Unit> UpdateSelectionShoppingListItemCommand = ReactiveCommand.CreateFromTask<IShoppingListItem>(async vm =>
     {
         var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
 
+
         if (vm.IsSelected)
         {
-            await cashierService.UnselectShoppingListItem(vm.Source);
+            await cashierService.UnselectShoppingListItem(vm.SourceDto);
         }
         else
         {
-            await cashierService.SelectShoppingListItem(vm.Source);
+            await cashierService.SelectShoppingListItem(vm.SourceDto);
         }
     });
+
+
 
     public ShoppingListItemView()
     {

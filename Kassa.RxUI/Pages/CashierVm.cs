@@ -93,7 +93,7 @@ public class CashierVm : PageViewModel
                        foreach (var item in ShoppingList.CurrentItems.OfType<ProductShoppingListItemViewModel>())
                        {
 
-                           item.AddictiveInfo = dialog.Comment;
+                           item.AdditiveInfo = dialog.Comment;
                        }
                    }
                });

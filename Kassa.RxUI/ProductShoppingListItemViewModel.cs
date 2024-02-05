@@ -59,9 +59,9 @@ public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListIte
 
             });
 
-        this.WhenAnyValue(x => x.AddictiveInfo)
+        this.WhenAnyValue(x => x.AdditiveInfo)
             .Select(x => !string.IsNullOrEmpty(x))
-            .Subscribe(x => HasAddictiveInfo = x);
+            .Subscribe(x => HasAdditiveInfo = x);
 
         this.WhenAnyValue(x => x.Count, x => x.Price, x => x.AddictiveSubtotalSum)
             .Select(x => (x.Item1 * x.Item2) + x.Item3)
@@ -136,10 +136,10 @@ public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListIte
     } = null!;
 
     [Reactive]
-    public string AddictiveInfo
+    public string? AdditiveInfo
     {
         get; set;
-    } = null!;
+    } 
 
     public ReadOnlyObservableCollection<AdditiveShoppingListItemViewModel> Additives
     {
@@ -147,7 +147,7 @@ public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListIte
     }
 
     [Reactive]
-    public bool HasAddictiveInfo
+    public bool HasAdditiveInfo
     {
         get; set;
     }
@@ -190,6 +190,8 @@ public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListIte
     }
     private ProductShoppingListItemDto _source;
 
+    public IShoppingListItemDto SourceDto => Source;
+
     private void Update(ProductShoppingListItemDto product)
     {
         Count = product.Count;
@@ -199,5 +201,7 @@ public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListIte
         CurrencySymbol = product.CurrencySymbol;
         Id = product.ItemId;
         IsSelected = product.IsSelected;
+        AdditiveInfo = product.AdditiveInfo;
+        HasAdditiveInfo = !string.IsNullOrEmpty(product.AdditiveInfo);
     }
 }

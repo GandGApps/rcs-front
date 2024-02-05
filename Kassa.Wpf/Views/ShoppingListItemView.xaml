@@ -177,7 +177,11 @@
             <ItemsControl ItemsSource="{Binding Additives}">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
-                        <Button Margin="0,3" Padding="13">
+                        <Button
+                            Margin="0,3"
+                            Padding="{mx:AdaptiveSize Thickness=13}"
+                            Command="{x:Static local:ShoppingListItemView.UpdateSelectionShoppingListItemCommand}"
+                            CommandParameter="{Binding .}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="14" />

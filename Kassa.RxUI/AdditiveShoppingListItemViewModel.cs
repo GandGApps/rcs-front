@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI;
-public class AdditiveShoppingListItemViewModel : ReactiveObject, IReactiveToChangeSet<Guid, AdditiveShoppingListItemDto>
+public class AdditiveShoppingListItemViewModel : ReactiveObject, IShoppingListItem, IReactiveToChangeSet<Guid, AdditiveShoppingListItemDto>
 {
+
     public Guid Id
     {
         get;
@@ -34,34 +37,78 @@ public class AdditiveShoppingListItemViewModel : ReactiveObject, IReactiveToChan
             .Subscribe(Update);
     }
 
+    [Reactive]
     public string Name
     {
         get; set;
     } = null!;
-
+    [Reactive]
     public string CurrencySymbol
     {
         get; set;
     } = null!;
-
+    [Reactive]
     public double Price
     {
         get; set;
     }
-
+    [Reactive]
     public double Count
     {
         get; set;
     }
-
+    [Reactive]
     public string Measure
     {
         get; set;
     } = null!;
-
+    [Reactive]
     public int Portion
     {
         get; set;
+    }
+
+    [Reactive]
+    public bool IsSelected
+    {
+        get; set;
+    }
+    [Reactive]
+    public double Discount
+    {
+        get;
+        set;
+    }
+    [Reactive]
+    public bool HasDiscount
+    {
+        get;
+        set;
+    }
+    [Reactive]
+    public ShoppingListViewModel ShoppingListViewModel
+    {
+        get;
+        set;
+    }
+    [Reactive]
+    public double SubtotalSum
+    {
+        get;
+        set;
+    }
+
+    [Reactive]
+    public double TotalSum
+    {
+        get;
+        set;
+    }
+
+    public IShoppingListItemDto SourceDto => Source;
+    public ReactiveCommand<Unit, Unit> RemoveCommand
+    {
+        get;
     }
 
     private void Update(AdditiveShoppingListItemDto item)
@@ -72,5 +119,6 @@ public class AdditiveShoppingListItemViewModel : ReactiveObject, IReactiveToChan
         Count = item.Count;
         Measure = item.Measure;
         Portion = item.Portion;
+        IsSelected = item.IsSelected;
     }
 }

@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Kassa.BuisnessLogic.Dto;
-public class AdditiveShoppingListItemDto : IShoppingListItemDto
+public record AdditiveShoppingListItemDto : IShoppingListItemDto
 {
 
-    public AdditiveShoppingListItemDto(AdditiveDto additiveDto)
+    public AdditiveShoppingListItemDto(ProductShoppingListItemDto productShopping,AdditiveDto additiveDto)
     {
         ItemId = additiveDto.Id;
         Name = additiveDto.Name;
@@ -20,6 +20,7 @@ public class AdditiveShoppingListItemDto : IShoppingListItemDto
         Portion = additiveDto.Portion;
 
         IsSelected = false;
+        ContainingProduct = productShopping;
     }
 
     public Guid Id
@@ -80,4 +81,9 @@ public class AdditiveShoppingListItemDto : IShoppingListItemDto
     {
         get;
     }
+
+    public ProductShoppingListItemDto ContainingProduct
+    {
+        get;
+    } 
 }

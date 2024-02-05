@@ -315,12 +315,23 @@ internal class CashierService(IProductService productService, ICategoryService c
 
         SelectedShoppingListItems.AddOrUpdate(shoppingListItemDto);
 
-        if (shoppingListItemDto is ProductShoppingListItemDto shoppingListItem)
+        if (shoppingListItemDto is ProductShoppingListItemDto product)
         {
-            ShoppingListItems.AddOrUpdate(shoppingListItem with
+            ShoppingListItems.AddOrUpdate(product with
             {
                 IsSelected = true
             });
+        }
+
+        if (shoppingListItemDto is AdditiveShoppingListItemDto additive)
+        {
+            if (_additivesInProductDto.TryGetValue(additive.ContainingProduct.Id, out var sourceCache))
+            {
+                sourceCache.AddOrUpdate(additive with
+                {
+                    IsSelected = true
+                });
+            }
         }
     }
 
@@ -371,7 +382,18 @@ internal class CashierService(IProductService productService, ICategoryService c
             });
         }
 
-        await UpdateAdditivesForSelectedProduct();
+        if (shoppingListItemDto is AdditiveShoppingListItemDto additive)
+        {
+
+            if (_additivesInProductDto.TryGetValue(additive.ContainingProduct.Id, out var sourceCache))
+            {
+
+                sourceCache.AddOrUpdate(additive with
+                {
+                    IsSelected = false
+                });
+            }
+        }
     }
 
     private void ClearSelectedShoppingListItems()
@@ -389,8 +411,19 @@ internal class CashierService(IProductService productService, ICategoryService c
 
                     IsSelected = false
                 });
+            }
 
+            if (shoppingListItem is AdditiveShoppingListItemDto additive)
+            {
 
+                if (_additivesInProductDto.TryGetValue(additive.ContainingProduct.Id, out var sourceCache))
+                {
+
+                    sourceCache.AddOrUpdate(additive with
+                    {
+                        IsSelected = false
+                    });
+                }
             }
         }
         SelectedShoppingListItems.Clear();
@@ -435,7 +468,7 @@ internal class CashierService(IProductService productService, ICategoryService c
             {
                 await additiveService.DecreaseAddtiveCount(additive);
 
-                var updatedAdditive = new AdditiveShoppingListItemDto(additive)
+                var updatedAdditive = new AdditiveShoppingListItemDto(product, additive)
                 {
                     Id = Guid.NewGuid()
                 };
@@ -469,7 +502,7 @@ internal class CashierService(IProductService productService, ICategoryService c
         {
             return sourceCache.Connect()
                 .TransformAndBind(creator)
-                .Bind(out additives)             
+                .Bind(out additives)
                 .Subscribe();
         }
 

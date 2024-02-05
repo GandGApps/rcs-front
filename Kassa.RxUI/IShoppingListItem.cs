@@ -1,5 +1,6 @@
 ﻿using System.Reactive;
 using System.Windows.Input;
+using Kassa.BuisnessLogic.Dto;
 using ReactiveUI;
 
 namespace Kassa.RxUI;
@@ -60,6 +61,11 @@ public interface IShoppingListItem
     {
         get;
         set;
+    }
+
+    IShoppingListItemDto SourceDto
+    {
+        get;
     }
 
     ReactiveCommand<Unit, Unit> RemoveCommand

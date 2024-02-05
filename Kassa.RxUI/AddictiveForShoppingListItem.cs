@@ -5,6 +5,7 @@ using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
+using Kassa.BuisnessLogic.Dto;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -131,4 +132,6 @@ public class AddictiveForShoppingListItem : ReactiveObject, IShoppingListItem
     {
         get; set;
     } = null!;
+
+    public IShoppingListItemDto SourceDto => throw new NotImplementedException();
 }
