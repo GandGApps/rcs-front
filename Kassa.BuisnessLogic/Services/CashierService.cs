@@ -17,6 +17,7 @@ namespace Kassa.BuisnessLogic.Services;
 internal class CashierService(IProductService productService, ICategoryService categoryService, IAdditiveService additiveService) : ICashierService
 {
     private readonly List<CategoryDto> _categoriesStack = [];
+    private readonly Dictionary<Guid, SourceCache<AdditiveShoppingListItemDto, Guid>> _additivesInProductDto = [];
 
     public bool IsInitialized
     {
@@ -170,6 +171,12 @@ internal class CashierService(IProductService productService, ICategoryService c
 
         categoryService.Dispose();
         productService.Dispose();
+        additiveService.Dispose();
+
+        foreach (var item in _additivesInProductDto)
+        {
+            item.Value.Dispose();
+        }
 
         IsDisposed = true;
     }
@@ -182,6 +189,12 @@ internal class CashierService(IProductService productService, ICategoryService c
 
         await categoryService.DisposeAsync();
         await productService.DisposeAsync();
+        await additiveService.DisposeAsync();
+
+        foreach (var item in _additivesInProductDto)
+        {
+            item.Value.Dispose();
+        }
 
         IsDisposed = true;
     }
@@ -422,12 +435,17 @@ internal class CashierService(IProductService productService, ICategoryService c
             {
                 await additiveService.DecreaseAddtiveCount(additive);
 
-                var updatedAdditive = additive with
+                var updatedAdditive = new AdditiveShoppingListItemDto(additive)
                 {
+                    Id = Guid.NewGuid()
                 };
 
                 product.Additives.Add(updatedAdditive);
-                await additiveService.UpdateAdditive(updatedAdditive);
+
+                if (_additivesInProductDto.TryGetValue(product.Id, out var sourceCache))
+                {
+                    sourceCache.AddOrUpdate(updatedAdditive);
+                }
             }
         }
 
@@ -437,6 +455,33 @@ internal class CashierService(IProductService productService, ICategoryService c
     {
         this.ThrowIfNotInitialized();
 
-        return ShoppingListItems.Items.Any(x => x.Additives.Any(x => x.Id == additiveId));
+        return SelectedShoppingListItems.Items.Select(x => x.Id)
+            .Where(_additivesInProductDto.ContainsKey)
+            .Select(id => _additivesInProductDto[id].Items)
+            .Any(x => x.Any(additive => additive.ItemId == additiveId));
+    }
+
+    public IDisposable BindAdditivesForProductShoppingListItem<T>(ProductShoppingListItemDto item, Func<AdditiveShoppingListItemDto, T> creator, out ReadOnlyObservableCollection<T> additives) where T : class, IReactiveToChangeSet<Guid, AdditiveShoppingListItemDto>
+    {
+        this.ThrowIfNotInitialized();
+
+        if (_additivesInProductDto.TryGetValue(item.Id, out var sourceCache))
+        {
+            return sourceCache.Connect()
+                .TransformAndBind(creator)
+                .Bind(out additives)             
+                .Subscribe();
+        }
+
+        sourceCache = new SourceCache<AdditiveShoppingListItemDto, Guid>(x => x.Id);
+        sourceCache.AddOrUpdate(item.Additives);
+
+        _additivesInProductDto.Add(item.Id, sourceCache);
+
+
+        return sourceCache.Connect()
+                .TransformAndBind(creator)
+                .Bind(out additives)
+                .Subscribe();
     }
 }

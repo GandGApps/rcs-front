@@ -38,7 +38,17 @@ public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListIte
     {
         Source = product;
 
-        Additives = product.Additives;
+        var cashierService = Locator.Current.GetNotInitializedService<ICashierService>();
+
+        if (cashierService.IsInitialized)
+        {
+            cashierService.BindAdditivesForProductShoppingListItem(product, x => new AdditiveShoppingListItemViewModel(x), out var additives);
+            Additives = additives;
+        }
+        else
+        {
+            Additives = new([]);
+        }
 
         this.WhenAnyValue(x => x.Source)
             .Subscribe(Update);
@@ -131,10 +141,10 @@ public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListIte
         get; set;
     } = null!;
 
-    public ObservableCollection<AdditiveDto> Additives
+    public ReadOnlyObservableCollection<AdditiveShoppingListItemViewModel> Additives
     {
-        get; 
-    } = [];
+        get;
+    }
 
     [Reactive]
     public bool HasAddictiveInfo
