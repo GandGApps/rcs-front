@@ -56,4 +56,5 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
 
     public Task IncreaseSelectedProductShoppingListItem();
     public Task DecreaseSelectedProductShoppingListItem();
+    public Task RemoveSelectedProductShoppingListItem();
 }

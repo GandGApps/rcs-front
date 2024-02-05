@@ -28,12 +28,7 @@ public class ShoppingListViewModel : ReactiveObject
 
         RemoveCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var items = CurrentItems.ToArray();
-
-            foreach (var item in items)
-            {
-                await item.RemoveCommand.Execute();
-            }
+            await cashierService.RemoveSelectedProductShoppingListItem();
         });
     }
 

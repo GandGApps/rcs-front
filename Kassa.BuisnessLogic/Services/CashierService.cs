@@ -473,8 +473,6 @@ internal class CashierService(IProductService productService, ICategoryService c
                     Id = Guid.NewGuid()
                 };
 
-                product.Additives.Add(updatedAdditive);
-
                 if (_additivesInProductDto.TryGetValue(product.Id, out var sourceCache))
                 {
                     sourceCache.AddOrUpdate(updatedAdditive);
@@ -507,7 +505,6 @@ internal class CashierService(IProductService productService, ICategoryService c
         }
 
         sourceCache = new SourceCache<AdditiveShoppingListItemDto, Guid>(x => x.Id);
-        sourceCache.AddOrUpdate(item.Additives);
 
         _additivesInProductDto.Add(item.Id, sourceCache);
 
@@ -547,7 +544,6 @@ internal class CashierService(IProductService productService, ICategoryService c
         {
             if (shoppingListItem is ProductShoppingListItemDto product)
             {
-
                 await IncreaseProductShoppingListItem(product);
             }
         }
@@ -563,6 +559,40 @@ internal class CashierService(IProductService productService, ICategoryService c
             if (shoppingListItem is ProductShoppingListItemDto product)
             {
                 await DecreaseProductShoppingListItem(product);
+            }
+        }
+    }
+
+    public async Task RemoveSelectedProductShoppingListItem()
+    {
+        this.ThrowIfNotInitialized();
+
+        foreach (var shoppingListItem in SelectedShoppingListItems.Items)
+        {
+            if (shoppingListItem is ProductShoppingListItemDto product)
+            {
+                await RemoveProductShoppingListItem(product);
+            }
+
+            if (shoppingListItem is AdditiveShoppingListItemDto additive)
+            {
+                var additiveDto = await additiveService.GetAdditiveById(additive.ItemId);
+
+                if (additiveDto is null)
+                {
+                    throw new InvalidOperationException($"Additive with id {additive.ItemId} not found.");
+                }
+
+                await additiveService.UpdateAdditive(additiveDto with
+                {
+                    Count = additiveDto.Count + additive.Count
+                });
+
+                if (_additivesInProductDto.TryGetValue(additive.ContainingProduct.Id, out var sourceCache))
+                {
+                    sourceCache.Remove(additive.Id);
+                }
+                SelectedShoppingListItems.Remove(additive.Id);
             }
         }
     }
@@ -603,14 +633,13 @@ internal class CashierService(IProductService productService, ICategoryService c
             throw new InvalidOperationException($"Product with id {item.ItemId} not found.");
         }
 
-        await productService.IncreaseProductCount(product.Id);
-
         if (item.Count <= 1)
         {
-            ShoppingListItems.Remove(item.Id);
-            SelectedShoppingListItems.Remove(item.Id);
+            await RemoveProductShoppingListItem(item);
             return;
         }
+
+        await productService.IncreaseProductCount(product.Id);
 
         var decreased = item with
         {
@@ -618,5 +647,38 @@ internal class CashierService(IProductService productService, ICategoryService c
         };
         ShoppingListItems.AddOrUpdate(decreased);
         SelectedShoppingListItems.AddOrUpdate(decreased);
+    }
+
+    /// <summary>
+    /// 
+    /// <para>
+    /// Warning! This method will change the product count in the database!!!.
+    /// </para>
+    /// </summary>
+    /// <param name="product"></param>
+    /// <returns></returns>
+    /// <exception cref="InvalidOperationException"></exception>
+    private async Task RemoveProductShoppingListItem(ProductShoppingListItemDto product)
+    {
+        var productDto = await productService.GetProductById(product.ItemId);
+
+        if (productDto is null)
+        {
+            throw new InvalidOperationException($"Product with id {product.ItemId} not found.");
+        }
+
+        await productService.UpdateProduct(productDto with
+        {
+            Count = productDto.Count + product.Count
+        });
+
+        ShoppingListItems.Remove(product.Id);
+        SelectedShoppingListItems.Remove(product.Id);
+
+        if (_additivesInProductDto.TryGetValue(product.Id, out var cache))
+        {
+            cache.Dispose();
+            _additivesInProductDto.Remove(product.Id);
+        }
     }
 }

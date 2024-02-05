@@ -71,11 +71,6 @@ public record ProductShoppingListItemDto : IShoppingListItemDto
     public double SubtotalSum => Price * Count;
     public double TotalSum => SubtotalSum * Discount;
 
-    public ICollection<AdditiveShoppingListItemDto> Additives
-    {
-        get;
-    } = [];
-
     public string? AdditiveInfo
     {
         get; init;
