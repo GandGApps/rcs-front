@@ -23,7 +23,7 @@ public class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<int, Addit
         }
         var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
 
-        await cashierService.AddAdditiveToProduct(additive.Id);
+        await cashierService.AddAdditiveToSelectedProducts(additive.Id);
 
         additive.IsAdded = true;
         additive.Count--;

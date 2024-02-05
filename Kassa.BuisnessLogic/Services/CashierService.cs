@@ -317,20 +317,25 @@ internal class CashierService(IProductService productService, ICategoryService c
 
         if (shoppingListItemDto is ProductShoppingListItemDto product)
         {
-            ShoppingListItems.AddOrUpdate(product with
+            var selected = product with
             {
                 IsSelected = true
-            });
+            };
+
+            ShoppingListItems.AddOrUpdate(selected);
+            SelectedShoppingListItems.AddOrUpdate(selected);
         }
 
         if (shoppingListItemDto is AdditiveShoppingListItemDto additive)
         {
             if (_additivesInProductDto.TryGetValue(additive.ContainingProduct.Id, out var sourceCache))
             {
-                sourceCache.AddOrUpdate(additive with
+                var selected = additive with
                 {
                     IsSelected = true
-                });
+                };
+                sourceCache.AddOrUpdate(selected);
+                SelectedShoppingListItems.AddOrUpdate(selected);
             }
         }
     }
@@ -343,8 +348,6 @@ internal class CashierService(IProductService productService, ICategoryService c
         {
             throw new ArgumentNullException(nameof(shoppingListItemDto));
         }
-
-
 
         if (shoppingListItemDto is ProductShoppingListItemDto shoppingListItem)
         {
@@ -375,7 +378,6 @@ internal class CashierService(IProductService productService, ICategoryService c
 
         if (shoppingListItemDto is ProductShoppingListItemDto shoppingListItem)
         {
-
             ShoppingListItems.AddOrUpdate(shoppingListItem with
             {
                 IsSelected = false
@@ -387,7 +389,6 @@ internal class CashierService(IProductService productService, ICategoryService c
 
             if (_additivesInProductDto.TryGetValue(additive.ContainingProduct.Id, out var sourceCache))
             {
-
                 sourceCache.AddOrUpdate(additive with
                 {
                     IsSelected = false
@@ -408,7 +409,6 @@ internal class CashierService(IProductService productService, ICategoryService c
 
                 ShoppingListItems.AddOrUpdate(shoppingListItemDto with
                 {
-
                     IsSelected = false
                 });
             }
@@ -448,7 +448,7 @@ internal class CashierService(IProductService productService, ICategoryService c
         }
     }
 
-    public async Task AddAdditiveToProduct(int additiveId)
+    public async Task AddAdditiveToSelectedProducts(int additiveId)
     {
 
         this.ThrowIfNotInitialized();
@@ -578,33 +578,45 @@ internal class CashierService(IProductService productService, ICategoryService c
             throw new InvalidOperationException($"Product with id {item.ItemId} not found.");
         }
 
-        await productService.DecreaseProductCount(product.Id);
+        if (product.Count <= 0)
+        {
+            return;
+        }
 
-        ShoppingListItems.AddOrUpdate(item with
+        await productService.DecreaseProductCount(product.Id);
+        var increased = item with
         {
             Count = item.Count + 1
-        });
+        };
+        ShoppingListItems.AddOrUpdate(increased);
+        SelectedShoppingListItems.AddOrUpdate(increased);
     }
 
     private async Task DecreaseProductShoppingListItem(ProductShoppingListItemDto item)
     {
-
         this.ThrowIfNotInitialized();
 
         var product = await productService.GetProductById(item.ItemId);
 
         if (product is null)
         {
-
             throw new InvalidOperationException($"Product with id {item.ItemId} not found.");
         }
 
         await productService.IncreaseProductCount(product.Id);
 
-        ShoppingListItems.AddOrUpdate(item with
+        if (item.Count <= 1)
         {
+            ShoppingListItems.Remove(item.Id);
+            SelectedShoppingListItems.Remove(item.Id);
+            return;
+        }
 
+        var decreased = item with
+        {
             Count = item.Count - 1
-        });
+        };
+        ShoppingListItems.AddOrUpdate(decreased);
+        SelectedShoppingListItems.AddOrUpdate(decreased);
     }
 }

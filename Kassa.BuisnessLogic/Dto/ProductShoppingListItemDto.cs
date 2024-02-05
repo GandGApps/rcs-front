@@ -19,8 +19,6 @@ public record ProductShoppingListItemDto : IShoppingListItemDto
         Measure = product.Measure;
         Count = 1;
         Discount = 1;
-
-        IsSelected = false;
     }
 
     public int ItemId

@@ -50,9 +50,6 @@ public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListIte
             Additives = new([]);
         }
 
-        this.WhenAnyValue(x => x.Source)
-            .Subscribe(Update);
-
         this.WhenAnyValue(x => x.IsSelected)
             .Subscribe(x =>
             {
@@ -72,13 +69,6 @@ public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListIte
             .ToCollection()
             .Select(list => list.Sum(item => item.Price))
             .Subscribe(x => AddictiveSubtotalSum = x);
-
-        Count = 1;
-        Price = product.Price;
-        Measure = product.Measure;
-        Name = product.Name;
-        CurrencySymbol = product.CurrencySymbol;
-        Id = product.ItemId;
 
 
         RemoveCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -186,6 +176,7 @@ public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListIte
         {
             _source = value;
             this.RaisePropertyChanged();
+            Update(value);
         }
     }
     private ProductShoppingListItemDto _source;
