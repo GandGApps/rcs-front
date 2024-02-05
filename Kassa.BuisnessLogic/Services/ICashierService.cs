@@ -50,6 +50,6 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
     public ValueTask<bool> SelectPreviosCategory();
 
     public Task AddAdditiveToProduct(int additiveId);
-
+    public Task WriteCommentToSelectedItems(string? comment);
     public bool IsAdditiveAdded(int additiveId);
 }

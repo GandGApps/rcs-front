@@ -89,12 +89,7 @@ public class CashierVm : PageViewModel
 
                    if (dialog.IsPublished)
                    {
-
-                       foreach (var item in ShoppingList.CurrentItems.OfType<ProductShoppingListItemViewModel>())
-                       {
-
-                           item.AdditiveInfo = dialog.Comment;
-                       }
+                       _cashierService?.WriteCommentToSelectedItems(dialog.Comment);
                    }
                });
 

@@ -517,4 +517,23 @@ internal class CashierService(IProductService productService, ICategoryService c
                 .Bind(out additives)
                 .Subscribe();
     }
+
+    public async Task WriteCommentToSelectedItems(string? comment)
+    {
+        this.ThrowIfNotInitialized();
+
+
+        foreach (var shoppingListItem in SelectedShoppingListItems.Items)
+        {
+
+            if (shoppingListItem is ProductShoppingListItemDto product)
+            {
+                product = product with
+                {
+                    AdditiveInfo = comment
+                };
+                ShoppingListItems.AddOrUpdate(product);
+            }
+        }
+    }
 }
