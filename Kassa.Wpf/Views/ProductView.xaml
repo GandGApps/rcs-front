@@ -17,7 +17,10 @@
     mc:Ignorable="d">
 
     <d:DesignProperties.DataContext>
-        <vm:DesignerProductViewModel Name="Холодные напитки “Криспи Гриль”" Price="1299" />
+        <vm:DesignerProductViewModel
+            Name="Холодные напитки “Криспи Гриль”"
+            HasIcon="True"
+            Price="1299" />
     </d:DesignProperties.DataContext>
 
     <Grid>
@@ -45,7 +48,17 @@
             <Path
                 x:Name="ProductIcon"
                 d:Data="{StaticResource CupOfTeaIcon}"
-                Fill="{DynamicResource DefaultProductViewIconFill}" />
+                Fill="{DynamicResource DefaultProductViewIconFill}">
+                <Path.Style>
+                    <Style BasedOn="{StaticResource {x:Type Path}}" TargetType="Path">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding HasIcon}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Path.Style>
+            </Path>
             <TextBlock
                 x:Name="ProductName"
                 Grid.Column="1"
@@ -54,7 +67,17 @@
                 FontSize="16"
                 Foreground="Black"
                 Text="{Binding Name, Mode=OneTime}"
-                TextWrapping="Wrap" />
+                TextWrapping="Wrap">
+                <TextBlock.Style>
+                    <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding HasIcon}" Value="False">
+                                <Setter Property="TextAlignment" Value="Center" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
         </Grid>
 
         <Border

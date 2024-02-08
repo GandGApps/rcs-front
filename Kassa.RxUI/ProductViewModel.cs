@@ -100,6 +100,12 @@ public class DesignerProductViewModel : ReactiveObject
     } = null!;
 
     [Reactive]
+    public bool HasIcon
+    {
+        get; set;
+    }
+
+    [Reactive]
     public ReactiveCommand<Unit, Unit> AddToShoppingListCommand
     {
         get; set;

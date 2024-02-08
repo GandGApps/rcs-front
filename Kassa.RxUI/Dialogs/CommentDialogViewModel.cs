@@ -15,7 +15,6 @@ public class CommentDialogViewModel : DialogViewModel
     {
         CashierVm = cashierVm;
 
-        Comment = cashierVm.TotalComment;
 
         PublishCommentCommand = ReactiveCommand.CreateFromTask(async () =>
         {

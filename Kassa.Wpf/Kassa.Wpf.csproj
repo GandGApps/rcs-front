@@ -31,4 +31,15 @@
     <Resource Include="Assets\Fonts\**" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Assets\auto.png" />
+    <None Remove="Shaders\grayshader.ps" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Shaders\grayshader.ps">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
 </Project>

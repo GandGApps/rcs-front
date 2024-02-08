@@ -16,6 +16,8 @@ using ReactiveUI;
 namespace Kassa.BuisnessLogic.Services;
 internal class CashierService(IProductService productService, ICategoryService categoryService, IAdditiveService additiveService) : ICashierService
 {
+    private string? _totalComment;
+
     private readonly List<CategoryDto> _categoriesStack = [];
     private readonly Dictionary<Guid, SourceCache<AdditiveShoppingListItemDto, Guid>> _additivesInProductDto = [];
 
@@ -533,6 +535,13 @@ internal class CashierService(IProductService productService, ICategoryService c
                 SelectedShoppingListItems.AddOrUpdate(product);
             }
         }
+
+        return Task.CompletedTask;
+    }
+
+    public Task WriteTotalComment(string? totalComment)
+    {
+        _totalComment = totalComment;
 
         return Task.CompletedTask;
     }

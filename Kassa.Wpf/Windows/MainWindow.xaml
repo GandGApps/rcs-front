@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:debug="debug-mode"
+    xmlns:effects="clr-namespace:Kassa.Wpf.Effects"
     xmlns:local="clr-namespace:Kassa.Wpf"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
@@ -44,66 +45,72 @@
             Visibility="Collapsed">
             <rxui:RoutedViewHost x:Name="DialogHost" />
         </Border>
+        <Border Grid.RowSpan="2">
+
+            <Border.Effect>
+                <effects:DialogShaderEffect x:Name="GrayEffect" />
+            </Border.Effect>
+
+            <Grid x:Name="RootBody">
+
+                <Grid.Effect>
+                    <BlurEffect x:Name="ContentBlur" Radius="0" />
+
+                </Grid.Effect>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="{mx:AdaptiveSize GridLength={StaticResource FooterSizeAsGridLength}}" />
+                </Grid.RowDefinitions>
+
+                <rxui:RoutedViewHost
+                    x:Name="RoutedViewHost"
+                    Grid.Row="0"
+                    Grid.RowSpan="2" />
+
+                <Border
+                    x:Name="Footer"
+                    Grid.Row="2"
+                    Padding="{mx:AdaptiveSize Thickness=20\,10}"
+                    Background="{DynamicResource SurfaceBrush}"
+                    CornerRadius="14,14,0,0">
+
+                    <Border.Effect>
+                        <DropShadowEffect
+                            BlurRadius="10"
+                            Direction="90"
+                            Opacity="0.25"
+                            ShadowDepth="4"
+                            Color="{DynamicResource FooterShadow}" />
+                    </Border.Effect>
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <ContentPresenter
+                            x:Name="PageFooterAdditionalContent"
+                            Margin="{mx:AdaptiveSize Thickness=0\,0\,35\,0}"
+                            HorizontalAlignment="Right" />
+
+                        <CheckBox
+                            x:Name="IsMainPageCheckBox"
+                            Grid.Column="1"
+                            Width="{mx:AdaptiveSize 50}"
+                            Height="{mx:AdaptiveSize 50}"
+                            HorizontalAlignment="Right"
+                            Style="{StaticResource BackToMain}" />
+
+                    </Grid>
+
+                </Border>
 
 
-        <Grid x:Name="RootBody" Grid.RowSpan="2">
 
-            <Grid.Effect>
-                <BlurEffect x:Name="ContentBlur" Radius="0" />
-            </Grid.Effect>
-
-            <Grid.RowDefinitions>
-                <RowDefinition />
-                <RowDefinition Height="{mx:AdaptiveSize GridLength={StaticResource FooterSizeAsGridLength}}" />
-            </Grid.RowDefinitions>
-
-            <rxui:RoutedViewHost
-                x:Name="RoutedViewHost"
-                Grid.Row="0"
-                Grid.RowSpan="2" />
-
-            <Border
-                Grid.Row="2"
-                Padding="{mx:AdaptiveSize Thickness='20,10'}"
-                Background="{DynamicResource SurfaceBrush}"
-                CornerRadius="14,14,0,0">
-
-                <Border.Effect>
-                    <DropShadowEffect
-                        BlurRadius="10"
-                        Direction="90"
-                        Opacity="0.25"
-                        ShadowDepth="4"
-                        Color="{DynamicResource FooterShadow}" />
-                </Border.Effect>
-
-                <Grid>
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <ContentPresenter
-                        x:Name="PageFooter"
-                        Margin="{mx:AdaptiveSize Thickness='0,0,35,0'}"
-                        HorizontalAlignment="Right" />
-
-                    <CheckBox
-                        x:Name="IsMainPageCheckBox"
-                        Grid.Column="1"
-                        Width="{mx:AdaptiveSize 50}"
-                        Height="{mx:AdaptiveSize 50}"
-                        HorizontalAlignment="Right"
-                        Style="{StaticResource BackToMain}" />
-
-
-                </Grid>
-
-            </Border>
-
-
-
-        </Grid>
+            </Grid>
+        </Border>
     </Grid>
 </rxui:ReactiveWindow>

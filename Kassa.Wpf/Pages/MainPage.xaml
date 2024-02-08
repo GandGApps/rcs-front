@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:Kassa.Wpf.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:effects="clr-namespace:Kassa.Wpf.Effects"
     xmlns:local="clr-namespace:Kassa.Wpf"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
@@ -51,7 +52,8 @@
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="{mx:AdaptiveSize GridLength=120}" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="{mx:AdaptiveSize GridLength=275}" />
             <RowDefinition Height="{mx:AdaptiveSize GridLength=275}" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>

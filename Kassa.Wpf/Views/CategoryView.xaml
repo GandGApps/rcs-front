@@ -48,7 +48,17 @@
                 FontSize="16"
                 Foreground="Black"
                 Text="{Binding Name}"
-                TextWrapping="Wrap" />
+                TextWrapping="Wrap">
+                <TextBlock.Style>
+                    <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding HasIcon}" Value="False">
+                                <Setter Property="TextAlignment" Value="Center" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
         </Grid>
 
     </Grid>

@@ -1,0 +1,219 @@
+﻿<rxui:ReactiveUserControl
+    x:Class="Kassa.Wpf.Pages.AutorizationPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Kassa.Wpf.Pages"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
+    xmlns:pages="clr-namespace:Kassa.RxUI.Pages;assembly=Kassa.RxUI"
+    xmlns:rxui="http://reactiveui.net"
+    xmlns:wnd="clr-namespace:Kassa.Wpf"
+    d:DataContext="{d:DesignInstance Type=pages:AutorizationPageVm}"
+    d:DesignHeight="740"
+    d:DesignWidth="1560"
+    wnd:MainWindow.IsHasFooter="False"
+    x:TypeArguments="pages:AutorizationPageVm"
+    mc:Ignorable="d">
+
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="Button.Click" SourceName="NextButton">
+            <EventTrigger.Actions>
+                <BeginStoryboard>
+                    <Storyboard>
+                        <DoubleAnimation
+                            Storyboard.TargetName="Welcome"
+                            Storyboard.TargetProperty="Opacity"
+                            From="1"
+                            To="0"
+                            Duration="0:0:0.3" />
+                        <DoubleAnimation
+                            BeginTime="0:0:0.32"
+                            Completed="LogoSizeAnimationCompleted"
+                            Storyboard.TargetName="Logo"
+                            Storyboard.TargetProperty="Width"
+                            From="275"
+                            To="175"
+                            Duration="0:0:0.3" />
+                        <DoubleAnimation
+                            BeginTime="0:0:0.75"
+                            Storyboard.TargetName="Form"
+                            Storyboard.TargetProperty="Opacity"
+                            From="0"
+                            To="1"
+                            Duration="0:0:0.3" />
+                    </Storyboard>
+                </BeginStoryboard>
+            </EventTrigger.Actions>
+        </EventTrigger>
+
+    </UserControl.Triggers>
+
+
+    <Grid>
+        <Image Source="/Assets/auto.png" Stretch="UniformToFill" />
+        <Border
+            Margin="140,60,140,60"
+            Background="{DynamicResource AutorizationPageBackground}"
+            CornerRadius="17">
+
+            <Grid>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Border
+                    Height="23"
+                    VerticalAlignment="Top"
+                    Background="{DynamicResource Theme}"
+                    CornerRadius="17,17,0,0" />
+
+                <Button
+                    x:Name="CloseButton"
+                    Grid.Row="2"
+                    Margin="{mx:AdaptiveSize Thickness='0,36,36,0'}"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Top"
+                    Style="{StaticResource IconButton}">
+                    <Path
+                        Width="{mx:AdaptiveSize 41}"
+                        Height="{mx:AdaptiveSize 41}"
+                        Data="{StaticResource TurnOffIcon}"
+                        Fill="Black"
+                        Stretch="Uniform" />
+                </Button>
+
+                <Grid Grid.Row="2">
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="75" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Border
+                        x:Name="Logo"
+                        Grid.Row="1"
+                        Width="275"
+                        Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
+                        Padding="45"
+                        VerticalAlignment="Center"
+                        Background="{DynamicResource AutorizationPageBrendLogo}"
+                        CornerRadius="50">
+                        <Path Data="{StaticResource Logo}" Fill="White" />
+                    </Border>
+
+                    <StackPanel
+                        x:Name="Welcome"
+                        Grid.Row="2"
+                        Margin="0,48,0,0">
+
+                        <TextBlock
+                            Width="320"
+                            FontSize="24"
+                            Text="Добро подаловать  в “Название организации”"
+                            TextAlignment="Center"
+                            TextWrapping="Wrap" />
+
+                        <Button
+                            x:Name="NextButton"
+                            Width="220"
+                            Margin="40"
+                            Content="Далее"
+                            Style="{StaticResource PrimaryButton}" />
+
+                    </StackPanel>
+
+                    <Grid
+                        x:Name="Form"
+                        Grid.Row="2"
+                        Margin="0,55,0,0"
+                        IsHitTestVisible="False"
+                        Opacity="0">
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="1*" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel>
+
+                            <Border
+                                BorderBrush="Black"
+                                BorderThickness="0.8"
+                                Style="{StaticResource SearchTextBoxBorder}">
+                                <Grid VerticalAlignment="Center">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Path
+                                        Grid.Column="0"
+                                        Data="{StaticResource LoginUserIcon}"
+                                        Fill="Black"
+                                        Style="{StaticResource SearchTextBoxIcon}" />
+                                    <TextBox
+                                        x:Name="Login"
+                                        Grid.Column="1"
+                                        Style="{StaticResource SearchTextBox}" />
+
+                                </Grid>
+                            </Border>
+                            <Border
+                                Margin="0,10,0,0"
+                                BorderBrush="Black"
+                                BorderThickness="0.8"
+                                Style="{StaticResource SearchTextBoxBorder}">
+                                <Grid VerticalAlignment="Center">
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Path
+                                        Grid.Column="0"
+                                        Data="{StaticResource KeyLock}"
+                                        Fill="Black"
+                                        Style="{StaticResource SearchTextBoxIcon}" />
+                                    <TextBox
+                                        x:Name="Password"
+                                        Grid.Column="1"
+                                        Style="{StaticResource SearchTextBox}" />
+
+                                </Grid>
+                            </Border>
+
+                            <Button
+                                x:Name="Submit"
+                                Width="220"
+                                Margin="0,45,0,0"
+                                Content="Войти"
+                                Style="{StaticResource PrimaryButton}" />
+
+                        </StackPanel>
+
+                        <TextBlock
+                            x:Name="ErrorInfo"
+                            Grid.Row="1"
+                            Margin="0,0,0,30"
+                            HorizontalAlignment="Center"
+                            Foreground="{DynamicResource DangerBrush}"
+                            Style="{StaticResource SmallTextBlock}"
+                            Text="{Binding Error}"
+                            TextAlignment="Center" />
+
+                    </Grid>
+
+                </Grid>
+
+            </Grid>
+
+        </Border>
+    </Grid>
+</rxui:ReactiveUserControl>

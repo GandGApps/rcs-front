@@ -25,6 +25,11 @@ public class CategoryDto : ICategoryItemDto
         get; set;
     }
 
+    public bool HasIcon
+    {
+        get; set;
+    }
+
     public int? CategoryId
     {
         get; set;

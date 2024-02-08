@@ -135,6 +135,8 @@
         <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="Foreground" Value="{DynamicResource DefaultButtonForeground}" />
         <Setter Property="MinHeight" Value="{mx:AdaptiveSize 56}" />
+        <Setter Property="BorderBrush" Value="Transparent" />
+        <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Template">
             <Setter.Value>
 
@@ -146,7 +148,9 @@
                         HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                         VerticalAlignment="{TemplateBinding VerticalAlignment}"
                         Background="{TemplateBinding Background}"
-                        CornerRadius="25">
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="38">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                     </Border>
                 </ControlTemplate>

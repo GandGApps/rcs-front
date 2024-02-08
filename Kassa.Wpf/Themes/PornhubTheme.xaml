@@ -230,4 +230,8 @@
     </DataTemplate>
     <!--#endregion-->
 
+    <SolidColorBrush x:Key="AutorizationPageBackground" Color="White" />
+
+    <SolidColorBrush x:Key="AutorizationPageBrendLogo" Color="Black" />
+
 </ResourceDictionary>

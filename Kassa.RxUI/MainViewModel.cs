@@ -60,7 +60,7 @@ public class MainViewModel : ReactiveObject, IScreen
     public MainViewModel()
     {
         Router = new();
-        Router.Navigate.Execute(new MainPageVm(this));
+        Router.Navigate.Execute(new AutorizationPageVm(this));
 
         CloseCommand = ReactiveCommand.Create((ReactiveObject sender) => sender);
 

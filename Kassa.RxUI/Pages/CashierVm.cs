@@ -30,7 +30,10 @@ public class CashierVm : PageViewModel
     {
         CreateTotalCommentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var dialog = new CommentDialogViewModel(this);
+            var dialog = new CommentDialogViewModel(this)
+            {
+                Comment = TotalComment
+            };
 
             await mainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
 
@@ -38,6 +41,7 @@ public class CashierVm : PageViewModel
 
             if (dialog.IsPublished)
             {
+                await _cashierService!.WriteTotalComment(dialog.Comment);
                 TotalComment = dialog.Comment;
             }
         });
