@@ -12,6 +12,7 @@
     d:DataContext="{d:DesignInstance Type=pages:AutorizationPageVm}"
     d:DesignHeight="740"
     d:DesignWidth="1560"
+    wnd:MainWindow.IsGrayscaleEffectOnDialog="True"
     wnd:MainWindow.IsHasFooter="False"
     x:TypeArguments="pages:AutorizationPageVm"
     mc:Ignorable="d">

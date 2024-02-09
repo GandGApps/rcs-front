@@ -10,12 +10,11 @@ using Kassa.RxUI.Dialogs;
 using ReactiveUI;
 
 namespace Kassa.Wpf.Dialogs;
-public abstract class ClosableDialog<T>: ReactiveUserControl<T> where T: DialogViewModel
+public abstract class ClosableDialog<T>: BaseDialog<T> where T: DialogViewModel
 {
     public ClosableDialog()
     {
         SetResourceReference(TemplateProperty, "ClosableDialogTemplate");
-        
     }
 
     public override void OnApplyTemplate()

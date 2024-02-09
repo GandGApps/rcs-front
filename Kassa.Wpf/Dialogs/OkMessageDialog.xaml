@@ -1,0 +1,36 @@
+﻿<local:ClosableDialog
+    x:Class="Kassa.Wpf.Dialogs.OkMessageDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialogs="clr-namespace:Kassa.RxUI.Dialogs;assembly=Kassa.RxUI"
+    xmlns:local="clr-namespace:Kassa.Wpf.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DataContext="{d:DesignInstance Type=dialogs:OkMessageDialogViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:TypeArguments="dialogs:OkMessageDialogViewModel"
+    mc:Ignorable="d">
+    <Border
+        Padding="20,14"
+        VerticalAlignment="Center"
+        Style="{StaticResource PrimaryMenu}">
+        <StackPanel VerticalAlignment="Center">
+            <Path
+                x:Name="Icon"
+                Width="70"
+                Margin="0,60,0,0"
+                Fill="{DynamicResource OkDialogIconFill}" />
+            <TextBlock
+                x:Name="Message"
+                Margin="0,30,0,30"
+                Style="{StaticResource Header}"
+                TextAlignment="Center"
+                TextWrapping="Wrap" />
+            <Button
+                x:Name="OkButton"
+                HorizontalAlignment="Center"
+                Style="{StaticResource PrimaryButton}" />
+        </StackPanel>
+    </Border>
+</local:ClosableDialog>

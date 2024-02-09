@@ -55,5 +55,6 @@ public partial class AutorizationPage : ReactiveUserControl<AutorizationPageVm>
     private void LogoSizeAnimationCompleted(object sender, EventArgs e)
     {
         Form.IsHitTestVisible = true;
+        Welcome.IsHitTestVisible = false;
     }
 }

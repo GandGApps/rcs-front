@@ -192,4 +192,43 @@ public class KeyboardInfo: ReactiveObject
 
         return keyboard;
     }
+
+    public static KeyboardInfo Numpad()
+    {
+        var keyboard = new KeyboardInfo();
+
+        ObservableCollection<KeyInfo> line1 = [
+            KeyInfo.Char('1'),
+            KeyInfo.Char('2'),
+            KeyInfo.Char('3'),
+        ];
+
+        ObservableCollection<KeyInfo> line2 = [
+            KeyInfo.Char('4'),
+            KeyInfo.Char('5'),
+            KeyInfo.Char('6'),
+        ];
+
+        ObservableCollection<KeyInfo> line3 = [
+            KeyInfo.Char('7'),
+            KeyInfo.Char('8'),
+            KeyInfo.Char('9'),
+        ];
+
+        ObservableCollection<KeyInfo> line4 = [
+            KeyInfo.IconButton("DeliveryTruck"),
+            KeyInfo.Char('0'),
+            new() { IsBackspace = true },
+        ];
+
+        keyboard.Lines.Add(line1);
+        keyboard.Lines.Add(line2);
+        keyboard.Lines.Add(line3);
+        keyboard.Lines.Add(line4);
+
+        keyboard.LineWidth *= 1.4;
+        keyboard.KeyHeight *= 1.4;
+
+        return keyboard;
+    }
 }

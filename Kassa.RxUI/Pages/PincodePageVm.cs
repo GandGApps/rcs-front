@@ -1,10 +1,101 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.RxUI.Dialogs;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI.Pages;
-public class PincodePageVm
+public class PincodePageVm : PageViewModel
 {
+    [Reactive]
+    public string Pincode
+    {
+        get; set;
+    } = null!;
+
+    public string RestoranName
+    {
+        get;
+    }
+    public DateTime LicenseEndDate
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> CloseCommand
+    {
+        get;
+    }
+
+    public PincodePageVm(MainViewModel mainViewModel) : base(mainViewModel)
+    {
+        RestoranName = "RestoranName";
+        LicenseEndDate = DateTime.Now;
+
+        CloseCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await mainViewModel.DialogOpenCommand.Execute(new PincodeTurnOffDialogViewModel(mainViewModel)).FirstAsync();
+        });
+    }
+
+    protected override void OnActivated(CompositeDisposable disposables)
+    {
+        base.OnActivated(disposables);
+
+        this.WhenAnyValue(x => x.Pincode)
+            .Where(x => x is not null && x.Length == 4)
+            .Subscribe(async _ =>
+            {
+                var loading = new LoadingDialogViewModel(MainViewModel)
+                {
+                    Message = "Запрос подключения для модуля: “SUPER_MODUL”"
+                };
+
+                MainViewModel.DialogOpenCommand.Execute(loading).Subscribe();
+
+                await Task.Delay(10_000);
+
+                loading.Message = "Типо 10 сек прошло";
+
+                await Task.Delay(1000);
+
+                if (Pincode == "0000")
+                {
+                    await loading.CloseAsync();
+                    await MainViewModel.Router.NavigateAndReset.Execute(new MainPageVm(MainViewModel)).FirstAsync();
+                    return;
+                }
+
+                loading.Message = "Сейчас будет либо 'Неверный пинкод', либо 'Соединение не устоновлено'";
+
+                await Task.Delay(1000);
+
+                await loading.CloseAsync();
+
+                var observableTask = Random.Shared.Next(0, 2) switch
+                {
+                    0 => MainViewModel.DialogOpenCommand.Execute(new OkMessageDialogViewModel
+                    {
+                        Icon = "JustFailed",
+                        Message = "Неверный пинкод"
+                    }).FirstAsync(),
+                    1 => MainViewModel.DialogOpenCommand.Execute(new OkMessageDialogViewModel
+                    {
+                        Icon = "LinkFailed",
+                        Message = "Соединение не устоновлено"
+                    }).FirstAsync(),
+                    _ => throw new InvalidOperationException()
+                };
+
+                await observableTask;
+
+            })
+            .DisposeWith(disposables);
+    }
 }

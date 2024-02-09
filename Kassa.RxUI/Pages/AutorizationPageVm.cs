@@ -24,7 +24,7 @@ public class AutorizationPageVm : PageViewModel
 
             if (Login == "admin" && Password == "admin")
             {
-                await mainViewModel.Router.NavigateAndReset.Execute(new MainPageVm(mainViewModel)).FirstAsync();
+                await mainViewModel.GoToPageCommand.Execute(new PincodePageVm(mainViewModel)).FirstAsync();
                 return true;
             }
             else

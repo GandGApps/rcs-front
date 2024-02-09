@@ -1,0 +1,149 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:dialogs="clr-namespace:Kassa.Wpf.Dialogs"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions">
+
+    <ControlTemplate x:Key="BaseDialogTemplate" TargetType="UserControl">
+        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+
+            <ContentPresenter Grid.Row="1" />
+
+        </Grid>
+    </ControlTemplate>
+
+    <CornerRadius x:Key="StartMenu">12,12,0,0</CornerRadius>
+    <CornerRadius x:Key="EndMenu">0,0,12,12</CornerRadius>
+
+    <Style x:Key="PrimaryMenu" TargetType="Border">
+        <Setter Property="Width" Value="{mx:AdaptiveSize 500}" />
+        <Setter Property="Background" Value="{DynamicResource DialogBackground}" />
+        <Setter Property="CornerRadius" Value="12" />
+    </Style>
+
+    <Style
+        x:Key="WideDialog"
+        BasedOn="{StaticResource PrimaryMenu}"
+        TargetType="Border">
+        <Setter Property="Width" Value="{mx:AdaptiveSize 1320}" />
+        <Setter Property="Height" Value="{mx:AdaptiveSize 670}" />
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='17,24,17,0'}" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="HeaderMenu" TargetType="Border">
+        <Setter Property="Background" Value="{DynamicResource DialogHeaderBackground}" />
+        <Setter Property="CornerRadius" Value="{DynamicResource StartMenu}" />
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='20,24,20,13'}" />
+    </Style>
+
+    <Style x:Key="HeaderIcon" TargetType="Image">
+        <Setter Property="Stretch" Value="Uniform" />
+        <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='10'}" />
+    </Style>
+
+    <Style x:Key="MenuButton" TargetType="Button">
+        <Setter Property="Background" Value="White" />
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='30'}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="TextBlock.LineHeight" Value="33" />
+    </Style>
+
+    <Style x:Key="Separator" TargetType="Border">
+        <Setter Property="Width" Value="{mx:AdaptiveSize 430}" />
+        <Setter Property="Height" Value="1" />
+        <Setter Property="Background" Value="#C5E3F8" />
+    </Style>
+
+    <Style
+        x:Key="NotCenteredMenyButton"
+        BasedOn="{StaticResource MenuButton}"
+        TargetType="Button">
+        <Setter Property="HorizontalContentAlignment" Value="Left" />
+    </Style>
+
+    <Style x:Key="DialogFooter" TargetType="Border">
+        <Setter Property="CornerRadius" Value="38" />
+        <Setter Property="Background" Value="{DynamicResource DialogFooterBrush}" />
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='20,4,20,4'}" />
+    </Style>
+
+    <Style
+        x:Key="KeyboardCheckbox"
+        BasedOn="{StaticResource PrimaryCheckbox}"
+        TargetType="CheckBox">
+        <Setter Property="Width" Value="{mx:AdaptiveSize 136}" />
+        <Setter Property="Height" Value="{mx:AdaptiveSize 50}" />
+        <Setter Property="Margin" Value="0,0,18,0" />
+        <Setter Property="Padding" Value="3,0,3,0" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter Property="BorderThickness" Value="0" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
+    <Style
+        x:Key="KeyboardCheckboxIcon"
+        BasedOn="{StaticResource {x:Type Path}}"
+        TargetType="Path">
+        <Setter Property="Height" Value="{mx:AdaptiveSize 23}" />
+        <Setter Property="Data" Value="{StaticResource Keyboard}" />
+        <Setter Property="Fill" Value="{DynamicResource AlternateForeground}" />
+    </Style>
+
+    <Style x:Key="KeyboardCheckboxText" TargetType="TextBlock">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 11}" />
+        <Setter Property="Foreground" Value="{DynamicResource AlternateForeground}" />
+        <Setter Property="TextAlignment" Value="Center" />
+    </Style>
+
+    <Style x:Key="SearchTextBoxBorder" TargetType="Border">
+        <Setter Property="Width" Value="{mx:AdaptiveSize 430}" />
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='20,14,13,14'}" />
+        <Setter Property="Background" Value="{DynamicResource SearchTextBoxBorderBackground}" />
+        <Setter Property="CornerRadius" Value="28" />
+    </Style>
+
+    <Style x:Key="SearchTextBox" TargetType="TextBox">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 20}" />
+        <Setter Property="Foreground" Value="{DynamicResource SecondaryForeground}" />
+    </Style>
+
+    <Style
+        x:Key="SearchTextBoxIcon"
+        BasedOn="{StaticResource {x:Type Path}}"
+        TargetType="Path">
+        <Setter Property="Height" Value="{mx:AdaptiveSize 34}" />
+        <Setter Property="Data" Value="{DynamicResource SearchIcon}" />
+        <Setter Property="Fill" Value="{DynamicResource SecondaryForeground}" />
+    </Style>
+
+    <Style x:Key="ClearSearchTextBorder" TargetType="Border">
+        <Setter Property="Margin" Value="25,0,0,0" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="Background" Value="{StaticResource ClickableBg}" />
+        <Setter Property="Grid.Column" Value="3" />
+    </Style>
+
+    <Style
+        x:Key="ClearSearchTextIcon"
+        BasedOn="{StaticResource {x:Type Path}}"
+        TargetType="Path">
+        <Setter Property="Height" Value="{mx:AdaptiveSize 32}" />
+        <Setter Property="Width" Value="{mx:AdaptiveSize 32}" />
+        <Setter Property="Data" Value="{DynamicResource CancelIcon}" />
+        <Setter Property="Fill" Value="White" />
+        <Setter Property="Opacity" Value="0.5" />
+    </Style>
+
+
+</ResourceDictionary>

@@ -27,7 +27,7 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
         DependencyProperty.RegisterAttached("PageFooter", typeof(object), typeof(MainWindow));
 
     public static readonly DependencyProperty IsHasFooterProperty =
-        DependencyProperty.RegisterAttached("IsHasFooter", typeof(bool), typeof(MainWindow));
+        DependencyProperty.RegisterAttached("IsHasFooter", typeof(bool), typeof(MainWindow), new(true));
 
     public static readonly DependencyProperty IsGrayscaleEffectOnDialogProperty =
         DependencyProperty.RegisterAttached("IsGrayscaleEffectOnDialog", typeof(bool), typeof(MainWindow));
@@ -82,6 +82,7 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
             RoutedViewHost.WhenAnyValue(x => x.Content)
                           .Subscribe(x =>
                           {
+                              _isGrayscaleEffectOnDialog = false;
                               if (x is FrameworkElement element)
                               {
                                   _isGrayscaleEffectOnDialog = element.GetValue(IsGrayscaleEffectOnDialogProperty) is bool isGrayscaleEffectOnDialog && isGrayscaleEffectOnDialog;
@@ -89,15 +90,12 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
                                   if (element.GetValue(IsHasFooterProperty) is bool isHasFooter)
                                   {
                                       Footer.Visibility = isHasFooter ? Visibility.Visible : Visibility.Collapsed;
-                                      return;
                                   }
                                   if (element.GetValue(PageFooterProperty) is FrameworkElement footer)
                                   {
                                       PageFooterAdditionalContent.Content = footer;
                                       footer.DataContext = ViewModel.Router.GetCurrentViewModel();
-                                      return;
                                   }
-
                               }
 
                           })
@@ -158,6 +156,16 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
     public static bool GetIsHasFooter(UIElement element)
     {
         return (bool)element.GetValue(IsHasFooterProperty);
+    }
+
+    public static void SetIsGrayscaleEffectOnDialog(UIElement element, bool value)
+    {
+        element.SetValue(IsGrayscaleEffectOnDialogProperty, value);
+    }
+
+    public static bool GetIsGrayscaleEffectOnDialog(UIElement element)
+    {
+        return (bool)element.GetValue(IsGrayscaleEffectOnDialogProperty);
     }
 
 }

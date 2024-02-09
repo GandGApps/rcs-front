@@ -94,9 +94,17 @@ public partial class Keyboard : UserControl, IActivatableView
 
                             var keyDisposables = new CompositeDisposable();
 
-                            key.WhenAnyValue(x => x.Character, x => x.Text)
+                            key.WhenAnyValue(x => x.Character, x => x.Text, x => x.IsIcon, x => x.Icon)
                                 .Subscribe(x =>
                                 {
+                                    if (x.Item3 && !string.IsNullOrWhiteSpace(x.Item4))
+                                    {
+                                        var path = new Path();
+                                        path.SetResourceReference(Path.DataProperty, x.Item4);
+                                        path.SetResourceReference(Path.FillProperty, "KeyForeground");
+
+                                        button.Content = path;
+                                    }
                                     if (x.Item1 is not null && x.Item1 != ' ')
                                     {
                                         button.Content = x.Item1;
@@ -234,4 +242,6 @@ public partial class Keyboard : UserControl, IActivatableView
         }
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
     }
+
+    public static readonly KeyboardInfo Numpad = KeyboardInfo.Numpad();
 }

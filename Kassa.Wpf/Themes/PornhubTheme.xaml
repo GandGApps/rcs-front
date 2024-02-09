@@ -231,7 +231,8 @@
     <!--#endregion-->
 
     <SolidColorBrush x:Key="AutorizationPageBackground" Color="White" />
-
     <SolidColorBrush x:Key="AutorizationPageBrendLogo" Color="Black" />
+
+    <SolidColorBrush x:Key="OkDialogIconFill" Color="#7F000000" />
 
 </ResourceDictionary>
