@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
+using DynamicData.Binding;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
@@ -163,6 +164,15 @@ public class CashierVm : PageViewModel
 
             })
             .DisposeWith(disposables);
+
+        ShoppingListItems.ToObservableChangeSet()
+                         .AutoRefresh(x => x.SubtotalSum)
+                         .ToCollection()
+                         .Select(x => x.Sum(x => x.SubtotalSum))
+                         .Subscribe(x => ShoppingList.Subtotal = x)
+                         .DisposeWith(disposables);
+
+
     }
 
     public bool IsMultiSelect

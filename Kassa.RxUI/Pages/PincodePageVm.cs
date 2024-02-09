@@ -50,8 +50,9 @@ public class PincodePageVm : PageViewModel
 
         this.WhenAnyValue(x => x.Pincode)
             .Where(x => x is not null && x.Length == 4)
-            .Subscribe(async _ =>
+            .Subscribe(async x =>
             {
+                Pincode = string.Empty;
                 var loading = new LoadingDialogViewModel(MainViewModel)
                 {
                     Message = "Запрос подключения для модуля: “SUPER_MODUL”"
@@ -65,7 +66,7 @@ public class PincodePageVm : PageViewModel
 
                 await Task.Delay(1000);
 
-                if (Pincode == "0000")
+                if (x == "0000")
                 {
                     await loading.CloseAsync();
                     await MainViewModel.Router.NavigateAndReset.Execute(new MainPageVm(MainViewModel)).FirstAsync();
@@ -74,7 +75,11 @@ public class PincodePageVm : PageViewModel
 
                 loading.Message = "Сейчас будет либо 'Неверный пинкод', либо 'Соединение не устоновлено'";
 
+#if RELEASE
                 await Task.Delay(1000);
+#elif DEBUG
+                await Task.Delay(2000);
+#endif
 
                 await loading.CloseAsync();
 

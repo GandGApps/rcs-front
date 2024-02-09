@@ -30,6 +30,10 @@ public class ShoppingListViewModel : ReactiveObject
         {
             await cashierService.RemoveSelectedProductShoppingListItem();
         });
+
+        this.WhenAnyValue(x => x.Subtotal)
+            .Select(x => x * (1-Discount))
+            .Subscribe(x => Total = x);
     }
 
     public ObservableCollection<ProductShoppingListItemViewModel> AddictiveViewModels
@@ -62,7 +66,7 @@ public class ShoppingListViewModel : ReactiveObject
     public double Discount
     {
         get; set;
-    }
+    } 
 
     public ObservableCollection<IShoppingListItem> CurrentItems
     {
