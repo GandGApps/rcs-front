@@ -134,7 +134,12 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
 
         });
 
-
+#if DEBUG
+        WindowState = WindowState.Normal;
+        WindowStyle = WindowStyle.SingleBorderWindow;
+        ResizeMode = ResizeMode.CanResize;
+        WindowStartupLocation = WindowStartupLocation.CenterScreen;
+#endif
     }
     public static void SetPageFooter(UIElement element, object? value)
     {

@@ -27,24 +27,24 @@
 
         <Border
             Grid.Column="1"
-            Padding="30"
+            Padding="{mx:AdaptiveSize Thickness='30'}"
             Background="{DynamicResource AlternateForeground}">
             <StackPanel>
                 <Border
                     x:Name="Logo"
                     Grid.Row="1"
-                    Width="124"
+                    Width="{mx:AdaptiveSize 124}"
                     Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
-                    Margin="0,30,0,0"
-                    Padding="20"
+                    Margin="{mx:AdaptiveSize Thickness='0,30,0,0'}"
+                    Padding="{mx:AdaptiveSize Thickness='20'}"
                     VerticalAlignment="Center"
                     Background="{DynamicResource AutorizationPageBrendLogo}"
-                    CornerRadius="24">
+                    CornerRadius="{mx:AdaptiveSize CornerRadius='24'}">
                     <Path Data="{StaticResource Logo}" Fill="White" />
                 </Border>
 
                 <TextBlock
-                    Margin="0,21,0,16"
+                    Margin="{mx:AdaptiveSize Thickness='0,21,0,16'}"
                     Style="{StaticResource SubHeader}"
                     Text="Прокатайте карту или введите ПИН-код для входа в систему"
                     TextAlignment="Center"
@@ -53,7 +53,7 @@
                 <controls:Keyboard x:Name="Keyboard" />
 
                 <TextBlock
-                    Margin="0,20,0,0"
+                    Margin="{mx:AdaptiveSize Thickness='0,20,0,0'}"
                     Style="{StaticResource PrimaryTextBlock}"
                     TextAlignment="Center">
                     <Run Text="Ресторан:" /><Run x:Name="RestoranName" />

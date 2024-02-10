@@ -41,6 +41,11 @@ public class AdaptiveSizeExtension : MarkupExtension
         get; set;
     }
 
+    public CornerRadius CornerRadius
+    {
+        get; set;
+    }
+
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
         var valueTargetProvider = serviceProvider?.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
@@ -57,12 +62,15 @@ public class AdaptiveSizeExtension : MarkupExtension
                 {
                     if (dProperty.PropertyType == typeof(Thickness))
                     {
-
                         return Thickness;
                     }
                     if (dProperty.PropertyType == typeof(GridLength))
                     {
                         return GridLength;
+                    }
+                    if (dProperty.PropertyType == typeof(CornerRadius))
+                    {
+                        return CornerRadius;
                     }
                 }
                 return Size;
@@ -83,6 +91,11 @@ public class AdaptiveSizeExtension : MarkupExtension
                     return GridLength;
                 }
 
+                if (dSetter.Property.PropertyType == typeof(CornerRadius))
+                {
+                    return CornerRadius;
+                }
+
                 return Size;
             }
         }
@@ -94,7 +107,6 @@ public class AdaptiveSizeExtension : MarkupExtension
         {
             if (setter.Property.PropertyType == typeof(Thickness))
             {
-
                 binding = new Binding
                 {
                     Source = source,
@@ -102,6 +114,34 @@ public class AdaptiveSizeExtension : MarkupExtension
                     Converter = new AdaptiveSizeConverter(),
                     ConverterParameter = Thickness,
                     FallbackValue = Thickness
+                };
+
+                return binding.ProvideValue(serviceProvider);
+            }
+
+            if (setter.Property.PropertyType == typeof(GridLength))
+            {
+                binding = new Binding
+                {
+                    Source = source,
+                    Path = new("ActualWidth"),
+                    Converter = new AdaptiveSizeConverter(),
+                    ConverterParameter = GridLength,
+                    FallbackValue = GridLength
+                };
+
+                return binding.ProvideValue(serviceProvider);
+            }
+
+            if (setter.Property.PropertyType == typeof(CornerRadius))
+            {
+                binding = new Binding
+                {
+                    Source = source,
+                    Path = new("ActualWidth"),
+                    Converter = new AdaptiveSizeConverter(),
+                    ConverterParameter = CornerRadius,
+                    FallbackValue = CornerRadius
                 };
 
                 return binding.ProvideValue(serviceProvider);
@@ -134,6 +174,22 @@ public class AdaptiveSizeExtension : MarkupExtension
                     Converter = new AdaptiveSizeConverter(),
                     ConverterParameter = GridLength,
                     FallbackValue = GridLength
+                };
+
+                return binding.ProvideValue(serviceProvider);
+            }
+
+            if (property.PropertyType == typeof(CornerRadius))
+            {
+
+                binding = new Binding
+                {
+
+                    Source = source,
+                    Path = new("ActualWidth"),
+                    Converter = new AdaptiveSizeConverter(),
+                    ConverterParameter = CornerRadius,
+                    FallbackValue = CornerRadius
                 };
 
                 return binding.ProvideValue(serviceProvider);
@@ -201,6 +257,16 @@ public class AdaptiveSizeExtension : MarkupExtension
                     );
                 }
                 return gridLength;
+            }
+
+            if (parameter is CornerRadius cornerRadius)
+            {
+                return new CornerRadius(
+                    AdaptiveMarkupExtension.GetAdaptiveSize(cornerRadius.TopLeft, width),
+                    AdaptiveMarkupExtension.GetAdaptiveSize(cornerRadius.TopRight, width),
+                    AdaptiveMarkupExtension.GetAdaptiveSize(cornerRadius.BottomRight, width),
+                    AdaptiveMarkupExtension.GetAdaptiveSize(cornerRadius.BottomLeft, width)
+                );
             }
 
             var size = (double)parameter;

@@ -59,8 +59,11 @@ public class PincodePageVm : PageViewModel
                 };
 
                 MainViewModel.DialogOpenCommand.Execute(loading).Subscribe();
-
+#if RELEASE
                 await Task.Delay(10_000);
+#elif DEBUG
+                await Task.Delay(700);
+#endif
 
                 loading.Message = "Типо 10 сек прошло";
 
@@ -75,11 +78,7 @@ public class PincodePageVm : PageViewModel
 
                 loading.Message = "Сейчас будет либо 'Неверный пинкод', либо 'Соединение не устоновлено'";
 
-#if RELEASE
                 await Task.Delay(1000);
-#elif DEBUG
-                await Task.Delay(2000);
-#endif
 
                 await loading.CloseAsync();
 
