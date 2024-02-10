@@ -64,11 +64,23 @@ public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListIte
             .Select(x => (x.Item1 * x.Item2) + x.Item3)
             .Subscribe(x => SubtotalSum = x);
 
+        this.WhenAnyValue(x => x.Count, x => x.Price, x => x.AddictiveTotalSum)
+            .Select(x => ((x.Item1 * x.Item2) + x.Item3) * (1 -  Discount))
+            .Subscribe(x => TotalSum = x);
+
+        Additives
+            .ToObservableChangeSet()
+            .AutoRefresh(x => x.Price)
+            .AutoRefresh(x => x.Count)
+            .ToCollection()
+            .Select(list => list.Sum(item => item.Price))
+            .Subscribe(x => AddictiveSubtotalSum = x);
+
         Additives
             .ToObservableChangeSet()
             .ToCollection()
             .Select(list => list.Sum(item => item.Price))
-            .Subscribe(x => AddictiveSubtotalSum = x);
+            .Subscribe(x => AddictiveTotalSum = x);
 
 
         RemoveCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -129,7 +141,7 @@ public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListIte
     public string? AdditiveInfo
     {
         get; set;
-    } 
+    }
 
     public ReadOnlyObservableCollection<AdditiveShoppingListItemViewModel> Additives
     {
@@ -149,6 +161,12 @@ public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListIte
 
     [Reactive]
     public double AddictiveSubtotalSum
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public double AddictiveTotalSum
     {
         get; set;
     }

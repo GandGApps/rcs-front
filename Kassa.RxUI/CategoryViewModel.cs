@@ -37,4 +37,8 @@ public class CategoryViewModel : ReactiveObject
     public int Id => _category.Id;
 
     public string Name => _category.Name;
+
+    public bool HasIcon => _category.HasIcon;
+
+    public string? Icon => _category.Icon;
 }

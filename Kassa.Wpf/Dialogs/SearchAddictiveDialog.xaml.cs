@@ -65,4 +65,9 @@ public partial class SearchAddictiveDialog : ClosableDialog<SearchAddictiveDialo
     {
         ViewModel!.SearchedText = string.Empty;
     }
+
+    private void ScrollViewerGotFocus(object sender, RoutedEventArgs e)
+    {
+        ViewModel!.IsKeyboardVisible = false;
+    }
 }

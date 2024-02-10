@@ -149,13 +149,16 @@
 
     <UserControl.Style>
 
-        <Style BasedOn="{StaticResource {x:Type UserControl}}" TargetType="UserControl">
+        <Style BasedOn="{StaticResource {x:Type UserControl}}" TargetType="local:AddictiveView">
             <Setter Property="Background" Value="{DynamicResource DefaultAdditiveViewBackground}" />
             <Setter Property="Padding" Value="13" />
             <Setter Property="Margin" Value="1" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Style.Triggers>
+                <Trigger Property="IsOnDialog" Value="True">
+                    <Setter Property="Background" Value="{DynamicResource DefaultOnDialogAdditiveViewBackground}" />
+                </Trigger>
                 <DataTrigger Binding="{Binding IsAvailable}" Value="False">
                     <Setter Property="Background" Value="{DynamicResource NotAvailbaleAdditiveViewBackground}" />
                 </DataTrigger>

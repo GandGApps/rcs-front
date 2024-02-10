@@ -131,7 +131,6 @@
                                 ViewModel="{Binding .}">
                                 <UserControl.Resources>
                                     <ResourceDictionary>
-                                        <SolidColorBrush x:Key="SolidPrimaryButtonColor" Color="White" />
                                         <sys:Double x:Key="NotAvailableFontSize">13</sys:Double>
                                         <sys:Double x:Key="CountFontSize">13</sys:Double>
                                         <sys:Double x:Key="NameFontSize">13</sys:Double>
@@ -299,6 +298,11 @@
                     Grid.Row="1"
                     Style="{StaticResource PrimaryScrollViewer}"
                     VerticalScrollBarVisibility="Auto">
+
+                    <i:Interaction.Behaviors>
+                        <behaviors:ScrollViewerFixingBehavior />
+                    </i:Interaction.Behaviors>
+
                     <ItemsControl x:Name="ShoppingListItems" Margin="0,11,0,0" />
                 </ScrollViewer>
 

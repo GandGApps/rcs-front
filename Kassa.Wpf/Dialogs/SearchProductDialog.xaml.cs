@@ -78,4 +78,9 @@ public partial class SearchProductDialog : ClosableDialog<SearchProductDialogVie
     {
         ViewModel!.SearchedText = string.Empty;
     }
+
+    private void ScrollViewerGotFocus(object sender, RoutedEventArgs e)
+    {
+        ViewModel!.IsKeyboardVisible = false;
+    }
 }

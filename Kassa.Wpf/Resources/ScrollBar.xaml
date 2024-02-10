@@ -64,10 +64,7 @@
             </Grid.RowDefinitions>
 
             <RepeatButton Command="ScrollBar.LineUpCommand" Style="{StaticResource PrimaryScrollbarRepeatButton}">
-                <Path
-                    Data="{DynamicResource ScrollBarIcon}"
-                    Fill="Black"
-                    Opacity="0.1" />
+                <Path Data="{DynamicResource ScrollBarIcon}" Fill="{DynamicResource ScrollBarButton}" />
             </RepeatButton>
 
             <Track x:Name="PART_Track" Grid.Row="1" />

@@ -45,15 +45,17 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
             .DistinctUntilChanged();
 
         var searchFilter = throttledStream
-            .Select(text => new Func<AdditiveDto, bool>(addictive =>
-                           string.IsNullOrWhiteSpace(text) || addictive.Name.Contains(text.Trim(), StringComparison.OrdinalIgnoreCase)));
+            .Select(text => new Func<AdditiveDto, bool>(additive =>
+                string.IsNullOrWhiteSpace(text) || additive.Name.Contains(text.Trim(), StringComparison.OrdinalIgnoreCase)));
+
+
 
         _additiveService.RuntimeAdditives
             .Connect()
             .ObserveOn(RxApp.MainThreadScheduler)
             .Filter(searchFilter)
+            .TransformWithInlineUpdate(additive => new AdditiveViewModel(additive), (vm,source) => vm.Source = source)
             .Bind(out _filteredAdditives)
-            .DisposeMany()
             .Subscribe()
             .DisposeWith(disposables);
 
@@ -72,8 +74,8 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
         get; set;
     }
 
-    public ReadOnlyObservableCollection<AdditiveDto> FilteredAddcitves => _filteredAdditives;
-    private ReadOnlyObservableCollection<AdditiveDto> _filteredAdditives;
+    public ReadOnlyObservableCollection<AdditiveViewModel> FilteredAddcitves => _filteredAdditives;
+    private ReadOnlyObservableCollection<AdditiveViewModel> _filteredAdditives;
 
     /// <summary>
     /// if it's null then user canceled dialog

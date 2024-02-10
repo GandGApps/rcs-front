@@ -38,6 +38,9 @@ public partial class CashierPage : ReactiveUserControl<CashierVm>
             this.OneWayBind(ViewModel, x => x.ShoppingList.Subtotal, x => x.SubtotalCost.Text, x => $"{x} ₽")
                 .DisposeWith(disposables);
 
+            this.OneWayBind(ViewModel, x => x.ShoppingList.Total, x => x.TotalCost.Text, x => $"{x} ₽")
+                .DisposeWith(disposables);
+
             this.BindCommand(ViewModel, x => x.ShoppingList.RemoveCommand, x => x.RemoveButton)
                 .DisposeWith(disposables);
 

@@ -66,6 +66,7 @@
 
     <!--#region Default State-->
     <SolidColorBrush x:Key="DefaultAdditiveViewBackground" Color="White" />
+    <SolidColorBrush x:Key="DefaultOnDialogAdditiveViewBackground" Color="#DEDEDE" />
     <SolidColorBrush x:Key="DefaultAdditiveViewForeground" Color="Black" />
     <SolidColorBrush x:Key="DefaultAdditiveViewIconFill" Color="#3A3A45" />
     <SolidColorBrush x:Key="DefaultAdditveViewMeasureForeground" Color="#153750" />
@@ -89,7 +90,7 @@
     <!--#endregion-->
 
     <!--#region ScrollBar-->
-    <SolidColorBrush x:Key="ScrollBarButton" Color="#19000000" />
+    <SolidColorBrush x:Key="ScrollBarButton" Color="#54000000" />
     <!--#endregion-->
 
     <!--#region Buttons-->

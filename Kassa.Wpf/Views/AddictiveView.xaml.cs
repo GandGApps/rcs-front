@@ -37,6 +37,9 @@ public partial class AddictiveView : ReactiveUserControl<AdditiveViewModel>
     public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register(
                nameof(CommandParameter), typeof(object), typeof(AddictiveView), new PropertyMetadata(default(object)));
 
+    public static readonly DependencyProperty IsOnDialogProperty = DependencyProperty.Register(
+               nameof(IsOnDialog), typeof(bool), typeof(AddictiveView), new PropertyMetadata(default(bool)));
+
     public bool HasAddictiveIcon
     {
         get => (bool)GetValue(HasAddictiveIconProperty);
@@ -55,11 +58,17 @@ public partial class AddictiveView : ReactiveUserControl<AdditiveViewModel>
         set => SetValue(CommandParameterProperty, value);
     }
 
+    public bool IsOnDialog
+    {
+        get => (bool)GetValue(IsOnDialogProperty);
+        set => SetValue(IsOnDialogProperty, value);
+    }
+
     public AddictiveView()
     {
         InitializeComponent();
 
-        
+
 
         this.WhenActivated(disposabels =>
         {

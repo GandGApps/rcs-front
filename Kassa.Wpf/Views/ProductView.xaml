@@ -163,13 +163,10 @@
                     <Setter Property="Background" Value="{DynamicResource NotAvailableProductViewBackground}" />
                 </DataTrigger>
 
-                <DataTrigger Binding="{Binding IsAdded}" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource SelectedProductViewBackground}" />
-                </DataTrigger>
-
                 <Trigger Property="IsPressed" Value="True">
                     <Setter Property="Background" Value="{DynamicResource SelectedProductViewBackground}" />
                 </Trigger>
+
             </Style.Triggers>
         </Style>
     </Button.Style>
