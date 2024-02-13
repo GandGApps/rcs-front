@@ -13,6 +13,11 @@ public interface ICategoryItemDto
         get;
     }
 
+    public int[] Favourites
+    {
+        get;
+    }
+
     public string Name
     {
         get;

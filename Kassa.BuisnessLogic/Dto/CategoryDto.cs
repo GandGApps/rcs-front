@@ -50,6 +50,11 @@ public class CategoryDto : ICategoryItemDto
         get;
     }
 
+    public int[] Favourites
+    {
+        get;
+    } = [];
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [return: NotNullIfNotNull(nameof(category))]
     public static CategoryDto? FromCategory(Category? category) => category == null ? null : new()

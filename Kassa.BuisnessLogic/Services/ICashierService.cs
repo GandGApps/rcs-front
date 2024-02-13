@@ -22,6 +22,10 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
     {
         get; set;
     }
+    int? SelectedFavourite
+    {
+        get;
+    }
 
     /// <summary>
     /// Bind the current category to ObservableCollection, that will be updated when the category changes.
@@ -49,6 +53,8 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
     /// <returns> true if the previous category exists</returns>
     public ValueTask<bool> SelectPreviosCategory();
 
+    public ValueTask SelectRootCategory();
+
     public Task AddAdditiveToSelectedProducts(int additiveId);
     public Task WriteCommentToSelectedItems(string? comment);
     public Task WriteTotalComment(string? comment);
@@ -58,4 +64,5 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
     public Task IncreaseSelectedProductShoppingListItem();
     public Task DecreaseSelectedProductShoppingListItem();
     public Task RemoveSelectedProductShoppingListItem();
+    public ValueTask SelectFavourite(int? favourite);
 }

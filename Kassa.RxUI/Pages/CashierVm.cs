@@ -68,9 +68,24 @@ public class CashierVm : PageViewModel
             await dialog.WaitDialogClose();
         });
 
-        SelectCategoryCommand = ReactiveCommand.Create<string>(x =>
+        SelectFavouriteCommand = ReactiveCommand.CreateFromTask(async (int x) =>
         {
-            Category = x;
+            if (_cashierService == null)
+            {
+                return;
+            }
+            await _cashierService.SelectFavourite(x);
+        });
+
+        SelectRootCategoryCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+
+            if (_cashierService == null)
+            {
+
+                return;
+            }
+            await _cashierService.SelectRootCategory();
         });
 
         SearchProductCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -113,7 +128,7 @@ public class CashierVm : PageViewModel
 
             await dialog.WaitDialogClose();
         });
-    
+
     }
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
@@ -124,7 +139,7 @@ public class CashierVm : PageViewModel
         _cashierService.BindSelectedCategoryItems(out var categoryItems)
                        .DisposeWith(disposables);
 
-        _cashierService.BindShoppingListItems(x => new ProductShoppingListItemViewModel(x),out var shoppingListItems)
+        _cashierService.BindShoppingListItems(x => new ProductShoppingListItemViewModel(x), out var shoppingListItems)
                        .DisposeWith(disposables);
 
         _cashierService.BindAdditivesForSelectedProduct(x => new AdditiveViewModel(x), out var fastAdditives)
@@ -237,7 +252,12 @@ public class CashierVm : PageViewModel
         get;
     }
 
-    public ReactiveCommand<string, Unit> SelectCategoryCommand
+    public ReactiveCommand<int, Unit> SelectFavouriteCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> SelectRootCategoryCommand
     {
         get;
     }

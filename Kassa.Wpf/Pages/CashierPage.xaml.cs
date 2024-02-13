@@ -53,22 +53,22 @@ public partial class CashierPage : ReactiveUserControl<CashierVm>
             this.Bind(ViewModel, x => x.IsMultiSelect, x => x.MultiSelectCheckbox.IsChecked)
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x => x.SelectCategoryCommand, x => x.AllCategories)
+            this.BindCommand(ViewModel, x => x.SelectRootCategoryCommand, x => x.AllCategories)
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x => x.SelectCategoryCommand, x => x.FastFoodCategory)
+            /*this.BindCommand(ViewModel, x => x.SelectFavouriteCommand, x => x.FastFoodCategory)
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x => x.SelectCategoryCommand, x => x.DrinksCategory)
+            this.BindCommand(ViewModel, x => x.SelectFavouriteCommand, x => x.DrinksCategory)
+                .DisposeWith(disposables);*/
+
+            this.BindCommand(ViewModel, x => x.SelectFavouriteCommand, x => x.FavoriteCategory1)
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x => x.SelectCategoryCommand, x => x.FavoriteCategory1)
+            this.BindCommand(ViewModel, x => x.SelectFavouriteCommand, x => x.FavoriteCategory2)
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x => x.SelectCategoryCommand, x => x.FavoriteCategory2)
-                .DisposeWith(disposables);
-
-            this.BindCommand(ViewModel, x => x.SelectCategoryCommand, x => x.FavoriteCategory3)
+            this.BindCommand(ViewModel, x => x.SelectFavouriteCommand, x => x.FavoriteCategory3)
                 .DisposeWith(disposables);
 
             this.BindCommand(ViewModel, x => x.SearchProductCommand, x => x.SearchFoodButton)

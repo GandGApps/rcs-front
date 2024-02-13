@@ -17,6 +17,8 @@ namespace Kassa.BuisnessLogic.Services;
 internal class CashierService(IProductService productService, ICategoryService categoryService, IAdditiveService additiveService) : ICashierService
 {
     private string? _totalComment;
+    private CategoryDto? _currentCategory;
+    private int? _selectedFavorite;
 
     private readonly List<CategoryDto> _categoriesStack = [];
     private readonly Dictionary<Guid, SourceCache<AdditiveShoppingListItemDto, Guid>> _additivesInProductDto = [];
@@ -59,7 +61,7 @@ internal class CashierService(IProductService productService, ICategoryService c
     public CategoryDto? CurrentCategory
     {
         get => _currentCategory;
-        set
+        private set
         {
             if (_currentCategory == value)
             {
@@ -68,6 +70,23 @@ internal class CashierService(IProductService productService, ICategoryService c
 
             _currentCategory = value;
             PropertyChanged?.Invoke(this, new(nameof(CurrentCategory)));
+        }
+    }
+
+    public int? SelectedFavourite
+    {
+        get => _selectedFavorite;
+        private set
+        {
+
+            if (_selectedFavorite == value)
+            {
+
+                return;
+            }
+
+            _selectedFavorite = value;
+            PropertyChanged?.Invoke(this, new(nameof(SelectedFavourite)));
         }
     }
 
@@ -86,7 +105,7 @@ internal class CashierService(IProductService productService, ICategoryService c
         get;
     } = new(x => x.Id);
 
-    private CategoryDto? _currentCategory;
+
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -94,8 +113,33 @@ internal class CashierService(IProductService productService, ICategoryService c
     {
         this.ThrowIfNotInitialized();
 
-        var filterCondition = this.WhenPropertyChanged(cashierService => cashierService.CurrentCategory)
-            .Select(category => new Func<ICategoryItemDto, bool>(item => item.CategoryId == category.Value?.Id));
+        var filterCondition = this.WhenAnyValue(
+            cashierService => cashierService.CurrentCategory,
+            cashierService => cashierService.SelectedFavourite
+        )
+        .Select(
+            categoryAndFavorite => new Func<ICategoryItemDto, bool>(
+                item =>
+                {
+                    if (item.Name is CategoryDto category && item.Name.Contains("Мяс"))
+                    {
+                    }
+                    if (categoryAndFavorite.Item1?.CategoryId == null && !categoryAndFavorite.Item2.HasValue)
+                    {
+                        return item.CategoryId == null;
+                    }
+
+                    if (categoryAndFavorite.Item1?.CategoryId == null && categoryAndFavorite.Item2.HasValue)
+                    {
+                        return item.Favourites.Contains(categoryAndFavorite.Item2.Value);
+                    }
+
+
+                    return item.CategoryId == categoryAndFavorite.Item1?.CategoryId
+                                            || (categoryAndFavorite.Item2.HasValue && item.Favourites.Contains(categoryAndFavorite.Item2.Value));
+                })
+        );
+
 
         var categoryStream = categoryService.RuntimeCategories.Connect()
             .Transform(category => (ICategoryItemDto)category)
@@ -251,6 +295,24 @@ internal class CashierService(IProductService productService, ICategoryService c
         }
 
         return new(true);
+    }
+
+    public ValueTask SelectFavourite(int? favourite)
+    {
+        this.ThrowIfNotInitialized();
+
+        SelectedFavourite = favourite;
+
+        return ValueTask.CompletedTask;
+    }
+
+    public ValueTask SelectRootCategory()
+    {
+        CurrentCategory = null;
+        _categoriesStack.Clear();
+        SelectedFavourite = null;
+
+        return ValueTask.CompletedTask;
     }
 
     public async Task AddProductToShoppingList(int productId)
