@@ -79,10 +79,6 @@ public partial class CashierPage : ReactiveUserControl<CashierVm>
 
             this.BindCommand(ViewModel, x => x.OpenDiscountsAndSurchargesDialog, x => x.PricingDetailsButton)
                 .DisposeWith(disposables);
-
-            Observable.FromAsync(async () => await ViewModel.InitializeAsync())
-                .Subscribe()
-                .DisposeWith(disposables);
         });
     }
 

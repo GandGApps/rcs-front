@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -81,7 +82,6 @@ internal class CashierService(IProductService productService, ICategoryService c
 
             if (_selectedFavorite == value)
             {
-
                 return;
             }
 
@@ -113,41 +113,32 @@ internal class CashierService(IProductService productService, ICategoryService c
     {
         this.ThrowIfNotInitialized();
 
-        var filterCondition = this.WhenAnyValue(
-            cashierService => cashierService.CurrentCategory,
-            cashierService => cashierService.SelectedFavourite
-        )
-        .Select(
-            categoryAndFavorite => new Func<ICategoryItemDto, bool>(
-                item =>
-                {
-                    if (item.Name is CategoryDto category && item.Name.Contains("Мяс"))
-                    {
-                    }
-                    if (categoryAndFavorite.Item1?.CategoryId == null && !categoryAndFavorite.Item2.HasValue)
-                    {
-                        return item.CategoryId == null;
-                    }
+        var categoryFilter = this.WhenAnyValue(x => x.CurrentCategory)
+            .Select(currentCategory => new Func<ICategoryItemDto, bool>(item =>
+            {
+                if (currentCategory == null) return item.CategoryId == null || SelectedFavourite != null;
+                return item.CategoryId == currentCategory.Id;
+            }));
 
-                    if (categoryAndFavorite.Item1?.CategoryId == null && categoryAndFavorite.Item2.HasValue)
-                    {
-                        return item.Favourites.Contains(categoryAndFavorite.Item2.Value);
-                    }
+        var favouriteFilter = this.WhenAnyValue(x => x.SelectedFavourite)
+            .Select(selectedFavourite => new Func<ICategoryItemDto, bool>(item =>
+            {
+                if (selectedFavourite == null) return true;
+                return item.Favourites.Contains(selectedFavourite.Value);
+            }));
 
+        var combinedFilter = categoryFilter.CombineLatest(favouriteFilter, (categoryPredicate, favouritePredicate) =>
+            new Func<ICategoryItemDto, bool>(item => categoryPredicate(item) && favouritePredicate(item)));
 
-                    return item.CategoryId == categoryAndFavorite.Item1?.CategoryId
-                                            || (categoryAndFavorite.Item2.HasValue && item.Favourites.Contains(categoryAndFavorite.Item2.Value));
-                })
-        );
 
 
         var categoryStream = categoryService.RuntimeCategories.Connect()
             .Transform(category => (ICategoryItemDto)category)
-            .Filter(filterCondition);
+            .Filter(combinedFilter);
 
         var productStream = productService.RuntimeProducts.Connect()
             .Transform(product => (ICategoryItemDto)product)
-            .Filter(filterCondition);
+            .Filter(combinedFilter);
 
         var stream = categoryStream.Merge(productStream)
             .Sort(SortExpressionComparer<ICategoryItemDto>.Ascending(x =>
@@ -297,11 +288,13 @@ internal class CashierService(IProductService productService, ICategoryService c
         return new(true);
     }
 
-    public ValueTask SelectFavourite(int? favourite)
+    public ValueTask SelectFavourite(int favourite)
     {
         this.ThrowIfNotInitialized();
 
+        CurrentCategory = null;
         SelectedFavourite = favourite;
+        
 
         return ValueTask.CompletedTask;
     }

@@ -67,4 +67,9 @@ public class CategoryDto : ICategoryItemDto
         Categories = category.Categories,
         Products = category.Products,
     };
+
+    public override string ToString()
+    {
+        return $"'{Name}'";
+    }
 }
