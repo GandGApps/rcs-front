@@ -145,6 +145,7 @@ public class CashierVm : PageViewModel
         _cashierService.BindAdditivesForSelectedProduct(x => new AdditiveViewModel(x), out var fastAdditives)
                        .DisposeWith(disposables);
 
+
         _isMultiSelectSetter = x => _cashierService.IsMultiSelect = x;
         IsMultiSelect = _cashierService.IsMultiSelect;
 

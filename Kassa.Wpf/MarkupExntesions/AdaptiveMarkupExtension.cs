@@ -10,7 +10,7 @@ using System.Windows.Data;
 using System.Windows.Markup;
 
 namespace Kassa.Wpf.MarkupExntesions;
-
+[MarkupExtensionReturnType(typeof(object))]
 public class AdaptiveMarkupExtension : MarkupExtension
 {
     public const double MediumBreakpoint = 1200;
@@ -60,7 +60,16 @@ public class AdaptiveMarkupExtension : MarkupExtension
         {
             if (DesignerProperties.GetIsInDesignMode(dependencyObject))
             {
-                return false;
+                var fallbackBinding = new Binding
+                {
+                    Source = this,
+                    Path = new(MainWindow.ActualWidthProperty),
+                    Converter = new AdaptiveConverter(),
+                    ConverterParameter = Breakpoint,
+                    FallbackValue = false
+                };
+
+                return fallbackBinding.ProvideValue(serviceProvider);
             }
         }
 
@@ -69,7 +78,8 @@ public class AdaptiveMarkupExtension : MarkupExtension
             Source = Source ?? MainWindow.Instance,
             Path = new(MainWindow.ActualWidthProperty),
             Converter = new AdaptiveConverter(),
-            ConverterParameter = Breakpoint
+            ConverterParameter = Breakpoint,
+            FallbackValue = false
         };
 
         return binding.ProvideValue(serviceProvider);

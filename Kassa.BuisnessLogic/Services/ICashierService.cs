@@ -8,12 +8,12 @@ using Kassa.DataAccess;
 namespace Kassa.BuisnessLogic.Services;
 public interface ICashierService : IInitializableService, INotifyPropertyChanged
 {
-    public CategoryDto? CurrentCategory
+    public ICategoryDto? CurrentCategory
     {
         get;
     }
 
-    public IReadOnlyList<CategoryDto> CategoriesStack
+    public IReadOnlyList<ICategoryDto> CategoriesStack
     {
         get;
     }
@@ -65,4 +65,5 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
     public Task DecreaseSelectedProductShoppingListItem();
     public Task RemoveSelectedProductShoppingListItem();
     public ValueTask SelectFavourite(int favourite);
+    
 }

@@ -109,7 +109,7 @@ public record ProductDto : ICategoryItemDto, IDto<Product, ProductDto>
         Icon = product.Icon,
         CategoryId = product.CategoryId,
     };
-    [return: NotNullIfNotNull("dto")]
+    [return: NotNullIfNotNull(nameof(dto))]
     public static Product? ToModel(ProductDto? dto) => ToProduct(dto);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

@@ -18,10 +18,10 @@ namespace Kassa.BuisnessLogic.Services;
 internal class CashierService(IProductService productService, ICategoryService categoryService, IAdditiveService additiveService) : ICashierService
 {
     private string? _totalComment;
-    private CategoryDto? _currentCategory;
+    private ICategoryDto? _currentCategory;
     private int? _selectedFavorite;
 
-    private readonly List<CategoryDto> _categoriesStack = [];
+    private readonly List<ICategoryDto> _categoriesStack = [];
     private readonly Dictionary<Guid, SourceCache<AdditiveShoppingListItemDto, Guid>> _additivesInProductDto = [];
 
     public bool IsInitialized
@@ -57,9 +57,9 @@ internal class CashierService(IProductService productService, ICategoryService c
     }
     private bool _isMultiSelect;
 
-    public IReadOnlyList<CategoryDto> CategoriesStack => _categoriesStack;
+    public IReadOnlyList<ICategoryDto> CategoriesStack => _categoriesStack;
 
-    public CategoryDto? CurrentCategory
+    public ICategoryDto? CurrentCategory
     {
         get => _currentCategory;
         private set
@@ -113,32 +113,34 @@ internal class CashierService(IProductService productService, ICategoryService c
     {
         this.ThrowIfNotInitialized();
 
-        var categoryFilter = this.WhenAnyValue(x => x.CurrentCategory)
-            .Select(currentCategory => new Func<ICategoryItemDto, bool>(item =>
-            {
-                if (currentCategory == null) return item.CategoryId == null || SelectedFavourite != null;
-                return item.CategoryId == currentCategory.Id;
-            }));
-
-        var favouriteFilter = this.WhenAnyValue(x => x.SelectedFavourite)
-            .Select(selectedFavourite => new Func<ICategoryItemDto, bool>(item =>
-            {
-                if (selectedFavourite == null) return true;
-                return item.Favourites.Contains(selectedFavourite.Value);
-            }));
-
-        var combinedFilter = categoryFilter.CombineLatest(favouriteFilter, (categoryPredicate, favouritePredicate) =>
-            new Func<ICategoryItemDto, bool>(item => categoryPredicate(item) && favouritePredicate(item)));
-
-
+        var filterCondition = this.WhenAnyValue(x => x.CurrentCategory)
+            .Select(x =>
+                new Func<ICategoryItemDto, bool>(item =>
+                {
+                    if (x is FavouriteCategoryDto favourite)
+                    {
+                        Debug.WriteLine($"Current category is favourite {favourite.Id}");
+                        Debug.WriteLine($"item '{item.Name}' favourites:[{string.Join(',',item.Favourites)}]");
+                        return item.Favourites.Contains(favourite.Id);
+                    }
+                    if (x is CategoryDto category)
+                    {
+                        Debug.WriteLine($"Current category is '{category.Name}' Id={category.Id}");
+                        Debug.WriteLine($"item '{item.Name}' CategoryId={item.CategoryId}");
+                        return item.CategoryId == category.Id;
+                    }
+                    Debug.WriteLine("Current category is root");
+                    Debug.WriteLine($"item '{item.Name}' CategoryId={item.CategoryId}");
+                    return item.CategoryId == null;
+                }));
 
         var categoryStream = categoryService.RuntimeCategories.Connect()
             .Transform(category => (ICategoryItemDto)category)
-            .Filter(combinedFilter);
+            .Filter(filterCondition);
 
         var productStream = productService.RuntimeProducts.Connect()
             .Transform(product => (ICategoryItemDto)product)
-            .Filter(combinedFilter);
+            .Filter(filterCondition);
 
         var stream = categoryStream.Merge(productStream)
             .Sort(SortExpressionComparer<ICategoryItemDto>.Ascending(x =>
@@ -292,9 +294,11 @@ internal class CashierService(IProductService productService, ICategoryService c
     {
         this.ThrowIfNotInitialized();
 
-        CurrentCategory = null;
+        _categoriesStack.Clear();
+
+        CurrentCategory = new FavouriteCategoryDto(favourite);
         SelectedFavourite = favourite;
-        
+
 
         return ValueTask.CompletedTask;
     }
@@ -302,8 +306,8 @@ internal class CashierService(IProductService productService, ICategoryService c
     public ValueTask SelectRootCategory()
     {
         CurrentCategory = null;
-        _categoriesStack.Clear();
         SelectedFavourite = null;
+        _categoriesStack.Clear();
 
         return ValueTask.CompletedTask;
     }
@@ -485,24 +489,6 @@ internal class CashierService(IProductService productService, ICategoryService c
         }
         SelectedShoppingListItems.Clear();
         AdditivesForSelectedProduct.Clear();
-    }
-
-    private async ValueTask UpdateAdditivesForSelectedProduct()
-    {
-        this.ThrowIfNotInitialized();
-
-        AdditivesForSelectedProduct.Clear();
-
-        foreach (var shoppingListItem in SelectedShoppingListItems.Items)
-        {
-
-            if (shoppingListItem is ProductShoppingListItemDto shoppingListItemDto)
-            {
-                var additives = await additiveService.GetAdditivesByProductId(shoppingListItemDto.ItemId);
-
-                AdditivesForSelectedProduct.AddOrUpdate(additives);
-            }
-        }
     }
 
     public async Task AddAdditiveToSelectedProducts(int additiveId)
