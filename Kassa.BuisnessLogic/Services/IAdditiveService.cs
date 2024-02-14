@@ -13,13 +13,13 @@ public interface IAdditiveService : IInitializableService
     public Task DecreaseAddtiveCount(AdditiveDto additive);
     public Task IncreaseAdditiveCount(AdditiveDto additive);
 
-    public SourceCache<AdditiveDto, int> RuntimeAdditives
+    public SourceCache<AdditiveDto, Guid> RuntimeAdditives
     {
         get;
     }
 
     public Task UpdateAdditive(AdditiveDto additive);
 
-    public ValueTask<AdditiveDto?> GetAdditiveById(int additiveId);
-    public ValueTask<IEnumerable<AdditiveDto>> GetAdditivesByProductId(int id);
+    public ValueTask<AdditiveDto?> GetAdditiveById(Guid additiveId);
+    public ValueTask<IEnumerable<AdditiveDto>> GetAdditivesByProductId(Guid id);
 }

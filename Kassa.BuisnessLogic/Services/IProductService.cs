@@ -23,17 +23,17 @@ public interface IProductService : IInitializableService
     /// Use this property only for connect.
     /// </para>
     /// </summary>
-    public SourceCache<ProductDto, int> RuntimeProducts
+    public SourceCache<ProductDto, Guid> RuntimeProducts
     {
         get;
     }
 
     public Task UpdateProduct(ProductDto product);
     public Task RemoveProduct(ProductDto product);
-    public Task DecreaseProductCount(int productId);
+    public Task DecreaseProductCount(Guid productId);
     public Task DecreaseProductCount(ProductDto product);
-    public Task IncreaseProductCount(int productId);
+    public Task IncreaseProductCount(Guid productId);
     public Task IncreaseProductCount(ProductDto product);
 
-    public ValueTask<ProductDto?> GetProductById(int productId);
+    public ValueTask<ProductDto?> GetProductById(Guid productId);
 }

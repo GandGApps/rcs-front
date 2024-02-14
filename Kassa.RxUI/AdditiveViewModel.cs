@@ -13,7 +13,7 @@ using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.RxUI;
-public class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<int, AdditiveDto>
+public class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Guid, AdditiveDto>
 {
     public static readonly ReactiveCommand<AdditiveViewModel, Unit> AddAdditveToProduct = ReactiveCommand.CreateFromTask<AdditiveViewModel>(async additive =>
     {
@@ -109,7 +109,7 @@ public class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<int, Addit
     {
         get; set;
     }
-    public int Id
+    public Guid Id
     {
         get;
     }

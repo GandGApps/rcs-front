@@ -12,7 +12,7 @@ using Kassa.DataAccess;
 namespace Kassa.BuisnessLogic.Services;
 public sealed class CategoryService(IRepository<Category> repository) : ICategoryService
 {
-    public SourceCache<CategoryDto, int> RuntimeCategories
+    public SourceCache<CategoryDto, Guid> RuntimeCategories
     {
         get;
     } = new(x => x.Id);
@@ -70,7 +70,7 @@ public sealed class CategoryService(IRepository<Category> repository) : ICategor
         RuntimeCategories.Remove(categoryDto);
     }
 
-    public async ValueTask<CategoryDto?> GetCategoryById(int id)
+    public async ValueTask<CategoryDto?> GetCategoryById(Guid id)
     {
         this.ThrowIfNotInitialized();
 
@@ -119,7 +119,7 @@ public sealed class CategoryService(IRepository<Category> repository) : ICategor
     private static CategoryDto? ToCategoryDto(Category? category) => CategoryDto.FromCategory(category);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static async Task<Category> GetCategoryOrThrow(int id, IRepository<Category> repository)
+    private static async Task<Category> GetCategoryOrThrow(Guid id, IRepository<Category> repository)
     {
         var category = await repository.Get(id);
 

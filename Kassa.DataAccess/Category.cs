@@ -2,7 +2,7 @@
 
 public record Category: ICategoryItem
 {
-    public int Id
+    public Guid Id
     {
         get; set;
     }
@@ -17,7 +17,7 @@ public record Category: ICategoryItem
         get; set;
     }
 
-    public int? CategoryId
+    public Guid? CategoryId
     {
         get; set;
     }

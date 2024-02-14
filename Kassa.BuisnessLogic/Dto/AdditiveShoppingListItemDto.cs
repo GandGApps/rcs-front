@@ -28,7 +28,7 @@ public record AdditiveShoppingListItemDto : IShoppingListItemDto
         get;
         init;
     }
-    public int ItemId
+    public Guid ItemId
     {
         get;
     }

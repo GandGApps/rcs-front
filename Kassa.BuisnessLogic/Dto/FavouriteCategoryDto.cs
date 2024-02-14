@@ -12,13 +12,9 @@ namespace Kassa.BuisnessLogic.Dto;
 /// </summary>
 public sealed class FavouriteCategoryDto(int favourite) : ICategoryItemDto, ICategoryDto
 {
-    public int Id
-    {
+    public Guid Id => Guid.Empty;
 
-        get;
-    } = favourite;
-
-    public int? CategoryId
+    public Guid? CategoryId
     {
         get;
     } = null;

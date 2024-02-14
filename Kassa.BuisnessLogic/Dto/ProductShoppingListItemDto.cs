@@ -21,7 +21,7 @@ public record ProductShoppingListItemDto : IShoppingListItemDto
         Discount = 1;
     }
 
-    public int ItemId
+    public Guid ItemId
     {
         get;
     }

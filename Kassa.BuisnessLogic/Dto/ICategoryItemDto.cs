@@ -9,7 +9,7 @@ using Kassa.DataAccess;
 namespace Kassa.BuisnessLogic.Dto;
 public interface ICategoryItemDto
 {
-    public int? CategoryId
+    public Guid? CategoryId
     {
         get;
     }

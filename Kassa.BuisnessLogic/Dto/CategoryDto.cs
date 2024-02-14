@@ -10,7 +10,7 @@ using Kassa.DataAccess;
 namespace Kassa.BuisnessLogic.Dto;
 public class CategoryDto : ICategoryItemDto, ICategoryDto
 {
-    public int Id
+    public Guid Id
     {
         get; set;
     }
@@ -30,7 +30,7 @@ public class CategoryDto : ICategoryItemDto, ICategoryDto
         get; set;
     }
 
-    public int? CategoryId
+    public Guid? CategoryId
     {
         get; set;
     }

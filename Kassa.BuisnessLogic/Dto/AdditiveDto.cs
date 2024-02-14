@@ -9,7 +9,7 @@ using Kassa.DataAccess;
 namespace Kassa.BuisnessLogic.Dto;
 public record AdditiveDto : IDto<Additive, AdditiveDto>
 {
-    public int Id
+    public Guid Id
     {
         get; set;
     }
@@ -39,7 +39,7 @@ public record AdditiveDto : IDto<Additive, AdditiveDto>
         get; set;
     } = null!;
 
-    public int[] ProductIds
+    public Guid[] ProductIds
     {
         get; set;
     }

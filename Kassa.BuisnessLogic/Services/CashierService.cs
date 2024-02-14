@@ -100,7 +100,7 @@ internal class CashierService(IProductService productService, ICategoryService c
         get;
     } = new(x => x.Id);
 
-    public SourceCache<AdditiveDto, int> AdditivesForSelectedProduct
+    public SourceCache<AdditiveDto, Guid> AdditivesForSelectedProduct
     {
         get;
     } = new(x => x.Id);
@@ -119,27 +119,27 @@ internal class CashierService(IProductService productService, ICategoryService c
                 {
                     if (x is FavouriteCategoryDto favourite)
                     {
-                        Debug.WriteLine($"Current category is favourite {favourite.Id}");
-                        Debug.WriteLine($"item '{item.Name}' favourites:[{string.Join(',',item.Favourites)}]");
-                        return item.Favourites.Contains(favourite.Id);
+                        Debug.WriteLineIf(item.Favourites.Contains(favourite.Favourite), $"Current category is favourite {favourite.Favourite}");
+                        Debug.WriteLineIf(item.Favourites.Contains(favourite.Favourite), $"item '{item.Name}' favourites:[{string.Join(',', item.Favourites)}]");
+                        return item.Favourites.Contains(favourite.Favourite);
                     }
                     if (x is CategoryDto category)
                     {
-                        Debug.WriteLine($"Current category is '{category.Name}' Id={category.Id}");
-                        Debug.WriteLine($"item '{item.Name}' CategoryId={item.CategoryId}");
+                        Debug.WriteLineIf(item.CategoryId == category.Id, $"Current category is '{category.Name}' Id={category.Id}");
+                        Debug.WriteLineIf(item.CategoryId == category.Id, $"item '{item.Name}' CategoryId={item.CategoryId}");
                         return item.CategoryId == category.Id;
                     }
-                    Debug.WriteLine("Current category is root");
-                    Debug.WriteLine($"item '{item.Name}' CategoryId={item.CategoryId}");
+                    Debug.WriteLineIf(item.CategoryId == null, "Current category is root");
+                    Debug.WriteLineIf(item.CategoryId == null, $"item '{item.Name}' CategoryId={item.CategoryId}");
                     return item.CategoryId == null;
                 }));
 
         var categoryStream = categoryService.RuntimeCategories.Connect()
-            .Transform(category => (ICategoryItemDto)category)
+            .Cast(category => (ICategoryItemDto)category)
             .Filter(filterCondition);
 
         var productStream = productService.RuntimeProducts.Connect()
-            .Transform(product => (ICategoryItemDto)product)
+            .Cast(product => (ICategoryItemDto)product)
             .Filter(filterCondition);
 
         var stream = categoryStream.Merge(productStream)
@@ -157,10 +157,10 @@ internal class CashierService(IProductService productService, ICategoryService c
             }))
             .Bind(out categoryItems);
 
-        return stream.Subscribe();
+        return stream.Subscribe(_ => { },exc => Debug.WriteLine(exc));
     }
 
-    public IDisposable BindShoppingListItems<T>(Func<ProductShoppingListItemDto, T> creator, out ReadOnlyObservableCollection<T> shoppingListItems) where T : class, IReactiveToChangeSet<int, ProductShoppingListItemDto>
+    public IDisposable BindShoppingListItems<T>(Func<ProductShoppingListItemDto, T> creator, out ReadOnlyObservableCollection<T> shoppingListItems) where T : class, IReactiveToChangeSet<Guid, ProductShoppingListItemDto>
     {
         this.ThrowIfNotInitialized();
 
@@ -182,7 +182,7 @@ internal class CashierService(IProductService productService, ICategoryService c
         return stream.Subscribe();
     }
 
-    public IDisposable BindAdditivesForSelectedProduct<T>(Func<AdditiveDto, T> creator, out ReadOnlyObservableCollection<T> additives) where T : class, IReactiveToChangeSet<int, AdditiveDto>
+    public IDisposable BindAdditivesForSelectedProduct<T>(Func<AdditiveDto, T> creator, out ReadOnlyObservableCollection<T> additives) where T : class, IReactiveToChangeSet<Guid, AdditiveDto>
     {
         this.ThrowIfNotInitialized();
 
@@ -252,7 +252,7 @@ internal class CashierService(IProductService productService, ICategoryService c
         IsInitialized = true;
     }
 
-    public async Task SelectCategory(int categoryId)
+    public async Task SelectCategory(Guid categoryId)
     {
         this.ThrowIfNotInitialized();
 
@@ -312,7 +312,7 @@ internal class CashierService(IProductService productService, ICategoryService c
         return ValueTask.CompletedTask;
     }
 
-    public async Task AddProductToShoppingList(int productId)
+    public async Task AddProductToShoppingList(Guid productId)
     {
         var product = await productService.GetProductById(productId);
 
@@ -491,7 +491,7 @@ internal class CashierService(IProductService productService, ICategoryService c
         AdditivesForSelectedProduct.Clear();
     }
 
-    public async Task AddAdditiveToSelectedProducts(int additiveId)
+    public async Task AddAdditiveToSelectedProducts(Guid additiveId)
     {
 
         this.ThrowIfNotInitialized();
@@ -525,7 +525,7 @@ internal class CashierService(IProductService productService, ICategoryService c
 
     }
 
-    public bool IsAdditiveAdded(int additiveId)
+    public bool IsAdditiveAdded(Guid additiveId)
     {
         this.ThrowIfNotInitialized();
 

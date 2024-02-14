@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Kassa.DataAccess;
 public record Product : ICategoryItem
 {
-    public int Id
+    public Guid Id
     {
         get; set;
     }
@@ -68,7 +68,7 @@ public record Product : ICategoryItem
     {
         get; set;
     } = null!;
-    public int? CategoryId
+    public Guid? CategoryId
     {
         get; set;
     }

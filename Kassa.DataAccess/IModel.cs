@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Kassa.DataAccess;
 public interface IModel
 {
-    public int Id
+    public Guid Id
     {
         get;
     }

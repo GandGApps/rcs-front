@@ -22,10 +22,10 @@ public class PromocodeDialogViewModel : DialogViewModel
                 return null;
             }
 
-            var discounts = new Dictionary<int, double>
+            var discounts = new Dictionary<Guid, double>
             {
-                [Random.Shared.Next(1, 6)] = 30,
-                [Random.Shared.Next(1, 6)] = 50
+                [Guid.NewGuid()] = 30,
+                [Guid.NewGuid()] = 50
             };
 
             var discount = IDiscountAccesser.CreateMock(discounts, 25);

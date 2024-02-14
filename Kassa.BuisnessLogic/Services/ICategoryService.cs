@@ -23,7 +23,7 @@ public interface ICategoryService : IInitializableService
     /// Use this property only for connect.
     /// </para>
     /// </summary>
-    public SourceCache<CategoryDto, int> RuntimeCategories
+    public SourceCache<CategoryDto, Guid> RuntimeCategories
     {
         get;
     }
@@ -32,6 +32,6 @@ public interface ICategoryService : IInitializableService
     public Task AddCategory(CategoryDto category);
     public Task RemoveCategory(CategoryDto category);
 
-    public ValueTask<CategoryDto?> GetCategoryById(int categoryId);
+    public ValueTask<CategoryDto?> GetCategoryById(Guid categoryId);
 
 }

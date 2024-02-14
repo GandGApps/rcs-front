@@ -13,7 +13,7 @@ internal interface IDto<TModel, TDto> where TModel : class where TDto : class
     [return: NotNullIfNotNull(nameof(dto))]
     public static abstract TModel? ToModel(TDto? dto);
 
-    public int Id
+    public Guid Id
     {
         get;
     }

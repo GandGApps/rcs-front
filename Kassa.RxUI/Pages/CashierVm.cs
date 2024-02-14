@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
@@ -189,6 +191,20 @@ public class CashierVm : PageViewModel
                          .DisposeWith(disposables);
 
 
+        var incc = (INotifyCollectionChanged)categoryItems;
+        incc.CollectionChanged += (s, e) =>
+        {
+            // Just for breakpoint
+            var items = categoryItems;
+
+            if (e.Action == NotifyCollectionChangedAction.Remove)
+            {
+                if (e.OldItems[0] is ICategoryDto category)
+                {
+                    Debug.Assert(category is CategoryDto);
+                }
+            }
+        };
     }
 
     public bool IsMultiSelect

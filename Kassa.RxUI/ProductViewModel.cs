@@ -24,7 +24,7 @@ public class ProductViewModel(ProductDto product) : ReactiveObject
 
         await cashierService.AddProductToShoppingList(product.Id);
     });
-    public int Id => product.Id;
+    public Guid Id => product.Id;
 
     public string Name => product.Name;
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Kassa.DataAccess;
 public interface IRepository<T> where T : class, IModel
 {
-    public Task<T?> Get(int id);
+    public Task<T?> Get(Guid id);
     public Task<IEnumerable<T>> GetAll();
     public Task Add(T item);
     public Task Update(T item);
@@ -23,10 +23,10 @@ public interface IRepository<T> where T : class, IModel
         return new MockRepository(items?.ToDictionary(x => x.Id) ?? []);
     }
 
-    internal class MockRepository(Dictionary<int, T> items): IRepository<T>
+    internal class MockRepository(Dictionary<Guid, T> items): IRepository<T>
     {
 
-        public Task<T?> Get(int categoryId) => Task.FromResult(items.TryGetValue(categoryId, out var value) ? value : null);
+        public Task<T?> Get(Guid categoryId) => Task.FromResult(items.TryGetValue(categoryId, out var value) ? value : null);
 
         public Task<IEnumerable<T>> GetAll() => Task.FromResult(items.Values.AsEnumerable());
 

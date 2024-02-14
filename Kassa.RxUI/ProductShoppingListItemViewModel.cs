@@ -17,9 +17,9 @@ using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.RxUI;
-public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListItem, IReactiveToChangeSet<int, ProductShoppingListItemDto>
+public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListItem, IReactiveToChangeSet<Guid, ProductShoppingListItemDto>
 {
-    public int Id
+    public Guid Id
     {
         get; set;
     }

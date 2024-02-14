@@ -36,14 +36,14 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
     /// <param name="categoryItems"></param>
     /// <returns></returns>
     public IDisposable BindSelectedCategoryItems(out ReadOnlyObservableCollection<ICategoryItemDto> categoryItems);
-    public IDisposable BindShoppingListItems<T>(Func<ProductShoppingListItemDto, T> creator, out ReadOnlyObservableCollection<T> shoppingListItems) where T : class, IReactiveToChangeSet<int, ProductShoppingListItemDto>;
+    public IDisposable BindShoppingListItems<T>(Func<ProductShoppingListItemDto, T> creator, out ReadOnlyObservableCollection<T> shoppingListItems) where T : class, IReactiveToChangeSet<Guid, ProductShoppingListItemDto>;
     public IDisposable BindSelectedShoppingListItems(out ReadOnlyObservableCollection<IShoppingListItemDto> shoppingListItems);
-    public IDisposable BindAdditivesForSelectedProduct<T>(Func<AdditiveDto,T> creator, out ReadOnlyObservableCollection<T> additives) where T : class, IReactiveToChangeSet<int, AdditiveDto>;
+    public IDisposable BindAdditivesForSelectedProduct<T>(Func<AdditiveDto,T> creator, out ReadOnlyObservableCollection<T> additives) where T : class, IReactiveToChangeSet<Guid, AdditiveDto>;
     public IDisposable BindAdditivesForProductShoppingListItem<T>(ProductShoppingListItemDto item, Func<AdditiveShoppingListItemDto, T> creator, out ReadOnlyObservableCollection<T> additives) where T : class, IReactiveToChangeSet<Guid, AdditiveShoppingListItemDto>;
 
-    public Task AddProductToShoppingList(int productId);
+    public Task AddProductToShoppingList(Guid productId);
 
-    public Task SelectCategory(int categoryId);
+    public Task SelectCategory(Guid categoryId);
     public Task SelectShoppingListItem(IShoppingListItemDto shoppingListItemDto);
     public Task UnselectShoppingListItem(IShoppingListItemDto shoppingListItemDto);
 
@@ -55,10 +55,10 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
 
     public ValueTask SelectRootCategory();
 
-    public Task AddAdditiveToSelectedProducts(int additiveId);
+    public Task AddAdditiveToSelectedProducts(Guid additiveId);
     public Task WriteCommentToSelectedItems(string? comment);
     public Task WriteTotalComment(string? comment);
-    public bool IsAdditiveAdded(int additiveId);
+    public bool IsAdditiveAdded(Guid additiveId);
 
 
     public Task IncreaseSelectedProductShoppingListItem();

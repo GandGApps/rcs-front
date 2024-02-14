@@ -9,9 +9,9 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess;
 
 namespace Kassa.BuisnessLogic.Services;
-public class AdditiveService(IAdditiveRepository repository) : IAdditiveService, IRuntimeDtoProvider<AdditiveDto, int, Additive>
+public class AdditiveService(IAdditiveRepository repository) : IAdditiveService, IRuntimeDtoProvider<AdditiveDto, Guid, Additive>
 {
-    public SourceCache<AdditiveDto, int> RuntimeAdditives
+    public SourceCache<AdditiveDto, Guid> RuntimeAdditives
     {
         get;
     } = new(x => x.Id);
@@ -24,8 +24,8 @@ public class AdditiveService(IAdditiveRepository repository) : IAdditiveService,
     {
         get; set;
     }
-    SourceCache<AdditiveDto, int> IRuntimeDtoProvider<AdditiveDto, int, Additive>.RuntimeDtos => RuntimeAdditives;
-    IRepository<Additive> IRuntimeDtoProvider<AdditiveDto, int, Additive>.Repository => repository;
+    SourceCache<AdditiveDto, Guid> IRuntimeDtoProvider<AdditiveDto, Guid, Additive>.RuntimeDtos => RuntimeAdditives;
+    IRepository<Additive> IRuntimeDtoProvider<AdditiveDto, Guid, Additive>.Repository => repository;
 
 
     public async Task DecreaseAddtiveCount(AdditiveDto additiveDto)
@@ -67,14 +67,14 @@ public class AdditiveService(IAdditiveRepository repository) : IAdditiveService,
         return ValueTask.CompletedTask;
     }
 
-    public async ValueTask<AdditiveDto?> GetAdditiveById(int additiveId)
+    public async ValueTask<AdditiveDto?> GetAdditiveById(Guid additiveId)
     {
         this.ThrowIfNotInitialized();
 
         return await this.GetDtoAndUpdateRuntime(additiveId);
     }
 
-    public async ValueTask<IEnumerable<AdditiveDto>> GetAdditivesByProductId(int id)
+    public async ValueTask<IEnumerable<AdditiveDto>> GetAdditivesByProductId(Guid id)
     {
         this.ThrowIfNotInitialized();
 

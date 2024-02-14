@@ -10,7 +10,7 @@ using Kassa.DataAccess;
 namespace Kassa.BuisnessLogic.Services;
 internal static class RuntimeDtoProviderExtensions
 {
-    public static async Task<TDto> GetDtoByIdOrThrow<TDto, TKey, TModel>(this IRuntimeDtoProvider<TDto, TKey, TModel> provider, int id)
+    public static async Task<TDto> GetDtoByIdOrThrow<TDto, TKey, TModel>(this IRuntimeDtoProvider<TDto, TKey, TModel> provider, Guid id)
         where TKey : notnull
         where TModel : class, IModel
         where TDto : class, IDto<TModel, TDto>
@@ -27,7 +27,7 @@ internal static class RuntimeDtoProviderExtensions
         return dto;
     }
 
-    public static async Task<TDto?> GetDtoAndUpdateRuntime<TDto, TKey, TModel>(this IRuntimeDtoProvider<TDto, TKey, TModel> provider, int id)
+    public static async Task<TDto?> GetDtoAndUpdateRuntime<TDto, TKey, TModel>(this IRuntimeDtoProvider<TDto, TKey, TModel> provider, Guid id)
         where TKey : notnull
         where TModel : class, IModel
         where TDto : class, IDto<TModel, TDto>

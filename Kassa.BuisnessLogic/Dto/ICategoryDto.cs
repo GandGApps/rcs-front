@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Kassa.BuisnessLogic.Dto;
 public interface ICategoryDto
 {
-    public int Id
+    public Guid Id
     {
         get; 
     }

@@ -10,12 +10,12 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess;
 
 namespace Kassa.BuisnessLogic.Services;
-internal sealed class ProductService(IRepository<Product> productRepository, IAdditiveRepository additiveRepository) : IProductService, IRuntimeDtoProvider<ProductDto, int, Product>
+internal sealed class ProductService(IRepository<Product> productRepository, IAdditiveRepository additiveRepository) : IProductService, IRuntimeDtoProvider<ProductDto, Guid, Product>
 {
     private bool _isInitialized;
     private bool _isDisposed;
 
-    public SourceCache<ProductDto, int> RuntimeProducts
+    public SourceCache<ProductDto, Guid> RuntimeProducts
     {
         get;
     } = new(x => x.Id);
@@ -24,8 +24,8 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
 
     public bool IsDisposed => _isDisposed;
 
-    SourceCache<ProductDto, int> IRuntimeDtoProvider<ProductDto, int, Product>.RuntimeDtos => RuntimeProducts;
-    IRepository<Product> IRuntimeDtoProvider<ProductDto, int, Product>.Repository => productRepository;
+    SourceCache<ProductDto, Guid> IRuntimeDtoProvider<ProductDto, Guid, Product>.RuntimeDtos => RuntimeProducts;
+    IRepository<Product> IRuntimeDtoProvider<ProductDto, Guid, Product>.Repository => productRepository;
 
 
     public async ValueTask Initialize()
@@ -58,7 +58,7 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
         return IncreaseProductCount(product.Id);
     }
 
-    public async Task DecreaseProductCount(int productId)
+    public async Task DecreaseProductCount(Guid productId)
     {
         this.ThrowIfNotInitialized();
 
@@ -76,7 +76,7 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
         await UpdateProduct(ToProductDto(product));
     }
 
-    public async Task IncreaseProductCount(int productId)
+    public async Task IncreaseProductCount(Guid productId)
     {
         this.ThrowIfNotInitialized();
 
@@ -95,7 +95,7 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
 
     }
 
-    public async ValueTask<ProductDto?> GetProductById(int productId)
+    public async ValueTask<ProductDto?> GetProductById(Guid productId)
     {
         this.ThrowIfNotInitialized();
 
@@ -163,7 +163,7 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
     private static ProductDto? ToProductDto(Product? product) => ProductDto.FromProduct(product);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private static async Task<Product> GetProductOrThrow(int id, IRepository<Product> repository)
+    private static async Task<Product> GetProductOrThrow(Guid id, IRepository<Product> repository)
     {
         var product = await repository.Get(id);
 

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace Kassa.DataAccess;
 public record Additive : IModel
 {
-    public int Id
+    public Guid Id
     {
         get; set;
     }
@@ -41,7 +41,7 @@ public record Additive : IModel
     /// <summary>
     /// Identifier of the product to which this additive belongs.
     /// </summary>
-    public int[] ProductIds
+    public Guid[] ProductIds
     {
         get; set;
     }

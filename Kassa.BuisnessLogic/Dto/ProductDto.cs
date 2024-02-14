@@ -10,7 +10,7 @@ using Kassa.DataAccess;
 namespace Kassa.BuisnessLogic.Dto;
 public record ProductDto : ICategoryItemDto, IDto<Product, ProductDto>
 {
-    public int Id
+    public Guid Id
     {
         get; set;
     }
@@ -71,7 +71,7 @@ public record ProductDto : ICategoryItemDto, IDto<Product, ProductDto>
     {
         get; set;
     } = null!;
-    public int? CategoryId
+    public Guid? CategoryId
     {
         get; set;
     }

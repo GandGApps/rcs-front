@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 namespace Kassa.DataAccess;
 public interface IAdditiveRepository : IRepository<Additive>
 {
-    public Task<IEnumerable<Additive>> GetAdditivesByProductId(int productId);
+    public Task<IEnumerable<Additive>> GetAdditivesByProductId(Guid productId);
 
     internal class MockAdditveRepository(IRepository<Additive> repository) : IAdditiveRepository
     {
         public Task Add(Additive item) => repository.Add(item);
         public Task Delete(Additive item) => repository.Delete(item);
         public Task DeleteAll() => repository.DeleteAll();
-        public Task<Additive?> Get(int categoryId) => repository.Get(categoryId);
-        public async Task<IEnumerable<Additive>> GetAdditivesByProductId(int productId)
+        public Task<Additive?> Get(Guid categoryId) => repository.Get(categoryId);
+        public async Task<IEnumerable<Additive>> GetAdditivesByProductId(Guid productId)
         {
             var additives = await repository.GetAll();
 

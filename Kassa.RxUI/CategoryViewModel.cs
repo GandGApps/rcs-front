@@ -34,7 +34,7 @@ public class CategoryViewModel : ReactiveObject
         _category = category;
     }
 
-    public int Id => _category.Id;
+    public Guid Id => _category.Id;
 
     public string Name => _category.Name;
 
