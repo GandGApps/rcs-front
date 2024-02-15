@@ -1,1208 +1,1208 @@
 [
     {
-        "Id": 1,
+        "Id": "0011C9AB-9502-4687-B32D-9E6ACC752B1C",
         "Name": "Маршмеллоу",
-        "Price": 398,
-        "Count": 10,
-        "Portion": 5,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            18
-        ]
-    },
-    {
-        "Id": 2,
-        "Name": "Шоколадные стружки",
-        "Price": 12,
-        "Count": 15,
+        "Price": 418,
+        "Count": 9,
         "Portion": 1,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            18,
-            6,
-            27,
-            29
+            "0181C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 3,
+        "Id": "0021C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Шоколадные стружки",
+        "Price": 303,
+        "Count": 11,
+        "Portion": 5,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0181C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0061C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0271C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0291C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0031C9AB-9502-4687-B32D-9E6ACC752B1C",
         "Name": "Взбитые сливки",
-        "Price": 222,
-        "Count": 5,
-        "Portion": 3,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            18,
-            24,
-            25,
-            26
-        ]
-    },
-    {
-        "Id": 4,
-        "Name": "Сироп карамельный",
-        "Price": 71,
-        "Count": 17,
-        "Portion": 2,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            19,
-            24,
-            25,
-            26
-        ]
-    },
-    {
-        "Id": 5,
-        "Name": "Сироп ванильный",
-        "Price": 246,
-        "Count": 8,
+        "Price": 195,
+        "Count": 6,
         "Portion": 4,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            19,
-            24,
-            25,
-            26
+            "0181C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0241C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0251C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0261C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 6,
-        "Name": "Сироп шоколадный",
-        "Price": 353,
-        "Count": 11,
-        "Portion": 3,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            19,
-            24,
-            25,
-            26
-        ]
-    },
-    {
-        "Id": 7,
-        "Name": "Орехи ассорти",
-        "Price": 43,
+        "Id": "0041C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Сироп карамельный",
+        "Price": 132,
         "Count": 14,
-        "Portion": 3,
+        "Portion": 4,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            6,
-            27,
-            29
+            "0191C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0241C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0251C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0261C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 8,
+        "Id": "0051C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Сироп ванильный",
+        "Price": 310,
+        "Count": 11,
+        "Portion": 1,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0191C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0241C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0251C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0261C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0061C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Сироп шоколадный",
+        "Price": 404,
+        "Count": 13,
+        "Portion": 5,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0191C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0241C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0251C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0261C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0071C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Орехи ассорти",
+        "Price": 325,
+        "Count": 16,
+        "Portion": 2,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0061C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0271C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0291C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0081C9AB-9502-4687-B32D-9E6ACC752B1C",
         "Name": "Изюм",
         "Price": 164,
-        "Count": 11,
-        "Portion": 3,
+        "Count": 15,
+        "Portion": 2,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            6,
-            27,
-            29
+            "0061C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0271C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0291C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 9,
+        "Id": "0091C9AB-9502-4687-B32D-9E6ACC752B1C",
         "Name": "Кокосовая стружка",
-        "Price": 368,
-        "Count": 17,
+        "Price": 467,
+        "Count": 18,
         "Portion": 2,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            6,
-            27,
-            29
+            "0061C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0271C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0291C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 10,
+        "Id": "0101C9AB-9502-4687-B32D-9E6ACC752B1C",
         "Name": "Сливки для кофе",
-        "Price": 133,
-        "Count": 19,
-        "Portion": 4,
+        "Price": 374,
+        "Count": 13,
+        "Portion": 1,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            4
+            "0041C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 11,
+        "Id": "0111C9AB-9502-4687-B32D-9E6ACC752B1C",
         "Name": "Сахарный песок",
-        "Price": 159,
-        "Count": 15,
-        "Portion": 3,
+        "Price": 138,
+        "Count": 10,
+        "Portion": 4,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            4
+            "0041C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 12,
+        "Id": "0121C9AB-9502-4687-B32D-9E6ACC752B1C",
         "Name": "Коричневый сахар",
-        "Price": 386,
-        "Count": 9,
-        "Portion": 5,
+        "Price": 119,
+        "Count": 11,
+        "Portion": 3,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            4
+            "0041C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 13,
+        "Id": "0131C9AB-9502-4687-B32D-9E6ACC752B1C",
         "Name": "Соус барбекю",
-        "Price": 324,
-        "Count": 9,
-        "Portion": 2,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 14,
-        "Name": "Горчица дижонская",
-        "Price": 496,
-        "Count": 9,
-        "Portion": 2,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 15,
-        "Name": "Соус чесночный",
-        "Price": 65,
-        "Count": 20,
-        "Portion": 1,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 16,
-        "Name": "Карамельные кусочки",
-        "Price": 498,
-        "Count": 20,
-        "Portion": 1,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            6,
-            27,
-            29
-        ]
-    },
-    {
-        "Id": 17,
-        "Name": "Миндальные лепестки",
-        "Price": 103,
-        "Count": 13,
-        "Portion": 5,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            6,
-            27,
-            29
-        ]
-    },
-    {
-        "Id": 18,
-        "Name": "Клубничный сироп",
-        "Price": 93,
-        "Count": 10,
-        "Portion": 1,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            18,
-            24,
-            25,
-            26
-        ]
-    },
-    {
-        "Id": 19,
-        "Name": "Мятный сироп",
-        "Price": 182,
-        "Count": 10,
-        "Portion": 4,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            19,
-            24,
-            25,
-            26
-        ]
-    },
-    {
-        "Id": 20,
-        "Name": "Лимонный сок",
-        "Price": 10,
-        "Count": 7,
-        "Portion": 1,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            10,
-            11
-        ]
-    },
-    {
-        "Id": 21,
-        "Name": "Имбирь",
-        "Price": 498,
-        "Count": 16,
-        "Portion": 2,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            3,
-            20
-        ]
-    },
-    {
-        "Id": 22,
-        "Name": "Мед",
-        "Price": 288,
-        "Count": 6,
-        "Portion": 2,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            3,
-            20,
-            7,
-            8
-        ]
-    },
-    {
-        "Id": 23,
-        "Name": "Корица",
-        "Price": 431,
-        "Count": 5,
-        "Portion": 5,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            3,
-            20,
-            6
-        ]
-    },
-    {
-        "Id": 24,
-        "Name": "Сушеная клюква",
-        "Price": 199,
-        "Count": 19,
-        "Portion": 2,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            6,
-            27,
-            29
-        ]
-    },
-    {
-        "Id": 25,
-        "Name": "Арахисовая паста",
-        "Price": 424,
-        "Count": 15,
-        "Portion": 5,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            6,
-            27,
-            29
-        ]
-    },
-    {
-        "Id": 26,
-        "Name": "Соевый соус",
-        "Price": 279,
-        "Count": 15,
-        "Portion": 1,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 27,
-        "Name": "Терияки соус",
-        "Price": 71,
-        "Count": 18,
-        "Portion": 3,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 28,
-        "Name": "Сырный соус",
-        "Price": 130,
-        "Count": 6,
-        "Portion": 3,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 29,
-        "Name": "Перец чили",
-        "Price": 85,
-        "Count": 17,
-        "Portion": 2,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 30,
-        "Name": "Луковые колечки",
-        "Price": 199,
-        "Count": 9,
-        "Portion": 4,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 31,
-        "Name": "Кетчуп",
-        "Price": 492,
-        "Count": 16,
-        "Portion": 5,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 32,
-        "Name": "Майонез",
-        "Price": 89,
-        "Count": 8,
-        "Portion": 1,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 33,
-        "Name": "Гранатовый сироп",
-        "Price": 184,
-        "Count": 18,
-        "Portion": 5,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            18,
-            24,
-            25,
-            26
-        ]
-    },
-    {
-        "Id": 34,
-        "Name": "Кедровые орешки",
-        "Price": 204,
-        "Count": 18,
-        "Portion": 2,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            6,
-            27,
-            29
-        ]
-    },
-    {
-        "Id": 35,
-        "Name": "Сушеные абрикосы",
-        "Price": 497,
-        "Count": 15,
-        "Portion": 3,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            6,
-            27,
-            29
-        ]
-    },
-    {
-        "Id": 36,
-        "Name": "Ванильный экстракт",
-        "Price": 164,
-        "Count": 5,
-        "Portion": 4,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            18,
-            6,
-            27,
-            29
-        ]
-    },
-    {
-        "Id": 37,
-        "Name": "Ореховый крем",
-        "Price": 56,
-        "Count": 15,
-        "Portion": 1,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            6,
-            27,
-            29
-        ]
-    },
-    {
-        "Id": 38,
-        "Name": "Лавандовый сироп",
-        "Price": 263,
-        "Count": 11,
-        "Portion": 3,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            19,
-            24,
-            25,
-            26
-        ]
-    },
-    {
-        "Id": 39,
-        "Name": "Тростниковый сахар",
-        "Price": 54,
-        "Count": 9,
-        "Portion": 1,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            4
-        ]
-    },
-    {
-        "Id": 40,
-        "Name": "Соус хойсин",
-        "Price": 118,
-        "Count": 20,
-        "Portion": 4,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 41,
-        "Name": "Соус сатэ",
-        "Price": 133,
-        "Count": 15,
-        "Portion": 2,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 42,
-        "Name": "Томатный соус",
-        "Price": 282,
-        "Count": 15,
-        "Portion": 1,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 43,
-        "Name": "Соус песто",
-        "Price": 35,
-        "Count": 14,
-        "Portion": 5,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 44,
-        "Name": "Зеленый лук",
-        "Price": 191,
-        "Count": 6,
-        "Portion": 4,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 45,
-        "Name": "Чеснок молотый",
-        "Price": 363,
-        "Count": 11,
-        "Portion": 4,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 46,
-        "Name": "Паприка",
-        "Price": 321,
-        "Count": 16,
-        "Portion": 3,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 47,
-        "Name": "Сыр пармезан",
-        "Price": 473,
-        "Count": 11,
-        "Portion": 2,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 48,
-        "Name": "Базилик",
-        "Price": 220,
-        "Count": 11,
-        "Portion": 1,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 49,
-        "Name": "Тимьян",
-        "Price": 206,
-        "Count": 18,
-        "Portion": 2,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 50,
-        "Name": "Розмарин",
-        "Price": 473,
-        "Count": 13,
-        "Portion": 3,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 51,
-        "Name": "Майоран",
-        "Price": 227,
-        "Count": 18,
-        "Portion": 1,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 52,
-        "Name": "Уксус бальзамический",
-        "Price": 199,
-        "Count": 14,
-        "Portion": 4,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 53,
-        "Name": "Соус чили",
-        "Price": 24,
-        "Count": 6,
-        "Portion": 4,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 54,
-        "Name": "Маринованные огурцы",
-        "Price": 96,
+        "Price": 375,
         "Count": 12,
-        "Portion": 5,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            39,
-            40,
-            41
-        ]
-    },
-    {
-        "Id": 55,
-        "Name": "Соленые каперсы",
-        "Price": 396,
-        "Count": 11,
-        "Portion": 1,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            39,
-            40,
-            41
-        ]
-    },
-    {
-        "Id": 56,
-        "Name": "Смесь итальянских трав",
-        "Price": 491,
-        "Count": 7,
-        "Portion": 1,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 57,
-        "Name": "Лимонная цедра",
-        "Price": 259,
-        "Count": 6,
-        "Portion": 2,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            18,
-            24,
-            25,
-            26
-        ]
-    },
-    {
-        "Id": 58,
-        "Name": "Апельсиновая цедра",
-        "Price": 415,
-        "Count": 20,
         "Portion": 3,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            18,
-            24,
-            25,
-            26
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 59,
-        "Name": "Коньяк",
-        "Price": 47,
-        "Count": 16,
-        "Portion": 1,
+        "Id": "0141C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Горчица дижонская",
+        "Price": 418,
+        "Count": 15,
+        "Portion": 2,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            42,
-            43,
-            44
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 60,
-        "Name": "Виски",
-        "Price": 310,
-        "Count": 11,
-        "Portion": 1,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 61,
-        "Name": "Красное вино",
-        "Price": 387,
+        "Id": "0151C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Соус чесночный",
+        "Price": 256,
         "Count": 10,
-        "Portion": 2,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 62,
-        "Name": "Белое вино",
-        "Price": 260,
-        "Count": 8,
-        "Portion": 4,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 63,
-        "Name": "Соевые проростки",
-        "Price": 450,
-        "Count": 11,
-        "Portion": 4,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 64,
-        "Name": "Семена кунжута",
-        "Price": 191,
-        "Count": 9,
-        "Portion": 3,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 65,
-        "Name": "Соус табаско",
-        "Price": 326,
-        "Count": 7,
         "Portion": 5,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            42,
-            43,
-            44
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 66,
-        "Name": "Оливковое масло",
-        "Price": 225,
+        "Id": "0161C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Карамельные кусочки",
+        "Price": 269,
+        "Count": 8,
+        "Portion": 1,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0061C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0271C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0291C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0171C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Миндальные лепестки",
+        "Price": 246,
+        "Count": 9,
+        "Portion": 4,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0061C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0271C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0291C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0181C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Клубничный сироп",
+        "Price": 490,
+        "Count": 7,
+        "Portion": 1,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0181C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0241C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0251C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0261C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0191C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Мятный сироп",
+        "Price": 456,
+        "Count": 9,
+        "Portion": 2,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0191C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0241C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0251C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0261C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0201C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Лимонный сок",
+        "Price": 95,
+        "Count": 13,
+        "Portion": 2,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0101C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0111C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0211C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Имбирь",
+        "Price": 410,
+        "Count": 8,
+        "Portion": 5,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0031C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0201C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0221C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Мед",
+        "Price": 455,
+        "Count": 11,
+        "Portion": 1,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0031C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0201C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0071C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0081C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0231C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Корица",
+        "Price": 59,
+        "Count": 5,
+        "Portion": 1,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0031C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0201C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0061C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0241C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Сушеная клюква",
+        "Price": 394,
+        "Count": 11,
+        "Portion": 5,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0061C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0271C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0291C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0251C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Арахисовая паста",
+        "Price": 199,
+        "Count": 18,
+        "Portion": 5,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0061C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0271C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0291C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0261C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Соевый соус",
+        "Price": 34,
+        "Count": 19,
+        "Portion": 5,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0271C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Терияки соус",
+        "Price": 464,
+        "Count": 12,
+        "Portion": 4,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0281C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Сырный соус",
+        "Price": 218,
+        "Count": 16,
+        "Portion": 2,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0291C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Перец чили",
+        "Price": 113,
+        "Count": 18,
+        "Portion": 2,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0301C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Луковые колечки",
+        "Price": 187,
+        "Count": 12,
+        "Portion": 2,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0311C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Кетчуп",
+        "Price": 150,
+        "Count": 17,
+        "Portion": 1,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0321C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Майонез",
+        "Price": 187,
+        "Count": 13,
+        "Portion": 2,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0331C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Гранатовый сироп",
+        "Price": 389,
+        "Count": 10,
+        "Portion": 5,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0181C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0241C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0251C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0261C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0341C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Кедровые орешки",
+        "Price": 318,
         "Count": 16,
         "Portion": 4,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            42,
-            43,
-            44
+            "0061C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0271C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0291C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 67,
-        "Name": "Соус вустерширский",
-        "Price": 373,
+        "Id": "0351C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Сушеные абрикосы",
+        "Price": 281,
+        "Count": 11,
+        "Portion": 4,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0061C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0271C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0291C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0361C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Ванильный экстракт",
+        "Price": 382,
+        "Count": 9,
+        "Portion": 4,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0181C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0061C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0271C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0291C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0371C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Ореховый крем",
+        "Price": 318,
+        "Count": 10,
+        "Portion": 3,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0061C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0271C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0291C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0381C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Лавандовый сироп",
+        "Price": 296,
         "Count": 19,
         "Portion": 3,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            42,
-            43,
-            44
+            "0191C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0241C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0251C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0261C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 68,
-        "Name": "Соус рыбный",
-        "Price": 340,
-        "Count": 9,
-        "Portion": 3,
+        "Id": "0391C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Тростниковый сахар",
+        "Price": 16,
+        "Count": 5,
+        "Portion": 2,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            42,
-            43,
-            44
+            "0041C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 69,
-        "Name": "Листья мяты",
+        "Id": "0401C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Соус хойсин",
+        "Price": 312,
+        "Count": 13,
+        "Portion": 2,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0411C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Соус сатэ",
+        "Price": 87,
+        "Count": 9,
+        "Portion": 2,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0421C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Томатный соус",
+        "Price": 456,
+        "Count": 20,
+        "Portion": 1,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0431C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Соус песто",
+        "Price": 465,
+        "Count": 8,
+        "Portion": 1,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0441C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Зеленый лук",
         "Price": 122,
         "Count": 5,
-        "Portion": 5,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            18,
-            24,
-            25,
-            26
-        ]
-    },
-    {
-        "Id": 70,
-        "Name": "Шафран",
-        "Price": 312,
-        "Count": 6,
         "Portion": 4,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            42,
-            43,
-            44
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 71,
-        "Name": "Лавровый лист",
-        "Price": 481,
-        "Count": 7,
-        "Portion": 3,
+        "Id": "0451C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Чеснок молотый",
+        "Price": 118,
+        "Count": 13,
+        "Portion": 4,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            42,
-            43,
-            44
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 72,
-        "Name": "Корень имбиря",
-        "Price": 93,
-        "Count": 20,
+        "Id": "0461C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Паприка",
+        "Price": 347,
+        "Count": 15,
         "Portion": 2,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            42,
-            43,
-            44
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 73,
-        "Name": "Клюквенный соус",
-        "Price": 362,
-        "Count": 13,
-        "Portion": 1,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 74,
-        "Name": "Черный перец горошком",
-        "Price": 343,
-        "Count": 13,
-        "Portion": 3,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 75,
-        "Name": "Сливочное масло",
-        "Price": 35,
-        "Count": 20,
-        "Portion": 3,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 76,
-        "Name": "Зелень петрушки",
-        "Price": 88,
-        "Count": 15,
-        "Portion": 3,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 77,
-        "Name": "Смесь перцев",
-        "Price": 184,
-        "Count": 11,
-        "Portion": 4,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 78,
-        "Name": "Жгучий красный перец",
-        "Price": 395,
-        "Count": 19,
-        "Portion": 1,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 79,
-        "Name": "Карри",
-        "Price": 95,
-        "Count": 8,
-        "Portion": 1,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 80,
-        "Name": "Корица палочками",
-        "Price": 410,
-        "Count": 15,
-        "Portion": 3,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 81,
-        "Name": "Анис звездчатый",
-        "Price": 310,
-        "Count": 17,
-        "Portion": 1,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 82,
-        "Name": "Кардамон",
-        "Price": 413,
+        "Id": "0471C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Сыр пармезан",
+        "Price": 372,
         "Count": 7,
         "Portion": 4,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            42,
-            43,
-            44
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 83,
-        "Name": "Гвоздика",
-        "Price": 20,
+        "Id": "0481C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Базилик",
+        "Price": 428,
+        "Count": 18,
+        "Portion": 3,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0491C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Тимьян",
+        "Price": 166,
+        "Count": 20,
+        "Portion": 1,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0501C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Розмарин",
+        "Price": 405,
+        "Count": 20,
+        "Portion": 5,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0511C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Майоран",
+        "Price": 157,
+        "Count": 10,
+        "Portion": 5,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0521C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Уксус бальзамический",
+        "Price": 254,
+        "Count": 6,
+        "Portion": 2,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0531C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Соус чили",
+        "Price": 59,
         "Count": 9,
         "Portion": 2,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            42,
-            43,
-            44
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 84,
-        "Name": "Мускатный орех целый",
-        "Price": 359,
-        "Count": 18,
-        "Portion": 2,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "ProductIds": [
-            42,
-            43,
-            44
-        ]
-    },
-    {
-        "Id": 85,
-        "Name": "Тмин",
-        "Price": 118,
-        "Count": 15,
+        "Id": "0541C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Маринованные огурцы",
+        "Price": 147,
+        "Count": 12,
         "Portion": 3,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            42,
-            43,
-            44
+            "0391C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0401C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0411C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     },
     {
-        "Id": 86,
-        "Name": "Кориандр",
-        "Price": 452,
-        "Count": 17,
+        "Id": "0551C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Соленые каперсы",
+        "Price": 229,
+        "Count": 16,
+        "Portion": 1,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0391C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0401C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0411C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0561C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Смесь итальянских трав",
+        "Price": 497,
+        "Count": 18,
+        "Portion": 4,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0571C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Лимонная цедра",
+        "Price": 317,
+        "Count": 20,
         "Portion": 2,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "ProductIds": [
-            42,
-            43,
-            44
+            "0181C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0241C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0251C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0261C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0581C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Апельсиновая цедра",
+        "Price": 415,
+        "Count": 18,
+        "Portion": 3,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0181C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0241C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0251C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0261C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0591C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Коньяк",
+        "Price": 457,
+        "Count": 14,
+        "Portion": 1,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0601C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Виски",
+        "Price": 160,
+        "Count": 6,
+        "Portion": 4,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0611C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Красное вино",
+        "Price": 251,
+        "Count": 7,
+        "Portion": 4,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0621C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Белое вино",
+        "Price": 132,
+        "Count": 15,
+        "Portion": 1,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0631C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Соевые проростки",
+        "Price": 27,
+        "Count": 11,
+        "Portion": 5,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0641C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Семена кунжута",
+        "Price": 116,
+        "Count": 20,
+        "Portion": 2,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0651C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Соус табаско",
+        "Price": 48,
+        "Count": 11,
+        "Portion": 3,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0661C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Оливковое масло",
+        "Price": 352,
+        "Count": 11,
+        "Portion": 2,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0671C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Соус вустерширский",
+        "Price": 450,
+        "Count": 16,
+        "Portion": 2,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0681C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Соус рыбный",
+        "Price": 172,
+        "Count": 15,
+        "Portion": 4,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0691C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Листья мяты",
+        "Price": 374,
+        "Count": 7,
+        "Portion": 2,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0181C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0241C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0251C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0261C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0701C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Шафран",
+        "Price": 331,
+        "Count": 15,
+        "Portion": 1,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0711C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Лавровый лист",
+        "Price": 431,
+        "Count": 5,
+        "Portion": 1,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0721C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Корень имбиря",
+        "Price": 380,
+        "Count": 14,
+        "Portion": 1,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0731C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Клюквенный соус",
+        "Price": 344,
+        "Count": 8,
+        "Portion": 2,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0741C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Черный перец горошком",
+        "Price": 164,
+        "Count": 12,
+        "Portion": 3,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0751C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Сливочное масло",
+        "Price": 97,
+        "Count": 12,
+        "Portion": 1,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0761C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Зелень петрушки",
+        "Price": 436,
+        "Count": 16,
+        "Portion": 1,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0771C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Смесь перцев",
+        "Price": 64,
+        "Count": 9,
+        "Portion": 2,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0781C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Жгучий красный перец",
+        "Price": 359,
+        "Count": 9,
+        "Portion": 5,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0791C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Карри",
+        "Price": 469,
+        "Count": 16,
+        "Portion": 5,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0801C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Корица палочками",
+        "Price": 485,
+        "Count": 8,
+        "Portion": 4,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0811C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Анис звездчатый",
+        "Price": 405,
+        "Count": 9,
+        "Portion": 2,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0821C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Кардамон",
+        "Price": 217,
+        "Count": 17,
+        "Portion": 5,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0831C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Гвоздика",
+        "Price": 62,
+        "Count": 10,
+        "Portion": 3,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0841C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Мускатный орех целый",
+        "Price": 274,
+        "Count": 18,
+        "Portion": 5,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0851C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Тмин",
+        "Price": 32,
+        "Count": 5,
+        "Portion": 1,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
+        ]
+    },
+    {
+        "Id": "0861C9AB-9502-4687-B32D-9E6ACC752B1C",
+        "Name": "Кориандр",
+        "Price": 305,
+        "Count": 9,
+        "Portion": 1,
+        "Measure": "шт",
+        "CurrencySymbol": "₽",
+        "ProductIds": [
+            "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
+            "0441C9AB-9502-4687-B32D-9E6ACC752B6C"
         ]
     }
 ]

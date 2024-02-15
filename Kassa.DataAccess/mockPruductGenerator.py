@@ -6,23 +6,23 @@ import json
 # Базовая структура продуктов
 unique_products = [
     {
-        "Id": 1,
+        "Id": f"{1:03}1C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Кола",
         "Price": 324,
         "Count": 6,
         "Measure": "шт",
         "CurrencySymbol": "₽",
         "Favourites": [1, 2],
-        "CategoryId": 5,
+        "CategoryId": "05BCEF7E-4F00-406C-87DA-6364B4900940",
     },
     {
-        "Id": 2,
+        "Id": f"{2:03}1C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Вино",
         "Price": 1324,
         "Count": 10,
         "Measure": "шт",
         "CurrencySymbol": "₽",
-        "CategoryId": 3,
+        "CategoryId": "03BCEF7E-4F00-406C-87DA-6364B4900940",
     },
 ]
 
@@ -59,14 +59,14 @@ for category_id, names in product_names_by_category.items():
             break
         
         product = {
-            "Id": id_counter,
+            "Id": f"{id_counter:03}1C9AB-9502-4687-B32D-9E6ACC752B6C",
             "Name": name,
             "Price": random.randint(50, 2000),
             "Count": random.randint(5, 15),
             "Measure": random.choice(["шт", "кг", "л", "упак"]),
             "CurrencySymbol": "₽",
             "Favourites": random.sample([1, 2, 3], random.randint(0, 3)),
-            "CategoryId": category_id,
+            "CategoryId": f"{category_id:02}BCEF7E-4F00-406C-87DA-6364B4900940",
         }
         id_counter += 1
         

@@ -98,14 +98,14 @@ addition_id_counter = 1
 new_addition_json_objects = []
 for addition_name, product_ids in updated_additions.items():
     addition_object = {
-        "Id": addition_id_counter,
+        "Id": f"{addition_id_counter:03}1C9AB-9502-4687-B32D-9E6ACC752B1C",
         "Name": addition_name,
         "Price": random.randint(10, 500),
         "Count": random.randint(5, 20),
         "Portion": random.randint(1, 5),
         "Measure": "шт",
         "CurrencySymbol": "₽",
-        "ProductIds": product_ids
+        "ProductIds": [f"{x:03}1C9AB-9502-4687-B32D-9E6ACC752B6C" for x in product_ids]
     }
     addition_id_counter += 1
     new_addition_json_objects.append(addition_object)
