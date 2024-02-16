@@ -43,29 +43,14 @@ public interface ICashierPaymentService : IInitializableService, INotifyProperty
         get;
     }
 
-    public double Total
-    {
-        get;
-    }
-
-    public double Subtotal
-    {
-        get;
-    }
-
-    public double Discount
-    {
-        get;
-    }
-
-    public double Surcharge
-    {
-        get;
-    }
-
     public bool WithSalesReceipt
     {
         get; set;
+    }
+
+    public ICashierService CashierService
+    {
+        get;
     }
 
     public Task Pay();

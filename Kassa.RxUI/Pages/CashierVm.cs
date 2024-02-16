@@ -131,6 +131,13 @@ public class CashierVm : PageViewModel
             await dialog.WaitDialogClose();
         });
 
+        GoToPaymentCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var paymentPage = new CashierPaymentPageVm(mainViewModel);
+
+            mainViewModel.GoToPageCommand.Execute(paymentPage).Subscribe();
+        });
+
     }
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
@@ -189,6 +196,8 @@ public class CashierVm : PageViewModel
                          .Select(x => x.Sum(x => x.SubtotalSum))
                          .Subscribe(x => ShoppingList.Subtotal = x)
                          .DisposeWith(disposables);
+
+        
 
 
         var incc = (INotifyCollectionChanged)categoryItems;
@@ -295,6 +304,11 @@ public class CashierVm : PageViewModel
     }
 
     public ReactiveCommand<Unit, Unit> OpenDiscountsAndSurchargesDialog
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> GoToPaymentCommand
     {
         get;
     }

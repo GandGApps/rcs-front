@@ -27,6 +27,11 @@ public interface ICashierService : IInitializableService, INotifyPropertyChanged
         get;
     }
 
+    public int OrderId
+    {
+        get;
+    }
+
     /// <summary>
     /// Bind the current category to ObservableCollection, that will be updated when the category changes.
     /// <para>

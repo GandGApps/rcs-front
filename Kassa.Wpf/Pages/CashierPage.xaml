@@ -7,7 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:debug="https://debug.kassa.wpf"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-    xmlns:local="clr-namespace:Kassa.Wpf.Pages"
+    xmlns:local="clr-namespace:Kassa.Wpf"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     xmlns:pages="clr-namespace:Kassa.RxUI.Pages;assembly=Kassa.RxUI"
@@ -813,4 +813,27 @@
         </Grid>
 
     </Grid>
+
+    <local:MainWindow.PageFooter>
+        <controls:ButtonWithIcon
+            Command="{Binding GoToPaymentCommand}"
+            Content="Касса оплата"
+            Foreground="{DynamicResource AlternateForeground}"
+            Icon="{StaticResource CashierIcon}">
+            <controls:ButtonWithIcon.Style>
+                <Style BasedOn="{StaticResource {x:Type controls:ButtonWithIcon}}" TargetType="controls:ButtonWithIcon">
+                    <Style.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="BorderBrush" Value="{StaticResource AlternateForeground}" />
+                            <Setter Property="Background" Value="{StaticResource ClickableBg}" />
+                        </Trigger>
+                        <Trigger Property="IsPressed" Value="False">
+                            <Setter Property="BorderBrush" Value="{DynamicResource ClickableBg}" />
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </controls:ButtonWithIcon.Style>
+        </controls:ButtonWithIcon>
+    </local:MainWindow.PageFooter>
+
 </rxui:ReactiveUserControl>

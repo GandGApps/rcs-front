@@ -104,8 +104,10 @@ internal class CashierService(IProductService productService, ICategoryService c
     {
         get;
     } = new(x => x.Id);
-
-
+    public int OrderId
+    {
+        get; set;
+    }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -248,6 +250,9 @@ internal class CashierService(IProductService productService, ICategoryService c
         await productService.Initialize();
         await categoryService.Initialize();
         await additiveService.Initialize();
+
+        OrderId = Random.Shared.Next(0, 9999);
+
 
         IsInitialized = true;
     }

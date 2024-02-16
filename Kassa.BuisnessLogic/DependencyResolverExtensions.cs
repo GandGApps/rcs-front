@@ -33,6 +33,15 @@ public static class DependencyResolverExtensions
             return new CashierService(productService, categoryService, additiveService);
         });
         RegisterInitializableServiceFactory<ICashierService>(services);
+
+        services.Register<ICashierPaymentService>(() =>
+        {
+
+            var cashierService = Locator.Current.GetNotInitializedService<ICashierService>();
+
+            return new CashierPaymentService(cashierService);
+        });
+        RegisterInitializableServiceFactory<ICashierPaymentService>(services);
     }
 
     /// <summary>
