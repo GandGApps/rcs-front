@@ -11,6 +11,7 @@
     xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     xmlns:pages="clr-namespace:Kassa.RxUI.Pages;assembly=Kassa.RxUI"
     xmlns:rxui="http://reactiveui.net"
+    xmlns:vm="clr-namespace:Kassa.RxUI;assembly=Kassa.RxUI"
     xmlns:wnd="clr-namespace:Kassa.Wpf"
     Padding="{mx:AdaptiveSize Thickness={StaticResource FooterSizeAsThickness}}"
     d:DataContext="{d:DesignInstance Type=pages:CashierPaymentPageVm}"
@@ -26,7 +27,7 @@
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
 
-        <Grid>
+        <Grid x:Name="ShoppingList" Margin="5">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
                 <RowDefinition />
@@ -34,7 +35,6 @@
             </Grid.RowDefinitions>
             <Border
                 Height="{Binding ActualHeight, ElementName=CashierTabPanel}"
-                Margin="0,3,0,0"
                 Padding="12"
                 Background="{DynamicResource ShoppingListTopMenu}"
                 ClipToBounds="True"
@@ -43,84 +43,38 @@
                 <Grid>
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="50" />
-                        <ColumnDefinition Width="0.7*" />
-                        <ColumnDefinition Width="0.6*" />
+                        <ColumnDefinition Width="{mx:AdaptiveSize GridLength=136}" />
                         <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <CheckBox
-                        x:Name="MultiSelectCheckbox"
-                        Margin="-12,-12,0,-12"
-                        HorizontalAlignment="Left">
-                        <CheckBox.Style>
-                            <Style TargetType="CheckBox">
-                                <Setter Property="Background" Value="{StaticResource ClickableBg}" />
-                                <Setter Property="MinWidth" Value="0" />
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="CheckBox">
-                                            <Border Background="{TemplateBinding Background}" CornerRadius="11,0,0,11">
-                                                <Image
-                                                    x:Name="CheckIcon"
-                                                    Width="22"
-                                                    Height="22"
-                                                    Margin="12,0,12,0"
-                                                    HorizontalAlignment="Left"
-                                                    Source="{DynamicResource CheckListIcon}" />
-                                            </Border>
-
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsChecked" Value="True">
-                                                    <Setter Property="Background" Value="{DynamicResource MultiSelectCheckBoxCheckedBackground}" />
-                                                    <Setter TargetName="CheckIcon" Property="Source" Value="{StaticResource NegativeCheckListIcon}" />
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </CheckBox.Style>
-
-                    </CheckBox>
-
+                    <TextBlock Grid.ColumnSpan="3" Style="{StaticResource Header2}"><Run Text="Оплата заказа №" /><Run x:Name="OrderId" d:Text="2345" /></TextBlock>
 
                     <TextBlock
+                        Grid.Row="1"
+                        VerticalAlignment="Bottom"
+                        Foreground="{DynamicResource AlternateForeground}"
+                        Style="{StaticResource SubHeader}"><Run Text="Открыт " /><Run x:Name="OpenedAt" d:Text="14:55" /></TextBlock>
+
+                    <TextBlock
+                        Grid.Row="1"
                         Grid.Column="1"
-                        Style="{StaticResource Header2}"
-                        TextAlignment="Center">
-                        <Run Text="03.02  21:14" />
-                        <LineBreak />
-                        <Run Text="Здесь" />
-                    </TextBlock>
+                        VerticalAlignment="Bottom"
+                        Foreground="{DynamicResource AlternateForeground}"
+                        Style="{StaticResource SubHeader}"><Run Text="Стол № " /><Run x:Name="TableNumber" d:Text="5" /></TextBlock>
 
                     <TextBlock
+                        Grid.Row="1"
                         Grid.Column="2"
-                        VerticalAlignment="Center"
-                        LineHeight="10"
-                        Style="{StaticResource Header2}"
-                        TextAlignment="Center">
-                        <Path
-                            Width="13"
-                            Height="17"
-                            Data="{StaticResource DocsIcon}"
-                            Fill="White" />
-                        <Run Text="20" />
-                    </TextBlock>
-
-                    <TextBlock
-                        Grid.Column="3"
-                        VerticalAlignment="Center"
-                        Style="{StaticResource Header2}"
-                        TextAlignment="Center">
-                        <Path
-                            Height="20"
-                            Data="{StaticResource UserIcon}"
-                            Fill="White" />
-                        <Run Text="Григор" />
-                    </TextBlock>
+                        VerticalAlignment="Bottom"
+                        Foreground="{DynamicResource AlternateForeground}"
+                        Style="{StaticResource SubHeader}"
+                        TextAlignment="Right"><Run Text="Официант:" /><LineBreak /><Run d:Text="Григор" /></TextBlock>
 
                 </Grid>
             </Border>
@@ -205,14 +159,10 @@
                             HorizontalAlignment="Center"
                             VerticalAlignment="Center"
                             Style="{StaticResource ExtraLarge}"
-                            TextAlignment="Center">
-                            <Run
+                            TextAlignment="Center"><Run
                                 x:Name="SubtotalCost"
                                 FontWeight="Bold"
-                                Text="0,00 р" />
-                            <LineBreak />
-                            <Run FontSize="{mx:AdaptiveSize Size=11}" Text="Подытог" />
-                        </TextBlock>
+                                Text="0,00 р" /><LineBreak /><Run FontSize="{mx:AdaptiveSize Size=11}" Text="Подытог" /></TextBlock>
                     </Border>
 
                     <Border
@@ -230,18 +180,110 @@
                             VerticalAlignment="Center"
                             FontSize="{mx:AdaptiveSize Size=36}"
                             Style="{StaticResource ExtraLarge}"
-                            TextAlignment="Center">
-                            <Run
+                            TextAlignment="Center"><Run
                                 x:Name="TotalCost"
                                 FontWeight="Bold"
-                                Text="0,00 р" />
-                        </TextBlock>
+                                Text="0,00 р" /></TextBlock>
                     </Border>
 
                 </Grid>
             </Border>
 
         </Grid>
+
+        <Border
+            Grid.Column="1"
+            Margin="5,5,5,-30"
+            Padding="{mx:AdaptiveSize Thickness='17,25,17,44'}"
+            Background="{DynamicResource SecondaryBackground}"
+            CornerRadius="11">
+            <Grid>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock
+                    Foreground="{DynamicResource AccentBrush2}"
+                    Style="{StaticResource Header2}"
+                    Text="К оплате:" />
+
+                <TextBlock
+                    Grid.Column="1"
+                    d:Text="3000,00 р"
+                    FontWeight="Bold"
+                    Foreground="{DynamicResource AccentBrush2}"
+                    Style="{StaticResource Header}"
+                    TextAlignment="Right" />
+
+                <ItemsControl
+                    x:Name="CashierPaymentItems"
+                    Grid.Row="1"
+                    Grid.ColumnSpan="2"
+                    Margin="0,20,0,0">
+                    <d:ItemsControl.Items>
+                        <vm:CashierPaymentItemVm
+                            Name="Наличные"
+                            Cost="1000"
+                            CurrencySymbol="₽" />
+                    </d:ItemsControl.Items>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="vm:CashierPaymentItemVm">
+                            <Border
+                                Padding="{mx:AdaptiveSize Thickness='15,5,5,10'}"
+                                BorderBrush="{DynamicResource AlternateForeground}"
+                                BorderThickness="1"
+                                CornerRadius="11">
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="1*" />
+                                        <RowDefinition Height="1*" />
+                                    </Grid.RowDefinitions>
+
+                                    <TextBlock
+                                        Grid.RowSpan="2"
+                                        HorizontalAlignment="Left"
+                                        VerticalAlignment="Center"
+                                        Foreground="{DynamicResource AlternateForeground}"
+                                        Style="{StaticResource Header}"
+                                        Text="{Binding Name}" />
+
+                                    <Button
+                                        HorizontalAlignment="Right"
+                                        Command="{Binding RemoveItem}"
+                                        Style="{StaticResource IconButton}">
+                                        <Path
+                                            Width="{mx:AdaptiveSize Size=32}"
+                                            Height="{mx:AdaptiveSize Size=32}"
+                                            Data="{StaticResource CircleXIcon}"
+                                            Fill="{DynamicResource AlternateForeground}" />
+                                    </Button>
+
+                                    <TextBlock
+                                        Grid.Row="1"
+                                        Margin="{mx:AdaptiveSize Thickness='0,21,0,0'}"
+                                        Foreground="{DynamicResource AlternateForeground}"
+                                        Style="{StaticResource Header}"
+                                        TextAlignment="Right">
+                                        <Run Text="{Binding Cost, StringFormat='N2'}" /> <Run Text="{Binding CurrencySymbol}" />
+                                    </TextBlock>
+
+                                </Grid>
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+            </Grid>
+        </Border>
 
     </Grid>
 </rxui:ReactiveUserControl>
