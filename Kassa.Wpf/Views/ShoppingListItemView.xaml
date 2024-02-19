@@ -23,7 +23,7 @@
                 HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                 VerticalAlignment="{TemplateBinding VerticalAlignment}"
                 Background="{TemplateBinding Background}"
-                CornerRadius="11">
+                CornerRadius="{mx:AdaptiveSize CornerRadius=11}">
                 <ContentPresenter
                     Margin="{TemplateBinding Padding}"
                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -135,7 +135,7 @@
                 Margin="0,0,0,2.5"
                 Padding="13"
                 Background="White"
-                CornerRadius="11"
+                CornerRadius="{mx:AdaptiveSize CornerRadius=11}"
                 Visibility="{Binding HasAdditiveInfo, Converter={StaticResource BoolToVisibilityConverter}}">
 
                 <Border.Style>

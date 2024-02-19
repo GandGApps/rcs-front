@@ -8,6 +8,7 @@
     xmlns:data="clr-namespace:Kassa.DataAccess;assembly=Kassa.DataAccess"
     xmlns:local="clr-namespace:Kassa.Wpf.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     xmlns:rxui="http://reactiveui.net"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:vm="clr-namespace:Kassa.RxUI;assembly=Kassa.RxUI"
@@ -48,7 +49,7 @@
                 Background="{TemplateBinding Background}"
                 Command="{TemplateBinding local:AddictiveView.Command}"
                 CommandParameter="{TemplateBinding local:AddictiveView.CommandParameter}"
-                CornerRadius="11">
+                CornerRadius="{mx:AdaptiveSize CornerRadius=11}">
 
                 <ContentPresenter
                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"

@@ -33,7 +33,7 @@
                                 HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                                 VerticalAlignment="{TemplateBinding VerticalAlignment}"
                                 Background="{TemplateBinding Background}"
-                                CornerRadius="11">
+                                CornerRadius="{mx:AdaptiveSize CornerRadius=11}">
                                 <ContentPresenter />
                             </Border>
                         </ControlTemplate>

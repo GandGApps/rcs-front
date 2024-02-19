@@ -31,7 +31,7 @@
                             Padding="{TemplateBinding Padding}"
                             Panel.ZIndex="3"
                             Background="{DynamicResource AccentTabPanel}"
-                            CornerRadius="5.5">
+                            CornerRadius="{mx:AdaptiveSize CornerRadius=5.5}">
                             <Border.Effect>
                                 <DropShadowEffect
                                     BlurRadius="8"

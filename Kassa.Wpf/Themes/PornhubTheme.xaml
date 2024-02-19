@@ -236,4 +236,8 @@
 
     <SolidColorBrush x:Key="OkDialogIconFill" Color="#7F000000" />
 
+    <SolidColorBrush x:Key="ColorSeparator" Color="#C0DAED" />
+
+    <SolidColorBrush x:Key="CheckboxCircleColor" Color="Black" />
+
 </ResourceDictionary>

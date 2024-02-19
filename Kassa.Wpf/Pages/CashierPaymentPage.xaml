@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="clr-namespace:Kassa.Wpf.Behaviors"
     xmlns:controls="clr-namespace:Kassa.Wpf.Controls"
+    xmlns:ctrl="clr-namespace:Kassa.Wpf.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:Kassa.Wpf.Pages"
@@ -38,7 +39,7 @@
                 Padding="12"
                 Background="{DynamicResource ShoppingListTopMenu}"
                 ClipToBounds="True"
-                CornerRadius="11"
+                CornerRadius="{mx:AdaptiveSize CornerRadius=11}"
                 TextBlock.Foreground="White">
                 <Grid>
 
@@ -74,7 +75,7 @@
                         VerticalAlignment="Bottom"
                         Foreground="{DynamicResource AlternateForeground}"
                         Style="{StaticResource SubHeader}"
-                        TextAlignment="Right"><Run Text="Официант:" /><LineBreak /><Run d:Text="Григор" /></TextBlock>
+                        TextAlignment="Right"><Run Text="Официант:" /><LineBreak /><Run x:Name="Waiter" d:Text="Григор" /></TextBlock>
 
                 </Grid>
             </Border>
@@ -95,7 +96,7 @@
                 Grid.Row="2"
                 Padding="4"
                 Background="{DynamicResource SurfaceBrush}"
-                CornerRadius="11">
+                CornerRadius="{mx:AdaptiveSize CornerRadius=11}">
                 <Grid>
 
                     <Grid.ColumnDefinitions>
@@ -115,7 +116,7 @@
                         Padding="12"
                         HorizontalContentAlignment="Stretch"
                         Background="White"
-                        CornerRadius="11">
+                        CornerRadius="{mx:AdaptiveSize CornerRadius=11}">
                         <StackPanel>
 
                             <TextBlock
@@ -153,7 +154,7 @@
                         Margin="7,0,0,0"
                         BorderBrush="White"
                         BorderThickness="1"
-                        CornerRadius="27"
+                        CornerRadius="{mx:AdaptiveSize CornerRadius=27}"
                         TextBlock.Foreground="White">
                         <TextBlock
                             HorizontalAlignment="Center"
@@ -173,7 +174,7 @@
                         Background="{DynamicResource AccentBrush}"
                         BorderBrush="{DynamicResource AccentBrush}"
                         BorderThickness="1"
-                        CornerRadius="27"
+                        CornerRadius="{mx:AdaptiveSize CornerRadius=27}"
                         TextBlock.Foreground="White">
                         <TextBlock
                             HorizontalAlignment="Center"
@@ -192,16 +193,21 @@
         </Grid>
 
         <Border
+            x:Name="PaymentInfo"
             Grid.Column="1"
-            Margin="5,5,5,-30"
+            Margin="5,5,5,-15"
             Padding="{mx:AdaptiveSize Thickness='17,25,17,44'}"
             Background="{DynamicResource SecondaryBackground}"
-            CornerRadius="11">
+            CornerRadius="{mx:AdaptiveSize CornerRadius=11}">
             <Grid>
 
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="1*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
@@ -217,6 +223,7 @@
                     Text="К оплате:" />
 
                 <TextBlock
+                    x:Name="TotalCostPaymentInfo"
                     Grid.Column="1"
                     d:Text="3000,00 р"
                     FontWeight="Bold"
@@ -234,14 +241,23 @@
                             Name="Наличные"
                             Cost="1000"
                             CurrencySymbol="₽" />
+                        <vm:CashierPaymentItemVm
+                            Name="Банк. карта"
+                            Cost="2000"
+                            CurrencySymbol="₽" />
+                        <vm:CashierPaymentItemVm
+                            Name="Депозит"
+                            Cost="3000"
+                            CurrencySymbol="₽" />
                     </d:ItemsControl.Items>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="vm:CashierPaymentItemVm">
                             <Border
+                                Margin="0,4,0,4"
                                 Padding="{mx:AdaptiveSize Thickness='15,5,5,10'}"
                                 BorderBrush="{DynamicResource AlternateForeground}"
                                 BorderThickness="1"
-                                CornerRadius="11">
+                                CornerRadius="{mx:AdaptiveSize CornerRadius=11}">
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="1*" />
@@ -281,6 +297,117 @@
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
+
+                <Separator
+                    Grid.Row="2"
+                    Grid.ColumnSpan="2"
+                    Margin="{mx:AdaptiveSize Thickness='0,2,0,18'}"
+                    Background="{DynamicResource ColorSeparator}" />
+
+                <TextBlock
+                    Grid.Row="3"
+                    Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
+                    Foreground="{DynamicResource AlternateForeground}"
+                    Style="{StaticResource Header}"
+                    Text="Внести:" />
+                <TextBlock
+                    x:Name="ToEnter"
+                    Grid.Row="3"
+                    Grid.Column="1"
+                    Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
+                    d:Text="0,00 р"
+                    Foreground="{DynamicResource AlternateForeground}"
+                    Style="{StaticResource Header}"
+                    TextAlignment="Right" />
+
+                <TextBlock
+                    Grid.Row="4"
+                    Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
+                    Foreground="{DynamicResource AlternateForeground}"
+                    Style="{StaticResource Header}"
+                    Text="Внесено:" />
+                <TextBlock
+                    x:Name="ToEntered"
+                    Grid.Row="4"
+                    Grid.Column="1"
+                    Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
+                    d:Text="3000,00 р"
+                    Foreground="{DynamicResource AlternateForeground}"
+                    Style="{StaticResource Header}"
+                    TextAlignment="Right" />
+
+                <TextBlock
+                    Grid.Row="5"
+                    Foreground="{DynamicResource AlternateForeground}"
+                    Style="{StaticResource Header}"
+                    Text="Сдача:" />
+                <TextBlock
+                    x:Name="Change"
+                    Grid.Row="5"
+                    Grid.Column="1"
+                    d:Text="0,00 р"
+                    Foreground="{DynamicResource AlternateForeground}"
+                    Style="{StaticResource Header}"
+                    TextAlignment="Right" />
+
+                <Separator
+                    Grid.Row="6"
+                    Grid.ColumnSpan="2"
+                    Margin="{mx:AdaptiveSize Thickness='0,18,0,18'}"
+                    Background="{DynamicResource ColorSeparator}" />
+
+                <CheckBox
+                    x:Name="HasReceipt"
+                    Grid.Row="7"
+                    Width="{mx:AdaptiveSize 170}"
+                    Margin="{mx:AdaptiveSize Thickness='0,0,6,0'}"
+                    HorizontalAlignment="Right"
+                    IsChecked="False"
+                    Style="{StaticResource BorderToggleCheckbox}">
+
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="{mx:AdaptiveSize GridLength=32}" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Path Data="{StaticResource ReceiptIcon}" Fill="{DynamicResource AlternateForeground}" />
+
+                        <TextBlock
+                            Grid.Column="1"
+                            Margin="{mx:AdaptiveSize Thickness='12,0,0,0'}"
+                            Foreground="{DynamicResource AlternateForeground}"
+                            Style="{StaticResource Large}"
+                            Text="С товарным чеком"
+                            TextWrapping="Wrap" />
+
+                    </Grid>
+
+                </CheckBox>
+
+                <ctrl:ButtonWithIcon
+                    x:Name="ActionWithReceipt"
+                    Grid.Row="7"
+                    Grid.Column="1"
+                    Width="{mx:AdaptiveSize 170}"
+                    Margin="{mx:AdaptiveSize Thickness='6,0,0,0'}"
+                    HorizontalAlignment="Left"
+                    Foreground="{DynamicResource AlternateForeground}"
+                    Icon="{StaticResource PrinterIcon}"
+                    Style="{StaticResource ToggableBorderIconButton}">
+
+                    <TextBlock
+                        Foreground="{DynamicResource AlternateForeground}"
+                        Style="{StaticResource Large}"
+                        Text="С товарным чеком"
+                        TextWrapping="Wrap" />
+
+                </ctrl:ButtonWithIcon>
+
+
+
+
 
             </Grid>
         </Border>

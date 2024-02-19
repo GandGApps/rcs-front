@@ -44,6 +44,12 @@ public class CashierPaymentPageVm : PageViewModel
         get; set;
     }
 
+    [Reactive]
+    public string Email
+    {
+        get; set;
+    }
+
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
         CashierPaymentService = await GetInitializedService<ICashierPaymentService>();

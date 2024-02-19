@@ -71,9 +71,9 @@
                 <Border
                     x:Name="Footer"
                     Grid.Row="2"
-                    Padding="{mx:AdaptiveSize Thickness=20\,10}"
+                    Padding="{mx:AdaptiveSize Thickness='20,10'}"
                     Background="{DynamicResource SurfaceBrush}"
-                    CornerRadius="14,14,0,0">
+                    CornerRadius="{mx:AdaptiveSize CornerRadius='14,14,0,0'}">
 
                     <Border.Effect>
                         <DropShadowEffect

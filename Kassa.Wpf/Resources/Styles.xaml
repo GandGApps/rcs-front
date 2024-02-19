@@ -200,11 +200,12 @@
     <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type local:ButtonWithIcon}">
 
         <Setter Property="FontSize" Value="{mx:AdaptiveSize 14}" />
-        <Setter Property="Padding" Value="10" />
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='10'}" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Background" Value="{StaticResource ClickableBg}" />
-        <Setter Property="CornerRadius" Value="6.4" />
+        <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius=6.4}" />
         <Setter Property="FontFamily" Value="./Assets/Fonts/Montseratt/#Montserrat" />
-        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="BorderThickness" Value="{mx:AdaptiveSize Thickness='1.4'}" />
         <Setter Property="TextBlock.TextWrapping" Value="Wrap" />
 
         <Setter Property="Template">
@@ -246,7 +247,7 @@
                             <Grid>
 
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="28" />
+                                    <ColumnDefinition Width="{mx:AdaptiveSize GridLength=32}" />
                                     <ColumnDefinition Width="*" />
                                 </Grid.ColumnDefinitions>
 
@@ -256,7 +257,7 @@
                                     Stretch="Uniform" />
                                 <ContentPresenter
                                     Grid.Column="1"
-                                    Margin="10.4,0,0,0"
+                                    Margin="{mx:AdaptiveSize Thickness='12,0,0,0'}"
                                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                     Content="{TemplateBinding Content}"
@@ -269,11 +270,18 @@
 
 
                     <ControlTemplate.Triggers>
+
                         <Trigger Property="IsPressed" Value="True">
                             <Setter TargetName="_topShadow" Property="BorderThickness" Value="2,2,0,0" />
                             <Setter TargetName="_bottomShadow" Property="BorderThickness" Value="0,0,2,2" />
                         </Trigger>
+
+                        <Trigger Property="IsHitTestVisible" Value="False">
+                            <Setter Property="Opacity" Value="0.4" />
+                        </Trigger>
+
                     </ControlTemplate.Triggers>
+
 
                 </ControlTemplate>
 
@@ -288,12 +296,30 @@
         </Style.Triggers>
     </Style>
 
+    <Style
+        x:Key="ToggableBorderIconButton"
+        BasedOn="{StaticResource {x:Type local:ButtonWithIcon}}"
+        TargetType="local:ButtonWithIcon">
+
+        <Setter Property="BorderThickness" Value="{mx:AdaptiveSize Thickness='1.4'}" />
+
+        <Style.Triggers>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource AlternateForeground}" />
+                <Setter Property="Background" Value="{StaticResource ClickableBg}" />
+            </Trigger>
+            <Trigger Property="IsPressed" Value="False">
+                <Setter Property="BorderBrush" Value="{DynamicResource ClickableBg}" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
+
     <ControlTemplate x:Key="CheckBoxWithShadow" TargetType="CheckBox">
         <Grid>
             <Border
                 x:Name="_topShadow"
                 BorderThickness="2,2,0,0"
-                CornerRadius="6.4">
+                CornerRadius="{mx:AdaptiveSize CornerRadius=6.4}">
                 <Border.Effect>
                     <BlurEffect Radius="{DynamicResource TopShadowBlurEffectRadius}" />
                 </Border.Effect>
@@ -301,7 +327,7 @@
             <Border
                 x:Name="_bottomShadow"
                 BorderThickness="0,0,2,2"
-                CornerRadius="6.4">
+                CornerRadius="{mx:AdaptiveSize CornerRadius=6.4}">
                 <Border.Effect>
                     <BlurEffect Radius="{DynamicResource BottomShadowBlurEffectRadius}" />
                 </Border.Effect>
@@ -312,7 +338,7 @@
                 Background="{TemplateBinding Background}"
                 BorderBrush="{TemplateBinding BorderBrush}"
                 BorderThickness="{TemplateBinding BorderThickness}"
-                CornerRadius="6.4">
+                CornerRadius="{mx:AdaptiveSize CornerRadius=6.4}">
                 <ContentPresenter
                     Grid.Column="1"
                     Content="{TemplateBinding Content}"
@@ -336,6 +362,25 @@
 
     </ControlTemplate>
 
+    <ControlTemplate x:Key="TogableBorderCheckbox" TargetType="CheckBox">
+
+        <Border
+            x:Name="_border"
+            Padding="{TemplateBinding Padding}"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{mx:AdaptiveSize CornerRadius=6.4}">
+            <ContentPresenter
+                Grid.Column="1"
+                Content="{TemplateBinding Content}"
+                ContentTemplate="{TemplateBinding ContentTemplate}"
+                TextBlock.FontSize="{TemplateBinding FontSize}"
+                TextBlock.Foreground="{TemplateBinding Foreground}" />
+        </Border>
+
+    </ControlTemplate>
+
     <Style x:Key="PrimaryCheckbox" TargetType="CheckBox">
         <Setter Property="FontSize" Value="{mx:AdaptiveSize 14}" />
         <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness=10}" />
@@ -343,6 +388,21 @@
         <Setter Property="BorderThickness" Value="{DynamicResource BackToMenuBorderThickness}" />
         <Setter Property="BorderBrush" Value="{DynamicResource BackToMenuBorderBrush}" />
         <Setter Property="Template" Value="{StaticResource CheckBoxWithShadow}" />
+    </Style>
+
+    <Style
+        x:Key="BorderToggleCheckbox"
+        BasedOn="{StaticResource PrimaryCheckbox}"
+        TargetType="CheckBox">
+        <Setter Property="Template" Value="{StaticResource TogableBorderCheckbox}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AlternateForeground}" />
+        <Setter Property="BorderThickness" Value="{mx:AdaptiveSize Thickness='1.4'}" />
+
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="False">
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Trigger>
+        </Style.Triggers>
     </Style>
 
     <Style
@@ -370,7 +430,7 @@
         <Setter Property="Foreground" Value="{DynamicResource DefaultButtonForeground}" />
         <Setter Property="Background" Value="{DynamicResource DefaultButtonBackground}" />
         <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius=40}" />
-        <Setter Property="Padding" Value="10" />
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness=10}" />
         <Setter Property="Margin" Value="1.3" />
 
         <Setter Property="Template">
@@ -478,6 +538,68 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style x:Key="CircularRadioButton" TargetType="RadioButton">
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="RadioButton">
+
+                    <Border
+                        Width="{TemplateBinding Width}"
+                        Height="{TemplateBinding Height}"
+                        Margin="{TemplateBinding Margin}"
+                        Padding="{TemplateBinding Padding}"
+                        HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                        Background="{TemplateBinding Background}">
+
+                        <Grid>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Canvas Width="{mx:AdaptiveSize 32}" Height="{Binding Width, RelativeSource={RelativeSource Self}}">
+
+                                <Ellipse
+                                    Width="{mx:AdaptiveSize 32}"
+                                    Height="{Binding Width, RelativeSource={RelativeSource Self}}"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Stroke="{DynamicResource CheckboxCircleColor}"
+                                    StrokeThickness="{mx:AdaptiveSize 1.4}" />
+
+                                <Ellipse
+                                    Width="{mx:AdaptiveSize 16}"
+                                    Height="{Binding Width, RelativeSource={RelativeSource Self}}"
+                                    HorizontalAlignment="Center"
+                                    VerticalAlignment="Center"
+                                    Fill="{DynamicResource CheckboxCircleColor}"
+                                    Stroke="{DynamicResource CheckboxCircleColor}"
+                                    StrokeThickness="{mx:AdaptiveSize 1.4}" />
+
+                            </Canvas>
+
+                            <ContentPresenter
+                                Grid.Column="1"
+                                Margin="{mx:AdaptiveSize Thickness='25,0,0,0'}"
+                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                Content="{TemplateBinding Content}"
+                                TextBlock.FontSize="{TemplateBinding FontSize}"
+                                TextBlock.Foreground="{TemplateBinding Foreground}" />
+
+                        </Grid>
+
+                    </Border>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+
     </Style>
 
 </ResourceDictionary>

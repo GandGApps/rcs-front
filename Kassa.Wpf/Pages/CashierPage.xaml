@@ -207,7 +207,7 @@
                     Padding="12"
                     Background="{DynamicResource ShoppingListTopMenu}"
                     ClipToBounds="True"
-                    CornerRadius="11"
+                    CornerRadius="{mx:AdaptiveSize CornerRadius=11}"
                     TextBlock.Foreground="White">
                     <Grid>
 
@@ -230,7 +230,7 @@
                                     <Setter Property="Template">
                                         <Setter.Value>
                                             <ControlTemplate TargetType="CheckBox">
-                                                <Border Background="{TemplateBinding Background}" CornerRadius="11,0,0,11">
+                                                <Border Background="{TemplateBinding Background}" CornerRadius="{mx:AdaptiveSize CornerRadius='11,0,0,11'}">
                                                     <Image
                                                         x:Name="CheckIcon"
                                                         Width="22"
@@ -310,7 +310,7 @@
                     Grid.Row="2"
                     Padding="4"
                     Background="{DynamicResource SurfaceBrush}"
-                    CornerRadius="11">
+                    CornerRadius="{mx:AdaptiveSize CornerRadius=11}">
                     <Grid>
 
                         <Grid.ColumnDefinitions>
@@ -330,7 +330,7 @@
                             Padding="12"
                             HorizontalContentAlignment="Stretch"
                             Background="White"
-                            CornerRadius="11">
+                            CornerRadius="{mx:AdaptiveSize CornerRadius=11}">
                             <StackPanel>
 
                                 <TextBlock
@@ -368,7 +368,7 @@
                             Margin="7,0,0,0"
                             BorderBrush="White"
                             BorderThickness="1"
-                            CornerRadius="27"
+                            CornerRadius="{mx:AdaptiveSize CornerRadius=27}"
                             TextBlock.Foreground="White">
                             <TextBlock
                                 HorizontalAlignment="Center"
@@ -392,7 +392,7 @@
                             Background="{DynamicResource AccentBrush}"
                             BorderBrush="{DynamicResource AccentBrush}"
                             BorderThickness="1"
-                            CornerRadius="27"
+                            CornerRadius="{mx:AdaptiveSize CornerRadius=27}"
                             TextBlock.Foreground="White">
                             <TextBlock
                                 HorizontalAlignment="Center"
@@ -514,14 +514,14 @@
                     Grid.RowSpan="2"
                     Margin="0,3,0,0"
                     Background="{DynamicResource ProductHostBackground}"
-                    CornerRadius="11" />
+                    CornerRadius="{mx:AdaptiveSize CornerRadius=11}" />
 
                 <Border
                     x:Name="CashierTabPanel"
                     Margin="0,3,0,0"
                     Padding="12,0,12,0"
                     Background="{DynamicResource SurfaceBrush}"
-                    CornerRadius="11"
+                    CornerRadius="{mx:AdaptiveSize CornerRadius=11}"
                     TextBlock.Foreground="White">
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -816,24 +816,13 @@
 
     <local:MainWindow.PageFooter>
         <controls:ButtonWithIcon
+            VerticalContentAlignment="Center"
             Command="{Binding GoToPaymentCommand}"
             Content="Касса оплата"
             Foreground="{DynamicResource AlternateForeground}"
-            Icon="{StaticResource CashierIcon}">
-            <controls:ButtonWithIcon.Style>
-                <Style BasedOn="{StaticResource {x:Type controls:ButtonWithIcon}}" TargetType="controls:ButtonWithIcon">
-                    <Style.Triggers>
-                        <Trigger Property="IsPressed" Value="True">
-                            <Setter Property="BorderBrush" Value="{StaticResource AlternateForeground}" />
-                            <Setter Property="Background" Value="{StaticResource ClickableBg}" />
-                        </Trigger>
-                        <Trigger Property="IsPressed" Value="False">
-                            <Setter Property="BorderBrush" Value="{DynamicResource ClickableBg}" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </controls:ButtonWithIcon.Style>
-        </controls:ButtonWithIcon>
+            Icon="{StaticResource CashierIcon}"
+            IsEnabled="True"
+            Style="{StaticResource ToggableBorderIconButton}" />
     </local:MainWindow.PageFooter>
 
 </rxui:ReactiveUserControl>

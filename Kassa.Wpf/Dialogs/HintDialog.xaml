@@ -55,7 +55,7 @@
                 Height="{mx:AdaptiveSize 200}"
                 Padding="{mx:AdaptiveSize Thickness=20}"
                 Background="White"
-                CornerRadius="21,21,21,21">
+                CornerRadius="{mx:AdaptiveSize CornerRadius=21}">
                 <Grid>
 
                     <Grid.RowDefinitions>
