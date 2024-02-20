@@ -7,23 +7,7 @@ using Kassa.RxUI.Pages;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI.Dialogs;
-public class SendReceiptDialogViewModel : DialogViewModel
+public class SendReceiptDialogViewModel(MainViewModel mainViewModel, CashierPaymentPageVm cashierPaymentPageVm) : DialogViewModel(mainViewModel)
 {
-    private readonly CashierPaymentPageVm _cashierPaymentPageVm;
-    public SendReceiptDialogViewModel(MainViewModel mainViewModel, CashierPaymentPageVm cashierPaymentPageVm) : base(mainViewModel)
-    {
-        _cashierPaymentPageVm = cashierPaymentPageVm;
-    }
-
-    [Reactive]
-    public bool IsSendEmail
-    {
-        get; set;
-    }
-
-    [Reactive]
-    public bool IsPrint
-    {
-        get; set;
-    }
+    public CashierPaymentPageVm CashierPaymentPageVm => cashierPaymentPageVm;
 }

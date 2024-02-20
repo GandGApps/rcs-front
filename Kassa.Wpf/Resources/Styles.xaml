@@ -541,7 +541,7 @@
     </Style>
 
     <Style x:Key="CircularRadioButton" TargetType="RadioButton">
-
+        <Setter Property="VerticalContentAlignment" Value="Center" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="RadioButton">
@@ -562,7 +562,7 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <Canvas Width="{mx:AdaptiveSize 32}" Height="{Binding Width, RelativeSource={RelativeSource Self}}">
+                            <Grid Width="{mx:AdaptiveSize 32}" Height="{Binding Width, RelativeSource={RelativeSource Self}}">
 
                                 <Ellipse
                                     Width="{mx:AdaptiveSize 32}"
@@ -581,7 +581,7 @@
                                     Stroke="{DynamicResource CheckboxCircleColor}"
                                     StrokeThickness="{mx:AdaptiveSize 1.4}" />
 
-                            </Canvas>
+                            </Grid>
 
                             <ContentPresenter
                                 Grid.Column="1"

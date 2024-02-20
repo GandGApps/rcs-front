@@ -33,7 +33,7 @@
 
     <Style x:Key="HeaderMenu" TargetType="Border">
         <Setter Property="Background" Value="{DynamicResource DialogHeaderBackground}" />
-        <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius={DynamicResource StartMenu}}" />
+        <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius={StaticResource StartMenu}}" />
         <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='20,24,20,13'}" />
     </Style>
 

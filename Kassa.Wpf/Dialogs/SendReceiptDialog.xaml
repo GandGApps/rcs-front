@@ -36,18 +36,21 @@
 
                 </Grid>
             </Border>
-            <Button
-                Content="Новый документ"
-                Foreground="#C76060"
-                Style="{StaticResource MenuButton}" />
+            <RadioButton
+                x:Name="Print"
+                Content="Распечатать"
+                Style="{StaticResource DialogRadioButton}" />
             <Border Style="{DynamicResource Separator}" />
-            <Button Content="Документы" Style="{StaticResource MenuButton}">
+            <RadioButton
+                x:Name="SendEmail"
+                Content="Отправить на почту"
+                Style="{StaticResource DialogRadioButton}">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius={StaticResource EndMenu}}" />
                     </Style>
                 </Button.Resources>
-            </Button>
+            </RadioButton>
         </StackPanel>
     </Border>
 </local:ClosableDialog>
