@@ -57,7 +57,10 @@
             </Button>
 
 
-            <ContentPresenter Grid.Row="1" />
+            <ContentPresenter
+                Grid.Row="1"
+                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
 
         </Grid>
     </ControlTemplate>

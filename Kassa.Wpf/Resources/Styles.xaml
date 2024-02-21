@@ -276,10 +276,6 @@
                             <Setter TargetName="_bottomShadow" Property="BorderThickness" Value="0,0,2,2" />
                         </Trigger>
 
-                        <Trigger Property="IsHitTestVisible" Value="False">
-                            <Setter Property="Opacity" Value="0.4" />
-                        </Trigger>
-
                     </ControlTemplate.Triggers>
 
 
@@ -290,9 +286,15 @@
         </Setter>
 
         <Style.Triggers>
+
             <Trigger Property="IsPressed" Value="True">
                 <Setter Property="BorderBrush" Value="{StaticResource ClickableBg}" />
             </Trigger>
+
+            <Trigger Property="IsHitTestVisible" Value="False">
+                <Setter Property="Opacity" Value="0.4" />
+            </Trigger>
+
         </Style.Triggers>
     </Style>
 
@@ -573,6 +575,7 @@
                                     StrokeThickness="{mx:AdaptiveSize 1.4}" />
 
                                 <Ellipse
+                                    x:Name="CheckedEclipse"
                                     Width="{mx:AdaptiveSize 16}"
                                     Height="{Binding Width, RelativeSource={RelativeSource Self}}"
                                     HorizontalAlignment="Center"
@@ -595,6 +598,12 @@
                         </Grid>
 
                     </Border>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsChecked" Value="False">
+                            <Setter TargetName="CheckedEclipse" Property="Visibility" Value="Collapsed" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
 
                 </ControlTemplate>
             </Setter.Value>

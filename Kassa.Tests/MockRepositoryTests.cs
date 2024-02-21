@@ -10,8 +10,9 @@ public class MockTests
     {
         var repository = IRepository<Category>.CreateMock("MockCategories.json");
         var categories = await repository.GetAll();
+        var firstGuid = Guid.Parse("01BCEF7E-4F00-406C-87DA-6364B4900940");
 
-        Assert.AreEqual(1, categories.First(x => x.Id == 1).Id);
+        Assert.AreEqual(firstGuid, categories.First(x => x.Id == firstGuid).Id);
     }
 
     [TestMethod]
@@ -19,8 +20,9 @@ public class MockTests
     {
         var repository = IRepository<Product>.CreateMock("MockProducts.json");
         var products = await repository.GetAll();
+        var firstGuid = Guid.Parse("0011C9AB-9502-4687-B32D-9E6ACC752B6C");
 
-        Assert.AreEqual(1, products.First(x => x.Id == 1).Id);
+        Assert.AreEqual(firstGuid, products.First(x => x.Id == firstGuid).Id);
     }
 
     [TestMethod]
@@ -28,7 +30,8 @@ public class MockTests
     {
         var repository = IRepository<Additive>.CreateMock("MockAdditive.json");
         var receipts = await repository.GetAll();
+        var firstGuid = Guid.Parse("0011C9AB-9502-4687-B32D-9E6ACC752B1C");
 
-        Assert.AreEqual(1, receipts.First(x => x.Id == 1).Id);
+        Assert.AreEqual(firstGuid, receipts.First(x => x.Id == firstGuid).Id);
     }
 }

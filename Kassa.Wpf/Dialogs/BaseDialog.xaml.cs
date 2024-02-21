@@ -24,5 +24,6 @@ public abstract class BaseDialog<T>: ReactiveUserControl<T> where T: DialogViewM
     public BaseDialog()
     {
         SetResourceReference(TemplateProperty, "BaseDialogTemplate");
+
     }
 }

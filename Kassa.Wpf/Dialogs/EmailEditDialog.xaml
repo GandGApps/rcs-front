@@ -1,5 +1,5 @@
 ﻿<local:ClosableDialog
-    x:Class="Kassa.Wpf.Dialogs.CommentDialog"
+    x:Class="Kassa.Wpf.Dialogs.EmailEditDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="clr-namespace:Kassa.Wpf.Controls"
@@ -9,10 +9,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     Padding="{mx:AdaptiveSize Thickness={StaticResource WideDialogPadding}}"
-    d:DataContext="{d:DesignInstance Type=dialogs:CommentDialogViewModel}"
+    d:DataContext="{d:DesignInstance Type=dialogs:EmaiEditlDialogViewModel}"
     d:DesignHeight="700"
     d:DesignWidth="1380"
-    x:TypeArguments="dialogs:CommentDialogViewModel"
+    x:TypeArguments="dialogs:EmaiEditlDialogViewModel"
     mc:Ignorable="d">
     <Border Style="{StaticResource WideDialog}">
         <Grid>

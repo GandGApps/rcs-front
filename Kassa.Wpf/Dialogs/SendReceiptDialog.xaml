@@ -39,17 +39,53 @@
             <RadioButton
                 x:Name="Print"
                 Content="Распечатать"
+                IsChecked="True"
                 Style="{StaticResource DialogRadioButton}" />
             <Border Style="{DynamicResource Separator}" />
             <RadioButton
                 x:Name="SendEmail"
-                Content="Отправить на почту"
+                Height="{Binding ElementName=Print, Path=ActualHeight}"
+                Padding="{mx:AdaptiveSize Thickness='30,20,30,20'}"
+                HorizontalContentAlignment="Stretch"
                 Style="{StaticResource DialogRadioButton}">
-                <Button.Resources>
+
+                <RadioButton.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius={StaticResource EndMenu}}" />
                     </Style>
-                </Button.Resources>
+                </RadioButton.Resources>
+
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock
+                        x:Name="SendEmailText"
+                        FontSize="{mx:AdaptiveSize 24}"
+                        Text="Отправить на почту" />
+
+                    <TextBlock
+                        x:Name="Email"
+                        Grid.Row="1"
+                        d:Text="GRIGORJAN888@gmail.com"
+                        FontSize="{mx:AdaptiveSize 20}"
+                        Foreground="{DynamicResource AccentBrush2}" />
+
+                    <Button
+                        x:Name="EditEmailButton"
+                        Grid.RowSpan="2"
+                        Width="{mx:AdaptiveSize 32}"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource IconButton}">
+                        <Path Data="{StaticResource EditIcon}" Fill="{DynamicResource AccentBrush2}" />
+                    </Button>
+
+
+                </Grid>
+
             </RadioButton>
         </StackPanel>
     </Border>

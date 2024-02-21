@@ -7,6 +7,8 @@
     xmlns:dialogs="clr-namespace:Kassa.RxUI.Dialogs;assembly=Kassa.RxUI"
     xmlns:local="clr-namespace:Kassa.Wpf.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
+    Padding="{mx:AdaptiveSize Thickness={StaticResource WideDialogPadding}}"
     d:DataContext="{d:DesignInstance Type=dialogs:CommentDialogViewModel}"
     d:DesignHeight="700"
     d:DesignWidth="1380"

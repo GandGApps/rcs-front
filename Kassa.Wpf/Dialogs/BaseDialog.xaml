@@ -7,13 +7,18 @@
     <ControlTemplate x:Key="BaseDialogTemplate" TargetType="UserControl">
         <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
 
-            <ContentPresenter Grid.Row="1" />
+            <ContentPresenter
+                Grid.Row="1"
+                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
 
         </Grid>
     </ControlTemplate>
 
     <CornerRadius x:Key="StartMenu">12,12,0,0</CornerRadius>
     <CornerRadius x:Key="EndMenu">0,0,12,12</CornerRadius>
+
+    <Thickness x:Key="WideDialogPadding">100,70</Thickness>
 
     <Style x:Key="PrimaryMenu" TargetType="Border">
         <Setter Property="Width" Value="{mx:AdaptiveSize 500}" />
@@ -25,10 +30,10 @@
         x:Key="WideDialog"
         BasedOn="{StaticResource PrimaryMenu}"
         TargetType="Border">
-        <Setter Property="Width" Value="{mx:AdaptiveSize 1320}" />
-        <Setter Property="Height" Value="{mx:AdaptiveSize 670}" />
+        <Setter Property="Width" Value="Auto" />
+        <Setter Property="Height" Value="Auto" />
         <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='17,24,17,0'}" />
-        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Stretch" />
     </Style>
 
     <Style x:Key="HeaderMenu" TargetType="Border">

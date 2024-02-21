@@ -26,7 +26,7 @@ public partial class CashierPaymentPage : ReactiveUserControl<CashierPaymentPage
             this.OneWayBind(ViewModel, x => x.WithReceipt, x => x.HasReceipt.IsChecked)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.WithReceipt, x => x.ActionWithReceipt.IsEnabled)
+            this.OneWayBind(ViewModel, x => x.WithReceipt, x => x.ActionWithReceipt.IsHitTestVisible)
                 .DisposeWith(disposables);
 
             this.BindCommand(ViewModel, x => x.EnableWithCheckboxCommand, x => x.HasReceipt)

@@ -28,8 +28,11 @@ public class CashierPaymentPageVm : PageViewModel
                 await mainViewModel.DialogOpenCommand
                     .Execute(new SendReceiptDialogViewModel(mainViewModel, this))
                     .FirstAsync();
-
-
+            }
+            else
+            {
+                IsEmail = false;
+                IsPrinter = false;
             }
         });
     }
@@ -59,7 +62,7 @@ public class CashierPaymentPageVm : PageViewModel
     }
 
     [Reactive]
-    public string Email
+    public string? Email
     {
         get; set;
     } = string.Empty;
