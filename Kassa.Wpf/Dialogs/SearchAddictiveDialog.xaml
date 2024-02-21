@@ -12,11 +12,11 @@
     xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     xmlns:rxui="http://reactiveui.net"
     xmlns:view="clr-namespace:Kassa.Wpf.Views"
-    Padding="{mx:AdaptiveSize Thickness={StaticResource WideDialogPadding}}"
     d:DataContext="{d:DesignInstance Type=dialogs:SearchAddictiveDialogViewModel}"
     d:DesignHeight="700"
     d:DesignWidth="1380"
     x:TypeArguments="dialogs:SearchAddictiveDialogViewModel"
+    Style="{StaticResource WideDialogUserControl}"
     mc:Ignorable="d">
     <Border Style="{StaticResource WideDialog}">
         <Grid>

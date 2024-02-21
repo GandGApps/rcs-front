@@ -7,11 +7,12 @@
     xmlns:dialogs="clr-namespace:Kassa.RxUI.Dialogs;assembly=Kassa.RxUI"
     xmlns:local="clr-namespace:Kassa.Wpf.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Padding="{mx:AdaptiveSize Thickness={StaticResource WideDialogPadding}}"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     d:DataContext="{d:DesignInstance Type=dialogs:DiscountsAndSurchargesDialogViewModel}"
     d:DesignHeight="700"
     d:DesignWidth="1380"
     x:TypeArguments="dialogs:DiscountsAndSurchargesDialogViewModel"
+    Style="{StaticResource WideDialogUserControl}"
     mc:Ignorable="d">
     <Border Style="{StaticResource WideDialog}">
         <Grid>

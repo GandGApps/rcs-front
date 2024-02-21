@@ -11,11 +11,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     xmlns:rxui="http://reactiveui.net"
-    Padding="{mx:AdaptiveSize Thickness={StaticResource WideDialogPadding}}"
     d:DataContext="{d:DesignInstance Type=dialogs:SearchProductDialogViewModel}"
     d:DesignHeight="700"
     d:DesignWidth="1380"
     x:TypeArguments="dialogs:SearchProductDialogViewModel"
+    Style="{StaticResource WideDialogUserControl}"
     mc:Ignorable="d">
     <Border Style="{StaticResource WideDialog}">
         <Grid>

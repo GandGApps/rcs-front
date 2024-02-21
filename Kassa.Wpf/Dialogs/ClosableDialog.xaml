@@ -5,64 +5,64 @@
     xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions">
 
     <ControlTemplate x:Key="ClosableDialogTemplate" TargetType="UserControl">
-        <Grid
-            Margin="{mx:AdaptiveSize Thickness='76,0,0,76'}"
-            HorizontalAlignment="Center"
-            VerticalAlignment="Center">
+        <Border Margin="{mx:AdaptiveSize Thickness='76,0,0,76'}" Padding="{TemplateBinding Padding}">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="{mx:AdaptiveSize 76}" />
-            </Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="{mx:AdaptiveSize GridLength=76}" />
+                </Grid.ColumnDefinitions>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="{mx:AdaptiveSize 76}" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{mx:AdaptiveSize GridLength=76}" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-            <Button
-                x:Name="CloseDialog"
-                Grid.Column="1"
-                Background="{StaticResource ClickableBg}"
-                BorderThickness="0">
-                <Button.Template>
-                    <ControlTemplate TargetType="{x:Type ButtonBase}">
-                        <Border
-                            x:Name="border"
-                            Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}"
-                            SnapsToDevicePixels="true">
-                            <ContentPresenter
-                                x:Name="contentPresenter"
-                                Margin="{TemplateBinding Padding}"
-                                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                Focusable="False"
-                                RecognizesAccessKey="True"
-                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="Button.IsDefaulted" Value="true">
-                                <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Button.Template>
-                <Path
-                    Width="{mx:AdaptiveSize 76}"
-                    Height="{mx:AdaptiveSize 76}"
-                    Data="{StaticResource Close}"
-                    Fill="{DynamicResource AlternateForeground}" />
-            </Button>
+                <Button
+                    x:Name="CloseDialog"
+                    Grid.Column="1"
+                    Background="{StaticResource ClickableBg}"
+                    BorderThickness="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type ButtonBase}">
+                            <Border
+                                x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="true">
+                                <ContentPresenter
+                                    x:Name="contentPresenter"
+                                    Margin="{TemplateBinding Padding}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Focusable="False"
+                                    RecognizesAccessKey="True"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="Button.IsDefaulted" Value="true">
+                                    <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Path
+                        Width="{mx:AdaptiveSize 76}"
+                        Height="{mx:AdaptiveSize 76}"
+                        Data="{StaticResource Close}"
+                        Fill="{DynamicResource AlternateForeground}" />
+                </Button>
 
 
-            <ContentPresenter
-                Grid.Row="1"
-                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                <ContentPresenter
+                    Grid.Row="1"
+                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
 
-        </Grid>
+            </Grid>
+        </Border>
+
     </ControlTemplate>
 
 

@@ -5,7 +5,10 @@
     xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions">
 
     <ControlTemplate x:Key="BaseDialogTemplate" TargetType="UserControl">
-        <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid
+            Margin="{TemplateBinding Padding}"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Stretch">
 
             <ContentPresenter
                 Grid.Row="1"
@@ -18,7 +21,18 @@
     <CornerRadius x:Key="StartMenu">12,12,0,0</CornerRadius>
     <CornerRadius x:Key="EndMenu">0,0,12,12</CornerRadius>
 
-    <Thickness x:Key="WideDialogPadding">100,70</Thickness>
+    <Thickness x:Key="WideDialogPadding">63,35,63,35</Thickness>
+
+    <Style x:Key="WideDialogUserControl" TargetType="UserControl">
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness={StaticResource WideDialogPadding}}" />
+        <Setter Property="VerticalContentAlignment" Value="Stretch" />
+        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+    </Style>
+
+    <Style x:Key="PrimaryDialogUserControl" TargetType="UserControl">
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+    </Style>
 
     <Style x:Key="PrimaryMenu" TargetType="Border">
         <Setter Property="Width" Value="{mx:AdaptiveSize 500}" />

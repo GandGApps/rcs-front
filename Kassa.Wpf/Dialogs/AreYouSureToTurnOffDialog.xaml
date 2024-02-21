@@ -11,6 +11,7 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:TypeArguments="dialogs:AreYouSureToTurnOffDialogViewModel"
+    Style="{StaticResource PrimaryDialogUserControl}"
     mc:Ignorable="d">
     <Border
         Padding="20,14"
