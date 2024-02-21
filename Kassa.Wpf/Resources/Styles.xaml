@@ -91,7 +91,7 @@
 
         <Style.Triggers>
             <DataTrigger Binding="{mx:AdaptiveMarkup Breakpoint=Medium}" Value="True">
-                <Setter Property="FontSize" Value="11" />
+                <Setter Property="FontSize" Value="10" />
             </DataTrigger>
         </Style.Triggers>
 

@@ -85,6 +85,44 @@ public class CashierPaymentPageVm : PageViewModel
         get; set;
     }
 
+    [Reactive]
+    public string CurrencySymbol
+    {
+        get; set;
+    } = "₽";
+
+
+    public extern string ReceiptActionText
+    {
+        [ObservableAsProperty]
+        get;
+    }
+
+    public extern string ReceiptActionIcon
+    {
+        [ObservableAsProperty]
+        get;
+    }
+
+    public extern double ToEnter
+    {
+        [ObservableAsProperty]
+        get;
+    }
+
+
+    public extern double ToEntered
+    {
+        [ObservableAsProperty]
+        get;
+    }
+
+    public extern double Change
+    {
+        [ObservableAsProperty]
+        get;
+    }
+
     public ReactiveCommand<Unit, Unit> SendReceiptCommand
     {
         get;
@@ -94,6 +132,12 @@ public class CashierPaymentPageVm : PageViewModel
     {
         get;
     }
+
+    public ObservableCollection<CashierPaymentItemVm> CashierPaymentItemVms
+    {
+        get;
+    } = [new() { Cost = 123, Name = "DS", CurrencySymbol = "₽" }];
+
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
@@ -119,5 +163,56 @@ public class CashierPaymentPageVm : PageViewModel
         this.WhenAnyValue(x => x.Subtotal)
             .Subscribe(x => Total = x)
             .DisposeWith(disposables);
+
+        this.WhenAnyValue(x => x.IsEmail, x => x.IsPrinter, (email, printer) =>
+            {
+                if (email)
+                {
+                    return "Отправить на почту";
+                }
+                else if (printer)
+                {
+
+                    return "Переслать чек";
+                }
+                else
+                {
+                    return "Распечатать, переслать чек";
+                }
+            })
+            .ToPropertyEx(this, x => x.ReceiptActionText)
+            .DisposeWith(disposables);
+
+        this.WhenAnyValue(x => x.IsEmail, x => x.IsPrinter, (email, printer) =>
+            {
+                if (email)
+                {
+                    return "EmailIcon";
+                }
+                else if (printer)
+                {
+                    return "PrinterIcon";
+                }
+                else
+                {
+                    return "PrinterIcon";
+                }
+            })
+            .ToPropertyEx(this, x => x.ReceiptActionIcon)
+            .DisposeWith(disposables);
+
+
+        this.WhenAnyValue(x => x.CashierPaymentItemVms, (paymentItems) => paymentItems.Sum(x => x.Cost))
+            .ToPropertyEx(this, x => x.ToEntered)
+            .DisposeWith(disposables);
+
+        this.WhenAnyValue(x => x.ToEntered, x => x.Total, (entered, total) => Math.Max(0, total - entered))
+            .ToPropertyEx(this, x => x.ToEnter)
+            .DisposeWith(disposables);
+
+        this.WhenAnyValue(x => x.ToEnter, x => x.ToEntered, (toEnter, entered) => Math.Max(0, entered - toEnter))
+            .ToPropertyEx(this, x => x.Change)
+            .DisposeWith(disposables);
+
     }
 }

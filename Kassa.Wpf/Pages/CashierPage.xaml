@@ -387,11 +387,11 @@
                         <Border
                             Grid.Row="1"
                             Grid.Column="1"
+                            Width="{Binding ActualWidth, ElementName=SubtotalBorder, Mode=OneWay}"
                             Height="{Binding ActualHeight, ElementName=SubtotalBorder, Mode=OneWay}"
                             Margin="7,4,0,0"
                             Background="{DynamicResource AccentBrush}"
                             BorderBrush="{DynamicResource AccentBrush}"
-                            BorderThickness="1"
                             CornerRadius="{mx:AdaptiveSize CornerRadius=27}"
                             TextBlock.Foreground="White">
                             <TextBlock

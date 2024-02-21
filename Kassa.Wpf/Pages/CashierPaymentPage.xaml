@@ -169,11 +169,11 @@
                     <Border
                         Grid.Row="1"
                         Grid.Column="1"
+                        Width="{Binding ActualWidth, ElementName=SubtotalBorder, Mode=OneWay}"
                         Height="{Binding ActualHeight, ElementName=SubtotalBorder, Mode=OneWay}"
                         Margin="7,4,0,0"
                         Background="{DynamicResource AccentBrush}"
                         BorderBrush="{DynamicResource AccentBrush}"
-                        BorderThickness="1"
                         CornerRadius="{mx:AdaptiveSize CornerRadius=27}"
                         TextBlock.Foreground="White">
                         <TextBlock
@@ -359,7 +359,7 @@
                 <CheckBox
                     x:Name="HasReceipt"
                     Grid.Row="7"
-                    Width="{mx:AdaptiveSize 170}"
+                    Width="{mx:AdaptiveSize 175}"
                     Margin="{mx:AdaptiveSize Thickness='0,0,6,0'}"
                     HorizontalAlignment="Right"
                     IsChecked="False"
@@ -390,7 +390,7 @@
                     x:Name="ActionWithReceipt"
                     Grid.Row="7"
                     Grid.Column="1"
-                    Width="{mx:AdaptiveSize 170}"
+                    Width="{mx:AdaptiveSize 175}"
                     Margin="{mx:AdaptiveSize Thickness='6,0,0,0'}"
                     HorizontalAlignment="Left"
                     Foreground="{DynamicResource AlternateForeground}"
@@ -398,6 +398,7 @@
                     Style="{StaticResource ToggableBorderIconButton}">
 
                     <TextBlock
+                        x:Name="ActionWithReceiptText"
                         Foreground="{DynamicResource AlternateForeground}"
                         Style="{StaticResource Large}"
                         Text="С товарным чеком"
