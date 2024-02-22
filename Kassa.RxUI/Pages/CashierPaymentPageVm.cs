@@ -21,6 +21,25 @@ public class CashierPaymentPageVm : PageViewModel
     private byte _afterSeparatorDigitCount;
     public CashierPaymentPageVm(MainViewModel mainViewModel) : base(mainViewModel)
     {
+        CashVm = new()
+        {
+            Description = "Наличные",
+        };
+        BankCardVm = new()
+        {
+            Description = "Банковская карта",
+        };
+        CashlessPaymentVm = new()
+        {
+            Description = "Безналичный расчет",
+        };
+        WithoutRevenueVm = new()
+        {
+            Description = "Без выручки",
+        };
+
+        CashierPaymentItemVms = [CashVm, BankCardVm, CashlessPaymentVm, WithoutRevenueVm];
+
         SendReceiptCommand = ReactiveCommand.Create(() => { });
         EnableWithCheckboxCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -82,26 +101,35 @@ public class CashierPaymentPageVm : PageViewModel
             CurrentPaymentSumText = value.ToString($"F{_afterSeparatorDigitCount}");
         });
 
-        SetPaymentTypeCommand = ReactiveCommand.Create<PaymentType>(type => CurrentPaymentType = type);
-
-        AddPaymentItemCommand = ReactiveCommand.Create(() =>
+        SetPaymentTypeCommand = ReactiveCommand.Create<PaymentType>(type =>
         {
-            var paymentItem = new CashierPaymentItemVm();
-            paymentItem.RemoveItem = ReactiveCommand.Create(() => { CashierPaymentItemVms.Remove(paymentItem); });
-            paymentItem.Name = CurrentPaymentType switch
-            {
-                PaymentType.Cash => "Наличные",
-                PaymentType.BankCard => "Банковская карта",
-                PaymentType.CashlessPayment => "Безналичный расчет",
-                PaymentType.WithoutRevenue => "Без выручки",
-                _ => "Неизвестный тип оплаты"
-            };
-            paymentItem.Cost = CurrentPaymentSum;
-
-            CashierPaymentItemVms.Add(paymentItem);
+            // Don't allow to change payment type if the locker is true
+            Locker = true;
 
             ClearCurrentPaymentSum();
+
+            if (type == PaymentType.Cash)
+            {
+                SetDisplayText(CashVm.Entered);
+            }
+            else if (type == PaymentType.BankCard)
+            {
+                SetDisplayText(BankCardVm.Entered);
+            }
+            else if (type == PaymentType.CashlessPayment)
+            {
+                SetDisplayText(CashlessPaymentVm.Entered);
+            }
+            else if (type == PaymentType.WithoutRevenue)
+            {
+                SetDisplayText(WithoutRevenueVm.Entered);
+            }
+
+            CurrentPaymentType = type;
+            Locker = false;
         });
+
+
     }
 
     [Reactive]
@@ -121,10 +149,6 @@ public class CashierPaymentPageVm : PageViewModel
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> AddPaymentItemCommand
-    {
-        get;
-    }
 
     [Reactive]
     public double Subtotal
@@ -221,6 +245,26 @@ public class CashierPaymentPageVm : PageViewModel
         get;
     } = [];
 
+    public CashierPaymentItemVm CashVm
+    {
+        get;
+    }
+
+    public CashierPaymentItemVm BankCardVm
+    {
+        get;
+    }
+
+    public CashierPaymentItemVm CashlessPaymentVm
+    {
+        get;
+    }
+
+    public CashierPaymentItemVm WithoutRevenueVm
+    {
+        get;
+    }
+
 
     public ReactiveCommand<double, Unit> PlusCommand
     {
@@ -242,6 +286,12 @@ public class CashierPaymentPageVm : PageViewModel
     {
         [ObservableAsProperty]
         get;
+    }
+
+    [Reactive]
+    private bool Locker
+    {
+        get; set;
     }
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
@@ -307,7 +357,10 @@ public class CashierPaymentPageVm : PageViewModel
             .DisposeWith(disposables);
 
 
-        this.WhenAnyValue(x => x.CashierPaymentItemVms, (paymentItems) => paymentItems.Sum(x => x.Cost))
+        CashierPaymentItemVms.ToObservableChangeSet()
+            .AutoRefresh(x => x.Entered)
+            .ToCollection()
+            .Select(x => x.Sum(x => x.Entered))
             .ToPropertyEx(this, x => x.ToEntered)
             .DisposeWith(disposables);
 
@@ -327,6 +380,33 @@ public class CashierPaymentPageVm : PageViewModel
             .ToPropertyEx(this, x => x.CurrentPaymentSum)
             .DisposeWith(disposables);
 
+        this.WhenAnyValue(x => x.CurrentPaymentType, x => x.CurrentPaymentSum, x => x.Locker)
+            .Subscribe<(PaymentType type, double sum, bool locker)>(x =>
+            {
+                if (x.locker)
+                {
+                    return;
+                }
+
+                if (x.type == PaymentType.Cash)
+                {
+                    CashVm.Entered = x.sum;
+                }
+                else if (x.type == PaymentType.BankCard)
+                {
+                    BankCardVm.Entered = x.sum;
+                }
+                else if (x.type == PaymentType.CashlessPayment)
+                {
+                    CashlessPaymentVm.Entered = x.sum;
+                }
+                else if (x.type == PaymentType.WithoutRevenue)
+                {
+                    WithoutRevenueVm.Entered = x.sum;
+                }
+            })
+            .DisposeWith(disposables);
+
     }
 
     private void ClearCurrentPaymentSum()
@@ -334,5 +414,39 @@ public class CashierPaymentPageVm : PageViewModel
         CurrentPaymentSumText = string.Empty;
         _isFloat = false;
         _afterSeparatorDigitCount = 0;
+    }
+
+    private void SetDisplayText(double value)
+    {
+        var text = ToDisplayDouble(value);
+        _isFloat = IsFloat(value);
+        _afterSeparatorDigitCount = (byte)(_isFloat ? CountDigitAfterSeparator(text) : 0);
+        CurrentPaymentSumText = text;
+    }
+
+    private static byte CountDigitAfterSeparator(string value)
+    {
+        var index = value.IndexOf(',');
+        if (index == -1)
+        {
+
+            return 0;
+        }
+
+        return (byte)(value.Length - index - 1);
+    }
+
+    private static bool IsFloat(double value)
+    {
+        return Math.Round(value,3) % 1 != 0;
+    }
+
+    private static string ToDisplayDouble(double value)
+    {
+        if (!IsFloat(value))
+        {
+            return value.ToString("F0");
+        }
+        return value.ToString("F2").Replace('.', ',');
     }
 }

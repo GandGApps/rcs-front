@@ -240,17 +240,17 @@
                     Margin="0,20,0,0">
                     <d:ItemsControl.Items>
                         <vm:CashierPaymentItemVm
-                            Name="Наличные"
-                            Cost="1000"
-                            CurrencySymbol="₽" />
+                            CurrencySymbol="₽"
+                            Description="Наличные"
+                            Entered="1000" />
                         <vm:CashierPaymentItemVm
-                            Name="Банк. карта"
-                            Cost="2000"
-                            CurrencySymbol="₽" />
+                            CurrencySymbol="₽"
+                            Description="Банк. карта"
+                            Entered="2000" />
                         <vm:CashierPaymentItemVm
-                            Name="Депозит"
-                            Cost="3000"
-                            CurrencySymbol="₽" />
+                            CurrencySymbol="₽"
+                            Description="Депозит"
+                            Entered="10" />
                     </d:ItemsControl.Items>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="vm:CashierPaymentItemVm">
@@ -259,7 +259,10 @@
                                 Padding="{mx:AdaptiveSize Thickness='15,5,5,10'}"
                                 BorderBrush="{DynamicResource AlternateForeground}"
                                 BorderThickness="1"
-                                CornerRadius="{mx:AdaptiveSize CornerRadius=11}">
+                                CornerRadius="{mx:AdaptiveSize CornerRadius=11}"
+                                Visibility="{Binding IsEntered, Converter={StaticResource BoolToVisibilityConverter}}">
+
+
                                 <Grid>
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="1*" />
@@ -272,7 +275,7 @@
                                         VerticalAlignment="Center"
                                         Foreground="{DynamicResource AlternateForeground}"
                                         Style="{StaticResource Header}"
-                                        Text="{Binding Name}" />
+                                        Text="{Binding Description}" />
 
                                     <Button
                                         HorizontalAlignment="Right"
@@ -291,7 +294,7 @@
                                         Foreground="{DynamicResource AlternateForeground}"
                                         Style="{StaticResource Header}"
                                         TextAlignment="Right">
-                                        <Run Text="{Binding Cost, StringFormat='N2'}" /> <Run Text="{Binding CurrencySymbol}" />
+                                        <Run Text="{Binding Entered, StringFormat='N2'}" /> <Run Text="{Binding CurrencySymbol}" />
                                     </TextBlock>
 
                                 </Grid>

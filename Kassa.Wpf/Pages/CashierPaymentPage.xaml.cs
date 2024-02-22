@@ -45,13 +45,13 @@ public partial class CashierPaymentPage : ReactiveUserControl<CashierPaymentPage
             this.BindCommand(ViewModel, x => x.EnableWithCheckboxCommand, x => x.HasReceipt)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.ToEnter, x => x.ToEnter.Text, x => $"{x} {ViewModel!.CurrencySymbol}")
+            this.OneWayBind(ViewModel, x => x.ToEnter, x => x.ToEnter.Text, x => $"{x:N2} {ViewModel!.CurrencySymbol}")
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.ToEntered, x => x.ToEntered.Text, x => $"{x} {ViewModel!.CurrencySymbol}")
+            this.OneWayBind(ViewModel, x => x.ToEntered, x => x.ToEntered.Text, x => $"{x:N2} {ViewModel!.CurrencySymbol}")
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.Change, x => x.Change.Text, x => $"{x} {ViewModel!.CurrencySymbol}")
+            this.OneWayBind(ViewModel, x => x.Change, x => x.Change.Text, x => $"{x:N2} {ViewModel!.CurrencySymbol}")
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, x => x.CurrentPaymentSumText, x => x.CurrentPaymentSum.Text)
