@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Text;
@@ -27,6 +28,8 @@ public abstract class BaseInitializableService : ReactiveObject, IInitializableS
 
     public void Dispose()
     {
+        Debug.WriteLine($"Disposing {GetType().Name}");
+
         Dispose(disposing: true);
 
         IsDisposed = true;

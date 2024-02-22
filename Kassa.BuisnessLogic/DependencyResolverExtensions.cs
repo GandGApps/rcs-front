@@ -36,7 +36,6 @@ public static class DependencyResolverExtensions
 
         services.Register<ICashierPaymentService>(() =>
         {
-
             var cashierService = Locator.Current.GetNotInitializedService<ICashierService>();
 
             return new CashierPaymentService(cashierService);

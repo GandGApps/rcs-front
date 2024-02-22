@@ -129,6 +129,25 @@ public class CashierPaymentPageVm : PageViewModel
             Locker = false;
         });
 
+        ExactAmountCommand = ReactiveCommand.Create(() =>
+        {
+            if (CurrentPaymentType == PaymentType.Cash)
+            {
+                SetDisplayText(ToEnter);
+            }
+            else if (CurrentPaymentType == PaymentType.BankCard)
+            {
+                SetDisplayText(ToEnter);
+            }
+            else if (CurrentPaymentType == PaymentType.CashlessPayment)
+            {
+                SetDisplayText(ToEnter);
+            }
+            else if (CurrentPaymentType == PaymentType.WithoutRevenue)
+            {
+                SetDisplayText(ToEnter);
+            }
+        });
 
     }
 
@@ -276,6 +295,11 @@ public class CashierPaymentPageVm : PageViewModel
         get;
     }
 
+    public ReactiveCommand<Unit, Unit> ExactAmountCommand
+    {
+        get;
+    }
+
     [Reactive]
     public string CurrentPaymentSumText
     {
@@ -368,7 +392,7 @@ public class CashierPaymentPageVm : PageViewModel
             .ToPropertyEx(this, x => x.ToEnter)
             .DisposeWith(disposables);
 
-        this.WhenAnyValue(x => x.ToEnter, x => x.ToEntered, (toEnter, entered) => Math.Max(0, entered - toEnter))
+        this.WhenAnyValue(x => x.ToEnter, x => x.ToEntered, x => x.Total, (toEnter, entered, total) => Math.Max(0, entered - total))
             .ToPropertyEx(this, x => x.Change)
             .DisposeWith(disposables);
 
@@ -438,7 +462,7 @@ public class CashierPaymentPageVm : PageViewModel
 
     private static bool IsFloat(double value)
     {
-        return Math.Round(value,3) % 1 != 0;
+        return Math.Round(value, 3) % 1 != 0;
     }
 
     private static string ToDisplayDouble(double value)

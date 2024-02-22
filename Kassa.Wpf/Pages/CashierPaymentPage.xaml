@@ -228,8 +228,10 @@
                     x:Name="TotalCostPaymentInfo"
                     Grid.Column="1"
                     d:Text="3000,00 р"
+                    FontSize="{mx:AdaptiveSize 24}"
                     FontWeight="Bold"
                     Foreground="{DynamicResource AccentBrush2}"
+                    LineHeight="Auto"
                     Style="{StaticResource Header}"
                     TextAlignment="Right" />
 
@@ -237,7 +239,7 @@
                     x:Name="CashierPaymentItems"
                     Grid.Row="1"
                     Grid.ColumnSpan="2"
-                    Margin="0,20,0,0">
+                    Margin="{mx:AdaptiveSize Thickness='0,20,0,0'}">
                     <d:ItemsControl.Items>
                         <vm:CashierPaymentItemVm
                             CurrencySymbol="₽"
@@ -255,7 +257,7 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate DataType="vm:CashierPaymentItemVm">
                             <Border
-                                Margin="0,4,0,4"
+                                Margin="{mx:AdaptiveSize Thickness='0,4,0,4'}"
                                 Padding="{mx:AdaptiveSize Thickness='15,5,5,10'}"
                                 BorderBrush="{DynamicResource AlternateForeground}"
                                 BorderThickness="1"
@@ -273,7 +275,9 @@
                                         Grid.RowSpan="2"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
+                                        FontSize="{mx:AdaptiveSize 24}"
                                         Foreground="{DynamicResource AlternateForeground}"
+                                        LineHeight="Auto"
                                         Style="{StaticResource Header}"
                                         Text="{Binding Description}" />
 
@@ -282,16 +286,18 @@
                                         Command="{Binding RemoveItem}"
                                         Style="{StaticResource IconButton}">
                                         <Path
-                                            Width="{mx:AdaptiveSize Size=32}"
-                                            Height="{mx:AdaptiveSize Size=32}"
+                                            Width="{mx:AdaptiveSize Size=25}"
+                                            Height="{mx:AdaptiveSize Size=25}"
                                             Data="{StaticResource CircleXIcon}"
                                             Fill="{DynamicResource AlternateForeground}" />
                                     </Button>
 
                                     <TextBlock
                                         Grid.Row="1"
-                                        Margin="{mx:AdaptiveSize Thickness='0,21,0,0'}"
+                                        Margin="{mx:AdaptiveSize Thickness='0,17,0,0'}"
+                                        FontSize="{mx:AdaptiveSize 24}"
                                         Foreground="{DynamicResource AlternateForeground}"
+                                        LineHeight="Auto"
                                         Style="{StaticResource Header}"
                                         TextAlignment="Right">
                                         <Run Text="{Binding Entered, StringFormat='N2'}" /> <Run Text="{Binding CurrencySymbol}" />
@@ -312,7 +318,9 @@
                 <TextBlock
                     Grid.Row="3"
                     Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
+                    FontSize="{mx:AdaptiveSize 24}"
                     Foreground="{DynamicResource AlternateForeground}"
+                    LineHeight="Auto"
                     Style="{StaticResource Header}"
                     Text="Внести:" />
                 <TextBlock
@@ -321,14 +329,18 @@
                     Grid.Column="1"
                     Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
                     d:Text="0,00 р"
+                    FontSize="{mx:AdaptiveSize 24}"
                     Foreground="{DynamicResource AlternateForeground}"
+                    LineHeight="Auto"
                     Style="{StaticResource Header}"
                     TextAlignment="Right" />
 
                 <TextBlock
                     Grid.Row="4"
                     Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
+                    FontSize="{mx:AdaptiveSize 24}"
                     Foreground="{DynamicResource AlternateForeground}"
+                    LineHeight="Auto"
                     Style="{StaticResource Header}"
                     Text="Внесено:" />
                 <TextBlock
@@ -337,13 +349,17 @@
                     Grid.Column="1"
                     Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
                     d:Text="3000,00 р"
+                    FontSize="{mx:AdaptiveSize 24}"
                     Foreground="{DynamicResource AlternateForeground}"
+                    LineHeight="Auto"
                     Style="{StaticResource Header}"
                     TextAlignment="Right" />
 
                 <TextBlock
                     Grid.Row="5"
+                    FontSize="{mx:AdaptiveSize 24}"
                     Foreground="{DynamicResource AlternateForeground}"
+                    LineHeight="Auto"
                     Style="{StaticResource Header}"
                     Text="Сдача:" />
                 <TextBlock
@@ -351,7 +367,9 @@
                     Grid.Row="5"
                     Grid.Column="1"
                     d:Text="0,00 р"
+                    FontSize="{mx:AdaptiveSize 24}"
                     Foreground="{DynamicResource AlternateForeground}"
+                    LineHeight="Auto"
                     Style="{StaticResource Header}"
                     TextAlignment="Right" />
 
@@ -821,6 +839,13 @@
                             <system:Double>5000</system:Double>
                         </Button.CommandParameter>
                         <TextBlock FontSize="{mx:AdaptiveSize 19}" Text="+5000" />
+                    </Button>
+
+                    <Button
+                        x:Name="ExactAmount"
+                        Grid.Row="5"
+                        Grid.ColumnSpan="5">
+                        <TextBlock FontSize="{mx:AdaptiveSize 19}" Text="Точная сумма" />
                     </Button>
 
                 </Grid>

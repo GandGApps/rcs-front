@@ -14,7 +14,7 @@
     Style="{StaticResource PrimaryDialogUserControl}"
     mc:Ignorable="d">
     <Border
-        Padding="20,14"
+        Padding="{mx:AdaptiveSize Thickness='20,14'}"
         VerticalAlignment="Center"
         Style="{StaticResource PrimaryMenu}">
         <StackPanel VerticalAlignment="Center">

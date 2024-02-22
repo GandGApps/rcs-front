@@ -50,6 +50,31 @@ public partial class AutorizationPage : ReactiveUserControl<AutorizationPageVm>
             this.BindCommand(ViewModel, x=> x.LoginCommand, x => x.Submit)
                 .DisposeWith(disposables);
         });
+
+        AddPlaceHolder(Login, "Типа логин");
+        AddPlaceHolder(Password, "Типа пароль");
+    }
+
+    private void AddPlaceHolder(TextBox textBox, string placeHolder)
+    {
+        textBox.GotFocus += (_, _) => RemoveText(Login, placeHolder);
+        textBox.LostFocus += (_, _) => AddText(Login, placeHolder);
+    }
+
+    private void AddText(TextBox sender, string placeholder)
+    {
+        if (string.IsNullOrEmpty(sender.Text))
+        {
+            sender.Text = placeholder;
+        }
+    }
+
+    private void RemoveText(TextBox sender, string placeholder)
+    {
+        if (sender.Text == placeholder)
+        {
+            sender.Text = "";
+        }
     }
 
     private void LogoSizeAnimationCompleted(object sender, EventArgs e)

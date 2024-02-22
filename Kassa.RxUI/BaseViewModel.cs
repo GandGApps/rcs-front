@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Text;
@@ -94,6 +95,7 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
 
     public void Dispose()
     {
+        Debug.WriteLine($"Disposing {GetType().Name}");
         Dispose(disposing: true);
         IsDisposed = true;
         GC.SuppressFinalize(this);

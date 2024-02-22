@@ -84,6 +84,9 @@ public partial class CashierPaymentPage : ReactiveUserControl<CashierPaymentPage
 
             this.BindCommand(ViewModel, x => x.SetPaymentTypeCommand, x => x.WithoutRevenue)
                 .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, x => x.ExactAmountCommand, x => x.ExactAmount)
+                .DisposeWith(disposables);
         });
     }
 }
