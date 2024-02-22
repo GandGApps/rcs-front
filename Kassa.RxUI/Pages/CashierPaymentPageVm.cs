@@ -17,7 +17,8 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Pages;
 public class CashierPaymentPageVm : PageViewModel
 {
-
+    private bool _isFloat;
+    private byte _afterSeparatorDigitCount;
     public CashierPaymentPageVm(MainViewModel mainViewModel) : base(mainViewModel)
     {
         SendReceiptCommand = ReactiveCommand.Create(() => { });
@@ -35,6 +36,72 @@ public class CashierPaymentPageVm : PageViewModel
                 IsPrinter = false;
             }
         });
+
+        AddDigitCommand = ReactiveCommand.Create<string>(digit =>
+        {
+            if (digit == "C")
+            {
+                ClearCurrentPaymentSum();
+                return;
+            }
+
+            if (digit == "," && !_isFloat)
+            {
+                _isFloat = true;
+                if (CurrentPaymentSumText.Contains(','))
+                {
+                    return;
+                }
+                CurrentPaymentSumText += digit;
+                return;
+            }
+
+            if (_afterSeparatorDigitCount >= 2)
+            {
+                return;
+            }
+
+            if (!char.IsDigit(digit[0]))
+            {
+                return;
+            }
+
+            if (_isFloat)
+            {
+                _afterSeparatorDigitCount++;
+            }
+
+            CurrentPaymentSumText += digit;
+
+            return;
+        });
+
+        PlusCommand = ReactiveCommand.Create<double>((x) =>
+        {
+            var value = CurrentPaymentSum + x;
+            CurrentPaymentSumText = value.ToString($"F{_afterSeparatorDigitCount}");
+        });
+
+        SetPaymentTypeCommand = ReactiveCommand.Create<PaymentType>(type => CurrentPaymentType = type);
+
+        AddPaymentItemCommand = ReactiveCommand.Create(() =>
+        {
+            var paymentItem = new CashierPaymentItemVm();
+            paymentItem.RemoveItem = ReactiveCommand.Create(() => { CashierPaymentItemVms.Remove(paymentItem); });
+            paymentItem.Name = CurrentPaymentType switch
+            {
+                PaymentType.Cash => "Наличные",
+                PaymentType.BankCard => "Банковская карта",
+                PaymentType.CashlessPayment => "Безналичный расчет",
+                PaymentType.WithoutRevenue => "Без выручки",
+                _ => "Неизвестный тип оплаты"
+            };
+            paymentItem.Cost = CurrentPaymentSum;
+
+            CashierPaymentItemVms.Add(paymentItem);
+
+            ClearCurrentPaymentSum();
+        });
     }
 
     [Reactive]
@@ -47,6 +114,16 @@ public class CashierPaymentPageVm : PageViewModel
     public ReadOnlyObservableCollection<ProductShoppingListItemViewModel>? ShoppingListItems
     {
         get; set;
+    }
+
+    public ReactiveCommand<PaymentType, Unit> SetPaymentTypeCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> AddPaymentItemCommand
+    {
+        get;
     }
 
     [Reactive]
@@ -72,6 +149,12 @@ public class CashierPaymentPageVm : PageViewModel
         [ObservableAsProperty]
         get;
     }
+
+    [Reactive]
+    public PaymentType CurrentPaymentType
+    {
+        get; set;
+    } = PaymentType.Cash;
 
     [Reactive]
     public bool IsEmail
@@ -136,8 +219,30 @@ public class CashierPaymentPageVm : PageViewModel
     public ObservableCollection<CashierPaymentItemVm> CashierPaymentItemVms
     {
         get;
-    } = [new() { Cost = 123, Name = "DS", CurrencySymbol = "₽" }];
+    } = [];
 
+
+    public ReactiveCommand<double, Unit> PlusCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<string, Unit> AddDigitCommand
+    {
+        get;
+    }
+
+    [Reactive]
+    public string CurrentPaymentSumText
+    {
+        get; private set;
+    } = string.Empty;
+
+    public extern double CurrentPaymentSum
+    {
+        [ObservableAsProperty]
+        get;
+    }
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
@@ -214,5 +319,20 @@ public class CashierPaymentPageVm : PageViewModel
             .ToPropertyEx(this, x => x.Change)
             .DisposeWith(disposables);
 
+        this.WhenAnyValue(x => x.CurrentPaymentSumText, (text) =>
+            {
+                text = text.Replace(',', '.');
+                return string.IsNullOrWhiteSpace(text) ? 0 : text.EndsWith('.') ? double.Parse(text[..^1]) : double.Parse(text);
+            })
+            .ToPropertyEx(this, x => x.CurrentPaymentSum)
+            .DisposeWith(disposables);
+
+    }
+
+    private void ClearCurrentPaymentSum()
+    {
+        CurrentPaymentSumText = string.Empty;
+        _isFloat = false;
+        _afterSeparatorDigitCount = 0;
     }
 }

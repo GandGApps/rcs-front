@@ -10,8 +10,8 @@
     <StreamGeometry x:Key="CashierTabPanelBottomPointerIcon">M19.64 0 9.82 7.43 0 0h19.64z</StreamGeometry>
 
     <Style x:Key="CashierTabPanel" TargetType="RadioButton">
-        <Setter Property="Width" Value="96" />
-        <Setter Property="Height" Value="84" />
+        <Setter Property="Width" Value="{mx:AdaptiveSize 96}" />
+        <Setter Property="Height" Value="{mx:AdaptiveSize 84}" />
         <Setter Property="Background" Value="{StaticResource ClickableBg}" />
 
         <Setter Property="Template">
@@ -45,8 +45,8 @@
                                     ContentTemplate="{DynamicResource CashierTabPanelCheckedContnet}" />
 
                                 <Path
-                                    Width="16"
-                                    Height="7"
+                                    Width="{mx:AdaptiveSize 16}"
+                                    Height="{mx:AdaptiveSize 7}"
                                     VerticalAlignment="Top"
                                     Data="{DynamicResource CashierTabPanelBottomPointerIcon}"
                                     Fill="{DynamicResource AccentTabPanel}"
@@ -86,13 +86,6 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-
-        <Style.Triggers>
-            <DataTrigger Binding="{mx:AdaptiveMarkup Breakpoint=Medium}" Value="True">
-                <Setter Property="Width" Value="66" />
-                <Setter Property="Height" Value="58" />
-            </DataTrigger>
-        </Style.Triggers>
 
     </Style>
 </ResourceDictionary>

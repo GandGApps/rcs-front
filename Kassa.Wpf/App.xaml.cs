@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Globalization;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
@@ -103,6 +104,9 @@ public partial class App : Application
 
     public App()
     {
+        CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
+        CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
+
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
         Locator.CurrentMutable.RegisterMockDataAccess(); // TODO: Replace with real data access
         Locator.CurrentMutable.RegisterBuisnessLogic();

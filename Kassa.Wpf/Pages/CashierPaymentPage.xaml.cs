@@ -1,5 +1,6 @@
 ﻿using System.Reactive.Disposables;
 using System.Windows.Media;
+using Kassa.RxUI;
 using Kassa.RxUI.Pages;
 using ReactiveUI;
 
@@ -15,6 +16,8 @@ public partial class CashierPaymentPage : ReactiveUserControl<CashierPaymentPage
 
         this.WhenActivated(disposables =>
         {
+            DataContext = ViewModel;
+
             this.OneWayBind(ViewModel, x => x.ShoppingListItems, x => x.ShoppingListItems.ItemsSource)
                 .DisposeWith(disposables);
 
@@ -49,6 +52,37 @@ public partial class CashierPaymentPage : ReactiveUserControl<CashierPaymentPage
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, x => x.Change, x => x.Change.Text, x => $"{x} {ViewModel!.CurrencySymbol}")
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, x => x.CurrentPaymentSumText, x => x.CurrentPaymentSum.Text)
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, x => x.CurrencySymbol, x => x.CurrentPaymentSumCurrency.Text)
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, x => x.CurrentPaymentType, x => x.PaymentTypeName.Text, (type) =>
+                {
+                    return type switch 
+                    {
+                        PaymentType.Cash => "Наличные",
+                        PaymentType.BankCard => "Банковская карта",
+                        PaymentType.CashlessPayment => "Безналичный расчет",
+                        PaymentType.WithoutRevenue => "Без выручки",
+                        _ => "Неизвестный тип оплаты"
+                    };
+                })
+                .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, x => x.SetPaymentTypeCommand, x => x.Cash)
+                .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, x => x.SetPaymentTypeCommand, x => x.BankCard)
+                .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, x => x.SetPaymentTypeCommand, x => x.CashlessPayment)
+                .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, x => x.SetPaymentTypeCommand, x => x.WithoutRevenue)
                 .DisposeWith(disposables);
         });
     }

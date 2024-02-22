@@ -91,7 +91,7 @@
 
         <Style.Triggers>
             <DataTrigger Binding="{mx:AdaptiveMarkup Breakpoint=Medium}" Value="True">
-                <Setter Property="FontSize" Value="10" />
+                <Setter Property="FontSize" Value="12" />
             </DataTrigger>
         </Style.Triggers>
 
@@ -147,13 +147,7 @@
         x:Key="SmallTextBlock"
         BasedOn="{StaticResource PrimaryTextBlock}"
         TargetType="TextBlock">
-        <Setter Property="FontSize" Value="11" />
-
-        <Style.Triggers>
-            <DataTrigger Binding="{mx:AdaptiveMarkup Breakpoint=Medium}" Value="True">
-                <Setter Property="FontSize" Value="7.4" />
-            </DataTrigger>
-        </Style.Triggers>
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 12}" />
 
     </Style>
 
@@ -478,7 +472,7 @@
         Top="5" />
 
     <Style
-        x:Key="KeyButtonStyle"
+        x:Key="BaseKeyButtonStyle"
         BasedOn="{StaticResource {x:Type Button}}"
         TargetType="Button">
         <Setter Property="TextBlock.FontSize" Value="{mx:AdaptiveSize 28}" />
@@ -493,7 +487,41 @@
                     <Border
                         Width="{TemplateBinding Width}"
                         Height="{TemplateBinding Height}"
-                        Margin="{TemplateBinding Margin}"
+                        Padding="{TemplateBinding Padding}"
+                        HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                        Background="{TemplateBinding Background}"
+                        CornerRadius="{mx:AdaptiveSize CornerRadius=11}">
+                        <Grid HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <ContentPresenter
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                Content="{TemplateBinding Content}" />
+                        </Grid>
+
+                    </Border>
+
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style
+        x:Key="KeyButtonStyle"
+        BasedOn="{StaticResource BaseKeyButtonStyle}"
+        TargetType="Button">
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="Button">
+                    <Border
+                        Width="{TemplateBinding Width}"
+                        Height="{TemplateBinding Height}"
                         Padding="{TemplateBinding Padding}"
                         HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                         VerticalAlignment="{TemplateBinding VerticalAlignment}"
