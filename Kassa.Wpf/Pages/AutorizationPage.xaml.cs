@@ -57,8 +57,8 @@ public partial class AutorizationPage : ReactiveUserControl<AutorizationPageVm>
 
     private void AddPlaceHolder(TextBox textBox, string placeHolder)
     {
-        textBox.GotFocus += (_, _) => RemoveText(Login, placeHolder);
-        textBox.LostFocus += (_, _) => AddText(Login, placeHolder);
+        textBox.GotFocus += (_, _) => RemoveText(textBox, placeHolder);
+        textBox.LostFocus += (_, _) => AddText(textBox, placeHolder);
     }
 
     private void AddText(TextBox sender, string placeholder)
