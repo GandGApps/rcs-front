@@ -112,7 +112,6 @@ public partial class Keyboard : UserControl, IActivatableView
                                     else if (x.Item2 is not null)
                                     {
                                         button.Content = x.Item2;
-                                        button.FontSize = 16;
                                     }
 
                                 });

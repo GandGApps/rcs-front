@@ -242,7 +242,7 @@ public class CashierVm : PageViewModel
     [Reactive]
     public ReadOnlyObservableCollection<ProductShoppingListItemViewModel> ShoppingListItems
     {
-        get; set;
+        get; private set;
     }
 
     [Reactive]

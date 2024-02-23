@@ -476,6 +476,7 @@
         BasedOn="{StaticResource {x:Type Button}}"
         TargetType="Button">
         <Setter Property="TextBlock.FontSize" Value="{mx:AdaptiveSize 28}" />
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 28}" />
         <Setter Property="Foreground" Value="{DynamicResource KeyForeground}" />
         <Setter Property="Background" Value="{DynamicResource KeyBackground}" />
         <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness=10}" />

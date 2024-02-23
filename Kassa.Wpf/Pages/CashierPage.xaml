@@ -295,6 +295,7 @@
                 </Border>
 
                 <ScrollViewer
+                    x:Name="ScrollViewerForShoppingListItems"
                     Grid.Row="1"
                     Style="{StaticResource PrimaryScrollViewer}"
                     VerticalScrollBarVisibility="Auto">

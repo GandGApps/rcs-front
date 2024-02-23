@@ -228,7 +228,7 @@
                     x:Name="TotalCostPaymentInfo"
                     Grid.Column="1"
                     d:Text="3000,00 р"
-                    FontSize="{mx:AdaptiveSize 24}"
+                    FontSize="{mx:AdaptiveSize 21}"
                     FontWeight="Bold"
                     Foreground="{DynamicResource AccentBrush2}"
                     LineHeight="Auto"
@@ -258,7 +258,7 @@
                         <DataTemplate DataType="vm:CashierPaymentItemVm">
                             <Border
                                 Margin="{mx:AdaptiveSize Thickness='0,4,0,4'}"
-                                Padding="{mx:AdaptiveSize Thickness='15,5,5,10'}"
+                                Padding="{mx:AdaptiveSize Thickness='15,4,5,8'}"
                                 BorderBrush="{DynamicResource AlternateForeground}"
                                 BorderThickness="1"
                                 CornerRadius="{mx:AdaptiveSize CornerRadius=11}"
@@ -275,7 +275,7 @@
                                         Grid.RowSpan="2"
                                         HorizontalAlignment="Left"
                                         VerticalAlignment="Center"
-                                        FontSize="{mx:AdaptiveSize 24}"
+                                        FontSize="{mx:AdaptiveSize 21}"
                                         Foreground="{DynamicResource AlternateForeground}"
                                         LineHeight="Auto"
                                         Style="{StaticResource Header}"
@@ -295,7 +295,7 @@
                                     <TextBlock
                                         Grid.Row="1"
                                         Margin="{mx:AdaptiveSize Thickness='0,17,0,0'}"
-                                        FontSize="{mx:AdaptiveSize 24}"
+                                        FontSize="{mx:AdaptiveSize 21}"
                                         Foreground="{DynamicResource AlternateForeground}"
                                         LineHeight="Auto"
                                         Style="{StaticResource Header}"
@@ -312,13 +312,13 @@
                 <Separator
                     Grid.Row="2"
                     Grid.ColumnSpan="2"
-                    Margin="{mx:AdaptiveSize Thickness='0,2,0,18'}"
+                    Margin="{mx:AdaptiveSize Thickness='0,2,0,12'}"
                     Background="{DynamicResource ColorSeparator}" />
 
                 <TextBlock
                     Grid.Row="3"
                     Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
-                    FontSize="{mx:AdaptiveSize 24}"
+                    FontSize="{mx:AdaptiveSize 21}"
                     Foreground="{DynamicResource AlternateForeground}"
                     LineHeight="Auto"
                     Style="{StaticResource Header}"
@@ -329,7 +329,7 @@
                     Grid.Column="1"
                     Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
                     d:Text="0,00 р"
-                    FontSize="{mx:AdaptiveSize 24}"
+                    FontSize="{mx:AdaptiveSize 21}"
                     Foreground="{DynamicResource AlternateForeground}"
                     LineHeight="Auto"
                     Style="{StaticResource Header}"
@@ -338,7 +338,7 @@
                 <TextBlock
                     Grid.Row="4"
                     Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
-                    FontSize="{mx:AdaptiveSize 24}"
+                    FontSize="{mx:AdaptiveSize 21}"
                     Foreground="{DynamicResource AlternateForeground}"
                     LineHeight="Auto"
                     Style="{StaticResource Header}"
@@ -349,7 +349,7 @@
                     Grid.Column="1"
                     Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
                     d:Text="3000,00 р"
-                    FontSize="{mx:AdaptiveSize 24}"
+                    FontSize="{mx:AdaptiveSize 21}"
                     Foreground="{DynamicResource AlternateForeground}"
                     LineHeight="Auto"
                     Style="{StaticResource Header}"
@@ -357,7 +357,7 @@
 
                 <TextBlock
                     Grid.Row="5"
-                    FontSize="{mx:AdaptiveSize 24}"
+                    FontSize="{mx:AdaptiveSize 21}"
                     Foreground="{DynamicResource AlternateForeground}"
                     LineHeight="Auto"
                     Style="{StaticResource Header}"
@@ -367,7 +367,7 @@
                     Grid.Row="5"
                     Grid.Column="1"
                     d:Text="0,00 р"
-                    FontSize="{mx:AdaptiveSize 24}"
+                    FontSize="{mx:AdaptiveSize 21}"
                     Foreground="{DynamicResource AlternateForeground}"
                     LineHeight="Auto"
                     Style="{StaticResource Header}"
@@ -376,7 +376,7 @@
                 <Separator
                     Grid.Row="6"
                     Grid.ColumnSpan="2"
-                    Margin="{mx:AdaptiveSize Thickness='0,18,0,18'}"
+                    Margin="{mx:AdaptiveSize Thickness='0,12,0,12'}"
                     Background="{DynamicResource ColorSeparator}" />
 
                 <CheckBox

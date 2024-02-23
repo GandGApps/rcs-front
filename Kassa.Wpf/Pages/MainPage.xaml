@@ -21,8 +21,8 @@
             <Style x:Key="MainButton" TargetType="Button">
                 <Setter Property="HorizontalAlignment" Value="Center" />
                 <Setter Property="VerticalAlignment" Value="Center" />
-                <Setter Property="Width" Value="{mx:AdaptiveSize 360}" />
-                <Setter Property="Height" Value="{mx:AdaptiveSize 260}" />
+                <Setter Property="Width" Value="{mx:AdaptiveSize 315}" />
+                <Setter Property="Height" Value="{mx:AdaptiveSize 285}" />
                 <Setter Property="Background" Value="{DynamicResource DefaultMainButton}" />
                 <Setter Property="Template">
                     <Setter.Value>
@@ -33,12 +33,17 @@
                                 HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                                 VerticalAlignment="{TemplateBinding VerticalAlignment}"
                                 Background="{TemplateBinding Background}"
-                                CornerRadius="{mx:AdaptiveSize CornerRadius=11}">
+                                CornerRadius="{mx:AdaptiveSize CornerRadius=100}">
                                 <ContentPresenter />
                             </Border>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter Property="Background" Value="#0ECC24"/>
+                    </Trigger>
+                </Style.Triggers>
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
@@ -47,14 +52,14 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="{mx:AdaptiveSize GridLength=390}" />
+            <ColumnDefinition Width="{mx:AdaptiveSize GridLength=345}" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="{mx:AdaptiveSize GridLength=275}" />
-            <RowDefinition Height="{mx:AdaptiveSize GridLength=275}" />
+            <RowDefinition Height="{mx:AdaptiveSize GridLength=310}" />
+            <RowDefinition Height="{mx:AdaptiveSize GridLength=310}" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
@@ -177,10 +182,10 @@
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             Style="{StaticResource MainButton}">
-            <Grid>
+            <Grid VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
-                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
 
                 <Image
@@ -188,7 +193,7 @@
                     Width="{mx:AdaptiveSize 214}"
                     Height="{mx:AdaptiveSize 140}"
                     Margin="{mx:AdaptiveSize Thickness='0,20,0,0'}"
-                    Source="/Assets/Deliviry.png"
+                    Source="/Assets/Delivery.png"
                     Stretch="Uniform" />
 
                 <StackPanel Grid.Row="2">
@@ -239,7 +244,7 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             Style="{StaticResource MainButton}">
-            <Grid>
+            <Grid VerticalAlignment="Center">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto" />
                     <RowDefinition Height="*" />

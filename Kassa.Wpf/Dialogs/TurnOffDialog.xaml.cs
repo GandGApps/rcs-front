@@ -16,6 +16,9 @@ public partial class TurnOffDialog : ClosableDialog<TurnOffDialogViewModel>
         {
             this.BindCommand(ViewModel, vm => vm.MainViewModel.CloseCommand, v => v.TurnOffButton)
                 .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, vm => vm.LogoutCommand, v => v.LogoutButton)
+                .DisposeWith(disposables);
         });
     }
 }

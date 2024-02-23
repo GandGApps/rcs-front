@@ -44,7 +44,7 @@
                 </Button.Resources>
             </Button>
             <Border Style="{DynamicResource Separator}" />
-            <Button Style="{StaticResource NotCenteredMenyButton}">
+            <Button x:Name="LogoutButton" Style="{StaticResource NotCenteredMenyButton}">
                 <Grid>
 
                     <Grid.ColumnDefinitions>

@@ -48,6 +48,20 @@ public class AdaptiveSizeExtension : MarkupExtension
 
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
+        if(serviceProvider == null) 
+        {
+            var fallbackBinding = new Binding
+            {
+                Source = GetSource(serviceProvider),
+                Path = new("ActualWidth"),
+                Converter = new AdaptiveSizeConverter(),
+                ConverterParameter = Size,
+                FallbackValue = Size
+            };
+
+            return fallbackBinding.ProvideValue(serviceProvider);
+        }
+
         var valueTargetProvider = serviceProvider?.GetService(typeof(IProvideValueTarget)) as IProvideValueTarget;
 
         var targetProperty = valueTargetProvider?.TargetProperty;
@@ -210,7 +224,7 @@ public class AdaptiveSizeExtension : MarkupExtension
         return binding.ProvideValue(serviceProvider);
     }
 
-    private static object GetSource(IServiceProvider serviceProvider)
+    private static object GetSource(IServiceProvider? serviceProvider)
     {
 
         var designerHost = serviceProvider?.GetService(typeof(IDesignerHost)) as IDesignerHost;

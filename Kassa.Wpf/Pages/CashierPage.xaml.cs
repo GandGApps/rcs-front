@@ -79,6 +79,17 @@ public partial class CashierPage : ReactiveUserControl<CashierVm>
 
             this.BindCommand(ViewModel, x => x.OpenDiscountsAndSurchargesDialog, x => x.PricingDetailsButton)
                 .DisposeWith(disposables);
+
+            ViewModel.WhenAnyValue(x => x.ShoppingListItems.Count)
+                     .Buffer(2, 1)
+                     .Subscribe(x =>
+                     {
+                         if (x[0] < x[1])
+                         {
+                             ScrollViewerForShoppingListItems.ScrollToEnd();
+                         }
+                     })
+                     .DisposeWith(disposables);
         });
     }
 

@@ -50,7 +50,7 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
     {
         if (!IsDisposed)
         {
-            
+
             if (disposing)
             {
                 InternalDisposables.Dispose();
