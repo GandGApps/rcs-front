@@ -68,11 +68,12 @@ public partial class Keyboard : UserControl, IActivatableView
 
         this.WhenActivated(disposables =>
         {
-            this.WhenAnyValue(x => x.Width)
+            this.WhenAnyValue(x => x.ActualWidth)
                 .Subscribe(x => KeyboardInfo.LineWidth = x)
                 .DisposeWith(disposables);
 
-            this.WhenAnyValue(x => x.KeyboardInfo)
+            this.WhenAnyValue(x => x.KeyboardInfo, x => x.ActualWidth)
+                .Select(x => x.Item1)
                 .Subscribe(x =>
                 {
                     stack.Children.Clear();
@@ -213,7 +214,7 @@ public partial class Keyboard : UserControl, IActivatableView
                             button.Command = key.Command;
                         }
 
-                        var adaptiveWidth = new AdaptiveSizeExtension((Width / 13) * (size) + (size * 2));
+                        var adaptiveWidth = new AdaptiveSizeExtension((AdaptiveMarkupExtension.GetNotAdaptivedSize(ActualWidth, MainWindow.Instance.ActualWidth) / x.LineStarWidth) * (size));
                         var bindingWidth = (BindingBase)adaptiveWidth.ProvideValue(null!);
 
                         var adaptiveHeight = new AdaptiveSizeExtension(x.KeyHeight + 4);

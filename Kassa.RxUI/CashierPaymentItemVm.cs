@@ -17,6 +17,11 @@ public class CashierPaymentItemVm : ReactiveObject
         this.WhenAnyValue(x => x.Entered)
             .Select(x => x > 0)
             .ToPropertyEx(this, x => x.IsEntered);
+
+        RemoveItemCommand = ReactiveCommand.Create(() =>
+        {
+            Entered = 0;
+        });
     }
 
     [Reactive]
@@ -37,11 +42,10 @@ public class CashierPaymentItemVm : ReactiveObject
         get; set;
     } = null!;
 
-    [Reactive]
-    public ReactiveCommand<Unit, Unit> RemoveItem
+    public ReactiveCommand<Unit, Unit> RemoveItemCommand
     {
-        get; set;
-    } = null!;
+        get;
+    }
 
     public extern bool IsEntered
     {

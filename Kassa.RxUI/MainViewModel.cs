@@ -62,6 +62,11 @@ public class MainViewModel : ReactiveObject, IScreen
         get; set;
     }
 
+    public ReactiveCommand<string, Unit> OkMessageDialogCommand
+    {
+        get; 
+    }
+
     public MainViewModel()
     {
         Router = new();
@@ -144,6 +149,18 @@ public class MainViewModel : ReactiveObject, IScreen
                     await pageVm.DisposeAsync();
                 }
             }
+        });
+
+        OkMessageDialogCommand = ReactiveCommand.CreateFromTask<string>(async msg =>
+        {
+            var okMessageDialog = new OkMessageDialogViewModel
+            {
+                Icon = "JustFailed",
+                Message = msg
+            };
+            await DialogOpenCommand.Execute().FirstAsync();
+
+            await okMessageDialog.WaitDialogClose();
         });
 
 

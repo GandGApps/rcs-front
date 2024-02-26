@@ -565,6 +565,7 @@
                         <DataTrigger Binding="{Binding IsClear}" Value="False">
                             <Setter TargetName="Clear" Property="Visibility" Value="Collapsed" />
                         </DataTrigger>
+                        <DataTrigger Binding="{Binding Size.Size}" Value="1.5" />
                     </ControlTemplate.Triggers>
 
                 </ControlTemplate>

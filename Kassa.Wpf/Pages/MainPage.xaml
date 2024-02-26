@@ -27,21 +27,20 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="Button">
-                            <Border
+                            <controls:Squircle
                                 Width="{TemplateBinding Width}"
                                 Height="{TemplateBinding Height}"
                                 HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                                 VerticalAlignment="{TemplateBinding VerticalAlignment}"
-                                Background="{TemplateBinding Background}"
-                                CornerRadius="{mx:AdaptiveSize CornerRadius=100}">
+                                Background="{TemplateBinding Background}">
                                 <ContentPresenter />
-                            </Border>
+                            </controls:Squircle>
                         </ControlTemplate>
                     </Setter.Value>
                 </Setter>
                 <Style.Triggers>
                     <Trigger Property="IsPressed" Value="True">
-                        <Setter Property="Background" Value="#0ECC24"/>
+                        <Setter Property="Background" Value="#0ECC24" />
                     </Trigger>
                 </Style.Triggers>
             </Style>

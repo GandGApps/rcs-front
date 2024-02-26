@@ -27,6 +27,12 @@ public class KeyboardInfo: ReactiveObject
         get; set;
     } = 60;
 
+    [Reactive]
+    public double LineStarWidth
+    {
+        get; set;
+    } = 13;
+
 
     public static KeyboardInfo RuKeyboard(KeyInfo changeLanguage)
     {
@@ -227,6 +233,8 @@ public class KeyboardInfo: ReactiveObject
         keyboard.Lines.Add(line2);
         keyboard.Lines.Add(line3);
         keyboard.Lines.Add(line4);
+
+        keyboard.LineStarWidth = 3;
 
         return keyboard;
     }

@@ -38,6 +38,7 @@ public class CashierPaymentPageVm : PageViewModel
         WithoutRevenueVm = new()
         {
             Description = "Без выручки",
+            
         };
 
         CashierPaymentItemVms = [CashVm, BankCardVm, CashlessPaymentVm, WithoutRevenueVm];
