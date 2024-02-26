@@ -10,7 +10,7 @@ namespace Kassa.Wpf.Pages;
 /// <summary>
 /// Логика взаимодействия для CashierPage.xaml
 /// </summary>
-public partial class CashierPage : ReactiveUserControl<CashierVm>
+public partial class CashierPage : ReactiveUserControl<OrderVm>
 {
     public CashierPage()
     {

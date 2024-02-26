@@ -27,9 +27,9 @@
 
         <Border
             Grid.Column="1"
-            Padding="{mx:AdaptiveSize Thickness='30'}"
+            Padding="{mx:AdaptiveSize Thickness='25'}"
             Background="{DynamicResource AlternateForeground}">
-            <StackPanel>
+            <StackPanel VerticalAlignment="Center" ClipToBounds="False">
                 <Border
                     x:Name="Logo"
                     Grid.Row="1"
@@ -71,8 +71,8 @@
                         Margin="5"
                         Style="{StaticResource KeyButtonStyle}">
                         <Path
-                            Width="{mx:AdaptiveSize 41}"
-                            Height="{mx:AdaptiveSize 41}"
+                            Width="{mx:AdaptiveSize 32}"
+                            Height="{mx:AdaptiveSize 32}"
                             Data="{StaticResource TurnOffIcon}"
                             Fill="Black"
                             Stretch="Uniform" />
@@ -80,7 +80,7 @@
                     <Button
                         x:Name="TechSupport"
                         Grid.Column="1"
-                        Margin="5"
+                        Margin="{mx:AdaptiveSize Thickness=5}"
                         Style="{StaticResource KeyButtonStyle}">
                         <Grid>
                             <Grid.ColumnDefinitions>
@@ -88,10 +88,14 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <Path Data="{StaticResource TechIcon}" Fill="{DynamicResource KeyForeground}" />
+                            <Path
+                                Width="{mx:AdaptiveSize 32}"
+                                Height="{mx:AdaptiveSize 32}"
+                                Data="{StaticResource TechIcon}"
+                                Fill="{DynamicResource KeyForeground}" />
                             <TextBlock
                                 Grid.Column="1"
-                                Margin="7,0,0,0"
+                                Margin="{mx:AdaptiveSize Thickness='7,0,0,0'}"
                                 VerticalAlignment="Center"
                                 FontSize="{mx:AdaptiveSize 16}"
                                 Text="Техподдержка" />

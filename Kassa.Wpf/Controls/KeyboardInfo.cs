@@ -21,10 +21,12 @@ public class KeyboardInfo: ReactiveObject
         get; set;
     } = 1248;
 
+    [Reactive]
     public double KeyHeight
     {
         get; set;
     } = 60;
+
 
     public static KeyboardInfo RuKeyboard(KeyInfo changeLanguage)
     {
@@ -225,9 +227,6 @@ public class KeyboardInfo: ReactiveObject
         keyboard.Lines.Add(line2);
         keyboard.Lines.Add(line3);
         keyboard.Lines.Add(line4);
-
-        keyboard.LineWidth *= 1.4;
-        keyboard.KeyHeight *= 1.4;
 
         return keyboard;
     }

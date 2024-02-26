@@ -21,8 +21,14 @@ public class ProductViewModel(ProductDto product) : ReactiveObject
     public static readonly ReactiveCommand<ProductDto, Unit> AddToShoppingListCommand = ReactiveCommand.CreateFromTask<ProductDto>(async product =>
     {
         var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
+        var order = cashierService.CurrentOrder;
 
-        await cashierService.AddProductToShoppingList(product.Id);
+        if (order is null)
+        {
+            throw new InvalidOperationException("Order is not selected");
+        }
+
+        await order.AddProductToShoppingList(product.Id);
     });
     public Guid Id => product.Id;
 
@@ -32,7 +38,7 @@ public class ProductViewModel(ProductDto product) : ReactiveObject
     public double Price => product.Price;
 
     /// <summary>
-    /// Need implement by ICashierService
+    /// Need implement by IOrder
     /// </summary>
     public bool IsAdded => product.IsAdded;
 

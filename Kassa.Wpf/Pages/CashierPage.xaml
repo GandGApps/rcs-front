@@ -17,10 +17,10 @@
     xmlns:vm="clr-namespace:Kassa.RxUI;assembly=Kassa.RxUI"
     x:Name="Root"
     Padding="{mx:AdaptiveSize Thickness={StaticResource FooterSizeAsThickness}}"
-    d:DataContext="{d:DesignInstance Type=pages:CashierVm}"
+    d:DataContext="{d:DesignInstance Type=pages:OrderVm}"
     d:DesignHeight="840"
     d:DesignWidth="1440"
-    x:TypeArguments="pages:CashierVm"
+    x:TypeArguments="pages:OrderVm"
     Background="{DynamicResource Theme}"
     mc:Ignorable="d">
 

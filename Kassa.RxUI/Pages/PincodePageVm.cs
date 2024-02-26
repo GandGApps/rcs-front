@@ -53,7 +53,7 @@ public class PincodePageVm : PageViewModel
             .Subscribe(async x =>
             {
                 Pincode = string.Empty;
-                var loading = new LoadingDialogViewModel(MainViewModel)
+                var loading = new LoadingDialogViewModel(MainViewModel!)
                 {
                     Message = "Запрос подключения для модуля: “SUPER_MODUL”"
                 };

@@ -17,15 +17,27 @@ public class CategoryViewModel : ReactiveObject
     public static readonly ReactiveCommand<CategoryDto, Unit> MoveToCategoryCommand = ReactiveCommand.CreateFromTask<CategoryDto>(async (category) =>
     {
         var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
+        var order = cashierService.CurrentOrder;
 
-        await cashierService.SelectCategory(category.Id);
+        if (order is null)
+        {
+            throw new InvalidOperationException("Order is not selected");
+        }
+
+        await order.SelectCategory(category.Id);
     });
 
     public static readonly ReactiveCommand<Unit, Unit> NavigateBackCategoryCommand = ReactiveCommand.CreateFromTask(async () =>
     {
         var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
+        var order = cashierService.CurrentOrder;
 
-        await cashierService.SelectPreviosCategory();
+        if (order is null)
+        {
+            throw new InvalidOperationException("Order is not selected");
+        }
+
+        await order.SelectPreviosCategory();
     });
 
     private readonly CategoryDto _category;

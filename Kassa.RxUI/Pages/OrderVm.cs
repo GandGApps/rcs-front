@@ -21,16 +21,20 @@ using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.RxUI.Pages;
-public class CashierVm : PageViewModel
+public class OrderVm : PageViewModel
 {
     private readonly Dictionary<object, IEnumerable<ProductViewModel>> _categories = [];
 
-    private ICashierService? _cashierService;
+    private readonly IOrder _order;
+    private readonly ICashierService _cashierService;
 
     private Action<bool>? _isMultiSelectSetter;
 
-    public CashierVm(MainViewModel mainViewModel) : base(mainViewModel)
+    public OrderVm(MainViewModel mainViewModel, IOrder order, ICashierService cashierService) : base(mainViewModel)
     {
+        _order = order;
+        _cashierService = cashierService;
+
         CreateTotalCommentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             var dialog = new CommentDialogViewModel(this)
@@ -44,7 +48,7 @@ public class CashierVm : PageViewModel
 
             if (dialog.IsPublished)
             {
-                await _cashierService!.WriteTotalComment(dialog.Comment);
+                await _order!.WriteTotalComment(dialog.Comment);
                 TotalComment = dialog.Comment;
             }
         });
@@ -63,8 +67,8 @@ public class CashierVm : PageViewModel
 
         SearchAddictiveCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-
-            var addictiveDialog = new SearchAddictiveDialogViewModel(mainViewModel);
+            var additiveService = await Locator.GetInitializedService<IAdditiveService>();
+            var addictiveDialog = new SearchAddictiveDialogViewModel(mainViewModel, additiveService, order);
             var dialog = await mainViewModel.DialogOpenCommand.Execute(addictiveDialog).FirstAsync();
 
             await dialog.WaitDialogClose();
@@ -72,22 +76,22 @@ public class CashierVm : PageViewModel
 
         SelectFavouriteCommand = ReactiveCommand.CreateFromTask(async (int x) =>
         {
-            if (_cashierService == null)
+            if (_order == null)
             {
                 return;
             }
-            await _cashierService.SelectFavourite(x);
+            await _order.SelectFavourite(x);
         });
 
         SelectRootCategoryCommand = ReactiveCommand.CreateFromTask(async () =>
         {
 
-            if (_cashierService == null)
+            if (_order == null)
             {
 
                 return;
             }
-            await _cashierService.SelectRootCategory();
+            await _order.SelectRootCategory();
         });
 
         SearchProductCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -106,9 +110,9 @@ public class CashierVm : PageViewModel
 
             await dialog.WaitDialogClose();
 
-            if (dialog.IsPublished && _cashierService is not null)
+            if (dialog.IsPublished && _order is not null)
             {
-                await _cashierService.WriteCommentToSelectedItems(dialog.Comment);
+                await _order.WriteCommentToSelectedItems(dialog.Comment);
             }
         });
 
@@ -133,30 +137,29 @@ public class CashierVm : PageViewModel
 
         GoToPaymentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var paymentPage = new CashierPaymentPageVm(mainViewModel);
+            var payment = await _cashierService.CreatePayment(order);
+            var paymentPage = new CashierPaymentPageVm(mainViewModel, payment);
 
             mainViewModel.GoToPageCommand.Execute(paymentPage).Subscribe();
         });
-
     }
 
-    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    protected override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        _cashierService = await GetInitializedService<ICashierService>();
-        ShoppingList = new(_cashierService);
+        ShoppingList = new(_order);
 
-        _cashierService.BindSelectedCategoryItems(out var categoryItems)
+        _order.BindSelectedCategoryItems(out var categoryItems)
                        .DisposeWith(disposables);
 
-        _cashierService.BindShoppingListItems(x => new ProductShoppingListItemViewModel(x), out var shoppingListItems)
+        _order.BindShoppingListItems(x => new ProductShoppingListItemViewModel(x,_order), out var shoppingListItems)
                        .DisposeWith(disposables);
 
-        _cashierService.BindAdditivesForSelectedProduct(x => new AdditiveViewModel(x), out var fastAdditives)
+        _order.BindAdditivesForSelectedProduct(x => new AdditiveViewModel(x, _order), out var fastAdditives)
                        .DisposeWith(disposables);
 
 
-        _isMultiSelectSetter = x => _cashierService.IsMultiSelect = x;
-        IsMultiSelect = _cashierService.IsMultiSelect;
+        _isMultiSelectSetter = x => _order.IsMultiSelect = x;
+        IsMultiSelect = _order.IsMultiSelect;
 
         CurrentCategoryItems = categoryItems;
         ShoppingListItems = shoppingListItems;
@@ -197,31 +200,20 @@ public class CashierVm : PageViewModel
                          .Subscribe(x => ShoppingList.Subtotal = x)
                          .DisposeWith(disposables);
 
-        
-
-
-        var incc = (INotifyCollectionChanged)categoryItems;
-        incc.CollectionChanged += (s, e) =>
-        {
-            // Just for breakpoint
-            var items = categoryItems;
-
-            if (e.Action == NotifyCollectionChangedAction.Remove)
-            {
-                if (e.OldItems[0] is ICategoryDto category)
-                {
-                    Debug.Assert(category is CategoryDto);
-                }
-            }
-        };
+        return ValueTask.CompletedTask;
     }
 
     public bool IsMultiSelect
     {
 
-        get => ShoppingList.IsMultiSelect;
+        get => ShoppingList != null && ShoppingList.IsMultiSelect;
         set
         {
+            if (ShoppingList == null)
+            {
+                return;
+            }
+
             if (value == ShoppingList.IsMultiSelect)
             {
                 return;
@@ -234,21 +226,21 @@ public class CashierVm : PageViewModel
     }
 
     [Reactive]
-    public ShoppingListViewModel ShoppingList
+    public ShoppingListViewModel? ShoppingList
     {
         get; private set;
     }
 
     [Reactive]
-    public ReadOnlyObservableCollection<ProductShoppingListItemViewModel> ShoppingListItems
+    public ReadOnlyObservableCollection<ProductShoppingListItemViewModel>? ShoppingListItems
     {
         get; private set;
     }
 
     [Reactive]
-    public ReadOnlyObservableCollection<AdditiveViewModel> FastAdditives
+    public ReadOnlyObservableCollection<AdditiveViewModel>? FastAdditives
     {
-        get; set;
+        get; private set;
     }
 
     [Reactive]
@@ -322,28 +314,7 @@ public class CashierVm : PageViewModel
     [Reactive]
     public ReadOnlyObservableCollection<ICategoryItemDto>? CurrentCategoryItems
     {
-        get; set;
+        get; private set;
     }
 
-    protected override void Dispose(bool disposing)
-    {
-        if (IsDisposed)
-        {
-            return;
-        }
-
-        base.Dispose(disposing);
-
-        _cashierService = null;
-    }
-
-    protected async override ValueTask DisposeAsyncCore()
-    {
-        if (IsDisposed)
-        {
-            return;
-        }
-
-        await _cashierService!.DisposeAsync();
-    }
 }

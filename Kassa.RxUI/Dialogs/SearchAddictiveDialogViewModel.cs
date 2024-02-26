@@ -18,17 +18,19 @@ namespace Kassa.RxUI.Dialogs;
 
 public class SearchAddictiveDialogViewModel : DialogViewModel
 {
-    private IAdditiveService _additiveService;
+    private readonly IAdditiveService _additiveService;
+    private readonly IOrder _order;
 
-    public SearchAddictiveDialogViewModel(MainViewModel mainViewModel) : base(mainViewModel)
+    public SearchAddictiveDialogViewModel(MainViewModel mainViewModel, IAdditiveService additiveService, IOrder order) : base(mainViewModel)
     {
         IsKeyboardVisible = false;
+        _additiveService = additiveService;
+        _order = order;
     }
 
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        _additiveService = await GetInitializedService<IAdditiveService>();
 
         // Splitting the search text stream into immediate first item and throttled subsequent items
         var searchTextStream = this.WhenAnyValue(x => x.SearchedText).Publish();
@@ -54,7 +56,7 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
             .Connect()
             .ObserveOn(RxApp.MainThreadScheduler)
             .Filter(searchFilter)
-            .TransformWithInlineUpdate(additive => new AdditiveViewModel(additive), (vm,source) => vm.Source = source)
+            .TransformWithInlineUpdate(additive => new AdditiveViewModel(additive, _order), (vm,source) => vm.Source = source)
             .Bind(out _filteredAdditives)
             .Subscribe()
             .DisposeWith(disposables);
@@ -75,7 +77,7 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
     }
 
     public ReadOnlyObservableCollection<AdditiveViewModel> FilteredAddcitves => _filteredAdditives;
-    private ReadOnlyObservableCollection<AdditiveViewModel> _filteredAdditives;
+    private ReadOnlyObservableCollection<AdditiveViewModel> _filteredAdditives = ReadOnlyObservableCollection<AdditiveViewModel>.Empty;
 
     /// <summary>
     /// if it's null then user canceled dialog

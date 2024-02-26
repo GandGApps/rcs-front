@@ -539,6 +539,7 @@
                                 Fill="{DynamicResource KeyForeground}" />
                             <Path
                                 x:Name="Clear"
+                                Width="{mx:AdaptiveSize 32}"
                                 Margin="0,0,15,0"
                                 Data="{StaticResource Clear}"
                                 Fill="{DynamicResource KeyForeground}" />

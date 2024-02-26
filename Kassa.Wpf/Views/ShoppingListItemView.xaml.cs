@@ -15,15 +15,21 @@ public partial class ShoppingListItemView : ReactiveUserControl<ProductShoppingL
     public static readonly ReactiveCommand<IShoppingListItem, Unit> UpdateSelectionShoppingListItemCommand = ReactiveCommand.CreateFromTask<IShoppingListItem>(async vm =>
     {
         var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
+        var order = cashierService.CurrentOrder;
+
+        if (order is null)
+        {
+            throw new InvalidOperationException("Order is not selected");
+        }
 
 
         if (vm.IsSelected)
         {
-            await cashierService.UnselectShoppingListItem(vm.SourceDto);
+            await order.UnselectShoppingListItem(vm.SourceDto);
         }
         else
         {
-            await cashierService.SelectShoppingListItem(vm.SourceDto);
+            await order.SelectShoppingListItem(vm.SourceDto);
         }
     });
 

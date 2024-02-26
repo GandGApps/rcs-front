@@ -16,14 +16,23 @@ public class AdaptiveMarkupExtension : MarkupExtension
     public const double MediumBreakpoint = 1200;
     public const double MeduimCoeficient = 0.69;
 
+    public const double SmallBreakpoint = 960;
+    public const double SmallCoeficient = 0.5;
+
     public static AdaptiveBreakpoint GetBreakpoint(double width)
     {
 
+        if (width <= SmallBreakpoint)
+        {
+            return AdaptiveBreakpoint.Small;
+        }
+
         if (width <= MediumBreakpoint)
         {
-
             return AdaptiveBreakpoint.Medium;
         }
+
+
 
         return AdaptiveBreakpoint.Large;
     }
@@ -34,6 +43,11 @@ public class AdaptiveMarkupExtension : MarkupExtension
         if (GetBreakpoint(width) == AdaptiveBreakpoint.Medium)
         {
             return size * MeduimCoeficient;
+        }
+
+        if (GetBreakpoint(width) == AdaptiveBreakpoint.Small)
+        {
+            return size * SmallCoeficient;
         }
 
         return size;

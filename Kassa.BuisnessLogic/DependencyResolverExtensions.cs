@@ -30,17 +30,9 @@ public static class DependencyResolverExtensions
             var categoryService = Locator.Current.GetNotInitializedService<ICategoryService>();
             var additiveService = Locator.Current.GetNotInitializedService<IAdditiveService>();
 
-            return new CashierService(productService, categoryService, additiveService);
+            return new CashierService(additiveService, categoryService, productService);
         });
         RegisterInitializableServiceFactory<ICashierService>(services);
-
-        services.Register<ICashierPaymentService>(() =>
-        {
-            var cashierService = Locator.Current.GetNotInitializedService<ICashierService>();
-
-            return new CashierPaymentService(cashierService);
-        });
-        RegisterInitializableServiceFactory<ICashierPaymentService>(services);
     }
 
     /// <summary>

@@ -6,6 +6,8 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Dialogs;
 using ReactiveUI;
 
@@ -42,11 +44,6 @@ public class MainPageVm : PageViewModel
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> OpenSearchDialog
-    {
-        get;
-    }
-
     public ICommand GoToCashier
     {
         get;
@@ -64,11 +61,15 @@ public class MainPageVm : PageViewModel
         OpenDeliviryDialog = CreateOpenDialogCommand(() => new DeliviryDialogViewModel(mainViewModel));
         OpenPersonnelDialog = CreateOpenDialogCommand(() => new PersonnelDialogViewModel(mainViewModel));
         OpenServicesDialog = CreateOpenDialogCommand(() => new ServicesDialogViewModel(mainViewModel));
-        OpenSearchDialog = CreateOpenDialogCommand(() => new SearchAddictiveDialogViewModel(mainViewModel));
 
         GoToCashier = ReactiveCommand.CreateFromTask(async () =>
         {
-            await mainViewModel.GoToPageCommand.Execute(new CashierVm(mainViewModel)).FirstAsync();
+            var cashierService = await Locator.GetInitializedService<ICashierService>();
+            var order = await cashierService.CreateOrder();
+
+            await cashierService.SelectCurrentOrder(order);
+
+            await mainViewModel.GoToPageCommand.Execute(new OrderVm(mainViewModel, order, cashierService)).FirstAsync();
         });
     }
 

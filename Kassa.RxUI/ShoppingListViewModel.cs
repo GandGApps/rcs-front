@@ -14,7 +14,7 @@ namespace Kassa.RxUI;
 public class ShoppingListViewModel : ReactiveObject
 {
 
-    public ShoppingListViewModel(ICashierService cashierService)
+    public ShoppingListViewModel(IOrder cashierService)
     {
         IncreaseCommand = ReactiveCommand.CreateFromTask(async () =>
         {

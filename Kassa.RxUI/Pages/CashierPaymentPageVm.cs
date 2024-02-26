@@ -17,10 +17,12 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Pages;
 public class CashierPaymentPageVm : PageViewModel
 {
+
     private bool _isFloat;
     private byte _afterSeparatorDigitCount;
-    public CashierPaymentPageVm(MainViewModel mainViewModel) : base(mainViewModel)
+    public CashierPaymentPageVm(MainViewModel mainViewModel, ICashierPaymentService cashierPaymentService) : base(mainViewModel)
     {
+        CashierPaymentService = cashierPaymentService;
         CashVm = new()
         {
             Description = "Наличные",
@@ -148,14 +150,12 @@ public class CashierPaymentPageVm : PageViewModel
                 SetDisplayText(ToEnter);
             }
         });
-
     }
 
-    [Reactive]
     public ICashierPaymentService CashierPaymentService
     {
-        get; private set;
-    } = null!;
+        get;
+    }
 
     [Reactive]
     public ReadOnlyObservableCollection<ProductShoppingListItemViewModel>? ShoppingListItems
@@ -320,10 +320,8 @@ public class CashierPaymentPageVm : PageViewModel
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        CashierPaymentService = await GetInitializedService<ICashierPaymentService>();
-
-        CashierPaymentService.CashierService
-            .BindShoppingListItems(x => new ProductShoppingListItemViewModel(x), out var shoppingListItems)
+        CashierPaymentService.Order
+            .BindShoppingListItems(x => new ProductShoppingListItemViewModel(x, CashierPaymentService.Order), out var shoppingListItems)
             .DisposeWith(disposables);
 
         ShoppingListItems = shoppingListItems;

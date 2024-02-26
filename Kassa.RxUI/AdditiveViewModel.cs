@@ -22,15 +22,16 @@ public class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Guid, Addi
             return;
         }
         var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
+        var order = cashierService.CurrentOrder;
 
-        await cashierService.AddAdditiveToSelectedProducts(additive.Id);
+        await order.AddAdditiveToSelectedProducts(additive.Id);
 
         additive.IsAdded = true;
         additive.Count--;
     });
 
 
-    public AdditiveViewModel(AdditiveDto additive)
+    public AdditiveViewModel(AdditiveDto additive, IOrder order)
     {
         Id = additive.Id;
 
@@ -44,11 +45,9 @@ public class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Guid, Addi
         this.WhenAnyValue(x => x.Count)
             .Subscribe(_ => IsAvailable = additive.Count > 0);
 
-        var cashierService = Locator.Current.GetNotInitializedService<ICashierService>();
-
-        if (cashierService.IsInitialized)
+        if (order.IsInitialized)
         {
-            IsAdded = cashierService.IsAdditiveAdded(additive.Id);
+            IsAdded = order.IsAdditiveAdded(additive.Id);
         }
     }
 

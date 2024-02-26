@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Kassa.Wpf.MarkupExntesions;
 public enum AdaptiveBreakpoint
 {
+    Small,
     Medium,
     Large
 }

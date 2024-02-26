@@ -25,6 +25,8 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
         get; protected set;
     }
 
+    protected static IReadonlyDependencyResolver Locator => Splat.Locator.Current;
+
     public MainViewModel? MainViewModel
     {
         get;
@@ -86,7 +88,7 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
     /// </remarks>
     protected async ValueTask<T> GetInitializedService<T>() where T : class, IInitializableService
     {
-        var services = await Locator.Current.GetInitializedService<T>();
+        var services = await Locator.GetInitializedService<T>();
 
         services.DisposeWith(InternalDisposables);
 

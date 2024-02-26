@@ -8,9 +8,9 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.BuisnessLogic.Services;
-public class CashierPaymentService(ICashierService cashierService) : BaseInitializableService, ICashierPaymentService, INotifyPropertyChanged
+public class CashierPaymentService(IOrder cashierService) : BaseInitializableService, ICashierPaymentService, INotifyPropertyChanged
 {
-    public ICashierService CashierService => cashierService;
+    public IOrder Order => cashierService;
     [Reactive]
     public double Cash
     {
@@ -101,10 +101,5 @@ public class CashierPaymentService(ICashierService cashierService) : BaseInitial
     public async Task SendReceiptToEmail(string email)
     {
         await Task.Delay(1000);
-    }
-
-    public async override ValueTask Initialize()
-    {
-
     }
 }

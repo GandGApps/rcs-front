@@ -45,12 +45,29 @@ public abstract class BaseInitializableService : ReactiveObject, IInitializableS
         GC.SuppressFinalize(this);
     }
 
-    public abstract ValueTask Initialize();
+    public async ValueTask Initialize()
+    {
+        await InitializeAsync(InternalDisposables).ConfigureAwait(false);
+
+        IsInitialized = true;
+    }
+
+    protected virtual ValueTask InitializeAsync(CompositeDisposable disposables) => ValueTask.CompletedTask;
 
     protected virtual void Dispose(bool disposing)
     {
+        if (IsDisposed)
+        {
+            return;
+        }
+
         InternalDisposables.Dispose();
     }
 
     protected virtual ValueTask DisposeAsyncCore() => ValueTask.CompletedTask;
+
+    ~BaseInitializableService()
+    {
+        Dispose(disposing: false);
+    }
 }

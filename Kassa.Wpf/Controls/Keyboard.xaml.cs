@@ -68,6 +68,10 @@ public partial class Keyboard : UserControl, IActivatableView
 
         this.WhenActivated(disposables =>
         {
+            this.WhenAnyValue(x => x.Width)
+                .Subscribe(x => KeyboardInfo.LineWidth = x)
+                .DisposeWith(disposables);
+
             this.WhenAnyValue(x => x.KeyboardInfo)
                 .Subscribe(x =>
                 {
@@ -102,6 +106,11 @@ public partial class Keyboard : UserControl, IActivatableView
                                         var path = new Path();
                                         path.SetResourceReference(Path.DataProperty, x.Item4);
                                         path.SetResourceReference(Path.FillProperty, "KeyForeground");
+
+                                        var iconAdaptiveSize = new AdaptiveSizeExtension(32);
+                                        var binding = (BindingBase)iconAdaptiveSize.ProvideValue(null!);
+
+                                        path.SetBinding(HeightProperty, binding);
 
                                         button.Content = path;
                                     }
@@ -203,7 +212,8 @@ public partial class Keyboard : UserControl, IActivatableView
 
                             button.Command = key.Command;
                         }
-                        var adaptiveWidth = new AdaptiveSizeExtension((x.LineWidth / 13) * (size) + (size * 2));
+
+                        var adaptiveWidth = new AdaptiveSizeExtension((Width / 13) * (size) + (size * 2));
                         var bindingWidth = (BindingBase)adaptiveWidth.ProvideValue(null!);
 
                         var adaptiveHeight = new AdaptiveSizeExtension(x.KeyHeight + 4);

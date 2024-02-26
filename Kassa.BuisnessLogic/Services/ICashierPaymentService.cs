@@ -48,7 +48,7 @@ public interface ICashierPaymentService : IInitializableService, INotifyProperty
         get; set;
     }
 
-    public ICashierService CashierService
+    public IOrder Order
     {
         get;
     }

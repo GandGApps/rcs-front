@@ -8,7 +8,7 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess;
 
 namespace Kassa.BuisnessLogic.Services;
-internal interface IRuntimeDtoProvider<TDto, TKey, TModel> where TModel : class, IModel where TDto : class, IDto<TModel, TDto>
+internal interface IRuntimeDtoProvider<TDto, TKey, TModel> where TModel : class, IModel where TDto : class, IDto<TModel, TDto> where TKey : notnull
 {
     SourceCache<TDto, TKey> RuntimeDtos
     {

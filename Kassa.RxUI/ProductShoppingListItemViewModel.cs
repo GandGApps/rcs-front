@@ -34,15 +34,13 @@ public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListIte
 
     }
 
-    public ProductShoppingListItemViewModel(ProductShoppingListItemDto product)
+    public ProductShoppingListItemViewModel(ProductShoppingListItemDto product, IOrder order)
     {
         Source = product;
 
-        var cashierService = Locator.Current.GetNotInitializedService<ICashierService>();
-
-        if (cashierService.IsInitialized)
+        if (order.IsInitialized)
         {
-            cashierService.BindAdditivesForProductShoppingListItem(product, x => new AdditiveShoppingListItemViewModel(x), out var additives);
+            order.BindAdditivesForProductShoppingListItem(product, x => new AdditiveShoppingListItemViewModel(x), out var additives);
             Additives = additives;
         }
         else
