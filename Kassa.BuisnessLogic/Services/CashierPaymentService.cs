@@ -10,6 +10,8 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.BuisnessLogic.Services;
 public class CashierPaymentService(IOrder cashierService) : BaseInitializableService, ICashierPaymentService, INotifyPropertyChanged
 {
+    public event Action? Payed;
+
     public IOrder Order => cashierService;
     [Reactive]
     public double Cash
@@ -85,6 +87,7 @@ public class CashierPaymentService(IOrder cashierService) : BaseInitializableSer
 
     public async Task Pay()
     {
+        Payed?.Invoke();
         await Task.Delay(1000);
     }
 

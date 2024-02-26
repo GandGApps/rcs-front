@@ -24,7 +24,7 @@ public class MainPageVm : PageViewModel
         get;
     }
 
-    public ReactiveCommand<Unit,Unit> OpenDocumnetsDialog
+    public ReactiveCommand<Unit, Unit> OpenDocumnetsDialog
     {
         get;
     }
@@ -45,6 +45,11 @@ public class MainPageVm : PageViewModel
     }
 
     public ICommand GoToCashier
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> OpenCurrentOrderCommand
     {
         get;
     }
@@ -71,9 +76,24 @@ public class MainPageVm : PageViewModel
 
             await mainViewModel.GoToPageCommand.Execute(new OrderVm(mainViewModel, order, cashierService)).FirstAsync();
         });
+
+        OpenCurrentOrderCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+
+            var cashierService = await Locator.GetInitializedService<ICashierService>();
+            var order = cashierService.CurrentOrder;
+
+            if (order == null)
+            {
+                await mainViewModel.OkMessage("Нет текущего заказа", "JustFailed");
+                return;
+            }
+
+            await mainViewModel.GoToPageCommand.Execute(new OrderVm(mainViewModel, order, cashierService)).FirstAsync();
+        });
     }
 
-    private ReactiveCommand<Unit,Unit> CreateOpenDialogCommand(Func<DialogViewModel> dialogViewModel) => ReactiveCommand.CreateFromTask(async () =>
+    private ReactiveCommand<Unit, Unit> CreateOpenDialogCommand(Func<DialogViewModel> dialogViewModel) => ReactiveCommand.CreateFromTask(async () =>
     {
         await MainViewModel!.DialogOpenCommand.Execute(dialogViewModel()).FirstAsync();
     });

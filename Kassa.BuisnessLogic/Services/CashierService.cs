@@ -57,6 +57,15 @@ internal class CashierService : BaseInitializableService, ICashierService
     {
         var paymentService = new CashierPaymentService(order);
 
+        paymentService.Payed += () =>
+        {
+            _orders.Remove(order);
+            if (CurrentOrder == order)
+            {
+                CurrentOrder = null;
+            }
+        };
+
         return new(paymentService);
     }
 

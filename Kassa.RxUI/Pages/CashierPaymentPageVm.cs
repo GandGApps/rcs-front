@@ -38,7 +38,7 @@ public class CashierPaymentPageVm : PageViewModel
         WithoutRevenueVm = new()
         {
             Description = "Без выручки",
-            
+
         };
 
         CashierPaymentItemVms = [CashVm, BankCardVm, CashlessPaymentVm, WithoutRevenueVm];
@@ -151,6 +151,30 @@ public class CashierPaymentPageVm : PageViewModel
                 SetDisplayText(ToEnter);
             }
         });
+
+        PayCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var loading = new LoadingDialogViewModel(mainViewModel)
+            {
+                Message = "Оплата..."
+            };
+
+            mainViewModel.DialogOpenCommand.Execute(loading).Subscribe();
+
+            await cashierPaymentService.Pay();
+
+            await loading.CloseAsync();
+
+            if (Change >= 0)
+            {
+                await mainViewModel.OkMessage("Сдача \n" + Change + " " + CurrencySymbol, "");
+            }
+            
+            await mainViewModel.OkMessage("Оплата прошла успешно", "");
+            await mainViewModel.GoToPageAndResetCommand.Execute(new MainPageVm(mainViewModel));
+
+
+        }, this.WhenAnyValue(x => x.IsExactAmount));
     }
 
     public ICashierPaymentService CashierPaymentService
@@ -301,6 +325,11 @@ public class CashierPaymentPageVm : PageViewModel
         get;
     }
 
+    public ReactiveCommand<Unit, Unit> PayCommand
+    {
+        get;
+    }
+
     [Reactive]
     public string CurrentPaymentSumText
     {
@@ -317,6 +346,12 @@ public class CashierPaymentPageVm : PageViewModel
     private bool Locker
     {
         get; set;
+    }
+
+    public extern bool IsExactAmount
+    {
+        [ObservableAsProperty]
+        get;
     }
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
@@ -430,6 +465,10 @@ public class CashierPaymentPageVm : PageViewModel
             })
             .DisposeWith(disposables);
 
+
+        this.WhenAnyValue(x => x.Total, x => x.ToEntered, (total, entered) => total <= entered)
+            .ToPropertyEx(this, x => x.IsExactAmount)
+            .DisposeWith(disposables);
     }
 
     private void ClearCurrentPaymentSum()

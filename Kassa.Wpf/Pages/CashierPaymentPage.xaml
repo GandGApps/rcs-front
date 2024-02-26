@@ -856,4 +856,33 @@
         </Border>
 
     </Grid>
+
+    <wnd:MainWindow.PageFooter>
+        <Button
+            x:Name="PublishCommentButton"
+            Grid.Column="2"
+            Width="{mx:AdaptiveSize 220}"
+            HorizontalAlignment="Right"
+            Command="{Binding PayCommand}">
+
+            <Button.Style>
+                <Style BasedOn="{StaticResource PrimaryButton}" TargetType="Button">
+                    <Setter Property="BorderThickness" Value="1" />
+                    <Setter Property="BorderBrush" Value="{StaticResource ClickableBg}" />
+
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsExactAmount}" Value="False">
+                            <Setter Property="IsHitTestVisible" Value="False" />
+                            <Setter Property="Opacity" Value="0.2" />
+                            <Setter Property="BorderBrush" Value="{DynamicResource AlternateForeground}" />
+                            <Setter Property="Background" Value="{StaticResource ClickableBg}" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+            Оплатить
+        </Button>
+
+    </wnd:MainWindow.PageFooter>
+
 </rxui:ReactiveUserControl>

@@ -62,9 +62,9 @@ public class MainViewModel : ReactiveObject, IScreen
         get; set;
     }
 
-    public ReactiveCommand<string, Unit> OkMessageDialogCommand
+    public ReactiveCommand<OkMessage, Unit> OkMessageDialogCommand
     {
-        get; 
+        get;
     }
 
     public MainViewModel()
@@ -151,14 +151,14 @@ public class MainViewModel : ReactiveObject, IScreen
             }
         });
 
-        OkMessageDialogCommand = ReactiveCommand.CreateFromTask<string>(async msg =>
+        OkMessageDialogCommand = ReactiveCommand.CreateFromTask<OkMessage>(async msg =>
         {
             var okMessageDialog = new OkMessageDialogViewModel
             {
-                Icon = "JustFailed",
-                Message = msg
+                Icon = msg.Icon,
+                Message = msg.Message
             };
-            await DialogOpenCommand.Execute().FirstAsync();
+            await DialogOpenCommand.Execute(okMessageDialog).FirstAsync();
 
             await okMessageDialog.WaitDialogClose();
         });
@@ -172,5 +172,14 @@ public class MainViewModel : ReactiveObject, IScreen
                     IsMainPage = true;
                 }
             });
+    }
+
+    public async Task OkMessage(string message, string icon = "JustOk")
+    {
+        await OkMessageDialogCommand.Execute(new OkMessage
+        {
+            Icon = icon,
+            Message = message
+        }).FirstAsync();
     }
 }

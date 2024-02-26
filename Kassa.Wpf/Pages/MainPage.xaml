@@ -271,7 +271,7 @@
     <local:MainWindow.PageFooter>
         <controls:ButtonWithIcon
             Click="ButtonWithIcon_Click"
-            Command="{Binding OpenSearchDialog}"
+            Command="{Binding OpenCurrentOrderCommand}"
             Content="Текущий заказ"
             Foreground="{DynamicResource DownMenuOrderBrush}"
             Icon="{StaticResource OrderIcon}">

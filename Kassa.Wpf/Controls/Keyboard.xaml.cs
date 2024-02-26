@@ -72,7 +72,7 @@ public partial class Keyboard : UserControl, IActivatableView
                 .Subscribe(x => KeyboardInfo.LineWidth = x)
                 .DisposeWith(disposables);
 
-            this.WhenAnyValue(x => x.KeyboardInfo, x => x.ActualWidth)
+            this.WhenAnyValue(x => x.KeyboardInfo, x => x.ActualWidth, x => x.Visibility)
                 .Select(x => x.Item1)
                 .Subscribe(x =>
                 {

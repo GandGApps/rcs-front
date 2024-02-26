@@ -28,7 +28,7 @@ public partial class OkMessageDialog : ClosableDialog<OkMessageDialogViewModel>
 
         this.WhenActivated(disposables =>
         {
-            this.OneWayBind(ViewModel, x => x.Icon, view =>  view.Icon.Data, iconName => App.Current.FindResource(iconName))
+            this.OneWayBind(ViewModel, x => x.Icon, view =>  view.Icon.Data, iconName => App.Current.TryFindResource(iconName))
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, vm => vm.Message, view => view.Message.Text)
