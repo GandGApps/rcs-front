@@ -385,27 +385,73 @@
                     Width="{mx:AdaptiveSize 175}"
                     Margin="{mx:AdaptiveSize Thickness='0,0,6,0'}"
                     HorizontalAlignment="Right"
-                    IsChecked="False"
-                    Style="{StaticResource BorderToggleCheckbox}">
+                    IsChecked="False">
 
-                    <Grid>
+                    <CheckBox.Style>
+                        <Style BasedOn="{StaticResource BorderToggleCheckbox}" TargetType="CheckBox">
+                            <Setter Property="Content">
+                                <Setter.Value>
+                                    <Grid>
 
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="{mx:AdaptiveSize GridLength=32}" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="{mx:AdaptiveSize GridLength=32}" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
 
-                        <Path Data="{StaticResource ReceiptIcon}" Fill="{DynamicResource AlternateForeground}" />
+                                        <Path
+                                            Width="{mx:AdaptiveSize 28}"
+                                            Height="{mx:AdaptiveSize 32}"
+                                            Data="{StaticResource ReceiptIcon}"
+                                            Fill="{DynamicResource AlternateForeground}" />
 
-                        <TextBlock
-                            Grid.Column="1"
-                            Margin="{mx:AdaptiveSize Thickness='12,0,0,0'}"
-                            Foreground="{DynamicResource AlternateForeground}"
-                            Style="{StaticResource SmallTextBlock}"
-                            Text="С товарным чеком"
-                            TextWrapping="Wrap" />
+                                        <TextBlock
+                                            Grid.Column="1"
+                                            Margin="{mx:AdaptiveSize Thickness='12,0,0,0'}"
+                                            Foreground="{DynamicResource AlternateForeground}"
+                                            Style="{StaticResource SmallTextBlock}"
+                                            Text="С товарным чеком"
+                                            TextWrapping="Wrap" />
 
-                    </Grid>
+                                    </Grid>
+                                </Setter.Value>
+
+                            </Setter>
+
+                            <Style.Triggers>
+                                <Trigger Property="IsChecked" Value="False">
+                                    <Setter Property="Content">
+                                        <Setter.Value>
+                                            <Grid>
+
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="{mx:AdaptiveSize GridLength=32}" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+
+                                                <Path
+                                                    Width="{mx:AdaptiveSize 28}"
+                                                    Height="{mx:AdaptiveSize 32}"
+                                                    Data="{StaticResource NotCheckedReceiptIcon}"
+                                                    Fill="{DynamicResource AlternateForeground}" />
+
+                                                <TextBlock
+                                                    Grid.Column="1"
+                                                    Margin="{mx:AdaptiveSize Thickness='12,0,0,0'}"
+                                                    Foreground="{DynamicResource AlternateForeground}"
+                                                    Style="{StaticResource SmallTextBlock}"
+                                                    Text="Без товарного чека"
+                                                    TextWrapping="Wrap" />
+
+                                            </Grid>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Trigger>
+                            </Style.Triggers>
+
+                        </Style>
+                    </CheckBox.Style>
+
+
 
                 </CheckBox>
 
@@ -858,30 +904,41 @@
     </Grid>
 
     <wnd:MainWindow.PageFooter>
-        <Button
-            x:Name="PublishCommentButton"
-            Grid.Column="2"
-            Width="{mx:AdaptiveSize 220}"
-            HorizontalAlignment="Right"
-            Command="{Binding PayCommand}">
 
-            <Button.Style>
-                <Style BasedOn="{StaticResource PrimaryButton}" TargetType="Button">
-                    <Setter Property="BorderThickness" Value="1" />
-                    <Setter Property="BorderBrush" Value="{StaticResource ClickableBg}" />
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsExactAmount}" Value="False">
-                            <Setter Property="IsHitTestVisible" Value="False" />
-                            <Setter Property="Opacity" Value="0.2" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource AlternateForeground}" />
-                            <Setter Property="Background" Value="{StaticResource ClickableBg}" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
-            Оплатить
-        </Button>
+            <controls:ButtonWithCornerRaduis Command="{Binding MainViewModel.GoBackCommand}" Style="{StaticResource BackButton}" />
+
+            <Button
+                x:Name="PublishCommentButton"
+                Grid.Column="2"
+                Width="{mx:AdaptiveSize 220}"
+                HorizontalAlignment="Right"
+                Command="{Binding PayCommand}">
+
+                <Button.Style>
+                    <Style BasedOn="{StaticResource PrimaryButton}" TargetType="Button">
+                        <Setter Property="BorderThickness" Value="1" />
+                        <Setter Property="BorderBrush" Value="{StaticResource ClickableBg}" />
+
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsExactAmount}" Value="False">
+                                <Setter Property="IsHitTestVisible" Value="False" />
+                                <Setter Property="Opacity" Value="0.2" />
+                                <Setter Property="BorderBrush" Value="{DynamicResource AlternateForeground}" />
+                                <Setter Property="Background" Value="{StaticResource ClickableBg}" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </Button.Style>
+                Оплатить
+            </Button>
+
+        </Grid>
 
     </wnd:MainWindow.PageFooter>
 

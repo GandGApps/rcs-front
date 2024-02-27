@@ -1,5 +1,5 @@
 ﻿<rxui:ReactiveUserControl
-    x:Class="Kassa.Wpf.Pages.CashierPage"
+    x:Class="Kassa.Wpf.Pages.OrderPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="clr-namespace:Kassa.Wpf.Behaviors"
@@ -816,14 +816,29 @@
     </Grid>
 
     <local:MainWindow.PageFooter>
-        <controls:ButtonWithIcon
-            VerticalContentAlignment="Center"
-            Command="{Binding GoToPaymentCommand}"
-            Content="Касса оплата"
-            Foreground="{DynamicResource AlternateForeground}"
-            Icon="{StaticResource CashierIcon}"
-            IsEnabled="True"
-            Style="{StaticResource ToggableBorderIconButton}" />
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <controls:ButtonWithCornerRaduis Command="{Binding MainViewModel.GoBackCommand}" Style="{StaticResource BackButton}" />
+
+            <controls:ButtonWithIcon
+                Grid.Column="1"
+                HorizontalAlignment="Right"
+                VerticalContentAlignment="Center"
+                Command="{Binding GoToPaymentCommand}"
+                Content="Касса оплата"
+                Foreground="{DynamicResource AlternateForeground}"
+                Icon="{StaticResource CashierIcon}"
+                IsEnabled="True"
+                Style="{StaticResource ToggableBorderIconButton}" />
+
+        </Grid>
+
+
     </local:MainWindow.PageFooter>
 
 </rxui:ReactiveUserControl>

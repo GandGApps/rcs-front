@@ -154,11 +154,10 @@
     <Style x:Key="PrimaryButton" TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource DefaultButtonBackground}" />
         <Setter Property="MinWidth" Value="{mx:AdaptiveSize 200}" />
-        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='16'}" />
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='15'}" />
         <Setter Property="FontSize" Value="{mx:AdaptiveSize 20}" />
         <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="Foreground" Value="{DynamicResource DefaultButtonForeground}" />
-        <Setter Property="MinHeight" Value="{mx:AdaptiveSize 56}" />
         <Setter Property="BorderBrush" Value="Transparent" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="Template">
@@ -641,5 +640,40 @@
         </Setter>
 
     </Style>
+
+    <Style
+        x:Key="BackButton"
+        BasedOn="{StaticResource {x:Type local:ButtonWithCornerRaduis}}"
+        TargetType="local:ButtonWithCornerRaduis">
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='0,15,0,15'}" />
+        <Setter Property="Background" Value="{StaticResource ClickableBg}" />
+
+        <Setter Property="Content">
+            <Setter.Value>
+                <StackPanel Orientation="Horizontal">
+                    <Path
+                        Width="{mx:AdaptiveSize 13}"
+                        Height="{mx:AdaptiveSize 22.7}"
+                        Data="{StaticResource Arrow}"
+                        Fill="White" />
+                    <TextBlock
+                        Margin="{mx:AdaptiveSize Thickness='7,0,0,0'}"
+                        VerticalAlignment="Center"
+                        FontSize="{mx:AdaptiveSize 13}"
+                        Foreground="White"
+                        Text="Назад" />
+                </StackPanel>
+            </Setter.Value>
+        </Setter>
+
+        <Style.Triggers>
+            <Trigger Property="IsPressed" Value="True">
+                <Setter Property="Background" Value="{StaticResource ClickableBg}" />
+            </Trigger>
+        </Style.Triggers>
+
+    </Style>
+
+
 
 </ResourceDictionary>

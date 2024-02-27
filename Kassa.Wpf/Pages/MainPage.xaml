@@ -270,6 +270,7 @@
 
     <local:MainWindow.PageFooter>
         <controls:ButtonWithIcon
+            HorizontalAlignment="Right"
             Click="ButtonWithIcon_Click"
             Command="{Binding OpenCurrentOrderCommand}"
             Content="Текущий заказ"

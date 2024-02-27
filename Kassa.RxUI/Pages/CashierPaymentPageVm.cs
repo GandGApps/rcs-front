@@ -46,17 +46,9 @@ public class CashierPaymentPageVm : PageViewModel
         SendReceiptCommand = ReactiveCommand.Create(() => { });
         EnableWithCheckboxCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            if (!WithReceipt)
-            {
-                await mainViewModel.DialogOpenCommand
+            await mainViewModel.DialogOpenCommand
                     .Execute(new SendReceiptDialogViewModel(mainViewModel, this))
                     .FirstAsync();
-            }
-            else
-            {
-                IsEmail = false;
-                IsPrinter = false;
-            }
         });
 
         AddDigitCommand = ReactiveCommand.Create<string>(digit =>
@@ -165,11 +157,11 @@ public class CashierPaymentPageVm : PageViewModel
 
             await loading.CloseAsync();
 
-            if (Change >= 0)
+            if (Change - 0.001 >= 0)
             {
                 await mainViewModel.OkMessage("Сдача \n" + Change + " " + CurrencySymbol, "");
             }
-            
+
             await mainViewModel.OkMessage("Оплата прошла успешно", "");
             await mainViewModel.GoToPageAndResetCommand.Execute(new MainPageVm(mainViewModel));
 
@@ -212,10 +204,11 @@ public class CashierPaymentPageVm : PageViewModel
         get; set;
     } = string.Empty;
 
-    public extern bool WithReceipt
+    [Reactive]
+    public bool WithReceipt
     {
-        [ObservableAsProperty]
         get;
+        set;
     }
 
     [Reactive]
@@ -369,16 +362,26 @@ public class CashierPaymentPageVm : PageViewModel
                          .Subscribe(x => Subtotal = x)
                          .DisposeWith(disposables);
 
-        this.WhenAnyValue(x => x.IsEmail, x => x.IsPrinter, (email, printer) => email || printer)
-            .ToPropertyEx(this, x => x.WithReceipt)
-            .DisposeWith(disposables);
-
         this.WhenAnyValue(x => x.Subtotal)
             .Subscribe(x => Total = x)
             .DisposeWith(disposables);
 
-        this.WhenAnyValue(x => x.IsEmail, x => x.IsPrinter, (email, printer) =>
+        this.WhenAnyValue(x => x.IsEmail, x => x.IsPrinter, x => x.WithReceipt, (email, printer, withReceipt) =>
             {
+                if (!withReceipt)
+                {
+                    return "Распечатать, переслать чек";
+                }
+
+                if (withReceipt)
+                {
+                    if (!email && !printer)
+                    {
+                        IsPrinter = true;
+                        return "Переслать чек";
+                    }
+                }
+
                 if (email)
                 {
                     return "Отправить на почту";

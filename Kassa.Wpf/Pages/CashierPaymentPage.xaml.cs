@@ -30,7 +30,7 @@ public partial class CashierPaymentPage : ReactiveUserControl<CashierPaymentPage
             this.OneWayBind(ViewModel, x => x.Total, x => x.TotalCost.Text, x => $"{x} ₽")
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.WithReceipt, x => x.HasReceipt.IsChecked)
+            this.Bind(ViewModel, x => x.WithReceipt, x => x.HasReceipt.IsChecked)
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, x => x.WithReceipt, x => x.ActionWithReceipt.IsHitTestVisible)
@@ -42,7 +42,7 @@ public partial class CashierPaymentPage : ReactiveUserControl<CashierPaymentPage
             this.OneWayBind(ViewModel, x=> x.ReceiptActionIcon, x => x.ActionWithReceipt.Icon, icon => (Geometry)App.Current.FindResource(icon))
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x => x.EnableWithCheckboxCommand, x => x.HasReceipt)
+            this.BindCommand(ViewModel, x => x.EnableWithCheckboxCommand, x => x.ActionWithReceipt)
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, x => x.ToEnter, x => x.ToEnter.Text, x => $"{x:N2} {ViewModel!.CurrencySymbol}")

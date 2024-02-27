@@ -94,7 +94,7 @@
                         <ContentPresenter
                             x:Name="PageFooterAdditionalContent"
                             Margin="{mx:AdaptiveSize Thickness=0\,0\,35\,0}"
-                            HorizontalAlignment="Right" />
+                            HorizontalAlignment="Stretch" />
 
                         <CheckBox
                             x:Name="IsMainPageCheckBox"
