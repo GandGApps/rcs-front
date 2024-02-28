@@ -12,11 +12,11 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Pages;
 public class AutorizationPageVm : PageViewModel
 {
-    public AutorizationPageVm(MainViewModel mainViewModel) : base(mainViewModel)
+    public AutorizationPageVm()
     {
         CloseCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await mainViewModel.DialogOpenCommand.Execute(new AreYouSureToTurnOffDialogViewModel(mainViewModel)).FirstAsync();
+            await MainViewModel.DialogOpenCommand.Execute(new AreYouSureToTurnOffDialogViewModel(MainViewModel)).FirstAsync();
         });
 
         LoginCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -24,7 +24,7 @@ public class AutorizationPageVm : PageViewModel
 
             if (Login == "admin" && Password == "admin")
             {
-                await mainViewModel.GoToPageCommand.Execute(new PincodePageVm(mainViewModel)).FirstAsync();
+                await MainViewModel.GoToPageCommand.Execute(new PincodePageVm(MainViewModel)).FirstAsync();
                 return true;
             }
             else

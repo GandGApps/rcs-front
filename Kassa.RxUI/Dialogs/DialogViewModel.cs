@@ -25,16 +25,6 @@ public abstract class DialogViewModel : BaseViewModel, IRoutableViewModel
         _onClose.OnNext(true);
     }
 
-    public DialogViewModel(MainViewModel mainViewModel) : base(mainViewModel)
-    {
-        HostScreen = mainViewModel;
-        _taskCompletionSource = new();
-
-        CloseCommand = ReactiveCommand.Create(Close, _onClose);
-
-        _onClose.OnNext(true);
-    }
-
     public virtual ReactiveCommand<Unit,Unit> CloseCommand
     {
         get;

@@ -30,7 +30,7 @@ public class OrderVm : PageViewModel
 
     private Action<bool>? _isMultiSelectSetter;
 
-    public OrderVm(MainViewModel mainViewModel, IOrder order, ICashierService cashierService) : base(mainViewModel)
+    public OrderVm(IOrder order, ICashierService cashierService)
     {
         _order = order;
         _cashierService = cashierService;
@@ -42,7 +42,7 @@ public class OrderVm : PageViewModel
                 Comment = TotalComment
             };
 
-            await mainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
+            await MainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
 
             await dialog.WaitDialogClose();
 
@@ -60,7 +60,7 @@ public class OrderVm : PageViewModel
             {
                 DiscountAccesser = x;
             });
-            var dialog = await mainViewModel.DialogOpenCommand.Execute(promo).FirstAsync();
+            var dialog = await MainViewModel.DialogOpenCommand.Execute(promo).FirstAsync();
 
             await dialog.WaitDialogClose();
         });
@@ -68,8 +68,8 @@ public class OrderVm : PageViewModel
         SearchAddictiveCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             var additiveService = await Locator.GetInitializedService<IAdditiveService>();
-            var addictiveDialog = new SearchAddictiveDialogViewModel(mainViewModel, additiveService, order);
-            var dialog = await mainViewModel.DialogOpenCommand.Execute(addictiveDialog).FirstAsync();
+            var addictiveDialog = new SearchAddictiveDialogViewModel(additiveService, order);
+            var dialog = await MainViewModel.DialogOpenCommand.Execute(addictiveDialog).FirstAsync();
 
             await dialog.WaitDialogClose();
         });
@@ -97,7 +97,7 @@ public class OrderVm : PageViewModel
         SearchProductCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             var searchProductDialog = new SearchProductDialogViewModel();
-            var dialog = await mainViewModel.DialogOpenCommand.Execute(searchProductDialog).FirstAsync();
+            var dialog = await MainViewModel.DialogOpenCommand.Execute(searchProductDialog).FirstAsync();
 
             await dialog.WaitDialogClose();
         });
@@ -106,7 +106,7 @@ public class OrderVm : PageViewModel
         {
             var dialog = new CommentDialogViewModel(this);
 
-            await mainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
+            await MainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
 
             await dialog.WaitDialogClose();
 
@@ -121,7 +121,7 @@ public class OrderVm : PageViewModel
 
             var dialog = new MoreCashierDialogViewModel(this);
 
-            await mainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
+            await MainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
 
             await dialog.WaitDialogClose();
         });
@@ -130,7 +130,7 @@ public class OrderVm : PageViewModel
         {
             var dialog = new DiscountsAndSurchargesDialogViewModel();
 
-            await mainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
+            await MainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
 
             await dialog.WaitDialogClose();
         });
@@ -138,9 +138,9 @@ public class OrderVm : PageViewModel
         GoToPaymentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             var payment = await _cashierService.CreatePayment(order);
-            var paymentPage = new CashierPaymentPageVm(mainViewModel, payment);
+            var paymentPage = new CashierPaymentPageVm(payment);
 
-            mainViewModel.GoToPageCommand.Execute(paymentPage).Subscribe();
+            MainViewModel.GoToPageCommand.Execute(paymentPage).Subscribe();
         });
     }
 

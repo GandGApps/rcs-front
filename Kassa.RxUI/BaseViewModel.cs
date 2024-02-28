@@ -27,7 +27,7 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
 
     protected static IReadonlyDependencyResolver Locator => Splat.Locator.Current;
 
-    public MainViewModel? MainViewModel
+    public MainViewModel MainViewModel
     {
         get;
     }
@@ -36,16 +36,18 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
         get;
     }
 
-    public BaseViewModel()
+    public BaseViewModel(): this(Locator.GetRequiredService<MainViewModel>())
     {
+        
+    }
+
+    public BaseViewModel(MainViewModel MainViewModel)
+    {
+        MainViewModel = MainViewModel;
+
         Activator = new();
 
         this.WhenActivated(OnActivated);
-    }
-
-    public BaseViewModel(MainViewModel mainViewModel) : this()
-    {
-        MainViewModel = mainViewModel;
     }
 
     protected virtual void Dispose(bool disposing)

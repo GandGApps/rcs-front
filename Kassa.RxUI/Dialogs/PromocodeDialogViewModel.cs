@@ -13,7 +13,7 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Dialogs;
 public class PromocodeDialogViewModel : DialogViewModel
 {
-    public PromocodeDialogViewModel(OrderVm cashierVm) : base(null!)
+    public PromocodeDialogViewModel(OrderVm cashierVm)
     {
         ApplyCommand = ReactiveCommand.CreateFromTask<Unit, IDiscountAccesser?>(async x =>
         {

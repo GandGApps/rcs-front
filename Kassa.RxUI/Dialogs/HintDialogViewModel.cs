@@ -15,7 +15,7 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Dialogs;
 public class HintDialogViewModel : DialogViewModel
 {
-    public HintDialogViewModel(MainViewModel mainViewModel, IReadOnlyList<HintVm> hintVms) : base(mainViewModel)
+    public HintDialogViewModel(IReadOnlyList<HintVm> hintVms)
     {
         Hints = hintVms;
 

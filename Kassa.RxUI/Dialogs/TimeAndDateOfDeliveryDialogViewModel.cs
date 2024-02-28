@@ -5,6 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Kassa.RxUI.Dialogs;
-public class DocumentsDialogViewModel : DialogViewModel
+internal class TimeAndDateOfDeliveryDialogViewModel
 {
 }

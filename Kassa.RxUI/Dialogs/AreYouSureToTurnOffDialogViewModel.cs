@@ -11,11 +11,11 @@ namespace Kassa.RxUI.Dialogs;
 public class AreYouSureToTurnOffDialogViewModel : DialogViewModel
 {
 
-    public AreYouSureToTurnOffDialogViewModel(MainViewModel mainViewModel)
+    public AreYouSureToTurnOffDialogViewModel(MainViewModel MainViewModel)
     {
         TurnOffCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await mainViewModel.CloseCommand.Execute().FirstAsync();
+            await MainViewModel.CloseCommand.Execute().FirstAsync();
         });
     }
 

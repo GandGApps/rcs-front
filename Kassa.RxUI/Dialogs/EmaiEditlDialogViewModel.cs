@@ -6,12 +6,12 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Dialogs;
 public class EmaiEditlDialogViewModel : DialogViewModel
 {
-    private readonly MainViewModel _mainViewModel;
+    private readonly MainViewModel _MainViewModel;
     private readonly CashierPaymentPageVm _cashierPaymentPageVm;
 
-    public EmaiEditlDialogViewModel(MainViewModel mainViewModel, CashierPaymentPageVm cashierPaymentPageVm) : base(mainViewModel)
+    public EmaiEditlDialogViewModel(CashierPaymentPageVm cashierPaymentPageVm)
     {
-        _mainViewModel = mainViewModel;
+        _MainViewModel = MainViewModel;
         _cashierPaymentPageVm = cashierPaymentPageVm;
 
         PublishEmailCommand = ReactiveCommand.CreateFromTask(async () =>

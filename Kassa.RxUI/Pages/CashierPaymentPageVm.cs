@@ -20,7 +20,7 @@ public class CashierPaymentPageVm : PageViewModel
 
     private bool _isFloat;
     private byte _afterSeparatorDigitCount;
-    public CashierPaymentPageVm(MainViewModel mainViewModel, ICashierPaymentService cashierPaymentService) : base(mainViewModel)
+    public CashierPaymentPageVm(ICashierPaymentService cashierPaymentService)
     {
         CashierPaymentService = cashierPaymentService;
         CashVm = new()
@@ -46,8 +46,8 @@ public class CashierPaymentPageVm : PageViewModel
         SendReceiptCommand = ReactiveCommand.Create(() => { });
         EnableWithCheckboxCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await mainViewModel.DialogOpenCommand
-                    .Execute(new SendReceiptDialogViewModel(mainViewModel, this))
+            await MainViewModel.DialogOpenCommand
+                    .Execute(new SendReceiptDialogViewModel(this))
                     .FirstAsync();
         });
 
@@ -146,12 +146,12 @@ public class CashierPaymentPageVm : PageViewModel
 
         PayCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var loading = new LoadingDialogViewModel(mainViewModel)
+            var loading = new LoadingDialogViewModel()
             {
                 Message = "Оплата..."
             };
 
-            mainViewModel.DialogOpenCommand.Execute(loading).Subscribe();
+            MainViewModel.DialogOpenCommand.Execute(loading).Subscribe();
 
             await cashierPaymentService.Pay();
 
@@ -159,11 +159,11 @@ public class CashierPaymentPageVm : PageViewModel
 
             if (Change - 0.001 >= 0)
             {
-                await mainViewModel.OkMessage("Сдача \n" + Change + " " + CurrencySymbol, "");
+                await MainViewModel.OkMessage("Сдача \n" + Change + " " + CurrencySymbol, "");
             }
 
-            await mainViewModel.OkMessage("Оплата прошла успешно", "");
-            await mainViewModel.GoToPageAndResetCommand.Execute(new MainPageVm(mainViewModel));
+            await MainViewModel.OkMessage("Оплата прошла успешно", "");
+            await MainViewModel.GoToPageAndResetCommand.Execute(new MainPageVm());
 
 
         }, this.WhenAnyValue(x => x.IsExactAmount));

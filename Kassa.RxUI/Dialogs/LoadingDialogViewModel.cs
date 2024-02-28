@@ -14,8 +14,4 @@ public class LoadingDialogViewModel : DialogViewModel
         get; set;
     } = null!;
 
-    public LoadingDialogViewModel(MainViewModel mainViewModel) : base(mainViewModel)
-    {
-
-    }
 }

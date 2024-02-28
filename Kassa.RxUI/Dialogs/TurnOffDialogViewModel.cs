@@ -11,11 +11,11 @@ using ReactiveUI;
 namespace Kassa.RxUI.Dialogs;
 public class TurnOffDialogViewModel : DialogViewModel
 {
-    public TurnOffDialogViewModel(MainViewModel mainViewModel) : base(mainViewModel)
+    public TurnOffDialogViewModel()
     {
         LogoutCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await mainViewModel.GoToPageAndResetCommand.Execute(new PincodePageVm(mainViewModel)).FirstAsync();
+            await MainViewModel.GoToPageAndResetCommand.Execute(new PincodePageVm(MainViewModel)).FirstAsync();
 
             await CloseAsync();
         });

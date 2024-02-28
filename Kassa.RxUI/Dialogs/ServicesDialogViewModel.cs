@@ -7,7 +7,4 @@ using System.Threading.Tasks;
 namespace Kassa.RxUI.Dialogs;
 public class ServicesDialogViewModel : DialogViewModel
 {
-    public ServicesDialogViewModel(MainViewModel mainViewModel) : base(mainViewModel)
-    {
-    }
 }

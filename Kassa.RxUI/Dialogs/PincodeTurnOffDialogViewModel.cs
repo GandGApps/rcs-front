@@ -10,16 +10,16 @@ using ReactiveUI;
 namespace Kassa.RxUI.Dialogs;
 public class PincodeTurnOffDialogViewModel : DialogViewModel
 {
-    public PincodeTurnOffDialogViewModel(MainViewModel mainViewModel) : base(mainViewModel)
+    public PincodeTurnOffDialogViewModel()
     {
         TurnOffCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await mainViewModel.DialogOpenCommand.Execute(new AreYouSureToTurnOffDialogViewModel(mainViewModel)).FirstAsync();
+            await MainViewModel.DialogOpenCommand.Execute(new AreYouSureToTurnOffDialogViewModel(MainViewModel)).FirstAsync();
         });
 
         BackToLoginPageCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await mainViewModel.GoBackCommand.Execute().FirstAsync();
+            await MainViewModel.GoBackCommand.Execute().FirstAsync();
             await CloseAsync();
         });
     }

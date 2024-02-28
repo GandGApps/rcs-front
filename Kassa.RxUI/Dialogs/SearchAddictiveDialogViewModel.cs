@@ -21,7 +21,7 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
     private readonly IAdditiveService _additiveService;
     private readonly IOrder _order;
 
-    public SearchAddictiveDialogViewModel(MainViewModel mainViewModel, IAdditiveService additiveService, IOrder order) : base(mainViewModel)
+    public SearchAddictiveDialogViewModel(IAdditiveService additiveService, IOrder order)
     {
         IsKeyboardVisible = false;
         _additiveService = additiveService;

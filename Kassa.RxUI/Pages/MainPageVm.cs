@@ -54,18 +54,18 @@ public class MainPageVm : PageViewModel
         get;
     }
 
-    public MainPageVm(MainViewModel mainViewModel) : base(mainViewModel)
+    public MainPageVm()
     {
         CloseCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await mainViewModel.DialogOpenCommand.Execute(new TurnOffDialogViewModel(mainViewModel)).FirstAsync();
+            await MainViewModel.DialogOpenCommand.Execute(new TurnOffDialogViewModel()).FirstAsync();
         });
 
-        OpenProfileDialog = CreateOpenDialogCommand(() => new ProfileDialogViewModel(mainViewModel));
-        OpenDocumnetsDialog = CreateOpenDialogCommand(() => new DocumentsDialogViewModel(mainViewModel));
-        OpenDeliviryDialog = CreateOpenDialogCommand(() => new DeliviryDialogViewModel(mainViewModel));
-        OpenPersonnelDialog = CreateOpenDialogCommand(() => new PersonnelDialogViewModel(mainViewModel));
-        OpenServicesDialog = CreateOpenDialogCommand(() => new ServicesDialogViewModel(mainViewModel));
+        OpenProfileDialog = CreateOpenDialogCommand(() => new ProfileDialogViewModel());
+        OpenDocumnetsDialog = CreateOpenDialogCommand(() => new DocumentsDialogViewModel());
+        OpenDeliviryDialog = CreateOpenDialogCommand(() => new DeliviryDialogViewModel());
+        OpenPersonnelDialog = CreateOpenDialogCommand(() => new PersonnelDialogViewModel());
+        OpenServicesDialog = CreateOpenDialogCommand(() => new ServicesDialogViewModel());
 
         GoToCashier = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -74,7 +74,7 @@ public class MainPageVm : PageViewModel
 
             await cashierService.SelectCurrentOrder(order);
 
-            await mainViewModel.GoToPageCommand.Execute(new OrderVm(mainViewModel, order, cashierService)).FirstAsync();
+            await MainViewModel.GoToPageCommand.Execute(new OrderVm(order, cashierService)).FirstAsync();
         });
 
         OpenCurrentOrderCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -85,11 +85,11 @@ public class MainPageVm : PageViewModel
 
             if (order == null)
             {
-                await mainViewModel.OkMessage("Нет текущего заказа", "JustFailed");
+                await MainViewModel.OkMessage("Нет текущего заказа", "JustFailed");
                 return;
             }
 
-            await mainViewModel.GoToPageCommand.Execute(new OrderVm(mainViewModel, order, cashierService)).FirstAsync();
+            await MainViewModel.GoToPageCommand.Execute(new OrderVm(order, cashierService)).FirstAsync();
         });
     }
 

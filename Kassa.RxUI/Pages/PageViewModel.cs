@@ -4,19 +4,26 @@ using System.Linq;
 using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.BuisnessLogic;
 using ReactiveUI;
 
 namespace Kassa.RxUI.Pages;
 public class PageViewModel : BaseViewModel, IRoutableViewModel
 {
-    public PageViewModel(MainViewModel mainViewModel) : base(mainViewModel)
+
+    public PageViewModel(MainViewModel MainViewModel) : base(MainViewModel)
     {
-        HostScreen = mainViewModel;
+        HostScreen = MainViewModel;
 
         GoBackCommand = ReactiveCommand.Create(() =>
         {
             HostScreen.Router.NavigateBack.Execute();
         });
+    }
+
+    public PageViewModel() : this(Locator.GetRequiredService<MainViewModel>())
+    {
+
     }
 
     public string? UrlPathSegment

@@ -5,6 +5,7 @@ using Kassa.RxUI.Dialogs;
 using Kassa.RxUI.Pages;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Splat;
 
 namespace Kassa.RxUI;
 
@@ -69,8 +70,10 @@ public class MainViewModel : ReactiveObject, IScreen
 
     public MainViewModel()
     {
+        Locator.CurrentMutable.RegisterConstant(this);
+
         Router = new();
-        Router.Navigate.Execute(new AutorizationPageVm(this));
+        Router.Navigate.Execute(new AutorizationPageVm());
 
         CloseCommand = ReactiveCommand.Create((ReactiveObject sender) => sender);
 

@@ -14,14 +14,14 @@ public class SendReceiptDialogViewModel : DialogViewModel
 {
     private readonly CashierPaymentPageVm _cashierPaymentPageVm;
 
-    public SendReceiptDialogViewModel(MainViewModel mainViewModel, CashierPaymentPageVm cashierPaymentPageVm) : base(mainViewModel)
+    public SendReceiptDialogViewModel(CashierPaymentPageVm cashierPaymentPageVm)
     {
         _cashierPaymentPageVm = cashierPaymentPageVm;
 
         EditEmailCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await mainViewModel.DialogOpenCommand
-                    .Execute(new EmaiEditlDialogViewModel(mainViewModel, cashierPaymentPageVm))
+            await MainViewModel.DialogOpenCommand
+                    .Execute(new EmaiEditlDialogViewModel(cashierPaymentPageVm))
                     .FirstAsync();
         });
     }

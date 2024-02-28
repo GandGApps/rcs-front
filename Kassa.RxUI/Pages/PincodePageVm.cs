@@ -33,14 +33,14 @@ public class PincodePageVm : PageViewModel
         get;
     }
 
-    public PincodePageVm(MainViewModel mainViewModel) : base(mainViewModel)
+    public PincodePageVm(MainViewModel MainViewModel) : base(MainViewModel)
     {
         RestoranName = "RestoranName";
         LicenseEndDate = DateTime.Now;
 
         CloseCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await mainViewModel.DialogOpenCommand.Execute(new PincodeTurnOffDialogViewModel(mainViewModel)).FirstAsync();
+            await MainViewModel.DialogOpenCommand.Execute(new PincodeTurnOffDialogViewModel()).FirstAsync();
         });
     }
 
@@ -53,7 +53,7 @@ public class PincodePageVm : PageViewModel
             .Subscribe(async x =>
             {
                 Pincode = string.Empty;
-                var loading = new LoadingDialogViewModel(MainViewModel!)
+                var loading = new LoadingDialogViewModel()
                 {
                     Message = "Запрос подключения для модуля: “SUPER_MODUL”"
                 };
@@ -72,7 +72,7 @@ public class PincodePageVm : PageViewModel
                 if (x == "0000")
                 {
                     await loading.CloseAsync();
-                    await MainViewModel.Router.NavigateAndReset.Execute(new MainPageVm(MainViewModel)).FirstAsync();
+                    await MainViewModel.Router.NavigateAndReset.Execute(new MainPageVm()).FirstAsync();
                     return;
                 }
 
