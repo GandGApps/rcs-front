@@ -53,7 +53,7 @@ public partial class MainPage : ReactiveUserControl<MainPageVm>
 
 
             ViewModel!.MainViewModel.DialogOpenCommand.Execute(
-                new HintDialogViewModel(ViewModel.MainViewModel, [
+                new HintDialogViewModel([
                     new("Labu labu dab", Profile, MainWindow.Root),
                     new("asdasdads", Cashbox, MainWindow.Root),
                     new("asdasd", Services, MainWindow.Root),

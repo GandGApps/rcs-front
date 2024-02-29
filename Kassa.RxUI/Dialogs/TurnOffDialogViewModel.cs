@@ -15,7 +15,7 @@ public class TurnOffDialogViewModel : DialogViewModel
     {
         LogoutCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await MainViewModel.GoToPageAndResetCommand.Execute(new PincodePageVm(MainViewModel)).FirstAsync();
+            await MainViewModel.GoToPageAndResetCommand.Execute(new PincodePageVm()).FirstAsync();
 
             await CloseAsync();
         });

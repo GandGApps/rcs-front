@@ -253,5 +253,5 @@ public partial class Keyboard : UserControl, IActivatableView
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture) => throw new NotImplementedException();
     }
 
-    public static readonly KeyboardInfo Numpad = KeyboardInfo.Numpad();
+    public static readonly KeyboardInfo Numpad = KeyboardInfo.IntegerNumpadWithDelivery();
 }

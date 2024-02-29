@@ -33,7 +33,7 @@ public class PincodePageVm : PageViewModel
         get;
     }
 
-    public PincodePageVm(MainViewModel MainViewModel) : base(MainViewModel)
+    public PincodePageVm()
     {
         RestoranName = "RestoranName";
         LicenseEndDate = DateTime.Now;

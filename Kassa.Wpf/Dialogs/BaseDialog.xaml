@@ -41,6 +41,13 @@
     </Style>
 
     <Style
+        x:Key="LargeMenu"
+        BasedOn="{StaticResource PrimaryMenu}"
+        TargetType="Border">
+        <Setter Property="Width" Value="{mx:AdaptiveSize 800}" />
+    </Style>
+
+    <Style
         x:Key="WideDialog"
         BasedOn="{StaticResource PrimaryMenu}"
         TargetType="Border">

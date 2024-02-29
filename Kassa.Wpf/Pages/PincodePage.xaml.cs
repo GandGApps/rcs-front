@@ -27,7 +27,7 @@ public partial class PincodePage : ReactiveUserControl<PincodePageVm>
     {
         InitializeComponent();
 
-        Keyboard.KeyboardInfo = KeyboardInfo.Numpad();
+        Keyboard.KeyboardInfo = KeyboardInfo.IntegerNumpadWithDelivery();
 
         CloseButton.DataContext = KeyInfo.Char(' ');
         TechSupport.DataContext = KeyInfo.Char(' ');

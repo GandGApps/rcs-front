@@ -142,6 +142,26 @@ public class OrderVm : PageViewModel
 
             MainViewModel.GoToPageCommand.Execute(paymentPage).Subscribe();
         });
+
+        OpenQuantityVolumeDialogCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            if (ShoppingListItems == null)
+            {
+                return;
+            }
+            var shoppingListItem = ShoppingListItems.FirstOrDefault(x => x.IsSelected);
+
+            if (shoppingListItem == null)
+            {
+                return;
+            }
+
+            var dialog = new QuantityVolumeDialogVewModel(shoppingListItem);
+
+            await MainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
+
+            await dialog.WaitDialogClose();
+        });
     }
 
     protected override ValueTask InitializeAsync(CompositeDisposable disposables)
@@ -316,5 +336,8 @@ public class OrderVm : PageViewModel
     {
         get; private set;
     }
-
+    public ReactiveCommand<Unit, Unit> OpenQuantityVolumeDialogCommand
+    {
+        get;
+    }
 }

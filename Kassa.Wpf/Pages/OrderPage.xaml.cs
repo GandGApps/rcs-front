@@ -80,6 +80,9 @@ public partial class OrderPage : ReactiveUserControl<OrderVm>
             this.BindCommand(ViewModel, x => x.OpenDiscountsAndSurchargesDialog, x => x.PricingDetailsButton)
                 .DisposeWith(disposables);
 
+            this.BindCommand(ViewModel,  x => x.OpenQuantityVolumeDialogCommand, x => x.QuantityVolumeButton)
+                .DisposeWith(disposables);
+
             ViewModel.WhenAnyValue(x => x.ShoppingListItems.Count)
                      .Buffer(2, 1)
                      .Subscribe(x =>

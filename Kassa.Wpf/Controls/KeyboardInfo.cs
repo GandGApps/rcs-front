@@ -201,7 +201,7 @@ public class KeyboardInfo: ReactiveObject
         return keyboard;
     }
 
-    public static KeyboardInfo Numpad()
+    public static KeyboardInfo IntegerNumpadWithDelivery()
     {
         var keyboard = new KeyboardInfo();
 
@@ -235,6 +235,78 @@ public class KeyboardInfo: ReactiveObject
         keyboard.Lines.Add(line4);
 
         keyboard.LineStarWidth = 3;
+
+        return keyboard;
+    }
+
+    public static KeyboardInfo Numpad()
+    {
+        var keyboard = new KeyboardInfo();
+
+        ObservableCollection<KeyInfo> line1 = [
+            KeyInfo.Char('1'),
+            KeyInfo.Char('2'),
+            KeyInfo.Char('3'),
+        ];
+
+        ObservableCollection<KeyInfo> line2 = [
+            KeyInfo.Char('4'),
+            KeyInfo.Char('5'),
+            KeyInfo.Char('6'),
+        ];
+
+        ObservableCollection<KeyInfo> line3 = [
+            KeyInfo.Char('7'),
+            KeyInfo.Char('8'),
+            KeyInfo.Char('9'),
+        ];
+
+        ObservableCollection<KeyInfo> line4 = [
+            KeyInfo.Char(','),
+            KeyInfo.Char('0'),
+            new() { IsClear = true },
+        ];
+
+        keyboard.Lines.Add(line1);
+        keyboard.Lines.Add(line2);
+        keyboard.Lines.Add(line3);
+        keyboard.Lines.Add(line4);
+
+        keyboard.LineStarWidth = 3;
+
+        return keyboard;
+    }
+
+    public static KeyboardInfo NumpadAdditivePorc()
+    {
+        var keyboard = new KeyboardInfo();
+
+        ObservableCollection<KeyInfo> line1 = [
+            KeyInfo.TextButton("0,25", 0.25),
+            KeyInfo.TextButton("0,33", 0.33),
+        ];
+
+        ObservableCollection<KeyInfo> line2 = [
+            KeyInfo.TextButton("0,5", 0.5),
+            KeyInfo.TextButton("0,75", 0.75),
+        ];
+
+        ObservableCollection<KeyInfo> line3 = [
+            KeyInfo.TextButton("1,25", 1.25),
+            KeyInfo.TextButton("1,33", 1.33),
+        ];
+
+        ObservableCollection<KeyInfo> line4 = [
+            KeyInfo.TextButton("1,5", 1.5),
+            KeyInfo.TextButton("1,75", 1.75)
+        ];
+
+        keyboard.Lines.Add(line1);
+        keyboard.Lines.Add(line2);
+        keyboard.Lines.Add(line3);
+        keyboard.Lines.Add(line4);
+
+        keyboard.LineStarWidth = 2;
 
         return keyboard;
     }

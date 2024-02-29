@@ -14,6 +14,12 @@ public class KeyInfo : ReactiveObject
     }
 
     [Reactive]
+    public object? Parameter
+    {
+        get; set;
+    }
+
+    [Reactive]
     public bool IsRegister
     {
         get; set;
@@ -82,5 +88,11 @@ public class KeyInfo : ReactiveObject
         Command = command,
         Size = new(width),
         IsIcon = true,
+    };
+
+    public static KeyInfo TextButton(string text, object parameter) => new()
+    {
+        Text = text,
+        Parameter = parameter,
     };
 }

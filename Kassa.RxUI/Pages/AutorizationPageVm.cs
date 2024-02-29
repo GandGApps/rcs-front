@@ -24,7 +24,7 @@ public class AutorizationPageVm : PageViewModel
 
             if (Login == "admin" && Password == "admin")
             {
-                await MainViewModel.GoToPageCommand.Execute(new PincodePageVm(MainViewModel)).FirstAsync();
+                await MainViewModel.GoToPageCommand.Execute(new PincodePageVm()).FirstAsync();
                 return true;
             }
             else

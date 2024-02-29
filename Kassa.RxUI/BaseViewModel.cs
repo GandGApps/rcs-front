@@ -41,9 +41,9 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
         
     }
 
-    public BaseViewModel(MainViewModel MainViewModel)
+    public BaseViewModel(MainViewModel mainViewModel)
     {
-        MainViewModel = MainViewModel;
+        MainViewModel = mainViewModel;
 
         Activator = new();
 
