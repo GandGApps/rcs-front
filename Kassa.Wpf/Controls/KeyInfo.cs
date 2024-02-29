@@ -90,9 +90,10 @@ public class KeyInfo : ReactiveObject
         IsIcon = true,
     };
 
-    public static KeyInfo TextButton(string text, object parameter) => new()
+    public static KeyInfo TextButton(string text, object parameter, ICommand command) => new()
     {
         Text = text,
         Parameter = parameter,
+        Command = command,
     };
 }

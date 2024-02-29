@@ -77,12 +77,16 @@
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
-                <TextBlock FontSize="16" Text="{Binding Count}" />
+                <TextBlock
+                    VerticalAlignment="Center"
+                    FontSize="{mx:AdaptiveSize 16}"
+                    Text="{Binding Count}" />
 
                 <TextBlock
                     Grid.Column="1"
-                    Margin="16,0,0,0"
-                    FontSize="16">
+                    Margin="{mx:AdaptiveSize Thickness='16,0,0,0'}"
+                    VerticalAlignment="Center"
+                    FontSize="{mx:AdaptiveSize 16}">
                     <Run Foreground="{DynamicResource ShoppingListItemViewDiscountForeground}">
                         <Run.Style>
                             <Style TargetType="Run">
@@ -96,7 +100,7 @@
                     </Run><Run Text="{Binding Name}" />
                 </TextBlock>
 
-                <TextBlock Grid.Column="2" FontSize="16">
+                <TextBlock Grid.Column="2" FontSize="{mx:AdaptiveSize 16}">
                     <Run Text="{Binding Price}" /> <Run Text="{Binding CurrencySymbol}" />
                 </TextBlock>
 

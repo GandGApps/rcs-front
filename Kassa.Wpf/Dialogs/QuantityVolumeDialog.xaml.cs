@@ -15,17 +15,23 @@ public partial class QuantityVolumeDialog : ClosableDialog<QuantityVolumeDialogV
         InitializeComponent();
 
         Numpad.KeyboardInfo = KeyboardInfo.Numpad();
-        NumpadAdditivePorc.KeyboardInfo = KeyboardInfo.NumpadAdditivePorc();
+        NumpadAdditivePorc.KeyboardInfo = KeyboardInfo.NumpadAdditivePorc(null!);
 
         this.WhenActivated(disposables =>
         {
             ProductName.Text = ViewModel!.ProductShoppingListItem.Name;
+            NumpadAdditivePorc.KeyboardInfo = KeyboardInfo.NumpadAdditivePorc(ViewModel!.AddPortionCommand);
 
+            OkButton.Command = ViewModel!.OkCommand;
+            CancelButton.Command = ViewModel!.CancelCommand;
 
-            this.OneWayBind(ViewModel, x => x.ProductShoppingListItem.Count, x => x.QuantityVolume.Text, x => x.ToString("0.##"))
+            this.OneWayBind(ViewModel, x => x.IncorrectPosiblePortionText, x => x.QuantityVolume.Text)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.ProductShoppingListItem.Count, x => x.QuantityVolumeProduct.Text, x => x.ToString("0.##"))
+            this.OneWayBind(ViewModel, x => x.IncorrectPosiblePortionText, x => x.QuantityVolumeProduct.Text)
+                .DisposeWith(disposables);
+
+            this.Bind(ViewModel, x => x.IncorrectPosiblePortionText, x => x.Numpad.Text)
                 .DisposeWith(disposables);
         });
     }

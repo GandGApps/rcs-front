@@ -2,6 +2,7 @@
 using System.Reactive.Linq;
 using System.Windows;
 using Kassa.RxUI;
+using Kassa.RxUI.Dialogs;
 using Kassa.RxUI.Pages;
 using Kassa.Wpf.Themes;
 using ReactiveUI;
@@ -35,10 +36,10 @@ public partial class OrderPage : ReactiveUserControl<OrderVm>
             this.BindCommand(ViewModel, x => x.ShoppingList.DecreaseCommand, x => x.DecreaseButton)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.ShoppingList.Subtotal, x => x.SubtotalCost.Text, x => $"{x} ₽")
+            this.OneWayBind(ViewModel, x => x.ShoppingList.Subtotal, x => x.SubtotalCost.Text, x => $"{x.ToString("0.##", QuantityVolumeDialogVewModel.RuCultureInfo)} ₽")
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.ShoppingList.Total, x => x.TotalCost.Text, x => $"{x} ₽")
+            this.OneWayBind(ViewModel, x => x.ShoppingList.Total, x => x.TotalCost.Text, x => $"{x.ToString("0.##", QuantityVolumeDialogVewModel.RuCultureInfo)} ₽")
                 .DisposeWith(disposables);
 
             this.BindCommand(ViewModel, x => x.ShoppingList.RemoveCommand, x => x.RemoveButton)

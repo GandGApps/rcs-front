@@ -212,6 +212,7 @@ public partial class Keyboard : UserControl, IActivatableView
                             }
 
                             button.Command = key.Command;
+                            button.CommandParameter = key.Parameter;
                         }
 
                         var adaptiveWidth = new AdaptiveSizeExtension((AdaptiveMarkupExtension.GetNotAdaptivedSize(ActualWidth, MainWindow.Instance.ActualWidth) / x.LineStarWidth) * (size));

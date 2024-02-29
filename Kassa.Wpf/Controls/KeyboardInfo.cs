@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -277,28 +278,28 @@ public class KeyboardInfo: ReactiveObject
         return keyboard;
     }
 
-    public static KeyboardInfo NumpadAdditivePorc()
+    public static KeyboardInfo NumpadAdditivePorc(ICommand command)
     {
         var keyboard = new KeyboardInfo();
 
         ObservableCollection<KeyInfo> line1 = [
-            KeyInfo.TextButton("0,25", 0.25),
-            KeyInfo.TextButton("0,33", 0.33),
+            KeyInfo.TextButton("0,25", 0.25, command),
+            KeyInfo.TextButton("0,33", 0.33, command),
         ];
 
         ObservableCollection<KeyInfo> line2 = [
-            KeyInfo.TextButton("0,5", 0.5),
-            KeyInfo.TextButton("0,75", 0.75),
+            KeyInfo.TextButton("0,5", 0.5, command),
+            KeyInfo.TextButton("0,75", 0.75, command),
         ];
 
         ObservableCollection<KeyInfo> line3 = [
-            KeyInfo.TextButton("1,25", 1.25),
-            KeyInfo.TextButton("1,33", 1.33),
+            KeyInfo.TextButton("1,25", 1.25, command),
+            KeyInfo.TextButton("1,33", 1.33, command),
         ];
 
         ObservableCollection<KeyInfo> line4 = [
-            KeyInfo.TextButton("1,5", 1.5),
-            KeyInfo.TextButton("1,75", 1.75)
+            KeyInfo.TextButton("1,5", 1.5, command),
+            KeyInfo.TextButton("1,75", 1.75, command)
         ];
 
         keyboard.Lines.Add(line1);
