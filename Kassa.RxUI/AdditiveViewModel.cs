@@ -31,7 +31,7 @@ public class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Guid, Addi
     });
 
 
-    public AdditiveViewModel(AdditiveDto additive, IOrder order)
+    public AdditiveViewModel(AdditiveDto additive, IOrderService order)
     {
         Id = additive.Id;
 

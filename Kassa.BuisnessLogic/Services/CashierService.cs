@@ -10,18 +10,18 @@ using Splat;
 namespace Kassa.BuisnessLogic.Services;
 internal class CashierService : BaseInitializableService, ICashierService
 {
-    private readonly ObservableCollection<IOrder> _orders = [];
+    private readonly ObservableCollection<IOrderService> _orders = [];
     private readonly IAdditiveService _additiveService;
     private readonly ICategoryService _categoryService;
     private readonly IProductService _productService;
 
 
-    public IOrder? CurrentOrder
+    public IOrderService? CurrentOrder
     {
         get; private set;
     }
 
-    public ReadOnlyObservableCollection<IOrder> Orders
+    public ReadOnlyObservableCollection<IOrderService> Orders
     {
         get;
     }
@@ -35,9 +35,9 @@ internal class CashierService : BaseInitializableService, ICashierService
         _productService = productService;
     }
 
-    public async ValueTask<IOrder> CreateOrder()
+    public async ValueTask<IOrderService> CreateOrder()
     {
-        var order = new Order(_productService, _categoryService, _additiveService);
+        var order = new OrderService(_productService, _categoryService, _additiveService);
         await order.Initialize();
 
         order.DisposeWith(InternalDisposables);
@@ -47,13 +47,13 @@ internal class CashierService : BaseInitializableService, ICashierService
     }
 
 
-    public ValueTask SelectCurrentOrder(IOrder order)
+    public ValueTask SelectCurrentOrder(IOrderService order)
     {
         CurrentOrder = order;
         return ValueTask.CompletedTask;
     }
 
-    public ValueTask<ICashierPaymentService> CreatePayment(IOrder order)
+    public ValueTask<ICashierPaymentService> CreatePayment(IOrderService order)
     {
         var paymentService = new CashierPaymentService(order);
 

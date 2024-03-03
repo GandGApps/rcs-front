@@ -34,7 +34,7 @@ public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListIte
 
     }
 
-    public ProductShoppingListItemViewModel(ProductShoppingListItemDto product, IOrder order)
+    public ProductShoppingListItemViewModel(ProductShoppingListItemDto product, IOrderService order)
     {
         Source = product;
 

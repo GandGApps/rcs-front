@@ -18,10 +18,15 @@
     <Grid>
 
         <Grid.RowDefinitions>
-            <RowDefinition Height="{mx:AdaptiveSize 85}" />
+            <RowDefinition Height="{mx:AdaptiveSize GridLength=85}" />
+            <RowDefinition Height="{mx:AdaptiveSize GridLength=55}" />
         </Grid.RowDefinitions>
 
-        <Border Padding="{mx:AdaptiveSize Thickness='15,20,15,10'}" Background="{DynamicResource SurfaceBrush}">
+        <Border
+            Padding="{mx:AdaptiveSize Thickness='15,20,15,10'}"
+            Background="{DynamicResource SurfaceBrush}"
+            BorderBrush="{DynamicResource AlternateForeground}"
+            BorderThickness="0,0,0,1">
 
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -42,6 +47,7 @@
                         <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness=6}" />
                         <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='5,0,5,0'}" />
                         <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="MinWidth" Value="{mx:AdaptiveSize 155}" />
                         <Setter Property="Height" Value="{mx:AdaptiveSize 52}" />
                         <Setter Property="Template">
                             <Setter.Value>
@@ -51,7 +57,7 @@
                                         Height="{TemplateBinding Height}"
                                         Padding="{TemplateBinding Padding}"
                                         Background="{TemplateBinding Background}"
-                                        CornerRadius="6">
+                                        CornerRadius="{mx:AdaptiveSize CornerRadius='8'}">
                                         <ContentPresenter
                                             Grid.Column="1"
                                             Content="{TemplateBinding Content}"
@@ -134,6 +140,111 @@
 
             </Grid>
 
+        </Border>
+
+        <Border Grid.Row="1" Background="{DynamicResource SurfaceBrush}">
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.Resources>
+                    <Style TargetType="RadioButton">
+                        <Setter Property="Foreground" Value="{DynamicResource AlternateForeground}" />
+                        <Setter Property="Background" Value="{StaticResource ClickableBg}" />
+                        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness=6}" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                        <Setter Property="MinWidth" Value="{mx:AdaptiveSize 155}" />
+                        <Setter Property="Height" Value="{mx:AdaptiveSize 52}" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="RadioButton">
+                                    <Border
+                                        Width="{TemplateBinding Width}"
+                                        Height="{TemplateBinding Height}"
+                                        Padding="{TemplateBinding Padding}"
+                                        Background="{TemplateBinding Background}">
+                                        <ContentPresenter
+                                            Grid.Column="1"
+                                            Content="{TemplateBinding Content}"
+                                            ContentTemplate="{TemplateBinding ContentTemplate}"
+                                            TextBlock.FontSize="{TemplateBinding FontSize}"
+                                            TextBlock.Foreground="{TemplateBinding Foreground}" />
+                                    </Border>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+
+                        <Style.Triggers>
+                            <Trigger Property="IsChecked" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource AccentBrush2}" />
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+
+                    <Style
+                        x:Key="RadioButtonText"
+                        BasedOn="{StaticResource Large}"
+                        TargetType="TextBlock">
+                        <Setter Property="Foreground" Value="{DynamicResource AlternateForeground}" />
+                        <Setter Property="FontWeight" Value="SemiBold" />
+                        <Setter Property="HorizontalAlignment" Value="Center" />
+                        <Setter Property="VerticalAlignment" Value="Center" />
+                    </Style>
+
+                </Grid.Resources>
+
+                <RadioButton x:Name="Unconfirmed">
+                    <TextBlock Style="{StaticResource RadioButtonText}">
+                        <Run Text="Неподтв. " /><Run x:Name="UnconfirmedCount" d:Text="0" />
+                    </TextBlock>
+                </RadioButton>
+
+                <RadioButton x:Name="New" Grid.Column="1">
+                    <TextBlock Style="{StaticResource RadioButtonText}">
+                        <Run Text="Новые " /><Run x:Name="NewCount" d:Text="0" />
+                    </TextBlock>
+                </RadioButton>
+
+                <RadioButton x:Name="InCooking" Grid.Column="2">
+                    <TextBlock Style="{StaticResource RadioButtonText}">
+                        <Run Text="Готовится " /><Run x:Name="InCookingCount" d:Text="0" />
+                    </TextBlock>
+                </RadioButton>
+
+                <RadioButton x:Name="Ready" Grid.Column="3">
+                    <TextBlock Style="{StaticResource RadioButtonText}">
+                        <Run Text="Готовы " /><Run x:Name="ReadyCount" d:Text="0" />
+                    </TextBlock>
+                </RadioButton>
+
+                <RadioButton x:Name="OnTheWay" Grid.Column="4">
+                    <TextBlock Style="{StaticResource RadioButtonText}">
+                        <Run Text="В пути " /><Run x:Name="OnTheWayCount" d:Text="0" />
+                    </TextBlock>
+                </RadioButton>
+
+                <RadioButton x:Name="Closed" Grid.Column="5">
+                    <TextBlock Style="{StaticResource RadioButtonText}">
+                        <Run Text="Закры-е " /><Run x:Name="ClosedCount" d:Text="0" />
+                    </TextBlock>
+                </RadioButton>
+
+                <RadioButton x:Name="Cancel" Grid.Column="6">
+                    <TextBlock Style="{StaticResource RadioButtonText}">
+                        <Run Text="Отмена" /><Run x:Name="CancelCount" d:Text="0" />
+                    </TextBlock>
+                </RadioButton>
+
+            </Grid>
         </Border>
 
     </Grid>

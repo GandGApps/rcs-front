@@ -25,12 +25,12 @@ public class OrderVm : PageViewModel
 {
     private readonly Dictionary<object, IEnumerable<ProductViewModel>> _categories = [];
 
-    private readonly IOrder _order;
+    private readonly IOrderService _order;
     private readonly ICashierService _cashierService;
 
     private Action<bool>? _isMultiSelectSetter;
 
-    public OrderVm(IOrder order, ICashierService cashierService)
+    public OrderVm(IOrderService order, ICashierService cashierService)
     {
         _order = order;
         _cashierService = cashierService;

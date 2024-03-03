@@ -8,18 +8,18 @@ using System.Threading.Tasks;
 namespace Kassa.BuisnessLogic.Services;
 public interface ICashierService : IInitializableService
 {
-    public IOrder? CurrentOrder
+    public IOrderService? CurrentOrder
     {
         get;
     }
 
-    public ReadOnlyObservableCollection<IOrder> Orders
+    public ReadOnlyObservableCollection<IOrderService> Orders
     {
         get;
     }
 
-    public ValueTask<IOrder> CreateOrder();
-    public ValueTask<ICashierPaymentService> CreatePayment(IOrder order);
+    public ValueTask<IOrderService> CreateOrder();
+    public ValueTask<ICashierPaymentService> CreatePayment(IOrderService order);
 
-    public ValueTask SelectCurrentOrder(IOrder order);
+    public ValueTask SelectCurrentOrder(IOrderService order);
 }

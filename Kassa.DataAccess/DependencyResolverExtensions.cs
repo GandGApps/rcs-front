@@ -17,5 +17,6 @@ public static class DependencyResolverExtensions
                 IRepository<Additive>.CreateMock("MockAdditive.json")
             )
         );
+        services.RegisterConstant<IRepository<Order>>(new IRepository<Order>.MockRepository([]));
     }
 }
