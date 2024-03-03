@@ -15,6 +15,8 @@ namespace Kassa.Wpf;
 /// </summary>
 public partial class App : Application
 {
+    public static readonly CultureInfo RuCulture = new("ru-RU");
+
     private static readonly Dictionary<string, string[]> _lightTheme = new()
 {
     { "Theme", new[] { "SubtotalButtonBorderBrush", "SubtotalSeparator" } },

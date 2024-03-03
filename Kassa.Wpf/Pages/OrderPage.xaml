@@ -823,6 +823,7 @@
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
@@ -830,6 +831,18 @@
 
             <controls:ButtonWithIcon
                 Grid.Column="1"
+                Margin="{mx:AdaptiveSize Thickness='50,0,0,0'}"
+                HorizontalAlignment="Right"
+                VerticalContentAlignment="Center"
+                Command="{Binding GoToAllOrdersCommand}"
+                Content="ВСЕ ЗАКАЗЫ"
+                Foreground="{DynamicResource AlternateForeground}"
+                Icon="{StaticResource AllOrdersIcon}"
+                IsEnabled="True"
+                Style="{StaticResource ToggableBorderIconButton}" />
+
+            <controls:ButtonWithIcon
+                Grid.Column="2"
                 HorizontalAlignment="Right"
                 VerticalContentAlignment="Center"
                 Command="{Binding GoToPaymentCommand}"

@@ -162,6 +162,12 @@ public class OrderVm : PageViewModel
 
             await dialog.WaitDialogClose();
         });
+
+        GoToAllOrdersCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var allOrdersPage = new AllOrdersPageVm();
+            await MainViewModel.GoToPageCommand.Execute(allOrdersPage).FirstAsync();
+        });
     }
 
     protected override ValueTask InitializeAsync(CompositeDisposable disposables)
@@ -171,7 +177,7 @@ public class OrderVm : PageViewModel
         _order.BindSelectedCategoryItems(out var categoryItems)
                        .DisposeWith(disposables);
 
-        _order.BindShoppingListItems(x => new ProductShoppingListItemViewModel(x,_order), out var shoppingListItems)
+        _order.BindShoppingListItems(x => new ProductShoppingListItemViewModel(x, _order), out var shoppingListItems)
                        .DisposeWith(disposables);
 
         _order.BindAdditivesForSelectedProduct(x => new AdditiveViewModel(x, _order), out var fastAdditives)
@@ -321,6 +327,11 @@ public class OrderVm : PageViewModel
     }
 
     public ReactiveCommand<Unit, Unit> GoToPaymentCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> GoToAllOrdersCommand
     {
         get;
     }
