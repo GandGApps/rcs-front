@@ -16,7 +16,7 @@
     xmlns:views="clr-namespace:Kassa.Wpf.Views"
     xmlns:vm="clr-namespace:Kassa.RxUI;assembly=Kassa.RxUI"
     x:Name="Root"
-    Padding="{mx:AdaptiveSize Thickness={StaticResource FooterSizeAsThickness}}"
+    Padding="{mx:AdaptiveSize Thickness={StaticResource PagePaddingWithFooterSize}}"
     d:DataContext="{d:DesignInstance Type=pages:OrderVm}"
     d:DesignHeight="840"
     d:DesignWidth="1440"

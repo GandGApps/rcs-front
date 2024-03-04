@@ -229,4 +229,9 @@
 
     <SolidColorBrush x:Key="CheckboxCircleColor" Color="Black" />
 
+    <SolidColorBrush
+        x:Key="DatagridLineColor"
+        Opacity="0.5"
+        Color="#8BA1B1" />
+
 </ResourceDictionary>

@@ -15,7 +15,7 @@
     xmlns:system="clr-namespace:System;assembly=mscorlib"
     xmlns:vm="clr-namespace:Kassa.RxUI;assembly=Kassa.RxUI"
     xmlns:wnd="clr-namespace:Kassa.Wpf"
-    Padding="{mx:AdaptiveSize Thickness={StaticResource FooterSizeAsThickness}}"
+    Padding="{mx:AdaptiveSize Thickness={StaticResource PagePaddingWithFooterSize}}"
     d:DataContext="{d:DesignInstance Type=pages:CashierPaymentPageVm}"
     d:DesignHeight="840"
     d:DesignWidth="1440"

@@ -464,7 +464,7 @@
     <system:Double x:Key="FooterSize">75</system:Double>
     <GridLength x:Key="FooterSizeAsGridLength">75</GridLength>
     <Thickness
-        x:Key="FooterSizeAsThickness"
+        x:Key="PagePaddingWithFooterSize"
         Bottom="80"
         Left="5"
         Right="5"

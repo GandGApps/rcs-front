@@ -70,5 +70,7 @@ public interface IOrderService : IInitializableService, INotifyPropertyChanged
     public Task DecreaseSelectedProductShoppingListItem();
     public Task RemoveSelectedProductShoppingListItem();
     public ValueTask SelectFavourite(int favourite);
+
+    public ValueTask<OrderDto> GetOrder();
     
 }

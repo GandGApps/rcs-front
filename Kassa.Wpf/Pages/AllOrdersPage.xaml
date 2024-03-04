@@ -20,6 +20,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="{mx:AdaptiveSize GridLength=85}" />
             <RowDefinition Height="{mx:AdaptiveSize GridLength=55}" />
+            <RowDefinition Height="1*" />
         </Grid.RowDefinitions>
 
         <Border
@@ -246,6 +247,31 @@
 
             </Grid>
         </Border>
+
+        <DataGrid
+            Grid.Row="2"
+            ColumnHeaderStyle="{DynamicResource PrimaryDataGridColumnHeader}"
+            IsReadOnly="True"
+            Style="{StaticResource PrimaryDataGrid}">
+            <DataGrid.Columns>
+                <DataGridTextColumn Width="*" Header="№" />
+                <DataGridTextColumn Width="*" Header="Статус" />
+                <DataGridTextColumn Width="*" Header="Время доставки" />
+                <DataGridTextColumn Width="*" Header="Адрес" />
+                <DataGridTextColumn Width="*" Header="Курьер" />
+                <DataGridTextColumn Width="*" Header="Клиент" />
+                <DataGridTextColumn Width="*" Header="Коммент." />
+                <DataGridTextColumn Width="*" Header="Сумма" />
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Path
+            Grid.Row="2"
+            Width="{mx:AdaptiveSize 315}"
+            Data="{StaticResource DeliveryTruck}"
+            Fill="{DynamicResource PrimaryForeground}"
+            Opacity="0.1" />
+
 
     </Grid>
 </rxui:ReactiveUserControl>

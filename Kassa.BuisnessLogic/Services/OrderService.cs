@@ -732,4 +732,10 @@ internal class OrderService(IProductService productService, ICategoryService cat
             _additivesInProductDto.Remove(product.Id);
         }
     }
+
+    public ValueTask<OrderDto> GetOrder()
+    {
+        return new();
+    }
+
 }
