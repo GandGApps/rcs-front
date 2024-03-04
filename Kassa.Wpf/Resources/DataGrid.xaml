@@ -158,7 +158,9 @@
         <Setter Property="Padding" Value="6" />
         <Setter Property="FontSize" Value="{mx:AdaptiveSize 14}" />
         <Setter Property="FontFamily" Value="{DynamicResource Montseratt}" />
+        <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="Background" Value="{DynamicResource Theme}" />
+        <Setter Property="Height" Value="{mx:AdaptiveSize 40}" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type DataGridColumnHeader}">
