@@ -6,57 +6,44 @@ using System.Threading.Tasks;
 using Kassa.DataAccess;
 
 namespace Kassa.BuisnessLogic.Dto;
-public class OrderDto
+public class OrderedProductDto
 {
     public Guid Id
     {
         get; set;
     }
 
-    public OrderStatus Status
+    public Guid ProductId
     {
         get; set;
     }
 
-    public DateTime CreatedAt
-    {
-        get; set;
-    }
-    public DateTime DeliveryTime
+    public int Count
     {
         get; set;
     }
 
-    public string Address
+    public double Price
     {
         get; set;
     }
 
-    public CourierDto Courier
+    public double TotalPrice
     {
         get; set;
     }
 
-    public Guid CourierId
+    public double SubTotalPrice
     {
         get; set;
     }
 
-    public IEnumerable<OrderedProductDto> Products
-    {
-        get; set;
-    }
-    public string Comment
+    public double Discount
     {
         get; set;
     }
 
-    public int TotalSum
-    {
-        get; set;
-    }
-
-    public ClientDto Client
+    public IEnumerable<OrderedAdditiveDto> Additives
     {
         get; set;
     }

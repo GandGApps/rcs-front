@@ -735,6 +735,8 @@ internal class OrderService(IProductService productService, ICategoryService cat
 
     public ValueTask<OrderDto> GetOrder()
     {
+        var orderDto = new OrderDto();
+
         return new();
     }
 

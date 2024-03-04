@@ -20,8 +20,43 @@ public class Order : IModel
         get; set;
     }
 
+    public DateTime DeliveryTime
+    {
+        get; set;
+    }
+
+    public string Address
+    {
+        get; set;
+    }
+
+    public Courier Courier
+    {
+        get; set;
+    }
+
+    public Guid CourierId
+    {
+        get; set;
+    }
+
     public IEnumerable<OrderedProduct> Products
     {
-        get;
+        get; set;
+    }
+
+    public string Comment
+    {
+        get; set;
+    }
+
+    public int TotalSum
+    {
+        get; set;
+    }
+
+    public Client Client
+    {
+        get; set;
     }
 }
