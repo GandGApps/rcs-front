@@ -22,22 +22,22 @@ public class OrderDto
     {
         get; set;
     }
-    public DateTime DeliveryTime
+    public DateTime? DeliveryTime
     {
         get; set;
     }
 
-    public string Address
+    public string? Address
     {
         get; set;
     }
 
-    public CourierDto Courier
+    public CourierDto? Courier
     {
         get; set;
     }
 
-    public Guid CourierId
+    public Guid? CourierId
     {
         get; set;
     }
@@ -45,18 +45,34 @@ public class OrderDto
     public IEnumerable<OrderedProductDto> Products
     {
         get; set;
-    }
+    } = [];
+
     public string Comment
     {
         get; set;
-    }
+    } = string.Empty;
 
-    public int TotalSum
+    public double TotalSum
     {
         get; set;
     }
 
-    public ClientDto Client
+    public double SubtotalSum
+    {
+        get; set;
+    }
+
+    public double Discount
+    {
+        get; set;
+    }
+
+    public ClientDto? Client
+    {
+        get; set;
+    }
+
+    public Guid? ClientId
     {
         get; set;
     }

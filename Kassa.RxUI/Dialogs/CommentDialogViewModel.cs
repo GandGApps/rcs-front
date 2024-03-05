@@ -11,7 +11,7 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Dialogs;
 public class CommentDialogViewModel : DialogViewModel
 {
-    public CommentDialogViewModel(OrderVm cashierVm) : base()
+    public CommentDialogViewModel(OrderEditPageVm cashierVm) : base()
     {
         CashierVm = cashierVm;
 
@@ -26,7 +26,7 @@ public class CommentDialogViewModel : DialogViewModel
         });
     }
 
-    public OrderVm CashierVm
+    public OrderEditPageVm CashierVm
     {
         get;
     }

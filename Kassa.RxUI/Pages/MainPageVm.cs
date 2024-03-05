@@ -74,7 +74,7 @@ public class MainPageVm : PageViewModel
 
             await cashierService.SelectCurrentOrder(order);
 
-            await MainViewModel.GoToPageCommand.Execute(new OrderVm(order, cashierService)).FirstAsync();
+            await MainViewModel.GoToPageCommand.Execute(new OrderEditPageVm(order, cashierService)).FirstAsync();
         });
 
         OpenCurrentOrderCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -89,7 +89,7 @@ public class MainPageVm : PageViewModel
                 return;
             }
 
-            await MainViewModel.GoToPageCommand.Execute(new OrderVm(order, cashierService)).FirstAsync();
+            await MainViewModel.GoToPageCommand.Execute(new OrderEditPageVm(order, cashierService)).FirstAsync();
         });
     }
 

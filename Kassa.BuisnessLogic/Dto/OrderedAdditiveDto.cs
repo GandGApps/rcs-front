@@ -36,4 +36,14 @@ public class OrderedAdditiveDto
     {
         get; set;
     }
+
+    public double Count
+    {
+        get; set;
+    }
+
+    public string Measure
+    {
+        get; set;
+    }
 }

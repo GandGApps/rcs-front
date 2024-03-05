@@ -249,6 +249,7 @@
         </Border>
 
         <DataGrid
+            x:Name="Orders"
             Grid.Row="2"
             ColumnHeaderStyle="{DynamicResource PrimaryDataGridColumnHeader}"
             IsReadOnly="True"

@@ -21,6 +21,20 @@ public record ProductShoppingListItemDto : IShoppingListItemDto
         Discount = 1;
     }
 
+    public ProductShoppingListItemDto(OrderedProductDto orderedProduct, ProductDto product)
+    {
+        Id = orderedProduct.Id;
+        ItemId = orderedProduct.ProductId;
+        Name = product.Name;
+        Price = orderedProduct.Price;
+        CurrencySymbol = product.CurrencySymbol;
+        Measure = product.Measure;
+        Count = orderedProduct.Count;
+        Discount = orderedProduct.Discount;
+        HasDiscount = orderedProduct.Discount < 1;
+        AdditiveInfo = orderedProduct.Comment;
+    }
+
     public Guid ItemId
     {
         get;
@@ -28,7 +42,7 @@ public record ProductShoppingListItemDto : IShoppingListItemDto
 
     public Guid Id
     {
-        get; init;
+        get; set;
     }
 
     public string Name
@@ -43,7 +57,7 @@ public record ProductShoppingListItemDto : IShoppingListItemDto
 
     public double Count
     {
-        get; init;
+        get; set;
     }
     public string CurrencySymbol
     {
@@ -52,7 +66,7 @@ public record ProductShoppingListItemDto : IShoppingListItemDto
     public double Discount
     {
         get;
-        init;
+        set;
     }
     public bool HasDiscount
     {
@@ -66,13 +80,13 @@ public record ProductShoppingListItemDto : IShoppingListItemDto
     public double Price
     {
         get;
-        init;
+        set;
     }
     public double SubtotalSum => Price * Count;
     public double TotalSum => SubtotalSum * Discount;
 
     public string? AdditiveInfo
     {
-        get; init;
+        get; set;
     }
 }

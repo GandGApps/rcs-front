@@ -18,15 +18,35 @@ public record AdditiveShoppingListItemDto : IShoppingListItemDto
         Count = 1;
         Discount = 1;
         Portion = additiveDto.Portion;
+        TotalSum = Price;
+        SubtotalSum = Price;
 
         IsSelected = false;
+        ContainingProduct = productShopping;
+    }
+
+    public AdditiveShoppingListItemDto(OrderedAdditiveDto orderedAdditive, ProductShoppingListItemDto productShopping, AdditiveDto additiveDto)
+    {
+        Id = orderedAdditive.Id;
+        ItemId = additiveDto.Id;
+        Name = additiveDto.Name;
+        Price = additiveDto.Price;
+        CurrencySymbol = additiveDto.CurrencySymbol;
+        Measure = additiveDto.Measure;
+        Count = orderedAdditive.Count;
+        Discount = orderedAdditive.Discount;
+        Portion = additiveDto.Portion;
+        SubtotalSum = orderedAdditive.SubtotalPrice;
+        TotalSum = orderedAdditive.TotalPrice;
+
+        IsSelected = true;
         ContainingProduct = productShopping;
     }
 
     public Guid Id
     {
         get;
-        init;
+        set;
     }
     public Guid ItemId
     {
@@ -43,7 +63,7 @@ public record AdditiveShoppingListItemDto : IShoppingListItemDto
     public double Count
     {
         get;
-        init;
+        set;
     }
     public string CurrencySymbol
     {
@@ -52,7 +72,7 @@ public record AdditiveShoppingListItemDto : IShoppingListItemDto
     public double Discount
     {
         get;
-        init;
+        set;
     }
     public bool HasDiscount
     {
@@ -66,7 +86,7 @@ public record AdditiveShoppingListItemDto : IShoppingListItemDto
     public double Price
     {
         get;
-        init;
+        set;
     }
     public double SubtotalSum
     {

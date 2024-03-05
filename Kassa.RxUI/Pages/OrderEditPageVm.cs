@@ -21,7 +21,7 @@ using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.RxUI.Pages;
-public class OrderVm : PageViewModel
+public class OrderEditPageVm : PageViewModel
 {
     private readonly Dictionary<object, IEnumerable<ProductViewModel>> _categories = [];
 
@@ -30,7 +30,7 @@ public class OrderVm : PageViewModel
 
     private Action<bool>? _isMultiSelectSetter;
 
-    public OrderVm(IOrderService order, ICashierService cashierService)
+    public OrderEditPageVm(IOrderService order, ICashierService cashierService)
     {
         _order = order;
         _cashierService = cashierService;

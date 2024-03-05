@@ -8,7 +8,7 @@ public interface IDiscountAccesser
     }
 
     /// <summary>
-    /// If has not total discount, return <see cref="double.NaN"/>
+    /// If has not total discount, return 1
     /// </summary>
     public double TotalDiscount
     {
@@ -17,18 +17,18 @@ public interface IDiscountAccesser
 
 
     /// <summary>
-    /// If has not discount, return <see cref="double.NaN"/>
+    /// If has not discount, return 1
     /// </summary>
     /// <returns></returns>
     public double AccessDicsount(Guid id);
 
-    internal class MockDiscountAccesser(Dictionary<Guid, double> discountAccessers, double discount = double.NaN) : IDiscountAccesser
+    internal class MockDiscountAccesser(Dictionary<Guid, double> discountAccessers, double discount = 1) : IDiscountAccesser
     {
         public bool HasTotalDiscount => !double.IsNaN(TotalDiscount);
         public double TotalDiscount => discount;
 
-        public double AccessDicsount(Guid id) => discountAccessers.TryGetValue(id, out var discont) ? discont : double.NaN;
+        public double AccessDicsount(Guid id) => discountAccessers.TryGetValue(id, out var discont) ? discont : 1;
     }
 
-    public static IDiscountAccesser CreateMock(Dictionary<Guid, double> discountAccessers, double discount = double.NaN) => new MockDiscountAccesser(discountAccessers, discount);
+    public static IDiscountAccesser CreateMock(Dictionary<Guid, double> discountAccessers, double discount = 1) => new MockDiscountAccesser(discountAccessers, discount);
 }

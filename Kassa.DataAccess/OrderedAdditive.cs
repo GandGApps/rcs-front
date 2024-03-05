@@ -32,4 +32,14 @@ public class OrderedAdditive : IModel
     {
         get; set;
     }
+
+    public double Count
+    {
+        get; set;
+    }
+
+    public string Measure
+    {
+        get; set;
+    }
 }

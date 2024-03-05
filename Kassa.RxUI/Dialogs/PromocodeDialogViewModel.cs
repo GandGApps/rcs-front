@@ -13,7 +13,7 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Dialogs;
 public class PromocodeDialogViewModel : DialogViewModel
 {
-    public PromocodeDialogViewModel(OrderVm cashierVm)
+    public PromocodeDialogViewModel(OrderEditPageVm cashierVm)
     {
         ApplyCommand = ReactiveCommand.CreateFromTask<Unit, IDiscountAccesser?>(async x =>
         {
@@ -24,11 +24,11 @@ public class PromocodeDialogViewModel : DialogViewModel
 
             var discounts = new Dictionary<Guid, double>
             {
-                [Guid.NewGuid()] = 30,
-                [Guid.NewGuid()] = 50
+                [Guid.NewGuid()] = 0.30,
+                [Guid.NewGuid()] = 0.50
             };
 
-            var discount = IDiscountAccesser.CreateMock(discounts, 25);
+            var discount = IDiscountAccesser.CreateMock(discounts, 0.25);
 
             await CloseAsync();
 

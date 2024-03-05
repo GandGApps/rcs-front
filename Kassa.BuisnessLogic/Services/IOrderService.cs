@@ -27,6 +27,11 @@ public interface IOrderService : IInitializableService, INotifyPropertyChanged
         get;
     }
 
+    public double Discount
+    {
+        get;
+    }
+
     public Guid OrderId
     {
         get;
@@ -72,5 +77,5 @@ public interface IOrderService : IInitializableService, INotifyPropertyChanged
     public ValueTask SelectFavourite(int favourite);
 
     public ValueTask<OrderDto> GetOrder();
-    
+    public Task AddProductToShoppingList(OrderedProductDto orderedProduct);
 }

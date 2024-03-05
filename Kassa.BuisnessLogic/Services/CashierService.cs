@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.BuisnessLogic.Dto;
 using Splat;
 
 namespace Kassa.BuisnessLogic.Services;
@@ -44,6 +45,22 @@ internal class CashierService : BaseInitializableService, ICashierService
 
         return order;
 
+    }
+
+    public async ValueTask<IOrderService> CreateOrder(OrderDto order)
+    {
+        var orderService = new OrderService(_productService, _categoryService, _additiveService, order);
+
+        await orderService.Initialize();
+
+        orderService.DisposeWith(InternalDisposables);
+
+        foreach (var product in order.Products)
+        {
+            await orderService.AddProductToShoppingList(product);
+        }
+
+        return orderService;
     }
 
 

@@ -15,8 +15,10 @@ using Kassa.DataAccess;
 using ReactiveUI;
 
 namespace Kassa.BuisnessLogic.Services;
-internal class OrderService(IProductService productService, ICategoryService categoryService, IAdditiveService additiveService) : IOrderService
+internal class OrderService(IProductService productService, ICategoryService categoryService, IAdditiveService additiveService, OrderDto? order = null) : IOrderService
 {
+    private OrderDto? _order = order;
+
     private string? _totalComment;
     private ICategoryDto? _currentCategory;
     private int? _selectedFavorite;
@@ -108,6 +110,11 @@ internal class OrderService(IProductService productService, ICategoryService cat
     {
         get; set;
     }
+    public double Discount
+    {
+        get;
+        set;
+    } = 1;
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -159,7 +166,7 @@ internal class OrderService(IProductService productService, ICategoryService cat
             }))
             .Bind(out categoryItems);
 
-        return stream.Subscribe(_ => { },exc => Debug.WriteLine(exc));
+        return stream.Subscribe(_ => { }, exc => Debug.WriteLine(exc));
     }
 
     public IDisposable BindShoppingListItems<T>(Func<ProductShoppingListItemDto, T> creator, out ReadOnlyObservableCollection<T> shoppingListItems) where T : class, IReactiveToChangeSet<Guid, ProductShoppingListItemDto>
@@ -241,7 +248,14 @@ internal class OrderService(IProductService productService, ICategoryService cat
             return new ValueTask();
         }
 
-        OrderId = Guid.NewGuid();
+        if (_order is null)
+        {
+            OrderId = Guid.NewGuid();
+        }
+        else
+        {
+            OrderId = _order.Id;
+        }
 
         IsInitialized = true;
 
@@ -310,6 +324,8 @@ internal class OrderService(IProductService productService, ICategoryService cat
 
     public async Task AddProductToShoppingList(Guid productId)
     {
+        this.ThrowIfNotInitialized();
+
         var product = await productService.GetProductById(productId);
 
         if (product is null)
@@ -354,6 +370,39 @@ internal class OrderService(IProductService productService, ICategoryService cat
         };
 
         ShoppingListItems.AddOrUpdate(shoppingListItem);
+    }
+
+    public async Task AddProductToShoppingList(OrderedProductDto orderedProduct)
+    {
+        this.ThrowIfNotInitialized();
+
+        var product = await productService.GetProductById(orderedProduct.ProductId);
+
+        if (product is null)
+        {
+            throw new InvalidOperationException($"Product with id {orderedProduct.ProductId} not found.");
+        }
+
+        var shoppingListItem = new ProductShoppingListItemDto(orderedProduct, product);
+
+        ShoppingListItems.AddOrUpdate(shoppingListItem);
+
+        var sourceCache = new SourceCache<AdditiveShoppingListItemDto, Guid>(x => x.Id);
+
+        foreach (var orderedAdditive in orderedProduct.Additives)
+        {
+
+            var additive = await additiveService.GetAdditiveById(orderedAdditive.AdditiveId);
+
+            if (additive is null)
+            {
+                throw new InvalidOperationException($"Additive with id {orderedAdditive.AdditiveId} not found.");
+            }
+
+            var additiveShoppingListItem = new AdditiveShoppingListItemDto(orderedAdditive,shoppingListItem, additive);
+
+            sourceCache.AddOrUpdate(additiveShoppingListItem);
+        }
     }
 
     public Task SelectShoppingListItem(IShoppingListItemDto shoppingListItemDto)
@@ -735,9 +784,39 @@ internal class OrderService(IProductService productService, ICategoryService cat
 
     public ValueTask<OrderDto> GetOrder()
     {
-        var orderDto = new OrderDto();
+        var order = CreateOrGetOrder();
 
-        return new();
+        order.Comment = _totalComment!;
+        order.Products = ShoppingListItems.Items.Select(x =>
+        {
+            var product = Mapper.MapShoppingListItemToOrderedProductDto(x);
+
+            product.Additives = _additivesInProductDto.TryGetValue(x.Id, out var cache)
+                ? cache.Items.Select(Mapper.MapAdditiveShoppingListItemToOrderedAdditiveDto)
+                : [];
+
+            return product;
+
+        }).ToList();
+
+        order.TotalSum = order.Products.Sum(x => x.TotalPrice);
+        order.SubtotalSum = order.Products.Sum(x => x.SubTotalPrice);
+        order.Discount = Discount;
+
+        return new(order);
+    }
+
+    private OrderDto CreateOrGetOrder()
+    {
+        _order ??= new OrderDto
+        {
+            Status = OrderStatus.New,
+            CreatedAt = DateTime.Now,
+        };
+
+        _order.Id = OrderId;
+
+        return _order;
     }
 
 }

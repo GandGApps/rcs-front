@@ -26,4 +26,28 @@ public static partial class Mapper
 
     public static partial Courier MapDtoToCourier(CourierDto courier);
     public static partial CourierDto MapCourierToDto(CourierDto courier);
+
+    [MapProperty(nameof(ProductShoppingListItemDto.ItemId), nameof(OrderedProductDto.ProductId))]
+    [MapProperty(nameof(ProductShoppingListItemDto.SubtotalSum), nameof(OrderedProductDto.SubTotalPrice))]
+    [MapProperty(nameof(ProductShoppingListItemDto.TotalSum), nameof(OrderedProductDto.TotalPrice))]
+    [MapProperty(nameof(ProductShoppingListItemDto.AdditiveInfo), nameof(OrderedProductDto.Comment))]
+    [MapperIgnoreSource(nameof(ProductShoppingListItemDto.CurrencySymbol))]
+    [MapperIgnoreSource(nameof(ProductShoppingListItemDto.HasDiscount))]
+    [MapperIgnoreSource(nameof(ProductShoppingListItemDto.IsSelected))]
+    [MapperIgnoreSource(nameof(ProductShoppingListItemDto.Measure))]
+    [MapperIgnoreSource(nameof(ProductShoppingListItemDto.Name))]
+    [MapperIgnoreTarget(nameof(OrderedProductDto.Additives))]
+    public static partial OrderedProductDto MapShoppingListItemToOrderedProductDto(ProductShoppingListItemDto item);
+
+    [MapProperty(nameof(AdditiveShoppingListItemDto.ItemId), nameof(OrderedAdditiveDto.AdditiveId))]
+    [MapProperty(nameof(AdditiveShoppingListItemDto.Price), nameof(OrderedAdditiveDto.Price))]
+    [MapProperty(nameof(AdditiveShoppingListItemDto.TotalSum), nameof(OrderedAdditiveDto.TotalPrice))]
+    [MapProperty(nameof(AdditiveShoppingListItemDto.SubtotalSum), nameof(OrderedAdditiveDto.SubtotalPrice))]
+    [MapperIgnoreSource(nameof(AdditiveShoppingListItemDto.CurrencySymbol))]
+    [MapperIgnoreSource(nameof(AdditiveShoppingListItemDto.IsSelected))]
+    [MapperIgnoreSource(nameof(AdditiveShoppingListItemDto.Name))]
+    [MapperIgnoreSource(nameof(AdditiveShoppingListItemDto.HasDiscount))]
+    [MapperIgnoreSource(nameof(AdditiveShoppingListItemDto.ContainingProduct))]
+    [MapperIgnoreSource(nameof(AdditiveShoppingListItemDto.Portion))]
+    public static partial OrderedAdditiveDto MapAdditiveShoppingListItemToOrderedAdditiveDto(AdditiveShoppingListItemDto item);
 }

@@ -18,7 +18,7 @@ public class OrderedProductDto
         get; set;
     }
 
-    public int Count
+    public double Count
     {
         get; set;
     }
@@ -39,6 +39,11 @@ public class OrderedProductDto
     }
 
     public double Discount
+    {
+        get; set;
+    }
+
+    public string Comment
     {
         get; set;
     }

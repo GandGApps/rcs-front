@@ -4,7 +4,7 @@ public interface IShoppingListItemDto
 {
     public Guid Id
     {
-        get; init;
+        get; set;
     }
 
     public Guid ItemId
@@ -24,7 +24,7 @@ public interface IShoppingListItemDto
 
     public double Count
     {
-        get; init;
+        get; set;
     }
     public string CurrencySymbol
     {
@@ -33,7 +33,7 @@ public interface IShoppingListItemDto
     public double Discount
     {
         get;
-        init;
+        set;
     }
     public bool HasDiscount
     {
@@ -47,7 +47,7 @@ public interface IShoppingListItemDto
     }
     public double Price
     {
-        get; init;
+        get; set;
     }
     public double SubtotalSum
     {

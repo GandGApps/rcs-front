@@ -9,11 +9,11 @@ using ReactiveUI;
 
 namespace Kassa.Wpf.Pages;
 /// <summary>
-/// Логика взаимодействия для OrderPage.xaml
+/// Логика взаимодействия для OrderEditPage.xaml
 /// </summary>
-public partial class OrderPage : ReactiveUserControl<OrderVm>
+public partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
 {
-    public OrderPage()
+    public OrderEditPage()
     {
         InitializeComponent();
 
