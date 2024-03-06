@@ -77,6 +77,8 @@ public partial class AutorizationPage : ReactiveUserControl<AutorizationPageVm>
         {
             RemoveText(textBox, placeHolder);
 
+#if DEBUG
+
             Keyboard.Visibility = Visibility.Visible;
             Keyboard.Text = textBox.Text;
 
@@ -84,24 +86,26 @@ public partial class AutorizationPage : ReactiveUserControl<AutorizationPageVm>
                                       .Subscribe(x => textBox.Text = x);
 
             _keyboardTarget = textBox;
-
+#endif
         };
         textBox.LostFocus += (_, _) =>
         {
+#if DEBUG
             var focused = System.Windows.Input.Keyboard.FocusedElement;
 
             if (focused is Button)
             {
                 return;
             }
-
+#endif
             AddText(textBox, placeHolder);
-
+#if DEBUG
             if (_keyboardTarget == textBox)
             {
                 KeyboardBinding = null;
                 Keyboard.Visibility = Visibility.Collapsed;
             }
+#endif
         };
 
 
