@@ -24,6 +24,8 @@ namespace Kassa.Wpf.Pages;
 /// </summary>
 public partial class MainPage : ReactiveUserControl<MainPageVm>
 {
+    private const string KassaNewUserKey = "KASSA_NEW_USER";
+
     public MainPage()
     {
         InitializeComponent();
@@ -51,17 +53,23 @@ public partial class MainPage : ReactiveUserControl<MainPageVm>
             this.BindCommand(ViewModel, x => x.GoToCashier, x => x.Cashbox)
                 .DisposeWith(disposables);
 
+            var isFirstStart = Environment.GetEnvironmentVariable(KassaNewUserKey, EnvironmentVariableTarget.User);
 
-            ViewModel!.MainViewModel.DialogOpenCommand.Execute(
-                new HintDialogViewModel([
-                    new("Labu labu dab", Profile, MainWindow.Root),
-                    new("asdasdads", Cashbox, MainWindow.Root),
-                    new("asdasd", Services, MainWindow.Root),
-                    new("sdfddhjk", Deliviry, MainWindow.Root),
-                    new("Я в своем познании настолько преисполнился, что я как будто бы уже сто триллионов миллиардов лет проживаю на триллионах и триллионах таких же планет, как эта Земля, мне этот мир абсолютно nпонятен", Personnel, MainWindow.Root),
-                    new("!", Documents, MainWindow.Root),
-                ])
-            ).Subscribe();
+            if (string.IsNullOrWhiteSpace(isFirstStart) || isFirstStart == "true")
+            {
+                ViewModel!.MainViewModel.DialogOpenCommand.Execute(
+                    new HintDialogViewModel([
+                        new("Labu labu dab", Profile, MainWindow.Root),
+                        new("asdasdads", Cashbox, MainWindow.Root),
+                        new("asdasd", Services, MainWindow.Root),
+                        new("sdfddhjk", Deliviry, MainWindow.Root),
+                        new("Я в своем познании настолько преисполнился, что я как будто бы уже сто триллионов миллиардов лет проживаю на триллионах и триллионах таких же планет, как эта Земля, мне этот мир абсолютно nпонятен", Personnel, MainWindow.Root),
+                        new("!", Documents, MainWindow.Root),
+                    ])
+                ).Subscribe();
+
+                Environment.SetEnvironmentVariable(KassaNewUserKey, "false", EnvironmentVariableTarget.User);
+            }
         });
     }
 

@@ -8,11 +8,11 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.BuisnessLogic.Services;
-public class CashierPaymentService(IOrderService cashierService) : BaseInitializableService, ICashierPaymentService, INotifyPropertyChanged
+public class CashierPaymentService(IOrderEditService cashierService) : BaseInitializableService, ICashierPaymentService, INotifyPropertyChanged
 {
     public event Action? Payed;
 
-    public IOrderService Order => cashierService;
+    public IOrderEditService Order => cashierService;
     [Reactive]
     public double Cash
     {

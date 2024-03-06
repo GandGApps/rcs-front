@@ -19,9 +19,9 @@ namespace Kassa.RxUI.Dialogs;
 public class SearchAddictiveDialogViewModel : DialogViewModel
 {
     private readonly IAdditiveService _additiveService;
-    private readonly IOrderService _order;
+    private readonly IOrderEditService _order;
 
-    public SearchAddictiveDialogViewModel(IAdditiveService additiveService, IOrderService order)
+    public SearchAddictiveDialogViewModel(IAdditiveService additiveService, IOrderEditService order)
     {
         IsKeyboardVisible = false;
         _additiveService = additiveService;

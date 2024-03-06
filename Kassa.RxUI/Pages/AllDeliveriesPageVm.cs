@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.BuisnessLogic.Dto;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI.Pages;
-public class AllOrdersPageVm : PageViewModel
+public class AllDeliveriesPageVm : PageViewModel
 {
-    public AllOrdersPageVm()
+    public AllDeliveriesPageVm()
     {
         MoveDateCommand = ReactiveCommand.Create<int>(x =>
         {
@@ -68,6 +70,11 @@ public class AllOrdersPageVm : PageViewModel
     public extern int ReadyOrders
     {
         [ObservableAsProperty]
+        get;
+    }
+
+    public ReadOnlyObservableCollection<OrderDto> Orders
+    {
         get;
     }
 }

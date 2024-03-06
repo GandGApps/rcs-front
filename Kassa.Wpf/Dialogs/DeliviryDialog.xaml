@@ -29,7 +29,7 @@
                         <Image
                             Width="72"
                             Height="72"
-                            Source="/Assets/Deliviry.png"
+                            Source="/Assets/Delivery.png"
                             Style="{StaticResource HeaderIcon}" />
                         <TextBlock
                             Grid.Column="1"
@@ -41,7 +41,10 @@
 
                 </Grid>
             </Border>
-            <Button Content="Доставка, подробнее" Style="{StaticResource MenuButton}">
+            <Button
+                x:Name="AllDeliveriesButton"
+                Content="Доставка, подробнее"
+                Style="{StaticResource MenuButton}">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="{StaticResource EndMenu}" />

@@ -6,7 +6,7 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess;
 
 namespace Kassa.BuisnessLogic.Services;
-public interface IOrderService : IInitializableService, INotifyPropertyChanged
+public interface IOrderEditService : IInitializableService, INotifyPropertyChanged
 {
     public ICategoryDto? CurrentCategory
     {

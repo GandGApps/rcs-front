@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Text;
@@ -14,6 +15,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Kassa.RxUI.Pages;
+using Kassa.Wpf.Controls;
 using ReactiveUI;
 
 namespace Kassa.Wpf.Pages;
@@ -31,9 +33,23 @@ public partial class AutorizationPage : ReactiveUserControl<AutorizationPageVm>
         remove => RemoveHandler(NextClickedEvent, value);
     }
 
+    private IDisposable? _keyboardBinding;
+    private object _keyboardTarget;
+
+    private IDisposable? KeyboardBinding
+    {
+        get => _keyboardBinding;
+        set
+        {
+            _keyboardBinding?.Dispose();
+            _keyboardBinding = value;
+        }
+    }
+
     public AutorizationPage()
     {
         InitializeComponent();
+
         this.WhenActivated(disposables =>
         {
             DataContext = ViewModel;
@@ -47,18 +63,48 @@ public partial class AutorizationPage : ReactiveUserControl<AutorizationPageVm>
             this.Bind(ViewModel, x => x.Password, x => x.Password.Text)
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x=> x.LoginCommand, x => x.Submit)
+            this.BindCommand(ViewModel, x => x.LoginCommand, x => x.Submit)
                 .DisposeWith(disposables);
         });
 
-        AddPlaceHolder(Login, "Типа логин");
-        AddPlaceHolder(Password, "Типа пароль");
+        AddTextBoxBehavior(Login, "Типа логин");
+        AddTextBoxBehavior(Password, "Типа пароль");
     }
 
-    private void AddPlaceHolder(TextBox textBox, string placeHolder)
+    private void AddTextBoxBehavior(TextBox textBox, string placeHolder)
     {
-        textBox.GotFocus += (_, _) => RemoveText(textBox, placeHolder);
-        textBox.LostFocus += (_, _) => AddText(textBox, placeHolder);
+        textBox.GotFocus += (_, _) =>
+        {
+            RemoveText(textBox, placeHolder);
+
+            Keyboard.Visibility = Visibility.Visible;
+            Keyboard.Text = textBox.Text;
+
+            KeyboardBinding = Keyboard.WhenAnyValue(x => x.Text)
+                                      .Subscribe(x => textBox.Text = x);
+
+            _keyboardTarget = textBox;
+
+        };
+        textBox.LostFocus += (_, _) =>
+        {
+            var focused = System.Windows.Input.Keyboard.FocusedElement;
+
+            if (focused is Button)
+            {
+                return;
+            }
+
+            AddText(textBox, placeHolder);
+
+            if (_keyboardTarget == textBox)
+            {
+                KeyboardBinding = null;
+                Keyboard.Visibility = Visibility.Collapsed;
+            }
+        };
+
+
     }
 
     private void AddText(TextBox sender, string placeholder)
@@ -82,4 +128,5 @@ public partial class AutorizationPage : ReactiveUserControl<AutorizationPageVm>
         Form.IsHitTestVisible = true;
         Welcome.IsHitTestVisible = false;
     }
+
 }

@@ -15,7 +15,7 @@ using Kassa.DataAccess;
 using ReactiveUI;
 
 namespace Kassa.BuisnessLogic.Services;
-internal class OrderService(IProductService productService, ICategoryService categoryService, IAdditiveService additiveService, OrderDto? order = null) : IOrderService
+internal class OrderEditService(IProductService productService, ICategoryService categoryService, IAdditiveService additiveService, OrderDto? order = null) : IOrderEditService
 {
     private OrderDto? _order = order;
 

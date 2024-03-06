@@ -11,18 +11,18 @@ using Splat;
 namespace Kassa.BuisnessLogic.Services;
 internal class CashierService : BaseInitializableService, ICashierService
 {
-    private readonly ObservableCollection<IOrderService> _orders = [];
+    private readonly ObservableCollection<IOrderEditService> _orders = [];
     private readonly IAdditiveService _additiveService;
     private readonly ICategoryService _categoryService;
     private readonly IProductService _productService;
 
 
-    public IOrderService? CurrentOrder
+    public IOrderEditService? CurrentOrder
     {
         get; private set;
     }
 
-    public ReadOnlyObservableCollection<IOrderService> Orders
+    public ReadOnlyObservableCollection<IOrderEditService> Orders
     {
         get;
     }
@@ -36,9 +36,9 @@ internal class CashierService : BaseInitializableService, ICashierService
         _productService = productService;
     }
 
-    public async ValueTask<IOrderService> CreateOrder()
+    public async ValueTask<IOrderEditService> CreateOrder()
     {
-        var order = new OrderService(_productService, _categoryService, _additiveService);
+        var order = new OrderEditService(_productService, _categoryService, _additiveService);
         await order.Initialize();
 
         order.DisposeWith(InternalDisposables);
@@ -47,9 +47,9 @@ internal class CashierService : BaseInitializableService, ICashierService
 
     }
 
-    public async ValueTask<IOrderService> CreateOrder(OrderDto order)
+    public async ValueTask<IOrderEditService> CreateOrder(OrderDto order)
     {
-        var orderService = new OrderService(_productService, _categoryService, _additiveService, order);
+        var orderService = new OrderEditService(_productService, _categoryService, _additiveService, order);
 
         await orderService.Initialize();
 
@@ -64,13 +64,13 @@ internal class CashierService : BaseInitializableService, ICashierService
     }
 
 
-    public ValueTask SelectCurrentOrder(IOrderService order)
+    public ValueTask SelectCurrentOrder(IOrderEditService order)
     {
         CurrentOrder = order;
         return ValueTask.CompletedTask;
     }
 
-    public ValueTask<ICashierPaymentService> CreatePayment(IOrderService order)
+    public ValueTask<ICashierPaymentService> CreatePayment(IOrderEditService order)
     {
         var paymentService = new CashierPaymentService(order);
 

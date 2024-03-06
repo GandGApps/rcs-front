@@ -38,7 +38,7 @@ public class ProductViewModel(ProductDto product) : ReactiveObject
     public double Price => product.Price;
 
     /// <summary>
-    /// Need implement by IOrderService
+    /// Need implement by IOrderEditService
     /// </summary>
     public bool IsAdded => product.IsAdded;
 

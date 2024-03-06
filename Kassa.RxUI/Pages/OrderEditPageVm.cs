@@ -25,12 +25,12 @@ public class OrderEditPageVm : PageViewModel
 {
     private readonly Dictionary<object, IEnumerable<ProductViewModel>> _categories = [];
 
-    private readonly IOrderService _order;
+    private readonly IOrderEditService _order;
     private readonly ICashierService _cashierService;
 
     private Action<bool>? _isMultiSelectSetter;
 
-    public OrderEditPageVm(IOrderService order, ICashierService cashierService)
+    public OrderEditPageVm(IOrderEditService order, ICashierService cashierService)
     {
         _order = order;
         _cashierService = cashierService;
@@ -165,8 +165,6 @@ public class OrderEditPageVm : PageViewModel
 
         GoToAllOrdersCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var allOrdersPage = new AllOrdersPageVm();
-            await MainViewModel.GoToPageCommand.Execute(allOrdersPage).FirstAsync();
         });
     }
 

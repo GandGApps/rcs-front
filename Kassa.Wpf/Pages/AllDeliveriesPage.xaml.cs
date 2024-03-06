@@ -17,11 +17,11 @@ using ReactiveUI;
 
 namespace Kassa.Wpf.Pages;
 /// <summary>
-/// Interaction logic for AllOrdersPage.xaml
+/// Interaction logic for AllDeliveriesPage.xaml
 /// </summary>
-public partial class AllOrdersPage : ReactiveUserControl<AllOrdersPageVm>
+public partial class AllDeliveriesPage : ReactiveUserControl<AllDeliveriesPageVm>
 {
-    public AllOrdersPage()
+    public AllDeliveriesPage()
     {
         InitializeComponent();
     }
