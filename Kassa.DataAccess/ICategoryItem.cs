@@ -16,9 +16,4 @@ public interface ICategoryItem: IModel
     {
         get;
     }
-
-    public ICollection<ICategoryItem>? Items
-    {
-        get;
-    }
 }

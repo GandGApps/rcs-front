@@ -1,6 +1,8 @@
 ﻿
 namespace Kassa.DataAccess;
-
+/// <summary>
+/// Пока что, все что известно о курьере
+/// </summary>
 public class Courier : IModel
 {
     public Guid Id

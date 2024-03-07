@@ -12,7 +12,17 @@ public class ClientDto
         get; set;
     }
 
-    public string Name
+    public string FullName
+    {
+        get; set;
+    }
+
+    public string Address
+    {
+        get; set;
+    }
+
+    public string Phone
     {
         get; set;
     }

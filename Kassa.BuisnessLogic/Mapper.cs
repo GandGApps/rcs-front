@@ -22,7 +22,7 @@ public static partial class Mapper
     public static partial OrderedAdditiveDto MapOrderedAdditiveToDto(OrderedAdditive additive);
 
     public static partial Client MapDtoToClient(ClientDto client);
-    public static partial Client MapClientToDto(ClientDto client);
+    public static partial ClientDto MapClientToDto(Client client);
 
     public static partial Courier MapDtoToCourier(CourierDto courier);
     public static partial CourierDto MapCourierToDto(CourierDto courier);
@@ -50,4 +50,5 @@ public static partial class Mapper
     [MapperIgnoreSource(nameof(AdditiveShoppingListItemDto.ContainingProduct))]
     [MapperIgnoreSource(nameof(AdditiveShoppingListItemDto.Portion))]
     public static partial OrderedAdditiveDto MapAdditiveShoppingListItemToOrderedAdditiveDto(AdditiveShoppingListItemDto item);
+
 }

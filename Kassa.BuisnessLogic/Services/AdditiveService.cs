@@ -9,7 +9,7 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess;
 
 namespace Kassa.BuisnessLogic.Services;
-public class AdditiveService(IAdditiveRepository repository) : IAdditiveService, IRuntimeDtoProvider<AdditiveDto, Guid, Additive>
+public sealed class AdditiveService(IAdditiveRepository repository) : IAdditiveService, IRuntimeDtoProvider<AdditiveDto, Guid, Additive>
 {
     public SourceCache<AdditiveDto, Guid> RuntimeAdditives
     {
@@ -102,8 +102,6 @@ public class AdditiveService(IAdditiveRepository repository) : IAdditiveService,
         {
             Count = foundedAdditive.Count + 1
         });
-
-
 
         await UpdateAdditive(additiveDto);
     }

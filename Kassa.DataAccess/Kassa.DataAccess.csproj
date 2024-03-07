@@ -7,10 +7,15 @@
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU;x64;x86</Platforms>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="MockClient.json" />
+  </ItemGroup>
   
   <ItemGroup>
     <EmbeddedResource Include="MockAdditive.json" />
     <EmbeddedResource Include="MockCategories.json" />
+    <EmbeddedResource Include="MockClient.json" />
     <EmbeddedResource Include="MockProducts.json" />
   </ItemGroup>
 

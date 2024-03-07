@@ -13,6 +13,9 @@ public class OrderedProduct : IModel
         get; set;
     }
 
+    /// <summary>
+    /// Сколько заказано
+    /// </summary>
     public double Count
     {
         get; set;
@@ -23,11 +26,17 @@ public class OrderedProduct : IModel
         get; set;
     }
 
+    /// <summary>
+    /// Сумма с учетом скидки
+    /// </summary>
     public double TotalPrice
     {
         get; set;
     }
 
+    /// <summary>
+    /// Сумма до скидки
+    /// </summary>
     public double SubTotalPrice
     {
         get; set;
@@ -38,10 +47,14 @@ public class OrderedProduct : IModel
         get; set;
     }
 
+    /// <summary>
+    /// Коментарий к заказу(типо без лука)
+    /// </summary>
     public string Comment
     {
         get; set;
     }
+
     public IEnumerable<OrderedAdditive> Additives
     {
         get; set;

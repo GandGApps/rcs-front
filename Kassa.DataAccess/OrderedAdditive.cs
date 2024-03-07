@@ -18,11 +18,17 @@ public class OrderedAdditive : IModel
         get; set;
     }
 
+    /// <summary>
+    /// Сумма с учетом скидки
+    /// </summary>
     public double TotalPrice
     {
         get; set;
     }
 
+    /// <summary>
+    /// Сумма до скидки
+    /// </summary>
     public double SubtotalPrice
     {
         get; set;

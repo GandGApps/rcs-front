@@ -36,6 +36,18 @@ public partial class Keyboard : UserControl, IActivatableView
         typeof(Keyboard)
     );
 
+    public static readonly DependencyProperty EnterCommandProperty = DependencyProperty.Register(
+        nameof(EnterCommandProperty),
+        typeof(ICommand),
+        typeof(Keyboard)
+    );
+
+    public ICommand EnterCommand
+    {
+        get => (ICommand)GetValue(EnterCommandProperty);
+        set => SetValue(EnterCommandProperty, value);
+    }
+
     private static readonly KeySizeToGridWidthConverter _keySizeToWidthConverter = new();
 
     public Keyboard()
@@ -84,6 +96,7 @@ public partial class Keyboard : UserControl, IActivatableView
                         var lineGrid = new Grid()
                         {
                             HorizontalAlignment = HorizontalAlignment.Center,
+                            Focusable = false,
                         };
 
                         var size = 0d;
@@ -99,7 +112,7 @@ public partial class Keyboard : UserControl, IActivatableView
 
                             var keyDisposables = new CompositeDisposable();
 
-                            key.WhenAnyValue(x => x.Character, x => x.Text, x => x.IsIcon, x => x.Icon)
+                            key.WhenAnyValue(x => x.Character, x => x.Text, x => x.IsIcon, x => x.Icon, x => x.IsEnter)
                                 .Subscribe(x =>
                                 {
                                     if (x.Item3 && !string.IsNullOrWhiteSpace(x.Item4))
@@ -123,7 +136,10 @@ public partial class Keyboard : UserControl, IActivatableView
                                     {
                                         button.Content = x.Item2;
                                     }
-
+                                    if (x.Item5)
+                                    {
+                                        key.Command = EnterCommand;
+                                    }
                                 });
 
                             key.PropertyChanged += (s, e) =>

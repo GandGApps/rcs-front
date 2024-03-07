@@ -1,5 +1,8 @@
 ﻿namespace Kassa.DataAccess;
 
+/// <summary>
+/// Пока что, все что известно о клиенте
+/// </summary>
 public class Client : IModel
 {
     public Guid Id
@@ -7,7 +10,17 @@ public class Client : IModel
         get; set;
     }
 
-    public string Name
+    public string FullName
+    {
+        get; set;
+    }
+
+    public string Address
+    {
+        get; set;
+    }
+
+    public string Phone
     {
         get; set;
     }

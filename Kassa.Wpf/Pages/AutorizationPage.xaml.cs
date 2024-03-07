@@ -69,6 +69,11 @@ public partial class AutorizationPage : ReactiveUserControl<AutorizationPageVm>
 
         AddTextBoxBehavior(Login, "Типа логин");
         AddTextBoxBehavior(Password, "Типа пароль");
+
+        Keyboard.EnterCommand = ReactiveCommand.Create(() =>
+        {
+            Keyboard.Visibility = Visibility.Collapsed;
+        });
     }
 
     private void AddTextBoxBehavior(TextBox textBox, string placeHolder)
@@ -77,35 +82,41 @@ public partial class AutorizationPage : ReactiveUserControl<AutorizationPageVm>
         {
             RemoveText(textBox, placeHolder);
 
-#if DEBUG
-
             Keyboard.Visibility = Visibility.Visible;
             Keyboard.Text = textBox.Text;
 
-            KeyboardBinding = Keyboard.WhenAnyValue(x => x.Text)
-                                      .Subscribe(x => textBox.Text = x);
+            var binding = new Binding
+            {
+                Source = textBox,
+                Path = new(TextBox.TextProperty),
+                Mode = BindingMode.TwoWay,
+            };
+
+            Keyboard.SetBinding(Controls.Keyboard.TextProperty, binding);
+
+            KeyboardBinding = Disposable.Create(() =>
+            {
+                BindingOperations.ClearBinding(Keyboard, Controls.Keyboard.TextProperty);
+            });
 
             _keyboardTarget = textBox;
-#endif
+
         };
         textBox.LostFocus += (_, _) =>
         {
-#if DEBUG
             var focused = System.Windows.Input.Keyboard.FocusedElement;
 
             if (focused is Button)
             {
                 return;
             }
-#endif
             AddText(textBox, placeHolder);
-#if DEBUG
+
             if (_keyboardTarget == textBox)
             {
                 KeyboardBinding = null;
                 Keyboard.Visibility = Visibility.Collapsed;
             }
-#endif
         };
 
 

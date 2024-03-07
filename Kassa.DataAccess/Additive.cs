@@ -46,6 +46,9 @@ public record Additive : IModel
         get; set;
     }
 
+    /// <summary>
+    /// Я забыл зачем это добавил
+    /// </summary>
     public int Portion
     {
         get; set;

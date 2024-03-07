@@ -34,4 +34,14 @@ public class MockTests
 
         Assert.AreEqual(firstGuid, receipts.First(x => x.Id == firstGuid).Id);
     }
+
+    [TestMethod]
+    public async Task MockRepositoryTests4()
+    {
+        var repository = IRepository<Client>.CreateMock("MockClient.json");
+        var clients = await repository.GetAll();
+        var firstGuid = Guid.Parse("7f679106-42e4-43aa-84f6-307c22b1ebc5");
+
+        Assert.AreEqual(firstGuid, clients.First(x => x.Id == firstGuid).Id);
+    }
 }

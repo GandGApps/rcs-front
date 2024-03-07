@@ -54,16 +54,6 @@ public record Product : ICategoryItem
         get; set;
     } = [];
 
-    /// <summary>
-    /// Need to be removed, as soon as possible
-    /// </summary>
-    [Obsolete]
-    public string[] Categories
-    {
-        get; set;
-    } = [];
-
-
     public string Icon
     {
         get; set;
@@ -72,5 +62,4 @@ public record Product : ICategoryItem
     {
         get; set;
     }
-    public ICollection<ICategoryItem>? Items => null;
 }

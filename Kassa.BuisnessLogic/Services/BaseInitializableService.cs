@@ -61,7 +61,10 @@ public abstract class BaseInitializableService : ReactiveObject, IInitializableS
             return;
         }
 
-        InternalDisposables.Dispose();
+        if (disposing)
+        {
+            InternalDisposables.Dispose();
+        }
     }
 
     protected virtual ValueTask DisposeAsyncCore() => ValueTask.CompletedTask;
