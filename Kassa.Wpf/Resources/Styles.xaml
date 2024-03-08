@@ -42,7 +42,7 @@
 
         <Style.Triggers>
             <Trigger Property="IsPressed" Value="True">
-                <Setter Property="Background" Value="{DynamicResource AccentBrush2}" />
+                <Setter Property="Background" Value="{DynamicResource DefaultPressedButtonBackground}" />
             </Trigger>
         </Style.Triggers>
 
@@ -158,8 +158,8 @@
         <Setter Property="FontSize" Value="{mx:AdaptiveSize 20}" />
         <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="Foreground" Value="{DynamicResource DefaultButtonForeground}" />
-        <Setter Property="BorderBrush" Value="Transparent" />
-        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="BorderBrush" Value="{DynamicResource DefaultButtonBackground}" />
+        <Setter Property="BorderThickness" Value="1" />
         <Setter Property="Template">
             <Setter.Value>
 
@@ -188,6 +188,14 @@
                 <Setter Property="Padding" Value="11" />
             </DataTrigger>
         </Style.Triggers>
+    </Style>
+
+    <Style
+        x:Key="SecondaryButton"
+        BasedOn="{StaticResource PrimaryButton}"
+        TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource ClickableBg}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SecondaryButtonBorderBrush}" />
     </Style>
 
     <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type local:ButtonWithIcon}">

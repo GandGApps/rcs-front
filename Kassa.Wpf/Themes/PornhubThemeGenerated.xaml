@@ -98,6 +98,7 @@
     <!--#region Default State-->
     <SolidColorBrush x:Key="DefaultButtonBackground" Color="#FF9900" />
     <SolidColorBrush x:Key="DefaultButtonForeground" Color="#FFF" />
+    <SolidColorBrush x:Key="DefaultPressedButtonBackground" Color="#FF9900" />
     <!--#endregion-->
 
     <!--#region Disabled-->
@@ -110,6 +111,11 @@
 
     <!--#region Hover-->
     <SolidColorBrush x:Key="HoverButtonBackground" Color="#2ac2ec" />
+    <!--#endregion-->
+
+    <!--#region Secondary Button-->
+    <SolidColorBrush x:Key="SecondaryButtonBackground" Color="White" />
+    <SolidColorBrush x:Key="SecondaryButtonBorderBrush" Color="#FFF" />
     <!--#endregion-->
 
     <!--#endregion-->

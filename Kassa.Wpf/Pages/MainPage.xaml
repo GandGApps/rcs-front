@@ -137,7 +137,7 @@
                         TextAlignment="Center" />
                     <TextBlock
                         Style="{DynamicResource SubHeader}"
-                        Text="Подробнаяинформация про кассу..."
+                        Text="Создание заказа"
                         TextAlignment="Center" />
                 </StackPanel>
             </Grid>

@@ -175,7 +175,25 @@ internal class OrderEditService(IProductService productService, ICategoryService
 
         var stream = ShoppingListItems.Connect()
             .TransformWithInlineUpdate(x => creator(x), (x, source) => x.Source = source)
+            .Do(x =>
+            {
+                if (ShoppingListItems.Count == 1)
+                {
+                    IsMultiSelect = false;
+                    var product = ShoppingListItems.Items.First();
+
+                    if(product.IsSelected) return;
+
+                    product = product with
+                    {
+                        IsSelected = true
+                    };
+
+                    ShoppingListItems.AddOrUpdate(product);
+                }
+            })
             .Bind(out shoppingListItems);
+
 
         return stream.Subscribe();
     }
@@ -399,7 +417,7 @@ internal class OrderEditService(IProductService productService, ICategoryService
                 throw new InvalidOperationException($"Additive with id {orderedAdditive.AdditiveId} not found.");
             }
 
-            var additiveShoppingListItem = new AdditiveShoppingListItemDto(orderedAdditive,shoppingListItem, additive);
+            var additiveShoppingListItem = new AdditiveShoppingListItemDto(orderedAdditive, shoppingListItem, additive);
 
             sourceCache.AddOrUpdate(additiveShoppingListItem);
         }

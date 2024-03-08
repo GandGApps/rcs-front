@@ -23,6 +23,7 @@ public class CashierPaymentPageVm : PageViewModel
     public CashierPaymentPageVm(ICashierPaymentService cashierPaymentService)
     {
         CashierPaymentService = cashierPaymentService;
+
         CashVm = new()
         {
             Description = "Наличные",
@@ -38,7 +39,6 @@ public class CashierPaymentPageVm : PageViewModel
         WithoutRevenueVm = new()
         {
             Description = "Без выручки",
-
         };
 
         CashierPaymentItemVms = [CashVm, BankCardVm, CashlessPaymentVm, WithoutRevenueVm];
@@ -472,6 +472,42 @@ public class CashierPaymentPageVm : PageViewModel
         this.WhenAnyValue(x => x.Total, x => x.ToEntered, (total, entered) => total <= entered)
             .ToPropertyEx(this, x => x.IsExactAmount)
             .DisposeWith(disposables);
+
+
+        CashVm.RemoveItemCommand.Subscribe(_ =>
+        {
+            if (CurrentPaymentType == PaymentType.Cash)
+            {
+                ClearCurrentPaymentSum();
+            }
+        }).DisposeWith(disposables);
+
+        BankCardVm.RemoveItemCommand.Subscribe(_ =>
+        {
+            if (CurrentPaymentType == PaymentType.BankCard)
+            {
+                ClearCurrentPaymentSum();
+            }
+
+        }).DisposeWith(disposables);
+
+        CashlessPaymentVm.RemoveItemCommand.Subscribe(_ =>
+        {
+            if (CurrentPaymentType == PaymentType.CashlessPayment)
+            {
+                ClearCurrentPaymentSum();
+            }
+
+        }).DisposeWith(disposables);
+
+        WithoutRevenueVm.RemoveItemCommand.Subscribe(_ =>
+        {
+            if (CurrentPaymentType == PaymentType.WithoutRevenue)
+            {
+                ClearCurrentPaymentSum();
+            }
+
+        }).DisposeWith(disposables);
     }
 
     private void ClearCurrentPaymentSum()

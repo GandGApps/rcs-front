@@ -1,0 +1,129 @@
+﻿<local:ClosableDialog
+    x:Class="Kassa.Wpf.Dialogs.InputDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Kassa.Wpf.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialogs="clr-namespace:Kassa.RxUI.Dialogs;assembly=Kassa.RxUI"
+    xmlns:local="clr-namespace:Kassa.Wpf.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
+    d:DataContext="{d:DesignInstance Type=dialogs:InputDialogViewModel}"
+    d:DesignHeight="700"
+    d:DesignWidth="1380"
+    x:TypeArguments="dialogs:InputDialogViewModel"
+    Style="{StaticResource WideDialogUserControl}"
+    mc:Ignorable="d">
+    <Border Style="{StaticResource WideDialog}">
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock
+                    x:Name="FieldName"
+                    Grid.Column="0"
+                    Margin="24,0,0,0"
+                    VerticalAlignment="Center"
+                    FontWeight="Normal"
+                    Style="{DynamicResource Header}"
+                    Text="Добавки" />
+
+            </Grid>
+            <Border
+                Grid.Row="1"
+                Width="1280"
+                Margin="0,0,0,12"
+                Style="{DynamicResource Separator}" />
+
+            <ScrollViewer
+                Grid.Row="2"
+                HorizontalContentAlignment="Stretch"
+                HorizontalScrollBarVisibility="Disabled"
+                Style="{StaticResource PrimaryScrollViewer}">
+                <TextBox
+                    x:Name="Input"
+                    AcceptsReturn="True"
+                    BorderThickness="0"
+                    FontSize="28"
+                    TextWrapping="Wrap" />
+            </ScrollViewer>
+
+
+            <controls:Keyboard
+                x:Name="Keyboard"
+                Grid.Row="3"
+                Margin="0,0,0,15"
+                VerticalAlignment="Bottom" />
+
+            <Border
+                Grid.Row="4"
+                Margin="0,0,0,10"
+                Padding="20,4,2,4"
+                Style="{StaticResource DialogFooter}">
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <controls:ButtonWithCornerRaduis
+                        x:Name="BackButton"
+                        Padding="0,15,0,15"
+                        Background="Transparent">
+                        <StackPanel Orientation="Horizontal">
+                            <Path
+                                Width="13"
+                                Height="22.7"
+                                Data="{StaticResource Arrow}"
+                                Fill="White" />
+                            <TextBlock
+                                Margin="7,0,0,0"
+                                VerticalAlignment="Center"
+                                FontSize="13"
+                                Foreground="White"
+                                Text="Назад" />
+                        </StackPanel>
+
+                    </controls:ButtonWithCornerRaduis>
+
+                    <Button
+                        x:Name="CancelButton"
+                        Grid.Column="1"
+                        Width="{mx:AdaptiveSize 220}"
+                        Margin="0,-2,0,-2"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource SecondaryButton}">
+                        Отмена
+                    </Button>
+                    <Button
+                        x:Name="OkButton"
+                        Grid.Column="2"
+                        Width="{mx:AdaptiveSize 220}"
+                        Margin="0,-2,0,-2"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource PrimaryButton}">
+                        Ок
+                    </Button>
+
+                </Grid>
+
+            </Border>
+
+        </Grid>
+
+    </Border>
+</local:ClosableDialog>

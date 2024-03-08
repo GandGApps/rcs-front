@@ -220,11 +220,5 @@
 
         </Border>
 
-        <ctrl:Keyboard
-            x:Name="Keyboard"
-            VerticalAlignment="Bottom"
-            Focusable="False"
-            Visibility="Collapsed" />
-
     </Grid>
 </rxui:ReactiveUserControl>

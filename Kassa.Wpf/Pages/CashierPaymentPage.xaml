@@ -283,7 +283,7 @@
 
                                     <Button
                                         HorizontalAlignment="Right"
-                                        Command="{Binding RemoveItem}"
+                                        Command="{Binding RemoveItemCommand}"
                                         Style="{StaticResource IconButton}">
                                         <Path
                                             Width="{mx:AdaptiveSize Size=25}"
@@ -708,6 +708,21 @@
                     <Grid.Resources>
                         <Style BasedOn="{StaticResource BaseKeyButtonStyle}" TargetType="Button">
                             <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness=2}" />
+
+                            <Style.Triggers>
+
+                                <Trigger Property="Grid.Column" Value="3">
+                                    <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
+                                    <Setter Property="Foreground" Value="{DynamicResource AlternateForeground}" />
+                                </Trigger>
+
+                                <Trigger Property="Grid.Column" Value="4">
+                                    <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
+                                    <Setter Property="Foreground" Value="{DynamicResource AlternateForeground}" />
+                                </Trigger>
+
+                            </Style.Triggers>
+
                         </Style>
                     </Grid.Resources>
 

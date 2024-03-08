@@ -46,6 +46,11 @@ public class QuantityVolumeDialogVewModel : DialogViewModel
         this.WhenAnyValue(x => x.IncorrectPosiblePortionText)
             .Subscribe(x =>
             {
+                if (string.IsNullOrWhiteSpace(x))
+                {
+                    IncorrectPosiblePortionText = "1";
+                    return;
+                }
                 if (double.TryParse(x, RuCultureInfo, out var correct))
                 {
                     CorrectedPortionText = correct.ToString("0.##", RuCultureInfo);

@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kassa.RxUI.Dialogs;
 using Kassa.RxUI.Pages;
 using Kassa.Wpf.Controls;
 using ReactiveUI;
@@ -69,11 +70,6 @@ public partial class AutorizationPage : ReactiveUserControl<AutorizationPageVm>
 
         AddTextBoxBehavior(Login, "Типа логин");
         AddTextBoxBehavior(Password, "Типа пароль");
-
-        Keyboard.EnterCommand = ReactiveCommand.Create(() =>
-        {
-            Keyboard.Visibility = Visibility.Collapsed;
-        });
     }
 
     private void AddTextBoxBehavior(TextBox textBox, string placeHolder)
@@ -82,41 +78,18 @@ public partial class AutorizationPage : ReactiveUserControl<AutorizationPageVm>
         {
             RemoveText(textBox, placeHolder);
 
-            Keyboard.Visibility = Visibility.Visible;
-            Keyboard.Text = textBox.Text;
+            var inputDialog = new InputDialogViewModel(placeHolder, textBox.Text);
 
-            var binding = new Binding
+            inputDialog.OkCommand.Subscribe(x =>
             {
-                Source = textBox,
-                Path = new(TextBox.TextProperty),
-                Mode = BindingMode.TwoWay,
-            };
-
-            Keyboard.SetBinding(Controls.Keyboard.TextProperty, binding);
-
-            KeyboardBinding = Disposable.Create(() =>
-            {
-                BindingOperations.ClearBinding(Keyboard, Controls.Keyboard.TextProperty);
+                textBox.Text = x;
             });
 
-            _keyboardTarget = textBox;
-
+            ViewModel.MainViewModel.DialogOpenCommand.Execute(inputDialog).Subscribe();
         };
         textBox.LostFocus += (_, _) =>
         {
-            var focused = System.Windows.Input.Keyboard.FocusedElement;
-
-            if (focused is Button)
-            {
-                return;
-            }
             AddText(textBox, placeHolder);
-
-            if (_keyboardTarget == textBox)
-            {
-                KeyboardBinding = null;
-                Keyboard.Visibility = Visibility.Collapsed;
-            }
         };
 
 

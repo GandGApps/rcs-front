@@ -98,6 +98,7 @@
     <!--#region Default State-->
     <StaticResource x:Key="DefaultButtonBackground" ResourceKey="AccentBrush" />
     <StaticResource x:Key="DefaultButtonForeground" ResourceKey="AlternateForeground" />
+    <StaticResource x:Key="DefaultPressedButtonBackground" ResourceKey="AccentBrush2" />
     <!--#endregion-->
 
     <!--#region Disabled-->
@@ -110,6 +111,11 @@
 
     <!--#region Hover-->
     <SolidColorBrush x:Key="HoverButtonBackground" Color="#2ac2ec" />
+    <!--#endregion-->
+
+    <!--#region Secondary Button-->
+    <StaticResource x:Key="SecondaryButtonBackground" ResourceKey="ClickableBg" />
+    <StaticResource x:Key="SecondaryButtonBorderBrush" ResourceKey="AlternateForeground" />
     <!--#endregion-->
 
     <!--#endregion-->
