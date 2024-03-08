@@ -104,7 +104,7 @@
                         x:Name="CancelButton"
                         Grid.Column="1"
                         Width="{mx:AdaptiveSize 220}"
-                        Margin="0,-2,0,-2"
+                        Margin="0,-2,5,-2"
                         HorizontalAlignment="Right"
                         Style="{StaticResource SecondaryButton}">
                         Отмена
