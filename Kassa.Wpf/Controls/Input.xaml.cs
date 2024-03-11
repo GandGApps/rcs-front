@@ -5,6 +5,7 @@ using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Automation;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
@@ -13,10 +14,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kassa.BuisnessLogic;
+using Kassa.RxUI;
+using Kassa.RxUI.Dialogs;
+using Splat;
 
 namespace Kassa.Wpf.Controls;
 /// <summary>
-/// Логика взаимодействия для Input.xaml
+/// 
 /// </summary>
 public partial class Input : UserControl
 {
@@ -35,9 +40,26 @@ public partial class Input : UserControl
             new FrameworkPropertyMetadata(string.Empty, FrameworkPropertyMetadataOptions.BindsTwoWayByDefault)
         );
 
-    public string Text
+    public static readonly DependencyProperty LabelProperty =
+        DependencyProperty.Register(nameof(Label),
+            typeof(UIElement),
+            typeof(Input),
+            new FrameworkPropertyMetadata(null)
+        );
+
+    public static readonly DependencyProperty CornerRadiusProperty =
+        DependencyProperty.Register(nameof(CornerRadius),
+            typeof(CornerRadius),
+            typeof(Input),
+            new FrameworkPropertyMetadata(new CornerRadius(0))
+        );
+
+    private TextBlock? _placeholder;
+    private TextBoxWithoutVirtualKeyboard? _input;
+
+    public string? Text
     {
-        get => (string)GetValue(TextProperty);
+        get => (string?)GetValue(TextProperty);
         set => SetValue(TextProperty, value);
     }
 
@@ -47,12 +69,21 @@ public partial class Input : UserControl
         set => SetValue(PlaceholderProperty, value);
     }
 
-    private TextBlock? _placeholder;
+    public UIElement Label
+    {
+        get => (UIElement)GetValue(LabelProperty);
+        set => SetValue(LabelProperty, value);
+    }
+
+    public CornerRadius CornerRadius
+    {
+        get => (CornerRadius)GetValue(CornerRadiusProperty);
+        set => SetValue(CornerRadiusProperty, value);
+    }
 
     public Input()
     {
         InitializeComponent();
-
 
     }
 
@@ -60,8 +91,41 @@ public partial class Input : UserControl
     {
         base.OnApplyTemplate();
 
+
         _placeholder = (TextBlock)GetTemplateChild("Placeholder");
+        _input = (TextBoxWithoutVirtualKeyboard)GetTemplateChild("Input");
+
+        if (string.IsNullOrWhiteSpace(Text))
+        {
+            _placeholder.Visibility = Visibility.Visible;
+        }
+        else
+        {
+            _placeholder.Visibility = Visibility.Collapsed;
+        }
+
+        _input.GotFocus += (_, _) =>
+        {
+            var name = (string?)GetValue(AutomationProperties.NameProperty);
+
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                name = Placeholder ?? string.Empty;
+            }
+
+            var inputDialog = new InputDialogViewModel(name, Text);
+
+            inputDialog.OkCommand.Subscribe(x =>
+            {
+                Text = x;
+            });
+
+            var mainViewModel = Locator.Current.GetRequiredService<MainViewModel>();
+
+            mainViewModel.DialogOpenCommand.Execute(inputDialog).Subscribe();
+        };
     }
+
 
     public static void TextChangedCallback(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -82,4 +146,5 @@ public partial class Input : UserControl
             input._placeholder.Visibility = Visibility.Collapsed;
         }
     }
+
 }

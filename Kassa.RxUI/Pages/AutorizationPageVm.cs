@@ -33,6 +33,9 @@ public class AutorizationPageVm : PageViewModel
                 return false;
             }
         });
+
+        Login = string.Empty;
+        Password = string.Empty;
     }
 
     [Reactive]
@@ -61,11 +64,11 @@ public class AutorizationPageVm : PageViewModel
     public string Login
     {
         get; set;
-    } = "Типа логин";
+    }
 
     [Reactive]
     public string Password
     {
         get; set;
-    } = "Типа пароль";
+    }
 }

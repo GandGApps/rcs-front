@@ -29,22 +29,8 @@ public partial class AutorizationPage : ReactiveUserControl<AutorizationPageVm>
 
     public event RoutedEventHandler NextClicked
     {
-
         add => AddHandler(NextClickedEvent, value);
         remove => RemoveHandler(NextClickedEvent, value);
-    }
-
-    private IDisposable? _keyboardBinding;
-    private object _keyboardTarget;
-
-    private IDisposable? KeyboardBinding
-    {
-        get => _keyboardBinding;
-        set
-        {
-            _keyboardBinding?.Dispose();
-            _keyboardBinding = value;
-        }
     }
 
     public AutorizationPage()
@@ -67,48 +53,6 @@ public partial class AutorizationPage : ReactiveUserControl<AutorizationPageVm>
             this.BindCommand(ViewModel, x => x.LoginCommand, x => x.Submit)
                 .DisposeWith(disposables);
         });
-
-        AddTextBoxBehavior(Login, "Типа логин");
-        AddTextBoxBehavior(Password, "Типа пароль");
-    }
-
-    private void AddTextBoxBehavior(TextBox textBox, string placeHolder)
-    {
-        textBox.GotFocus += (_, _) =>
-        {
-            RemoveText(textBox, placeHolder);
-
-            var inputDialog = new InputDialogViewModel(placeHolder, textBox.Text);
-
-            inputDialog.OkCommand.Subscribe(x =>
-            {
-                textBox.Text = x;
-            });
-
-            ViewModel.MainViewModel.DialogOpenCommand.Execute(inputDialog).Subscribe();
-        };
-        textBox.LostFocus += (_, _) =>
-        {
-            AddText(textBox, placeHolder);
-        };
-
-
-    }
-
-    private void AddText(TextBox sender, string placeholder)
-    {
-        if (string.IsNullOrEmpty(sender.Text))
-        {
-            sender.Text = placeholder;
-        }
-    }
-
-    private void RemoveText(TextBox sender, string placeholder)
-    {
-        if (sender.Text == placeholder)
-        {
-            sender.Text = "";
-        }
     }
 
     private void LogoSizeAnimationCompleted(object sender, EventArgs e)

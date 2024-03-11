@@ -684,5 +684,15 @@
     </Style>
 
 
+    <Style TargetType="local:Input">
+        <Setter Property="Width" Value="{mx:AdaptiveSize 430}" />
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='20,14,13,14'}" />
+        <Setter Property="Background" Value="{DynamicResource PrimaryInputBackground}" />
+        <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius=28}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryInputBorderBrush}" />
+        <Setter Property="BorderThickness" Value="{mx:AdaptiveSize Thickness='1'}" />
+    </Style>
+
+
 
 </ResourceDictionary>

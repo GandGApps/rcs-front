@@ -11,9 +11,17 @@
     <UserControl.Template>
         <ControlTemplate TargetType="local:Input">
             <Border
-                BorderBrush="Black"
-                BorderThickness="0.8"
-                Style="{StaticResource SearchTextBoxBorder}">
+                Width="{TemplateBinding Width}"
+                Height="{TemplateBinding Height}"
+                MinWidth="{TemplateBinding MinWidth}"
+                Padding="{TemplateBinding Padding}"
+                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{TemplateBinding CornerRadius}">
+
                 <Grid VerticalAlignment="Center">
 
                     <Grid.ColumnDefinitions>
@@ -21,20 +29,19 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <Path
-                        Grid.Column="0"
-                        Data="{StaticResource LoginUserIcon}"
-                        Fill="Black"
-                        Style="{StaticResource SearchTextBoxIcon}" />
+                    <ContentPresenter Grid.Column="0" Content="{TemplateBinding Label}" />
 
-                    <TextBox
+                    <local:TextBoxWithoutVirtualKeyboard
                         x:Name="Input"
                         Grid.Column="1"
+                        Style="{StaticResource SearchTextBox}"
                         Text="{TemplateBinding Text}" />
 
                     <TextBlock
                         x:Name="Placeholder"
                         Grid.Column="1"
+                        VerticalAlignment="Center"
+                        IsHitTestVisible="False"
                         Text="{TemplateBinding Placeholder}" />
 
                 </Grid>

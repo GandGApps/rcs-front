@@ -191,7 +191,16 @@
     <!--#endregion-->
 
     <!--#region SearchTextBoxBorder-->
-    <SolidColorBrush x:Key="SearchTextBoxBorderBackground" Color="#FFF" />
+
+    <!--#endregion-->
+
+    <!--#region PrimaryInput-->
+    <SolidColorBrush x:Key="PrimaryInputBackground" Color="#FFF" />
+    <SolidColorBrush x:Key="PrimaryInputForeground" Color="Black" />
+    <SolidColorBrush x:Key="PrimaryInputBorderBrush" Color="Black" />
+    <SolidColorBrush x:Key="PrimaryInputErrorBorderBrush" Color="#F42E2E" />
+    <SolidColorBrush x:Key="PrimaryInputErrorForeground" Color="#F42E2E" />
+    <SolidColorBrush x:Key="PrimaryInputLabelBackground" Color="#DEDEDE" />
     <!--#endregion-->
 
     <!--#region MainPage-->

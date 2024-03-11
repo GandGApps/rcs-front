@@ -43,6 +43,8 @@ public partial class InputDialog : ClosableDialog<InputDialogViewModel>
             this.BindCommand(ViewModel, x => x.CloseCommand, x => x.BackButton)
                 .DisposeWith(disposables);
 
+            this.Bind(ViewModel, x => x.FieldName, x => x.FieldName.Text)
+                .DisposeWith(disposables);
 
         });
     }

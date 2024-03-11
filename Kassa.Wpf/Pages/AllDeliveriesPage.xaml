@@ -83,7 +83,7 @@
                         TargetType="TextBlock">
                         <Setter Property="FontWeight" Value="SemiBold" />
                         <Setter Property="Foreground" Value="{DynamicResource AlternateForeground}" />
-                        <Setter Property="FontSize" Value="{mx:AdaptiveSize 13}" />
+                        <Setter Property="FontSize" Value="{mx:AdaptiveSize 11}" />
                         <Setter Property="VerticalAlignment" Value="Center" />
                         <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='8,0,0,0'}" />
 
@@ -94,12 +94,12 @@
                         BasedOn="{StaticResource {x:Type Path}}"
                         TargetType="Path">
                         <Setter Property="Fill" Value="{DynamicResource AlternateForeground}" />
-                        <Setter Property="Width" Value="{mx:AdaptiveSize 32}" />
+                        <Setter Property="Width" Value="{mx:AdaptiveSize 28}" />
                     </Style>
 
                     <Style x:Key="RadioButtonIconImage" TargetType="Image">
                         <Setter Property="Stretch" Value="Uniform" />
-                        <Setter Property="Width" Value="{mx:AdaptiveSize 32}" />
+                        <Setter Property="Width" Value="{mx:AdaptiveSize 28}" />
                     </Style>
 
                     <Style TargetType="StackPanel">
@@ -129,7 +129,7 @@
                     </StackPanel>
                 </RadioButton>
 
-                <views:DateSelector Grid.Column="3" Margin="{mx:AdaptiveSize Thickness='75,0'}" />
+                <views:DateSelector Grid.Column="3" Margin="{mx:AdaptiveSize Thickness='40,0'}" />
 
                 <RadioButton Grid.Column="4">
                     <StackPanel>

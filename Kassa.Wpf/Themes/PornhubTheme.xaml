@@ -202,7 +202,16 @@
     <!--#endregion-->
 
     <!--#region SearchTextBoxBorder-->
-    <StaticResource x:Key="SearchTextBoxBorderBackground" ResourceKey="AlternateForeground" />
+
+    <!--#endregion-->
+
+    <!--#region PrimaryInput-->
+    <StaticResource x:Key="PrimaryInputBackground" ResourceKey="AlternateForeground" />
+    <StaticResource x:Key="PrimaryInputForeground" ResourceKey="PrimaryForeground" />
+    <SolidColorBrush x:Key="PrimaryInputBorderBrush" Color="Black" />
+    <StaticResource x:Key="PrimaryInputErrorBorderBrush" ResourceKey="DangerBrush" />
+    <StaticResource x:Key="PrimaryInputErrorForeground" ResourceKey="DangerBrush" />
+    <StaticResource x:Key="PrimaryInputLabelBackground" ResourceKey="Theme" />
     <!--#endregion-->
 
     <!--#region MainPage-->
