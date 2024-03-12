@@ -121,7 +121,7 @@ public partial class Keyboard : UserControl, IActivatableView
                                         path.SetResourceReference(Path.DataProperty, x.Item4);
                                         path.SetResourceReference(Path.FillProperty, "KeyForeground");
 
-                                        var iconAdaptiveSize = new AdaptiveSizeExtension(32);
+                                        var iconAdaptiveSize = new AdaptiveSizeExtension(30);
                                         var binding = (BindingBase)iconAdaptiveSize.ProvideValue(null!);
 
                                         path.SetBinding(HeightProperty, binding);
@@ -139,6 +139,27 @@ public partial class Keyboard : UserControl, IActivatableView
                                     if (x.Item5)
                                     {
                                         key.Command = EnterCommand;
+                                    }
+                                    if (!string.IsNullOrWhiteSpace(x.Item2))
+                                    {
+                                        AdaptiveSizeExtension? size = null;
+
+                                        if (x.Item2.Length > 4)
+                                        {
+                                            size = new(20);
+                                        }
+
+                                        if (x.Item2.Length > 7)
+                                        {
+                                            size = new(15);
+                                        }
+
+                                        if (size == null) return;
+
+                                        var binding = (BindingBase)size.ProvideValue(null!);
+
+                                        BindingOperations.ClearBinding(button, Button.FontSizeProperty);
+                                        button.SetBinding(Button.FontSizeProperty, binding);
                                     }
                                 });
 
