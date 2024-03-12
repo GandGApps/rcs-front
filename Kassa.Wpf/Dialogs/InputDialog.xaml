@@ -34,7 +34,7 @@
                 <TextBlock
                     x:Name="FieldName"
                     Grid.Column="0"
-                    Margin="24,0,0,0"
+                    Margin="{mx:AdaptiveSize Thickness='24,0,0,0'}"
                     VerticalAlignment="Center"
                     FontWeight="Normal"
                     Style="{DynamicResource Header}"
@@ -44,7 +44,7 @@
             <Border
                 Grid.Row="1"
                 Width="1280"
-                Margin="0,0,0,12"
+                Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
                 Style="{DynamicResource Separator}" />
 
             <ScrollViewer
@@ -56,7 +56,7 @@
                     x:Name="Input"
                     AcceptsReturn="True"
                     BorderThickness="0"
-                    FontSize="28"
+                    FontSize="{mx:AdaptiveSize 28}"
                     TextWrapping="Wrap" />
             </ScrollViewer>
 
@@ -64,13 +64,13 @@
             <controls:Keyboard
                 x:Name="Keyboard"
                 Grid.Row="3"
-                Margin="0,0,0,15"
+                Margin="{mx:AdaptiveSize Thickness='0,0,0,15'}"
                 VerticalAlignment="Bottom" />
 
             <Border
                 Grid.Row="4"
-                Margin="0,0,0,10"
-                Padding="20,4,2,4"
+                Margin="{mx:AdaptiveSize Thickness='0,0,0,10'}"
+                Padding="{mx:AdaptiveSize Thickness='20,4,2,4'}"
                 Style="{StaticResource DialogFooter}">
                 <Grid>
 
@@ -82,18 +82,18 @@
 
                     <controls:ButtonWithCornerRaduis
                         x:Name="BackButton"
-                        Padding="0,15,0,15"
+                        Padding="{mx:AdaptiveSize Thickness='0,15,0,15'}"
                         Background="Transparent">
                         <StackPanel Orientation="Horizontal">
                             <Path
-                                Width="13"
-                                Height="22.7"
+                                Width="{mx:AdaptiveSize 13}"
+                                Height="{mx:AdaptiveSize 22.7}"
                                 Data="{StaticResource Arrow}"
                                 Fill="White" />
                             <TextBlock
-                                Margin="7,0,0,0"
+                                Margin="{mx:AdaptiveSize Thickness='7,0,0,0'}"
                                 VerticalAlignment="Center"
-                                FontSize="13"
+                                FontSize="{mx:AdaptiveSize 13}"
                                 Foreground="White"
                                 Text="Назад" />
                         </StackPanel>
@@ -104,7 +104,7 @@
                         x:Name="CancelButton"
                         Grid.Column="1"
                         Width="{mx:AdaptiveSize 220}"
-                        Margin="0,-2,5,-2"
+                        Margin="{mx:AdaptiveSize Thickness='0,-1,5,-1'}"
                         HorizontalAlignment="Right"
                         Style="{StaticResource SecondaryButton}">
                         Отмена
@@ -113,7 +113,7 @@
                         x:Name="OkButton"
                         Grid.Column="2"
                         Width="{mx:AdaptiveSize 220}"
-                        Margin="0,-2,0,-2"
+                        Margin="{mx:AdaptiveSize Thickness='0,-1,0,-1'}"
                         HorizontalAlignment="Right"
                         Style="{StaticResource PrimaryButton}">
                         Ок

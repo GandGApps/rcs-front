@@ -249,4 +249,12 @@
         Opacity="0.5"
         Color="#8BA1B1" />
 
+
+    <!--#region ClientView-->
+
+    <SolidColorBrush x:Key="ClientViewBackground" Color="#DEDEDE" />
+    <SolidColorBrush x:Key="ClientViewForeground" Color="Black" />
+    <SolidColorBrush x:Key="ClientViewBackgroundSelected" Color="#FF9900" />
+    <!--#endregion-->
+
 </ResourceDictionary>

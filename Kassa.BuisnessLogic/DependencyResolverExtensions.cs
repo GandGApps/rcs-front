@@ -24,6 +24,9 @@ public static class DependencyResolverExtensions
         SplatRegistrations.Register<IAdditiveService, AdditiveService>();
         RegisterInitializableServiceFactory<IAdditiveService>(services);
 
+        SplatRegistrations.Register<IClientService, ClientService>();
+        RegisterInitializableServiceFactory<IClientService>(services);
+
         services.Register<ICashierService>(() =>
         {
             var productService = Locator.Current.GetNotInitializedService<IProductService>();
@@ -33,6 +36,8 @@ public static class DependencyResolverExtensions
             return new CashierService(additiveService, categoryService, productService);
         });
         RegisterInitializableServiceFactory<ICashierService>(services);
+
+
     }
 
     /// <summary>

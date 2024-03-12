@@ -260,4 +260,13 @@
         Opacity="0.5"
         Color="#8BA1B1" />
 
+
+    <!--#region ClientView-->
+
+    <StaticResource x:Key="ClientViewBackground" ResourceKey="Theme" />
+    <StaticResource x:Key="ClientViewForeground" ResourceKey="PrimaryForeground" />
+    <StaticResource x:Key="ClientViewBackgroundSelected" ResourceKey="AccentBrush" />
+
+    <!--#endregion-->
+
 </ResourceDictionary>

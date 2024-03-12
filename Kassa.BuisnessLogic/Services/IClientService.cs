@@ -7,7 +7,7 @@ using DynamicData;
 using Kassa.BuisnessLogic.Dto;
 
 namespace Kassa.BuisnessLogic.Services;
-internal interface IClientService: IInitializableService
+public interface IClientService: IInitializableService
 {
     public SourceCache<ClientDto, Guid> RuntimeClients
     {

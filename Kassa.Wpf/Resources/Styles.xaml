@@ -482,12 +482,12 @@
         x:Key="BaseKeyButtonStyle"
         BasedOn="{StaticResource {x:Type Button}}"
         TargetType="Button">
-        <Setter Property="TextBlock.FontSize" Value="{mx:AdaptiveSize 28}" />
-        <Setter Property="FontSize" Value="{mx:AdaptiveSize 28}" />
+        <Setter Property="TextBlock.FontSize" Value="{mx:AdaptiveSize 25}" />
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 25}" />
         <Setter Property="Foreground" Value="{DynamicResource KeyForeground}" />
         <Setter Property="Background" Value="{DynamicResource KeyBackground}" />
-        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness=10}" />
-        <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness=1.3}" />
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness=9}" />
+        <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness=1.2}" />
         <Setter Property="Focusable" Value="False" />
 
         <Setter Property="Template">
@@ -547,7 +547,7 @@
                                 Fill="{DynamicResource KeyForeground}" />
                             <Path
                                 x:Name="Clear"
-                                Width="{mx:AdaptiveSize 32}"
+                                Width="{mx:AdaptiveSize 25}"
                                 Margin="0,0,15,0"
                                 Data="{StaticResource Clear}"
                                 Fill="{DynamicResource KeyForeground}" />

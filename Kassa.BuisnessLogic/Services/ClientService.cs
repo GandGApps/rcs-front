@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
@@ -89,6 +90,12 @@ internal class ClientService : BaseInitializableService, IClientService
         RuntimeClients.AddOrUpdate(client);
     }
 
+    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    {
+        var clients = (await _repository.GetAll()).Select(Mapper.MapClientToDto);
+
+        RuntimeClients.AddOrUpdate(clients);
+    }
 
     protected override void Dispose(bool disposing)
     {

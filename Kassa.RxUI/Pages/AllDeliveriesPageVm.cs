@@ -3,9 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
+using Kassa.BuisnessLogic.Services;
+using Kassa.RxUI.Dialogs;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -18,6 +22,35 @@ public class AllDeliveriesPageVm : PageViewModel
         {
             Date = Date.AddDays(x);
         });
+
+        GoToPickUpCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var clientService = await Locator.GetInitializedService<IClientService>();
+
+            var allClientsDialogViewModel = new AllClientsDialogViewModel(clientService);
+
+            await MainViewModel.DialogOpenCommand.Execute(allClientsDialogViewModel).FirstAsync();
+        });
+
+        GoToDeliveryCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+
+            var clientService = await Locator.GetInitializedService<IClientService>();
+
+            var allClientsDialogViewModel = new AllClientsDialogViewModel(clientService);
+
+            await MainViewModel.DialogOpenCommand.Execute(allClientsDialogViewModel).FirstAsync();
+        });
+    }
+
+    public ReactiveCommand<Unit, Unit> GoToPickUpCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> GoToDeliveryCommand
+    {
+        get;
     }
 
     [Reactive]
