@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
@@ -20,6 +21,13 @@ public class AllClientsDialogViewModel : DialogViewModel
     public AllClientsDialogViewModel(IClientService clientService)
     {
         _clientService = clientService;
+
+        CancelCommand = ReactiveCommand.CreateFromTask(CloseAsync);
+
+        var okCommandValidator = this.WhenAnyValue(x => x.SelectedClient)
+                                     .Select(client => client != null);
+
+        OkCommand = ReactiveCommand.CreateFromTask(CloseAsync, okCommandValidator);
     }
 
     [Reactive]
@@ -46,6 +54,26 @@ public class AllClientsDialogViewModel : DialogViewModel
     {
         get;
         set;
+    }
+
+    public ReactiveCommand<Unit, Unit> NewGuestCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> SkipCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> CancelCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> OkCommand
+    {
+        get;
     }
 
     protected override ValueTask InitializeAsync(CompositeDisposable disposables)

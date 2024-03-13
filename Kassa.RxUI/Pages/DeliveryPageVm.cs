@@ -9,6 +9,12 @@ namespace Kassa.RxUI.Pages;
 public class DeliveryPageVm : PageViewModel
 {
 
+    public DeliveryPageVm(ClientViewModel? clientViewModel)
+    {
+        DeliveryId = Guid.NewGuid();
+        Client = clientViewModel;
+    }
+
     public Guid DeliveryId
     {
         get; set;
@@ -22,5 +28,10 @@ public class DeliveryPageVm : PageViewModel
     public bool IsDelivery
     {
         get; set;
+    }
+
+    public ClientViewModel? Client
+    {
+        get;
     }
 }

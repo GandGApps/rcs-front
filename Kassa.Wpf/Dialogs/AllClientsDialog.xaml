@@ -85,39 +85,21 @@
 
             <Border
                 Grid.Row="4"
-                Margin="0,0,0,10"
+                Margin="{mx:AdaptiveSize Thickness='0,0,0,10'}"
                 Style="{StaticResource DialogFooter}">
                 <Grid>
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <controls:ButtonWithCornerRaduis Padding="{mx:AdaptiveSize Thickness='0,15,0,15'}" Background="Transparent">
-                        <StackPanel Orientation="Horizontal">
-                            <Path
-                                Width="13"
-                                Height="22.7"
-                                Data="{StaticResource Arrow}"
-                                Fill="White" />
-                            <TextBlock
-                                Margin="7,0,0,0"
-                                VerticalAlignment="Center"
-                                FontSize="13"
-                                Foreground="White"
-                                Text="Назад" />
-                        </StackPanel>
-
-                    </controls:ButtonWithCornerRaduis>
-
-                    <CheckBox
-                        x:Name="IsKeyboardEnabled"
-                        Grid.Column="1"
-                        Style="{StaticResource KeyboardCheckbox}">
+                    <CheckBox x:Name="IsKeyboardEnabled" Style="{StaticResource KeyboardCheckbox}">
                         <StackPanel VerticalAlignment="Center">
                             <Path Style="{StaticResource KeyboardCheckboxIcon}" />
                             <TextBlock Style="{StaticResource KeyboardCheckboxText}">
@@ -127,7 +109,10 @@
                         </StackPanel>
                     </CheckBox>
 
-                    <Border Grid.Column="2" Style="{StaticResource SearchTextBoxBorder}">
+                    <Border
+                        Grid.Column="1"
+                        Width="{mx:AdaptiveSize 320}"
+                        Style="{StaticResource SearchTextBoxBorder}">
                         <Grid VerticalAlignment="Center">
 
                             <Grid.ColumnDefinitions>
@@ -135,16 +120,66 @@
                                 <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <TextBox x:Name="SearchTextBox" Style="{StaticResource SearchTextBox}" />
+                            <controls:TextBoxWithoutVirtualKeyboard x:Name="SearchTextBox" Style="{StaticResource SearchTextBox}" />
 
                             <Path Grid.Column="1" Style="{StaticResource SearchTextBoxIcon}" />
 
                         </Grid>
                     </Border>
 
-                    <Border MouseDown="ClearSearchText" Style="{StaticResource ClearSearchTextBorder}">
+                    <Border
+                        Grid.Column="2"
+                        Margin="{mx:AdaptiveSize Thickness='10,0,0,0'}"
+                        HorizontalAlignment="Left"
+                        MouseDown="ClearSearchText"
+                        Style="{StaticResource ClearSearchTextBorder}">
                         <Path Style="{StaticResource ClearSearchTextIcon}" />
                     </Border>
+
+                    <Button
+                        x:Name="NewGuestButton"
+                        Grid.Column="3"
+                        Width="{mx:AdaptiveSize 180}"
+                        MinWidth="{mx:AdaptiveSize 180}"
+                        Margin="{mx:AdaptiveSize Thickness='0,-1,3,-1'}"
+                        HorizontalAlignment="Right"
+                        FontSize="{mx:AdaptiveSize 18}"
+                        Style="{StaticResource SecondaryButton}">
+                        Новый гость+
+                    </Button>
+                    <Button
+                        x:Name="SkipButton"
+                        Grid.Column="4"
+                        Width="{mx:AdaptiveSize 180}"
+                        MinWidth="{mx:AdaptiveSize 180}"
+                        Margin="{mx:AdaptiveSize Thickness='0,-1,3,-1'}"
+                        HorizontalAlignment="Right"
+                        FontSize="{mx:AdaptiveSize 18}"
+                        Style="{StaticResource SecondaryButton}">
+                        Пропустить
+                    </Button>
+                    <Button
+                        x:Name="CancelButton"
+                        Grid.Column="5"
+                        Width="{mx:AdaptiveSize 180}"
+                        MinWidth="{mx:AdaptiveSize 180}"
+                        Margin="{mx:AdaptiveSize Thickness='0,-1,3,-1'}"
+                        HorizontalAlignment="Right"
+                        FontSize="{mx:AdaptiveSize 18}"
+                        Style="{StaticResource SecondaryButton}">
+                        Отмена
+                    </Button>
+                    <Button
+                        x:Name="OkButton"
+                        Grid.Column="6"
+                        Width="{mx:AdaptiveSize 180}"
+                        MinWidth="{mx:AdaptiveSize 180}"
+                        Margin="{mx:AdaptiveSize Thickness='0,-1,0,-1'}"
+                        HorizontalAlignment="Right"
+                        FontSize="{mx:AdaptiveSize 18}"
+                        Style="{StaticResource PrimaryButton}">
+                        Ок
+                    </Button>
 
 
                 </Grid>

@@ -92,7 +92,7 @@
     <Style x:Key="DialogFooter" TargetType="Border">
         <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius=38}" />
         <Setter Property="Background" Value="{DynamicResource DialogFooterBrush}" />
-        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='20,4,20,4'}" />
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='16,4,16,4'}" />
     </Style>
 
     <Style

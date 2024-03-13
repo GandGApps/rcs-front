@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData.Binding;
@@ -13,13 +14,18 @@ namespace Kassa.RxUI;
 
 public class ClientViewModel : ReactiveObject
 {
-    public ClientViewModel(ClientDto dto, AllClientsDialogViewModel allClientsDialogView)
+    public ClientViewModel(ClientDto dto, AllClientsDialogViewModel? allClientsDialogView)
     {
         Id = dto.Id;
         FullName = dto.FullName;
         Address = dto.Address;
         Phone = dto.Phone;
         AllClientsDialogVm = allClientsDialogView;
+
+        if (allClientsDialogView is null)
+        {
+            return;
+        }
 
         allClientsDialogView
             .WhenAnyValue(allClientsDialogView => allClientsDialogView.SearchedText)
@@ -34,6 +40,11 @@ public class ClientViewModel : ReactiveObject
             {
                 IsSelected = x != null && x.Id == Id;
             });
+
+        SelectClientCommand = ReactiveCommand.Create(() =>
+        {
+            allClientsDialogView.SelectedClient = this;
+        });
     }
 
     public AllClientsDialogViewModel? AllClientsDialogVm
@@ -83,6 +94,10 @@ public class ClientViewModel : ReactiveObject
         set;
     }
 
+    public ReactiveCommand<Unit, Unit>? SelectClientCommand
+    {
+        get; 
+    }
 
     public void UpdateDto(ClientDto dto)
     {

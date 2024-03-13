@@ -316,7 +316,8 @@
             </Grid.ColumnDefinitions>
 
             <controls:ButtonWithIcon
-                Grid.Column="1"
+                Grid.Column="0"
+                Width="{mx:AdaptiveSize 165}"
                 HorizontalAlignment="Right"
                 VerticalContentAlignment="Center"
                 Command="{Binding GoToPickUpCommand}"
@@ -334,28 +335,47 @@
                     <Path
                         Width="{mx:AdaptiveSize 13}"
                         Height="{mx:AdaptiveSize 13}"
-                        HorizontalAlignment="Center"
-                        VerticalAlignment="Center"
-                        Data="{StaticResource PlusIcon}" />
+                        Data="{StaticResource PlusIcon}"
+                        Fill="{DynamicResource AlternateForeground}" />
 
                     <TextBlock
                         Grid.Row="1"
-                        FontWeight="Bold"
-                        Style="{StaticResource Large}"
+                        FontSize="{mx:AdaptiveSize 14}"
+                        FontWeight="Medium"
                         Text="Самовывоз" />
                 </Grid>
             </controls:ButtonWithIcon>
 
             <controls:ButtonWithIcon
-                Grid.Column="2"
+                Grid.Column="1"
+                Width="{mx:AdaptiveSize 165}"
                 HorizontalAlignment="Right"
                 VerticalContentAlignment="Center"
                 Command="{Binding GoToDeliveryCommand}"
-                Content="Доставка"
                 Foreground="{DynamicResource AlternateForeground}"
                 Icon="{StaticResource DeliveryTruck}"
                 IsEnabled="True"
-                Style="{StaticResource ToggableBorderIconButton}" />
+                Style="{StaticResource ToggableBorderIconButton}">
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+
+                    <Path
+                        Width="{mx:AdaptiveSize 13}"
+                        Height="{mx:AdaptiveSize 13}"
+                        Data="{StaticResource PlusIcon}"
+                        Fill="{DynamicResource AlternateForeground}" />
+
+                    <TextBlock
+                        Grid.Row="1"
+                        FontSize="{mx:AdaptiveSize 14}"
+                        FontWeight="Medium"
+                        Text="Доставка" />
+                </Grid>
+            </controls:ButtonWithIcon>
 
         </Grid>
     </wnd:MainWindow.PageFooter>

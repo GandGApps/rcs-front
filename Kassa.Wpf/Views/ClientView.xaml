@@ -53,7 +53,7 @@
     <UserControl.Style>
         <Style BasedOn="{StaticResource {x:Type UserControl}}" TargetType="{x:Type local:ClientView}">
             <Setter Property="Background" Value="{DynamicResource DefaultAdditiveViewBackground}" />
-            <Setter Property="Padding" Value="{mx:AdaptiveSize 13}" />
+            <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness=13}" />
             <Setter Property="Margin" Value="1" />
             <Setter Property="MinHeight" Value="{mx:AdaptiveSize 80}" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
@@ -78,21 +78,38 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
+        <Path
+            x:Name="IsSelectedIcon"
+            Grid.RowSpan="2"
+            Width="{mx:AdaptiveSize 11}"
+            Height="{mx:AdaptiveSize 11}"
+            Margin="0,0,4,0"
+            VerticalAlignment="Center"
+            Data="{StaticResource AcceptIcon}"
+            Fill="{DynamicResource AlternateForeground}" />
+
         <TextBlock
             x:Name="FullName"
+            Grid.Row="0"
             Grid.RowSpan="2"
             Grid.Column="1"
             VerticalAlignment="Center"
-            d:Text="Рикардо Григорович">
+            d:Text="Рикардо Григорович"
+            FontWeight="Medium">
             <TextBlock.Style>
-                <Style BasedOn="{StaticResource Header2}" TargetType="TextBlock">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding IsDetailsVisible}" Value="True">
-                            <Setter Property="Grid.RowSpan" Value="1" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
+                <Style BasedOn="{StaticResource Header2}" TargetType="TextBlock" />
             </TextBlock.Style>
+        </TextBlock>
+
+        <TextBlock
+            x:Name="Details"
+            Grid.Row="1"
+            Grid.Column="1"
+            VerticalAlignment="Top"
+            Style="{StaticResource SubHeader}"
+            TextWrapping="Wrap">
+            <Run x:Name="Phone" d:Text="dsaasd" />
+            ,<Run x:Name="Address" />
         </TextBlock>
 
     </Grid>

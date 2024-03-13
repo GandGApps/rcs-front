@@ -191,7 +191,7 @@
     <!--#endregion-->
 
     <!--#region SearchTextBoxBorder-->
-
+    <SolidColorBrush x:Key="SearchTextBoxBorderBackground" Color="#FFF" />
     <!--#endregion-->
 
     <!--#region PrimaryInput-->

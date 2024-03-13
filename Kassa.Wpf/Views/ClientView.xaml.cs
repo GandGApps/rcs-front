@@ -50,7 +50,46 @@ public partial class ClientView : ReactiveUserControl<ClientViewModel>
 
         this.WhenActivated(disposables =>
         {
+            DataContext = ViewModel;
+
+            Command = ViewModel!.SelectClientCommand!;
+
             this.OneWayBind(ViewModel, x => x.FullName, x => x.FullName.Text)
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, x => x.Phone, x => x.Phone.Text)
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, x => x.Address, x => x.Address.Text)
+                .DisposeWith(disposables);
+
+            ViewModel.WhenAnyValue(x => x.IsDetailsVisible)
+                .Subscribe(isVisible =>
+                {
+                    FullName.SetValue(Grid.RowSpanProperty, isVisible ? 1 : 2);
+                    Details.Visibility = isVisible ? Visibility.Visible : Visibility.Collapsed;
+                })
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, x => x.IsSelected, x => x.IsSelectedIcon.Visibility,
+                isSelected => isSelected ? Visibility.Visible : Visibility.Collapsed)
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, x => x.IsSelected, x => x.Background, isSelected =>
+                {
+                    if (isSelected)
+                    {
+                        var brush = App.GetThemeResource("ClientViewBackgroundSelected");
+
+                        return (Brush)brush;
+                    }
+                    else
+                    {
+                        var brush = App.GetThemeResource("ClientViewBackground");
+
+                        return (Brush)brush;
+                    }
+                })
                 .DisposeWith(disposables);
         });
     }
