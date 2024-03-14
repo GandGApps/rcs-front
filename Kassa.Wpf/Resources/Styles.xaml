@@ -721,7 +721,10 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <ContentPresenter Grid.Column="0" Content="{TemplateBinding Label}" />
+                            <ContentPresenter
+                                Grid.Column="0"
+                                Margin="{mx:AdaptiveSize Thickness='0,0,8,0'}"
+                                Content="{TemplateBinding Label}" />
 
                             <local:TextBoxWithoutVirtualKeyboard
                                 x:Name="Input"
