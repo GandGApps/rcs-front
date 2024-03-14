@@ -42,7 +42,7 @@ public partial class Input : UserControl
 
     public static readonly DependencyProperty LabelProperty =
         DependencyProperty.Register(nameof(Label),
-            typeof(UIElement),
+            typeof(object),
             typeof(Input),
             new FrameworkPropertyMetadata(null)
         );
@@ -69,9 +69,9 @@ public partial class Input : UserControl
         set => SetValue(PlaceholderProperty, value);
     }
 
-    public UIElement Label
+    public object Label
     {
-        get => (UIElement)GetValue(LabelProperty);
+        get => (object)GetValue(LabelProperty);
         set => SetValue(LabelProperty, value);
     }
 

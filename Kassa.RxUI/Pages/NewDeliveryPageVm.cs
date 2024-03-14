@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.RxUI.Dialogs;
+using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI.Pages;
-public class DeliveryPageVm : PageViewModel
+public class NewDeliveryPageVm : PageViewModel
 {
 
-    public DeliveryPageVm(ClientViewModel? clientViewModel)
+    public NewDeliveryPageVm(ClientViewModel? clientViewModel)
     {
         DeliveryId = Guid.NewGuid();
         Client = clientViewModel;
@@ -33,5 +34,17 @@ public class DeliveryPageVm : PageViewModel
     public ClientViewModel? Client
     {
         get;
+    }
+
+    [Reactive]
+    public string FullName
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public string Phone
+    {
+        get; set;
     }
 }

@@ -7,45 +7,4 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    mc:Ignorable="d">
-    <UserControl.Template>
-        <ControlTemplate TargetType="local:Input">
-            <Border
-                Width="{TemplateBinding Width}"
-                Height="{TemplateBinding Height}"
-                MinWidth="{TemplateBinding MinWidth}"
-                Padding="{TemplateBinding Padding}"
-                HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                VerticalAlignment="{TemplateBinding VerticalAlignment}"
-                Background="{TemplateBinding Background}"
-                BorderBrush="{TemplateBinding BorderBrush}"
-                BorderThickness="{TemplateBinding BorderThickness}"
-                CornerRadius="{TemplateBinding CornerRadius}">
-
-                <Grid VerticalAlignment="Center">
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <ContentPresenter Grid.Column="0" Content="{TemplateBinding Label}" />
-
-                    <local:TextBoxWithoutVirtualKeyboard
-                        x:Name="Input"
-                        Grid.Column="1"
-                        Style="{StaticResource SearchTextBox}"
-                        Text="{TemplateBinding Text}" />
-
-                    <TextBlock
-                        x:Name="Placeholder"
-                        Grid.Column="1"
-                        VerticalAlignment="Center"
-                        IsHitTestVisible="False"
-                        Text="{TemplateBinding Placeholder}" />
-
-                </Grid>
-            </Border>
-        </ControlTemplate>
-    </UserControl.Template>
-</UserControl>
+    mc:Ignorable="d" />

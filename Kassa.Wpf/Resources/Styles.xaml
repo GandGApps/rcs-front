@@ -151,6 +151,13 @@
 
     </Style>
 
+    <Style x:Key="SearchTextBox" TargetType="TextBox">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 20}" />
+        <Setter Property="Foreground" Value="{DynamicResource SecondaryForeground}" />
+    </Style>
+
     <Style x:Key="PrimaryButton" TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource DefaultButtonBackground}" />
         <Setter Property="MinWidth" Value="{mx:AdaptiveSize 200}" />
@@ -691,8 +698,49 @@
         <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius=28}" />
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryInputBorderBrush}" />
         <Setter Property="BorderThickness" Value="{mx:AdaptiveSize Thickness='1'}" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:Input">
+                    <Border
+                        Width="{TemplateBinding Width}"
+                        Height="{TemplateBinding Height}"
+                        MinWidth="{TemplateBinding MinWidth}"
+                        Padding="{TemplateBinding Padding}"
+                        HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                        VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+
+                        <Grid VerticalAlignment="Center">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <ContentPresenter Grid.Column="0" Content="{TemplateBinding Label}" />
+
+                            <local:TextBoxWithoutVirtualKeyboard
+                                x:Name="Input"
+                                Grid.Column="1"
+                                Style="{StaticResource SearchTextBox}"
+                                Text="{TemplateBinding Text}" />
+
+                            <TextBlock
+                                x:Name="Placeholder"
+                                Grid.Column="1"
+                                VerticalAlignment="Center"
+                                IsHitTestVisible="False"
+                                Text="{TemplateBinding Placeholder}" />
+
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
     </Style>
-
-
 
 </ResourceDictionary>

@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using DynamicData;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
+using Kassa.RxUI.Pages;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -27,7 +28,33 @@ public class AllClientsDialogViewModel : DialogViewModel
         var okCommandValidator = this.WhenAnyValue(x => x.SelectedClient)
                                      .Select(client => client != null);
 
-        OkCommand = ReactiveCommand.CreateFromTask(CloseAsync, okCommandValidator);
+        SkipCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var newDeliveryPageVm = new NewDeliveryPageVm(null)
+            {
+                IsPickup = IsPickup,
+                IsDelivery = IsDelivery
+            };
+
+            await CloseAsync();
+
+            await MainViewModel.GoToPageCommand.Execute(newDeliveryPageVm).FirstAsync();
+        });
+
+        OkCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var newDeliveryPageVm = new NewDeliveryPageVm(SelectedClient)
+            {
+                IsPickup = IsPickup,
+                IsDelivery = IsDelivery
+            };
+
+            await CloseAsync();
+
+            await MainViewModel.GoToPageCommand.Execute(newDeliveryPageVm).FirstAsync();
+
+        }, okCommandValidator);
+
     }
 
     [Reactive]
@@ -54,6 +81,16 @@ public class AllClientsDialogViewModel : DialogViewModel
     {
         get;
         set;
+    }
+    [Reactive]
+    public bool IsPickup
+    {
+        get; set;
+    }
+    [Reactive]
+    public bool IsDelivery
+    {
+        get; set;
     }
 
     public ReactiveCommand<Unit, Unit> NewGuestCommand

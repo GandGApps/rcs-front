@@ -27,7 +27,10 @@ public class AllDeliveriesPageVm : PageViewModel
         {
             var clientService = await Locator.GetInitializedService<IClientService>();
 
-            var allClientsDialogViewModel = new AllClientsDialogViewModel(clientService);
+            var allClientsDialogViewModel = new AllClientsDialogViewModel(clientService)
+            {
+                IsPickup = true
+            };
 
             await MainViewModel.DialogOpenCommand.Execute(allClientsDialogViewModel).FirstAsync();
         });
@@ -37,7 +40,10 @@ public class AllDeliveriesPageVm : PageViewModel
 
             var clientService = await Locator.GetInitializedService<IClientService>();
 
-            var allClientsDialogViewModel = new AllClientsDialogViewModel(clientService);
+            var allClientsDialogViewModel = new AllClientsDialogViewModel(clientService)
+            {
+                IsDelivery = true
+            };
 
             await MainViewModel.DialogOpenCommand.Execute(allClientsDialogViewModel).FirstAsync();
         });

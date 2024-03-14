@@ -26,6 +26,7 @@
     <SolidColorBrush x:Key="BottomShadowBrush" Color="Transparent" />
     <SolidColorBrush x:Key="AccentBorderBrush" Color="#00F0FF" />
     <SolidColorBrush x:Key="BlurColor" Color="#664C6475" />
+    <SolidColorBrush x:Key="AlternateBackground" Color="#F2F2F7" />
     <Color x:Key="FooterShadow">#CF000000</Color>
 
     <system:Double x:Key="TopShadowBlurEffectRadius">0</system:Double>
