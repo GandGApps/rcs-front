@@ -6,6 +6,7 @@
     xmlns:dialogs="clr-namespace:Kassa.RxUI.Dialogs;assembly=Kassa.RxUI"
     xmlns:local="clr-namespace:Kassa.Wpf.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     d:DataContext="{d:DesignInstance Type=dialogs:AreYouSureToTurnOffDialogViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -70,7 +71,7 @@
 
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="{mx:AdaptiveSize Thickness={StaticResource EndMenu}}" />
+                        <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius={StaticResource EndMenu}}" />
                     </Style>
                 </Button.Resources>
             </Button>
