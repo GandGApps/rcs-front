@@ -92,7 +92,7 @@
 
                 <Button.Resources>
                     <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="{StaticResource EndMenu}" />
+                        <Setter Property="CornerRadius" Value="{mx:AdaptiveSize Thickness={StaticResource EndMenu}}" />
                     </Style>
                 </Button.Resources>
             </Button>

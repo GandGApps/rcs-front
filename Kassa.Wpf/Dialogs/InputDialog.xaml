@@ -70,7 +70,6 @@
             <Border
                 Grid.Row="4"
                 Margin="{mx:AdaptiveSize Thickness='0,0,0,10'}"
-                Padding="{mx:AdaptiveSize Thickness='20,4,2,4'}"
                 Style="{StaticResource DialogFooter}">
                 <Grid>
 
