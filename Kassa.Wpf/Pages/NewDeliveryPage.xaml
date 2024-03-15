@@ -37,6 +37,102 @@
             <Setter Property="Foreground" Value="{DynamicResource AlternateForeground}" />
         </Style>
 
+        <Style x:Key="LabelTextBlock" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Center" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}" />
+            <Setter Property="FontSize" Value="{mx:AdaptiveSize 15}" />
+            <Setter Property="FontFamily" Value="{StaticResource Montseratt}" />
+            <Setter Property="TextAlignment" Value="Center" />
+            <Setter Property="TextWrapping" Value="Wrap" />
+        </Style>
+
+        <Style TargetType="ctrl:Input">
+            <Setter Property="OverridesDefaultStyle" Value="True" />
+            <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius='11'}" />
+            <Setter Property="Background" Value="{DynamicResource AlternateForeground}" />
+            <Setter Property="Height" Value="{mx:AdaptiveSize 72}" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='0,0,0,5'}" />
+            <Setter Property="ClipToBounds" Value="True" />
+            <Setter Property="BorderBrush" Value="{DynamicResource AlternateBackground}" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ctrl:Input">
+                        <Border
+                            Width="{TemplateBinding Width}"
+                            Height="{TemplateBinding Height}"
+                            MinWidth="{TemplateBinding MinWidth}"
+                            Padding="{TemplateBinding Padding}"
+                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+                            VerticalAlignment="{TemplateBinding VerticalAlignment}"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            ClipToBounds="{TemplateBinding ClipToBounds}"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+
+                            <Grid VerticalAlignment="Center" ClipToBounds="True">
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Border
+                                    Width="{mx:AdaptiveSize 90}"
+                                    Height="{mx:AdaptiveSize 72}"
+                                    Background="{DynamicResource AlternateBackground}"
+                                    CornerRadius="{mx:AdaptiveSize CornerRadius='11,0,0,11'}">
+                                    <TextBlock
+                                        Grid.Column="0"
+                                        Style="{StaticResource LabelTextBlock}"
+                                        Text="{TemplateBinding Label}" />
+                                </Border>
+
+                                <ctrl:TextBoxWithoutVirtualKeyboard
+                                    x:Name="Input"
+                                    Grid.Column="1"
+                                    Margin="{mx:AdaptiveSize Thickness='10,20,10,20'}"
+                                    FontSize="{mx:AdaptiveSize 21}"
+                                    Style="{StaticResource SearchTextBox}"
+                                    Text="{TemplateBinding Text}" />
+
+                                <TextBlock
+                                    x:Name="Placeholder"
+                                    Grid.Column="1"
+                                    Margin="{mx:AdaptiveSize Thickness='10,20,10,20'}"
+                                    VerticalAlignment="Center"
+                                    FontSize="{mx:AdaptiveSize 21}"
+                                    IsHitTestVisible="False"
+                                    Opacity="0.5"
+                                    Text="{TemplateBinding Placeholder}" />
+
+                            </Grid>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="EmptyButton" TargetType="Button">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <ContentPresenter Content="{TemplateBinding Content}" />
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="BorderClientInfo" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource AlternateBackground}" />
+            <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius='11,0,0,11'}" />
+            <Setter Property="Height" Value="{mx:AdaptiveSize 72}" />
+            <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='0,0,0,5'}" />
+
+        </Style>
+
     </UserControl.Resources>
 
     <Grid>
@@ -142,93 +238,59 @@
 
                 <StackPanel Grid.Row="1" Margin="{mx:AdaptiveSize Thickness='15,10,8,9'}">
 
-                    <StackPanel.Resources>
-                        <Style TargetType="ctrl:Input">
-                            <Setter Property="OverridesDefaultStyle" Value="True" />
-                            <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius='11'}" />
-                            <Setter Property="Background" Value="{DynamicResource AlternateForeground}" />
-                            <Setter Property="Height" Value="{mx:AdaptiveSize 80}" />
-                            <Setter Property="Padding" Value="0" />
-                            <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='0,0,0,5'}" />
-                            <Setter Property="ClipToBounds" Value="True" />
-                            <Setter Property="BorderBrush" Value="{DynamicResource AlternateBackground}" />
-                            <Setter Property="Template">
-                                <Setter.Value>
-                                    <ControlTemplate TargetType="ctrl:Input">
-                                        <Border
-                                            Width="{TemplateBinding Width}"
-                                            Height="{TemplateBinding Height}"
-                                            MinWidth="{TemplateBinding MinWidth}"
-                                            Padding="{TemplateBinding Padding}"
-                                            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
-                                            VerticalAlignment="{TemplateBinding VerticalAlignment}"
-                                            Background="{TemplateBinding Background}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                            ClipToBounds="{TemplateBinding ClipToBounds}"
-                                            CornerRadius="{TemplateBinding CornerRadius}">
-
-                                            <Grid VerticalAlignment="Center" ClipToBounds="True">
-
-                                                <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="Auto" />
-                                                    <ColumnDefinition Width="*" />
-                                                </Grid.ColumnDefinitions>
-
-                                                <Border
-                                                    Width="{mx:AdaptiveSize 96}"
-                                                    Height="{mx:AdaptiveSize 80}"
-                                                    Background="{DynamicResource AlternateBackground}"
-                                                    CornerRadius="{mx:AdaptiveSize CornerRadius='11,0,0,11'}">
-                                                    <TextBlock
-                                                        Grid.Column="0"
-                                                        HorizontalAlignment="Center"
-                                                        VerticalAlignment="Center"
-                                                        FontFamily="{StaticResource Montseratt}"
-                                                        FontSize="{mx:AdaptiveSize 18}"
-                                                        Foreground="{DynamicResource PrimaryForeground}"
-                                                        Text="{TemplateBinding Label}"
-                                                        TextAlignment="Center"
-                                                        TextWrapping="Wrap" />
-                                                </Border>
-
-                                                <ctrl:TextBoxWithoutVirtualKeyboard
-                                                    x:Name="Input"
-                                                    Grid.Column="1"
-                                                    FontSize="{mx:AdaptiveSize 25}"
-                                                    Style="{StaticResource SearchTextBox}"
-                                                    Text="{TemplateBinding Text}" />
-
-                                                <TextBlock
-                                                    x:Name="Placeholder"
-                                                    Grid.Column="1"
-                                                    Margin="{mx:AdaptiveSize Thickness='13,26,13,26'}"
-                                                    VerticalAlignment="Center"
-                                                    FontSize="{mx:AdaptiveSize 25}"
-                                                    IsHitTestVisible="False"
-                                                    Opacity="0.5"
-                                                    Text="{TemplateBinding Placeholder}" />
-
-                                            </Grid>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Setter.Value>
-                            </Setter>
-                        </Style>
-                    </StackPanel.Resources>
-
                     <ctrl:Input
                         x:Name="FullName"
                         Label="Имя отчество"
                         Placeholder="Имя Отчество" />
-                    <ctrl:Input Label="Фамилия" Placeholder="Фамилия" />
+
+                    <ctrl:Input
+                        x:Name="LastName"
+                        Label="Фамилия"
+                        Placeholder="Фамилия" />
+
                     <ctrl:Input
                         x:Name="Phone"
                         Label="Телефон"
                         Placeholder="Телефон" />
-                    <ctrl:Input Label="Карта" Placeholder="Карта" />
-                    <ctrl:Input Label="Прочее" Placeholder="Прочее" />
-                    <ctrl:Input Label="Комм. к заказу" Placeholder="Комментарий" />
+
+                    <ctrl:Input
+                        x:Name="Card"
+                        Label="Карта"
+                        Placeholder="Карта" />
+
+                    <ctrl:Input
+                        x:Name="Miscellaneous"
+                        Label="Прочее"
+                        Placeholder="Прочее" />
+
+                    <Border Style="{StaticResource BorderClientInfo}">
+                        <Grid>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="0" Style="{StaticResource EmptyButton}">
+                                <TextBlock Style="{StaticResource LabelTextBlock}" Text="Доп. инфо" />
+                            </Button>
+
+                            <Button Grid.Column="1" Style="{StaticResource EmptyButton}">
+                                <TextBlock Style="{StaticResource LabelTextBlock}" Text="Без сидки / цен.катег." />
+                            </Button>
+
+                            <Button Grid.Column="2" Style="{StaticResource EmptyButton}">
+                                <TextBlock Style="{StaticResource LabelTextBlock}" Text="Не в статусе “Высокий риск”" />
+                            </Button>
+
+                        </Grid>
+                    </Border>
+
+                    <ctrl:Input
+                        x:Name="Comment"
+                        Label="Комм. к заказу"
+                        Placeholder="Комментарий" />
 
                 </StackPanel>
 
@@ -249,6 +311,140 @@
                 <Border Style="{StaticResource HeaderPart}">
                     <TextBlock Style="{StaticResource HeaderPartTextBlock}" Text="АДРЕС" />
                 </Border>
+
+                <StackPanel Grid.Row="1" Margin="{mx:AdaptiveSize Thickness='15,10,8,9'}">
+
+                    <Border Style="{StaticResource BorderClientInfo}">
+                        <Grid>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="0" Style="{StaticResource EmptyButton}">
+                                <TextBlock Style="{StaticResource LabelTextBlock}">
+                                    <Run Text="Время:" />
+                                    <LineBreak />
+                                    <Run
+                                        x:Name="Time"
+                                        FontWeight="SemiBold"
+                                        Text="--:--" />
+                                    <LineBreak />
+                                    <Run x:Name="RelationTime" Text="(сегодня)" />
+                                </TextBlock>
+                            </Button>
+
+                            <Button Grid.Column="1" Style="{StaticResource EmptyButton}">
+                                <TextBlock Style="{StaticResource LabelTextBlock}">
+                                    <Run Text="Тип заказа:" />
+                                    <LineBreak />
+                                    <Run x:Name="TypeOfOrder" FontWeight="SemiBold" />
+                                </TextBlock>
+                            </Button>
+
+                            <Button Grid.Column="2" Style="{StaticResource EmptyButton}">
+                                <TextBlock Style="{StaticResource LabelTextBlock}">
+                                    <Run Text="Реклама:" />
+                                    <LineBreak />
+                                    <Run Text="Не задано" />
+                                </TextBlock>
+                            </Button>
+
+                        </Grid>
+                    </Border>
+
+                    <Border Style="{StaticResource BorderClientInfo}">
+                        <Grid>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <Button Grid.Column="0" Style="{StaticResource EmptyButton}">
+                                <TextBlock Style="{StaticResource LabelTextBlock}">
+                                    <Run Text="Улица:" />
+                                    <LineBreak />
+                                    <Run x:Name="StreetName" Text="Не задана" />
+                                </TextBlock>
+                            </Button>
+
+                            <Button Grid.Column="1" Style="{StaticResource EmptyButton}">
+                                <TextBlock Style="{StaticResource LabelTextBlock}">
+                                    <Run Text="Район:" />
+                                    <LineBreak />
+                                    <Run x:Name="DistrictName" Text="Не задан" />
+                                </TextBlock>
+                            </Button>
+
+                        </Grid>
+                    </Border>
+
+                    <Grid>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <!--  Костыль, как нибудь потом убери  -->
+                        <Border Grid.Column="1" Width="4" />
+
+                        <ctrl:Input
+                            x:Name="House"
+                            Label="Дом"
+                            Placeholder="Дом" />
+
+                        <ctrl:Input
+                            x:Name="Building"
+                            Grid.Column="2"
+                            Label="Корпус строение"
+                            Placeholder="Корпус" />
+
+                        <ctrl:Input
+                            x:Name="Entrance"
+                            Grid.Row="1"
+                            Label="Подъезд"
+                            Placeholder="Подъезд" />
+
+                        <ctrl:Input
+                            x:Name="Floor"
+                            Grid.Row="1"
+                            Grid.Column="2"
+                            Label="Этаж"
+                            Placeholder="Этаж" />
+
+                        <ctrl:Input
+                            x:Name="Apartment"
+                            Grid.Row="2"
+                            Label="Квартира"
+                            Placeholder="Квартира" />
+
+                        <ctrl:Input
+                            x:Name="Intercom"
+                            Grid.Row="2"
+                            Grid.Column="2"
+                            Label="Домофон"
+                            Placeholder="Домофон" />
+
+
+                    </Grid>
+
+                    <ctrl:Input
+                        x:Name="AddressNote"
+                        Label="Прим. к адресу"
+                        Placeholder="Прим. к адресу" />
+
+                </StackPanel>
 
             </Grid>
         </Border>

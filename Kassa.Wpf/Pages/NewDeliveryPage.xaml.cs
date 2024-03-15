@@ -28,10 +28,46 @@ public partial class NewDeliveryPage : ReactiveUserControl<NewDeliveryPageVm>
 
         this.WhenActivated(disposables =>
         {
-            this.Bind(ViewModel, vm => vm.FullName, v => v.FullName.Text)
+            this.Bind(ViewModel, vm => vm.NameWithMiddleName, v => v.FullName.Text)
+                .DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.LastName, v => v.LastName.Text)
                 .DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.Phone, v => v.Phone.Text)
+                .DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.Card, v => v.Card.Text)
+                .DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.Miscellaneous, v => v.Miscellaneous.Text)
+                .DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.Comment, v => v.Comment.Text)
+                .DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.House, v => v.House.Text)
+                .DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.Building, v => v.Building.Text)
+                .DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.Entrance, v => v.Entrance.Text)
+                .DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.Floor, v => v.Floor.Text)
+                .DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.Apartment, v => v.Apartment.Text)
+                .DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.Intercom, v => v.Intercom.Text)
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, vm => vm.TypeOfOrder, v => v.TypeOfOrder.Text)
+                .DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.AddressNote, v => v.AddressNote.Text)
                 .DisposeWith(disposables);
         });
     }

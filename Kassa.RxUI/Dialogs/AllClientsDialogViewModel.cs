@@ -152,7 +152,9 @@ public class AllClientsDialogViewModel : DialogViewModel
     private static bool IsMatch(ClientDto client, string text)
     {
         return client.Address.Contains(text, StringComparison.OrdinalIgnoreCase) ||
-               client.FullName.Contains(text, StringComparison.OrdinalIgnoreCase) ||
+               client.FirstName.Contains(text, StringComparison.OrdinalIgnoreCase) ||
+               client.LastName.Contains(text, StringComparison.OrdinalIgnoreCase) ||
+               client.MiddleName.Contains(text, StringComparison.OrdinalIgnoreCase) ||
                client.Phone.Contains(text, StringComparison.OrdinalIgnoreCase);
     }
 }

@@ -17,15 +17,29 @@ public class ClientViewModel : ReactiveObject
     public ClientViewModel(ClientDto dto, AllClientsDialogViewModel? allClientsDialogView)
     {
         Id = dto.Id;
-        FullName = dto.FullName;
+        FirstName = dto.FirstName;
+        LastName = dto.LastName;
+        MiddleName = dto.MiddleName;
         Address = dto.Address;
+        House = dto.House;
+        Building = dto.Building;
+        Entrance = dto.Entrance;
+        Floor = dto.Floor;
+        Apartment = dto.Apartment;
+        Intercom = dto.Intercom;
         Phone = dto.Phone;
+        Card = dto.Card;
+        AddressNote = dto.AddressNote;
+        Miscellaneous = dto.Miscellaneous;
         AllClientsDialogVm = allClientsDialogView;
 
         if (allClientsDialogView is null)
         {
             return;
         }
+
+        this.WhenAnyValue(x => x.FirstName, x => x.LastName, x => x.MiddleName, (firstName, lastName, middleName) => $"{firstName} {lastName} {middleName}")
+            .ToPropertyEx(this, x => x.FullName);
 
         allClientsDialogView
             .WhenAnyValue(allClientsDialogView => allClientsDialogView.SearchedText)
@@ -60,11 +74,28 @@ public class ClientViewModel : ReactiveObject
     }
 
     [Reactive]
-    public string FullName
+    public string FirstName
     {
-        get;
-        set;
+        get; set;
     }
+
+    [Reactive]
+    public string LastName
+    {
+        get; set;
+    }
+    [Reactive]
+    public string MiddleName
+    {
+        get; set;
+    }
+
+    public extern string FullName
+    {
+        [ObservableAsProperty]
+        get;
+    }
+
 
     [Reactive]
     public string Address
@@ -74,10 +105,63 @@ public class ClientViewModel : ReactiveObject
     }
 
     [Reactive]
+    public string House
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public string Building
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public string Entrance
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public string Floor
+    {
+        get; set;
+    }
+    [Reactive]
+    public string Apartment
+    {
+        get; set;
+    }
+    [Reactive]
+    public string Intercom
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public string AddressNote
+    {
+        get; set;
+    }
+
+
+    [Reactive]
     public string Phone
     {
         get;
         set;
+    }
+
+    [Reactive]
+    public string Card
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public string Miscellaneous
+    {
+        get; set;
     }
 
     [Reactive]
@@ -96,14 +180,25 @@ public class ClientViewModel : ReactiveObject
 
     public ReactiveCommand<Unit, Unit>? SelectClientCommand
     {
-        get; 
+        get;
     }
 
     public void UpdateDto(ClientDto dto)
     {
         Id = dto.Id;
-        FullName = dto.FullName;
+        FirstName = dto.FirstName;
+        LastName = dto.LastName;
+        MiddleName = dto.MiddleName;
         Address = dto.Address;
+        House = dto.House;
+        Building = dto.Building;
+        Entrance = dto.Entrance;
+        Floor = dto.Floor;
+        Apartment = dto.Apartment;
+        Intercom = dto.Intercom;
         Phone = dto.Phone;
+        Card = dto.Card;
+        AddressNote = dto.AddressNote;
+        Miscellaneous = dto.Miscellaneous;
     }
 }
