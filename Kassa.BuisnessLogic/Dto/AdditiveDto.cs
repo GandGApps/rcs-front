@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Kassa.DataAccess;
+using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Dto;
 public record AdditiveDto : IDto<Additive, AdditiveDto>

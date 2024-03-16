@@ -1,6 +1,6 @@
-﻿namespace Kassa.DataAccess;
+﻿namespace Kassa.DataAccess.Model;
 
-public record Category: ICategoryItem
+public record Category : ICategoryItem
 {
     public Guid Id
     {

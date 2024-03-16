@@ -1,4 +1,4 @@
-﻿namespace Kassa.DataAccess;
+﻿namespace Kassa.DataAccess.Model;
 
 public enum OrderStatus
 {

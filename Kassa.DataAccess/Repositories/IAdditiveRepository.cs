@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.DataAccess.Model;
 
-namespace Kassa.DataAccess;
+namespace Kassa.DataAccess.Repositories;
 public interface IAdditiveRepository : IRepository<Additive>
 {
     public Task<IEnumerable<Additive>> GetAdditivesByProductId(Guid productId);

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Kassa.DataAccess;
+namespace Kassa.DataAccess.Model;
 public class Order : IModel
 {
     public Guid Id

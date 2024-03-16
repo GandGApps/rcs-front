@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
 using Kassa.BuisnessLogic.Dto;
-using Kassa.DataAccess;
+using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Services;
 public interface IProductService : IInitializableService

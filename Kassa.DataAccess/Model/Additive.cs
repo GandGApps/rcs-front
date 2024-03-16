@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kassa.DataAccess;
+namespace Kassa.DataAccess.Model;
 public record Additive : IModel
 {
     public Guid Id

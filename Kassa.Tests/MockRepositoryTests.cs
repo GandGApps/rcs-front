@@ -1,4 +1,5 @@
-using Kassa.DataAccess;
+using Kassa.DataAccess.Model;
+using Kassa.DataAccess.Repositories;
 
 namespace Kassa.Tests;
 

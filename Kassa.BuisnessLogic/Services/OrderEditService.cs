@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
 using Kassa.BuisnessLogic.Dto;
-using Kassa.DataAccess;
+using Kassa.DataAccess.Model;
 using ReactiveUI;
 
 namespace Kassa.BuisnessLogic.Services;

@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Kassa.DataAccess.Model;
 
-namespace Kassa.DataAccess;
+namespace Kassa.DataAccess.Repositories;
 public interface IRepository<T> where T : class, IModel
 {
     public Task<T?> Get(Guid id);
@@ -15,7 +16,7 @@ public interface IRepository<T> where T : class, IModel
     public Task Delete(T item);
     public Task DeleteAll();
 
-    public static IRepository<T> CreateMock(string jsonResourceName) 
+    internal static IRepository<T> CreateMock(string jsonResourceName)
     {
         var assembly = typeof(IRepository<>).Assembly;
         var json = assembly.GetManifestResourceStream($"Kassa.DataAccess.{jsonResourceName}");
@@ -23,7 +24,7 @@ public interface IRepository<T> where T : class, IModel
         return new MockRepository(items?.ToDictionary(x => x.Id) ?? []);
     }
 
-    internal class MockRepository(Dictionary<Guid, T> items): IRepository<T>
+    internal class MockRepository(Dictionary<Guid, T> items) : IRepository<T>
     {
 
         public Task<T?> Get(Guid categoryId) => Task.FromResult(items.TryGetValue(categoryId, out var value) ? value : null);

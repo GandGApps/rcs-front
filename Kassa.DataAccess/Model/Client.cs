@@ -1,4 +1,4 @@
-﻿namespace Kassa.DataAccess;
+﻿namespace Kassa.DataAccess.Model;
 
 /// <summary>
 /// Пока что, все что известно о клиенте

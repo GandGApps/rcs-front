@@ -1,0 +1,162 @@
+[
+  {
+    "Id": "E81A3261-DB55-40DF-991B-867B6555CA81",
+    "Name": "Greenfield Street",
+    "DistrictId": "CD4A1F53-3D5F-4C2F-8333-CAE4803FEB45"
+  },
+  {
+    "Id": "FCF04767-458C-4F5B-B6E7-389C8B1B5F94",
+    "Name": "Maple Avenue",
+    "DistrictId": "6B4F893A-9C5E-4DF3-AE67-8D8D15E14FD2"
+  },
+  {
+    "Id": "C5B9E89B-EB48-4B43-81F3-81A789AF4036",
+    "Name": "Pine Street",
+    "DistrictId": "E5D69CE7-3FFB-4022-AB70-3F6FDD667E73"
+  },
+  {
+    "Id": "3F55FA20-24F2-4E3E-9C26-D163847F1BDF",
+    "Name": "Oak Lane",
+    "DistrictId": "1A1C0D2D-1FE3-4DDA-80C3-E9338F7DFB07"
+  },
+  {
+    "Id": "BDCA5F38-E65F-4E1C-8A04-5EAB8015003F",
+    "Name": "Cedar Street",
+    "DistrictId": "9089F242-68A8-46C3-85C0-C7E3F3B90A21"
+  },
+  {
+    "Id": "78DFD1F7-5E9A-40A7-AE9F-E52507AB0E47",
+    "Name": "Birch Avenue",
+    "DistrictId": "CFAE6D8B-33DD-4D3F-BCE0-8CF6B0AECBEB"
+  },
+  {
+    "Id": "4B4C71A5-415E-4C1F-B3B4-20A47739235A",
+    "Name": "Elm Street",
+    "DistrictId": "B4A2D342-5F05-46F5-977C-6B96C45E73D3"
+  },
+  {
+    "Id": "3A1FBCB4-43C0-4766-B50A-B5A7360F40A4",
+    "Name": "Walnut Drive",
+    "DistrictId": "75F238AB-1010-40C3-93E2-3B9D6E3D68E3"
+  },
+  {
+    "Id": "0D9DF30D-7331-4771-9A32-7201A2E23A7D",
+    "Name": "Hickory Lane",
+    "DistrictId": "CD4A1F53-3D5F-4C2F-8333-CAE4803FEB45"
+  },
+  {
+    "Id": "A1A826AD-1B09-409A-B86C-05937F3B23A0",
+    "Name": "Sycamore Street",
+    "DistrictId": "6B4F893A-9C5E-4DF3-AE67-8D8D15E14FD2"
+  },
+  {
+    "Id": "F7DF1731-843E-4A8E-9224-C2B9E4E339E3",
+    "Name": "Willow Lane",
+    "DistrictId": "E5D69CE7-3FFB-4022-AB70-3F6FDD667E73"
+  },
+  {
+    "Id": "83F1CB3F-02F5-4A11-9B11-75E6E8507B91",
+    "Name": "Spruce Street",
+    "DistrictId": "1A1C0D2D-1FE3-4DDA-80C3-E9338F7DFB07"
+  },
+  {
+    "Id": "ED2F6D41-17ED-41D3-98AF-E84C1AC83B1D",
+    "Name": "Juniper Avenue",
+    "DistrictId": "9089F242-68A8-46C3-85C0-C7E3F3B90A21"
+  },
+  {
+    "Id": "D89E1DAE-255E-41BB-8AC9-9444E953DBEB",
+    "Name": "Cherry Lane",
+    "DistrictId": "CFAE6D8B-33DD-4D3F-BCE0-8CF6B0AECBEB"
+  },
+  {
+    "Id": "C74670E2-0B1E-44F6-90E6-05A9A24910A8",
+    "Name": "Poplar Drive",
+    "DistrictId": "B4A2D342-5F05-46F5-977C-6B96C45E73D3"
+  },
+  {
+    "Id": "FC5A03AA-583F-46A3-A80E-CD6A724E8AC6",
+    "Name": "Linden Street",
+    "DistrictId": "75F238AB-1010-40C3-93E2-3B9D6E3D68E3"
+  },
+  {
+    "Id": "4A8C779F-47CB-4E43-B86A-1639F9F20264",
+    "Name": "Magnolia Avenue",
+    "DistrictId": "CD4A1F53-3D5F-4C2F-8333-CAE4803FEB45"
+  },
+  {
+    "Id": "22E9ACF7-7E5F-4F4A-B81B-6D3FD5BDA081",
+    "Name": "Chestnut Lane",
+    "DistrictId": "6B4F893A-9C5E-4DF3-AE67-8D8D15E14FD2"
+  },
+  {
+    "Id": "7A56A91E-FE90-4E67-86D0-0B908585F8D0",
+    "Name": "Aspen Avenue",
+    "DistrictId": "E5D69CE7-3FFB-4022-AB70-3F6FDD667E73"
+  },
+  {
+    "Id": "38D8A81D-1F02-479F-87B3-E059B7CB1E4E",
+    "Name": "Locust Lane",
+    "DistrictId": "1A1C0D2D-1FE3-4DDA-80C3-E9338F7DFB07"
+  },
+  {
+    "Id": "08DE3B69-60C2-48C0-B3FE-73A3F1C2A500",
+    "Name": "Mulberry Street",
+    "DistrictId": "9089F242-68A8-46C3-85C0-C7E3F3B90A21"
+  },
+  {
+    "Id": "8FDE6C80-CF50-4735-B7A6-6A97C5C8AB0A",
+    "Name": "Alder Avenue",
+    "DistrictId": "CFAE6D8B-33DD-4D3F-BCE0-8CF6B0AECBEB"
+  },
+  {
+    "Id": "B86F9EFB-E4AE-486D-987D-4A4A5E3B858C",
+    "Name": "Beech Street",
+    "DistrictId": "B4A2D342-5F05-46F5-977C-6B96C45E73D3"
+  },
+  {
+    "Id": "F4B13BC7-B332-4147-93B5-175BD7F0E932",
+    "Name": "Fir Lane",
+    "DistrictId": "75F238AB-1010-40C3-93E2-3B9D6E3D68E3"
+  },
+  {
+    "Id": "F1D23D0C-1C24-4C41-ACAB-CD1B545646E1",
+    "Name": "Acacia Drive",
+    "DistrictId": "CD4A1F53-3D5F-4C2F-8333-CAE4803FEB45"
+  },
+  {
+    "Id": "99551C10-C4DA-4A77-B249-7F58E04C01BD",
+    "Name": "Hemlock Street",
+    "DistrictId": "6B4F893A-9C5E-4DF3-AE67-8D8D15E14FD2"
+  },
+  {
+    "Id": "B4C2A3CB-1603-4D8D-A5CB-083A5EAF684C",
+    "Name": "Cypress Avenue",
+    "DistrictId": "E5D69CE7-3FFB-4022-AB70-3F6FDD667E73"
+  },
+  {
+    "Id": "60961542-2C20-4E05-BC4E-903B49CE24AF",
+    "Name": "Dogwood Drive",
+    "DistrictId": "1A1C0D2D-1FE3-4DDA-80C3-E9338F7DFB07"
+  },
+  {
+    "Id": "5E96D9D1-1A15-44E1-94D2-EE4F981A502D",
+    "Name": "Pear Lane",
+    "DistrictId": "9089F242-68A8-46C3-85C0-C7E3F3B90A21"
+  },
+  {
+    "Id": "F3D6FEC7-F916-4EB4-9D13-0A85AC61EB05",
+    "Name": "Plum Street",
+    "DistrictId": "CFAE6D8B-33DD-4D3F-BCE0-8CF6B0AECBEB"
+  },
+  {
+    "Id": "7FCCCA6C-48F0-4ECE-A786-45DECB7F4A19",
+    "Name": "Redwood Avenue",
+    "DistrictId": "B4A2D342-5F05-46F5-977C-6B96C45E73D3"
+  },
+  {
+    "Id": "BEB5B54E-2B52-4A13-817C-CEB7C3940B7B",
+    "Name": "Sycamore Lane",
+    "DistrictId": "75F238AB-1010-40C3-93E2-3B9D6E3D68E3"
+  }
+]

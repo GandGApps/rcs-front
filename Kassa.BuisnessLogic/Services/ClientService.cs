@@ -7,7 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
 using Kassa.BuisnessLogic.Dto;
-using Kassa.DataAccess;
+using Kassa.DataAccess.Model;
+using Kassa.DataAccess.Repositories;
 
 namespace Kassa.BuisnessLogic.Services;
 internal class ClientService : BaseInitializableService, IClientService

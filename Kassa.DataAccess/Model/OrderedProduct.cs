@@ -1,14 +1,21 @@
-﻿
-namespace Kassa.DataAccess;
+﻿namespace Kassa.DataAccess.Model;
 
-public class OrderedAdditive : IModel
+public class OrderedProduct : IModel
 {
     public Guid Id
     {
         get; set;
     }
 
-    public Guid AdditiveId
+    public Guid ProductId
+    {
+        get; set;
+    }
+
+    /// <summary>
+    /// Сколько заказано
+    /// </summary>
+    public double Count
     {
         get; set;
     }
@@ -29,7 +36,7 @@ public class OrderedAdditive : IModel
     /// <summary>
     /// Сумма до скидки
     /// </summary>
-    public double SubtotalPrice
+    public double SubTotalPrice
     {
         get; set;
     }
@@ -39,12 +46,15 @@ public class OrderedAdditive : IModel
         get; set;
     }
 
-    public double Count
+    /// <summary>
+    /// Коментарий к заказу(типо без лука)
+    /// </summary>
+    public string Comment
     {
         get; set;
     }
 
-    public string Measure
+    public IEnumerable<OrderedAdditive> Additives
     {
         get; set;
     }

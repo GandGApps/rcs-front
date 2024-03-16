@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.DataAccess;
+using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Dto;
 public class CategoryDto : ICategoryItemDto, ICategoryDto

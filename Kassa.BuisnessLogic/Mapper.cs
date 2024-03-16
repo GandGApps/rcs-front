@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Dto;
-using Kassa.DataAccess;
+using Kassa.DataAccess.Model;
 using Riok.Mapperly.Abstractions;
 
 namespace Kassa.BuisnessLogic;

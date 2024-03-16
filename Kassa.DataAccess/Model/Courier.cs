@@ -1,5 +1,4 @@
-﻿
-namespace Kassa.DataAccess;
+﻿namespace Kassa.DataAccess.Model;
 /// <summary>
 /// Пока что, все что известно о курьере
 /// </summary>

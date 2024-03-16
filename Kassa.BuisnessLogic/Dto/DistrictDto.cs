@@ -3,18 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Kassa.DataAccess.Model;
 
-namespace Kassa.DataAccess;
-public interface ICategoryItem: IModel
+namespace Kassa.BuisnessLogic.Dto;
+
+public class DistrictDto
 {
-    public Guid? CategoryId
+    public Guid Id
     {
-        get;
+        get; set;
     }
 
     public string Name
     {
-        get;
+        get; set;
     }
 }
