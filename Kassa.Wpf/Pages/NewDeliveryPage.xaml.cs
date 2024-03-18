@@ -69,6 +69,18 @@ public partial class NewDeliveryPage : ReactiveUserControl<NewDeliveryPageVm>
 
             this.Bind(ViewModel, vm => vm.AddressNote, v => v.AddressNote.Text)
                 .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, vm => vm.SelectDistrictAndStreetCommand, v => v.SelectDistrict)
+                .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, vm => vm.SelectDistrictAndStreetCommand, v => v.SelectStreet)
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, vm => vm.District, v => v.DistrictName.Text, d => d is null || string.IsNullOrWhiteSpace(d.Name) ? "Не задан" : d.Name)
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, vm => vm.Street, v => v.StreetName.Text, s => s is null || string.IsNullOrWhiteSpace(s.Name) ? "Не задана" : s.Name)
+                .DisposeWith(disposables);
         });
     }
 }

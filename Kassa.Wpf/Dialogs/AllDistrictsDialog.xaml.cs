@@ -20,9 +20,9 @@ namespace Kassa.Wpf.Dialogs;
 /// <summary>
 /// Interaction logic for AllClientsDialog.xaml
 /// </summary>
-public partial class AllClientsDialog : ClosableDialog<AllClientsDialogViewModel>
+public partial class AllDistrictsDialog : ClosableDialog<AllDistrictsDialogViewModel>
 {
-    public AllClientsDialog()
+    public AllDistrictsDialog()
     {
         InitializeComponent();
 
@@ -31,13 +31,7 @@ public partial class AllClientsDialog : ClosableDialog<AllClientsDialogViewModel
             this.BindCommand(ViewModel, x => x.CancelCommand, x => x.CancelButton)
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x => x.OkCommand, x => x.OkButton)
-                .DisposeWith(disposables);
-
-            this.BindCommand(ViewModel, x => x.SkipCommand, x => x.SkipButton)
-                .DisposeWith(disposables);
-
-            this.OneWayBind(ViewModel, x => x.FilteredItems, x => x.ClientsList.ItemsSource)
+            this.OneWayBind(ViewModel, x => x.FilteredItems, x => x.DistrictsList.ItemsSource)
                 .DisposeWith(disposables);
 
             this.Bind(ViewModel, x => x.SearchText, x => x.SearchTextBox.Text)

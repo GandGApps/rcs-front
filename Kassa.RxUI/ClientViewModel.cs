@@ -42,14 +42,14 @@ public class ClientViewModel : ReactiveObject
             .ToPropertyEx(this, x => x.FullName);
 
         allClientsDialogView
-            .WhenAnyValue(allClientsDialogView => allClientsDialogView.SearchedText)
+            .WhenAnyValue(allClientsDialogView => allClientsDialogView.SearchText)
             .Subscribe(x =>
             {
                 IsDetailsVisible = !string.IsNullOrWhiteSpace(x);
             });
 
         allClientsDialogView
-            .WhenAnyValue(allClientsDialogView => allClientsDialogView.SelectedClient)
+            .WhenAnyValue(allClientsDialogView => allClientsDialogView.SelectedItem)
             .Subscribe(x =>
             {
                 IsSelected = x != null && x.Id == Id;
@@ -57,7 +57,7 @@ public class ClientViewModel : ReactiveObject
 
         SelectClientCommand = ReactiveCommand.Create(() =>
         {
-            allClientsDialogView.SelectedClient = this;
+            allClientsDialogView.SelectedItem = this;
         });
     }
 

@@ -185,4 +185,16 @@ public class MainViewModel : ReactiveObject, IScreen
             Message = message
         }).FirstAsync();
     }
+
+    public async Task ShowDialog(DialogViewModel dialog)
+    {
+        await DialogOpenCommand.Execute(dialog).FirstAsync();
+    }
+
+    public async Task ShowDialogAndWaitClose(DialogViewModel dialog)
+    {
+        await DialogOpenCommand.Execute(dialog).FirstAsync();
+
+        await dialog.WaitDialogClose();
+    }
 }

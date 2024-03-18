@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.Dto;
+using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Dialogs;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -10,6 +15,11 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Pages;
 public class NewDeliveryPageVm : PageViewModel
 {
+
+    public NewDeliveryPageVm() : this(null)
+    {
+        IsNewClient = true;
+    }
 
     public NewDeliveryPageVm(ClientViewModel? clientViewModel)
     {
@@ -19,7 +29,6 @@ public class NewDeliveryPageVm : PageViewModel
         Phone = Client?.Phone ?? string.Empty;
         NameWithMiddleName = $"{clientViewModel?.FirstName} {clientViewModel?.MiddleName}";
         Address = Client?.Address ?? string.Empty;
-        IsNewClient = clientViewModel is null;
         House = Client?.House ?? string.Empty;
         Building = Client?.Building ?? string.Empty;
         Entrance = Client?.Entrance ?? string.Empty;
@@ -32,9 +41,27 @@ public class NewDeliveryPageVm : PageViewModel
         FirstName = Client?.FirstName ?? string.Empty;
         MiddleName = Client?.MiddleName ?? string.Empty;
         Miscellaneous = Client?.Miscellaneous ?? string.Empty;
-        
+
         this.WhenAnyValue(x => x.IsPickup, x => x.IsDelivery, (isPickup, isDelivery) => isPickup ? "Самовывоз" : isDelivery ? "Доставка курьером" : string.Empty)
             .ToPropertyEx(this, x => x.TypeOfOrder);
+
+        SelectDistrictAndStreetCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var districtService = await Locator.GetInitializedService<IDistrictService>();
+
+            var districtDialog = new AllDistrictsDialogViewModel(districtService);
+
+            await MainViewModel.ShowDialogAndWaitClose(districtDialog);
+
+            if (districtDialog.SelectedItem is null)
+            {
+                return;
+            }
+
+            District = districtDialog.SelectedItem;
+
+            var streetService = await Locator.GetInitializedService<IStreetService>();
+        });
     }
 
     public Guid DeliveryId
@@ -152,7 +179,7 @@ public class NewDeliveryPageVm : PageViewModel
     public extern string TypeOfOrder
     {
         [ObservableAsProperty]
-        get; 
+        get;
     }
 
     public extern string FullName
@@ -167,7 +194,24 @@ public class NewDeliveryPageVm : PageViewModel
         get; set;
     }
 
+    [Reactive]
+    public StreetViewModel? Street
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public DistrictViewModel? District
+    {
+        get; set;
+    }
+
     public bool IsNewClient
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> SelectDistrictAndStreetCommand
     {
         get;
     }

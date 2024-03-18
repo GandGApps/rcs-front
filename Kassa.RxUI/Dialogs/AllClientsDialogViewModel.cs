@@ -15,7 +15,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI.Dialogs;
-public class AllClientsDialogViewModel : DialogViewModel
+public class AllClientsDialogViewModel : SearchableDialogViewModel<ClientDto, ClientViewModel>
 {
     private readonly IClientService _clientService;
 
@@ -25,7 +25,7 @@ public class AllClientsDialogViewModel : DialogViewModel
 
         CancelCommand = ReactiveCommand.CreateFromTask(CloseAsync);
 
-        var okCommandValidator = this.WhenAnyValue(x => x.SelectedClient)
+        var okCommandValidator = this.WhenAnyValue(x => x.SelectedItem)
                                      .Select(client => client != null);
 
         SkipCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -43,7 +43,7 @@ public class AllClientsDialogViewModel : DialogViewModel
 
         OkCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var newDeliveryPageVm = new NewDeliveryPageVm(SelectedClient)
+            var newDeliveryPageVm = new NewDeliveryPageVm(SelectedItem)
             {
                 IsPickup = IsPickup,
                 IsDelivery = IsDelivery
@@ -55,33 +55,21 @@ public class AllClientsDialogViewModel : DialogViewModel
 
         }, okCommandValidator);
 
+        NewGuestCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var newClientPageVm = new NewDeliveryPageVm()
+            {
+                IsPickup = IsPickup,
+                IsDelivery = IsDelivery
+            };
+
+            await CloseAsync();
+
+            await MainViewModel.GoToPageCommand.Execute(newClientPageVm).FirstAsync();
+        });
+
     }
 
-    [Reactive]
-    public string? SearchedText
-    {
-        get;
-        set;
-    }
-
-    [Reactive]
-    public ClientViewModel? SelectedClient
-    {
-        get; set;
-    }
-
-    [Reactive]
-    public ReadOnlyObservableCollection<ClientViewModel>? FilteredClients
-    {
-        get; private set;
-    }
-
-    [Reactive]
-    public bool IsKeyboardVisible
-    {
-        get;
-        set;
-    }
     [Reactive]
     public bool IsPickup
     {
@@ -115,41 +103,16 @@ public class AllClientsDialogViewModel : DialogViewModel
 
     protected override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        var searchTextStream = this.WhenAnyValue(x => x.SearchedText).Publish();
-
-        var firstItemStream = searchTextStream
-            .Take(1)
-            .ObserveOn(RxApp.MainThreadScheduler);
-
-        var throttledStream = searchTextStream
-            .Skip(1)
-            .Throttle(TimeSpan.FromMilliseconds(500))
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Merge(firstItemStream)
-            .DistinctUntilChanged();
-
-        var searchFilter = throttledStream
-            .Select(text => new Func<ClientDto, bool>(client =>
-                           string.IsNullOrWhiteSpace(text) || IsMatch(client, text)));
-
-        _clientService.RuntimeClients
-            .Connect()
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Filter(searchFilter)
-            .TransformWithInlineUpdate(client => new ClientViewModel(client, this), (vm, source) => vm.UpdateDto(source))
-            .Bind(out var _filteredClients)
-            .DisposeMany()
-            .Subscribe()
-            .DisposeWith(disposables);
-
-        searchTextStream.Connect().DisposeWith(disposables);
-
-        FilteredClients = _filteredClients;
+        Filter(
+            _clientService.RuntimeClients,
+            client => new ClientViewModel(client, this),
+            (vm, source) => vm.UpdateDto(source),
+            disposables);
 
         return base.InitializeAsync(disposables);
     }
 
-    private static bool IsMatch(ClientDto client, string text)
+    protected override bool IsMatch(string text, ClientDto client)
     {
         return client.Address.Contains(text, StringComparison.OrdinalIgnoreCase) ||
                client.FirstName.Contains(text, StringComparison.OrdinalIgnoreCase) ||

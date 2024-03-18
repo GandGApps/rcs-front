@@ -364,7 +364,10 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <Button Grid.Column="0" Style="{StaticResource EmptyButton}">
+                            <Button
+                                x:Name="SelectStreet"
+                                Grid.Column="0"
+                                Style="{StaticResource EmptyButton}">
                                 <TextBlock Style="{StaticResource LabelTextBlock}">
                                     <Run Text="Улица:" />
                                     <LineBreak />
@@ -372,7 +375,10 @@
                                 </TextBlock>
                             </Button>
 
-                            <Button Grid.Column="1" Style="{StaticResource EmptyButton}">
+                            <Button
+                                x:Name="SelectDistrict"
+                                Grid.Column="1"
+                                Style="{StaticResource EmptyButton}">
                                 <TextBlock Style="{StaticResource LabelTextBlock}">
                                     <Run Text="Район:" />
                                     <LineBreak />
