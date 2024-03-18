@@ -5,6 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Kassa.BuisnessLogic.Services;
-public class StreetService: BaseInitializableService, IStreetService
+public class StreetService: BaseInitializableService
 {
 }

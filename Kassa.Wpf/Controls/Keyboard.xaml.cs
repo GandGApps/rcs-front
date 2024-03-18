@@ -146,12 +146,12 @@ public partial class Keyboard : UserControl, IActivatableView
 
                                         if (x.Item2.Length > 4)
                                         {
-                                            size = new(20);
+                                            size = new(18);
                                         }
 
                                         if (x.Item2.Length > 7)
                                         {
-                                            size = new(15);
+                                            size = new(12);
                                         }
 
                                         if (size == null) return;
