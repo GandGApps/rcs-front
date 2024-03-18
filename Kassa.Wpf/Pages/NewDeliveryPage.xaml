@@ -250,6 +250,7 @@
 
                     <ctrl:Input
                         x:Name="Phone"
+                        InputType="Number"
                         Label="Телефон"
                         Placeholder="Телефон" />
 

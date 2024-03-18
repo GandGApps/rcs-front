@@ -1,0 +1,19 @@
+﻿<UserControl
+    x:Class="Kassa.Wpf.Views.DistrictView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Kassa.Wpf.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Kassa.Wpf.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
+    xmlns:rxui="http://reactiveui.net"
+    xmlns:vm="clr-namespace:Kassa.RxUI;assembly=Kassa.RxUI"
+    d:DataContext="{d:DesignInstance Type=vm:DistrictViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    Background="{DynamicResource DistrictViewBackground}"
+    Foreground="{DynamicResource DistrictViewForeground}"
+    mc:Ignorable="d">
+    
+</UserControl>

@@ -52,7 +52,7 @@
                 HorizontalContentAlignment="Stretch"
                 HorizontalScrollBarVisibility="Disabled"
                 Style="{StaticResource PrimaryScrollViewer}">
-                <TextBox
+                <controls:TextBoxWithoutVirtualKeyboard
                     x:Name="Input"
                     AcceptsReturn="True"
                     BorderThickness="0"

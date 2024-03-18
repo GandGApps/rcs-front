@@ -240,9 +240,12 @@ public class KeyboardInfo: ReactiveObject
         return keyboard;
     }
 
-    public static KeyboardInfo Numpad()
+    public static KeyboardInfo Numpad(KeyInfo? extraKey1 = null, KeyInfo? extraKey2 = null)
     {
         var keyboard = new KeyboardInfo();
+
+        extraKey1 ??= KeyInfo.Char(',');
+        extraKey2 ??= new() { IsClear = true };
 
         ObservableCollection<KeyInfo> line1 = [
             KeyInfo.Char('1'),
@@ -263,9 +266,9 @@ public class KeyboardInfo: ReactiveObject
         ];
 
         ObservableCollection<KeyInfo> line4 = [
-            KeyInfo.Char(','),
+            extraKey1,
             KeyInfo.Char('0'),
-            new() { IsClear = true },
+            extraKey2,
         ];
 
         keyboard.Lines.Add(line1);

@@ -6,6 +6,7 @@
     xmlns:dialogs="clr-namespace:Kassa.RxUI.Dialogs;assembly=Kassa.RxUI"
     xmlns:local="clr-namespace:Kassa.Wpf.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     d:DataContext="{d:DesignInstance Type=dialogs:OkMessageDialogViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
@@ -13,18 +14,18 @@
     Style="{StaticResource PrimaryDialogUserControl}"
     mc:Ignorable="d">
     <Border
-        Padding="20,14"
+        Padding="{mx:AdaptiveSize Thickness='20,14'}"
         VerticalAlignment="Center"
         Style="{StaticResource PrimaryMenu}">
         <StackPanel VerticalAlignment="Center">
             <Path
                 x:Name="Icon"
-                Width="70"
-                Margin="0,60,0,0"
+                Width="{mx:AdaptiveSize 70}"
+                Margin="{mx:AdaptiveSize Thickness='0,60,0,0'}"
                 Fill="{DynamicResource OkDialogIconFill}" />
             <TextBlock
                 x:Name="Message"
-                Margin="0,30,0,30"
+                Margin="{mx:AdaptiveSize Thickness='0,30,0,30'}"
                 Style="{StaticResource Header}"
                 TextAlignment="Center"
                 TextWrapping="Wrap" />

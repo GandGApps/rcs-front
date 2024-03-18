@@ -1,6 +1,7 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:Kassa.Wpf.Converters"
     xmlns:local="clr-namespace:Kassa.Wpf.Controls"
     xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     xmlns:system="clr-namespace:System;assembly=mscorlib">
@@ -13,6 +14,8 @@
         <Setter Property="FontFamily" Value="{DynamicResource Montseratt}" />
         <Setter Property="Foreground" Value="{DynamicResource SecondaryForeground}" />
     </Style>
+
+    <Style BasedOn="{StaticResource {x:Type TextBox}}" TargetType="local:TextBoxWithoutVirtualKeyboard" />
 
     <Style TargetType="Button">
         <Setter Property="FontFamily" Value="{DynamicResource Montseratt}" />
@@ -555,7 +558,7 @@
                             <Path
                                 x:Name="Clear"
                                 Width="{mx:AdaptiveSize 25}"
-                                Margin="0,0,15,0"
+                                Margin="{mx:AdaptiveSize Thickness='0,0,12,0'}"
                                 Data="{StaticResource Clear}"
                                 Fill="{DynamicResource KeyForeground}" />
 
@@ -577,10 +580,27 @@
                         <DataTrigger Binding="{Binding IsClear}" Value="True">
                             <Setter TargetName="Clear" Property="Visibility" Value="Visible" />
                         </DataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding IsClear}" Value="True" />
+                                <Condition Binding="{Binding Text}" Value="{x:Static system:String.Empty}" />
+                            </MultiDataTrigger.Conditions>
+
+                            <Setter TargetName="Clear" Property="Margin" Value="0" />
+
+                        </MultiDataTrigger>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding IsClear}" Value="True" />
+                                <Condition Binding="{Binding Text}" Value="{x:Null}" />
+                            </MultiDataTrigger.Conditions>
+
+                            <Setter TargetName="Clear" Property="Margin" Value="0" />
+
+                        </MultiDataTrigger>
                         <DataTrigger Binding="{Binding IsClear}" Value="False">
                             <Setter TargetName="Clear" Property="Visibility" Value="Collapsed" />
                         </DataTrigger>
-                        <DataTrigger Binding="{Binding Size.Size}" Value="1.5" />
                     </ControlTemplate.Triggers>
 
                 </ControlTemplate>

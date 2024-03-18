@@ -19,7 +19,7 @@
         Style="{StaticResource PrimaryMenu}">
         <StackPanel VerticalAlignment="Center">
             <TextBlock
-                Margin="0,60,0,30"
+                Margin="{mx:AdaptiveSize Thickness='0,60,0,30'}"
                 Style="{StaticResource Header}"
                 Text="Вы действительно хотите выключить устройство?"
                 TextAlignment="Center"

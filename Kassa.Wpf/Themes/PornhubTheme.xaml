@@ -270,4 +270,12 @@
 
     <!--#endregion-->
 
+    <!--#region DistrictView-->
+
+    <StaticResource x:Key="DistrictViewBackground" ResourceKey="Theme" />
+    <StaticResource x:Key="DistrictViewForeground" ResourceKey="PrimaryForeground" />
+    <StaticResource x:Key="DistrictViewBackgroundSelected" ResourceKey="AccentBrush" />
+
+    <!--#endregion-->
+
 </ResourceDictionary>

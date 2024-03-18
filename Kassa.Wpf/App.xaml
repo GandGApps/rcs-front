@@ -6,6 +6,13 @@
     StartupUri="Windows/MainWindow.xaml">
     <Application.Resources>
         <ResourceDictionary>
+
+            <FontFamily x:Key="Montseratt">./Assets/Fonts/Montseratt/#Montserrat</FontFamily>
+
+            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+            <converters:IsValueLessThanParameter x:Key="IsValueLessThanParameter" />
+            <converters:IsNullOrWhitespaceConverter x:Key="IsNullOrWhitespaceConverter" />
+
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/PornhubThemeGenerated.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
@@ -18,10 +25,7 @@
                 <ResourceDictionary Source="/Resources/DataGrid.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
-            <FontFamily x:Key="Montseratt">./Assets/Fonts/Montseratt/#Montserrat</FontFamily>
 
-            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-            <converters:IsValueLessThanParameter x:Key="IsValueLessThanParameter" />
         </ResourceDictionary>
     </Application.Resources>
 </Application>

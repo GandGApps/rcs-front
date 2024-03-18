@@ -112,7 +112,7 @@ public partial class Keyboard : UserControl, IActivatableView
 
                             var keyDisposables = new CompositeDisposable();
 
-                            key.WhenAnyValue(x => x.Character, x => x.Text, x => x.IsIcon, x => x.Icon, x => x.IsEnter)
+                            key.WhenAnyValue(x => x.Character, x => x.Text, x => x.IsIcon, x => x.Icon, x => x.IsEnter, x => x.Command)
                                 .Subscribe(x =>
                                 {
                                     if (x.Item3 && !string.IsNullOrWhiteSpace(x.Item4))
@@ -136,7 +136,7 @@ public partial class Keyboard : UserControl, IActivatableView
                                     {
                                         button.Content = x.Item2;
                                     }
-                                    if (x.Item5)
+                                    if (x.Item5 || x.Item6 is null)
                                     {
                                         key.Command = EnterCommand;
                                     }
@@ -250,6 +250,14 @@ public partial class Keyboard : UserControl, IActivatableView
 
                             button.Command = key.Command;
                             button.CommandParameter = key.Parameter;
+
+                            key.WhenAnyValue(x => x.Command, x => x.Parameter)
+                               .Subscribe(x =>
+                               {
+                                   button.Command = x.Item1;
+                                   button.CommandParameter = x.Item2;
+                               })
+                               .DisposeWith(keyDisposables);
                         }
 
                         var adaptiveWidth = new AdaptiveSizeExtension((AdaptiveMarkupExtension.GetNotAdaptivedSize(ActualWidth, MainWindow.Instance.ActualWidth) / x.LineStarWidth) * (size));

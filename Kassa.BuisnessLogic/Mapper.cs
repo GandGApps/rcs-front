@@ -51,4 +51,11 @@ public static partial class Mapper
     [MapperIgnoreSource(nameof(AdditiveShoppingListItemDto.Portion))]
     public static partial OrderedAdditiveDto MapAdditiveShoppingListItemToOrderedAdditiveDto(AdditiveShoppingListItemDto item);
 
+
+    public static partial District MapDtoToDistrict(DistrictDto district);
+    public static partial DistrictDto MapDistrictToDto(District district);
+
+    public static partial Street MapDtoToStreet(StreetDto street);
+    public static partial StreetDto MapStreetToDto(Street street);
+
 }

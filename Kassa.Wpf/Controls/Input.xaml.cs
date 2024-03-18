@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using Kassa.BuisnessLogic;
 using Kassa.RxUI;
 using Kassa.RxUI.Dialogs;
+using ReactiveUI;
 using Splat;
 
 namespace Kassa.Wpf.Controls;
@@ -54,6 +55,13 @@ public partial class Input : UserControl
             new FrameworkPropertyMetadata(new CornerRadius(0))
         );
 
+    public static readonly DependencyProperty InputTypeProperty =
+        DependencyProperty.Register(nameof(InputType),
+        typeof(InputDialogType),
+        typeof(Input),
+        new FrameworkPropertyMetadata(InputDialogType.Text)
+    );
+
     private TextBlock? _placeholder;
     private TextBoxWithoutVirtualKeyboard? _input;
 
@@ -81,10 +89,15 @@ public partial class Input : UserControl
         set => SetValue(CornerRadiusProperty, value);
     }
 
+    public InputDialogType InputType
+    {
+        get => (InputDialogType)GetValue(InputTypeProperty);
+        set => SetValue(InputTypeProperty, value);
+    }
+
     public Input()
     {
         InitializeComponent();
-
     }
 
     public override void OnApplyTemplate()
@@ -113,16 +126,69 @@ public partial class Input : UserControl
                 name = Placeholder ?? string.Empty;
             }
 
-            var inputDialog = new InputDialogViewModel(name, Text);
-
-            inputDialog.OkCommand.Subscribe(x =>
-            {
-                Text = x;
-            });
-
             var mainViewModel = Locator.Current.GetRequiredService<MainViewModel>();
 
-            mainViewModel.DialogOpenCommand.Execute(inputDialog).Subscribe();
+            if (InputType is InputDialogType.Number or InputDialogType.Phone)
+            {
+                var inputDialog = new InputNumberDialogViewModel(name, Text);
+
+                inputDialog.OkCommand.Subscribe(x =>
+                {
+                    Text = x;
+                });
+
+                if (InputType == InputDialogType.Phone)
+                {
+                    inputDialog.ClearCommand = ReactiveCommand.Create(() =>
+                    {
+                        inputDialog.Input = "+";
+                    });
+
+                    inputDialog.BackspaceCommand = ReactiveCommand.Create(() =>
+                    {
+                        if (inputDialog.Input?.Length > 1)
+                        {
+                            inputDialog.Input = inputDialog.Input[0..^1];
+                        }
+                        else
+                        {
+                            inputDialog.Input = "+";
+                        }
+                    });
+                }
+                else
+                {
+                    inputDialog.ClearCommand = ReactiveCommand.Create(() =>
+                    {
+                        inputDialog.Input = string.Empty;
+                    });
+
+                    inputDialog.BackspaceCommand = ReactiveCommand.Create(() =>
+                    {
+
+                        if (inputDialog.Input?.Length > 0)
+                        {
+
+                            inputDialog.Input = inputDialog.Input[0..^1];
+                        }
+                    });
+                }
+
+                mainViewModel.DialogOpenCommand.Execute(inputDialog).Subscribe();
+            }
+            else
+            {
+                var inputDialog = new InputDialogViewModel(name, Text);
+
+                inputDialog.OkCommand.Subscribe(x =>
+                {
+                    Text = x;
+                });
+
+                mainViewModel.DialogOpenCommand.Execute(inputDialog).Subscribe();
+            }
+
+
         };
     }
 
