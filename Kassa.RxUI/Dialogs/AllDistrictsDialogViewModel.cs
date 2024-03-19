@@ -24,7 +24,7 @@ public class AllDistrictsDialogViewModel : SearchableDialogViewModel<DistrictDto
         CancelCommand = ReactiveCommand.CreateFromTask(CloseAsync);
     }
 
-    public ReactiveCommand<Unit,Unit> CancelCommand
+    public ReactiveCommand<Unit, Unit> CancelCommand
     {
         get;
         set;
@@ -33,9 +33,9 @@ public class AllDistrictsDialogViewModel : SearchableDialogViewModel<DistrictDto
     protected override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
         Filter(
-            _districtService.RuntimeDistricts, 
-            x => new DistrictViewModel(this, x), 
-            (vm, source) => vm.Update(source), 
+            _districtService.RuntimeDistricts,
+            x => new DistrictViewModel(this, x),
+            (vm, source) => vm.Update(source),
             disposables);
 
         this.WhenAnyValue(x => x.SelectedItem)

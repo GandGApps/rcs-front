@@ -20,13 +20,13 @@ namespace Kassa.Wpf.Views;
 /// <summary>
 /// Interaction logic for DistrictView.xaml
 /// </summary>
-public partial class DistrictView : ReactiveUserControl<DistrictViewModel>
+public partial class StreetView : ReactiveUserControl<StreetViewModel>
 {
     public static readonly DependencyProperty CommandProperty = DependencyProperty.Register(
-                      nameof(Command), typeof(ICommand), typeof(DistrictView));
+                      nameof(Command), typeof(ICommand), typeof(StreetView));
 
     public static readonly DependencyProperty CommandParameterProperty = DependencyProperty.Register(
-                  nameof(CommandParameter), typeof(object), typeof(DistrictView));
+                  nameof(CommandParameter), typeof(object), typeof(StreetView));
 
     public ICommand Command
     {
@@ -40,7 +40,7 @@ public partial class DistrictView : ReactiveUserControl<DistrictViewModel>
         set => SetValue(CommandParameterProperty, value);
     }
 
-    public DistrictView()
+    public StreetView()
     {
         InitializeComponent();
 

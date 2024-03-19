@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
@@ -28,6 +29,12 @@ public abstract class SearchableDialogViewModel<TItem, TVm> : DialogViewModel
     public ReadOnlyCollection<TVm>? FilteredItems
     {
         get; private set;
+    }
+
+    [Reactive]
+    public ReactiveCommand<TVm, Unit>? SelectCommand
+    {
+        get; protected set;
     }
 
     [Reactive]

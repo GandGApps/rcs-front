@@ -23,7 +23,8 @@ public class DistrictViewModel : ReactiveObject
             districtsDialogViewModel.SelectedItem = this;
         });
 
-        districtsDialogViewModel.WhenAnyValue(x => x.SelectedItem)
+        districtsDialogViewModel
+            .WhenAnyValue(x => x.SelectedItem)
             .Subscribe(selectedItem =>
             {
                 IsSelected = selectedItem == this;

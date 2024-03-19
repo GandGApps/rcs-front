@@ -46,7 +46,13 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Update="Dialogs\StreetsDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Dialogs\AllDistrictsDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\StreetView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>

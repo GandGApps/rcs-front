@@ -1,20 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Dto;
+using Kassa.RxUI.Dialogs;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI;
 public class StreetViewModel : ReactiveObject
 {
-    public StreetViewModel(StreetDto streetDto)
+    public StreetViewModel(StreetsDialogViewModel streets,StreetDto streetDto)
     {
         Id = streetDto.Id;
         Name = streetDto.Name;
         DistrictId = streetDto.DistrictId;
+
+        SelectCommand = ReactiveCommand.Create(() =>
+        {
+            streets.SelectedItem = this;
+        });
     }
 
     [Reactive]
@@ -32,6 +39,11 @@ public class StreetViewModel : ReactiveObject
     public Guid DistrictId
     {
         get; set;
+    }
+
+    public ReactiveCommand<Unit, Unit> SelectCommand
+    {
+        get;
     }
 
     public void Update(StreetDto streetDto)

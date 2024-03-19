@@ -58,9 +58,19 @@ public class NewDeliveryPageVm : PageViewModel
                 return;
             }
 
-            District = districtDialog.SelectedItem;
-
             var streetService = await Locator.GetInitializedService<IStreetService>();
+
+            var streetDialog = new StreetsDialogViewModel(districtDialog.SelectedItem, streetService);
+
+            await MainViewModel.ShowDialogAndWaitClose(streetDialog);
+
+            if(streetDialog.SelectedItem is null)
+            {
+                return;
+            }
+
+            District = districtDialog.SelectedItem;
+            Street = streetDialog.SelectedItem;
         });
     }
 
