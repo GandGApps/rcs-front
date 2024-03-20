@@ -31,7 +31,7 @@ public partial class StreetsDialog : ClosableDialog<StreetsDialogViewModel>
             this.BindCommand(ViewModel, x => x.CloseCommand, x => x.CancelButton)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.FilteredItems, x => x.DistrictsList.ItemsSource)
+            this.OneWayBind(ViewModel, x => x.FilteredItems, x => x.StreetList.ItemsSource)
                 .DisposeWith(disposables);
 
             this.Bind(ViewModel, x => x.SearchText, x => x.SearchTextBox.Text)

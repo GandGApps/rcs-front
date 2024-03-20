@@ -265,4 +265,12 @@
     <SolidColorBrush x:Key="DistrictViewBackgroundSelected" Color="#FF9900" />
     <!--#endregion-->
 
+    <!--#region DistrictView-->
+
+    <SolidColorBrush x:Key="StreetViewBackground" Color="#DEDEDE" />
+    <SolidColorBrush x:Key="StreetViewForeground" Color="Black" />
+    <SolidColorBrush x:Key="StreetViewBackgroundSelected" Color="#FF9900" />
+    <!--#endregion-->
+
+
 </ResourceDictionary>

@@ -12,7 +12,7 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI;
 public class StreetViewModel : ReactiveObject
 {
-    public StreetViewModel(StreetsDialogViewModel streets,StreetDto streetDto)
+    public StreetViewModel(StreetsDialogViewModel streets, StreetDto streetDto)
     {
         Id = streetDto.Id;
         Name = streetDto.Name;
@@ -44,6 +44,12 @@ public class StreetViewModel : ReactiveObject
     public ReactiveCommand<Unit, Unit> SelectCommand
     {
         get;
+    }
+
+    [Reactive]
+    public bool IsSelected
+    {
+        get; set;
     }
 
     public void Update(StreetDto streetDto)

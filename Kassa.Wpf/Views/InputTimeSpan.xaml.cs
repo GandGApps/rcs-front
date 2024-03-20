@@ -54,7 +54,7 @@ public partial class InputTimeSpan : UserControl
 
     public TimeSpan HourStep
     {
-        get 
+        get; 
         set;
     }
 

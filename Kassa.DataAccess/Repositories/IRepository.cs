@@ -55,4 +55,14 @@ public interface IRepository<T> where T : class, IModel
             return Task.CompletedTask;
         }
     }
+
+    internal abstract class BasicMockRepository(IRepository<T> repository) : IRepository<T>
+    {
+        public Task Add(T item) => repository.Add(item);
+        public Task Delete(T item) => repository.Delete(item);
+        public Task DeleteAll() => repository.DeleteAll();
+        public Task<T?> Get(Guid id) => repository.Get(id);
+        public Task<IEnumerable<T>> GetAll() => repository.GetAll();
+        public Task Update(T item) => repository.Update(item);
+    }
 }

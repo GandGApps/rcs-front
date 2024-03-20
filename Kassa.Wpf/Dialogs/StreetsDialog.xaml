@@ -60,7 +60,7 @@
                     <behaviors:ScrollViewerFixingBehavior />
                 </i:Interaction.Behaviors>
 
-                <ItemsControl x:Name="DistrictsList" BorderThickness="0">
+                <ItemsControl x:Name="StreetList" BorderThickness="0">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
                             <controls:FixedColumnsPanel
@@ -71,7 +71,7 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <view:DistrictView ViewModel="{Binding .}" />
+                            <view:StreetView ViewModel="{Binding .}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>

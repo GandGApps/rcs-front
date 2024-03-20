@@ -278,4 +278,13 @@
 
     <!--#endregion-->
 
+    <!--#region DistrictView-->
+
+    <StaticResource x:Key="StreetViewBackground" ResourceKey="Theme" />
+    <StaticResource x:Key="StreetViewForeground" ResourceKey="PrimaryForeground" />
+    <StaticResource x:Key="StreetViewBackgroundSelected" ResourceKey="AccentBrush" />
+
+    <!--#endregion-->
+
+
 </ResourceDictionary>

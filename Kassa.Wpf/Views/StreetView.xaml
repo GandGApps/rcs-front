@@ -13,12 +13,12 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:TypeArguments="vm:StreetViewModel"
-    Background="{DynamicResource DistrictViewBackground}"
-    Foreground="{DynamicResource DistrictViewForeground}"
+    Background="{DynamicResource StreetViewBackground}"
+    Foreground="{DynamicResource StreetViewForeground}"
     mc:Ignorable="d">
 
     <UserControl.Template>
-        <ControlTemplate TargetType="{x:Type local:DistrictView}">
+        <ControlTemplate TargetType="{x:Type local:StreetView}">
 
             <controls:ButtonWithCornerRaduis
                 x:Name="Border"
@@ -45,7 +45,7 @@
     </UserControl.Template>
 
     <UserControl.Style>
-        <Style BasedOn="{StaticResource {x:Type UserControl}}" TargetType="{x:Type local:DistrictView}">
+        <Style BasedOn="{StaticResource {x:Type UserControl}}" TargetType="{x:Type local:StreetView}">
             <Setter Property="Background" Value="{DynamicResource DefaultAdditiveViewBackground}" />
             <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness=13}" />
             <Setter Property="Margin" Value="1" />
@@ -54,7 +54,7 @@
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource ClientViewBackgroundSelected}" />
+                    <Setter Property="Background" Value="{DynamicResource StreetViewBackgroundSelected}" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>

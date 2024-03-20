@@ -35,7 +35,6 @@ public class StreetsDialogViewModel : SearchableDialogViewModel<StreetDto, Stree
             .WhereNotNull()
             .Subscribe(x =>
             {
-
                 CloseCommand.Execute().Subscribe();
             })
             .DisposeWith(disposables);

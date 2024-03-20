@@ -27,6 +27,9 @@ public static class DependencyResolverExtensions
         SplatRegistrations.Register<IClientService, ClientService>();
         RegisterInitializableServiceFactory<IClientService>(services);
 
+        SplatRegistrations.Register<IStreetService, StreetService>();
+        RegisterInitializableServiceFactory<IStreetService>(services);
+
         SplatRegistrations.Register<IDistrictService, DistrictService>();
         RegisterInitializableServiceFactory<IDistrictService>(services);
 
