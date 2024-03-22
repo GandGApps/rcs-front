@@ -11,12 +11,10 @@ public record Product : ICategoryItem
     {
         get; set;
     }
-
     public string Name
     {
         get; set;
     } = null!;
-
 
     public string CurrencySymbol
     {
@@ -24,11 +22,6 @@ public record Product : ICategoryItem
     } = null!;
 
     public double Price
-    {
-        get; set;
-    }
-
-    public double Count
     {
         get; set;
     }
@@ -58,7 +51,13 @@ public record Product : ICategoryItem
     {
         get; set;
     } = null!;
+
     public Guid? CategoryId
+    {
+        get; set;
+    }
+
+    public Guid ReceiptId
     {
         get; set;
     }

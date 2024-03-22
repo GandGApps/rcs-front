@@ -45,6 +45,11 @@ public class Order : IModel
         get; set;
     }
 
+    public bool IsDelivery
+    {
+        get; set;
+    }
+
     public string Comment
     {
         get; set;
@@ -55,7 +60,7 @@ public class Order : IModel
         get; set;
     }
 
-    public Client Client
+    public Client? Client
     {
         get; set;
     }

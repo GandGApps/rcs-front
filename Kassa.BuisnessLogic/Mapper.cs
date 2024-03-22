@@ -12,6 +12,21 @@ namespace Kassa.BuisnessLogic;
 [Mapper]
 public static partial class Mapper
 {
+    public static partial Ingredient MapIngredientDtoToIngredient(IngredientDto ingredient);
+    public static partial IngredientDto MapIngredientToIngredientDto(Ingredient ingredient);
+
+    public static partial Additive MapAdditiveDtoToAdditive(AdditiveDto additive);
+    public static partial AdditiveDto MapAdditiveToAdditiveDto(Additive additive);
+
+    public static partial Product MapProductDtoToProduct(ProductDto product);
+    public static partial ProductDto MapProductToProductDto(Product product);
+
+    public static partial Receipt MapDtoToReceipt(ReceiptDto receipt);
+    public static partial ReceiptDto MapReceiptToDto(Receipt receipt);
+
+    public static partial IngredientUsage MapDtoToIngredientUsage(IngredientUsageDto ingredientUsage);
+    public static partial IngredientUsageDto MapIngredientUsageToDto(IngredientUsage ingredientUsage);
+
     public static partial Order MapDtoToOrder(OrderDto order);
     public static partial OrderDto MapOrderToDto(Order order);
 

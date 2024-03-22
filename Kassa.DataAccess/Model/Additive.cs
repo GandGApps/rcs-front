@@ -28,11 +28,6 @@ public record Additive : IModel
         get; set;
     }
 
-    public double Count
-    {
-        get; set;
-    }
-
     public string Measure
     {
         get; set;
@@ -50,6 +45,11 @@ public record Additive : IModel
     /// Я забыл зачем это добавил
     /// </summary>
     public int Portion
+    {
+        get; set;
+    }
+
+    public Guid ReceiptId
     {
         get; set;
     }

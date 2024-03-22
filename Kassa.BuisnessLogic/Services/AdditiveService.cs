@@ -10,7 +10,7 @@ using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 
 namespace Kassa.BuisnessLogic.Services;
-public sealed class AdditiveService(IAdditiveRepository repository) : IAdditiveService, IRuntimeDtoProvider<AdditiveDto, Guid, Additive>
+public sealed class AdditiveService(IAdditiveRepository repository, IReceiptService receiptService) : IAdditiveService
 {
     public SourceCache<AdditiveDto, Guid> RuntimeAdditives
     {
@@ -25,16 +25,21 @@ public sealed class AdditiveService(IAdditiveRepository repository) : IAdditiveS
     {
         get; set;
     }
-    SourceCache<AdditiveDto, Guid> IRuntimeDtoProvider<AdditiveDto, Guid, Additive>.RuntimeDtos => RuntimeAdditives;
-    IRepository<Additive> IRuntimeDtoProvider<AdditiveDto, Guid, Additive>.Repository => repository;
 
 
-    public async Task DecreaseAddtiveCount(AdditiveDto additiveDto)
+    public async Task DecreaseAddtiveCount(AdditiveDto additiveDto, double count = 1)
     {
         this.ThrowIfNotInitialized();
         ArgumentNullException.ThrowIfNull(additiveDto);
 
-        if (additiveDto.Count <= 0)
+        var receipt = await receiptService.GetReceipt(additiveDto.ReceiptId);
+
+        if (receipt == null)
+        {
+            throw new InvalidOperationException($"Receipt with id {additiveDto.ReceiptId} not found");
+        }
+
+        if (!await receiptService.HasEnoughIngridients(receipt))
         {
             throw new ArgumentException("Additive count must be greater than zero.", nameof(additiveDto));
         }
@@ -46,14 +51,9 @@ public sealed class AdditiveService(IAdditiveRepository repository) : IAdditiveS
             throw new InvalidOperationException($"Additive with id {additiveDto.Id} not found");
         }
 
-        var updatedAdditive = AdditiveDto.FromModel(foundedAdditive with
-        {
-            Count = foundedAdditive.Count - 1
-        });
+        await receiptService.SpendIngridients(receipt);
 
-        additiveDto.Count--;
-
-        await UpdateAdditive(updatedAdditive);
+        await UpdateAdditive(Mapper.MapAdditiveToAdditiveDto(foundedAdditive));
     }
     public void Dispose()
     {
@@ -72,7 +72,18 @@ public sealed class AdditiveService(IAdditiveRepository repository) : IAdditiveS
     {
         this.ThrowIfNotInitialized();
 
-        return await this.GetDtoAndUpdateRuntime(additiveId);
+        var foundedAdditive = await repository.Get(additiveId);
+
+        if (foundedAdditive is null)
+        {
+            return null;
+        }
+
+        var dto = Mapper.MapAdditiveToAdditiveDto(foundedAdditive);
+
+        RuntimeAdditives.AddOrUpdate(dto);
+
+        return dto;
     }
 
     public async ValueTask<IEnumerable<AdditiveDto>> GetAdditivesByProductId(Guid id)
@@ -80,14 +91,14 @@ public sealed class AdditiveService(IAdditiveRepository repository) : IAdditiveS
         this.ThrowIfNotInitialized();
 
         var additives = await repository.GetAdditivesByProductId(id);
-        var additivesDto = additives.Select(x => AdditiveDto.FromModel(x)!);
+        var additivesDto = additives.Select(Mapper.MapAdditiveToAdditiveDto);
 
         RuntimeAdditives.AddOrUpdate(additivesDto);
 
         return additivesDto;
     }
 
-    public async Task IncreaseAdditiveCount(AdditiveDto additiveDto)
+    public async Task IncreaseAdditiveCount(AdditiveDto additiveDto, double count = 1)
     {
         this.ThrowIfNotInitialized();
 
@@ -98,11 +109,7 @@ public sealed class AdditiveService(IAdditiveRepository repository) : IAdditiveS
             throw new InvalidOperationException($"Additive with id {additiveDto.Id} not found");
         }
 
-        additiveDto.Count++;
-        additiveDto = AdditiveDto.FromModel(foundedAdditive with
-        {
-            Count = foundedAdditive.Count + 1
-        });
+        var receipt = await receiptService.GetReceipt(additiveDto.ReceiptId);
 
         await UpdateAdditive(additiveDto);
     }
@@ -118,6 +125,6 @@ public sealed class AdditiveService(IAdditiveRepository repository) : IAdditiveS
     {
         this.ThrowIfNotInitialized();
 
-        await this.UpdateDto(additiveDto);
+        RuntimeAdditives.AddOrUpdate(additiveDto);
     }
 }

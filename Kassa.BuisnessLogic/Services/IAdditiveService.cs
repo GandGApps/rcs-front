@@ -10,8 +10,8 @@ using Kassa.DataAccess;
 namespace Kassa.BuisnessLogic.Services;
 public interface IAdditiveService : IInitializableService
 {
-    public Task DecreaseAddtiveCount(AdditiveDto additive);
-    public Task IncreaseAdditiveCount(AdditiveDto additive);
+    public Task DecreaseAddtiveCount(AdditiveDto additive, double count = 1);
+    public Task IncreaseAdditiveCount(AdditiveDto additive, double count = 1);
 
     public SourceCache<AdditiveDto, Guid> RuntimeAdditives
     {

@@ -11,7 +11,9 @@ using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 
 namespace Kassa.BuisnessLogic.Services;
-internal sealed class ProductService(IRepository<Product> productRepository, IAdditiveRepository additiveRepository) : IProductService, IRuntimeDtoProvider<ProductDto, Guid, Product>
+internal sealed class ProductService(
+    IRepository<Product> productRepository,
+    IReceiptService receiptService) : IProductService
 {
     private bool _isInitialized;
     private bool _isDisposed;
@@ -25,10 +27,6 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
 
     public bool IsDisposed => _isDisposed;
 
-    SourceCache<ProductDto, Guid> IRuntimeDtoProvider<ProductDto, Guid, Product>.RuntimeDtos => RuntimeProducts;
-    IRepository<Product> IRuntimeDtoProvider<ProductDto, Guid, Product>.Repository => productRepository;
-
-
     public async ValueTask Initialize()
     {
         if (_isInitialized)
@@ -39,7 +37,7 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
         {
             var products = await productRepository.GetAll();
 
-            RuntimeProducts.AddOrUpdate(products.Select(x => ToProductDto(x)));
+            RuntimeProducts.AddOrUpdate(products.Select(Mapper.MapProductToProductDto));
 
             _isInitialized = true;
         }
@@ -70,11 +68,13 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
             throw new InvalidOperationException($"Product with id {productId} not found");
         }
 
-        product.Count--;
+        var receipt = await receiptService.GetReceipt(product.ReceiptId);
+
+        await receiptService.SpendIngridients(receipt);
 
         await productRepository.Update(product);
 
-        await UpdateProduct(ToProductDto(product));
+        await UpdateProduct(Mapper.MapProductToProductDto(product));
     }
 
     public async Task IncreaseProductCount(Guid productId)
@@ -88,11 +88,13 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
             throw new InvalidOperationException($"Product with id {productId} not found");
         }
 
-        product.Count++;
+        var receipt = await receiptService.GetReceipt(product.ReceiptId);
+
+        await receiptService.ReturnIngridients(receipt);
 
         await productRepository.Update(product);
 
-        await UpdateProduct(ToProductDto(product));
+        await UpdateProduct(Mapper.MapProductToProductDto(product));
 
     }
 
@@ -101,7 +103,7 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
         this.ThrowIfNotInitialized();
 
         var product = await productRepository.Get(productId);
-        var productDto = ToProductDto(product);
+        var productDto = Mapper.MapProductToProductDto(product);
 
         if (productDto is not null)
         {
@@ -122,7 +124,7 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
             throw new InvalidOperationException($"Product with id {productDto.Id} not found");
         }
 
-        product = ProductDto.ToProduct(productDto);
+        product = Mapper.MapProductDtoToProduct(productDto);
 
         await productRepository.Update(product);
 
@@ -158,10 +160,6 @@ internal sealed class ProductService(IRepository<Product> productRepository, IAd
 
         RuntimeProducts.Remove(productDto);
     }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    [return: NotNullIfNotNull(nameof(product))]
-    private static ProductDto? ToProductDto(Product? product) => ProductDto.FromProduct(product);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static async Task<Product> GetProductOrThrow(Guid id, IRepository<Product> repository)

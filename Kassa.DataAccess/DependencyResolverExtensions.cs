@@ -28,5 +28,6 @@ public static class DependencyResolverExtensions
         services.RegisterConstant<IRepository<Order>>(new IRepository<Order>.MockRepository([]));
         services.RegisterConstant(streets);
         services.RegisterConstant(IStreetRepository.CreateStreetMock("MockStreets.json"));
+        services.RegisterConstant(IRepository<Ingredient>.CreateMock("MockIngredients.json"));
     }
 }

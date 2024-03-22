@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Dto;
-public record AdditiveDto : IDto<Additive, AdditiveDto>
+public record AdditiveDto
 {
     public Guid Id
     {
@@ -28,12 +28,6 @@ public record AdditiveDto : IDto<Additive, AdditiveDto>
     {
         get; set;
     }
-
-    public double Count
-    {
-        get; set;
-    }
-
     public string Measure
     {
         get; set;
@@ -49,30 +43,8 @@ public record AdditiveDto : IDto<Additive, AdditiveDto>
         get; set;
     }
 
-
-    [return: NotNullIfNotNull(nameof(model))]
-    public static AdditiveDto? FromModel(Additive? model) => model is null ? null : new AdditiveDto
+    public Guid ReceiptId
     {
-        Id = model.Id,
-        Name = model.Name,
-        CurrencySymbol = model.CurrencySymbol,
-        Price = model.Price,
-        Count = model.Count,
-        Measure = model.Measure,
-        ProductIds = model.ProductIds,
-        Portion = model.Portion,
-    };
-
-    [return: NotNullIfNotNull(nameof(dto))]
-    public static Additive? ToModel(AdditiveDto? dto) => dto is null ? null : new Additive
-    {
-        Id = dto.Id,
-        Name = dto.Name,
-        CurrencySymbol = dto.CurrencySymbol,
-        Price = dto.Price,
-        Count = dto.Count,
-        Measure = dto.Measure,
-        ProductIds = dto.ProductIds,
-        Portion = dto.Portion,
-    };
+        get; set;
+    }
 }

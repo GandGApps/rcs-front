@@ -32,8 +32,8 @@ public interface IProductService : IInitializableService
     public Task RemoveProduct(ProductDto product);
     public Task DecreaseProductCount(Guid productId);
     public Task DecreaseProductCount(ProductDto product);
-    public Task IncreaseProductCount(Guid productId);
-    public Task IncreaseProductCount(ProductDto product);
+    public Task IncreaseProductCount(Guid productId, double count = 1);
+    public Task IncreaseProductCount(ProductDto product, double count = 1);
 
     public ValueTask<ProductDto?> GetProductById(Guid productId);
 }

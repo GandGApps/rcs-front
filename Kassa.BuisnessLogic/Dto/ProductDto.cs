@@ -9,7 +9,7 @@ using Kassa.DataAccess;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Dto;
-public record ProductDto : ICategoryItemDto, IDto<Product, ProductDto>
+public record ProductDto : ICategoryItemDto
 {
     public Guid Id
     {
@@ -28,11 +28,6 @@ public record ProductDto : ICategoryItemDto, IDto<Product, ProductDto>
     } = null!;
 
     public double Price
-    {
-        get; set;
-    }
-
-    public double Count
     {
         get; set;
     }
@@ -58,16 +53,6 @@ public record ProductDto : ICategoryItemDto, IDto<Product, ProductDto>
         get; set;
     } = [];
 
-    /// <summary>
-    /// Need to be removed, as soon as possible
-    /// </summary>
-    [Obsolete]
-    public string[] Categories
-    {
-        get; set;
-    } = [];
-
-
     public string Icon
     {
         get; set;
@@ -92,41 +77,14 @@ public record ProductDto : ICategoryItemDto, IDto<Product, ProductDto>
         get;
     } = null;
 
-    [return: NotNullIfNotNull("model")]
-    public static ProductDto? FromModel(Product? model) =>  FromProduct(model);
-
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    [return: NotNullIfNotNull(nameof(product))]
-    public static ProductDto? FromProduct(Product? product) => product == null ? null : new()
+    public virtual ReceiptDto Receipt
     {
-        Id = product.Id,
-        Name = product.Name,
-        CurrencySymbol = product.CurrencySymbol,
-        Price = product.Price,
-        Count = product.Count,
-        Measure = product.Measure,
-        Favourites = product.Favourites,
-        Icon = product.Icon,
-        CategoryId = product.CategoryId,
-    };
-    [return: NotNullIfNotNull(nameof(dto))]
-    public static Product? ToModel(ProductDto? dto) => ToProduct(dto);
+        get; set;
+    }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    [return: NotNullIfNotNull(nameof(productDto))]
-    public static Product? ToProduct(ProductDto? productDto) => productDto == null ? null : new()
+    public Guid ReceiptId
     {
-        Id = productDto.Id,
-        Name = productDto.Name,
-        CurrencySymbol = productDto.CurrencySymbol,
-        Price = productDto.Price,
-        Count = productDto.Count,
-        Measure = productDto.Measure,
-        Favourites = productDto.Favourites,
-        Icon = productDto.Icon,
-        CategoryId = productDto.CategoryId,
-    };
-
+        get; set;
+    }
 
 }

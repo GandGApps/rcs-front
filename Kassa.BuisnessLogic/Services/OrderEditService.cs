@@ -15,7 +15,12 @@ using Kassa.DataAccess.Model;
 using ReactiveUI;
 
 namespace Kassa.BuisnessLogic.Services;
-internal class OrderEditService(IProductService productService, ICategoryService categoryService, IAdditiveService additiveService, OrderDto? order = null) : IOrderEditService
+internal class OrderEditService(
+    IProductService productService,
+    ICategoryService categoryService,
+    IAdditiveService additiveService,
+    IReceiptService receiptService,
+    OrderDto? order = null) : IOrderEditService
 {
     private OrderDto? _order = order;
 
@@ -182,7 +187,7 @@ internal class OrderEditService(IProductService productService, ICategoryService
                     IsMultiSelect = false;
                     var product = ShoppingListItems.Items.First();
 
-                    if(product.IsSelected) return;
+                    if (product.IsSelected) return;
 
                     product = product with
                     {
@@ -351,9 +356,16 @@ internal class OrderEditService(IProductService productService, ICategoryService
             throw new InvalidOperationException($"Product with id {productId} not found.");
         }
 
-        if (product.Count == 0)
+        var receipt = await receiptService.GetReceipt(product.ReceiptId);
+
+        if (receipt is null)
         {
-            return;
+            throw new InvalidOperationException($"Receipt with id {product.ReceiptId} not found.");
+        }
+
+        if (!await receiptService.HasEnoughIngridients(receipt))
+        {
+            throw new InvalidOperationException($"Not enough ingredients for product {product.Name}");
         }
 
         await productService.DecreaseProductCount(product.Id);
@@ -573,7 +585,6 @@ internal class OrderEditService(IProductService productService, ICategoryService
         foreach (var shoppingListItem in SelectedShoppingListItems.Items)
         {
             if (additive.ProductIds.Contains(shoppingListItem.ItemId) &&
-                additive.Count > 0 &&
                 shoppingListItem is ProductShoppingListItemDto product)
             {
                 await additiveService.DecreaseAddtiveCount(additive);
@@ -701,10 +712,7 @@ internal class OrderEditService(IProductService productService, ICategoryService
                     throw new InvalidOperationException($"Additive with id {additive.ItemId} not found.");
                 }
 
-                await additiveService.UpdateAdditive(additiveDto with
-                {
-                    Count = additiveDto.Count + additive.Count
-                });
+                await additiveService.IncreaseAdditiveCount(additiveDto);
 
                 if (_additivesInProductDto.TryGetValue(additive.ContainingProduct.Id, out var sourceCache))
                 {
@@ -726,9 +734,16 @@ internal class OrderEditService(IProductService productService, ICategoryService
             throw new InvalidOperationException($"Product with id {item.ItemId} not found.");
         }
 
-        if (product.Count <= 0)
+        var receipt = await receiptService.GetReceipt(product.ReceiptId);
+
+        if (receipt is null)
         {
-            return;
+            throw new InvalidOperationException($"Receipt with id {product.ReceiptId} not found.");
+        }
+
+        if (!await receiptService.HasEnoughIngridients(receipt))
+        {
+            throw new InvalidOperationException($"Not enough ingredients for product {product.Name}");
         }
 
         await productService.DecreaseProductCount(product.Id);
@@ -785,10 +800,7 @@ internal class OrderEditService(IProductService productService, ICategoryService
             throw new InvalidOperationException($"Product with id {product.ItemId} not found.");
         }
 
-        await productService.UpdateProduct(productDto with
-        {
-            Count = productDto.Count + product.Count
-        });
+        await productService.IncreaseProductCount(productDto.Id, product.Count);
 
         ShoppingListItems.Remove(product.Id);
         SelectedShoppingListItems.Remove(product.Id);
