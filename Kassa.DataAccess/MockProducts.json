@@ -24,25 +24,26 @@
     {
         "Id": "0031C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Зеленый чай",
-        "Price": 553,
-        "Count": 8,
-        "Measure": "шт",
+        "Price": 1706,
+        "ReceiptId": "027001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "упак",
         "CurrencySymbol": "₽",
         "Favourites": [
-            3,
-            1
+            1,
+            3
         ],
         "CategoryId": "01BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0041C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Кофе арабика",
-        "Price": 1945,
-        "Count": 10,
-        "Measure": "кг",
+        "Price": 1789,
+        "ReceiptId": "027001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "л",
         "CurrencySymbol": "₽",
         "Favourites": [
             1,
+            2,
             3
         ],
         "CategoryId": "01BCEF7E-4F00-406C-87DA-6364B4900940"
@@ -50,11 +51,13 @@
     {
         "Id": "0051C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Какао",
-        "Price": 1877,
-        "Count": 9,
-        "Measure": "шт",
+        "Price": 670,
+        "ReceiptId": "087001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "л",
         "CurrencySymbol": "₽",
         "Favourites": [
+            1,
+            2,
             3
         ],
         "CategoryId": "01BCEF7E-4F00-406C-87DA-6364B4900940"
@@ -62,121 +65,120 @@
     {
         "Id": "0061C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Молочный шоколад",
-        "Price": 621,
-        "Count": 8,
-        "Measure": "кг",
+        "Price": 311,
+        "ReceiptId": "077001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "упак",
         "CurrencySymbol": "₽",
-        "Favourites": [
-            1
-        ],
+        "Favourites": [],
         "CategoryId": "02BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0071C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Медовое печенье",
-        "Price": 1167,
-        "Count": 5,
-        "Measure": "кг",
+        "Price": 1835,
+        "ReceiptId": "027001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "л",
         "CurrencySymbol": "₽",
         "Favourites": [
-            3
+            3,
+            1
         ],
         "CategoryId": "02BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0081C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Мармелад",
-        "Price": 1950,
-        "Count": 9,
-        "Measure": "л",
+        "Price": 82,
+        "ReceiptId": "117001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "кг",
         "CurrencySymbol": "₽",
-        "Favourites": [],
+        "Favourites": [
+            1
+        ],
         "CategoryId": "02BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0091C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Лимонад",
-        "Price": 535,
-        "Count": 10,
-        "Measure": "упак",
-        "CurrencySymbol": "₽",
-        "Favourites": [],
-        "CategoryId": "03BCEF7E-4F00-406C-87DA-6364B4900940"
-    },
-    {
-        "Id": "0101C9AB-9502-4687-B32D-9E6ACC752B6C",
-        "Name": "Морс",
-        "Price": 638,
-        "Count": 14,
-        "Measure": "упак",
+        "Price": 1252,
+        "ReceiptId": "017001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "л",
         "CurrencySymbol": "₽",
         "Favourites": [
             2,
+            1,
             3
         ],
         "CategoryId": "03BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
+        "Id": "0101C9AB-9502-4687-B32D-9E6ACC752B6C",
+        "Name": "Морс",
+        "Price": 1125,
+        "ReceiptId": "127001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "кг",
+        "CurrencySymbol": "₽",
+        "Favourites": [],
+        "CategoryId": "03BCEF7E-4F00-406C-87DA-6364B4900940"
+    },
+    {
         "Id": "0111C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Компот",
-        "Price": 1821,
-        "Count": 12,
-        "Measure": "л",
+        "Price": 1716,
+        "ReceiptId": "017001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "кг",
         "CurrencySymbol": "₽",
         "Favourites": [
+            2,
             3,
-            1,
-            2
+            1
         ],
         "CategoryId": "03BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0121C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Апельсиновый сок",
-        "Price": 1900,
-        "Count": 13,
+        "Price": 780,
+        "ReceiptId": "087001F7-37BA-4907-98D0-B1EDE02F8EA7",
         "Measure": "упак",
         "CurrencySymbol": "₽",
-        "Favourites": [
-            2
-        ],
+        "Favourites": [],
         "CategoryId": "04BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0131C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Яблочный сок",
-        "Price": 1324,
-        "Count": 6,
-        "Measure": "л",
+        "Price": 655,
+        "ReceiptId": "117001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "упак",
         "CurrencySymbol": "₽",
         "Favourites": [
             2,
-            1,
-            3
+            1
         ],
         "CategoryId": "04BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0141C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Томатный сок",
-        "Price": 758,
-        "Count": 8,
+        "Price": 431,
+        "ReceiptId": "047001F7-37BA-4907-98D0-B1EDE02F8EA7",
         "Measure": "л",
         "CurrencySymbol": "₽",
         "Favourites": [
-            1
+            1,
+            3
         ],
         "CategoryId": "04BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0151C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Кола",
-        "Price": 783,
-        "Count": 7,
-        "Measure": "упак",
+        "Price": 565,
+        "ReceiptId": "067001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "л",
         "CurrencySymbol": "₽",
         "Favourites": [
-            1,
             2
         ],
         "CategoryId": "05BCEF7E-4F00-406C-87DA-6364B4900940"
@@ -184,71 +186,77 @@
     {
         "Id": "0161C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Пепси",
-        "Price": 791,
-        "Count": 12,
-        "Measure": "кг",
+        "Price": 99,
+        "ReceiptId": "077001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "л",
         "CurrencySymbol": "₽",
         "Favourites": [
-            2
+            3
         ],
         "CategoryId": "05BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0171C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Фанта",
-        "Price": 1730,
-        "Count": 9,
-        "Measure": "упак",
+        "Price": 1152,
+        "ReceiptId": "027001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "шт",
         "CurrencySymbol": "₽",
         "Favourites": [
-            1,
-            3,
-            2
+            1
         ],
         "CategoryId": "05BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0181C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Горячий шоколад",
-        "Price": 878,
-        "Count": 13,
-        "Measure": "кг",
+        "Price": 1049,
+        "ReceiptId": "027001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "л",
         "CurrencySymbol": "₽",
         "Favourites": [
-            3,
+            1,
             2,
-            1
+            3
         ],
         "CategoryId": "06BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0191C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Эспрессо",
-        "Price": 1328,
-        "Count": 10,
+        "Price": 392,
+        "ReceiptId": "097001F7-37BA-4907-98D0-B1EDE02F8EA7",
         "Measure": "кг",
         "CurrencySymbol": "₽",
-        "Favourites": [],
+        "Favourites": [
+            3,
+            1,
+            2
+        ],
         "CategoryId": "06BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0201C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Чай с имбирем",
-        "Price": 305,
-        "Count": 13,
+        "Price": 1841,
+        "ReceiptId": "127001F7-37BA-4907-98D0-B1EDE02F8EA7",
         "Measure": "л",
         "CurrencySymbol": "₽",
-        "Favourites": [],
+        "Favourites": [
+            1,
+            3
+        ],
         "CategoryId": "06BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0211C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Зеленый чай",
-        "Price": 113,
-        "Count": 15,
-        "Measure": "кг",
+        "Price": 69,
+        "ReceiptId": "127001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "упак",
         "CurrencySymbol": "₽",
         "Favourites": [
+            2,
             3
         ],
         "CategoryId": "07BCEF7E-4F00-406C-87DA-6364B4900940"
@@ -256,58 +264,61 @@
     {
         "Id": "0221C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Черный чай",
-        "Price": 569,
-        "Count": 7,
-        "Measure": "упак",
+        "Price": 1716,
+        "ReceiptId": "077001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "кг",
         "CurrencySymbol": "₽",
         "Favourites": [
-            1
+            2
         ],
         "CategoryId": "07BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0231C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Травяной чай",
-        "Price": 656,
-        "Count": 11,
-        "Measure": "кг",
+        "Price": 1189,
+        "ReceiptId": "017001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "шт",
         "CurrencySymbol": "₽",
         "Favourites": [
+            3,
             1,
-            3
+            2
         ],
         "CategoryId": "07BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0241C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Латте",
-        "Price": 1286,
-        "Count": 7,
-        "Measure": "шт",
+        "Price": 559,
+        "ReceiptId": "107001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "упак",
         "CurrencySymbol": "₽",
         "Favourites": [
             1,
-            3,
-            2
+            2,
+            3
         ],
         "CategoryId": "08BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0251C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Капучино",
-        "Price": 1037,
-        "Count": 13,
-        "Measure": "шт",
+        "Price": 726,
+        "ReceiptId": "107001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "л",
         "CurrencySymbol": "₽",
-        "Favourites": [],
+        "Favourites": [
+            3
+        ],
         "CategoryId": "08BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0261C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Американо",
-        "Price": 912,
-        "Count": 9,
-        "Measure": "упак",
+        "Price": 1300,
+        "ReceiptId": "037001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "шт",
         "CurrencySymbol": "₽",
         "Favourites": [],
         "CategoryId": "08BCEF7E-4F00-406C-87DA-6364B4900940"
@@ -315,9 +326,9 @@
     {
         "Id": "0271C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Горький шоколад",
-        "Price": 1116,
-        "Count": 11,
-        "Measure": "кг",
+        "Price": 262,
+        "ReceiptId": "077001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "л",
         "CurrencySymbol": "₽",
         "Favourites": [],
         "CategoryId": "09BCEF7E-4F00-406C-87DA-6364B4900940"
@@ -325,24 +336,25 @@
     {
         "Id": "0281C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Шоколад с орехами",
-        "Price": 1483,
-        "Count": 11,
-        "Measure": "упак",
+        "Price": 1498,
+        "ReceiptId": "107001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "шт",
         "CurrencySymbol": "₽",
         "Favourites": [
-            1
+            2,
+            1,
+            3
         ],
         "CategoryId": "09BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0291C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Белый шоколад",
-        "Price": 1895,
-        "Count": 5,
-        "Measure": "кг",
+        "Price": 1648,
+        "ReceiptId": "127001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "шт",
         "CurrencySymbol": "₽",
         "Favourites": [
-            2,
             1,
             3
         ],
@@ -351,31 +363,33 @@
     {
         "Id": "0301C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Ирис",
-        "Price": 1782,
-        "Count": 8,
-        "Measure": "упак",
+        "Price": 298,
+        "ReceiptId": "077001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "л",
         "CurrencySymbol": "₽",
-        "Favourites": [],
+        "Favourites": [
+            3
+        ],
         "CategoryId": "10BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0311C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Леденцы",
-        "Price": 587,
-        "Count": 14,
-        "Measure": "кг",
+        "Price": 1400,
+        "ReceiptId": "067001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "л",
         "CurrencySymbol": "₽",
         "Favourites": [
-            2
+            3
         ],
         "CategoryId": "10BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0321C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Карамель",
-        "Price": 79,
-        "Count": 6,
-        "Measure": "упак",
+        "Price": 1733,
+        "ReceiptId": "107001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "кг",
         "CurrencySymbol": "₽",
         "Favourites": [],
         "CategoryId": "10BCEF7E-4F00-406C-87DA-6364B4900940"
@@ -383,48 +397,51 @@
     {
         "Id": "0331C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Овсяное печенье",
-        "Price": 189,
-        "Count": 12,
-        "Measure": "л",
+        "Price": 1272,
+        "ReceiptId": "117001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "упак",
         "CurrencySymbol": "₽",
-        "Favourites": [],
+        "Favourites": [
+            1,
+            2,
+            3
+        ],
         "CategoryId": "11BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0341C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Песочное печенье",
-        "Price": 1819,
-        "Count": 5,
-        "Measure": "л",
+        "Price": 1433,
+        "ReceiptId": "107001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "упак",
         "CurrencySymbol": "₽",
         "Favourites": [
             2,
-            1,
-            3
+            3,
+            1
         ],
         "CategoryId": "11BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0351C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Шоколадное печенье",
-        "Price": 1025,
-        "Count": 11,
-        "Measure": "шт",
+        "Price": 450,
+        "ReceiptId": "037001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "л",
         "CurrencySymbol": "₽",
         "Favourites": [
-            1
+            3
         ],
         "CategoryId": "11BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0361C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Свинина",
-        "Price": 1260,
-        "Count": 6,
-        "Measure": "кг",
+        "Price": 1490,
+        "ReceiptId": "047001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "упак",
         "CurrencySymbol": "₽",
         "Favourites": [
-            1,
             2
         ],
         "CategoryId": "12BCEF7E-4F00-406C-87DA-6364B4900940"
@@ -432,69 +449,67 @@
     {
         "Id": "0371C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Говядина",
-        "Price": 1789,
-        "Count": 9,
+        "Price": 871,
+        "ReceiptId": "127001F7-37BA-4907-98D0-B1EDE02F8EA7",
         "Measure": "упак",
         "CurrencySymbol": "₽",
         "Favourites": [
-            1,
-            3,
-            2
+            2,
+            1
         ],
         "CategoryId": "12BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0381C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Курица",
-        "Price": 1015,
-        "Count": 13,
-        "Measure": "л",
+        "Price": 846,
+        "ReceiptId": "047001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "шт",
         "CurrencySymbol": "₽",
-        "Favourites": [
-            3
-        ],
+        "Favourites": [],
         "CategoryId": "12BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0391C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Вареная колбаса",
-        "Price": 95,
-        "Count": 6,
-        "Measure": "шт",
+        "Price": 1096,
+        "ReceiptId": "027001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "л",
         "CurrencySymbol": "₽",
-        "Favourites": [
-            3,
-            2,
-            1
-        ],
+        "Favourites": [],
         "CategoryId": "13BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0401C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Копченая колбаса",
-        "Price": 110,
-        "Count": 5,
-        "Measure": "упак",
+        "Price": 553,
+        "ReceiptId": "027001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "л",
         "CurrencySymbol": "₽",
-        "Favourites": [],
+        "Favourites": [
+            1,
+            2
+        ],
         "CategoryId": "13BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0411C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Салями",
-        "Price": 267,
-        "Count": 5,
+        "Price": 995,
+        "ReceiptId": "027001F7-37BA-4907-98D0-B1EDE02F8EA7",
         "Measure": "упак",
         "CurrencySymbol": "₽",
-        "Favourites": [],
+        "Favourites": [
+            2
+        ],
         "CategoryId": "13BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0421C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Говяжий стейк",
-        "Price": 1379,
-        "Count": 13,
-        "Measure": "упак",
+        "Price": 161,
+        "ReceiptId": "097001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "кг",
         "CurrencySymbol": "₽",
         "Favourites": [],
         "CategoryId": "14BCEF7E-4F00-406C-87DA-6364B4900940"
@@ -502,19 +517,22 @@
     {
         "Id": "0431C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Свиной стейк",
-        "Price": 763,
-        "Count": 13,
+        "Price": 695,
+        "ReceiptId": "117001F7-37BA-4907-98D0-B1EDE02F8EA7",
         "Measure": "упак",
         "CurrencySymbol": "₽",
-        "Favourites": [],
+        "Favourites": [
+            1,
+            2
+        ],
         "CategoryId": "14BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0441C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Куриный стейк",
-        "Price": 1201,
-        "Count": 8,
-        "Measure": "шт",
+        "Price": 732,
+        "ReceiptId": "117001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "л",
         "CurrencySymbol": "₽",
         "Favourites": [],
         "CategoryId": "14BCEF7E-4F00-406C-87DA-6364B4900940"
@@ -522,45 +540,56 @@
     {
         "Id": "0451C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Яблоки",
-        "Price": 1278,
-        "Count": 6,
-        "Measure": "шт",
+        "Price": 1586,
+        "ReceiptId": "087001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "кг",
         "CurrencySymbol": "₽",
-        "Favourites": [],
+        "Favourites": [
+            3,
+            1
+        ],
         "CategoryId": "15BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0461C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Бананы",
-        "Price": 1991,
-        "Count": 13,
-        "Measure": "шт",
+        "Price": 490,
+        "ReceiptId": "017001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "упак",
         "CurrencySymbol": "₽",
         "Favourites": [
-            3,
-            2,
-            1
+            3
         ],
         "CategoryId": "15BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0471C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Киви",
-        "Price": 838,
-        "Count": 12,
-        "Measure": "упак",
+        "Price": 1859,
+        "ReceiptId": "027001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "шт",
         "CurrencySymbol": "₽",
-        "Favourites": [
-            3
-        ],
+        "Favourites": [],
         "CategoryId": "15BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0481C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Груши",
-        "Price": 679,
-        "Count": 13,
-        "Measure": "шт",
+        "Price": 1775,
+        "ReceiptId": "067001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "упак",
+        "CurrencySymbol": "₽",
+        "Favourites": [
+            3
+        ],
+        "CategoryId": "16BCEF7E-4F00-406C-87DA-6364B4900940"
+    },
+    {
+        "Id": "0491C9AB-9502-4687-B32D-9E6ACC752B6C",
+        "Name": "Ананас",
+        "Price": 255,
+        "ReceiptId": "077001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "кг",
         "CurrencySymbol": "₽",
         "Favourites": [
             1
@@ -568,24 +597,11 @@
         "CategoryId": "16BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
-        "Id": "0491C9AB-9502-4687-B32D-9E6ACC752B6C",
-        "Name": "Ананас",
-        "Price": 1001,
-        "Count": 10,
-        "Measure": "шт",
-        "CurrencySymbol": "₽",
-        "Favourites": [
-            1,
-            3
-        ],
-        "CategoryId": "16BCEF7E-4F00-406C-87DA-6364B4900940"
-    },
-    {
         "Id": "0501C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Гранат",
-        "Price": 1226,
-        "Count": 9,
-        "Measure": "упак",
+        "Price": 903,
+        "ReceiptId": "057001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "л",
         "CurrencySymbol": "₽",
         "Favourites": [],
         "CategoryId": "16BCEF7E-4F00-406C-87DA-6364B4900940"
@@ -593,33 +609,39 @@
     {
         "Id": "0511C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Помидоры",
-        "Price": 811,
-        "Count": 13,
-        "Measure": "л",
+        "Price": 1899,
+        "ReceiptId": "067001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "шт",
         "CurrencySymbol": "₽",
-        "Favourites": [],
+        "Favourites": [
+            1,
+            3,
+            2
+        ],
         "CategoryId": "17BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0521C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Огурцы",
-        "Price": 968,
-        "Count": 9,
-        "Measure": "шт",
+        "Price": 1607,
+        "ReceiptId": "057001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "л",
         "CurrencySymbol": "₽",
         "Favourites": [
-            3
+            3,
+            2
         ],
         "CategoryId": "17BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0531C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Перец",
-        "Price": 426,
-        "Count": 6,
-        "Measure": "упак",
+        "Price": 1624,
+        "ReceiptId": "037001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "кг",
         "CurrencySymbol": "₽",
         "Favourites": [
+            3,
             2
         ],
         "CategoryId": "17BCEF7E-4F00-406C-87DA-6364B4900940"
@@ -627,27 +649,22 @@
     {
         "Id": "0541C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Баклажан",
-        "Price": 1565,
-        "Count": 6,
-        "Measure": "упак",
+        "Price": 223,
+        "ReceiptId": "097001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "кг",
         "CurrencySymbol": "₽",
-        "Favourites": [
-            1,
-            3,
-            2
-        ],
+        "Favourites": [],
         "CategoryId": "18BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0551C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Кабачок",
-        "Price": 773,
-        "Count": 11,
-        "Measure": "упак",
+        "Price": 345,
+        "ReceiptId": "107001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "кг",
         "CurrencySymbol": "₽",
         "Favourites": [
             3,
-            2,
             1
         ],
         "CategoryId": "18BCEF7E-4F00-406C-87DA-6364B4900940"
@@ -655,12 +672,11 @@
     {
         "Id": "0561C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Тыква",
-        "Price": 1760,
-        "Count": 10,
-        "Measure": "кг",
+        "Price": 964,
+        "ReceiptId": "087001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "л",
         "CurrencySymbol": "₽",
         "Favourites": [
-            3,
             1,
             2
         ],
@@ -669,20 +685,18 @@
     {
         "Id": "0571C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Картофель",
-        "Price": 439,
-        "Count": 13,
-        "Measure": "кг",
+        "Price": 219,
+        "ReceiptId": "127001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "упак",
         "CurrencySymbol": "₽",
-        "Favourites": [
-            3
-        ],
+        "Favourites": [],
         "CategoryId": "19BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0581C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Морковь",
-        "Price": 1358,
-        "Count": 15,
+        "Price": 85,
+        "ReceiptId": "057001F7-37BA-4907-98D0-B1EDE02F8EA7",
         "Measure": "л",
         "CurrencySymbol": "₽",
         "Favourites": [],
@@ -691,35 +705,32 @@
     {
         "Id": "0591C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Лук",
-        "Price": 1915,
-        "Count": 9,
-        "Measure": "упак",
+        "Price": 635,
+        "ReceiptId": "017001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "л",
         "CurrencySymbol": "₽",
-        "Favourites": [
-            3,
-            2
-        ],
+        "Favourites": [],
         "CategoryId": "19BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0601C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Чеснок",
-        "Price": 1366,
-        "Count": 6,
-        "Measure": "шт",
+        "Price": 1664,
+        "ReceiptId": "067001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "упак",
         "CurrencySymbol": "₽",
         "Favourites": [
+            2,
             1,
-            3,
-            2
+            3
         ],
         "CategoryId": "20BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0611C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Редис",
-        "Price": 1125,
-        "Count": 8,
+        "Price": 1958,
+        "ReceiptId": "077001F7-37BA-4907-98D0-B1EDE02F8EA7",
         "Measure": "упак",
         "CurrencySymbol": "₽",
         "Favourites": [],
@@ -728,33 +739,34 @@
     {
         "Id": "0621C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Свекла",
-        "Price": 454,
-        "Count": 11,
-        "Measure": "л",
+        "Price": 752,
+        "ReceiptId": "047001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "упак",
         "CurrencySymbol": "₽",
         "Favourites": [
-            1,
-            3,
-            2
+            3
         ],
         "CategoryId": "20BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0631C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Лук-порей",
-        "Price": 1890,
-        "Count": 14,
-        "Measure": "кг",
+        "Price": 1793,
+        "ReceiptId": "057001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "упак",
         "CurrencySymbol": "₽",
-        "Favourites": [],
+        "Favourites": [
+            1,
+            2
+        ],
         "CategoryId": "21BCEF7E-4F00-406C-87DA-6364B4900940"
     },
     {
         "Id": "0641C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Сельдерей",
-        "Price": 253,
-        "Count": 13,
-        "Measure": "кг",
+        "Price": 348,
+        "ReceiptId": "057001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "шт",
         "CurrencySymbol": "₽",
         "Favourites": [],
         "CategoryId": "21BCEF7E-4F00-406C-87DA-6364B4900940"
@@ -762,12 +774,12 @@
     {
         "Id": "0651C9AB-9502-4687-B32D-9E6ACC752B6C",
         "Name": "Фенхель",
-        "Price": 1213,
-        "Count": 8,
-        "Measure": "л",
+        "Price": 1312,
+        "ReceiptId": "127001F7-37BA-4907-98D0-B1EDE02F8EA7",
+        "Measure": "кг",
         "CurrencySymbol": "₽",
         "Favourites": [
-            1
+            3
         ],
         "CategoryId": "21BCEF7E-4F00-406C-87DA-6364B4900940"
     }

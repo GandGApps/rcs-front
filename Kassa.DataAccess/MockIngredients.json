@@ -1,68 +1,62 @@
 [
   {
-    "Id": "BD25EE84-18D2-4A47-A8DB-A727C3CB61AE",
-    "Name": "Картошка",
-    "Count": 59.3,
-    "Measure": "кг"
-  },
-  {
     "Id": "9bd4b641-c1c2-4f2c-be7a-b36c73a13a67",
-    "Name": "Морковь",
+    "Name": "РњРѕСЂРєРѕРІСЊ",
     "Count": 12.6,
-    "Measure": "кг"
+    "Measure": "РєРі"
   },
   {
     "Id": "f77be172-d478-4c53-a6f4-bc1d91cb267c",
-    "Name": "Лук",
+    "Name": "Р›СѓРє",
     "Count": 39.0,
-    "Measure": "кг"
+    "Measure": "РєРі"
   },
   {
     "Id": "6612915f-a686-429c-a142-0aa28ffa3173",
-    "Name": "Чеснок",
+    "Name": "Р§РµСЃРЅРѕРє",
     "Count": 20.4,
-    "Measure": "г"
+    "Measure": "Рі"
   },
   {
     "Id": "977fae46-2d25-4358-a015-1ff930e4c18e",
-    "Name": "Помидоры",
+    "Name": "РџРѕРјРёРґРѕСЂС‹",
     "Count": 73.0,
-    "Measure": "кг"
+    "Measure": "РєРі"
   },
   {
     "Id": "dcbd262e-cc3e-4b45-8c25-3a9bd79b8210",
-    "Name": "Огурцы",
+    "Name": "РћРіСѓСЂС†С‹",
     "Count": 68.1,
-    "Measure": "кг"
+    "Measure": "РєРі"
   },
   {
     "Id": "9bd571b3-6e92-4b85-8b0a-106feabdd432",
-    "Name": "Курица",
+    "Name": "РљСѓСЂРёС†Р°",
     "Count": 18.9,
-    "Measure": "кг"
+    "Measure": "РєРі"
   },
   {
     "Id": "835e6285-003c-47e5-9120-d856991cf187",
-    "Name": "Говядина",
+    "Name": "Р“РѕРІСЏРґРёРЅР°",
     "Count": 84.7,
-    "Measure": "кг"
+    "Measure": "РєРі"
   },
   {
     "Id": "c0378a2b-6a86-4fa6-ac20-fdb5cb829485",
-    "Name": "Свинина",
+    "Name": "РЎРІРёРЅРёРЅР°",
     "Count": 70.0,
-    "Measure": "кг"
+    "Measure": "РєРі"
   },
   {
     "Id": "d5353f77-48a3-4316-a81c-9f744149a0db",
-    "Name": "Лимоны",
+    "Name": "Р›РёРјРѕРЅС‹",
     "Count": 89.2,
-    "Measure": "шт"
+    "Measure": "С€С‚"
   },
   {
     "Id": "ff447506-129f-40bc-9ca0-bad37544f731",
-    "Name": "Яйца",
+    "Name": "РЇР№С†Р°",
     "Count": 65.3,
-    "Measure": "шт"
+    "Measure": "С€С‚"
   }
 ]
