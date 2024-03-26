@@ -42,9 +42,6 @@ public class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Guid, Addi
         this.WhenAnyValue(x => x.Source)
             .Subscribe(UpdateSource);
 
-        this.WhenAnyValue(x => x.Count)
-            .Subscribe(_ => IsAvailable = additive.Count > 0);
-
         if (order.IsInitialized)
         {
             IsAdded = order.IsAdditiveAdded(additive.Id);
@@ -127,8 +124,7 @@ public class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Guid, Addi
         Price = additive.Price;
         Portion = additive.Portion;
         Measure = additive.Measure;
-        IsAvailable = additive.Count > 0;
-        Count = additive.Count;
+        IsAvailable = additive.IsAvailable;
         AddToShoppingListCommand = ReactiveCommand.Create(() => { });
     }
 }

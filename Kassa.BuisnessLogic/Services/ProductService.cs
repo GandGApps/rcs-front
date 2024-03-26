@@ -35,9 +35,25 @@ internal sealed class ProductService(
         }
         try
         {
+            await receiptService.Initialize();
+
             var products = await productRepository.GetAll();
 
-            RuntimeProducts.AddOrUpdate(products.Select(Mapper.MapProductToProductDto));
+            foreach (var product in products)
+            {
+
+                var productDto = Mapper.MapProductToProductDto(product);
+                var receipt = await receiptService.GetReceipt(product.ReceiptId);
+
+                if (receipt is null)
+                {
+                    throw new InvalidOperationException($"Receipt with id {product.ReceiptId} not found");
+                }
+
+                productDto.IsEnoughIngredients = await receiptService.HasEnoughIngridients(receipt, 1);
+
+                RuntimeProducts.AddOrUpdate(productDto);
+            }
 
             _isInitialized = true;
         }
@@ -47,17 +63,17 @@ internal sealed class ProductService(
         }
     }
 
-    public Task DecreaseProductCount(ProductDto product)
+    public Task DecreaseProductCount(ProductDto product, double count = 1)
     {
-        return DecreaseProductCount(product.Id);
+        return DecreaseProductCount(product.Id, count);
     }
 
-    public Task IncreaseProductCount(ProductDto product)
+    public Task IncreaseProductCount(ProductDto product, double count = 1)
     {
-        return IncreaseProductCount(product.Id);
+        return IncreaseProductCount(product.Id, count);
     }
 
-    public async Task DecreaseProductCount(Guid productId)
+    public async Task DecreaseProductCount(Guid productId, double count = 1)
     {
         this.ThrowIfNotInitialized();
 
@@ -70,14 +86,25 @@ internal sealed class ProductService(
 
         var receipt = await receiptService.GetReceipt(product.ReceiptId);
 
-        await receiptService.SpendIngridients(receipt);
+        if (receipt is null)
+        {
+            throw new InvalidOperationException($"Receipt with id {product.ReceiptId} not found");
+        }
+
+        if (!await receiptService.HasEnoughIngridients(receipt, count))
+        {
+            throw new InvalidOperationException($"Product with id {productId} has not enough count");
+        }
+
+        await receiptService.SpendIngridients(receipt, count);
+        await CheckAllIngridients((product,receipt));
 
         await productRepository.Update(product);
 
         await UpdateProduct(Mapper.MapProductToProductDto(product));
     }
 
-    public async Task IncreaseProductCount(Guid productId)
+    public async Task IncreaseProductCount(Guid productId, double count = 1)
     {
         this.ThrowIfNotInitialized();
 
@@ -90,7 +117,18 @@ internal sealed class ProductService(
 
         var receipt = await receiptService.GetReceipt(product.ReceiptId);
 
-        await receiptService.ReturnIngridients(receipt);
+        if (receipt is null)
+        {
+            throw new InvalidOperationException($"Receipt with id {product.ReceiptId} not found");
+        }
+
+        if (!await receiptService.HasEnoughIngridients(receipt, count))
+        {
+            throw new InvalidOperationException($"Product with id {productId} has not enough count");
+        }
+
+        await receiptService.ReturnIngridients(receipt, count);
+        await CheckAllIngridients((product, receipt));
 
         await productRepository.Update(product);
 
@@ -103,6 +141,12 @@ internal sealed class ProductService(
         this.ThrowIfNotInitialized();
 
         var product = await productRepository.Get(productId);
+
+        if (product == null)
+        {
+            return null;
+        }
+
         var productDto = Mapper.MapProductToProductDto(product);
 
         if (productDto is not null)
@@ -159,6 +203,38 @@ internal sealed class ProductService(
         await productRepository.Delete(product);
 
         RuntimeProducts.Remove(productDto);
+    }
+
+    private async Task CheckAllIngridients((Product product, ReceiptDto receipt)? existingModel)
+    {
+        var products = RuntimeProducts.Items.ToList();
+
+        if (existingModel.HasValue)
+        {
+            var (product, receipt) = existingModel.Value;
+            product.IsEnoughIngredients = await receiptService.HasEnoughIngridients(receipt, 1);
+        }
+
+
+        foreach (var product in products)
+        {
+            if (existingModel.HasValue && existingModel.Value.product.Id == product.Id)
+            {
+                continue;
+            }
+
+            var receipt = await receiptService.GetReceipt(product.ReceiptId);
+
+            if (receipt is null)
+            {
+
+                throw new InvalidOperationException($"Receipt with id {product.ReceiptId} not found");
+            }
+
+            var updateNeed = product with { IsEnoughIngredients = await receiptService.HasEnoughIngridients(receipt, 1) };
+
+            await UpdateProduct(updateNeed);
+        }
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

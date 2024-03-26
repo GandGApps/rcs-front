@@ -47,6 +47,7 @@ public record Product : ICategoryItem
         get; set;
     } = [];
 
+
     public string Icon
     {
         get; set;
@@ -61,4 +62,14 @@ public record Product : ICategoryItem
     {
         get; set;
     }
+
+    public bool IsAvailable
+    {
+        get; set;
+    } = true;
+
+    public bool IsEnoughIngredients
+    {
+        get; set;
+    } = true;
 }

@@ -1,6 +1,8 @@
 ﻿using System.Runtime.InteropServices;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess;
+using Kassa.DataAccess.Model;
+using Kassa.DataAccess.Repositories;
 using Splat;
 
 namespace Kassa.BuisnessLogic;
@@ -18,7 +20,14 @@ public static class DependencyResolverExtensions
         SplatRegistrations.Register<ICategoryService, CategoryService>();
         RegisterInitializableServiceFactory<ICategoryService>(services);
 
-        SplatRegistrations.Register<IProductService, ProductService>();
+        services.Register<IProductService>(() =>
+        {
+
+            var repository = Locator.Current.GetRequiredService<IRepository<Product>>();
+            var receiptService = Locator.Current.GetNotInitializedService<IReceiptService>();
+
+            return new ProductService(repository, receiptService);
+        });
         RegisterInitializableServiceFactory<IProductService>(services);
 
         SplatRegistrations.Register<IAdditiveService, AdditiveService>();
@@ -32,6 +41,18 @@ public static class DependencyResolverExtensions
 
         SplatRegistrations.Register<IDistrictService, DistrictService>();
         RegisterInitializableServiceFactory<IDistrictService>(services);
+
+        SplatRegistrations.Register<IIngridientsService, IngridientsService>();
+        RegisterInitializableServiceFactory<IIngridientsService>(services);
+
+        services.Register<IReceiptService>(() =>
+        {
+            var ingridientsService = Locator.Current.GetNotInitializedService<IIngridientsService>();
+            var repository = Locator.Current.GetRequiredService<IRepository<Receipt>>();
+
+            return new ReceiptService(repository, ingridientsService);
+        });
+        RegisterInitializableServiceFactory<IReceiptService>(services);
 
         services.Register<ICashierService>(() =>
         {

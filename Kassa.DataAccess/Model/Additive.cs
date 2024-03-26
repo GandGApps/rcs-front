@@ -49,6 +49,11 @@ public record Additive : IModel
         get; set;
     }
 
+    public bool IsAvailable
+    {
+        get; set;
+    }
+
     public Guid ReceiptId
     {
         get; set;

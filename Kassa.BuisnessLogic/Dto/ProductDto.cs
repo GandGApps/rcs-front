@@ -70,7 +70,12 @@ public record ProductDto : ICategoryItemDto
     public bool IsAvailable
     {
         get; set;
-    }
+    } = true;
+
+    public bool IsEnoughIngredients
+    {
+        get; set;
+    } = true;
 
     public ICollection<ICategoryItem>? Items
     {

@@ -43,6 +43,11 @@ public record AdditiveDto
         get; set;
     }
 
+    public bool IsAvailable
+    {
+        get; set;
+    }
+
     public Guid ReceiptId
     {
         get; set;

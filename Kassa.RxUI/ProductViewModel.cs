@@ -28,6 +28,10 @@ public class ProductViewModel(ProductDto product) : ReactiveObject
             throw new InvalidOperationException("Order is not selected");
         }
 
+        if (!(product.IsAvailable && product.IsEnoughIngredients))
+        {
+            return;
+        }
         await order.AddProductToShoppingList(product.Id);
     });
     public Guid Id => product.Id;
@@ -42,16 +46,9 @@ public class ProductViewModel(ProductDto product) : ReactiveObject
     /// </summary>
     public bool IsAdded => product.IsAdded;
 
-    public double Count => product.Count;
-
     public string Measure => product.Measure;
 
-    [Reactive]
-    public bool IsAvailable
-    {
-        get; private set;
-    } = product.Count > 0;
-
+    public bool IsAvailable => product.IsAvailable && product.IsEnoughIngredients;
     public string Icon => product.Icon;
 }
 
