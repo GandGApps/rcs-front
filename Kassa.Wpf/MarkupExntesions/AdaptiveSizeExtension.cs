@@ -53,7 +53,7 @@ public class AdaptiveSizeExtension : MarkupExtension
             var fallbackBinding = new Binding
             {
                 Source = GetSource(serviceProvider),
-                Path = new("ActualWidth"),
+                Path = new(FrameworkElement.ActualWidthProperty),
                 Converter = new AdaptiveSizeConverter(),
                 ConverterParameter = Size,
                 FallbackValue = Size
@@ -124,7 +124,7 @@ public class AdaptiveSizeExtension : MarkupExtension
                 binding = new Binding
                 {
                     Source = source,
-                    Path = new("ActualWidth"),
+                    Path = new(FrameworkElement.ActualWidthProperty),
                     Converter = new AdaptiveSizeConverter(),
                     ConverterParameter = Thickness,
                     FallbackValue = Thickness
@@ -138,7 +138,7 @@ public class AdaptiveSizeExtension : MarkupExtension
                 binding = new Binding
                 {
                     Source = source,
-                    Path = new("ActualWidth"),
+                    Path = new(FrameworkElement.ActualWidthProperty),
                     Converter = new AdaptiveSizeConverter(),
                     ConverterParameter = GridLength,
                     FallbackValue = GridLength
@@ -152,7 +152,7 @@ public class AdaptiveSizeExtension : MarkupExtension
                 binding = new Binding
                 {
                     Source = source,
-                    Path = new("ActualWidth"),
+                    Path = new(FrameworkElement.ActualWidthProperty),
                     Converter = new AdaptiveSizeConverter(),
                     ConverterParameter = CornerRadius,
                     FallbackValue = CornerRadius
@@ -169,7 +169,7 @@ public class AdaptiveSizeExtension : MarkupExtension
                 binding = new Binding
                 {
                     Source = source,
-                    Path = new("ActualWidth"),
+                    Path = new(FrameworkElement.ActualWidthProperty),
                     Converter = new AdaptiveSizeConverter(),
                     ConverterParameter = Thickness,
                     FallbackValue = Thickness
@@ -182,9 +182,8 @@ public class AdaptiveSizeExtension : MarkupExtension
             {
                 binding = new Binding
                 {
-
                     Source = source,
-                    Path = new("ActualWidth"),
+                    Path = new(FrameworkElement.ActualWidthProperty),
                     Converter = new AdaptiveSizeConverter(),
                     ConverterParameter = GridLength,
                     FallbackValue = GridLength
@@ -198,9 +197,8 @@ public class AdaptiveSizeExtension : MarkupExtension
 
                 binding = new Binding
                 {
-
                     Source = source,
-                    Path = new("ActualWidth"),
+                    Path = new(FrameworkElement.ActualWidthProperty),
                     Converter = new AdaptiveSizeConverter(),
                     ConverterParameter = CornerRadius,
                     FallbackValue = CornerRadius
@@ -215,7 +213,7 @@ public class AdaptiveSizeExtension : MarkupExtension
         binding = new Binding
         {
             Source = source,
-            Path = new("ActualWidth"),
+            Path = new(FrameworkElement.ActualWidthProperty),
             Converter = new AdaptiveSizeConverter(),
             ConverterParameter = Size,
             FallbackValue = Size

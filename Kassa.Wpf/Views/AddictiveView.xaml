@@ -62,10 +62,12 @@
     </UserControl.Template>
 
     <Grid>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition />
@@ -74,11 +76,11 @@
 
         <TextBlock Grid.Column="1" FontSize="{DynamicResource CountFontSize}">
             <Path
-                Width="11"
-                Height="11"
-                Margin="0,0,4,0"
+                Width="{mx:AdaptiveSize 11}"
+                Height="{mx:AdaptiveSize 11}"
+                Margin="{mx:AdaptiveSize Thickness='0,0,4,0'}"
                 Data="{StaticResource AcceptIcon}"
-                Fill="#00BA00">
+                Fill="{DynamicResource SuccessBrush}">
                 <Path.Style>
                     <Style BasedOn="{StaticResource {x:Type Path}}" TargetType="Path">
                         <Style.Triggers>
@@ -97,7 +99,7 @@
         <TextBlock
             Grid.Column="2"
             HorizontalAlignment="Right"
-            FontSize="{DynamicResource NotAvailableFontSize}"
+            FontSize="{mx:AdaptiveSize {StaticResource NotAvailableFontSize}}"
             Foreground="{DynamicResource NotAvailbaleTextAdditveView}"
             Text="Нет в наличии">
             <TextBlock.Style>
@@ -119,17 +121,17 @@
             Grid.Row="1"
             Grid.Column="1"
             Grid.ColumnSpan="2"
-            Margin="{DynamicResource NameMargin}"
+            Margin="{mx:AdaptiveSize Thickness={StaticResource NameMargin}}"
             VerticalAlignment="Bottom"
-            FontSize="{DynamicResource NameFontSize}"
+            FontSize="{mx:AdaptiveSize {StaticResource NameFontSize}}"
             Foreground="Black"
             Text="{Binding Name, Mode=OneTime}" />
 
         <Path
             Grid.RowSpan="2"
-            Width="17"
-            Height="21"
-            Margin="0,0,11,0"
+            Width="{mx:AdaptiveSize 17}"
+            Height="{mx:AdaptiveSize 21}"
+            Margin="{mx:AdaptiveSize Thickness='0,0,11,0'}"
             Data="{StaticResource AdditivesIcon}"
             Fill="{DynamicResource DefaultAdditiveViewIconFill}">
             <Path.Style>
@@ -152,8 +154,8 @@
 
         <Style BasedOn="{StaticResource {x:Type UserControl}}" TargetType="local:AddictiveView">
             <Setter Property="Background" Value="{DynamicResource DefaultAdditiveViewBackground}" />
-            <Setter Property="Padding" Value="13" />
-            <Setter Property="Margin" Value="1" />
+            <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='13'}" />
+            <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='1'}" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Style.Triggers>

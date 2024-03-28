@@ -33,7 +33,7 @@
         </ControlTemplate>
 
         <Style x:Key="AdditiveBorder" TargetType="Border">
-            <Setter Property="Padding" Value="13" />
+            <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='13'}" />
             <Setter Property="VerticalAlignment" Value="Top" />
         </Style>
 
@@ -72,7 +72,7 @@
             <Grid>
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="26" />
+                    <ColumnDefinition Width="{mx:AdaptiveSize GridLength='26'}" />
                     <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
@@ -92,7 +92,7 @@
                             <Style TargetType="Run">
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding HasDiscount}" Value="True">
-                                        <Setter Property="Text" Value="%  " />
+                                        <Setter Property="Text" Value="% " />
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -110,9 +110,9 @@
 
         <Path
             Grid.Row="1"
-            Width="23"
-            Height="23"
-            Margin="14,3,3,0"
+            Width="{mx:AdaptiveSize 23}"
+            Height="{mx:AdaptiveSize 23}"
+            Margin="{mx:AdaptiveSize Thickness='14,3,3,0'}"
             VerticalAlignment="Top"
             Data="{StaticResource CurvedArrowIcon}"
             Fill="{DynamicResource ShoppingListItemViewCurvedArrowIconFill}">
@@ -134,10 +134,10 @@
         <StackPanel
             Grid.Row="1"
             Grid.Column="1"
-            Margin="0,8,0,0">
+            Margin="{mx:AdaptiveSize Thickness='0,8,0,0'}">
             <Border
-                Margin="0,0,0,2.5"
-                Padding="13"
+                Margin="{mx:AdaptiveSize Thickness='0,0,0,2.5'}"
+                Padding="{mx:AdaptiveSize Thickness='13'}"
                 Background="White"
                 CornerRadius="{mx:AdaptiveSize CornerRadius=11}"
                 Visibility="{Binding HasAdditiveInfo, Converter={StaticResource BoolToVisibilityConverter}}">
@@ -148,13 +148,13 @@
 
                 <Grid>
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="14" />
+                        <ColumnDefinition Width="{mx:AdaptiveSize GridLength='14'}" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
                     <Path
-                        Width="14"
-                        Height="11"
+                        Width="{mx:AdaptiveSize 14}"
+                        Height="{mx:AdaptiveSize 11}"
                         Data="{StaticResource MessageIcon}"
                         Fill="{DynamicResource ShoppingListItemViewComment}"
                         RenderTransformOrigin="0.5,0.5">
@@ -167,11 +167,11 @@
 
                     <TextBlock
                         Grid.Column="1"
-                        Margin="6,0,0,0"
-                        FontSize="13"
+                        Margin="{mx:AdaptiveSize Thickness='6,0,0,0'}"
+                        FontSize="{mx:AdaptiveSize 13}"
                         Foreground="{DynamicResource ShoppingListItemViewComment}"
                         TextTrimming="CharacterEllipsis">
-                        <Run Text="{Binding AdditiveInfo}" /><Run FontSize="16" />
+                        <Run Text="{Binding AdditiveInfo}" /><Run FontSize="{mx:AdaptiveSize 16}" />
                     </TextBlock>
 
                 </Grid>
@@ -182,20 +182,20 @@
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
                         <Button
-                            Margin="0,3"
+                            Margin="{mx:AdaptiveSize Thickness='0,3'}"
                             Padding="{mx:AdaptiveSize Thickness=13}"
                             Command="{x:Static local:ShoppingListItemView.UpdateSelectionShoppingListItemCommand}"
                             CommandParameter="{Binding .}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="14" />
+                                    <ColumnDefinition Width="{mx:AdaptiveSize GridLength='14'}" />
                                     <ColumnDefinition Width="*" />
                                     <ColumnDefinition Width="Auto" />
                                 </Grid.ColumnDefinitions>
 
                                 <Path
-                                    Width="14"
-                                    Height="15"
+                                    Width="{mx:AdaptiveSize 14}"
+                                    Height="{mx:AdaptiveSize 15}"
                                     Data="{StaticResource AdditivesIcon}"
                                     Fill="Black"
                                     RenderTransformOrigin="0.5,0.5">
@@ -208,16 +208,16 @@
 
                                 <TextBlock
                                     Grid.Column="1"
-                                    Margin="6,0,0,0"
-                                    FontSize="13"
+                                    Margin="{mx:AdaptiveSize Thickness='6,0,0,0'}"
+                                    FontSize="{mx:AdaptiveSize 13}"
                                     TextTrimming="CharacterEllipsis">
                                     <Run Text="{Binding Name}" /> <Run Text="{Binding Portion}" /><Run Text="{Binding Measure}" />
                                 </TextBlock>
 
                                 <TextBlock
                                     Grid.Column="2"
-                                    Margin="6,0,0,0"
-                                    FontSize="16">
+                                    Margin="{mx:AdaptiveSize Thickness='6,0,0,0'}"
+                                    FontSize="{mx:AdaptiveSize 16}">
                                     <Run Text="{Binding Price}" /><Run Text="{Binding CurrencySymbol}" />
                                 </TextBlock>
 

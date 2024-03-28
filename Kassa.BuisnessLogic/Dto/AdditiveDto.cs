@@ -36,7 +36,7 @@ public record AdditiveDto
     public Guid[] ProductIds
     {
         get; set;
-    }
+    } = [];
 
     public int Portion
     {
@@ -46,7 +46,12 @@ public record AdditiveDto
     public bool IsAvailable
     {
         get; set;
-    }
+    } = true;
+
+    public bool IsEnoughIngredients
+    {
+        get; set;
+    } = true;
 
     public Guid ReceiptId
     {

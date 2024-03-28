@@ -30,7 +30,13 @@ public static class DependencyResolverExtensions
         });
         RegisterInitializableServiceFactory<IProductService>(services);
 
-        SplatRegistrations.Register<IAdditiveService, AdditiveService>();
+        services.Register<IAdditiveService>(() =>
+        {
+            var repository = Locator.Current.GetRequiredService<IAdditiveRepository>();
+            var receiptService = Locator.Current.GetNotInitializedService<IReceiptService>();
+
+            return new AdditiveService(repository, receiptService);
+        });
         RegisterInitializableServiceFactory<IAdditiveService>(services);
 
         SplatRegistrations.Register<IClientService, ClientService>();

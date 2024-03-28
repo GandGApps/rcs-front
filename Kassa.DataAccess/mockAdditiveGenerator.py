@@ -101,7 +101,7 @@ for addition_name, product_ids in updated_additions.items():
         "Id": f"{addition_id_counter:03}1C9AB-9502-4687-B32D-9E6ACC752B1C",
         "Name": addition_name,
         "Price": random.randint(10, 500),
-        "Count": random.randint(5, 20),
+        "ReceiptId": f"{random.randint(1, 11):02}7001F7-37BA-4907-98D0-B1EDE02F8EA7",
         "Portion": random.randint(1, 5),
         "Measure": "шт",
         "CurrencySymbol": "₽",

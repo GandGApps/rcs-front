@@ -52,7 +52,12 @@ public record Additive : IModel
     public bool IsAvailable
     {
         get; set;
-    }
+    } = true;
+
+    public bool IsEnoughIngredients
+    {
+        get; set;
+    } = true;
 
     public Guid ReceiptId
     {

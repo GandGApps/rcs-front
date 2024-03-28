@@ -62,7 +62,7 @@ for category_id, names in product_names_by_category.items():
             "Id": f"{id_counter:03}1C9AB-9502-4687-B32D-9E6ACC752B6C",
             "Name": name,
             "Price": random.randint(50, 2000),
-            "ReceiptId": f"{random.randint(1, 12):02}7001F7-37BA-4907-98D0-B1EDE02F8EA7",
+            "ReceiptId": f"{random.randint(1, 11):02}7001F7-37BA-4907-98D0-B1EDE02F8EA7",
             "Measure": random.choice(["шт", "кг", "л", "упак"]),
             "CurrencySymbol": "₽",
             "Favourites": random.sample([1, 2, 3], random.randint(0, 3)),

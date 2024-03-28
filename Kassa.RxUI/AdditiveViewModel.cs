@@ -17,17 +17,31 @@ public class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Guid, Addi
 {
     public static readonly ReactiveCommand<AdditiveViewModel, Unit> AddAdditveToProduct = ReactiveCommand.CreateFromTask<AdditiveViewModel>(async additive =>
     {
-        if (additive.Count <= 0)
+        if (!additive.IsAvailable)
         {
             return;
         }
         var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
+        var additiveService = await Locator.Current.GetInitializedService<IAdditiveService>();
         var order = cashierService.CurrentOrder;
+
+        if (order is null)
+        {
+            throw new InvalidOperationException("Order is not initialized");
+        }
+
 
         await order.AddAdditiveToSelectedProducts(additive.Id);
 
+        var additiveDto = await additiveService.GetAdditiveById(additive.Id);
+
+        if (additiveDto is null)
+        {
+            throw new InvalidOperationException("Additive not found");
+        }
+
         additive.IsAdded = true;
-        additive.Count--;
+        additive.IsAvailable = additiveDto.IsAvailable && additiveDto.IsEnoughIngredients;
     });
 
 
@@ -35,7 +49,13 @@ public class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Guid, Addi
     {
         Id = additive.Id;
 
-        UpdateSource(additive);
+        Name = additive.Name;
+        СurrencySymbol = additive.CurrencySymbol;
+        Price = additive.Price;
+        Portion = additive.Portion;
+        Measure = additive.Measure;
+        IsAvailable = additive.IsAvailable && additive.IsEnoughIngredients;
+        AddToShoppingListCommand = ReactiveCommand.Create(() => { });
 
         Source = additive;
 
@@ -78,13 +98,6 @@ public class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Guid, Addi
         get; set;
     }
 
-    [Reactive]
-    public double Count
-    {
-        get; set;
-    }
-
-
     /// <summary>
     /// Measure of addictive, for example, kg, l, etc.
     /// </summary>
@@ -124,7 +137,7 @@ public class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Guid, Addi
         Price = additive.Price;
         Portion = additive.Portion;
         Measure = additive.Measure;
-        IsAvailable = additive.IsAvailable;
+        IsAvailable = additive.IsAvailable && additive.IsEnoughIngredients;
         AddToShoppingListCommand = ReactiveCommand.Create(() => { });
     }
 }

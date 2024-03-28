@@ -47,6 +47,11 @@ public abstract class BaseInitializableService : ReactiveObject, IInitializableS
 
     public async ValueTask Initialize()
     {
+        if (IsInitialized)
+        {
+            return;
+        }
+
         await InitializeAsync(InternalDisposables).ConfigureAwait(false);
 
         IsInitialized = true;

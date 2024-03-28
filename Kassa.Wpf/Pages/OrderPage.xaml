@@ -118,17 +118,17 @@
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
                             <views:AddictiveView
-                                MinWidth="205"
-                                MinHeight="53"
-                                MaxWidth="205"
-                                MaxHeight="53"
-                                Margin="1,0"
-                                Padding="6.4"
+                                MinWidth="{mx:AdaptiveSize 215}"
+                                MinHeight="{mx:AdaptiveSize 60}"
+                                MaxWidth="{mx:AdaptiveSize 215}"
+                                MaxHeight="{mx:AdaptiveSize 60}"
+                                Margin="{mx:AdaptiveSize Thickness='1,0'}"
+                                Padding="{mx:AdaptiveSize Thickness='6.4'}"
                                 HorizontalAlignment="Stretch"
                                 VerticalAlignment="Stretch"
                                 HorizontalContentAlignment="Stretch"
                                 HasAddictiveIcon="True"
-                                ViewModel="{Binding .}">
+                                ViewModel="{Binding ., Mode=OneTime}">
                                 <UserControl.Resources>
                                     <ResourceDictionary>
                                         <sys:Double x:Key="NotAvailableFontSize">13</sys:Double>

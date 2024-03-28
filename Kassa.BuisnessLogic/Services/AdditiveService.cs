@@ -39,9 +39,9 @@ public sealed class AdditiveService(IAdditiveRepository repository, IReceiptServ
             throw new InvalidOperationException($"Receipt with id {additiveDto.ReceiptId} not found");
         }
 
-        if (!await receiptService.HasEnoughIngridients(receipt))
+        if (!await receiptService.HasEnoughIngridients(receipt, count))
         {
-            throw new ArgumentException("Additive count must be greater than zero.", nameof(additiveDto));
+            throw new InvalidOperationException($"Additive with id {additiveDto.Id} has not enough count");
         }
 
         var foundedAdditive = await repository.Get(additiveDto.Id);
@@ -51,8 +51,9 @@ public sealed class AdditiveService(IAdditiveRepository repository, IReceiptServ
             throw new InvalidOperationException($"Additive with id {additiveDto.Id} not found");
         }
 
-        await receiptService.SpendIngridients(receipt);
+        await receiptService.SpendIngridients(receipt, count);
 
+        await CheckAllIngridients((foundedAdditive, receipt));
         await UpdateAdditive(Mapper.MapAdditiveToAdditiveDto(foundedAdditive));
     }
     public void Dispose()
@@ -111,14 +112,57 @@ public sealed class AdditiveService(IAdditiveRepository repository, IReceiptServ
 
         var receipt = await receiptService.GetReceipt(additiveDto.ReceiptId);
 
+        if (receipt is null)
+        {
+            throw new InvalidOperationException($"Receipt with id {additiveDto.ReceiptId} not found");
+        }
+
+        if (!await receiptService.HasEnoughIngridients(receipt, count))
+        {
+            throw new InvalidOperationException($"Additive with id {additiveDto.Id} has not enough count");
+        }
+
+        await receiptService.ReturnIngridients(receipt, count);
+
+        await CheckAllIngridients((foundedAdditive, receipt));
+
+        additiveDto = additiveDto with
+        {
+            IsEnoughIngredients = await receiptService.HasEnoughIngridients(receipt, 1)
+        };
+
         await UpdateAdditive(additiveDto);
     }
 
-    public ValueTask Initialize()
+    public async ValueTask Initialize()
     {
+        if (IsInitialized)
+        {
+            return;
+        }
+
         IsInitialized = true;
 
-        return ValueTask.CompletedTask;
+        await receiptService.Initialize();
+
+        var additives = await repository.GetAll();
+
+        foreach (var additive in additives)
+        {
+            var additiveDto = Mapper.MapAdditiveToAdditiveDto(additive);
+
+            var receipt = await receiptService.GetReceipt(additiveDto.ReceiptId);
+
+            if (receipt is null)
+            {
+                throw new InvalidOperationException($"Receipt with id {additiveDto.ReceiptId} not found");
+            }
+
+            additiveDto.IsEnoughIngredients = await receiptService.HasEnoughIngridients(receipt, 1);
+
+            await UpdateAdditive(additiveDto);
+
+        }
     }
 
     public async Task UpdateAdditive(AdditiveDto additiveDto)
@@ -126,5 +170,37 @@ public sealed class AdditiveService(IAdditiveRepository repository, IReceiptServ
         this.ThrowIfNotInitialized();
 
         RuntimeAdditives.AddOrUpdate(additiveDto);
+    }
+
+    private async Task CheckAllIngridients((Additive product, ReceiptDto receipt)? existingModel)
+    {
+        var products = RuntimeAdditives.Items;
+
+        if (existingModel.HasValue)
+        {
+            var (product, receipt) = existingModel.Value;
+            product.IsEnoughIngredients = await receiptService.HasEnoughIngridients(receipt, 1);
+        }
+
+
+        foreach (var product in products)
+        {
+            if (existingModel.HasValue && existingModel.Value.product.Id == product.Id)
+            {
+                continue;
+            }
+
+            var receipt = await receiptService.GetReceipt(product.ReceiptId);
+
+            if (receipt is null)
+            {
+
+                throw new InvalidOperationException($"Receipt with id {product.ReceiptId} not found");
+            }
+
+            var updateNeed = product with { IsEnoughIngredients = await receiptService.HasEnoughIngridients(receipt, 1) };
+
+            await UpdateAdditive(updateNeed);
+        }
     }
 }

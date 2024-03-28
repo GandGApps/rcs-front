@@ -439,12 +439,13 @@
 
     <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="local:ButtonWithCornerRaduis">
 
-        <Setter Property="TextBlock.FontSize" Value="28" />
+        <Setter Property="TextBlock.FontSize" Value="{mx:AdaptiveSize 28}" />
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 28}" />
         <Setter Property="Foreground" Value="{DynamicResource DefaultButtonForeground}" />
         <Setter Property="Background" Value="{DynamicResource DefaultButtonBackground}" />
         <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius=40}" />
         <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness=10}" />
-        <Setter Property="Margin" Value="1.3" />
+        <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='1.3'}" />
 
         <Setter Property="Template">
             <Setter.Value>
@@ -452,12 +453,12 @@
                     <Border
                         Width="{TemplateBinding Width}"
                         Height="{TemplateBinding Height}"
+                        Padding="{TemplateBinding Padding}"
                         HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
                         VerticalAlignment="{TemplateBinding VerticalAlignment}"
                         Background="{TemplateBinding Background}"
                         CornerRadius="{TemplateBinding CornerRadius}">
                         <ContentPresenter
-                            Margin="{TemplateBinding Padding}"
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                             Content="{TemplateBinding Content}" />
