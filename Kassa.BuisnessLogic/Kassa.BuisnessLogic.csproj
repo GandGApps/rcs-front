@@ -8,6 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="BeaKona.AutoInterfaceGenerator" Version="1.0.41" />
     <PackageReference Include="DynamicData" Version="8.3.27" />
     <PackageReference Include="ReactiveUI" Version="19.5.41" />
     <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
@@ -20,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Kassa.DataAccess\Kassa.DataAccess.csproj" />
+    <ProjectReference Include="..\Kassa.Shared\Kassa.Shared.csproj" />
   </ItemGroup>
 
 </Project>

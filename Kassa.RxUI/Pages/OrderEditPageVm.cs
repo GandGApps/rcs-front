@@ -158,7 +158,29 @@ public class OrderEditPageVm : PageViewModel
 
             var dialog = new QuantityVolumeDialogVewModel(shoppingListItem);
 
+            dialog.OkCommand.Subscribe(async x =>
+            {
+                var differece = x - shoppingListItem.Count;
+
+                if (differece == 0)
+                {
+                    return;
+                }
+
+                if (differece > 0)
+                {
+                    await _order.IncreaseProductShoppingListItem(shoppingListItem.Source, differece);
+                }
+                else
+                {
+                    await _order.DecreaseProductShoppingListItem(shoppingListItem.Source, -differece);
+                }
+
+                shoppingListItem.Count = x;
+            });
+
             await MainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
+
 
             await dialog.WaitDialogClose();
         });

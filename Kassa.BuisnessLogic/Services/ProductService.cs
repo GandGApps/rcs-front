@@ -122,11 +122,6 @@ internal sealed class ProductService(
             throw new InvalidOperationException($"Receipt with id {product.ReceiptId} not found");
         }
 
-        if (!await receiptService.HasEnoughIngridients(receipt, count))
-        {
-            throw new InvalidOperationException($"Product with id {productId} has not enough count");
-        }
-
         await receiptService.ReturnIngridients(receipt, count);
         await CheckAllIngridients((product, receipt));
 

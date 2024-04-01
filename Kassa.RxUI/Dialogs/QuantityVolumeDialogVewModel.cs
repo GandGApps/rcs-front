@@ -33,12 +33,17 @@ public class QuantityVolumeDialogVewModel : DialogViewModel
         });
 
         OkCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            ProductShoppingListItem.Count = double.Parse(CorrectedPortionText, RuCultureInfo);
+        { 
             await CloseAsync();
+
+            return double.Parse(CorrectedPortionText, RuCultureInfo);
         });
 
         CancelCommand = ReactiveCommand.CreateFromTask(CloseAsync);
+
+        AddPortionCommand.DisposeWith(InternalDisposables);
+        OkCommand.DisposeWith(InternalDisposables);
+        CancelCommand.DisposeWith(InternalDisposables);
     }
 
     protected override void OnActivated(CompositeDisposable disposables)
@@ -87,7 +92,7 @@ public class QuantityVolumeDialogVewModel : DialogViewModel
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> OkCommand
+    public ReactiveCommand<Unit, double> OkCommand
     {
         get;
     }

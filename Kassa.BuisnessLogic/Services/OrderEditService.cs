@@ -214,7 +214,13 @@ internal class OrderEditService(
 
         return stream.Subscribe();
     }
-
+    /// <summary>
+    /// Attention, additives not will update at runtime, that's why you need update it manually.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    /// <param name="creator"></param>
+    /// <param name="additives"></param>
+    /// <returns></returns>
     public IDisposable BindAdditivesForSelectedProduct<T>(Func<AdditiveDto, T> creator, out ReadOnlyObservableCollection<T> additives) where T : class, IReactiveToChangeSet<Guid, AdditiveDto>
     {
         this.ThrowIfNotInitialized();
@@ -667,7 +673,7 @@ internal class OrderEditService(
         return Task.CompletedTask;
     }
 
-    public async Task IncreaseSelectedProductShoppingListItem()
+    public async Task IncreaseSelectedProductShoppingListItem(double count)
     {
         this.ThrowIfNotInitialized();
 
@@ -675,12 +681,12 @@ internal class OrderEditService(
         {
             if (shoppingListItem is ProductShoppingListItemDto product)
             {
-                await IncreaseProductShoppingListItem(product);
+                await IncreaseProductShoppingListItem(product, count);
             }
         }
     }
 
-    public async Task DecreaseSelectedProductShoppingListItem()
+    public async Task DecreaseSelectedProductShoppingListItem(double count)
     {
         this.ThrowIfNotInitialized();
 
@@ -689,7 +695,7 @@ internal class OrderEditService(
 
             if (shoppingListItem is ProductShoppingListItemDto product)
             {
-                await DecreaseProductShoppingListItem(product);
+                await DecreaseProductShoppingListItem(product, count);
             }
         }
     }
@@ -725,7 +731,7 @@ internal class OrderEditService(
         }
     }
 
-    private async Task IncreaseProductShoppingListItem(ProductShoppingListItemDto item)
+    public async Task IncreaseProductShoppingListItem(ProductShoppingListItemDto item, double count = 1)
     {
         this.ThrowIfNotInitialized();
 
@@ -748,16 +754,16 @@ internal class OrderEditService(
             throw new InvalidOperationException($"Not enough ingredients for product {product.Name}");
         }
 
-        await productService.DecreaseProductCount(product.Id);
+        await productService.DecreaseProductCount(product.Id, count);
         var increased = item with
         {
-            Count = item.Count + 1
+            Count = item.Count + count
         };
         ShoppingListItems.AddOrUpdate(increased);
         SelectedShoppingListItems.AddOrUpdate(increased);
     }
 
-    private async Task DecreaseProductShoppingListItem(ProductShoppingListItemDto item)
+    public async Task DecreaseProductShoppingListItem(ProductShoppingListItemDto item, double count)
     {
         this.ThrowIfNotInitialized();
 
@@ -774,11 +780,11 @@ internal class OrderEditService(
             return;
         }
 
-        await productService.IncreaseProductCount(product.Id);
+        await productService.IncreaseProductCount(product.Id, count);
 
         var decreased = item with
         {
-            Count = item.Count - 1
+            Count = item.Count - count
         };
         ShoppingListItems.AddOrUpdate(decreased);
         SelectedShoppingListItems.AddOrUpdate(decreased);

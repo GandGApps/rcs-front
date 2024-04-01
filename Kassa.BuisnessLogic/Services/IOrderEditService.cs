@@ -70,9 +70,12 @@ public interface IOrderEditService : IInitializableService, INotifyPropertyChang
     public Task WriteTotalComment(string? comment);
     public bool IsAdditiveAdded(Guid additiveId);
 
+    public Task IncreaseSelectedProductShoppingListItem(double count = 1);
+    public Task DecreaseSelectedProductShoppingListItem(double count = 1);
 
-    public Task IncreaseSelectedProductShoppingListItem();
-    public Task DecreaseSelectedProductShoppingListItem();
+    public Task IncreaseProductShoppingListItem(ProductShoppingListItemDto item, double count = 1);
+    public Task DecreaseProductShoppingListItem(ProductShoppingListItemDto item, double count = 1);
+
     public Task RemoveSelectedProductShoppingListItem();
     public ValueTask SelectFavourite(int favourite);
 
