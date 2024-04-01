@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess.Model;
 
@@ -23,7 +24,7 @@ public interface IProductService : IInitializableService
     /// Use this property only for connect.
     /// </para>
     /// </summary>
-    public SourceCache<ProductDto, Guid> RuntimeProducts
+    public IApplicationModelManager<ProductDto> RuntimeProducts
     {
         get;
     }

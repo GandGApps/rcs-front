@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
@@ -18,10 +19,10 @@ internal sealed class ProductService(
     private bool _isInitialized;
     private bool _isDisposed;
 
-    public SourceCache<ProductDto, Guid> RuntimeProducts
+    public IApplicationModelManager<ProductDto> RuntimeProducts
     {
         get;
-    } = new(x => x.Id);
+    } = new HostModelManager<ProductDto>();
 
     public bool IsInitialized => _isInitialized;
 
@@ -172,10 +173,7 @@ internal sealed class ProductService(
 
     private void UpdateRuntimeProducts(ProductDto productDto)
     {
-        RuntimeProducts.Edit(updater =>
-        {
-            updater.AddOrUpdate(productDto);
-        });
+        RuntimeProducts.AddOrUpdate(productDto);
     }
 
     public void Dispose()
@@ -197,12 +195,12 @@ internal sealed class ProductService(
 
         await productRepository.Delete(product);
 
-        RuntimeProducts.Remove(productDto);
+        RuntimeProducts.Remove(productDto.Id);
     }
 
     private async Task CheckAllIngridients((Product product, ReceiptDto receipt)? existingModel)
     {
-        var products = RuntimeProducts.Items.ToList();
+        var products = RuntimeProducts.Values;
 
         if (existingModel.HasValue)
         {
@@ -226,9 +224,9 @@ internal sealed class ProductService(
                 throw new InvalidOperationException($"Receipt with id {product.ReceiptId} not found");
             }
 
-            var updateNeed = product with { IsEnoughIngredients = await receiptService.HasEnoughIngridients(receipt, 1) };
+            product.IsEnoughIngredients = await receiptService.HasEnoughIngridients(receipt, 1);
 
-            await UpdateProduct(updateNeed);
+            await UpdateProduct(product);
         }
     }
 

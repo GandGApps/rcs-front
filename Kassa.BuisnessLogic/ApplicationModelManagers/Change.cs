@@ -24,6 +24,22 @@ public readonly struct Change<TModel> : IEquatable<Change<TModel>>
         return new Change<TModel>(model, ModelChangeReason.Remove, currentIndex, null, -1);
     }
 
+    public static Change<TDestination> Transform<TDestination>(Change<TModel> change, Func<TModel, TDestination> transform)
+        where TDestination : class, IModel
+    {
+        TDestination? previos;
+        if (change.Previous is null)
+        {
+            previos = null!;
+        }
+        else
+        {
+            previos = transform(change.Previous);
+        }
+
+        return new Change<TDestination>(transform(change.Current), change.Reason, change.CurrentIndex, previos, change.PreviousIndex);
+    }
+
     public override bool Equals(object? obj) => obj is Change<TModel> change && Equals(change);
     public bool Equals(Change<TModel> other) => Id.Equals(other.Id) && Reason == other.Reason && EqualityComparer<TModel>.Default.Equals(Current, other.Current) && CurrentIndex == other.CurrentIndex && EqualityComparer<TModel?>.Default.Equals(Previous, other.Previous) && PreviousIndex == other.PreviousIndex;
     public override int GetHashCode() => HashCode.Combine(Id, Reason, Current, CurrentIndex, Previous, PreviousIndex);
@@ -84,6 +100,7 @@ public readonly struct Change<TModel> : IEquatable<Change<TModel>>
     {
         get;
     }
+
 
     public static bool operator ==(Change<TModel> left, Change<TModel> right)
     {

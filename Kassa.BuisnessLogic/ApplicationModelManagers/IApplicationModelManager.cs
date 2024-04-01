@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.ApplicationModelManagers;
-public interface IApplicationModelManager<TModel>: IReadOnlyDictionary<Guid,TModel> ,IObservable<ChangeSet<TModel>>, IDisposable
+public interface IApplicationModelManager<TModel> : IReadOnlyDictionary<Guid, TModel>, IObservable<ChangeSet<TModel>>, IDisposable
     where TModel : class, IModel
 {
     public void AddOrUpdate(TModel model);
@@ -14,5 +14,5 @@ public interface IApplicationModelManager<TModel>: IReadOnlyDictionary<Guid,TMod
     public void Remove(Guid id);
     public void Remove(IEnumerable<Guid> ids);
     public void Clear();
-    public void AddPresenter(IApplicationModelPresenter<TModel> presenter);
+    public IDisposable AddPresenter(IApplicationModelPresenter<TModel> presenter);
 }

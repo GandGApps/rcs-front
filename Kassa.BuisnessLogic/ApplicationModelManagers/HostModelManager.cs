@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using System.Collections.Immutable;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Subjects;
-using System.Text;
-using System.Threading.Tasks;
-using BeaKona;
 using DynamicData;
 using Kassa.DataAccess.Model;
 using Kassa.Shared.Collections;
@@ -185,9 +180,11 @@ internal partial class HostModelManager<TModel> : IApplicationModelManager<TMode
         _changes.OnNext(ChangeSet<TModel>.Create(changes, 0));
     }
 
-    public void AddPresenter(IApplicationModelPresenter<TModel> presenter)
+    public IDisposable AddPresenter(IApplicationModelPresenter<TModel> presenter)
     {
         _applicationModelPresenters.Add(presenter);
+
+        return Disposable.Create(() => _applicationModelPresenters.Remove(presenter));
     }
 
     private void DisposePresenter(IApplicationModelPresenter<TModel> presenter)

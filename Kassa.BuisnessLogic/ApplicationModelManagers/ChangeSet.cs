@@ -133,6 +133,8 @@ public readonly struct ChangeSet<TModel> where TModel : class, IModel
         get;
     }
 
+    public readonly bool IsEmpty => TotalChanges == 0;
+
     /// <summary>
     /// Returns a <see cref="string" /> that represents this instance.
     /// </summary>
