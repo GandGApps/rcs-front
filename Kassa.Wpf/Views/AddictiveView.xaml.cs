@@ -86,7 +86,10 @@ public partial class AddictiveView : ReactiveUserControl<AdditiveViewModel>
                     {
                         DataContext = x;
                     }
-                });
+                })
+                .DisposeWith(disposabels);
+
+            ViewModel!.DisposeWith(disposabels);
         });
     }
 }

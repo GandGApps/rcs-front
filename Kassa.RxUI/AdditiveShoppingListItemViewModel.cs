@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI;
-public class AdditiveShoppingListItemViewModel : ReactiveObject, IShoppingListItem, IReactiveToChangeSet<Guid, AdditiveShoppingListItemDto>
+public sealed class AdditiveShoppingListItemViewModel : ReactiveObject, IShoppingListItem, IApplicationModelPresenter<AdditiveShoppingListItemDto>
 {
 
     public Guid Id
@@ -28,13 +30,24 @@ public class AdditiveShoppingListItemViewModel : ReactiveObject, IShoppingListIt
         }
     }
     private AdditiveShoppingListItemDto _source;
+    private readonly CompositeDisposable _disposables = [];
 
-    public AdditiveShoppingListItemViewModel(AdditiveShoppingListItemDto additive)
+    public AdditiveShoppingListItemViewModel(AdditiveShoppingListItemDto additive, IApplicationModelManager<AdditiveShoppingListItemDto> modelManager)
     {
+        Id = additive.Id;
         _source = additive;
 
         this.WhenAnyValue(x => x.Source)
-            .Subscribe(Update);
+            .Subscribe(Update)
+            .DisposeWith(_disposables);
+
+        modelManager.AddPresenter(this)
+            .DisposeWith(_disposables);
+
+        RemoveCommand = ReactiveCommand.Create(() =>
+        {
+            modelManager.Remove(additive.Id);
+        });
     }
 
     [Reactive]
@@ -90,7 +103,7 @@ public class AdditiveShoppingListItemViewModel : ReactiveObject, IShoppingListIt
     {
         get;
         set;
-    }
+    } = null!;
     [Reactive]
     public double SubtotalSum
     {
@@ -109,6 +122,15 @@ public class AdditiveShoppingListItemViewModel : ReactiveObject, IShoppingListIt
     public ReactiveCommand<Unit, Unit> RemoveCommand
     {
         get;
+    }
+
+    public void Dispose() => _disposables.Dispose();
+
+    public void ModelChanged(Change<AdditiveShoppingListItemDto> change)
+    {
+        var current = change.Current;
+
+        Update(current);
     }
 
     private void Update(AdditiveShoppingListItemDto item)

@@ -71,16 +71,17 @@ public class MainPageVm : PageViewModel
         {
             var cashierService = await Locator.GetInitializedService<ICashierService>();
             var order = await cashierService.CreateOrder();
+            var additveService = await Locator.GetInitializedService<IAdditiveService>();
 
             await cashierService.SelectCurrentOrder(order);
 
-            await MainViewModel.GoToPageCommand.Execute(new OrderEditPageVm(order, cashierService)).FirstAsync();
+            await MainViewModel.GoToPageCommand.Execute(new OrderEditPageVm(order, cashierService, additveService)).FirstAsync();
         });
 
         OpenCurrentOrderCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-
             var cashierService = await Locator.GetInitializedService<ICashierService>();
+            var additiveService = await Locator.GetInitializedService<IAdditiveService>();
             var order = cashierService.CurrentOrder;
 
             if (order == null)
@@ -89,7 +90,7 @@ public class MainPageVm : PageViewModel
                 return;
             }
 
-            await MainViewModel.GoToPageCommand.Execute(new OrderEditPageVm(order, cashierService)).FirstAsync();
+            await MainViewModel.GoToPageCommand.Execute(new OrderEditPageVm(order, cashierService, additiveService)).FirstAsync();
         });
     }
 

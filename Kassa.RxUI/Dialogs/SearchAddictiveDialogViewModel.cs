@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess;
@@ -29,39 +30,47 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
     }
 
 
-    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    protected override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
+        IDisposable? searchDisposable = null;
 
-        // Splitting the search text stream into immediate first item and throttled subsequent items
-        var searchTextStream = this.WhenAnyValue(x => x.SearchedText).Publish();
+        var observableCollection = new ObservableCollection<AdditiveViewModel>();
+        _filteredAdditives = new(observableCollection);
 
-        var firstItemStream = searchTextStream
-            .Take(1)
-            .ObserveOn(RxApp.MainThreadScheduler);
-
-        var throttledStream = searchTextStream
-            .Skip(1)
-            .Throttle(TimeSpan.FromMilliseconds(500))
+        this.WhenAnyValue(x => x.SearchedText)
+            .Throttle(TimeSpan.FromMilliseconds(300))
             .ObserveOn(RxApp.MainThreadScheduler)
-            .Merge(firstItemStream) // Merging the immediate first item with the throttled stream
-            .DistinctUntilChanged();
+            .Subscribe(text =>
+            {
+                searchDisposable?.Dispose();
+                searchDisposable = _additiveService.RuntimeAdditives
+                    .Filter(additive => additive.Name.Contains(text, StringComparison.OrdinalIgnoreCase))
+                    .Subscribe(changeSet =>
+                    {
+                        foreach (var change in changeSet.Changes)
+                        {
+                            switch (change.Reason)
+                            {
+                                case ModelChangeReason.Add:
+                                    observableCollection.Add(new AdditiveViewModel(change.Current, _order, _additiveService));
+                                    break;
+                                case ModelChangeReason.Remove:
+                                    observableCollection.Remove(observableCollection.First(x => x.Id == change.Current.Id));
+                                    break;
+                            }
+                        }
+                    });
 
-        var searchFilter = throttledStream
-            .Select(text => new Func<AdditiveDto, bool>(additive =>
-                string.IsNullOrWhiteSpace(text) || additive.Name.Contains(text.Trim(), StringComparison.OrdinalIgnoreCase)));
+                var filteredAdditives = _additiveService.RuntimeAdditives.Values
+                    .Where(additive => additive.Name.Contains(text, StringComparison.OrdinalIgnoreCase))
+                    .Select(additive => new AdditiveViewModel(additive, _order, _additiveService));
 
-
-
-        _additiveService.RuntimeAdditives
-            .Connect()
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Filter(searchFilter)
-            .TransformWithInlineUpdate(additive => new AdditiveViewModel(additive, _order), (vm,source) => vm.Source = source)
-            .Bind(out _filteredAdditives)
-            .Subscribe()
+                observableCollection.Clear();
+                observableCollection.AddRange(filteredAdditives);
+            })
             .DisposeWith(disposables);
 
-        searchTextStream.Connect().DisposeWith(disposables);
+        return ValueTask.CompletedTask;
     }
 
     [Reactive]

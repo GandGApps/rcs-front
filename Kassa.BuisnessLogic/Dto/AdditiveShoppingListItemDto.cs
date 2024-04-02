@@ -3,9 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Dto;
-public record AdditiveShoppingListItemDto : IShoppingListItemDto
+public record AdditiveShoppingListItemDto : IShoppingListItemDto, IModel
 {
 
     public AdditiveShoppingListItemDto(ProductShoppingListItemDto productShopping,AdditiveDto additiveDto)

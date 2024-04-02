@@ -22,10 +22,12 @@ internal partial class HostModelManager<TModel> : IApplicationModelManager<TMode
 
         if (_models.TryGetValue(model.Id, out var value))
         {
+            _models[model.Id] = model;
             change = Change<TModel>.Update(model, value, _models.Values.IndexOf(value));
         }
         else
         {
+            _models.Add(model.Id, model);
             change = Change<TModel>.Add(model, _models.Count);
         }
 
@@ -62,12 +64,12 @@ internal partial class HostModelManager<TModel> : IApplicationModelManager<TMode
 
             if (_models.TryGetValue(model.Id, out var value))
             {
-
+                _models[model.Id] = model;
                 change = Change<TModel>.Update(model, value, _models.Values.IndexOf(value));
             }
             else
             {
-
+                _models.Add(model.Id, model);
                 change = Change<TModel>.Add(model, _models.Count);
             }
 

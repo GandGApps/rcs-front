@@ -93,7 +93,7 @@
                         </Style.Triggers>
                     </Style>
                 </Path.Style>
-            </Path><Run Text="{Binding Portion, Mode=OneTime}" /><Run Text="{Binding Measure, Mode=OneTime}" />
+            </Path><Run Text="{Binding Portion}" /><Run Text="{Binding Measure}" />
         </TextBlock>
 
         <TextBlock
@@ -125,7 +125,7 @@
             VerticalAlignment="Bottom"
             FontSize="{mx:AdaptiveSize {StaticResource NameFontSize}}"
             Foreground="Black"
-            Text="{Binding Name, Mode=OneTime}" />
+            Text="{Binding Name}" />
 
         <Path
             Grid.RowSpan="2"

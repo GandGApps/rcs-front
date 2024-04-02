@@ -56,13 +56,6 @@ public class SearchProductDialogViewModel : DialogViewModel
             .Select(text => new Func<ProductDto, bool>(product =>
                 string.IsNullOrWhiteSpace(text) || product.Name.Contains(text.Trim(), StringComparison.OrdinalIgnoreCase)));
 
-        _productService.RuntimeProducts
-            .Connect()
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Filter(searchFilter)
-            .Bind(out _filteredProducts)
-            .Subscribe()
-            .DisposeWith(disposables);
 
         searchTextStream.Connect().DisposeWith(disposables);
     }

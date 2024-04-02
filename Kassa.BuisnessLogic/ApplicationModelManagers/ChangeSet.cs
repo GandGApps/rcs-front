@@ -141,5 +141,5 @@ public readonly struct ChangeSet<TModel> where TModel : class, IModel
     /// <returns>
     /// A <see cref="string" /> that represents this instance.
     /// </returns>
-    public override string ToString() => $"ChangeSet<{typeof(TModel).Name}>. Count={Changes.Length}";
+    public readonly override string ToString() => $"ChangeSet<{typeof(TModel).Name}>. Count={Changes.Length}";
 }

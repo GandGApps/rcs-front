@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess;
 
@@ -13,7 +14,7 @@ public interface IAdditiveService : IInitializableService
     public Task DecreaseAddtiveCount(AdditiveDto additive, double count = 1);
     public Task IncreaseAdditiveCount(AdditiveDto additive, double count = 1);
 
-    public SourceCache<AdditiveDto, Guid> RuntimeAdditives
+    public IApplicationModelManager<AdditiveDto> RuntimeAdditives
     {
         get;
     }

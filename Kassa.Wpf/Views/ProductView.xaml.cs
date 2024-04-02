@@ -13,7 +13,9 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
+using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess;
 using Kassa.RxUI;
 using Kassa.Wpf.Controls;
@@ -31,25 +33,41 @@ public partial class ProductView : ButtonUserControl<ProductDto>
 
         this.WhenActivated(disposables =>
         {
-            DataContext = new ProductViewModel(ViewModel!);
+            var vm = new ProductViewModel(
+                Splat.Locator.Current.GetNotInitializedService<IProductService>(),
+                ViewModel!
+            );
+
+            DataContext = vm; 
 
             Command = ProductViewModel.AddToShoppingListCommand;
-            CommandParameter = ViewModel;
+            CommandParameter = vm;
 
             if (ViewModel!.Icon is not null)
             {
-                var resource = Application.Current.TryFindResource(ViewModel!.Icon);
+                ViewModel.WhenAnyValue(x => x.Icon)
+                    .Subscribe(x =>
+                    {
+                        var resource = Application.Current.TryFindResource(x);
 
-                if (resource is Geometry geometry)
-                {
-                    ProductIcon.Data = geometry;
-                }
+                        if (resource is Geometry geometry)
+                        {
+                            ProductIcon.Data = geometry;
+                        }
+                        else
+                        {
+                            ProductIcon.Data = Geometry.Empty;
+                        }
+                    })
+                    .DisposeWith(disposables);
 
-                return;
+            }
+            else
+            {
+                ProductIcon.Data = Application.Current.TryFindResource("CupOfTeaIcon") as Geometry;
             }
 
-            ProductIcon.Data = Application.Current.TryFindResource("CupOfTeaIcon") as Geometry;
-
+            vm.DisposeWith(disposables);
         });
     }
 }

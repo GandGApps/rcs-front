@@ -27,13 +27,15 @@ public class OrderEditPageVm : PageViewModel
 
     private readonly IOrderEditService _order;
     private readonly ICashierService _cashierService;
+    private readonly IAdditiveService _additiveService;
 
     private Action<bool>? _isMultiSelectSetter;
 
-    public OrderEditPageVm(IOrderEditService order, ICashierService cashierService)
+    public OrderEditPageVm(IOrderEditService order, ICashierService cashierService, IAdditiveService additiveService)
     {
         _order = order;
         _cashierService = cashierService;
+        _additiveService = additiveService;
 
         CreateTotalCommentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -200,7 +202,7 @@ public class OrderEditPageVm : PageViewModel
         _order.BindShoppingListItems(x => new ProductShoppingListItemViewModel(x, _order), out var shoppingListItems)
                        .DisposeWith(disposables);
 
-        _order.BindAdditivesForSelectedProduct(x => new AdditiveViewModel(x, _order), out var fastAdditives)
+        _order.BindAdditivesForSelectedProduct(x => new AdditiveViewModel(x, _order, _additiveService), out var fastAdditives)
                        .DisposeWith(disposables);
 
 

@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess.Model;
 using ReactiveUI;
@@ -30,7 +31,7 @@ internal class OrderEditService(
     private int? _selectedFavorite;
 
     private readonly List<ICategoryDto> _categoriesStack = [];
-    private readonly Dictionary<Guid, SourceCache<AdditiveShoppingListItemDto, Guid>> _additivesInProductDto = [];
+    private readonly Dictionary<Guid, IApplicationModelManager<AdditiveShoppingListItemDto>> _additivesInProductDto = [];
 
     public bool IsInitialized
     {
@@ -128,51 +129,283 @@ internal class OrderEditService(
     {
         this.ThrowIfNotInitialized();
 
-        var filterCondition = this.WhenAnyValue(x => x.CurrentCategory)
-            .Select(x =>
-                new Func<ICategoryItemDto, bool>(item =>
-                {
-                    if (x is FavouriteCategoryDto favourite)
-                    {
-                        Debug.WriteLineIf(item.Favourites.Contains(favourite.Favourite), $"Current category is favourite {favourite.Favourite}");
-                        Debug.WriteLineIf(item.Favourites.Contains(favourite.Favourite), $"item '{item.Name}' favourites:[{string.Join(',', item.Favourites)}]");
-                        return item.Favourites.Contains(favourite.Favourite);
-                    }
-                    if (x is CategoryDto category)
-                    {
-                        Debug.WriteLineIf(item.CategoryId == category.Id, $"Current category is '{category.Name}' Id={category.Id}");
-                        Debug.WriteLineIf(item.CategoryId == category.Id, $"item '{item.Name}' CategoryId={item.CategoryId}");
-                        return item.CategoryId == category.Id;
-                    }
-                    Debug.WriteLineIf(item.CategoryId == null, "Current category is root");
-                    Debug.WriteLineIf(item.CategoryId == null, $"item '{item.Name}' CategoryId={item.CategoryId}");
-                    return item.CategoryId == null;
-                }));
+        var target = new ObservableCollection<ICategoryItemDto>();
+        var ordered = new ObservableCollection<ICategoryItemDto>();
+        categoryItems = new(ordered);
 
-        var categoryStream = categoryService.RuntimeCategories.Connect()
-            .Cast(category => (ICategoryItemDto)category)
-            .Filter(filterCondition);
 
-        var productStream = productService.RuntimeProducts.Connect()
-            .Cast(product => (ICategoryItemDto)product)
-            .Filter(filterCondition);
+        IDisposable? observeCategories = null;
+        IDisposable? observeproducts = null;
 
-        var stream = categoryStream.Merge(productStream)
-            .Sort(SortExpressionComparer<ICategoryItemDto>.Ascending(x =>
+        var disposable = this.WhenAnyValue(x => x.CurrentCategory)
+            .Subscribe(x =>
             {
-                if (x is ProductDto)
-                {
-                    return 1;
-                }
-                else
-                {
+                target.Clear();
 
-                    return 0;
-                }
-            }))
-            .Bind(out categoryItems);
+                observeCategories?.Dispose();
+                observeproducts?.Dispose();
 
-        return stream.Subscribe(_ => { }, exc => Debug.WriteLine(exc));
+                if (x is FavouriteCategoryDto favouriteCategory)
+                {
+                    target.AddRange(productService.RuntimeProducts.Values
+                        .Cast<ICategoryItemDto>()
+                        .Where(x => x.Favourites.Contains(favouriteCategory.Favourite)));
+
+                    observeproducts = productService.RuntimeProducts
+                        .Filter(p => p.Favourites.Contains(favouriteCategory.Favourite))
+                        .Subscribe(changeSet =>
+                        {
+                            if (changeSet.IsEmpty)
+                            {
+                                return;
+                            }
+
+                            foreach (var change in changeSet.Changes)
+                            {
+
+                                switch (change.Reason)
+                                {
+
+                                    case ModelChangeReason.Add:
+                                        target.Add(change.Current);
+                                        break;
+
+                                    case ModelChangeReason.Remove:
+                                        target.Remove(change.Current);
+                                        break;
+
+                                    case ModelChangeReason.Refresh:
+                                        target.Remove(change.Previous ?? change.Current);
+                                        target.Add(change.Current);
+                                        break;
+                                }
+                            }
+                        });
+
+                    observeCategories = categoryService.RuntimeCategories.Connect()
+                        .Filter(c => c.Favourites.Contains(favouriteCategory.Favourite))
+                        .Subscribe(changeSet =>
+                        {
+                            foreach (var change in changeSet)
+                            {
+
+                                switch (change.Reason)
+                                {
+
+                                    case ChangeReason.Add:
+                                        target.Add(change.Current);
+                                        break;
+
+                                    case ChangeReason.Remove:
+                                        target.Remove(change.Current);
+                                        break;
+
+                                    case ChangeReason.Refresh:
+                                        target.Remove(change.Previous.Value);
+                                        target.Add(change.Current);
+                                        break;
+                                }
+                            }
+                        });
+                    ordered.Clear();
+                    ordered.AddRange(target.OrderBy(x =>
+                    {
+                        if (x is ProductDto)
+                        {
+                            return 1;
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    }));
+                }
+
+                if (x is CategoryDto category)
+                {
+                    target.AddRange(categoryService.RuntimeCategories.Items
+                                               .Where(c => c.CategoryId == category.Id));
+
+                    observeCategories = categoryService.RuntimeCategories.Connect()
+                        .Filter(c => c.CategoryId == category.Id)
+                        .Subscribe(changeSet =>
+                        {
+                            foreach (var change in changeSet)
+                            {
+                                switch (change.Reason)
+                                {
+                                    case ChangeReason.Add:
+                                        target.Add(change.Current);
+                                        break;
+
+                                    case ChangeReason.Remove:
+                                        target.Remove(change.Current);
+                                        break;
+
+                                    case ChangeReason.Refresh:
+                                        target.Remove(change.Previous.Value);
+                                        target.Add(change.Current);
+                                        break;
+                                }
+                            }
+                        });
+
+                    target.AddRange(productService.RuntimeProducts.Values
+                            .Cast<ICategoryItemDto>()
+                            .Where(p => p.CategoryId == category.Id));
+
+                    observeproducts = productService.RuntimeProducts
+                        .Filter(p => p.CategoryId == category.Id)
+                        .Subscribe(changeSet =>
+                        {
+                            if (changeSet.IsEmpty)
+                            {
+                                return;
+                            }
+
+                            foreach (var change in changeSet.Changes)
+                            {
+
+                                switch (change.Reason)
+                                {
+                                    case ModelChangeReason.Add:
+                                        target.Add(change.Current);
+                                        break;
+
+                                    case ModelChangeReason.Remove:
+                                        target.Remove(change.Current);
+                                        break;
+                                }
+                            }
+                        });
+
+                    ordered.Clear();
+                    ordered.AddRange(target.OrderBy(x =>
+                    {
+                        if (x is ProductDto)
+                        {
+                            return 1;
+                        }
+                        else
+                        {
+                            return 0;
+                        }
+                    }));
+                }
+
+                if (x is null)
+                {
+                    observeCategories = categoryService.RuntimeCategories.Connect()
+                        .Filter(c => c.CategoryId == null)
+                        .Subscribe(changeSet =>
+                        {
+
+                            foreach (var change in changeSet)
+                            {
+
+                                switch (change.Reason)
+                                {
+
+                                    case ChangeReason.Add:
+                                        target.Add(change.Current);
+                                        break;
+
+                                    case ChangeReason.Remove:
+                                        target.Remove(change.Current);
+                                        break;
+
+                                    case ChangeReason.Refresh:
+                                        target.Remove(change.Previous.Value);
+                                        target.Add(change.Current);
+                                        break;
+                                }
+                            }
+
+                            ordered.Clear();
+                            ordered.AddRange(target.OrderBy(x =>
+                            {
+
+                                if (x is ProductDto)
+                                {
+
+                                    return 1;
+                                }
+                                else
+                                {
+
+                                    return 0;
+                                }
+                            }));
+                        });
+
+                    target.AddRange(productService.RuntimeProducts.Values
+                        .Cast<ICategoryItemDto>()
+                        .Where(p => p.CategoryId == null));
+
+                    observeproducts = productService.RuntimeProducts
+                        .Filter(p => p.CategoryId == null)
+                        .Subscribe(changeSet =>
+                        {
+
+                            if (changeSet.IsEmpty)
+                            {
+
+                                return;
+                            }
+
+                            foreach (var change in changeSet.Changes)
+                            {
+
+
+                                switch (change.Reason)
+                                {
+
+
+                                    case ModelChangeReason.Add:
+                                        target.Add(change.Current);
+                                        break;
+
+                                    case ModelChangeReason.Remove:
+                                        target.Remove(change.Current);
+                                        break;
+
+                                    case ModelChangeReason.Refresh:
+                                        target.Remove(change.Previous ?? change.Current);
+                                        target.Add(change.Current);
+                                        break;
+                                }
+                            }
+                        });
+
+                    ordered.Clear();
+                    ordered.AddRange(target.OrderBy(x =>
+                    {
+
+                        if (x is ProductDto)
+                        {
+
+                            return 1;
+                        }
+                        else
+                        {
+
+                            return 0;
+                        }
+                    }));
+                }
+
+
+            });
+
+        return Disposable.Create(() =>
+        {
+            disposable.Dispose();
+            observeCategories?.Dispose();
+            observeproducts?.Dispose();
+
+            target = null;
+            ordered = null;
+        });
     }
 
     public IDisposable BindShoppingListItems<T>(Func<ProductShoppingListItemDto, T> creator, out ReadOnlyObservableCollection<T> shoppingListItems) where T : class, IReactiveToChangeSet<Guid, ProductShoppingListItemDto>
@@ -190,10 +423,7 @@ internal class OrderEditService(
 
                     if (product.IsSelected) return;
 
-                    product = product with
-                    {
-                        IsSelected = true
-                    };
+                    product.IsSelected = true;
 
                     ShoppingListItems.AddOrUpdate(product);
                 }
@@ -474,12 +704,9 @@ internal class OrderEditService(
         {
             if (_additivesInProductDto.TryGetValue(additive.ContainingProduct.Id, out var sourceCache))
             {
-                var selected = additive with
-                {
-                    IsSelected = true
-                };
-                sourceCache.AddOrUpdate(selected);
-                SelectedShoppingListItems.AddOrUpdate(selected);
+                additive.IsSelected = true;
+                sourceCache.AddOrUpdate(additive);
+                SelectedShoppingListItems.AddOrUpdate(additive);
             }
         }
 
@@ -617,31 +844,72 @@ internal class OrderEditService(
 
         return SelectedShoppingListItems.Items.Select(x => x.Id)
             .Where(_additivesInProductDto.ContainsKey)
-            .Select(id => _additivesInProductDto[id].Items)
+            .Select(id => _additivesInProductDto[id].Values)
             .Any(x => x.Any(additive => additive.ItemId == additiveId));
     }
 
-    public IDisposable BindAdditivesForProductShoppingListItem<T>(ProductShoppingListItemDto item, Func<AdditiveShoppingListItemDto, T> creator, out ReadOnlyObservableCollection<T> additives) where T : class, IReactiveToChangeSet<Guid, AdditiveShoppingListItemDto>
+    public IDisposable BindAdditivesForProductShoppingListItem<T>(ProductShoppingListItemDto item, Func<AdditiveShoppingListItemDto, IApplicationModelManager<AdditiveShoppingListItemDto>, T> creator, out ReadOnlyObservableCollection<T> additives) where T : class, IApplicationModelPresenter<AdditiveShoppingListItemDto>
     {
         this.ThrowIfNotInitialized();
 
+        var target = new ObservableCollection<T>();
+        additives = new(target);
+
         if (_additivesInProductDto.TryGetValue(item.Id, out var sourceCache))
         {
-            return sourceCache.Connect()
-                .TransformAndBind(creator)
-                .Bind(out additives)
-                .Subscribe();
+            target.AddRange(sourceCache.Values.Select(x =>
+            {
+                var result = creator(x, sourceCache);
+                return result;
+            }));
+
+            return sourceCache.Subscribe(x =>
+            {
+                foreach (var change in x.Changes)
+                {
+                    switch (change.Reason)
+                    {
+
+                        case ModelChangeReason.Add:
+                            target.Add(creator(change.Current, sourceCache));
+                            break;
+
+                        case ModelChangeReason.Remove:
+                            target.Remove(target.First(x => x.Id == change.Current.Id));
+                            break;
+                    }
+                }
+            });
         }
 
-        sourceCache = new SourceCache<AdditiveShoppingListItemDto, Guid>(x => x.Id);
+        sourceCache = new HostModelManager<AdditiveShoppingListItemDto>();
 
         _additivesInProductDto.Add(item.Id, sourceCache);
 
 
-        return sourceCache.Connect()
-                .TransformAndBind(creator)
-                .Bind(out additives)
-                .Subscribe();
+        target.AddRange(sourceCache.Values.Select(x =>
+        {
+            var result = creator(x, sourceCache);
+            return result;
+        }));
+
+        return sourceCache.Subscribe(x =>
+        {
+            foreach (var change in x.Changes)
+            {
+                switch (change.Reason)
+                {
+
+                    case ModelChangeReason.Add:
+                        target.Add(creator(change.Current, sourceCache));
+                        break;
+
+                    case ModelChangeReason.Remove:
+                        target.Remove(target.First(x => x.Id == change.Current.Id));
+                        break;
+                }
+            }
+        });
     }
 
     public Task WriteCommentToSelectedItems(string? comment)
@@ -793,7 +1061,7 @@ internal class OrderEditService(
     /// <summary>
     /// 
     /// <para>
-    /// Warning! This method will change the product count in the database!!!.
+    /// Warning! This method will changeSet the product count in the database!!!.
     /// </para>
     /// </summary>
     /// <param name="product"></param>
@@ -830,7 +1098,7 @@ internal class OrderEditService(
             var product = Mapper.MapShoppingListItemToOrderedProductDto(x);
 
             product.Additives = _additivesInProductDto.TryGetValue(x.Id, out var cache)
-                ? cache.Items.Select(Mapper.MapAdditiveShoppingListItemToOrderedAdditiveDto)
+                ? cache.Values.Select(Mapper.MapAdditiveShoppingListItemToOrderedAdditiveDto)
                 : [];
 
             return product;

@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,28 +20,22 @@ using Splat;
 namespace Kassa.RxUI;
 public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListItem, IReactiveToChangeSet<Guid, ProductShoppingListItemDto>
 {
+    private readonly CompositeDisposable _disposables = [];
+
     public Guid Id
     {
         get; set;
-    }
-    /// <summary>
-    /// Need's for design time
-    /// </summary>
-    [EditorBrowsable(EditorBrowsableState.Never)]
-#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    public ProductShoppingListItemViewModel()
-#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
-    {
-
     }
 
     public ProductShoppingListItemViewModel(ProductShoppingListItemDto product, IOrderEditService order)
     {
         Source = product;
+        _source = product;
 
         if (order.IsInitialized)
         {
-            order.BindAdditivesForProductShoppingListItem(product, x => new AdditiveShoppingListItemViewModel(x), out var additives);
+            order.BindAdditivesForProductShoppingListItem(product, (x,y) => new AdditiveShoppingListItemViewModel(x,y), out var additives)
+                .DisposeWith(_disposables);
             Additives = additives;
         }
         else

@@ -5,6 +5,7 @@ using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
@@ -12,10 +13,10 @@ using Kassa.DataAccess.Repositories;
 namespace Kassa.BuisnessLogic.Services;
 public sealed class AdditiveService(IAdditiveRepository repository, IReceiptService receiptService) : IAdditiveService
 {
-    public SourceCache<AdditiveDto, Guid> RuntimeAdditives
+    public IApplicationModelManager<AdditiveDto> RuntimeAdditives
     {
         get;
-    } = new(x => x.Id);
+    } = new HostModelManager<AdditiveDto>();
 
     public bool IsInitialized
     {
@@ -126,10 +127,7 @@ public sealed class AdditiveService(IAdditiveRepository repository, IReceiptServ
 
         await CheckAllIngridients((foundedAdditive, receipt));
 
-        additiveDto = additiveDto with
-        {
-            IsEnoughIngredients = await receiptService.HasEnoughIngridients(receipt, 1)
-        };
+        additiveDto.IsEnoughIngredients = await receiptService.HasEnoughIngridients(receipt, 1);
 
         await UpdateAdditive(additiveDto);
     }
@@ -174,7 +172,7 @@ public sealed class AdditiveService(IAdditiveRepository repository, IReceiptServ
 
     private async Task CheckAllIngridients((Additive product, ReceiptDto receipt)? existingModel)
     {
-        var products = RuntimeAdditives.Items;
+        var products = RuntimeAdditives.Values;
 
         if (existingModel.HasValue)
         {
@@ -194,13 +192,12 @@ public sealed class AdditiveService(IAdditiveRepository repository, IReceiptServ
 
             if (receipt is null)
             {
-
                 throw new InvalidOperationException($"Receipt with id {product.ReceiptId} not found");
             }
 
-            var updateNeed = product with { IsEnoughIngredients = await receiptService.HasEnoughIngridients(receipt, 1) };
+            product.IsEnoughIngredients = await receiptService.HasEnoughIngridients(receipt, 1);
 
-            await UpdateAdditive(updateNeed);
+            await UpdateAdditive(product);
         }
     }
 }

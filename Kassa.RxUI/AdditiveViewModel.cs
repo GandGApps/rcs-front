@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess;
@@ -13,7 +15,7 @@ using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.RxUI;
-public class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Guid, AdditiveDto>
+public sealed class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Guid, AdditiveDto>, IApplicationModelPresenter<AdditiveDto>
 {
     public static readonly ReactiveCommand<AdditiveViewModel, Unit> AddAdditveToProduct = ReactiveCommand.CreateFromTask<AdditiveViewModel>(async additive =>
     {
@@ -21,6 +23,7 @@ public class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Guid, Addi
         {
             return;
         }
+
         var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
         var additiveService = await Locator.Current.GetInitializedService<IAdditiveService>();
         var order = cashierService.CurrentOrder;
@@ -39,13 +42,12 @@ public class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Guid, Addi
         {
             throw new InvalidOperationException("Additive not found");
         }
-
-        additive.IsAdded = true;
-        additive.IsAvailable = additiveDto.IsAvailable && additiveDto.IsEnoughIngredients;
+        additive.IsAdded = order.IsAdditiveAdded(additive.Id);
     });
 
+    private readonly CompositeDisposable _disposables = [];
 
-    public AdditiveViewModel(AdditiveDto additive, IOrderEditService order)
+    public AdditiveViewModel(AdditiveDto additive, IOrderEditService order, IAdditiveService additiveService)
     {
         Id = additive.Id;
 
@@ -60,12 +62,17 @@ public class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Guid, Addi
         Source = additive;
 
         this.WhenAnyValue(x => x.Source)
-            .Subscribe(UpdateSource);
+            .Subscribe(UpdateSource)
+            .DisposeWith(_disposables);
 
         if (order.IsInitialized)
         {
             IsAdded = order.IsAdditiveAdded(additive.Id);
         }
+
+        AddToShoppingListCommand.DisposeWith(_disposables);
+
+        additiveService.RuntimeAdditives.AddPresenter(this).DisposeWith(_disposables);
     }
 
 
@@ -130,6 +137,19 @@ public class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Guid, Addi
         set;
     }
 
+    public void ModelChanged(Change<AdditiveDto> change)
+    {
+        var additive = change.Current;
+
+        UpdateSource(additive);
+    }
+
+    public void Dispose()
+    {
+        _disposables.Dispose();
+    }
+
+
     private void UpdateSource(AdditiveDto additive)
     {
         Name = additive.Name;
@@ -138,6 +158,5 @@ public class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Guid, Addi
         Portion = additive.Portion;
         Measure = additive.Measure;
         IsAvailable = additive.IsAvailable && additive.IsEnoughIngredients;
-        AddToShoppingListCommand = ReactiveCommand.Create(() => { });
     }
 }

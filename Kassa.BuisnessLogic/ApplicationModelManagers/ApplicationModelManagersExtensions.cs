@@ -87,10 +87,7 @@ public static class ApplicationModelManagersExtensions
 
                 if (destination is IApplicationModelPresenter<TModel> applicationModelPresenter)
                 {
-                    if (manager is not null)
-                    {
-                        manager.AddPresenter(applicationModelPresenter);
-                    }
+                    manager?.AddPresenter(applicationModelPresenter);
                 }
 
                 builder.Add(transformedChange);
@@ -132,6 +129,30 @@ public static class ApplicationModelManagersExtensions
         return observable;
     }
 
+    public static IObservable<ChangeSet<TCast>> Cast<TModel, TCast>(this IObservable<ChangeSet<TModel>> observable)
+        where TCast : class, IModel, TModel
+        where TModel : class, IModel
+    {
+        return observable.Select(changes =>
+        {
+
+            if (changes.IsEmpty)
+            {
+
+                return ChangeSet<TCast>.Empty;
+            }
+
+            using var builder = ImmutableArrayBuilder<Change<TCast>>.Rent(changes.Changes.Length);
+
+            foreach (var change in changes.Changes)
+            {
+
+                builder.Add(Change<TModel>.Transform(change, x => (TCast)x));
+            }
+
+            return ChangeSet<TCast>.Create(builder.ToImmutable(), changes.Index);
+        }).Where(x => !x.IsEmpty);
+    }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static IObservable<ChangeSet<TModel>> PackObservable<TModel>(IObservable<ChangeSet<TModel>> observable, IObservable<ChangeSet<TModel>> modifiedObservable)

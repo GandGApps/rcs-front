@@ -8,17 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess;
+using Kassa.DataAccess.Model;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.RxUI;
-public class ProductViewModel(ProductDto product) : ReactiveObject
+public sealed class ProductViewModel : ReactiveObject, IApplicationModelPresenter<ProductDto>
 {
-    public static readonly ReactiveCommand<ProductDto, Unit> AddToShoppingListCommand = ReactiveCommand.CreateFromTask<ProductDto>(async product =>
+    public static readonly ReactiveCommand<ProductViewModel, Unit> AddToShoppingListCommand = ReactiveCommand.CreateFromTask<ProductViewModel>(async product =>
     {
         var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
         var order = cashierService.CurrentOrder;
@@ -28,28 +30,89 @@ public class ProductViewModel(ProductDto product) : ReactiveObject
             throw new InvalidOperationException("Order is not selected");
         }
 
-        if (!(product.IsAvailable && product.IsEnoughIngredients))
+        if (!product.IsAvailable)
         {
             return;
         }
         await order.AddProductToShoppingList(product.Id);
     });
-    public Guid Id => product.Id;
 
-    public string Name => product.Name;
+    private readonly IDisposable _disposable;
 
-    public string CurrencySymbol => product.CurrencySymbol;
-    public double Price => product.Price;
+    public ProductViewModel(IProductService productService, ProductDto product)
+    {
+        Id = product.Id;
+        Name = product.Name;
+        CurrencySymbol = product.CurrencySymbol;
+        Price = product.Price;
+        IsAdded = product.IsAdded;
+        Measure = product.Measure;
+        IsAvailable = product.IsAvailable && product.IsEnoughIngredients;
+        Icon = product.Icon;
 
-    /// <summary>
-    /// Need implement by IOrderEditService
-    /// </summary>
-    public bool IsAdded => product.IsAdded;
+        _disposable = productService.RuntimeProducts.AddPresenter(this);
+    }
 
-    public string Measure => product.Measure;
+    public Guid Id
+    {
+        get;
+    }
 
-    public bool IsAvailable => product.IsAvailable && product.IsEnoughIngredients;
-    public string Icon => product.Icon;
+    [Reactive]
+    public string Name
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public string CurrencySymbol
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public double Price
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public bool IsAdded
+    {
+        get; set;
+    }
+    [Reactive]
+    public string Measure
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public bool IsAvailable
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public string Icon
+    {
+        get; set;
+    }
+
+    public void Dispose() => _disposable.Dispose();
+
+    public void ModelChanged(Change<ProductDto> change)
+    {
+        var product = change.Current;
+
+        Name = product.Name;
+        CurrencySymbol = product.CurrencySymbol;
+        Price = product.Price;
+        IsAdded = product.IsAdded;
+        Measure = product.Measure;
+        IsAvailable = product.IsAvailable && product.IsEnoughIngredients;
+        Icon = product.Icon;
+    }
 }
 
 [EditorBrowsable(EditorBrowsableState.Never)]

@@ -117,7 +117,7 @@
                         </Style.Triggers>
                     </Style>
                 </TextBlock.Style>
-                <Run x:Name="Price" Text="{Binding Price, Mode=OneTime}" /><Run Text="{Binding CurrencySymbol, Mode=OneTime}" />
+                <Run x:Name="Price" Text="{Binding Price}" /><Run Text="{Binding CurrencySymbol}" />
             </TextBlock>
         </Border>
 
