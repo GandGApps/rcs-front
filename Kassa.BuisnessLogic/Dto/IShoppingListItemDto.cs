@@ -1,12 +1,9 @@
-﻿namespace Kassa.BuisnessLogic.Dto;
+﻿using Kassa.DataAccess.Model;
 
-public interface IShoppingListItemDto
+namespace Kassa.BuisnessLogic.Dto;
+
+public interface IShoppingListItemDto: IModel
 {
-    public Guid Id
-    {
-        get; set;
-    }
-
     public Guid ItemId
     {
         get;

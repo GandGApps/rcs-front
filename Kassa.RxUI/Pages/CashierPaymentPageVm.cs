@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
+using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Dialogs;
 using ReactiveUI;
@@ -350,7 +351,7 @@ public class CashierPaymentPageVm : PageViewModel
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
         CashierPaymentService.Order
-            .BindShoppingListItems(x => new ProductShoppingListItemViewModel(x, CashierPaymentService.Order), out var shoppingListItems)
+            .BindShoppingListItems((x,y) => new ProductShoppingListItemViewModel(x, y, CashierPaymentService.Order), out var shoppingListItems)
             .DisposeWith(disposables);
 
         ShoppingListItems = shoppingListItems;

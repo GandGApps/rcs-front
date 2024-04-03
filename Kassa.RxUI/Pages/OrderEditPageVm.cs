@@ -199,7 +199,7 @@ public class OrderEditPageVm : PageViewModel
         _order.BindSelectedCategoryItems(out var categoryItems)
                        .DisposeWith(disposables);
 
-        _order.BindShoppingListItems(x => new ProductShoppingListItemViewModel(x, _order), out var shoppingListItems)
+        _order.BindShoppingListItems((x,y) => new ProductShoppingListItemViewModel(x, y, _order), out var shoppingListItems)
                        .DisposeWith(disposables);
 
         _order.BindAdditivesForSelectedProduct(x => new AdditiveViewModel(x, _order, _additiveService), out var fastAdditives)
@@ -221,14 +221,14 @@ public class OrderEditPageVm : PageViewModel
                     if (x is IDiscountAccesser discountAccesser)
                     {
                         item.HasDiscount = true;
-                        if (double.IsNaN(discountAccesser.AccessDicsount(item.Id)))
+                        if (double.IsNaN(discountAccesser.AccessDicsount(item.ItemId)))
                         {
                             item.HasDiscount = false;
                             item.Discount = 0;
                         }
                         else
                         {
-                            item.Discount = discountAccesser.AccessDicsount(item.Id);
+                            item.Discount = discountAccesser.AccessDicsount(item.ItemId);
                         }
                         continue;
                     }

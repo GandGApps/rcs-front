@@ -99,20 +99,16 @@ internal class OrderEditService(
         }
     }
 
-    public SourceCache<ProductShoppingListItemDto, Guid> ShoppingListItems
+    public IApplicationModelManager<ProductShoppingListItemDto> ShoppingListItems
     {
         get;
-    } = new(x => x.Id);
+    } = new HostModelManager<ProductShoppingListItemDto>();
 
-    public SourceCache<IShoppingListItemDto, Guid> SelectedShoppingListItems
+    public IApplicationModelManager<IShoppingListItemDto> SelectedShoppingListItems
     {
         get;
-    } = new(x => x.Id);
+    } = new HostModelManager<IShoppingListItemDto>();
 
-    public SourceCache<AdditiveDto, Guid> AdditivesForSelectedProduct
-    {
-        get;
-    } = new(x => x.Id);
     public Guid OrderId
     {
         get; set;
@@ -408,41 +404,41 @@ internal class OrderEditService(
         });
     }
 
-    public IDisposable BindShoppingListItems<T>(Func<ProductShoppingListItemDto, T> creator, out ReadOnlyObservableCollection<T> shoppingListItems) where T : class, IReactiveToChangeSet<Guid, ProductShoppingListItemDto>
+    public IDisposable BindShoppingListItems<T>(Func<ProductShoppingListItemDto, IApplicationModelManager<ProductShoppingListItemDto>, T> creator, out ReadOnlyObservableCollection<T> shoppingListItems) where T : class, IModel
     {
         this.ThrowIfNotInitialized();
 
-        var stream = ShoppingListItems.Connect()
-            .TransformWithInlineUpdate(x => creator(x), (x, source) => x.Source = source)
-            .Do(x =>
+        var observableCollection = new ObservableCollection<T>();
+        shoppingListItems = new(observableCollection);
+
+        observableCollection.AddRange(ShoppingListItems.Values.Select(x =>
+        {
+            var result = creator(x, ShoppingListItems);
+            return result;
+        }));
+
+
+        return ShoppingListItems.Subscribe(x =>
+        {
+            foreach (var change in x.Changes)
             {
-                if (ShoppingListItems.Count == 1)
+                switch (change.Reason)
                 {
-                    IsMultiSelect = false;
-                    var product = ShoppingListItems.Items.First();
+                    case ModelChangeReason.Add:
+                        observableCollection.Add(creator(change.Current, ShoppingListItems));
+                        break;
 
-                    if (product.IsSelected) return;
-
-                    product.IsSelected = true;
-
-                    ShoppingListItems.AddOrUpdate(product);
+                    case ModelChangeReason.Remove:
+                        observableCollection.Remove(observableCollection.First(x => x.Id == change.Current.Id));
+                        break;
                 }
-            })
-            .Bind(out shoppingListItems);
-
-
-        return stream.Subscribe();
+            }
+        });
     }
 
     public IDisposable BindSelectedShoppingListItems(out ReadOnlyObservableCollection<IShoppingListItemDto> shoppingListItems)
     {
-
-        this.ThrowIfNotInitialized();
-
-        var stream = SelectedShoppingListItems.Connect()
-            .Bind(out shoppingListItems);
-
-        return stream.Subscribe();
+        throw new NotImplementedException();
     }
     /// <summary>
     /// Attention, additives not will update at runtime, that's why you need update it manually.
@@ -455,20 +451,41 @@ internal class OrderEditService(
     {
         this.ThrowIfNotInitialized();
 
-        var subscribe = ShoppingListItems.Connect()
-            .Filter(x => x.IsSelected)
-            .TransformAsync(async x =>
+        var disposables = new CompositeDisposable();
+        var internalDisposables = new CompositeDisposable();
+
+        var observableCollection = new ObservableCollection<T>();
+        additives = new(observableCollection);
+
+        SelectedShoppingListItems
+            .Subscribe(changeSet =>
             {
-                return await additiveService.GetAdditivesByProductId(x.ItemId);
+                foreach (var change in changeSet.Changes)
+                {
+                    if (change.Current is not ProductShoppingListItemDto product)
+                    {
+                        continue;
+                    }
+
+                    switch (change.Reason)
+                    {
+                        case ModelChangeReason.Add:
+                            observableCollection.AddRange(additiveService.RuntimeAdditives.Values
+                                .Where(x => x.ProductIds.Contains(change.Current.ItemId))
+                                .Select(x => creator(x)));
+                            break;
+
+                        case ModelChangeReason.Remove:
+                            observableCollection.RemoveMany(observableCollection.Where(x => x.Source.ProductIds.Contains(change.Current.ItemId)));
+                            break;
+                    }
+                }
             })
-            .TransformMany(x => x, x => x.Id)
-            .TransformWithInlineUpdate(x => creator(x), (x, source) => x.Source = source)
-            .Bind(out additives)
-            .Subscribe();
+            .DisposeWith(disposables);
 
 
 
-        return subscribe;
+        return disposables;
     }
 
     public void Dispose()
@@ -610,27 +627,23 @@ internal class OrderEditService(
 
         product = (await productService.GetProductById(productId))!;
 
-        var existItem = ShoppingListItems.Items.FirstOrDefault(x => x.ItemId == product.Id);
+
+
+        var existItem = ShoppingListItems.Values.FirstOrDefault(x => x.ItemId == product.Id);
 
         if (existItem != null)
         {
-            ShoppingListItems.AddOrUpdate(existItem with
-            {
-                Count = existItem.Count + 1
-            });
+            existItem.Count++;
+            ShoppingListItems.AddOrUpdate(existItem);
 
-            productService.RuntimeProducts.AddOrUpdate(product with
-            {
-                IsAdded = true
-            });
+            product.IsAdded = true;
+            productService.RuntimeProducts.AddOrUpdate(product);
 
             return;
         }
 
-        productService.RuntimeProducts.AddOrUpdate(product with
-        {
-            IsAdded = true
-        });
+        product.IsAdded = true;
+        productService.RuntimeProducts.AddOrUpdate(product);
 
         var shoppingListItem = new ProductShoppingListItemDto(product)
         {
@@ -655,7 +668,7 @@ internal class OrderEditService(
 
         ShoppingListItems.AddOrUpdate(shoppingListItem);
 
-        var sourceCache = new SourceCache<AdditiveShoppingListItemDto, Guid>(x => x.Id);
+        var sourceCache = new HostModelManager<AdditiveShoppingListItemDto>();
 
         foreach (var orderedAdditive in orderedProduct.Additives)
         {
@@ -671,6 +684,8 @@ internal class OrderEditService(
 
             sourceCache.AddOrUpdate(additiveShoppingListItem);
         }
+
+        _additivesInProductDto.Add(product.Id, sourceCache);
     }
 
     public Task SelectShoppingListItem(IShoppingListItemDto shoppingListItemDto)
@@ -691,13 +706,10 @@ internal class OrderEditService(
 
         if (shoppingListItemDto is ProductShoppingListItemDto product)
         {
-            var selected = product with
-            {
-                IsSelected = true
-            };
+            product.IsSelected = true;
 
-            ShoppingListItems.AddOrUpdate(selected);
-            SelectedShoppingListItems.AddOrUpdate(selected);
+            ShoppingListItems.AddOrUpdate(product);
+            SelectedShoppingListItems.AddOrUpdate(product);
         }
 
         if (shoppingListItemDto is AdditiveShoppingListItemDto additive)
@@ -727,14 +739,13 @@ internal class OrderEditService(
             var product = await productService.GetProductById(shoppingListItem.ItemId);
             if (product != null)
             {
+                product.IsAdded = false;
+
                 await productService.IncreaseProductCount(product.Id);
-                productService.RuntimeProducts.AddOrUpdate(product with
-                {
-                    IsAdded = false
-                });
+                productService.RuntimeProducts.AddOrUpdate(product);
             }
 
-            SelectedShoppingListItems.Remove(shoppingListItemDto);
+            SelectedShoppingListItems.Remove(shoppingListItemDto.Id);
         }
     }
 
@@ -747,14 +758,12 @@ internal class OrderEditService(
             throw new ArgumentNullException(nameof(shoppingListItemDto));
         }
 
-        SelectedShoppingListItems.Remove(shoppingListItemDto);
+        SelectedShoppingListItems.Remove(shoppingListItemDto.Id);
 
         if (shoppingListItemDto is ProductShoppingListItemDto shoppingListItem)
         {
-            ShoppingListItems.AddOrUpdate(shoppingListItem with
-            {
-                IsSelected = false
-            });
+            shoppingListItem.IsSelected = false;
+            ShoppingListItems.AddOrUpdate(shoppingListItem);
         }
 
         if (shoppingListItemDto is AdditiveShoppingListItemDto additive)
@@ -762,10 +771,8 @@ internal class OrderEditService(
 
             if (_additivesInProductDto.TryGetValue(additive.ContainingProduct.Id, out var sourceCache))
             {
-                sourceCache.AddOrUpdate(additive with
-                {
-                    IsSelected = false
-                });
+                additive.IsSelected = false;
+                sourceCache.AddOrUpdate(additive);
             }
         }
 
@@ -776,16 +783,13 @@ internal class OrderEditService(
     {
         this.ThrowIfNotInitialized();
 
-        foreach (var shoppingListItem in SelectedShoppingListItems.Items)
+        foreach (var shoppingListItem in SelectedShoppingListItems.Values)
         {
 
             if (shoppingListItem is ProductShoppingListItemDto shoppingListItemDto)
             {
-
-                ShoppingListItems.AddOrUpdate(shoppingListItemDto with
-                {
-                    IsSelected = false
-                });
+                shoppingListItemDto.IsSelected = false;
+                ShoppingListItems.AddOrUpdate(shoppingListItemDto);
             }
 
             if (shoppingListItem is AdditiveShoppingListItemDto additive)
@@ -793,16 +797,12 @@ internal class OrderEditService(
 
                 if (_additivesInProductDto.TryGetValue(additive.ContainingProduct.Id, out var sourceCache))
                 {
-
-                    sourceCache.AddOrUpdate(additive with
-                    {
-                        IsSelected = false
-                    });
+                    additive.IsSelected = false;
+                    sourceCache.AddOrUpdate(additive);
                 }
             }
         }
         SelectedShoppingListItems.Clear();
-        AdditivesForSelectedProduct.Clear();
     }
 
     public async Task AddAdditiveToSelectedProducts(Guid additiveId)
@@ -817,7 +817,7 @@ internal class OrderEditService(
             throw new InvalidOperationException($"Additive with id {additiveId} not found.");
         }
 
-        foreach (var shoppingListItem in SelectedShoppingListItems.Items)
+        foreach (var shoppingListItem in SelectedShoppingListItems.Values)
         {
             if (additive.ProductIds.Contains(shoppingListItem.ItemId) &&
                 shoppingListItem is ProductShoppingListItemDto product)
@@ -842,7 +842,7 @@ internal class OrderEditService(
     {
         this.ThrowIfNotInitialized();
 
-        return SelectedShoppingListItems.Items.Select(x => x.Id)
+        return SelectedShoppingListItems.Values.Select(x => x.Id)
             .Where(_additivesInProductDto.ContainsKey)
             .Select(id => _additivesInProductDto[id].Values)
             .Any(x => x.Any(additive => additive.ItemId == additiveId));
@@ -917,15 +917,12 @@ internal class OrderEditService(
         this.ThrowIfNotInitialized();
 
 
-        foreach (var shoppingListItem in SelectedShoppingListItems.Items)
+        foreach (var shoppingListItem in SelectedShoppingListItems.Values)
         {
 
             if (shoppingListItem is ProductShoppingListItemDto product)
             {
-                product = product with
-                {
-                    AdditiveInfo = comment
-                };
+                product.AdditiveInfo = comment;
                 ShoppingListItems.AddOrUpdate(product);
                 SelectedShoppingListItems.AddOrUpdate(product);
             }
@@ -945,7 +942,7 @@ internal class OrderEditService(
     {
         this.ThrowIfNotInitialized();
 
-        foreach (var shoppingListItem in SelectedShoppingListItems.Items)
+        foreach (var shoppingListItem in SelectedShoppingListItems.Values)
         {
             if (shoppingListItem is ProductShoppingListItemDto product)
             {
@@ -958,7 +955,7 @@ internal class OrderEditService(
     {
         this.ThrowIfNotInitialized();
 
-        foreach (var shoppingListItem in SelectedShoppingListItems.Items)
+        foreach (var shoppingListItem in SelectedShoppingListItems.Values)
         {
 
             if (shoppingListItem is ProductShoppingListItemDto product)
@@ -971,8 +968,9 @@ internal class OrderEditService(
     public async Task RemoveSelectedProductShoppingListItem()
     {
         this.ThrowIfNotInitialized();
+        var needRemove = SelectedShoppingListItems.Values.ToList();
 
-        foreach (var shoppingListItem in SelectedShoppingListItems.Items)
+        foreach (var shoppingListItem in needRemove)
         {
             if (shoppingListItem is ProductShoppingListItemDto product)
             {
@@ -1023,12 +1021,9 @@ internal class OrderEditService(
         }
 
         await productService.DecreaseProductCount(product.Id, count);
-        var increased = item with
-        {
-            Count = item.Count + count
-        };
-        ShoppingListItems.AddOrUpdate(increased);
-        SelectedShoppingListItems.AddOrUpdate(increased);
+        item.Count += count;
+        ShoppingListItems.AddOrUpdate(item);
+        SelectedShoppingListItems.AddOrUpdate(item);
     }
 
     public async Task DecreaseProductShoppingListItem(ProductShoppingListItemDto item, double count)
@@ -1042,7 +1037,7 @@ internal class OrderEditService(
             throw new InvalidOperationException($"Product with id {item.ItemId} not found.");
         }
 
-        if (item.Count <= 1)
+        if (item.Count <= count)
         {
             await RemoveProductShoppingListItem(item);
             return;
@@ -1050,12 +1045,9 @@ internal class OrderEditService(
 
         await productService.IncreaseProductCount(product.Id, count);
 
-        var decreased = item with
-        {
-            Count = item.Count - count
-        };
-        ShoppingListItems.AddOrUpdate(decreased);
-        SelectedShoppingListItems.AddOrUpdate(decreased);
+        item.Count -= count;
+        ShoppingListItems.AddOrUpdate(item);
+        SelectedShoppingListItems.AddOrUpdate(item);
     }
 
     /// <summary>
@@ -1093,7 +1085,7 @@ internal class OrderEditService(
         var order = CreateOrGetOrder();
 
         order.Comment = _totalComment!;
-        order.Products = ShoppingListItems.Items.Select(x =>
+        order.Products = ShoppingListItems.Values.Select(x =>
         {
             var product = Mapper.MapShoppingListItemToOrderedProductDto(x);
 

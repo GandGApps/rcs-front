@@ -11,26 +11,24 @@ using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
 using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
+using Kassa.DataAccess.Model;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.RxUI;
-public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListItem, IReactiveToChangeSet<Guid, ProductShoppingListItemDto>
+public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListItem, IApplicationModelPresenter<ProductShoppingListItemDto>, IModel
 {
     private readonly CompositeDisposable _disposables = [];
 
-    public Guid Id
-    {
-        get; set;
-    }
-
-    public ProductShoppingListItemViewModel(ProductShoppingListItemDto product, IOrderEditService order)
+    public ProductShoppingListItemViewModel(ProductShoppingListItemDto product, IApplicationModelManager<ProductShoppingListItemDto> manager, IOrderEditService order)
     {
         Source = product;
         _source = product;
+        Id = product.Id;
 
         if (order.IsInitialized)
         {
@@ -47,19 +45,23 @@ public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListIte
             .Subscribe(x =>
             {
 
-            });
+            })
+            .DisposeWith(_disposables);
 
         this.WhenAnyValue(x => x.AdditiveInfo)
             .Select(x => !string.IsNullOrEmpty(x))
-            .Subscribe(x => HasAdditiveInfo = x);
+            .Subscribe(x => HasAdditiveInfo = x)
+            .DisposeWith(_disposables);
 
         this.WhenAnyValue(x => x.Count, x => x.Price, x => x.AddictiveSubtotalSum)
             .Select(x => (x.Item1 * x.Item2) + x.Item3)
-            .Subscribe(x => SubtotalSum = x);
+            .Subscribe(x => SubtotalSum = x)
+            .DisposeWith(_disposables);
 
         this.WhenAnyValue(x => x.Count, x => x.Price, x => x.AddictiveTotalSum)
             .Select(x => ((x.Item1 * x.Item2) + x.Item3) * (1 -  Discount))
-            .Subscribe(x => TotalSum = x);
+            .Subscribe(x => TotalSum = x)
+            .DisposeWith(_disposables);
 
         Additives
             .ToObservableChangeSet()
@@ -67,19 +69,35 @@ public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListIte
             .AutoRefresh(x => x.Count)
             .ToCollection()
             .Select(list => list.Sum(item => item.Price))
-            .Subscribe(x => AddictiveSubtotalSum = x);
+            .Subscribe(x => AddictiveSubtotalSum = x)
+            .DisposeWith(_disposables);
 
         Additives
             .ToObservableChangeSet()
             .ToCollection()
             .Select(list => list.Sum(item => item.Price))
-            .Subscribe(x => AddictiveTotalSum = x);
+            .Subscribe(x => AddictiveTotalSum = x)
+            .DisposeWith(_disposables);
 
 
         RemoveCommand = ReactiveCommand.CreateFromTask(async () =>
         {
 
-        });
+        }).DisposeWith(_disposables); ;
+
+        manager.AddPresenter(this)
+            .DisposeWith(_disposables);
+    }
+
+    public Guid Id
+    {
+        get;
+    }
+
+    [Reactive]
+    public Guid ItemId
+    {
+        get; set;
     }
 
     [Reactive]
@@ -194,6 +212,13 @@ public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListIte
 
     public IShoppingListItemDto SourceDto => Source;
 
+    public void ModelChanged(BuisnessLogic.ApplicationModelManagers.Change<ProductShoppingListItemDto> change)
+    {
+        var model = change.Current;
+
+        Update(model);
+    }
+
     private void Update(ProductShoppingListItemDto product)
     {
         Count = product.Count;
@@ -201,9 +226,11 @@ public class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListIte
         Measure = product.Measure;
         Name = product.Name;
         CurrencySymbol = product.CurrencySymbol;
-        Id = product.ItemId;
+        ItemId = product.ItemId;
         IsSelected = product.IsSelected;
         AdditiveInfo = product.AdditiveInfo;
         HasAdditiveInfo = !string.IsNullOrEmpty(product.AdditiveInfo);
     }
+
+    public void Dispose() => _disposables.Dispose();
 }

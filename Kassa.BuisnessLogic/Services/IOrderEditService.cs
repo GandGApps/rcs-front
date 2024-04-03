@@ -5,6 +5,7 @@ using DynamicData;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess;
+using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Services;
 public interface IOrderEditService : IInitializableService, INotifyPropertyChanged
@@ -47,7 +48,7 @@ public interface IOrderEditService : IInitializableService, INotifyPropertyChang
     /// <param name="categoryItems"></param>
     /// <returns></returns>
     public IDisposable BindSelectedCategoryItems(out ReadOnlyObservableCollection<ICategoryItemDto> categoryItems);
-    public IDisposable BindShoppingListItems<T>(Func<ProductShoppingListItemDto, T> creator, out ReadOnlyObservableCollection<T> shoppingListItems) where T : class, IReactiveToChangeSet<Guid, ProductShoppingListItemDto>;
+    public IDisposable BindShoppingListItems<T>(Func<ProductShoppingListItemDto, IApplicationModelManager<ProductShoppingListItemDto>, T> creator, out ReadOnlyObservableCollection<T> shoppingListItems) where T : class, IModel;
     public IDisposable BindSelectedShoppingListItems(out ReadOnlyObservableCollection<IShoppingListItemDto> shoppingListItems);
     public IDisposable BindAdditivesForSelectedProduct<T>(Func<AdditiveDto,T> creator, out ReadOnlyObservableCollection<T> additives) where T : class, IReactiveToChangeSet<Guid, AdditiveDto>;
     public IDisposable BindAdditivesForProductShoppingListItem<T>(ProductShoppingListItemDto item, Func<AdditiveShoppingListItemDto, IApplicationModelManager<AdditiveShoppingListItemDto>, T> creator, out ReadOnlyObservableCollection<T> additives) where T : class, IApplicationModelPresenter<AdditiveShoppingListItemDto>;
