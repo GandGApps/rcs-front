@@ -70,7 +70,7 @@ public class MainPageVm : PageViewModel
         GoToCashier = ReactiveCommand.CreateFromTask(async () =>
         {
             var cashierService = await Locator.GetInitializedService<ICashierService>();
-            var order = await cashierService.CreateOrder();
+            var order = await cashierService.CreateOrder(false);
             var additveService = await Locator.GetInitializedService<IAdditiveService>();
 
             await cashierService.SelectCurrentOrder(order);

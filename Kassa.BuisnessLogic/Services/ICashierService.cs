@@ -19,7 +19,7 @@ public interface ICashierService : IInitializableService
         get;
     }
 
-    public ValueTask<IOrderEditService> CreateOrder();
+    public ValueTask<IOrderEditService> CreateOrder(bool isDelivery);
     public ValueTask<IOrderEditService> CreateOrder(OrderDto order);
     public ValueTask<ICashierPaymentService> CreatePayment(IOrderEditService order);
 

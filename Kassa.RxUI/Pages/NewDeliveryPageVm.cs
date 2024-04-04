@@ -2,9 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
@@ -15,14 +17,20 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Pages;
 public class NewDeliveryPageVm : PageViewModel
 {
+    private IOrderEditService _orderEdit = null!;
+    private readonly ICashierService _cashierService;
+    private readonly IAdditiveService _additiveService;
 
-    public NewDeliveryPageVm() : this(null)
+    public NewDeliveryPageVm(ICashierService cashierService, IAdditiveService additiveService) : this(cashierService, additiveService, null)
     {
         IsNewClient = true;
     }
 
-    public NewDeliveryPageVm(ClientViewModel? clientViewModel)
+    public NewDeliveryPageVm(ICashierService cashierService, IAdditiveService additiveService, ClientViewModel? clientViewModel)
     {
+        _cashierService = cashierService;
+        _additiveService = additiveService;
+
         DeliveryId = Guid.NewGuid();
         Client = clientViewModel;
 
@@ -64,17 +72,46 @@ public class NewDeliveryPageVm : PageViewModel
 
             await MainViewModel.ShowDialogAndWaitClose(streetDialog);
 
-            if(streetDialog.SelectedItem is null)
+            if (streetDialog.SelectedItem is null)
             {
                 return;
             }
 
             District = districtDialog.SelectedItem;
             Street = streetDialog.SelectedItem;
-        });
+        }).DisposeWith(InternalDisposables);
+
+        SwitchOrderCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            if (!IsOrderEditOpened)
+            {
+                await MainViewModel.Router.NavigateBack.Execute().FirstAsync();
+                return;
+            }
+
+            await MainViewModel.Router.Navigate.Execute(OrderEditPageVm).FirstAsync();
+
+        }).DisposeWith(InternalDisposables);
+
+        BackButtonCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            while (MainViewModel.Router.NavigationStack[^1] is not AllDeliveriesPageVm)
+            {
+                await MainViewModel.GoBackCommand.Execute().FirstAsync();
+            }
+
+        }).DisposeWith(InternalDisposables);
     }
 
+    public new CompositeDisposable InternalDisposables => base.InternalDisposables;
+
     public Guid DeliveryId
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public bool IsOrderEditOpened
     {
         get; set;
     }
@@ -221,8 +258,49 @@ public class NewDeliveryPageVm : PageViewModel
         get;
     }
 
+    [Reactive]
+    public bool IsOutOfTurn
+    {
+        get; set;
+    }
+
     public ReactiveCommand<Unit, Unit> SelectDistrictAndStreetCommand
     {
         get;
+    }
+
+    public ReactiveCommand<Unit, Unit> SwitchOrderCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> BackButtonCommand
+    {
+        get;
+    }
+
+    [Reactive]
+    public NewDeliveryOrderEditPageVm OrderEditPageVm
+    {
+        get; set;
+    } = null!;
+
+    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    {
+        var cashierService = await Locator.GetInitializedService<ICashierService>();
+
+        _orderEdit = await cashierService.CreateOrder(true);
+        await cashierService.SelectCurrentOrder(_orderEdit);
+
+        OrderEditPageVm = new NewDeliveryOrderEditPageVm(_orderEdit, _cashierService, _additiveService);
+
+        await OrderEditPageVm.InitializeAsync();
+
+        Disposable.Create(() =>
+        {
+            _orderEdit.Dispose();
+            OrderEditPageVm.Dispose();
+        }).DisposeWith(disposables);
+
     }
 }

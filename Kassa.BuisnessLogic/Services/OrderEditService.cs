@@ -119,6 +119,12 @@ internal class OrderEditService(
         set;
     } = 1;
 
+    public bool IsDelivery
+    {
+        get;
+        set;
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public IDisposable BindSelectedCategoryItems(out ReadOnlyObservableCollection<ICategoryItemDto> categoryItems)

@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
+using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Pages;
@@ -30,7 +31,10 @@ public class AllClientsDialogViewModel : SearchableDialogViewModel<ClientDto, Cl
 
         SkipCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var newDeliveryPageVm = new NewDeliveryPageVm(null)
+            var cashierService = await Locator.GetInitializedService<ICashierService>();
+            var additiveService = await Locator.GetInitializedService<IAdditiveService>();
+
+            var newDeliveryPageVm = new NewDeliveryPageVm(cashierService, additiveService,null)
             {
                 IsPickup = IsPickup,
                 IsDelivery = IsDelivery
@@ -43,7 +47,10 @@ public class AllClientsDialogViewModel : SearchableDialogViewModel<ClientDto, Cl
 
         OkCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var newDeliveryPageVm = new NewDeliveryPageVm(SelectedItem)
+            var cashierService = await Locator.GetInitializedService<ICashierService>();
+            var additiveService = await Locator.GetInitializedService<IAdditiveService>();
+
+            var newDeliveryPageVm = new NewDeliveryPageVm(cashierService, additiveService, SelectedItem)
             {
                 IsPickup = IsPickup,
                 IsDelivery = IsDelivery
@@ -57,7 +64,10 @@ public class AllClientsDialogViewModel : SearchableDialogViewModel<ClientDto, Cl
 
         NewGuestCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var newClientPageVm = new NewDeliveryPageVm()
+            var cashierService = await Locator.GetInitializedService<ICashierService>();
+            var additiveService = await Locator.GetInitializedService<IAdditiveService>();
+
+            var newClientPageVm = new NewDeliveryPageVm(cashierService,additiveService)
             {
                 IsPickup = IsPickup,
                 IsDelivery = IsDelivery

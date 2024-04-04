@@ -50,6 +50,11 @@ public class Order : IModel
         get; set;
     }
 
+    public bool IsPickup
+    {
+        get; set;
+    }
+
     public string Comment
     {
         get; set;
@@ -64,4 +69,5 @@ public class Order : IModel
     {
         get; set;
     }
+
 }

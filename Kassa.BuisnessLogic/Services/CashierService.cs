@@ -38,9 +38,13 @@ internal class CashierService : BaseInitializableService, ICashierService
         _receiptService = receiptService;
     }
 
-    public async ValueTask<IOrderEditService> CreateOrder()
+    public async ValueTask<IOrderEditService> CreateOrder(bool isDelivery)
     {
-        var order = new OrderEditService(_productService, _categoryService, _additiveService, _receiptService);
+        var order = new OrderEditService(_productService, _categoryService, _additiveService, _receiptService)
+        {
+            IsDelivery = isDelivery
+        };
+
         await order.Initialize();
 
         order.DisposeWith(InternalDisposables);
@@ -51,7 +55,10 @@ internal class CashierService : BaseInitializableService, ICashierService
 
     public async ValueTask<IOrderEditService> CreateOrder(OrderDto order)
     {
-        var orderService = new OrderEditService(_productService, _categoryService, _additiveService, _receiptService, order);
+        var orderService = new OrderEditService(_productService, _categoryService, _additiveService, _receiptService, order)
+        {
+            IsDelivery = order.IsDelivery
+        };
 
         await orderService.Initialize();
 

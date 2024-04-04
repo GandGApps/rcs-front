@@ -32,7 +32,8 @@
                         VerticalAlignment="{TemplateBinding VerticalAlignment}"
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        ClipToBounds="True">
                         <ContentPresenter
                             HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                             VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
@@ -74,14 +75,12 @@
         x:Key="Header"
         BasedOn="{StaticResource {x:Type TextBlock}}"
         TargetType="TextBlock">
-        <Setter Property="FontSize" Value="28" />
+        <Setter Property="FontSize" Value="26" />
         <Setter Property="FontWeight" Value="Medium" />
-        <Setter Property="LineHeight" Value="39" />
 
         <Style.Triggers>
             <DataTrigger Binding="{mx:AdaptiveMarkup Breakpoint=Medium}" Value="True">
-                <Setter Property="FontSize" Value="20" />
-                <Setter Property="LineHeight" Value="27" />
+                <Setter Property="FontSize" Value="18" />
             </DataTrigger>
         </Style.Triggers>
     </Style>
@@ -765,6 +764,99 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
+    </Style>
+
+    <Style x:Key="EllipseStatus" TargetType="Ellipse">
+        <Setter Property="Width" Value="{mx:AdaptiveSize 30}" />
+        <Setter Property="Height" Value="{mx:AdaptiveSize 30}" />
+        <Setter Property="Stroke" Value="{DynamicResource AlternateForeground}" />
+        <Setter Property="StrokeThickness" Value="{mx:AdaptiveSize 2}" />
+    </Style>
+
+    <Style
+        x:Key="EllipseStatusTextBlock"
+        BasedOn="{StaticResource PrimaryTextBlock}"
+        TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 14}" />
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Foreground" Value="{DynamicResource AlternateForeground}" />
+    </Style>
+
+    <Style
+        x:Key="StatusTextBlock"
+        BasedOn="{StaticResource PrimaryTextBlock}"
+        TargetType="TextBlock">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 13}" />
+        <Setter Property="Foreground" Value="{DynamicResource AlternateForeground}" />
+        <Setter Property="Margin" Value="0,2,0,0" />
+        <Setter Property="Grid.Row" Value="1" />
+    </Style>
+
+    <Style
+        x:Key="StatusEllipsedButton"
+        BasedOn="{StaticResource {x:Type local:ButtonWithCornerRaduis}}"
+        TargetType="local:ButtonWithCornerRaduis">
+        <Setter Property="Background" Value="{StaticResource ClickableBg}" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="VerticalContentAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius=5}" />
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='3'}" />
+        <Setter Property="Margin" Value="0" />
+        <Setter Property="Width" Value="{mx:AdaptiveSize 105}" />
+
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:ButtonWithCornerRaduis">
+                    <Border
+                        Padding="{TemplateBinding Padding}"
+                        Background="{TemplateBinding Background}"
+                        ClipToBounds="True"
+                        CornerRadius="{TemplateBinding CornerRadius}">
+
+                        <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style BasedOn="{StaticResource StatusEllipsedButton}" TargetType="local:StatusEllipsedButton" />
+
+    <Style
+        x:Key="TopIconnedButton"
+        BasedOn="{StaticResource StatusEllipsedButton}"
+        TargetType="local:ButtonWithCornerRaduis">
+        <Setter Property="Width" Value="{mx:AdaptiveSize 150}" />
+    </Style>
+
+    <Style
+        x:Key="LeftSmallIcon"
+        BasedOn="{StaticResource {x:Type Path}}"
+        TargetType="Path">
+        <Setter Property="Width" Value="{mx:AdaptiveSize 19}" />
+        <Setter Property="Height" Value="{mx:AdaptiveSize 19}" />
+        <Setter Property="Fill" Value="{DynamicResource AlternateForeground}" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+        <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='0,0,5,0'}"/>
+    </Style>
+
+    <Style
+        x:Key="RightIcon"
+        BasedOn="{StaticResource {x:Type Path}}"
+        TargetType="Path">
+        <Setter Property="Width" Value="{mx:AdaptiveSize 23}" />
+        <Setter Property="Height" Value="{mx:AdaptiveSize 23}" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="VerticalAlignment" Value="Bottom" />
+        <Setter Property="Grid.Column" Value="1" />
+        <Setter Property="Fill" Value="{DynamicResource AlternateForeground}" />
     </Style>
 
 </ResourceDictionary>

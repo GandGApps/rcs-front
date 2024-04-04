@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kassa.RxUI.Dialogs;
 using Kassa.RxUI.Pages;
 using ReactiveUI;
 
@@ -28,6 +29,11 @@ public partial class NewDeliveryPage : ReactiveUserControl<NewDeliveryPageVm>
 
         this.WhenActivated(disposables =>
         {
+            if (ViewModel is null)
+            {
+                throw new InvalidOperationException("ViewModel is null");
+            }
+
             this.Bind(ViewModel, vm => vm.NameWithMiddleName, v => v.FullName.Text)
                 .DisposeWith(disposables);
 
@@ -81,6 +87,23 @@ public partial class NewDeliveryPage : ReactiveUserControl<NewDeliveryPageVm>
 
             this.OneWayBind(ViewModel, vm => vm.Street, v => v.StreetName.Text, s => s is null || string.IsNullOrWhiteSpace(s.Name) ? "Не задана" : s.Name)
                 .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, vm => vm.OrderEditPageVm!.ShoppingList!.Total, v => v.Price.Text, x => $"{x.ToString("0.##", QuantityVolumeDialogVewModel.RuCultureInfo)} ₽")
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, x => x.OrderEditPageVm!.ShoppingListItems, x => x.ShoppingListItems.ItemsSource)
+                .DisposeWith(disposables);
+
+
+            this.Bind(ViewModel, vm => vm.IsOrderEditOpened, v => v.SwitchOrderEdit.IsChecked)
+                .DisposeWith(ViewModel.InternalDisposables);
+
+            this.Bind(ViewModel, vm => vm.IsOutOfTurn, v => v.IsOutOfTurn.IsChecked)
+                .DisposeWith(ViewModel.InternalDisposables);
+
+
+            SwitchOrderEdit.Command = ViewModel.SwitchOrderCommand;
+            BackButton.Command = ViewModel.BackButtonCommand;
         });
     }
 }

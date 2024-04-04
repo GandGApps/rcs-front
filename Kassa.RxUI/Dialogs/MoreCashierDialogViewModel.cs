@@ -10,9 +10,9 @@ using ReactiveUI;
 namespace Kassa.RxUI.Dialogs;
 public class MoreCashierDialogViewModel: DialogViewModel
 {
-    public MoreCashierDialogViewModel(OrderEditPageVm cashierVm) :base()
+    public MoreCashierDialogViewModel(IOrderEditVm orderEditVm) :base()
     {
-        AddCommentCommand = cashierVm.CreateCommentCommand;
+        AddCommentCommand = orderEditVm.CreateCommentCommand;
     }
 
     public ReactiveCommand<Unit, Unit> AddCommentCommand

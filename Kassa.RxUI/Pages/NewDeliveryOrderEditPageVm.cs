@@ -1,27 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.Diagnostics;
 using System.Linq;
-using System.Reactive;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
+using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
-using DynamicData;
-using DynamicData.Binding;
-using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
-using Kassa.DataAccess;
-using Kassa.RxUI.Dialogs;
-using ReactiveUI;
+using Kassa.BuisnessLogic;
 using ReactiveUI.Fody.Helpers;
-using Splat;
+using ReactiveUI;
+using DynamicData.Binding;
+using Kassa.RxUI.Dialogs;
+using System.Reactive.Linq;
+using DynamicData;
 
 namespace Kassa.RxUI.Pages;
-public class OrderEditPageVm : PageViewModel, IOrderEditVm
+public sealed class NewDeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
 {
     private readonly IOrderEditService _order;
     private readonly ICashierService _cashierService;
@@ -29,7 +25,7 @@ public class OrderEditPageVm : PageViewModel, IOrderEditVm
 
     private Action<bool>? _isMultiSelectSetter;
 
-    public OrderEditPageVm(IOrderEditService order, ICashierService cashierService, IAdditiveService additiveService)
+    public NewDeliveryOrderEditPageVm(IOrderEditService order, ICashierService cashierService, IAdditiveService additiveService)
     {
         _order = order;
         _cashierService = cashierService;
@@ -135,14 +131,6 @@ public class OrderEditPageVm : PageViewModel, IOrderEditVm
             await dialog.WaitDialogClose();
         });
 
-        GoToPaymentCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            var payment = await _cashierService.CreatePayment(order);
-            var paymentPage = new CashierPaymentPageVm(payment);
-
-            MainViewModel.GoToPageCommand.Execute(paymentPage).Subscribe();
-        });
-
         OpenQuantityVolumeDialogCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             if (ShoppingListItems == null)
@@ -183,10 +171,6 @@ public class OrderEditPageVm : PageViewModel, IOrderEditVm
 
 
             await dialog.WaitDialogClose();
-        });
-
-        GoToAllOrdersCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
         });
     }
 
@@ -342,16 +326,6 @@ public class OrderEditPageVm : PageViewModel, IOrderEditVm
     }
 
     public ReactiveCommand<Unit, Unit> OpenDiscountsAndSurchargesDialog
-    {
-        get;
-    }
-
-    public ReactiveCommand<Unit, Unit> GoToPaymentCommand
-    {
-        get;
-    }
-
-    public ReactiveCommand<Unit, Unit> GoToAllOrdersCommand
     {
         get;
     }

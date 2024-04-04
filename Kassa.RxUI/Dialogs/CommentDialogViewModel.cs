@@ -11,9 +11,9 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Dialogs;
 public class CommentDialogViewModel : DialogViewModel
 {
-    public CommentDialogViewModel(OrderEditPageVm cashierVm) : base()
+    public CommentDialogViewModel(IOrderEditVm orderEditVm) : base()
     {
-        CashierVm = cashierVm;
+        OrderEditVm = orderEditVm;
 
 
         PublishCommentCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -26,7 +26,7 @@ public class CommentDialogViewModel : DialogViewModel
         });
     }
 
-    public OrderEditPageVm CashierVm
+    public IOrderEditVm OrderEditVm
     {
         get;
     }

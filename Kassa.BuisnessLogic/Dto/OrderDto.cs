@@ -72,6 +72,11 @@ public class OrderDto
         get; set;
     }
 
+    public bool IsDelivery
+    {
+        get; set;
+    }
+
     public Guid? ClientId
     {
         get; set;

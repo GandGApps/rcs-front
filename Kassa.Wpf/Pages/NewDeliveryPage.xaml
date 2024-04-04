@@ -11,6 +11,8 @@
     xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     xmlns:rxui="http://reactiveui.net"
     xmlns:vm="clr-namespace:Kassa.RxUI.Pages;assembly=Kassa.RxUI"
+    xmlns:wnd="clr-namespace:Kassa.Wpf"
+    Padding="{mx:AdaptiveSize Thickness='0,0,0,60'}"
     d:DataContext="{d:DesignInstance Type=vm:NewDeliveryPageVm}"
     d:DesignHeight="740"
     d:DesignWidth="1560"
@@ -20,6 +22,9 @@
 
     <UserControl.Resources>
 
+        <CornerRadius x:Key="LeftSideCornerRadius">11,0,0,11</CornerRadius>
+        <CornerRadius x:Key="RightSideCornerRadius">0,11,11,0</CornerRadius>
+
         <Style x:Key="Part" TargetType="Border">
             <Setter Property="BorderBrush" Value="{DynamicResource AlternateForeground}" />
             <Setter Property="Grid.Row" Value="1" />
@@ -27,7 +32,7 @@
 
         <Style x:Key="HeaderPart" TargetType="Border">
             <Setter Property="Background" Value="{DynamicResource SurfaceBrush}" />
-            <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='12'}" />
+            <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='8'}" />
         </Style>
 
         <Style
@@ -43,7 +48,7 @@
             <Setter Property="HorizontalAlignment" Value="Center" />
             <Setter Property="VerticalAlignment" Value="Center" />
             <Setter Property="Foreground" Value="{DynamicResource PrimaryForeground}" />
-            <Setter Property="FontSize" Value="{mx:AdaptiveSize 15}" />
+            <Setter Property="FontSize" Value="{mx:AdaptiveSize 12}" />
             <Setter Property="FontFamily" Value="{StaticResource Montseratt}" />
             <Setter Property="TextAlignment" Value="Center" />
             <Setter Property="TextWrapping" Value="Wrap" />
@@ -53,7 +58,7 @@
             <Setter Property="OverridesDefaultStyle" Value="True" />
             <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius='11'}" />
             <Setter Property="Background" Value="{DynamicResource AlternateForeground}" />
-            <Setter Property="Height" Value="{mx:AdaptiveSize 72}" />
+            <Setter Property="Height" Value="{mx:AdaptiveSize 57}" />
             <Setter Property="Padding" Value="0" />
             <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='0,0,0,5'}" />
             <Setter Property="ClipToBounds" Value="True" />
@@ -82,10 +87,10 @@
                                 </Grid.ColumnDefinitions>
 
                                 <Border
-                                    Width="{mx:AdaptiveSize 90}"
-                                    Height="{mx:AdaptiveSize 72}"
+                                    Width="{mx:AdaptiveSize 71}"
+                                    Height="{mx:AdaptiveSize 57}"
                                     Background="{DynamicResource AlternateBackground}"
-                                    CornerRadius="{mx:AdaptiveSize CornerRadius='11,0,0,11'}">
+                                    CornerRadius="{mx:AdaptiveSize CornerRadius={StaticResource LeftSideCornerRadius}}">
                                     <TextBlock
                                         Grid.Column="0"
                                         Style="{StaticResource LabelTextBlock}"
@@ -95,17 +100,17 @@
                                 <ctrl:TextBoxWithoutVirtualKeyboard
                                     x:Name="Input"
                                     Grid.Column="1"
-                                    Margin="{mx:AdaptiveSize Thickness='10,20,10,20'}"
-                                    FontSize="{mx:AdaptiveSize 21}"
+                                    Margin="{mx:AdaptiveSize Thickness='8,16,8,16'}"
+                                    FontSize="{mx:AdaptiveSize 17.2}"
                                     Style="{StaticResource SearchTextBox}"
                                     Text="{TemplateBinding Text}" />
 
                                 <TextBlock
                                     x:Name="Placeholder"
                                     Grid.Column="1"
-                                    Margin="{mx:AdaptiveSize Thickness='10,20,10,20'}"
+                                    Margin="{mx:AdaptiveSize Thickness='8,16,8,16'}"
                                     VerticalAlignment="Center"
-                                    FontSize="{mx:AdaptiveSize 21}"
+                                    FontSize="{mx:AdaptiveSize 17.2}"
                                     IsHitTestVisible="False"
                                     Opacity="0.5"
                                     Text="{TemplateBinding Placeholder}" />
@@ -117,23 +122,43 @@
             </Setter>
         </Style>
 
-        <Style x:Key="EmptyButton" TargetType="Button">
+        <Style x:Key="BorderClientInfo" TargetType="Border">
+            <Setter Property="Background" Value="{DynamicResource AlternateBackground}" />
+            <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius={StaticResource LeftSideCornerRadius}}" />
+            <Setter Property="Height" Value="{mx:AdaptiveSize 57}" />
+            <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='0,0,0,5'}" />
+        </Style>
+
+        <Style
+            x:Key="WideBorderClientInfo"
+            BasedOn="{StaticResource BorderClientInfo}"
+            TargetType="Border">
+            <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius='11'}" />
+        </Style>
+
+        <Style BasedOn="{StaticResource {x:Type ctrl:ButtonWithCornerRaduis}}" TargetType="ctrl:ButtonWithCornerRaduis">
             <Setter Property="Background" Value="{StaticResource ClickableBg}" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="BorderThickness" Value="0" />
+            <Setter Property="CornerRadius" Value="0" />
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="0" />
+
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <ContentPresenter Content="{TemplateBinding Content}" />
+                    <ControlTemplate TargetType="ctrl:ButtonWithCornerRaduis">
+                        <Border
+                            Padding="{TemplateBinding Padding}"
+                            Background="{TemplateBinding Background}"
+                            ClipToBounds="True"
+                            CornerRadius="{TemplateBinding CornerRadius}">
+
+                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                        </Border>
                     </ControlTemplate>
                 </Setter.Value>
             </Setter>
-        </Style>
-
-        <Style x:Key="BorderClientInfo" TargetType="Border">
-            <Setter Property="Background" Value="{DynamicResource AlternateBackground}" />
-            <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius='11,0,0,11'}" />
-            <Setter Property="Height" Value="{mx:AdaptiveSize 72}" />
-            <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='0,0,0,5'}" />
-
         </Style>
 
     </UserControl.Resources>
@@ -225,6 +250,7 @@
                 <ScrollViewer
                     x:Name="ScrollViewerForShoppingListItems"
                     Grid.Row="1"
+                    Margin="{mx:AdaptiveSize Thickness='6,0,17,0'}"
                     Style="{StaticResource PrimaryScrollViewer}"
                     VerticalScrollBarVisibility="Auto">
 
@@ -234,6 +260,36 @@
 
                     <ItemsControl x:Name="ShoppingListItems" Margin="0,11,0,0" />
                 </ScrollViewer>
+
+                <Border
+                    Grid.Row="2"
+                    Margin="{mx:AdaptiveSize Thickness='0,0,17,0'}"
+                    Padding="{mx:AdaptiveSize Thickness='16,8,14,10'}"
+                    Background="{StaticResource AccentBrush}"
+                    CornerRadius="0,11,0,0">
+                    <Grid>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+
+                        <TextBlock
+                            VerticalAlignment="Center"
+                            Foreground="{StaticResource AlternateForeground}"
+                            Style="{StaticResource Header2}"
+                            Text="Стоимость заказа" />
+
+                        <TextBlock
+                            x:Name="Price"
+                            Grid.Column="1"
+                            VerticalAlignment="Center"
+                            FontSize="{mx:AdaptiveSize 30}"
+                            FontWeight="Bold"
+                            Foreground="{StaticResource AlternateForeground}" />
+
+                    </Grid>
+                </Border>
 
             </Grid>
         </Border>
@@ -281,7 +337,7 @@
                         Label="Прочее"
                         Placeholder="Прочее" />
 
-                    <Border Style="{StaticResource BorderClientInfo}">
+                    <Border ClipToBounds="True" Style="{StaticResource WideBorderClientInfo}">
                         <Grid>
 
                             <Grid.ColumnDefinitions>
@@ -290,17 +346,17 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <Button Grid.Column="0" Style="{StaticResource EmptyButton}">
+                            <ctrl:ButtonWithCornerRaduis Grid.Column="0" CornerRadius="{mx:AdaptiveSize CornerRadius={StaticResource LeftSideCornerRadius}}">
                                 <TextBlock Style="{StaticResource LabelTextBlock}" Text="Доп. инфо" />
-                            </Button>
+                            </ctrl:ButtonWithCornerRaduis>
 
-                            <Button Grid.Column="1" Style="{StaticResource EmptyButton}">
+                            <ctrl:ButtonWithCornerRaduis Grid.Column="1">
                                 <TextBlock Style="{StaticResource LabelTextBlock}" Text="Без сидки / цен.катег." />
-                            </Button>
+                            </ctrl:ButtonWithCornerRaduis>
 
-                            <Button Grid.Column="2" Style="{StaticResource EmptyButton}">
+                            <ctrl:ButtonWithCornerRaduis Grid.Column="2" CornerRadius="{mx:AdaptiveSize CornerRadius={StaticResource RightSideCornerRadius}}">
                                 <TextBlock Style="{StaticResource LabelTextBlock}" Text="Не в статусе “Высокий риск”" />
-                            </Button>
+                            </ctrl:ButtonWithCornerRaduis>
 
                         </Grid>
                     </Border>
@@ -332,7 +388,7 @@
 
                 <StackPanel Grid.Row="1" Margin="{mx:AdaptiveSize Thickness='15,10,8,9'}">
 
-                    <Border Style="{StaticResource BorderClientInfo}">
+                    <Border ClipToBounds="True" Style="{StaticResource WideBorderClientInfo}">
                         <Grid>
 
                             <Grid.ColumnDefinitions>
@@ -341,7 +397,7 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <Button Grid.Column="0" Style="{StaticResource EmptyButton}">
+                            <ctrl:ButtonWithCornerRaduis Grid.Column="0" CornerRadius="{mx:AdaptiveSize CornerRadius={StaticResource LeftSideCornerRadius}}">
                                 <TextBlock Style="{StaticResource LabelTextBlock}">
                                     <Run Text="Время:" />
                                     <LineBreak />
@@ -352,28 +408,28 @@
                                     <LineBreak />
                                     <Run x:Name="RelationTime" Text="(сегодня)" />
                                 </TextBlock>
-                            </Button>
+                            </ctrl:ButtonWithCornerRaduis>
 
-                            <Button Grid.Column="1" Style="{StaticResource EmptyButton}">
+                            <ctrl:ButtonWithCornerRaduis Grid.Column="1">
                                 <TextBlock Style="{StaticResource LabelTextBlock}">
                                     <Run Text="Тип заказа:" />
                                     <LineBreak />
                                     <Run x:Name="TypeOfOrder" FontWeight="SemiBold" />
                                 </TextBlock>
-                            </Button>
+                            </ctrl:ButtonWithCornerRaduis>
 
-                            <Button Grid.Column="2" Style="{StaticResource EmptyButton}">
+                            <ctrl:ButtonWithCornerRaduis Grid.Column="2" CornerRadius="{mx:AdaptiveSize CornerRadius={StaticResource RightSideCornerRadius}}">
                                 <TextBlock Style="{StaticResource LabelTextBlock}">
                                     <Run Text="Реклама:" />
                                     <LineBreak />
                                     <Run Text="Не задано" />
                                 </TextBlock>
-                            </Button>
+                            </ctrl:ButtonWithCornerRaduis>
 
                         </Grid>
                     </Border>
 
-                    <Border Style="{StaticResource BorderClientInfo}">
+                    <Border Style="{StaticResource WideBorderClientInfo}">
                         <Grid>
 
                             <Grid.ColumnDefinitions>
@@ -381,27 +437,27 @@
                                 <ColumnDefinition Width="*" />
                             </Grid.ColumnDefinitions>
 
-                            <Button
+                            <ctrl:ButtonWithCornerRaduis
                                 x:Name="SelectStreet"
                                 Grid.Column="0"
-                                Style="{StaticResource EmptyButton}">
+                                CornerRadius="{mx:AdaptiveSize CornerRadius={StaticResource LeftSideCornerRadius}}">
                                 <TextBlock Style="{StaticResource LabelTextBlock}">
                                     <Run Text="Улица:" />
                                     <LineBreak />
                                     <Run x:Name="StreetName" Text="Не задана" />
                                 </TextBlock>
-                            </Button>
+                            </ctrl:ButtonWithCornerRaduis>
 
-                            <Button
+                            <ctrl:ButtonWithCornerRaduis
                                 x:Name="SelectDistrict"
                                 Grid.Column="1"
-                                Style="{StaticResource EmptyButton}">
+                                CornerRadius="{mx:AdaptiveSize CornerRadius={StaticResource RightSideCornerRadius}}">
                                 <TextBlock Style="{StaticResource LabelTextBlock}">
                                     <Run Text="Район:" />
                                     <LineBreak />
                                     <Run x:Name="DistrictName" Text="Не задан" />
                                 </TextBlock>
-                            </Button>
+                            </ctrl:ButtonWithCornerRaduis>
 
                         </Grid>
                     </Border>
@@ -473,6 +529,193 @@
             </Grid>
         </Border>
 
+        <Border
+            Grid.Row="2"
+            Grid.ColumnSpan="3"
+            Padding="{mx:AdaptiveSize Thickness='50,15,50,30'}"
+            Background="{DynamicResource SecondaryBackground}">
+
+            <Grid Opacity="0.5">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+
+                <Grid Margin="{mx:AdaptiveSize Thickness='0,0,81,0'}">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <ctrl:ButtonWithCornerRaduis Style="{StaticResource TopIconnedButton}">
+                        <Grid>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                <Path Data="{StaticResource PhoneIcon}" Style="{StaticResource LeftSmallIcon}" />
+                                <Path Data="{StaticResource ClientIcon}" Style="{StaticResource RightIcon}" />
+                            </StackPanel>
+
+                            <TextBlock Style="{StaticResource StatusTextBlock}" Text="Позвонить клиенту" />
+
+                        </Grid>
+                    </ctrl:ButtonWithCornerRaduis>
+
+                    <ctrl:ButtonWithCornerRaduis Grid.Column="1" Style="{StaticResource TopIconnedButton}">
+                        <Grid>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*" />
+                            </Grid.ColumnDefinitions>
+
+                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                <Path Data="{StaticResource PhoneIcon}" Style="{StaticResource LeftSmallIcon}" />
+                                <Path
+                                    Width="{mx:AdaptiveSize 37}"
+                                    Data="{StaticResource DeliveryTruck}"
+                                    Style="{StaticResource RightIcon}" />
+                            </StackPanel>
+
+                            <TextBlock Style="{StaticResource StatusTextBlock}" Text="Позвонить курьеру" />
+
+                        </Grid>
+                    </ctrl:ButtonWithCornerRaduis>
+
+
+                </Grid>
+
+                <Grid Grid.Column="2">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+
+                    <ctrl:StatusEllipsedButton
+                        Grid.Column="0"
+                        EllipseText="0"
+                        StatusText="ОТМЕНИТЬ" />
+                    <ctrl:StatusEllipsedButton
+                        Grid.Column="1"
+                        EllipseText="1"
+                        StatusText="НЕПОДТВ." />
+                    <ctrl:StatusEllipsedButton
+                        Grid.Column="2"
+                        EllipseText="2"
+                        StatusText="ГОТОВИТЬ" />
+                    <ctrl:StatusEllipsedButton
+                        Grid.Column="3"
+                        EllipseText="3"
+                        StatusText="ОТПРАВИТЬ" />
+                    <ctrl:StatusEllipsedButton
+                        Grid.Column="4"
+                        EllipseText="4"
+                        StatusText="ДОСТАВЛ." />
+                    <ctrl:StatusEllipsedButton
+                        Grid.Column="5"
+                        EllipseText="5"
+                        StatusText="ЗАКРЫТЬ" />
+
+                </Grid>
+
+            </Grid>
+
+        </Border>
+
     </Grid>
+
+    <wnd:MainWindow.PageFooter>
+        <Grid>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <ctrl:ButtonWithCornerRaduis x:Name="BackButton" Style="{StaticResource BackButton}" />
+
+            <CheckBox
+                x:Name="SwitchOrderEdit"
+                Grid.Column="1"
+                Width="{mx:AdaptiveSize 165}"
+                Margin="{mx:AdaptiveSize Thickness='30,0,0,0'}"
+                Background="{StaticResource ClickableBg}"
+                Style="{StaticResource BorderToggleCheckbox}">
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Path
+                        Margin="{mx:AdaptiveSize Thickness='0,0,10,0'}"
+                        Data="{StaticResource CheckedOrderIcon}"
+                        Fill="{DynamicResource AlternateForeground}" />
+
+                    <TextBlock
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        FontSize="{mx:AdaptiveSize 14}"
+                        FontWeight="Medium"
+                        Foreground="{DynamicResource AlternateForeground}"
+                        Text="Доставка" />
+
+                </Grid>
+            </CheckBox>
+
+            <CheckBox
+                x:Name="IsOutOfTurn"
+                Grid.Column="2"
+                Width="{mx:AdaptiveSize 165}"
+                Margin="{mx:AdaptiveSize Thickness='15,0,0,0'}"
+                Background="{StaticResource ClickableBg}"
+                Style="{StaticResource BorderToggleCheckbox}">
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Path
+                        Margin="{mx:AdaptiveSize Thickness='0,0,10,0'}"
+                        Data="{StaticResource StarIcon}"
+                        Fill="{DynamicResource AlternateForeground}" />
+
+                    <TextBlock
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        FontSize="{mx:AdaptiveSize 14}"
+                        FontWeight="Medium"
+                        Foreground="{DynamicResource AlternateForeground}"
+                        Text="Вне очереди" />
+
+                </Grid>
+            </CheckBox>
+
+
+        </Grid>
+    </wnd:MainWindow.PageFooter>
 
 </rxui:ReactiveUserControl>
