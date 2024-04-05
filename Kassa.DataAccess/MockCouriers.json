@@ -1,0 +1,72 @@
+[
+  {
+    "Id": "7f679106-42e4-43aa-84f6-307c11b1ebc5",
+    "FirstName": "Ivan",
+    "LastName": "Petrov",
+    "MiddleName": "Sergeevich",
+    "Phone": "+288 331 497 48 71"
+  },
+  {
+    "Id": "8c0e1d0b-ff34-44a5-bec1-1e45b2fe634d",
+    "FirstName": "Elena",
+    "LastName": "Ivanova",
+    "MiddleName": "Petrovna",
+    "Phone": "+555 123 456 78 90"
+  },
+  {
+    "Id": "93b29f51-7816-4bae-b4b4-8f9c8fe4baf7",
+    "FirstName": "Dmitry",
+    "LastName": "Sidorov",
+    "MiddleName": "Nikolaevich",
+    "Phone": "+777 987 654 32 10"
+  },
+  {
+    "Id": "5d9f7b7e-4950-4c58-a94f-6839b98ec920",
+    "FirstName": "Olga",
+    "LastName": "Smirnova",
+    "MiddleName": "Ivanovna",
+    "Phone": "+111 222 333 44 55"
+  },
+  {
+    "Id": "c43ad3f3-4581-4a1f-83bc-5e3efc1e8c2d",
+    "FirstName": "Pavel",
+    "LastName": "Kuznetsov",
+    "MiddleName": "Sergeevich",
+    "Phone": "+999 888 777 66 55"
+  },
+  {
+    "Id": "4cf7bc23-54a3-49d5-9132-00b9c7250f90",
+    "FirstName": "Maria",
+    "LastName": "Volkova",
+    "MiddleName": "Alexandrovna",
+    "Phone": "+123 456 789 01 23"
+  },
+  {
+    "Id": "a81d1cb9-5e2a-4b89-b5b0-757a1d5cb2d4",
+    "FirstName": "Sergei",
+    "LastName": "Fedorov",
+    "MiddleName": "Ivanovich",
+    "Phone": "+444 555 666 77 88"
+  },
+  {
+    "Id": "a93db5b9-e14e-4a27-b393-7f70f47d2b1d",
+    "FirstName": "Natalia",
+    "LastName": "Kovaleva",
+    "MiddleName": "Petrovna",
+    "Phone": "+777 666 555 44 33"
+  },
+  {
+    "Id": "3fd975d2-3d3f-475b-bf3a-3ef32c2b242e",
+    "FirstName": "Andrei",
+    "LastName": "Orlov",
+    "MiddleName": "Dmitrievich",
+    "Phone": "+888 777 666 55 44"
+  },
+  {
+    "Id": "3bcf5d5a-af37-484a-889a-6093aa31e105",
+    "FirstName": "Yulia",
+    "LastName": "Antonova",
+    "MiddleName": "Andreevna",
+    "Phone": "+321 654 987 01 23"
+  }
+]

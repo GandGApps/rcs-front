@@ -17,21 +17,25 @@ using Kassa.RxUI.Dialogs;
 using ReactiveUI;
 
 namespace Kassa.Wpf.Dialogs;
+
 /// <summary>
-/// Interaction logic for CommentDialog.xaml
+/// Interaction logic for ProblemDialog.xaml
 /// </summary>
-public partial class CommentDialog : ClosableDialog<CommentDialogViewModel>
+public partial class ProblemDialog : ClosableDialog<ProblemDialogViewModel>
 {
-    public CommentDialog()
+    public ProblemDialog()
     {
         InitializeComponent();
 
         this.WhenActivated(disposables =>
         {
-            this.Bind(ViewModel, x => x.Comment, x => x.CommentTextBox.Text)
+            this.Bind(ViewModel, x => x.Problem, x => x.Input.Text)
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x => x.PublishCommentCommand, x => x.PublishCommentButton)
+            this.BindCommand(ViewModel, x => x.OkCommand, x => x.OkButton)
+                .DisposeWith(disposables);
+
+            this.Bind(ViewModel, x => x.Problem, x => x.Keyboard.Text)
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel,
@@ -40,22 +44,26 @@ public partial class CommentDialog : ClosableDialog<CommentDialogViewModel>
                 visibility => visibility ? Visibility.Visible : Visibility.Collapsed
             ).DisposeWith(disposables);
 
+            this.Bind(ViewModel,
+                vm => vm.IsKeyboardVisible,
+                v => v.IsKeyboardEnabled.IsChecked
+            ).DisposeWith(disposables);
+
             this.OneWayBind(ViewModel,
                 vm => vm.IsKeyboardVisible,
                 v => v.KeyboardVisibilityText.Text,
                 x => x ? "Вкл" : "Выкл"
             ).DisposeWith(disposables);
 
-            this.Bind(ViewModel,
-                vm => vm.IsKeyboardVisible,
-                v => v.IsKeyboardEnabled.IsChecked
-            ).DisposeWith(disposables);
-
-            this.Bind(ViewModel, x => x.Comment, x => x.Keyboard.Text)
+            this.BindCommand(ViewModel, x => x.CloseCommand, x => x.CancelButton)
                 .DisposeWith(disposables);
 
             this.BindCommand(ViewModel, x => x.CloseCommand, x => x.BackButton)
                 .DisposeWith(disposables);
+
+            this.Bind(ViewModel, x => x.IsProblematicDelivery, x => x.IsProblematicDelivery.IsChecked)
+                .DisposeWith(disposables);
+
         });
     }
 }

@@ -13,6 +13,11 @@ public class OrderDto
         get; set;
     }
 
+    public string Problem
+    {
+        get; set;
+    } = string.Empty;
+
     public OrderStatus Status
     {
         get; set;

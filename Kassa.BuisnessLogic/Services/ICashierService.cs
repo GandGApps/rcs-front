@@ -21,7 +21,7 @@ public interface ICashierService : IInitializableService
 
     public ValueTask<IOrderEditService> CreateOrder(bool isDelivery);
     public ValueTask<IOrderEditService> CreateOrder(OrderDto order);
-    public ValueTask<ICashierPaymentService> CreatePayment(IOrderEditService order);
+    public ValueTask<IPaymentService> CreatePayment(IOrderEditService order);
 
     public ValueTask SelectCurrentOrder(IOrderEditService order);
 }

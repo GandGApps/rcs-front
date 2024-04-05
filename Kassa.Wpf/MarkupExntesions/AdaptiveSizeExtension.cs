@@ -119,6 +119,10 @@ public class AdaptiveSizeExtension : MarkupExtension
 
         if (targetObject is Setter setter)
         {
+            if (setter.Property is null)
+            {
+                return null!;
+            }
             if (setter.Property.PropertyType == typeof(Thickness))
             {
                 binding = new Binding

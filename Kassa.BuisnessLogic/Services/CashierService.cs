@@ -79,7 +79,7 @@ internal class CashierService : BaseInitializableService, ICashierService
         return ValueTask.CompletedTask;
     }
 
-    public ValueTask<ICashierPaymentService> CreatePayment(IOrderEditService order)
+    public ValueTask<IPaymentService> CreatePayment(IOrderEditService order)
     {
         var paymentService = new CashierPaymentService(order);
 

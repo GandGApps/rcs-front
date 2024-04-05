@@ -94,6 +94,16 @@ public partial class NewDeliveryPage : ReactiveUserControl<NewDeliveryPageVm>
             this.OneWayBind(ViewModel, x => x.OrderEditPageVm!.ShoppingListItems, x => x.ShoppingListItems.ItemsSource)
                 .DisposeWith(disposables);
 
+            this.OneWayBind(ViewModel, x => x.IsDelivery, x => x.BasicAddressInfo.Visibility)
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, x => x.IsDelivery, x => x.AdditionalAddressInfo.Visibility)
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, x => x.IsDelivery, x => x.AddressNote.Visibility)
+                .DisposeWith(disposables);
+
+
 
             this.Bind(ViewModel, vm => vm.IsOrderEditOpened, v => v.SwitchOrderEdit.IsChecked)
                 .DisposeWith(ViewModel.InternalDisposables);
@@ -101,9 +111,14 @@ public partial class NewDeliveryPage : ReactiveUserControl<NewDeliveryPageVm>
             this.Bind(ViewModel, vm => vm.IsOutOfTurn, v => v.IsOutOfTurn.IsChecked)
                 .DisposeWith(ViewModel.InternalDisposables);
 
+            this.Bind(ViewModel, vm => vm.IsPaymentPageOpenned, v => v.Payment.IsChecked)
+                .DisposeWith(ViewModel.InternalDisposables);
+
 
             SwitchOrderEdit.Command = ViewModel.SwitchOrderCommand;
             BackButton.Command = ViewModel.BackButtonCommand;
+            Payment.Command = ViewModel.SwitchToPaymentCommand;
+            Problem.Command = ViewModel.WriteProblemCommand;
         });
     }
 }

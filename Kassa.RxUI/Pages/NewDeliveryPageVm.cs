@@ -101,6 +101,35 @@ public class NewDeliveryPageVm : PageViewModel
             }
 
         }).DisposeWith(InternalDisposables);
+
+        SwitchToPaymentCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            if (!IsPaymentPageOpenned)
+            {
+                await MainViewModel.Router.NavigateBack.Execute().FirstAsync();
+                return;
+            }
+            await MainViewModel.Router.Navigate.Execute(PaymentPageVm).FirstAsync();
+
+        }).DisposeWith(InternalDisposables);
+
+        WriteProblemCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var problemDialog = new ProblemDialogViewModel
+            {
+                Problem = Problem,
+                IsProblematicDelivery = IsProblematicDelivery
+            };
+
+            problemDialog.OkCommand.Subscribe( _ =>
+            {
+                Problem = problemDialog.Problem;
+                IsProblematicDelivery = problemDialog.IsProblematicDelivery;
+            });
+
+            await MainViewModel.ShowDialogAndWaitClose(problemDialog);
+
+        }).DisposeWith(InternalDisposables);
     }
 
     public new CompositeDisposable InternalDisposables => base.InternalDisposables;
@@ -264,6 +293,24 @@ public class NewDeliveryPageVm : PageViewModel
         get; set;
     }
 
+    [Reactive]
+    public bool IsPaymentPageOpenned
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public string Problem
+    {
+        get; set;
+    } = string.Empty;
+
+    [Reactive]
+    public bool IsProblematicDelivery
+    {
+        get; set;
+    }
+
     public ReactiveCommand<Unit, Unit> SelectDistrictAndStreetCommand
     {
         get;
@@ -274,13 +321,29 @@ public class NewDeliveryPageVm : PageViewModel
         get;
     }
 
+    public ReactiveCommand<Unit, Unit> SwitchToPaymentCommand
+    {
+        get;
+    }
+
     public ReactiveCommand<Unit, Unit> BackButtonCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> WriteProblemCommand
     {
         get;
     }
 
     [Reactive]
     public NewDeliveryOrderEditPageVm OrderEditPageVm
+    {
+        get; set;
+    } = null!;
+
+    [Reactive]
+    public DeliveryPaymentPageVm PaymentPageVm
     {
         get; set;
     } = null!;
@@ -294,12 +357,19 @@ public class NewDeliveryPageVm : PageViewModel
 
         OrderEditPageVm = new NewDeliveryOrderEditPageVm(_orderEdit, _cashierService, _additiveService);
 
+        var payment = await cashierService.CreatePayment(_orderEdit);
+        PaymentPageVm = new(payment);
+
         await OrderEditPageVm.InitializeAsync();
+        await PaymentPageVm.InitializeAsync();
 
         Disposable.Create(() =>
         {
             _orderEdit.Dispose();
             OrderEditPageVm.Dispose();
+
+            payment.Dispose();
+            PaymentPageVm.Dispose();
         }).DisposeWith(disposables);
 
     }

@@ -12,21 +12,21 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Dialogs;
 public class SendReceiptDialogViewModel : DialogViewModel
 {
-    private readonly CashierPaymentPageVm _cashierPaymentPageVm;
+    private readonly IPaymentVm _paymentVm;
 
-    public SendReceiptDialogViewModel(CashierPaymentPageVm cashierPaymentPageVm)
+    public SendReceiptDialogViewModel(IPaymentVm paymentVm)
     {
-        _cashierPaymentPageVm = cashierPaymentPageVm;
+        _paymentVm = paymentVm;
 
         EditEmailCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             await MainViewModel.DialogOpenCommand
-                    .Execute(new EmaiEditlDialogViewModel(cashierPaymentPageVm))
+                    .Execute(new EmaiEditlDialogViewModel(paymentVm))
                     .FirstAsync();
         });
     }
 
-    public CashierPaymentPageVm CashierPaymentPageVm => _cashierPaymentPageVm;
+    public IPaymentVm PaymentVm => _paymentVm;
 
     public ReactiveCommand<Unit, Unit> EditEmailCommand
     {

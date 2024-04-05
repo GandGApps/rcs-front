@@ -34,24 +34,24 @@ public partial class SendReceiptDialog : ClosableDialog<SendReceiptDialogViewMod
                 throw new NullReferenceException(nameof(ViewModel));
             }
 
-            if (!(ViewModel.CashierPaymentPageVm.IsPrinter || ViewModel.CashierPaymentPageVm.IsEmail))
+            if (!(ViewModel.PaymentVm.IsPrinter || ViewModel.PaymentVm.IsEmail))
             {
-                ViewModel.CashierPaymentPageVm.IsPrinter = true;
-                ViewModel.CashierPaymentPageVm.IsEmail = false;
+                ViewModel.PaymentVm.IsPrinter = true;
+                ViewModel.PaymentVm.IsEmail = false;
             }
 
-            this.Bind(ViewModel, x => x.CashierPaymentPageVm.IsPrinter, x => x.Print.IsChecked)
+            this.Bind(ViewModel, x => x.PaymentVm.IsPrinter, x => x.Print.IsChecked)
                 .DisposeWith(disposables);
 
-            this.Bind(ViewModel, x => x.CashierPaymentPageVm.IsEmail, x => x.SendEmail.IsChecked)
+            this.Bind(ViewModel, x => x.PaymentVm.IsEmail, x => x.SendEmail.IsChecked)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.CashierPaymentPageVm.Email, x => x.Email.Text)
+            this.OneWayBind(ViewModel, x => x.PaymentVm.Email, x => x.Email.Text)
                 .DisposeWith(disposables);
 
             this.OneWayBind(
                     ViewModel,
-                    x => x.CashierPaymentPageVm.Email,
+                    x => x.PaymentVm.Email,
                     x => x.Email.Visibility,
                     (email) => string.IsNullOrWhiteSpace(email) ? Visibility.Collapsed : Visibility.Visible
                 ).DisposeWith(disposables);

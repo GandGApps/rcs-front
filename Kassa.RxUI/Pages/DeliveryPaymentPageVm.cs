@@ -2,26 +2,24 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Reactive;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
+using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
-using DynamicData;
-using DynamicData.Binding;
-using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
-using Kassa.RxUI.Dialogs;
-using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using ReactiveUI;
+using DynamicData.Binding;
+using DynamicData;
+using Kassa.RxUI.Dialogs;
+using System.Reactive.Linq;
 
 namespace Kassa.RxUI.Pages;
-public class CashierPaymentPageVm : PageViewModel, IPaymentVm
+public class DeliveryPaymentPageVm: PageViewModel, IPaymentVm
 {
-
     private bool _isFloat;
     private byte _afterSeparatorDigitCount;
-    public CashierPaymentPageVm(IPaymentService cashierPaymentService)
+    public DeliveryPaymentPageVm(IPaymentService cashierPaymentService)
     {
         CashierPaymentService = cashierPaymentService;
 
@@ -145,7 +143,7 @@ public class CashierPaymentPageVm : PageViewModel, IPaymentVm
             }
         });
 
-        PayCommand = ReactiveCommand.CreateFromTask(async () =>
+        /*PayCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             var loading = new LoadingDialogViewModel()
             {
@@ -167,7 +165,7 @@ public class CashierPaymentPageVm : PageViewModel, IPaymentVm
             await MainViewModel.GoToPageAndResetCommand.Execute(new MainPageVm());
 
 
-        }, this.WhenAnyValue(x => x.IsExactAmount));
+        }, this.WhenAnyValue(x => x.IsExactAmount));*/
     }
 
     public IPaymentService CashierPaymentService
@@ -368,53 +366,53 @@ public class CashierPaymentPageVm : PageViewModel, IPaymentVm
             .DisposeWith(disposables);
 
         this.WhenAnyValue(x => x.IsEmail, x => x.IsPrinter, x => x.WithReceipt, (email, printer, withReceipt) =>
+        {
+            if (!withReceipt)
             {
-                if (!withReceipt)
-                {
-                    return "Распечатать, переслать чек";
-                }
+                return "Распечатать, переслать чек";
+            }
 
-                if (withReceipt)
+            if (withReceipt)
+            {
+                if (!email && !printer)
                 {
-                    if (!email && !printer)
-                    {
-                        IsPrinter = true;
-                        return "Переслать чек";
-                    }
-                }
-
-                if (email)
-                {
-                    return "Отправить на почту";
-                }
-                else if (printer)
-                {
-
+                    IsPrinter = true;
                     return "Переслать чек";
                 }
-                else
-                {
-                    return "Распечатать, переслать чек";
-                }
-            })
+            }
+
+            if (email)
+            {
+                return "Отправить на почту";
+            }
+            else if (printer)
+            {
+
+                return "Переслать чек";
+            }
+            else
+            {
+                return "Распечатать, переслать чек";
+            }
+        })
             .ToPropertyEx(this, x => x.ReceiptActionText)
             .DisposeWith(disposables);
 
         this.WhenAnyValue(x => x.IsEmail, x => x.IsPrinter, (email, printer) =>
+        {
+            if (email)
             {
-                if (email)
-                {
-                    return "EmailIcon";
-                }
-                else if (printer)
-                {
-                    return "PrinterIcon";
-                }
-                else
-                {
-                    return "PrinterIcon";
-                }
-            })
+                return "EmailIcon";
+            }
+            else if (printer)
+            {
+                return "PrinterIcon";
+            }
+            else
+            {
+                return "PrinterIcon";
+            }
+        })
             .ToPropertyEx(this, x => x.ReceiptActionIcon)
             .DisposeWith(disposables);
 
@@ -435,10 +433,10 @@ public class CashierPaymentPageVm : PageViewModel, IPaymentVm
             .DisposeWith(disposables);
 
         this.WhenAnyValue(x => x.CurrentPaymentSumText, (text) =>
-            {
-                text = text.Replace(',', '.');
-                return string.IsNullOrWhiteSpace(text) ? 0 : text.EndsWith('.') ? double.Parse(text[..^1]) : double.Parse(text);
-            })
+        {
+            text = text.Replace(',', '.');
+            return string.IsNullOrWhiteSpace(text) ? 0 : text.EndsWith('.') ? double.Parse(text[..^1]) : double.Parse(text);
+        })
             .ToPropertyEx(this, x => x.CurrentPaymentSum)
             .DisposeWith(disposables);
 

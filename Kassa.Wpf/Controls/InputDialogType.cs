@@ -4,5 +4,6 @@ public enum InputDialogType
 {
     Text,
     Number, 
-    Phone
+    Phone,
+    Custom
 }

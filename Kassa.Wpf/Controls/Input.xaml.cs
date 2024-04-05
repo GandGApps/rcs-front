@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
@@ -57,10 +58,17 @@ public partial class Input : UserControl
 
     public static readonly DependencyProperty InputTypeProperty =
         DependencyProperty.Register(nameof(InputType),
-        typeof(InputDialogType),
-        typeof(Input),
-        new FrameworkPropertyMetadata(InputDialogType.Text)
-    );
+            typeof(InputDialogType),
+            typeof(Input),
+            new FrameworkPropertyMetadata(InputDialogType.Text)
+        );
+
+    public static readonly DependencyProperty CustomDialogProperty =
+        DependencyProperty.Register(nameof(CustomInputDialog),
+            typeof(Type),
+            typeof(Input),
+            new FrameworkPropertyMetadata(null)
+        );
 
     private TextBlock? _placeholder;
     private TextBoxWithoutVirtualKeyboard? _input;
@@ -95,6 +103,17 @@ public partial class Input : UserControl
         set => SetValue(InputTypeProperty, value);
     }
 
+    /// <summary>
+    /// The type must implement ICustomInputDialogVm, 
+    /// have a parameterless constructor
+    /// and DialogViewModel as a base class
+    /// </summary>
+    public Type? CustomInputDialog
+    {
+        get => (Type?)GetValue(CustomDialogProperty);
+        set => SetValue(CustomDialogProperty, value);
+    }
+
     public Input()
     {
         InitializeComponent();
@@ -117,7 +136,7 @@ public partial class Input : UserControl
             _placeholder.Visibility = Visibility.Collapsed;
         }
 
-        _input.GotFocus += (_, _) =>
+        _input.GotFocus += async (_, _) =>
         {
             var name = (string?)GetValue(AutomationProperties.NameProperty);
 
@@ -176,6 +195,20 @@ public partial class Input : UserControl
 
                 mainViewModel.DialogOpenCommand.Execute(inputDialog).Subscribe();
             }
+            else if (InputType == InputDialogType.Custom && CustomInputDialog is not null)
+            {
+                var customDialog = GetCustomDialog(CustomInputDialog);
+
+                if (customDialog != null)
+                {
+                    ((ICustomInputDialogVm)customDialog).OkCommand.Subscribe(x =>
+                    {
+                        Text = x;
+                    });
+
+                    await mainViewModel.DialogOpenCommand.Execute(customDialog).FirstAsync();
+                }
+            }
             else
             {
                 var inputDialog = new InputDialogViewModel(name, Text);
@@ -211,6 +244,28 @@ public partial class Input : UserControl
         {
             input._placeholder.Visibility = Visibility.Collapsed;
         }
+    }
+
+    /// <summary>
+    /// The type must implement ICustomInputDialogVm, 
+    /// have a parameterless constructor
+    /// and DialogViewModel as a base class
+    /// </summary>
+    private static bool IsValidType(Type type)
+    {
+        return type.GetInterfaces().Contains(typeof(ICustomInputDialogVm)) &&
+               type.GetConstructor(Type.EmptyTypes) != null &&
+               type.BaseType == typeof(DialogViewModel);
+    }
+
+    private static DialogViewModel? GetCustomDialog(Type type)
+    {
+        if (!IsValidType(type))
+        {
+            return null;
+        }
+
+        return (DialogViewModel)Activator.CreateInstance(type)!;
     }
 
 }

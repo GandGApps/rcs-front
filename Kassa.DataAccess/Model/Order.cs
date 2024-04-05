@@ -10,6 +10,11 @@ public class Order : IModel
         get; set;
     }
 
+    public string Problem
+    {
+        get; set;
+    } = string.Empty;
+
     public OrderStatus Status
     {
         get; set;

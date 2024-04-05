@@ -48,6 +48,8 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
         Activator = new();
 
         this.WhenActivated(OnActivated);
+
+        Activator.DisposeWith(InternalDisposables);
     }
 
     protected virtual void Dispose(bool disposing)

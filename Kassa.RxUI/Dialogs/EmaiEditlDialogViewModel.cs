@@ -6,29 +6,27 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Dialogs;
 public class EmaiEditlDialogViewModel : DialogViewModel
 {
-    private readonly MainViewModel _MainViewModel;
-    private readonly CashierPaymentPageVm _cashierPaymentPageVm;
+    private readonly IPaymentVm _paymentVm;
 
-    public EmaiEditlDialogViewModel(CashierPaymentPageVm cashierPaymentPageVm)
+    public EmaiEditlDialogViewModel(IPaymentVm cashierPaymentPageVm)
     {
-        _MainViewModel = MainViewModel;
-        _cashierPaymentPageVm = cashierPaymentPageVm;
+        _paymentVm = cashierPaymentPageVm;
 
         PublishEmailCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             if (!string.IsNullOrWhiteSpace(Email))
             {
-                _cashierPaymentPageVm.IsEmail = true;
-                _cashierPaymentPageVm.IsPrinter = false;
+                _paymentVm.IsEmail = true;
+                _paymentVm.IsPrinter = false;
             }
 
-            _cashierPaymentPageVm.Email = Email;
+            _paymentVm.Email = Email;
 
             await CloseAsync();
         });
     }
 
-    public CashierPaymentPageVm CashierPaymentPageVm => _cashierPaymentPageVm;
+    public IPaymentVm PaymentVm => _paymentVm;
 
     [Reactive]
     public string? Email
