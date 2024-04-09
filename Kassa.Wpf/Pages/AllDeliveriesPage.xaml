@@ -109,28 +109,31 @@
 
                 </Grid.Resources>
 
-                <RadioButton IsChecked="True">
+                <RadioButton x:Name="AllOrders" IsChecked="True">
                     <StackPanel>
                         <Path Data="{StaticResource AllOrdersIcon}" Style="{StaticResource RadioButtonIcon}" />
                         <TextBlock Style="{StaticResource RadioButtonTextBlock}" Text="ВСЕ ЗАКАЗЫ" />
                     </StackPanel>
                 </RadioButton>
 
-                <RadioButton Grid.Column="1">
+                <RadioButton x:Name="IsDelivery" Grid.Column="1">
                     <StackPanel>
                         <Path Data="{StaticResource DeliveryTruck}" Style="{StaticResource RadioButtonIcon}" />
                         <TextBlock Style="{StaticResource RadioButtonTextBlock}" Text="ДОСТАВКА" />
                     </StackPanel>
                 </RadioButton>
 
-                <RadioButton Grid.Column="2">
+                <RadioButton x:Name="IsPickUp" Grid.Column="2">
                     <StackPanel>
                         <Path Data="{StaticResource PickupIcon}" Style="{StaticResource RadioButtonIcon}" />
                         <TextBlock Style="{StaticResource RadioButtonTextBlock}" Text="САМОВЫВОЗ" />
                     </StackPanel>
                 </RadioButton>
 
-                <views:DateSelector Grid.Column="3" Margin="{mx:AdaptiveSize Thickness='40,0'}" />
+                <views:DateSelector
+                    x:Name="CurrentDate"
+                    Grid.Column="3"
+                    Margin="{mx:AdaptiveSize Thickness='40,0'}" />
 
                 <RadioButton Grid.Column="4">
                     <StackPanel>
@@ -234,13 +237,13 @@
 
                 <RadioButton x:Name="Closed" Grid.Column="5">
                     <TextBlock Style="{StaticResource RadioButtonText}">
-                        <Run Text="Закрытые " /><Run x:Name="ClosedCount" d:Text="0" />
+                        <Run Text="Закрытые " /><Run x:Name="CompleatedCount" d:Text="0" />
                     </TextBlock>
                 </RadioButton>
 
                 <RadioButton x:Name="Cancel" Grid.Column="6">
                     <TextBlock Style="{StaticResource RadioButtonText}">
-                        <Run Text="Отмена" /><Run x:Name="CancelCount" d:Text="0" />
+                        <Run Text="Отмена " /><Run x:Name="CancelCount" d:Text="0" />
                     </TextBlock>
                 </RadioButton>
 
@@ -260,42 +263,49 @@
             <DataGrid.Columns>
                 <DataGridTextColumn
                     Width="*"
-                    Binding="{Binding Id, Converter={StaticResource GuidToGridNumber}}"
+                    Binding="{Binding Number}"
                     FontFamily="{StaticResource Montseratt}"
                     FontSize="{mx:AdaptiveSize 18}"
                     Header="№" />
                 <DataGridTextColumn
                     Width="*"
+                    Binding="{Binding Status}"
                     FontFamily="{StaticResource Montseratt}"
                     FontSize="{mx:AdaptiveSize 18}"
                     Header="Статус" />
                 <DataGridTextColumn
                     Width="*"
+                    Binding="{Binding TimeToDelivery}"
                     FontFamily="{StaticResource Montseratt}"
                     FontSize="{mx:AdaptiveSize 18}"
                     Header="Время доставки" />
                 <DataGridTextColumn
                     Width="*"
+                    Binding="{Binding Address}"
                     FontFamily="{StaticResource Montseratt}"
                     FontSize="{mx:AdaptiveSize 18}"
                     Header="Адрес" />
                 <DataGridTextColumn
                     Width="*"
+                    Binding="{Binding Courier}"
                     FontFamily="{StaticResource Montseratt}"
                     FontSize="{mx:AdaptiveSize 18}"
                     Header="Курьер" />
                 <DataGridTextColumn
                     Width="*"
+                    Binding="{Binding Client}"
                     FontFamily="{StaticResource Montseratt}"
                     FontSize="{mx:AdaptiveSize 18}"
                     Header="Клиент" />
                 <DataGridTextColumn
                     Width="*"
+                    Binding="{Binding Comment}"
                     FontFamily="{StaticResource Montseratt}"
                     FontSize="{mx:AdaptiveSize 18}"
                     Header="Коммент." />
                 <DataGridTextColumn
                     Width="*"
+                    Binding="{Binding Value}"
                     FontFamily="{StaticResource Montseratt}"
                     FontSize="{mx:AdaptiveSize 18}"
                     Header="Сумма" />

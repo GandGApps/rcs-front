@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
+using DynamicData.Binding;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
@@ -19,10 +20,10 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Pages;
 public class AllDeliveriesPageVm : PageViewModel
 {
-    private readonly ObservableCollection<OrderDto> _orders = [];
-
     public AllDeliveriesPageVm()
     {
+        Date = DateTime.UtcNow;
+
         MoveDateCommand = ReactiveCommand.Create<int>(x =>
         {
             Date = Date.AddDays(x);
@@ -52,8 +53,6 @@ public class AllDeliveriesPageVm : PageViewModel
 
             await MainViewModel.DialogOpenCommand.Execute(allClientsDialogViewModel).FirstAsync();
         }).DisposeWith(InternalDisposables);
-
-        Orders = new(_orders);
     }
 
     public ReactiveCommand<Unit, Unit> GoToPickUpCommand
@@ -89,6 +88,12 @@ public class AllDeliveriesPageVm : PageViewModel
         get;
     }
 
+    public extern int InUncomfiredOrders
+    {
+        [ObservableAsProperty]
+        get;
+    }
+
     public extern int NewOrders
     {
         [ObservableAsProperty]
@@ -119,33 +124,110 @@ public class AllDeliveriesPageVm : PageViewModel
         get;
     }
 
-    public ReadOnlyObservableCollection<OrderDto> Orders
+    public extern int OnTheWayOrders
     {
-        get;
+        [ObservableAsProperty]
+        get; 
+    }
+
+    [Reactive]
+    public ReadOnlyObservableCollection<OrderRowViewModel>? Orders
+    {
+        get; set;
     }
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
+
         var orderService = await Locator.GetInitializedService<IOrdersService>();
-
-        orderService.RuntimeOrders
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(x =>
+        var filter = this.WhenAnyValue(x => x.IsPickup, x => x.IsDelivery, x => x.Date)
+            .Select<(bool isPickup, bool isDelivery, DateTime date), Func<OrderDto, bool>>(x =>
             {
-                foreach (var change in x.Changes)
+                if (!x.isPickup && !x.isDelivery)
                 {
-                    switch (change.Reason)
-                    {
-
-                        case ModelChangeReason.Add:
-                            _orders.Add(change.Current);
-                            break;
-                        case ModelChangeReason.Remove:
-                            _orders.Remove(_orders.Where(x => x.Id == change.Id).First());
-                            break;
-                    }
+                    return new Func<OrderDto, bool>(model => model.CreatedAt.Date == x.date.Date);
                 }
-            })
+
+                if (x.isPickup && x.isDelivery)
+                {
+                    return new Func<OrderDto, bool>(model => model.CreatedAt.Date == x.date.Date);
+                }
+
+                if (x.isPickup)
+                {
+                    return new Func<OrderDto, bool>(model => model.CreatedAt.Date == x.date.Date && model.IsPickup);
+                }
+
+                if (x.isDelivery)
+                {
+                    return new Func<OrderDto, bool>(model => model.CreatedAt.Date == x.date.Date && model.IsDelivery);
+                }
+
+                return new Func<OrderDto, bool>(model => model.CreatedAt.Date == x.date.Date);
+            });
+
+        var streetService = await Locator.GetInitializedService<IStreetService>();
+        var courierService = await Locator.GetInitializedService<ICourierService>();
+        var clientService = await Locator.GetInitializedService<IClientService>();
+
+        orderService.RuntimeOrders.BindAndFilter(filter,
+            x => new OrderRowViewModel(x, streetService, courierService, clientService),
+            out var collection)
             .DisposeWith(disposables);
+
+        // Count all orders statuses
+
+        var changeSet = collection.ToObservableChangeSet().RefCount();
+
+        changeSet
+            .AutoRefresh(x => x.Status)
+            .Filter(x => x.Status == "Неподтвержден")
+            .Count()
+            .ToPropertyEx(this, x => x.InUncomfiredOrders)
+            .DisposeWith(disposables);
+
+        changeSet
+            .AutoRefresh(x => x.Status)
+            .Filter(x => x.Status == "Новый")
+            .Count()
+            .ToPropertyEx(this, x => x.NewOrders)
+            .DisposeWith(disposables);
+
+        changeSet
+            .AutoRefresh(x => x.Status)
+            .Filter(x => x.Status == "Готовится")
+            .Count()
+            .ToPropertyEx(this, x => x.InCookingOrders)
+            .DisposeWith(disposables);
+
+        changeSet
+            .AutoRefresh(x => x.Status)
+            .Filter(x => x.Status == "Готов")
+            .Count()
+            .ToPropertyEx(this, x => x.ReadyOrders)
+            .DisposeWith(disposables);
+
+        changeSet
+            .AutoRefresh(x => x.Status)
+            .Filter(x => x.Status == "Отменен")
+            .Count()
+            .ToPropertyEx(this, x => x.CanceledOrders)
+            .DisposeWith(disposables);
+
+        changeSet
+            .AutoRefresh(x => x.Status)
+            .Filter(x => x.Status == "Закрытый")
+            .Count()
+            .ToPropertyEx(this, x => x.CompletedOrders)
+            .DisposeWith(disposables);
+
+        changeSet
+            .AutoRefresh(x => x.Status)
+            .Filter(x => x.Status == "В пути")
+            .Count()
+            .ToPropertyEx(this, x => x.OnTheWayOrders)
+            .DisposeWith(disposables);
+
+        Orders = collection;
     }
 }

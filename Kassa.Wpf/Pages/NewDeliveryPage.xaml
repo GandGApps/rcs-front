@@ -165,486 +165,500 @@
 
     <Grid>
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
+        <Grid x:Name="BasicInfo" Visibility="{Binding IsChecked, ElementName=SwitchClientEdit, Converter={StaticResource BoolToVisibilityConverter}}">
 
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
 
-        <Border
-            Grid.ColumnSpan="3"
-            Padding="{mx:AdaptiveSize Thickness='17,20,17,13'}"
-            Background="{DynamicResource SurfaceBrush}"
-            BorderBrush="{DynamicResource AlternateForeground}"
-            BorderThickness="0,0,0,1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
 
-            <Grid>
+            <Border
+                Grid.ColumnSpan="3"
+                Padding="{mx:AdaptiveSize Thickness='17,20,17,13'}"
+                Background="{DynamicResource SurfaceBrush}"
+                BorderBrush="{DynamicResource AlternateForeground}"
+                BorderThickness="0,0,0,1">
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+                <Grid>
 
-                <Grid.Resources>
-                    <Style BasedOn="{StaticResource Header2}" TargetType="TextBlock">
-                        <Setter Property="FontWeight" Value="Medium" />
-                        <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='0,0,70,0'}" />
-                        <Setter Property="Foreground" Value="{DynamicResource AlternateForeground}" />
-                    </Style>
-                </Grid.Resources>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
 
-                <TextBlock>
-                    <Run Text="Доставка" />
-                    <Run Foreground="{DynamicResource AccentBrush2}" Text="№" />
-                    <Run x:Name="DeliveryId" Foreground="{DynamicResource AccentBrush2}" />
-                </TextBlock>
+                    <Grid.Resources>
+                        <Style BasedOn="{StaticResource Header2}" TargetType="TextBlock">
+                            <Setter Property="FontWeight" Value="Medium" />
+                            <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='0,0,70,0'}" />
+                            <Setter Property="Foreground" Value="{DynamicResource AlternateForeground}" />
+                        </Style>
+                    </Grid.Resources>
 
-                <TextBlock Grid.Column="1">
-                    <Run Text="Принят" />
-                    <Run x:Name="Accepted" Text="--:--" />
-                </TextBlock>
+                    <TextBlock>
+                        <Run Text="Доставка" />
+                        <Run Foreground="{DynamicResource AccentBrush2}" Text="№" />
+                        <Run x:Name="DeliveryId" Foreground="{DynamicResource AccentBrush2}" />
+                    </TextBlock>
 
-                <TextBlock Grid.Column="2">
-                    <Run Text="Подтвержден" />
-                    <Run x:Name="Confirmed" Text="--:--" />
-                </TextBlock>
+                    <TextBlock Grid.Column="1">
+                        <Run Text="Принят" />
+                        <Run x:Name="Accepted" Text="--:--" />
+                    </TextBlock>
 
-                <TextBlock Grid.Column="3">
-                    <Run Text="Отпечатан" />
-                    <Run x:Name="Processed" Text="--:--" />
-                </TextBlock>
+                    <TextBlock Grid.Column="2">
+                        <Run Text="Подтвержден" />
+                        <Run x:Name="Confirmed" Text="--:--" />
+                    </TextBlock>
 
-                <TextBlock Grid.Column="4">
-                    <Run Text="Доставлен" />
-                    <Run x:Name="Delivered" Text="--:--" />
-                </TextBlock>
+                    <TextBlock Grid.Column="3">
+                        <Run Text="Отпечатан" />
+                        <Run x:Name="Processed" Text="--:--" />
+                    </TextBlock>
 
-            </Grid>
+                    <TextBlock Grid.Column="4">
+                        <Run Text="Доставлен" />
+                        <Run x:Name="Delivered" Text="--:--" />
+                    </TextBlock>
 
-        </Border>
+                </Grid>
 
-        <Border
-            Grid.Column="0"
-            BorderThickness="0,1,1,0"
-            Style="{StaticResource Part}">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="1*" />
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
+            </Border>
 
-                <Border x:Name="HeaderPartOrder" Style="{StaticResource HeaderPart}">
-                    <TextBlock Style="{StaticResource HeaderPartTextBlock}" Text="СОСТАВ ЗАКАЗА" />
-                </Border>
+            <Border
+                Grid.Column="0"
+                BorderThickness="0,1,1,0"
+                Style="{StaticResource Part}">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="1*" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                <ScrollViewer
-                    x:Name="ScrollViewerForShoppingListItems"
-                    Grid.Row="1"
-                    Margin="{mx:AdaptiveSize Thickness='6,0,17,0'}"
-                    Style="{StaticResource PrimaryScrollViewer}"
-                    VerticalScrollBarVisibility="Auto">
-
-                    <i:Interaction.Behaviors>
-                        <behaviors:ScrollViewerFixingBehavior />
-                    </i:Interaction.Behaviors>
-
-                    <ItemsControl x:Name="ShoppingListItems" Margin="0,11,0,0" />
-                </ScrollViewer>
-
-                <Border
-                    Grid.Row="2"
-                    Margin="{mx:AdaptiveSize Thickness='0,0,17,0'}"
-                    Padding="{mx:AdaptiveSize Thickness='16,8,14,10'}"
-                    Background="{StaticResource AccentBrush}"
-                    CornerRadius="0,11,0,0">
-                    <Grid>
-
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
-                        </Grid.ColumnDefinitions>
-
-                        <TextBlock
-                            VerticalAlignment="Center"
-                            Foreground="{StaticResource AlternateForeground}"
-                            Style="{StaticResource Header2}"
-                            Text="Стоимость заказа" />
-
-                        <TextBlock
-                            x:Name="Price"
-                            Grid.Column="1"
-                            VerticalAlignment="Center"
-                            FontSize="{mx:AdaptiveSize 30}"
-                            FontWeight="Bold"
-                            Foreground="{StaticResource AlternateForeground}" />
-
-                    </Grid>
-                </Border>
-
-            </Grid>
-        </Border>
-
-        <Border
-            Grid.Column="1"
-            BorderThickness="0,1,1,0"
-            Style="{StaticResource Part}">
-            <Grid>
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="1*" />
-                </Grid.RowDefinitions>
-
-                <Border Style="{StaticResource HeaderPart}">
-                    <TextBlock Style="{StaticResource HeaderPartTextBlock}" Text="КЛИЕНТ" />
-                </Border>
-
-                <StackPanel Grid.Row="1" Margin="{mx:AdaptiveSize Thickness='15,10,8,9'}">
-
-                    <ctrl:Input
-                        x:Name="FullName"
-                        Label="Имя отчество"
-                        Placeholder="Имя Отчество" />
-
-                    <ctrl:Input
-                        x:Name="LastName"
-                        Label="Фамилия"
-                        Placeholder="Фамилия" />
-
-                    <ctrl:Input
-                        x:Name="Phone"
-                        InputType="Number"
-                        Label="Телефон"
-                        Placeholder="Телефон" />
-
-                    <ctrl:Input
-                        x:Name="Card"
-                        Label="Карта"
-                        Placeholder="Карта" />
-
-                    <ctrl:Input
-                        x:Name="Miscellaneous"
-                        Label="Прочее"
-                        Placeholder="Прочее" />
-
-                    <Border ClipToBounds="True" Style="{StaticResource WideBorderClientInfo}">
-                        <Grid>
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <ctrl:ButtonWithCornerRaduis Grid.Column="0" CornerRadius="{mx:AdaptiveSize CornerRadius={StaticResource LeftSideCornerRadius}}">
-                                <TextBlock Style="{StaticResource LabelTextBlock}" Text="Доп. инфо" />
-                            </ctrl:ButtonWithCornerRaduis>
-
-                            <ctrl:ButtonWithCornerRaduis Grid.Column="1">
-                                <TextBlock Style="{StaticResource LabelTextBlock}" Text="Без сидки / цен.катег." />
-                            </ctrl:ButtonWithCornerRaduis>
-
-                            <ctrl:ButtonWithCornerRaduis Grid.Column="2" CornerRadius="{mx:AdaptiveSize CornerRadius={StaticResource RightSideCornerRadius}}">
-                                <TextBlock Style="{StaticResource LabelTextBlock}" Text="Не в статусе “Высокий риск”" />
-                            </ctrl:ButtonWithCornerRaduis>
-
-                        </Grid>
+                    <Border x:Name="HeaderPartOrder" Style="{StaticResource HeaderPart}">
+                        <TextBlock Style="{StaticResource HeaderPartTextBlock}" Text="СОСТАВ ЗАКАЗА" />
                     </Border>
 
-                    <ctrl:Input
-                        x:Name="Comment"
-                        Label="Комм. к заказу"
-                        Placeholder="Комментарий" />
+                    <ScrollViewer
+                        x:Name="ScrollViewerForShoppingListItems"
+                        Grid.Row="1"
+                        Margin="{mx:AdaptiveSize Thickness='6,0,17,0'}"
+                        Style="{StaticResource PrimaryScrollViewer}"
+                        VerticalScrollBarVisibility="Auto">
 
-                </StackPanel>
+                        <i:Interaction.Behaviors>
+                            <behaviors:ScrollViewerFixingBehavior />
+                        </i:Interaction.Behaviors>
 
-            </Grid>
-        </Border>
+                        <ItemsControl x:Name="ShoppingListItems" Margin="0,11,0,0" />
+                    </ScrollViewer>
 
-        <Border
-            Grid.Column="2"
-            BorderThickness="0,1,0,0"
-            Style="{StaticResource Part}">
-            <Grid>
-
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="1*" />
-                </Grid.RowDefinitions>
-
-                <Border Style="{StaticResource HeaderPart}">
-                    <TextBlock Style="{StaticResource HeaderPartTextBlock}" Text="АДРЕС" />
-                </Border>
-
-                <StackPanel Grid.Row="1" Margin="{mx:AdaptiveSize Thickness='15,10,8,9'}">
-
-                    <Border ClipToBounds="True" Style="{StaticResource WideBorderClientInfo}">
+                    <Border
+                        Grid.Row="2"
+                        Margin="{mx:AdaptiveSize Thickness='0,0,17,0'}"
+                        Padding="{mx:AdaptiveSize Thickness='16,8,14,10'}"
+                        Background="{StaticResource AccentBrush}"
+                        CornerRadius="0,11,0,0">
                         <Grid>
 
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
                             </Grid.ColumnDefinitions>
 
-                            <ctrl:ButtonWithCornerRaduis Grid.Column="0" CornerRadius="{mx:AdaptiveSize CornerRadius={StaticResource LeftSideCornerRadius}}">
-                                <TextBlock Style="{StaticResource LabelTextBlock}">
-                                    <Run Text="Время:" />
-                                    <LineBreak />
-                                    <Run
-                                        x:Name="Time"
-                                        FontWeight="SemiBold"
-                                        Text="--:--" />
-                                    <LineBreak />
-                                    <Run x:Name="RelationTime" Text="(сегодня)" />
-                                </TextBlock>
-                            </ctrl:ButtonWithCornerRaduis>
+                            <TextBlock
+                                VerticalAlignment="Center"
+                                Foreground="{StaticResource AlternateForeground}"
+                                Style="{StaticResource Header2}"
+                                Text="Стоимость заказа" />
 
-                            <ctrl:ButtonWithCornerRaduis Grid.Column="1">
-                                <TextBlock Style="{StaticResource LabelTextBlock}">
-                                    <Run Text="Тип заказа:" />
-                                    <LineBreak />
-                                    <Run x:Name="TypeOfOrder" FontWeight="SemiBold" />
-                                </TextBlock>
-                            </ctrl:ButtonWithCornerRaduis>
-
-                            <ctrl:ButtonWithCornerRaduis Grid.Column="2" CornerRadius="{mx:AdaptiveSize CornerRadius={StaticResource RightSideCornerRadius}}">
-                                <TextBlock Style="{StaticResource LabelTextBlock}">
-                                    <Run Text="Реклама:" />
-                                    <LineBreak />
-                                    <Run Text="Не задано" />
-                                </TextBlock>
-                            </ctrl:ButtonWithCornerRaduis>
-
-                        </Grid>
-                    </Border>
-
-                    <Border x:Name="BasicAddressInfo" Style="{StaticResource WideBorderClientInfo}">
-                        <Grid>
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="*" />
-                            </Grid.ColumnDefinitions>
-
-                            <ctrl:ButtonWithCornerRaduis
-                                x:Name="SelectStreet"
-                                Grid.Column="0"
-                                CornerRadius="{mx:AdaptiveSize CornerRadius={StaticResource LeftSideCornerRadius}}">
-                                <TextBlock Style="{StaticResource LabelTextBlock}">
-                                    <Run Text="Улица:" />
-                                    <LineBreak />
-                                    <Run x:Name="StreetName" Text="Не задана" />
-                                </TextBlock>
-                            </ctrl:ButtonWithCornerRaduis>
-
-                            <ctrl:ButtonWithCornerRaduis
-                                x:Name="SelectDistrict"
+                            <TextBlock
+                                x:Name="Price"
                                 Grid.Column="1"
-                                CornerRadius="{mx:AdaptiveSize CornerRadius={StaticResource RightSideCornerRadius}}">
-                                <TextBlock Style="{StaticResource LabelTextBlock}">
-                                    <Run Text="Район:" />
-                                    <LineBreak />
-                                    <Run x:Name="DistrictName" Text="Не задан" />
-                                </TextBlock>
-                            </ctrl:ButtonWithCornerRaduis>
+                                VerticalAlignment="Center"
+                                FontSize="{mx:AdaptiveSize 30}"
+                                FontWeight="Bold"
+                                Foreground="{StaticResource AlternateForeground}" />
 
                         </Grid>
                     </Border>
 
-                    <Grid x:Name="AdditionalAddressInfo">
+                </Grid>
+            </Border>
 
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
+            <Border
+                Grid.Column="1"
+                BorderThickness="0,1,1,0"
+                Style="{StaticResource Part}">
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+
+                    <Border Style="{StaticResource HeaderPart}">
+                        <TextBlock Style="{StaticResource HeaderPartTextBlock}" Text="КЛИЕНТ" />
+                    </Border>
+
+                    <StackPanel Grid.Row="1" Margin="{mx:AdaptiveSize Thickness='15,10,8,9'}">
+
+                        <ctrl:Input
+                            x:Name="FullName"
+                            Label="Имя отчество"
+                            Placeholder="Имя Отчество" />
+
+                        <ctrl:Input
+                            x:Name="LastName"
+                            Label="Фамилия"
+                            Placeholder="Фамилия" />
+
+                        <ctrl:Input
+                            x:Name="Phone"
+                            InputType="Number"
+                            Label="Телефон"
+                            Placeholder="Телефон" />
+
+                        <ctrl:Input
+                            x:Name="Card"
+                            Label="Карта"
+                            Placeholder="Карта" />
+
+                        <ctrl:Input
+                            x:Name="Miscellaneous"
+                            Label="Прочее"
+                            Placeholder="Прочее" />
+
+                        <Border ClipToBounds="True" Style="{StaticResource WideBorderClientInfo}">
+                            <Grid>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <ctrl:ButtonWithCornerRaduis Grid.Column="0" CornerRadius="{mx:AdaptiveSize CornerRadius={StaticResource LeftSideCornerRadius}}">
+                                    <TextBlock Style="{StaticResource LabelTextBlock}" Text="Доп. инфо" />
+                                </ctrl:ButtonWithCornerRaduis>
+
+                                <ctrl:ButtonWithCornerRaduis Grid.Column="1">
+                                    <TextBlock Style="{StaticResource LabelTextBlock}" Text="Без сидки / цен.катег." />
+                                </ctrl:ButtonWithCornerRaduis>
+
+                                <ctrl:ButtonWithCornerRaduis Grid.Column="2" CornerRadius="{mx:AdaptiveSize CornerRadius={StaticResource RightSideCornerRadius}}">
+                                    <TextBlock Style="{StaticResource LabelTextBlock}" Text="Не в статусе “Высокий риск”" />
+                                </ctrl:ButtonWithCornerRaduis>
+
+                            </Grid>
+                        </Border>
+
+                        <ctrl:Input
+                            x:Name="Comment"
+                            Label="Комм. к заказу"
+                            Placeholder="Комментарий" />
+
+                    </StackPanel>
+
+                </Grid>
+            </Border>
+
+            <Border
+                Grid.Column="2"
+                BorderThickness="0,1,0,0"
+                Style="{StaticResource Part}">
+                <Grid>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="1*" />
+                    </Grid.RowDefinitions>
+
+                    <Border Style="{StaticResource HeaderPart}">
+                        <TextBlock Style="{StaticResource HeaderPartTextBlock}" Text="АДРЕС" />
+                    </Border>
+
+                    <StackPanel Grid.Row="1" Margin="{mx:AdaptiveSize Thickness='15,10,8,9'}">
+
+                        <Border ClipToBounds="True" Style="{StaticResource WideBorderClientInfo}">
+                            <Grid>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <ctrl:ButtonWithCornerRaduis Grid.Column="0" CornerRadius="{mx:AdaptiveSize CornerRadius={StaticResource LeftSideCornerRadius}}">
+                                    <TextBlock Style="{StaticResource LabelTextBlock}">
+                                        <Run Text="Время:" />
+                                        <LineBreak />
+                                        <Run
+                                            x:Name="Time"
+                                            FontWeight="SemiBold"
+                                            Text="--:--" />
+                                        <LineBreak />
+                                        <Run x:Name="RelationTime" Text="(сегодня)" />
+                                    </TextBlock>
+                                </ctrl:ButtonWithCornerRaduis>
+
+                                <ctrl:ButtonWithCornerRaduis Grid.Column="1">
+                                    <TextBlock Style="{StaticResource LabelTextBlock}">
+                                        <Run Text="Тип заказа:" />
+                                        <LineBreak />
+                                        <Run x:Name="TypeOfOrder" FontWeight="SemiBold" />
+                                    </TextBlock>
+                                </ctrl:ButtonWithCornerRaduis>
+
+                                <ctrl:ButtonWithCornerRaduis Grid.Column="2" CornerRadius="{mx:AdaptiveSize CornerRadius={StaticResource RightSideCornerRadius}}">
+                                    <TextBlock Style="{StaticResource LabelTextBlock}">
+                                        <Run Text="Реклама:" />
+                                        <LineBreak />
+                                        <Run Text="Не задано" />
+                                    </TextBlock>
+                                </ctrl:ButtonWithCornerRaduis>
+
+                            </Grid>
+                        </Border>
+
+                        <Border x:Name="BasicAddressInfo" Style="{StaticResource WideBorderClientInfo}">
+                            <Grid>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <ctrl:ButtonWithCornerRaduis
+                                    x:Name="SelectStreet"
+                                    Grid.Column="0"
+                                    CornerRadius="{mx:AdaptiveSize CornerRadius={StaticResource LeftSideCornerRadius}}">
+                                    <TextBlock Style="{StaticResource LabelTextBlock}">
+                                        <Run Text="Улица:" />
+                                        <LineBreak />
+                                        <Run x:Name="StreetName" Text="Не задана" />
+                                    </TextBlock>
+                                </ctrl:ButtonWithCornerRaduis>
+
+                                <ctrl:ButtonWithCornerRaduis
+                                    x:Name="SelectDistrict"
+                                    Grid.Column="1"
+                                    CornerRadius="{mx:AdaptiveSize CornerRadius={StaticResource RightSideCornerRadius}}">
+                                    <TextBlock Style="{StaticResource LabelTextBlock}">
+                                        <Run Text="Район:" />
+                                        <LineBreak />
+                                        <Run x:Name="DistrictName" Text="Не задан" />
+                                    </TextBlock>
+                                </ctrl:ButtonWithCornerRaduis>
+
+                            </Grid>
+                        </Border>
+
+                        <Grid x:Name="AdditionalAddressInfo">
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                            </Grid.RowDefinitions>
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <!--  Костыль, как нибудь потом убери  -->
+                            <Border Grid.Column="1" Width="4" />
+
+                            <ctrl:Input
+                                x:Name="House"
+                                Label="Дом"
+                                Placeholder="Дом" />
+
+                            <ctrl:Input
+                                x:Name="Building"
+                                Grid.Column="2"
+                                Label="Корпус строение"
+                                Placeholder="Корпус" />
+
+                            <ctrl:Input
+                                x:Name="Entrance"
+                                Grid.Row="1"
+                                Label="Подъезд"
+                                Placeholder="Подъезд" />
+
+                            <ctrl:Input
+                                x:Name="Floor"
+                                Grid.Row="1"
+                                Grid.Column="2"
+                                Label="Этаж"
+                                Placeholder="Этаж" />
+
+                            <ctrl:Input
+                                x:Name="Apartment"
+                                Grid.Row="2"
+                                Label="Квартира"
+                                Placeholder="Квартира" />
+
+                            <ctrl:Input
+                                x:Name="Intercom"
+                                Grid.Row="2"
+                                Grid.Column="2"
+                                Label="Домофон"
+                                Placeholder="Домофон" />
+
+
+                        </Grid>
+
+                        <ctrl:Input
+                            x:Name="AddressNote"
+                            Label="Прим. к адресу"
+                            Placeholder="Прим. к адресу" />
+
+                        <ctrl:Input
+                            x:Name="Courier"
+                            Label="Курьер"
+                            Placeholder="Не задан" />
+
+                    </StackPanel>
+
+                </Grid>
+            </Border>
+
+            <Border
+                Grid.Row="2"
+                Grid.ColumnSpan="3"
+                Padding="{mx:AdaptiveSize Thickness='50,15,50,30'}"
+                Background="{DynamicResource SecondaryBackground}">
+
+                <Grid Opacity="0.5">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*" />
+                        <ColumnDefinition Width="2*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Margin="{mx:AdaptiveSize Thickness='0,0,81,0'}">
 
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
-                            <ColumnDefinition Width="Auto" />
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <!--  Костыль, как нибудь потом убери  -->
-                        <Border Grid.Column="1" Width="4" />
+                        <ctrl:ButtonWithCornerRaduis Style="{StaticResource TopIconnedButton}">
+                            <Grid>
 
-                        <ctrl:Input
-                            x:Name="House"
-                            Label="Дом"
-                            Placeholder="Дом" />
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
 
-                        <ctrl:Input
-                            x:Name="Building"
-                            Grid.Column="2"
-                            Label="Корпус строение"
-                            Placeholder="Корпус" />
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
 
-                        <ctrl:Input
-                            x:Name="Entrance"
-                            Grid.Row="1"
-                            Label="Подъезд"
-                            Placeholder="Подъезд" />
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <Path Data="{StaticResource PhoneIcon}" Style="{StaticResource LeftSmallIcon}" />
+                                    <Path Data="{StaticResource ClientIcon}" Style="{StaticResource RightIcon}" />
+                                </StackPanel>
 
-                        <ctrl:Input
-                            x:Name="Floor"
-                            Grid.Row="1"
-                            Grid.Column="2"
-                            Label="Этаж"
-                            Placeholder="Этаж" />
+                                <TextBlock Style="{StaticResource StatusTextBlock}" Text="Позвонить клиенту" />
 
-                        <ctrl:Input
-                            x:Name="Apartment"
-                            Grid.Row="2"
-                            Label="Квартира"
-                            Placeholder="Квартира" />
+                            </Grid>
+                        </ctrl:ButtonWithCornerRaduis>
 
-                        <ctrl:Input
-                            x:Name="Intercom"
-                            Grid.Row="2"
-                            Grid.Column="2"
-                            Label="Домофон"
-                            Placeholder="Домофон" />
+                        <ctrl:ButtonWithCornerRaduis Grid.Column="1" Style="{StaticResource TopIconnedButton}">
+                            <Grid>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="*" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
+
+                                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                                    <Path Data="{StaticResource PhoneIcon}" Style="{StaticResource LeftSmallIcon}" />
+                                    <Path
+                                        Width="{mx:AdaptiveSize 37}"
+                                        Data="{StaticResource DeliveryTruck}"
+                                        Style="{StaticResource RightIcon}" />
+                                </StackPanel>
+
+                                <TextBlock Style="{StaticResource StatusTextBlock}" Text="Позвонить курьеру" />
+
+                            </Grid>
+                        </ctrl:ButtonWithCornerRaduis>
 
 
                     </Grid>
 
-                    <ctrl:Input
-                        x:Name="AddressNote"
-                        Label="Прим. к адресу"
-                        Placeholder="Прим. к адресу" />
+                    <Grid Grid.Column="2">
 
-                    <ctrl:Input
-                        x:Name="Courier"
-                        Label="Курьер"
-                        Placeholder="Не задан" />
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                            <ColumnDefinition Width="1*" />
+                        </Grid.ColumnDefinitions>
 
-                </StackPanel>
+                        <ctrl:StatusEllipsedButton
+                            Grid.Column="0"
+                            EllipseText="0"
+                            StatusText="ОТМЕНИТЬ" />
+                        <ctrl:StatusEllipsedButton
+                            Grid.Column="1"
+                            EllipseText="1"
+                            StatusText="НЕПОДТВ." />
+                        <ctrl:StatusEllipsedButton
+                            Grid.Column="2"
+                            EllipseText="2"
+                            StatusText="ГОТОВИТЬ" />
+                        <ctrl:StatusEllipsedButton
+                            Grid.Column="3"
+                            EllipseText="3"
+                            StatusText="ОТПРАВИТЬ" />
+                        <ctrl:StatusEllipsedButton
+                            Grid.Column="4"
+                            EllipseText="4"
+                            StatusText="ДОСТАВЛ." />
+                        <ctrl:StatusEllipsedButton
+                            Grid.Column="5"
+                            EllipseText="5"
+                            StatusText="ЗАКРЫТЬ" />
 
-            </Grid>
-        </Border>
-
-        <Border
-            Grid.Row="2"
-            Grid.ColumnSpan="3"
-            Padding="{mx:AdaptiveSize Thickness='50,15,50,30'}"
-            Background="{DynamicResource SecondaryBackground}">
-
-            <Grid Opacity="0.5">
-
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*" />
-                    <ColumnDefinition Width="2*" />
-                </Grid.ColumnDefinitions>
-
-                <Grid Margin="{mx:AdaptiveSize Thickness='0,0,81,0'}">
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="*" />
-                    </Grid.ColumnDefinitions>
-
-                    <ctrl:ButtonWithCornerRaduis Style="{StaticResource TopIconnedButton}">
-                        <Grid>
-
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*" />
-                            </Grid.ColumnDefinitions>
-
-                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                <Path Data="{StaticResource PhoneIcon}" Style="{StaticResource LeftSmallIcon}" />
-                                <Path Data="{StaticResource ClientIcon}" Style="{StaticResource RightIcon}" />
-                            </StackPanel>
-
-                            <TextBlock Style="{StaticResource StatusTextBlock}" Text="Позвонить клиенту" />
-
-                        </Grid>
-                    </ctrl:ButtonWithCornerRaduis>
-
-                    <ctrl:ButtonWithCornerRaduis Grid.Column="1" Style="{StaticResource TopIconnedButton}">
-                        <Grid>
-
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="*" />
-                                <RowDefinition Height="Auto" />
-                            </Grid.RowDefinitions>
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="1*" />
-                            </Grid.ColumnDefinitions>
-
-                            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
-                                <Path Data="{StaticResource PhoneIcon}" Style="{StaticResource LeftSmallIcon}" />
-                                <Path
-                                    Width="{mx:AdaptiveSize 37}"
-                                    Data="{StaticResource DeliveryTruck}"
-                                    Style="{StaticResource RightIcon}" />
-                            </StackPanel>
-
-                            <TextBlock Style="{StaticResource StatusTextBlock}" Text="Позвонить курьеру" />
-
-                        </Grid>
-                    </ctrl:ButtonWithCornerRaduis>
-
+                    </Grid>
 
                 </Grid>
 
-                <Grid Grid.Column="2">
+            </Border>
 
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="1*" />
-                        <ColumnDefinition Width="1*" />
-                    </Grid.ColumnDefinitions>
+        </Grid>
 
-                    <ctrl:StatusEllipsedButton
-                        Grid.Column="0"
-                        EllipseText="0"
-                        StatusText="ОТМЕНИТЬ" />
-                    <ctrl:StatusEllipsedButton
-                        Grid.Column="1"
-                        EllipseText="1"
-                        StatusText="НЕПОДТВ." />
-                    <ctrl:StatusEllipsedButton
-                        Grid.Column="2"
-                        EllipseText="2"
-                        StatusText="ГОТОВИТЬ" />
-                    <ctrl:StatusEllipsedButton
-                        Grid.Column="3"
-                        EllipseText="3"
-                        StatusText="ОТПРАВИТЬ" />
-                    <ctrl:StatusEllipsedButton
-                        Grid.Column="4"
-                        EllipseText="4"
-                        StatusText="ДОСТАВЛ." />
-                    <ctrl:StatusEllipsedButton
-                        Grid.Column="5"
-                        EllipseText="5"
-                        StatusText="ЗАКРЫТЬ" />
+        <local:NewDeliveryOrderEditPage
+            x:Name="OrderEditPage"
+            Margin="{mx:AdaptiveSize Thickness='0,0,0,-60'}"
+            Visibility="{Binding IsChecked, ElementName=SwitchOrderEdit, Converter={StaticResource BoolToVisibilityConverter}}" />
 
-                </Grid>
-
-            </Grid>
-
-        </Border>
+        <local:DeliveryPaymentPage
+            x:Name="PaymentPage"
+            Margin="{mx:AdaptiveSize Thickness='0,0,0,-60'}"
+            Visibility="{Binding IsChecked, ElementName=Payment, Converter={StaticResource BoolToVisibilityConverter}}" />
 
     </Grid>
 
@@ -652,6 +666,7 @@
         <Grid>
 
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
@@ -663,13 +678,14 @@
 
             <ctrl:ButtonWithCornerRaduis x:Name="BackButton" Style="{StaticResource BackButton}" />
 
-            <CheckBox
+            <RadioButton
                 x:Name="SwitchOrderEdit"
                 Grid.Column="1"
                 Width="{mx:AdaptiveSize 165}"
                 Margin="{mx:AdaptiveSize Thickness='30,0,0,0'}"
                 Background="{StaticResource ClickableBg}"
-                Style="{StaticResource BorderToggleCheckbox}">
+                GroupName="CurrentView"
+                Style="{StaticResource BorderToggleRadioButton}">
                 <Grid>
 
                     <Grid.ColumnDefinitions>
@@ -688,14 +704,46 @@
                         FontSize="{mx:AdaptiveSize 14}"
                         FontWeight="Medium"
                         Foreground="{DynamicResource AlternateForeground}"
-                        Text="Доставка" />
+                        Text="ЗАКАЗ" />
 
                 </Grid>
-            </CheckBox>
+            </RadioButton>
+
+            <RadioButton
+                x:Name="SwitchClientEdit"
+                Grid.Column="2"
+                Width="{mx:AdaptiveSize 165}"
+                Margin="{mx:AdaptiveSize Thickness='15,0,0,0'}"
+                Background="{StaticResource ClickableBg}"
+                GroupName="CurrentView"
+                IsChecked="True"
+                Style="{StaticResource BorderToggleRadioButton}">
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="1*" />
+                    </Grid.ColumnDefinitions>
+
+                    <Path
+                        Margin="{mx:AdaptiveSize Thickness='0,0,10,0'}"
+                        Data="{StaticResource ClientIcon}"
+                        Fill="{DynamicResource AlternateForeground}" />
+
+                    <TextBlock
+                        Grid.Column="1"
+                        VerticalAlignment="Center"
+                        FontSize="{mx:AdaptiveSize 14}"
+                        FontWeight="Medium"
+                        Foreground="{DynamicResource AlternateForeground}"
+                        Text="КЛИЕНТ" />
+
+                </Grid>
+            </RadioButton>
 
             <CheckBox
                 x:Name="IsOutOfTurn"
-                Grid.Column="2"
+                Grid.Column="3"
                 Width="{mx:AdaptiveSize 165}"
                 Margin="{mx:AdaptiveSize Thickness='15,0,0,0'}"
                 Background="{StaticResource ClickableBg}"
@@ -725,7 +773,7 @@
 
             <ctrl:ButtonWithIcon
                 x:Name="Problem"
-                Grid.Column="4"
+                Grid.Column="5"
                 Width="{mx:AdaptiveSize 165}"
                 Margin="{mx:AdaptiveSize Thickness='15,0,0,0'}"
                 Background="{StaticResource ClickableBg}"
@@ -735,13 +783,14 @@
                 Icon="{StaticResource ProblemIcon}"
                 Style="{StaticResource ToggableBorderIconButton}" />
 
-            <CheckBox
+            <RadioButton
                 x:Name="Payment"
-                Grid.Column="5"
+                Grid.Column="6"
                 Width="{mx:AdaptiveSize 165}"
                 Margin="{mx:AdaptiveSize Thickness='15,0,0,0'}"
                 Background="{StaticResource ClickableBg}"
-                Style="{StaticResource BorderToggleCheckbox}">
+                GroupName="CurrentView"
+                Style="{StaticResource BorderToggleRadioButton}">
                 <Grid>
 
                     <Grid.ColumnDefinitions>
@@ -763,11 +812,11 @@
                         Text="Платежи" />
 
                 </Grid>
-            </CheckBox>
+            </RadioButton>
 
             <Button
                 x:Name="Save"
-                Grid.Column="6"
+                Grid.Column="7"
                 Margin="{mx:AdaptiveSize Thickness='15,0,0,0'}"
                 Padding="{mx:AdaptiveSize Thickness='4'}"
                 Content="Сохранить"

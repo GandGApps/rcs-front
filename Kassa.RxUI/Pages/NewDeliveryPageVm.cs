@@ -50,6 +50,7 @@ public class NewDeliveryPageVm : PageViewModel
         FirstName = Client?.FirstName ?? string.Empty;
         MiddleName = Client?.MiddleName ?? string.Empty;
         Miscellaneous = Client?.Miscellaneous ?? string.Empty;
+        IsClientOpenned = true;
 
         this.WhenAnyValue(x => x.IsPickup, x => x.IsDelivery, (isPickup, isDelivery) => isPickup ? "Самовывоз" : isDelivery ? "Доставка курьером" : string.Empty)
             .ToPropertyEx(this, x => x.TypeOfOrder)
@@ -87,37 +88,57 @@ public class NewDeliveryPageVm : PageViewModel
             Street = streetDialog.SelectedItem;
         }).DisposeWith(InternalDisposables);
 
-        SwitchOrderCommand = ReactiveCommand.CreateFromTask(async () =>
+        
+
+        BackButtonCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            if (!IsOrderEditOpened)
+            if (MainViewModel.Router.GetCurrentViewModel() is not NewDeliveryPageVm)
             {
                 await MainViewModel.Router.NavigateBack.Execute().FirstAsync();
+            }
+
+            await MainViewModel.GoBackCommand.Execute().FirstAsync();
+
+        }).DisposeWith(InternalDisposables);
+
+        /*SwitchClientCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            if (MainViewModel.Router.GetCurrentViewModel() is NewDeliveryPageVm)
+            {
                 return;
             }
+
+            await MainViewModel.Router.NavigateBack.Execute().FirstAsync();
+
+        }).DisposeWith(InternalDisposables);
+
+        SwitchOrderCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var currentVm = MainViewModel.Router.GetCurrentViewModel();
+
+            if (currentVm is IOrderEditVm)
+            {
+                return;
+            }
+
+            await SwitchClientCommand.Execute().FirstAsync();
 
             await MainViewModel.Router.Navigate.Execute(OrderEditPageVm).FirstAsync();
 
         }).DisposeWith(InternalDisposables);
 
-        BackButtonCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            while (MainViewModel.Router.NavigationStack[^1] is not AllDeliveriesPageVm)
-            {
-                await MainViewModel.GoBackCommand.Execute().FirstAsync();
-            }
-
-        }).DisposeWith(InternalDisposables);
-
         SwitchToPaymentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            if (!IsPaymentPageOpenned)
+            if (MainViewModel.Router.GetCurrentViewModel() is IPaymentVm)
             {
-                await MainViewModel.Router.NavigateBack.Execute().FirstAsync();
                 return;
             }
+
+            await SwitchClientCommand.Execute().FirstAsync();
+
             await MainViewModel.Router.Navigate.Execute(PaymentPageVm).FirstAsync();
 
-        }).DisposeWith(InternalDisposables);
+        }).DisposeWith(InternalDisposables);*/
 
         WriteProblemCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -159,7 +180,7 @@ public class NewDeliveryPageVm : PageViewModel
                 return;
             }
 
-            if (!IsDelivery && (District is null || Street is null))
+            if (IsDelivery && (District is null || Street is null))
             {
                 await MainViewModel.OkMessage("Не выбран район или улица");
                 return;
@@ -257,6 +278,7 @@ public class NewDeliveryPageVm : PageViewModel
             order.IsProblematicDelivery = IsProblematicDelivery;
             order.Problem = Problem;
             order.CourierId = CourierViewModel?.Id;
+            order.ClientId = Client?.Id;
             order.CreatedAt = DateTime.UtcNow;
 
             var ordersService = await Locator.GetInitializedService<IOrdersService>();
@@ -265,9 +287,15 @@ public class NewDeliveryPageVm : PageViewModel
             await loading.CloseAsync();
 
             await MainViewModel.OkMessage("Заказ сохранен");
-            await GoBackCommand.Execute();
+            await BackButtonCommand.Execute().FirstAsync();
 
         }).DisposeWith(InternalDisposables);
+
+#if DEBUG
+        Disposable.Create(() =>
+        {
+        }).DisposeWith(InternalDisposables);
+#endif
     }
 
     public new CompositeDisposable InternalDisposables => base.InternalDisposables;
@@ -508,6 +536,17 @@ public class NewDeliveryPageVm : PageViewModel
         get; set;
     } = null!;
 
+    public ReactiveCommand<Unit, Unit> SwitchClientCommand
+    {
+        get;
+    }
+
+    [Reactive]
+    public bool IsClientOpenned
+    {
+        get; set;
+    }
+
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
         var cashierService = await Locator.GetInitializedService<ICashierService>();
@@ -536,19 +575,19 @@ public class NewDeliveryPageVm : PageViewModel
 
     private bool IsAllClientInfoFilled()
     {
-        return !string.IsNullOrWhiteSpace(NameWithMiddleName) 
-            && !string.IsNullOrWhiteSpace(Phone) 
+        return !string.IsNullOrWhiteSpace(NameWithMiddleName)
+            && !string.IsNullOrWhiteSpace(Phone)
             && !string.IsNullOrWhiteSpace(Address)
             && !string.IsNullOrWhiteSpace(Card);
     }
 
     private bool IsAllAddressInfoFilled()
     {
-        return !string.IsNullOrWhiteSpace(House) 
-            && !string.IsNullOrWhiteSpace(Building) 
-            && !string.IsNullOrWhiteSpace(Entrance) 
-            && !string.IsNullOrWhiteSpace(Floor) 
-            && !string.IsNullOrWhiteSpace(Apartment) 
+        return !string.IsNullOrWhiteSpace(House)
+            && !string.IsNullOrWhiteSpace(Building)
+            && !string.IsNullOrWhiteSpace(Entrance)
+            && !string.IsNullOrWhiteSpace(Floor)
+            && !string.IsNullOrWhiteSpace(Apartment)
             && !string.IsNullOrWhiteSpace(Intercom)
             && (Street != null)
             && (District != null);

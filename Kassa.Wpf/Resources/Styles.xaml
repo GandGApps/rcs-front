@@ -374,6 +374,54 @@
 
     </ControlTemplate>
 
+    <ControlTemplate x:Key="RadioButtonWithShadow" TargetType="RadioButton">
+        <Grid>
+            <Border
+                x:Name="_topShadow"
+                BorderThickness="2,2,0,0"
+                CornerRadius="{mx:AdaptiveSize CornerRadius=6.4}">
+                <Border.Effect>
+                    <BlurEffect Radius="{DynamicResource TopShadowBlurEffectRadius}" />
+                </Border.Effect>
+            </Border>
+            <Border
+                x:Name="_bottomShadow"
+                BorderThickness="0,0,2,2"
+                CornerRadius="{mx:AdaptiveSize CornerRadius=6.4}">
+                <Border.Effect>
+                    <BlurEffect Radius="{DynamicResource BottomShadowBlurEffectRadius}" />
+                </Border.Effect>
+            </Border>
+            <Border
+                x:Name="_border"
+                Padding="{TemplateBinding Padding}"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{mx:AdaptiveSize CornerRadius=6.4}">
+                <ContentPresenter
+                    Grid.Column="1"
+                    Content="{TemplateBinding Content}"
+                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                    TextBlock.FontSize="{TemplateBinding FontSize}"
+                    TextBlock.Foreground="{TemplateBinding Foreground}" />
+            </Border>
+        </Grid>
+
+
+        <ControlTemplate.Triggers>
+            <Trigger Property="IsChecked" Value="True">
+                <Setter TargetName="_topShadow" Property="BorderBrush" Value="{DynamicResource TopShadowBrush}" />
+                <Setter TargetName="_bottomShadow" Property="BorderBrush" Value="{DynamicResource BottomShadowBrush}" />
+            </Trigger>
+            <Trigger Property="IsChecked" Value="False">
+                <Setter TargetName="_topShadow" Property="BorderBrush" Value="{DynamicResource BottomShadowBrush}" />
+                <Setter TargetName="_bottomShadow" Property="BorderBrush" Value="{DynamicResource TopShadowBrush}" />
+            </Trigger>
+        </ControlTemplate.Triggers>
+
+    </ControlTemplate>
+
     <ControlTemplate x:Key="TogableBorderCheckbox" TargetType="CheckBox">
 
         <Border
@@ -415,6 +463,22 @@
                 <Setter Property="BorderBrush" Value="Transparent" />
             </Trigger>
         </Style.Triggers>
+    </Style>
+
+    <Style x:Key="BorderToggleRadioButton" TargetType="RadioButton">
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 14}" />
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness=10}" />
+        <Setter Property="Background" Value="{DynamicResource ClickableBg}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AlternateForeground}" />
+        <Setter Property="BorderThickness" Value="{mx:AdaptiveSize Thickness='1.4'}" />
+        <Setter Property="Template" Value="{StaticResource RadioButtonWithShadow}" />
+
+        <Style.Triggers>
+            <Trigger Property="IsChecked" Value="False">
+                <Setter Property="BorderBrush" Value="Transparent" />
+            </Trigger>
+        </Style.Triggers>
+
     </Style>
 
     <Style

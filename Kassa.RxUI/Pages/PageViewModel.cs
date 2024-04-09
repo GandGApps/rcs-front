@@ -17,7 +17,7 @@ public class PageViewModel : BaseViewModel, IRoutableViewModel
 
         GoBackCommand = ReactiveCommand.Create(() =>
         {
-            HostScreen.Router.NavigateBack.Execute();
+            MainViewModel.GoBackCommand.Execute().Subscribe();
         });
     }
 

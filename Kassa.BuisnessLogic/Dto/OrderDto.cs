@@ -172,4 +172,6 @@ public class OrderDto : IModel
     {
         get; set;
     }
+
+    public string AddressWithoutStreet => $"{House} {Building} {Entrance} {Floor} {Apartment}";
 }

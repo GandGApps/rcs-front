@@ -3,10 +3,12 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using DynamicData;
 using Kassa.DataAccess.Model;
 using Kassa.Shared.Collections;
 using Splat.ModeDetection;
@@ -46,115 +48,117 @@ public static class ApplicationModelManagersExtensions
         return PackObservable(observable, filteredOservable);
     }
 
-    public static IObservable<ChangeSet<TDestionation>> Transform<TModel, TDestionation>(this IObservable<ChangeSet<TModel>> observable, Func<TModel, TDestionation> transform)
+
+    public static IDisposable BindAndFilter<TModel, TCast>(this IApplicationModelManager<TModel> manager, Func<TModel, bool> filter, Func<TModel, TCast> selector, out ReadOnlyObservableCollection<TCast> collection)
         where TModel : class, IModel
-        where TDestionation : class, IModel
+        where TCast : class, IApplicationModelPresenter<TModel>
     {
-        IApplicationModelManager<TModel>? manager;
+        var target = new ObservableCollection<TCast>();
+        collection = new(target);
 
-        if (observable is SourceApplicationModelManager<TModel> sourceApplicationModelManager)
+        var disposables = new CompositeDisposable();
+
+        target.AddRange(manager.Values.Where(filter).Select(selector));
+
+        manager.Subscribe(changeSet =>
         {
-            manager = sourceApplicationModelManager.Source;
-        }
-        else if (observable is IApplicationModelManager<TModel> applicationModelManager)
-        {
 
-            manager = applicationModelManager;
-        }
-        else
-        {
-            manager = null;
-        }
-
-        return observable.Scan(ChangeSet<TDestionation>.Empty, (cache, changes) =>
-        {
-            if (changes.IsEmpty)
-            {
-                return cache;
-            }
-
-            using var builder = ImmutableArrayBuilder<Change<TDestionation>>.Rent(cache.IsEmpty ? 8 : cache.Changes.Length);
-
-            if (!cache.IsEmpty)
-            {
-                builder.AddRange(cache.Changes.AsSpan());
-            }
-
-            foreach (var change in changes.Changes)
-            {
-                var transformedChange = Change<TModel>.Transform(change, transform);
-                var destination = transformedChange.Current;
-
-                if (destination is IApplicationModelPresenter<TModel> applicationModelPresenter)
-                {
-                    manager?.AddPresenter(applicationModelPresenter);
-                }
-
-                builder.Add(transformedChange);
-            }
-
-            return ChangeSet<TDestionation>.Create(builder.ToImmutable(), changes.Index);
-        }).Where(x => !x.IsEmpty);
-    }
-
-    public static IObservable<ChangeSet<TModel>> Bind<TModel>(this IObservable<ChangeSet<TModel>> observable, out ReadOnlyObservableCollection<TModel> models)
-        where TModel : class, IModel
-    {
-        var collection = new ObservableCollection<TModel>();
-        models = new ReadOnlyObservableCollection<TModel>(collection);
-
-        observable.Subscribe(changeSet =>
-        {
             foreach (var change in changeSet.Changes)
             {
+                var model = change.Current;
+
+                if (!filter(model))
+                {
+                    continue;
+                }
+
                 switch (change.Reason)
                 {
+
                     case ModelChangeReason.Add:
-                        collection.Add(change.Current);
+                        var added = selector(model);
+                        target.Add(added);
+                        manager.AddPresenter(added).DisposeWith(disposables);
                         break;
-                    case ModelChangeReason.Refresh:
-                        var index = collection.IndexOf(change.Current);
-                        if (index != -1)
+
+                    case ModelChangeReason.Remove:
+                        var removed = target.FirstOrDefault(x => x.Id == model.Id);
+                        if (removed != null)
                         {
-                            collection[index] = change.Current;
+                            target.Remove(removed);
                         }
                         break;
-                    case ModelChangeReason.Remove:
-                        collection.Remove(change.Current);
-                        break;
+
                 }
             }
-        });
 
-        return observable;
+        }).DisposeWith(disposables);
+
+        return disposables;
     }
 
-    public static IObservable<ChangeSet<TCast>> Cast<TModel, TCast>(this IObservable<ChangeSet<TModel>> observable)
-        where TCast : class, IModel, TModel
-        where TModel : class, IModel
+    public static IDisposable BindAndFilter<TModel, TCast>(this IApplicationModelManager<TModel> manager, IObservable<Func<TModel, bool>> filterChangeable, Func<TModel, TCast> selector, out ReadOnlyObservableCollection<TCast> collection)
+      where TModel : class, IModel
+      where TCast : class, IApplicationModelPresenter<TModel>
     {
-        return observable.Select(changes =>
+        var target = new ObservableCollection<TCast>();
+        collection = new(target);
+
+        var disposables = new CompositeDisposable();
+        var internalDisposables = new CompositeDisposable();
+
+
+        filterChangeable.Subscribe(filter =>
         {
+            internalDisposables.Dispose();
 
-            if (changes.IsEmpty)
+            target.Clear();
+            target.AddRange(manager.Values.Where(filter).Select(selector));
+
+            internalDisposables = [];
+
+            manager.Subscribe(changeSet =>
             {
 
-                return ChangeSet<TCast>.Empty;
-            }
+                foreach (var change in changeSet.Changes)
+                {
+                    var model = change.Current;
 
-            using var builder = ImmutableArrayBuilder<Change<TCast>>.Rent(changes.Changes.Length);
+                    if (!filter(model))
+                    {
+                        continue;
+                    }
 
-            foreach (var change in changes.Changes)
-            {
+                    switch (change.Reason)
+                    {
 
-                builder.Add(Change<TModel>.Transform(change, x => (TCast)x));
-            }
+                        case ModelChangeReason.Add:
+                            var added = selector(model);
+                            target.Add(added);
+                            manager.AddPresenter(added).DisposeWith(internalDisposables);
+                            break;
 
-            return ChangeSet<TCast>.Create(builder.ToImmutable(), changes.Index);
-        }).Where(x => !x.IsEmpty);
+                        case ModelChangeReason.Remove:
+                            var removed = target.FirstOrDefault(x => x.Id == model.Id);
+                            if (removed != null)
+                            {
+                                target.Remove(removed);
+                            }
+                            break;
+
+                    }
+                }
+
+            }).DisposeWith(internalDisposables);
+
+        }).DisposeWith(disposables);
+
+       
+
+        return disposables;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static IObservable<ChangeSet<TModel>> PackObservable<TModel>(IObservable<ChangeSet<TModel>> observable, IObservable<ChangeSet<TModel>> modifiedObservable)
         where TModel : class, IModel
     {
