@@ -51,6 +51,12 @@ public static class DependencyResolverExtensions
         SplatRegistrations.Register<IIngridientsService, IngridientsService>();
         RegisterInitializableServiceFactory<IIngridientsService>(services);
 
+        SplatRegistrations.Register<ICourierService, CourierService>();
+        RegisterInitializableServiceFactory<ICourierService>(services);
+
+        SplatRegistrations.Register<IOrdersService, OrdersService>();
+        RegisterInitializableServiceFactory<IOrdersService>(services);
+
         services.Register<IReceiptService>(() =>
         {
             var ingridientsService = Locator.Current.GetNotInitializedService<IIngridientsService>();

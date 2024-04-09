@@ -524,6 +524,11 @@
                         Label="Прим. к адресу"
                         Placeholder="Прим. к адресу" />
 
+                    <ctrl:Input
+                        x:Name="Courier"
+                        Label="Курьер"
+                        Placeholder="Не задан" />
+
                 </StackPanel>
 
             </Grid>
@@ -653,6 +658,7 @@
                 <ColumnDefinition Width="*" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
             <ctrl:ButtonWithCornerRaduis x:Name="BackButton" Style="{StaticResource BackButton}" />
@@ -758,6 +764,14 @@
 
                 </Grid>
             </CheckBox>
+
+            <Button
+                x:Name="Save"
+                Grid.Column="6"
+                Margin="{mx:AdaptiveSize Thickness='15,0,0,0'}"
+                Padding="{mx:AdaptiveSize Thickness='4'}"
+                Content="Сохранить"
+                Style="{StaticResource PrimaryButton}" />
 
         </Grid>
     </wnd:MainWindow.PageFooter>

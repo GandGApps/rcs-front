@@ -4,20 +4,27 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
-using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using DynamicData;
-using Kassa.BuisnessLogic.Dto;
-using ReactiveUI;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
+using Kassa.DataAccess.Model;
 using ReactiveUI.Fody.Helpers;
+using ReactiveUI;
+using System.Reactive.Linq;
+using DynamicData;
 
 namespace Kassa.RxUI.Dialogs;
-public abstract class SearchableDialogViewModel<TItem, TVm> : DialogViewModel
-    where TItem : notnull
-    where TVm : class
+public abstract class ApplicationManagedModelSearchableDialogViewModel<TItem, TVm>: DialogViewModel
+    where TItem : class, IModel
+    where TVm : class, IApplicationModelPresenter<TItem>
 {
     protected readonly TimeSpan SearchThrottle = TimeSpan.FromMilliseconds(500);
+    protected readonly ObservableCollection<TVm> _filteredItems = new();
+
+    public ApplicationManagedModelSearchableDialogViewModel()
+    {
+        FilteredItems = new ReadOnlyCollection<TVm>(_filteredItems);
+    }
 
     [Reactive]
     public string? SearchText
@@ -25,16 +32,15 @@ public abstract class SearchableDialogViewModel<TItem, TVm> : DialogViewModel
         get; set;
     }
 
-    [Reactive]
     public ReadOnlyCollection<TVm>? FilteredItems
     {
-        get; protected set;
+        get;
     }
 
     [Reactive]
     public ReactiveCommand<TVm, Unit>? SelectCommand
     {
-        get; protected set;
+        get; protected init;
     }
 
     [Reactive]
@@ -42,14 +48,15 @@ public abstract class SearchableDialogViewModel<TItem, TVm> : DialogViewModel
     {
         get; set;
     }
+
     [Reactive]
     public TVm? SelectedItem
     {
         get; set;
     }
 
-    protected void Filter<TKey>(SourceCache<TItem, TKey> sourceCache, Func<TItem, TVm> selector, Action<TVm, TItem> updater, CompositeDisposable disposables) where TKey : notnull
 
+    protected void Filter(IApplicationModelManager<TItem> modelManager, Func<TItem, TVm> selector, CompositeDisposable disposables)
     {
         var searchTextStream = this.WhenAnyValue(x => x.SearchText).Publish();
 
@@ -68,20 +75,19 @@ public abstract class SearchableDialogViewModel<TItem, TVm> : DialogViewModel
             .Select(text => new Func<TItem, bool>(item =>
                            string.IsNullOrWhiteSpace(text) || IsMatch(text, item)));
 
-        sourceCache.Connect()
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Filter(searchFilter)
-            .TransformWithInlineUpdate(selector, (vm, source) => updater(vm, source))
-            .Bind(out var _filteredClients)
-            .DisposeMany()
-            .Subscribe()
-            .DisposeWith(disposables);
+        searchFilter.Subscribe(filter =>
+        {
+            _filteredItems.Clear();
+            _filteredItems.AddRange(modelManager.Values.Where(filter).Select(x =>
+            {
+                var itemVm = selector(x);
+                modelManager.AddPresenter(itemVm).DisposeWith(disposables);
+                return itemVm;
+            }));
+        }).DisposeWith(disposables);
 
         searchTextStream.Connect().DisposeWith(disposables);
-
-        FilteredItems = _filteredClients;
     }
-
 
     protected virtual bool IsMatch(string searchText, TItem item)
     {

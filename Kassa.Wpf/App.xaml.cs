@@ -36,7 +36,7 @@ public partial class App : Application
     { "TopShadowBrush", [] },
     { "BottomShadowBrush", [] },
     { "AccentBorderBrush", [] },
-    { "BlurColor", [] },
+    { "BlurBrush", [] },
 };
 
     public static void SetSolidBrush(string brushKey, Color color)

@@ -25,27 +25,37 @@ public class Order : IModel
         get; set;
     }
 
-    public DateTime DeliveryTime
+    public DateTime? DeliveryTime
     {
         get; set;
     }
 
-    public string Address
-    {
-        get; set;
-    }
-
-    public Courier Courier
-    {
-        get; set;
-    }
-
-    public Guid CourierId
+    public Guid? CourierId
     {
         get; set;
     }
 
     public IEnumerable<OrderedProduct> Products
+    {
+        get; set;
+    } = [];
+
+    public string? Comment
+    {
+        get; set;
+    } = string.Empty;
+
+    public double TotalSum
+    {
+        get; set;
+    }
+
+    public double SubtotalSum
+    {
+        get; set;
+    }
+
+    public double Discount
     {
         get; set;
     }
@@ -55,24 +65,98 @@ public class Order : IModel
         get; set;
     }
 
+    public Guid? ClientId
+    {
+        get; set;
+    }
+
+    public string LastName
+    {
+        get; set;
+    } = string.Empty;
+
+    public string Phone
+    {
+        get; set;
+    } = string.Empty;
+
+    public string Card
+    {
+        get; set;
+    } = string.Empty;
+
+    public string Miscellaneous
+    {
+        get; set;
+    } = string.Empty;
+
+    public string House
+    {
+        get; set;
+    } = string.Empty;
+
+    public string Building
+    {
+        get; set;
+    } = string.Empty;
+
+    public string Entrance
+    {
+        get; set;
+    } = string.Empty;
+
+    public string Floor
+    {
+        get; set;
+    } = string.Empty;
+
+    public string Apartment
+    {
+        get; set;
+    } = string.Empty;
+
+    public string Intercom
+    {
+        get; set;
+    } = string.Empty;
+
+    public string AddressNote
+    {
+        get; set;
+    } = string.Empty;
+
     public bool IsPickup
     {
         get; set;
     }
 
-    public string Comment
+    public Guid? StreetId
     {
         get; set;
     }
 
-    public int TotalSum
+    public Guid? DistrictId
     {
         get; set;
     }
 
-    public Client? Client
+    public string FirstName
+    {
+        get; set;
+    } = string.Empty;
+
+    public string MiddleName
+    {
+        get; set;
+    } = string.Empty;
+
+    public bool IsOutOfTurn
     {
         get; set;
     }
 
+    public bool IsProblematicDelivery
+    {
+        get; set;
+    }
 }

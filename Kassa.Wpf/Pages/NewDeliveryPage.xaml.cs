@@ -76,10 +76,16 @@ public partial class NewDeliveryPage : ReactiveUserControl<NewDeliveryPageVm>
             this.Bind(ViewModel, vm => vm.AddressNote, v => v.AddressNote.Text)
                 .DisposeWith(disposables);
 
+            this.Bind(ViewModel, vm => vm.CourierFullName, v => v.Courier.Text)
+                .DisposeWith(disposables);
+
             this.BindCommand(ViewModel, vm => vm.SelectDistrictAndStreetCommand, v => v.SelectDistrict)
                 .DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.SelectDistrictAndStreetCommand, v => v.SelectStreet)
+                .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, vm => vm.SelectCourierCommand, v => v.Courier)
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, vm => vm.District, v => v.DistrictName.Text, d => d is null || string.IsNullOrWhiteSpace(d.Name) ? "Не задан" : d.Name)
@@ -114,11 +120,11 @@ public partial class NewDeliveryPage : ReactiveUserControl<NewDeliveryPageVm>
             this.Bind(ViewModel, vm => vm.IsPaymentPageOpenned, v => v.Payment.IsChecked)
                 .DisposeWith(ViewModel.InternalDisposables);
 
-
             SwitchOrderEdit.Command = ViewModel.SwitchOrderCommand;
             BackButton.Command = ViewModel.BackButtonCommand;
             Payment.Command = ViewModel.SwitchToPaymentCommand;
             Problem.Command = ViewModel.WriteProblemCommand;
+            Save.Command = ViewModel.SaveCommand;
         });
     }
 }

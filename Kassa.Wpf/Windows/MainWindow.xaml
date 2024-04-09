@@ -41,7 +41,7 @@
             x:Name="DialogOverlay"
             Grid.RowSpan="2"
             Panel.ZIndex="10"
-            Background="{DynamicResource BlurColor}"
+            Background="{DynamicResource BlurBrush}"
             Visibility="Collapsed">
             <rxui:RoutedViewHost x:Name="DialogHost" />
         </Border>

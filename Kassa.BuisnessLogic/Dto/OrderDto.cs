@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Dto;
-public class OrderDto
+public class OrderDto : IModel
 {
     public Guid Id
     {
@@ -27,12 +27,8 @@ public class OrderDto
     {
         get; set;
     }
-    public DateTime? DeliveryTime
-    {
-        get; set;
-    }
 
-    public string? Address
+    public DateTime? DeliveryTime
     {
         get; set;
     }
@@ -52,7 +48,7 @@ public class OrderDto
         get; set;
     } = [];
 
-    public string Comment
+    public string? Comment
     {
         get; set;
     } = string.Empty;
@@ -83,6 +79,96 @@ public class OrderDto
     }
 
     public Guid? ClientId
+    {
+        get; set;
+    }
+
+    public string LastName
+    {
+        get; set;
+    } = string.Empty;
+
+    public string Phone
+    {
+        get; set;
+    } = string.Empty;
+
+    public string Card
+    {
+        get; set;
+    } = string.Empty;
+
+    public string Miscellaneous
+    {
+        get; set;
+    } = string.Empty;
+
+    public string House
+    {
+        get; set;
+    } = string.Empty;
+
+    public string Building
+    {
+        get; set;
+    } = string.Empty;
+
+    public string Entrance
+    {
+        get; set;
+    } = string.Empty;
+
+    public string Floor
+    {
+        get; set;
+    } = string.Empty;
+
+    public string Apartment
+    {
+        get; set;
+    } = string.Empty;
+
+    public string Intercom
+    {
+        get; set;
+    } = string.Empty;
+
+    public string AddressNote
+    {
+        get; set;
+    } = string.Empty;
+
+    public bool IsPickup
+    {
+        get; set;
+    }
+
+    public Guid? StreetId
+    {
+        get; set;
+    }
+
+    public Guid? DistrictId
+    {
+        get; set;
+    }
+
+    public string FirstName
+    {
+        get; set;
+    } = string.Empty;
+
+    public string MiddleName
+    {
+        get; set;
+    } = string.Empty;
+
+    public bool IsOutOfTurn
+    {
+        get; set;
+    }
+
+    public bool IsProblematicDelivery
     {
         get; set;
     }

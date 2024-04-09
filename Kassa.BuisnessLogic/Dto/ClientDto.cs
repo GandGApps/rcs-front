@@ -81,4 +81,9 @@ public class ClientDto
     {
         get; set;
     }
+
+    public Guid StreetId
+    {
+        get; set;
+    }
 }

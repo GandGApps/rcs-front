@@ -12,6 +12,7 @@
             <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <converters:IsValueLessThanParameter x:Key="IsValueLessThanParameter" />
             <converters:IsNullOrWhitespaceConverter x:Key="IsNullOrWhitespaceConverter" />
+            <converters:GuidToGridNumber x:Key="GuidToGridNumber" />
 
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Themes/PornhubThemeGenerated.xaml" />

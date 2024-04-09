@@ -8,25 +8,47 @@
         Opacity="0.001"
         Color="White" />
 
-    <SolidColorBrush x:Key="Theme" Color="#DEDEDE" />
-    <SolidColorBrush x:Key="SecondaryBackground" Color="#404049" />
-    <SolidColorBrush x:Key="SurfaceBrush" Color="#3A3A45" />
-    <SolidColorBrush x:Key="DisabledBrush" Color="#54748A" />
-    <SolidColorBrush x:Key="AccentBrush" Color="#FF9900" />
-    <SolidColorBrush x:Key="AccentBrush2" Color="#FF9900" />
-    <SolidColorBrush x:Key="AccentBrush3" Color="#BFDAED" />
-    <SolidColorBrush x:Key="SecondaryBrush" Color="#E2EBF1" />
-    <SolidColorBrush x:Key="PrimaryForeground" Color="Black" />
-    <SolidColorBrush x:Key="AlternateForeground" Color="#FFF" />
-    <SolidColorBrush x:Key="SecondaryForeground" Color="#153750" />
-    <SolidColorBrush x:Key="DangerBrush" Color="#F42E2E" />
-    <SolidColorBrush x:Key="DangerBrushAlpha" Color="#33F42E2E" />
-    <SolidColorBrush x:Key="SuccessBrush" Color="#00BA00" />
-    <SolidColorBrush x:Key="TopShadowBrush" Color="Transparent" />
-    <SolidColorBrush x:Key="BottomShadowBrush" Color="Transparent" />
-    <SolidColorBrush x:Key="AccentBorderBrush" Color="#00F0FF" />
-    <SolidColorBrush x:Key="BlurColor" Color="#664C6475" />
-    <SolidColorBrush x:Key="AlternateBackground" Color="#F2F2F7" />
+    <Color x:Key="ThemeColor">#DEDEDE</Color>
+    <Color x:Key="SecondaryBackgroundColor">#404049</Color>
+    <Color x:Key="SurfaceColor">#3A3A45</Color>
+    <Color x:Key="DisabledColor">#54748A</Color>
+    <Color x:Key="AccentColor">#FF9900</Color>
+    <Color x:Key="AccentColor2">#FF9900</Color>
+    <Color x:Key="AccentColor3">#BFDAED</Color>
+    <Color x:Key="SecondaryColor">#E2EBF1</Color>
+    <Color x:Key="PrimaryForegroundColor">Black</Color>
+    <Color x:Key="AlternateForegroundColor">#FFF</Color>
+    <Color x:Key="SecondaryForegroundColor">#153750</Color>
+    <Color x:Key="DangerColor">#F42E2E</Color>
+    <Color x:Key="DangerColorAlpha">#33F42E2E</Color>
+    <Color x:Key="SuccessColor">#00BA00</Color>
+    <Color x:Key="TopShadowColor">Transparent</Color>
+    <Color x:Key="BottomShadowColor">Transparent</Color>
+    <Color x:Key="AccentBorderColor">#00F0FF</Color>
+    <Color x:Key="BlurColor">#664C6475</Color>
+    <Color x:Key="AlternateBackgroundColor">#F2F2F7</Color>
+
+    <SolidColorBrush x:Key="Theme" Color="{DynamicResource ThemeColor}" />
+    <SolidColorBrush x:Key="SecondaryBackground" Color="{DynamicResource SecondaryBackgroundColor}" />
+    <SolidColorBrush x:Key="SurfaceBrush" Color="{DynamicResource SurfaceColor}" />
+    <SolidColorBrush x:Key="DisabledBrush" Color="{DynamicResource DisabledColor}" />
+    <SolidColorBrush x:Key="AccentBrush" Color="{DynamicResource AccentColor}" />
+    <SolidColorBrush x:Key="AccentBrush2" Color="{DynamicResource AccentColor2}" />
+    <SolidColorBrush x:Key="AccentBrush3" Color="{DynamicResource AccentColor3}" />
+    <SolidColorBrush x:Key="SecondaryBrush" Color="{DynamicResource SecondaryColor}" />
+    <SolidColorBrush x:Key="PrimaryForeground" Color="{DynamicResource PrimaryForegroundColor}" />
+    <SolidColorBrush x:Key="AlternateForeground" Color="{DynamicResource AlternateForegroundColor}" />
+    <SolidColorBrush x:Key="SecondaryForeground" Color="{DynamicResource SecondaryForegroundColor}" />
+    <SolidColorBrush x:Key="DangerBrush" Color="{DynamicResource DangerColor}" />
+    <SolidColorBrush x:Key="DangerBrushAlpha" Color="{DynamicResource DangerColorAlpha}" />
+    <SolidColorBrush x:Key="SuccessBrush" Color="{DynamicResource SuccessColor}" />
+    <SolidColorBrush x:Key="TopShadowBrush" Color="{DynamicResource TopShadowColor}" />
+    <SolidColorBrush x:Key="BottomShadowBrush" Color="{DynamicResource BottomShadowColor}" />
+    <SolidColorBrush x:Key="AccentBorderBrush" Color="{DynamicResource AccentBorderColor}" />
+    <SolidColorBrush x:Key="BlurBrush" Color="{DynamicResource BlurColor}" />
+    <SolidColorBrush x:Key="AlternateBackground" Color="{DynamicResource AlternateBackgroundColor}" />
+
+
     <Color x:Key="FooterShadow">#CF000000</Color>
 
     <system:Double x:Key="TopShadowBlurEffectRadius">0</system:Double>

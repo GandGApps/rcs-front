@@ -250,18 +250,55 @@
         <DataGrid
             x:Name="Orders"
             Grid.Row="2"
+            AutoGenerateColumns="False"
+            CellStyle="{DynamicResource DataGridCellStyle}"
             ColumnHeaderStyle="{DynamicResource PrimaryDataGridColumnHeader}"
             IsReadOnly="True"
+            ItemsSource="{Binding Orders}"
+            RowStyle="{DynamicResource DataGridRowStyle}"
             Style="{StaticResource PrimaryDataGrid}">
             <DataGrid.Columns>
-                <DataGridTextColumn Width="*" Header="№" />
-                <DataGridTextColumn Width="*" Header="Статус" />
-                <DataGridTextColumn Width="*" Header="Время доставки" />
-                <DataGridTextColumn Width="*" Header="Адрес" />
-                <DataGridTextColumn Width="*" Header="Курьер" />
-                <DataGridTextColumn Width="*" Header="Клиент" />
-                <DataGridTextColumn Width="*" Header="Коммент." />
-                <DataGridTextColumn Width="*" Header="Сумма" />
+                <DataGridTextColumn
+                    Width="*"
+                    Binding="{Binding Id, Converter={StaticResource GuidToGridNumber}}"
+                    FontFamily="{StaticResource Montseratt}"
+                    FontSize="{mx:AdaptiveSize 18}"
+                    Header="№" />
+                <DataGridTextColumn
+                    Width="*"
+                    FontFamily="{StaticResource Montseratt}"
+                    FontSize="{mx:AdaptiveSize 18}"
+                    Header="Статус" />
+                <DataGridTextColumn
+                    Width="*"
+                    FontFamily="{StaticResource Montseratt}"
+                    FontSize="{mx:AdaptiveSize 18}"
+                    Header="Время доставки" />
+                <DataGridTextColumn
+                    Width="*"
+                    FontFamily="{StaticResource Montseratt}"
+                    FontSize="{mx:AdaptiveSize 18}"
+                    Header="Адрес" />
+                <DataGridTextColumn
+                    Width="*"
+                    FontFamily="{StaticResource Montseratt}"
+                    FontSize="{mx:AdaptiveSize 18}"
+                    Header="Курьер" />
+                <DataGridTextColumn
+                    Width="*"
+                    FontFamily="{StaticResource Montseratt}"
+                    FontSize="{mx:AdaptiveSize 18}"
+                    Header="Клиент" />
+                <DataGridTextColumn
+                    Width="*"
+                    FontFamily="{StaticResource Montseratt}"
+                    FontSize="{mx:AdaptiveSize 18}"
+                    Header="Коммент." />
+                <DataGridTextColumn
+                    Width="*"
+                    FontFamily="{StaticResource Montseratt}"
+                    FontSize="{mx:AdaptiveSize 18}"
+                    Header="Сумма" />
             </DataGrid.Columns>
         </DataGrid>
 

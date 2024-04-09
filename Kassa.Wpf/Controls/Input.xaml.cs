@@ -25,7 +25,7 @@ namespace Kassa.Wpf.Controls;
 /// <summary>
 /// 
 /// </summary>
-public partial class Input : UserControl
+public partial class Input : UserControl, ICommandSource
 {
 
     public static readonly DependencyProperty TextProperty =
@@ -63,13 +63,6 @@ public partial class Input : UserControl
             new FrameworkPropertyMetadata(InputDialogType.Text)
         );
 
-    public static readonly DependencyProperty CustomDialogProperty =
-        DependencyProperty.Register(nameof(CustomInputDialog),
-            typeof(Type),
-            typeof(Input),
-            new FrameworkPropertyMetadata(null)
-        );
-
     private TextBlock? _placeholder;
     private TextBoxWithoutVirtualKeyboard? _input;
 
@@ -103,15 +96,22 @@ public partial class Input : UserControl
         set => SetValue(InputTypeProperty, value);
     }
 
-    /// <summary>
-    /// The type must implement ICustomInputDialogVm, 
-    /// have a parameterless constructor
-    /// and DialogViewModel as a base class
-    /// </summary>
-    public Type? CustomInputDialog
+    public ICommand Command
     {
-        get => (Type?)GetValue(CustomDialogProperty);
-        set => SetValue(CustomDialogProperty, value);
+        get => (ICommand)GetValue(Button.CommandProperty);
+        set => SetValue(Button.CommandProperty, value);
+    }
+
+    public object CommandParameter
+    {
+        get => GetValue(Button.CommandParameterProperty);
+        set => SetValue(Button.CommandParameterProperty, value);
+    }
+
+    public IInputElement CommandTarget
+    {
+        get => (IInputElement)GetValue(Button.CommandTargetProperty);
+        set => SetValue(Button.CommandTargetProperty, value);
     }
 
     public Input()
@@ -122,7 +122,6 @@ public partial class Input : UserControl
     public override void OnApplyTemplate()
     {
         base.OnApplyTemplate();
-
 
         _placeholder = (TextBlock)GetTemplateChild("Placeholder");
         _input = (TextBoxWithoutVirtualKeyboard)GetTemplateChild("Input");
@@ -136,7 +135,7 @@ public partial class Input : UserControl
             _placeholder.Visibility = Visibility.Collapsed;
         }
 
-        _input.GotFocus += async (_, _) =>
+        _input.GotFocus += (_, _) =>
         {
             var name = (string?)GetValue(AutomationProperties.NameProperty);
 
@@ -146,6 +145,12 @@ public partial class Input : UserControl
             }
 
             var mainViewModel = Locator.Current.GetRequiredService<MainViewModel>();
+
+            if (Command is not null)
+            {
+                Command.Execute(CommandParameter);
+                return;
+            }
 
             if (InputType is InputDialogType.Number or InputDialogType.Phone)
             {
@@ -194,20 +199,6 @@ public partial class Input : UserControl
                 }
 
                 mainViewModel.DialogOpenCommand.Execute(inputDialog).Subscribe();
-            }
-            else if (InputType == InputDialogType.Custom && CustomInputDialog is not null)
-            {
-                var customDialog = GetCustomDialog(CustomInputDialog);
-
-                if (customDialog != null)
-                {
-                    ((ICustomInputDialogVm)customDialog).OkCommand.Subscribe(x =>
-                    {
-                        Text = x;
-                    });
-
-                    await mainViewModel.DialogOpenCommand.Execute(customDialog).FirstAsync();
-                }
             }
             else
             {

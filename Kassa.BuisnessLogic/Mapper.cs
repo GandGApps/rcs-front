@@ -43,7 +43,7 @@ public static partial class Mapper
     public static partial ClientDto MapClientToDto(Client client);
 
     public static partial Courier MapDtoToCourier(CourierDto courier);
-    public static partial CourierDto MapCourierToDto(CourierDto courier);
+    public static partial CourierDto MapCourierToDto(Courier courier);
 
     [MapProperty(nameof(ProductShoppingListItemDto.ItemId), nameof(OrderedProductDto.ProductId))]
     [MapProperty(nameof(ProductShoppingListItemDto.SubtotalSum), nameof(OrderedProductDto.SubTotalPrice))]
@@ -75,5 +75,4 @@ public static partial class Mapper
 
     public static partial Street MapDtoToStreet(StreetDto street);
     public static partial StreetDto MapStreetToDto(Street street);
-
 }

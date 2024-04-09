@@ -9,7 +9,7 @@ using ReactiveUI;
 namespace Kassa.RxUI.Dialogs;
 public interface ICustomInputDialogVm
 {
-    public ReactiveCommand<Unit, string> OkCommand
+    public ReactiveCommand<Unit, object> OkCommand
     {
         get;
     }

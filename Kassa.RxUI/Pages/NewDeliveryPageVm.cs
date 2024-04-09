@@ -18,6 +18,7 @@ namespace Kassa.RxUI.Pages;
 public class NewDeliveryPageVm : PageViewModel
 {
     private IOrderEditService _orderEdit = null!;
+    private IPaymentService _paymentService = null!;
     private readonly ICashierService _cashierService;
     private readonly IAdditiveService _additiveService;
 
@@ -51,7 +52,12 @@ public class NewDeliveryPageVm : PageViewModel
         Miscellaneous = Client?.Miscellaneous ?? string.Empty;
 
         this.WhenAnyValue(x => x.IsPickup, x => x.IsDelivery, (isPickup, isDelivery) => isPickup ? "Самовывоз" : isDelivery ? "Доставка курьером" : string.Empty)
-            .ToPropertyEx(this, x => x.TypeOfOrder);
+            .ToPropertyEx(this, x => x.TypeOfOrder)
+            .DisposeWith(InternalDisposables);
+
+        this.WhenAnyValue(x => x.CourierViewModel, (CourierViewModel? x) => x is not null ? x.FullName : string.Empty)
+            .ToPropertyEx(this, x => x.CourierFullName)
+            .DisposeWith(InternalDisposables);
 
         SelectDistrictAndStreetCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -121,13 +127,145 @@ public class NewDeliveryPageVm : PageViewModel
                 IsProblematicDelivery = IsProblematicDelivery
             };
 
-            problemDialog.OkCommand.Subscribe( _ =>
+            problemDialog.OkCommand.Subscribe(_ =>
             {
                 Problem = problemDialog.Problem;
                 IsProblematicDelivery = problemDialog.IsProblematicDelivery;
             });
 
             await MainViewModel.ShowDialogAndWaitClose(problemDialog);
+
+        }).DisposeWith(InternalDisposables);
+
+        SelectCourierCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var courierService = await Locator.GetInitializedService<ICourierService>();
+            var dialog = new SearchCourierDialogViewModel(courierService);
+
+            dialog.OkCommand.Subscribe(x =>
+            {
+                CourierViewModel = x;
+            });
+
+            await MainViewModel.ShowDialogAndWaitClose(dialog);
+
+        }).DisposeWith(InternalDisposables);
+
+        SaveCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            if (!IsPickup && CourierViewModel is null)
+            {
+                await MainViewModel.OkMessage("Не выбран курьер");
+                return;
+            }
+
+            if (!IsDelivery && (District is null || Street is null))
+            {
+                await MainViewModel.OkMessage("Не выбран район или улица");
+                return;
+            }
+
+            if (!PaymentPageVm.IsExactAmount)
+            {
+                await MainViewModel.OkMessage("Необходимо ввести сумму оплаты");
+                return;
+            }
+
+            var order = await _orderEdit.GetOrder();
+
+            if (!order.Products.Any())
+            {
+                await MainViewModel.OkMessage("Не выбраны товары");
+                return;
+            }
+
+            if (!IsAllClientInfoFilled())
+            {
+                await MainViewModel.OkMessage("Не все данные клиента заполнены");
+                return;
+            }
+
+            var separetedNameWithMiddleName = NameWithMiddleName.Split(' ', 1);
+            if (separetedNameWithMiddleName.Length == 1)
+            {
+                separetedNameWithMiddleName = [separetedNameWithMiddleName[0], string.Empty];
+            }
+            else if (separetedNameWithMiddleName.Length > 2)
+            {
+                separetedNameWithMiddleName = [separetedNameWithMiddleName[0], separetedNameWithMiddleName[1]];
+            }
+            else
+            {
+                separetedNameWithMiddleName = [string.Empty, string.Empty];
+            }
+
+            if (IsNewClient)
+            {
+
+                if (!IsAllAddressInfoFilled())
+                {
+                    await MainViewModel.OkMessage("Не все данные адреса заполнены. Они обязательны для нового клиента.");
+                    return;
+                }
+
+                var client = new ClientDto
+                {
+                    Id = Guid.NewGuid(),
+                    Address = Address,
+                    AddressNote = AddressNote,
+                    Apartment = Apartment,
+                    Building = Building,
+                    Card = Card,
+                    StreetId = Street!.Id,
+                    Entrance = Entrance,
+                    Floor = Floor,
+                    House = House,
+                    Intercom = Intercom,
+                    LastName = LastName,
+                    FirstName = separetedNameWithMiddleName[0],
+                    MiddleName = separetedNameWithMiddleName[1],
+                    Miscellaneous = Miscellaneous,
+                    Phone = Phone
+                };
+
+                var clientService = await Locator.GetInitializedService<IClientService>();
+                await clientService.AddClient(client);
+            }
+
+            var loading = MainViewModel.ShowLoadingDialog("Сохранение заказа");
+
+            order.AddressNote = AddressNote;
+            order.Comment = Comment;
+            order.Apartment = Apartment;
+            order.Building = Building;
+            order.Card = Card;
+            order.Id = DeliveryId;
+            order.IsDelivery = IsDelivery;
+            order.IsPickup = IsPickup;
+            order.DistrictId = District?.Id;
+            order.StreetId = Street?.Id;
+            order.House = House;
+            order.Entrance = Entrance;
+            order.Floor = Floor;
+            order.Intercom = Intercom;
+            order.LastName = LastName;
+            order.FirstName = separetedNameWithMiddleName[0];
+            order.MiddleName = separetedNameWithMiddleName[1];
+            order.Phone = Phone;
+            order.Miscellaneous = Miscellaneous;
+            order.IsOutOfTurn = IsOutOfTurn;
+            order.IsProblematicDelivery = IsProblematicDelivery;
+            order.Problem = Problem;
+            order.CourierId = CourierViewModel?.Id;
+            order.CreatedAt = DateTime.UtcNow;
+
+            var ordersService = await Locator.GetInitializedService<IOrdersService>();
+            await ordersService.AddOrder(order);
+
+            await loading.CloseAsync();
+
+            await MainViewModel.OkMessage("Заказ сохранен");
+            await GoBackCommand.Execute();
 
         }).DisposeWith(InternalDisposables);
     }
@@ -311,6 +449,23 @@ public class NewDeliveryPageVm : PageViewModel
         get; set;
     }
 
+    public extern string CourierFullName
+    {
+        [ObservableAsProperty]
+        get;
+    }
+
+    [Reactive]
+    public CourierViewModel? CourierViewModel
+    {
+        get; set;
+    }
+
+    public ReactiveCommand<Unit, Unit> SelectCourierCommand
+    {
+        get;
+    }
+
     public ReactiveCommand<Unit, Unit> SelectDistrictAndStreetCommand
     {
         get;
@@ -336,6 +491,11 @@ public class NewDeliveryPageVm : PageViewModel
         get;
     }
 
+    public ReactiveCommand<Unit, Unit> SaveCommand
+    {
+        get;
+    }
+
     [Reactive]
     public NewDeliveryOrderEditPageVm OrderEditPageVm
     {
@@ -357,8 +517,8 @@ public class NewDeliveryPageVm : PageViewModel
 
         OrderEditPageVm = new NewDeliveryOrderEditPageVm(_orderEdit, _cashierService, _additiveService);
 
-        var payment = await cashierService.CreatePayment(_orderEdit);
-        PaymentPageVm = new(payment);
+        _paymentService = await cashierService.CreatePayment(_orderEdit);
+        PaymentPageVm = new(_paymentService);
 
         await OrderEditPageVm.InitializeAsync();
         await PaymentPageVm.InitializeAsync();
@@ -368,9 +528,29 @@ public class NewDeliveryPageVm : PageViewModel
             _orderEdit.Dispose();
             OrderEditPageVm.Dispose();
 
-            payment.Dispose();
+            _paymentService.Dispose();
             PaymentPageVm.Dispose();
         }).DisposeWith(disposables);
 
+    }
+
+    private bool IsAllClientInfoFilled()
+    {
+        return !string.IsNullOrWhiteSpace(NameWithMiddleName) 
+            && !string.IsNullOrWhiteSpace(Phone) 
+            && !string.IsNullOrWhiteSpace(Address)
+            && !string.IsNullOrWhiteSpace(Card);
+    }
+
+    private bool IsAllAddressInfoFilled()
+    {
+        return !string.IsNullOrWhiteSpace(House) 
+            && !string.IsNullOrWhiteSpace(Building) 
+            && !string.IsNullOrWhiteSpace(Entrance) 
+            && !string.IsNullOrWhiteSpace(Floor) 
+            && !string.IsNullOrWhiteSpace(Apartment) 
+            && !string.IsNullOrWhiteSpace(Intercom)
+            && (Street != null)
+            && (District != null);
     }
 }

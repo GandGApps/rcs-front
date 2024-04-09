@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DynamicData;
 using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Dialogs;
@@ -16,6 +19,8 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Pages;
 public class AllDeliveriesPageVm : PageViewModel
 {
+    private readonly ObservableCollection<OrderDto> _orders = [];
+
     public AllDeliveriesPageVm()
     {
         MoveDateCommand = ReactiveCommand.Create<int>(x =>
@@ -33,7 +38,7 @@ public class AllDeliveriesPageVm : PageViewModel
             };
 
             await MainViewModel.DialogOpenCommand.Execute(allClientsDialogViewModel).FirstAsync();
-        });
+        }).DisposeWith(InternalDisposables);
 
         GoToDeliveryCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -46,7 +51,9 @@ public class AllDeliveriesPageVm : PageViewModel
             };
 
             await MainViewModel.DialogOpenCommand.Execute(allClientsDialogViewModel).FirstAsync();
-        });
+        }).DisposeWith(InternalDisposables);
+
+        Orders = new(_orders);
     }
 
     public ReactiveCommand<Unit, Unit> GoToPickUpCommand
@@ -115,5 +122,30 @@ public class AllDeliveriesPageVm : PageViewModel
     public ReadOnlyObservableCollection<OrderDto> Orders
     {
         get;
+    }
+
+    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    {
+        var orderService = await Locator.GetInitializedService<IOrdersService>();
+
+        orderService.RuntimeOrders
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(x =>
+            {
+                foreach (var change in x.Changes)
+                {
+                    switch (change.Reason)
+                    {
+
+                        case ModelChangeReason.Add:
+                            _orders.Add(change.Current);
+                            break;
+                        case ModelChangeReason.Remove:
+                            _orders.Remove(_orders.Where(x => x.Id == change.Id).First());
+                            break;
+                    }
+                }
+            })
+            .DisposeWith(disposables);
     }
 }

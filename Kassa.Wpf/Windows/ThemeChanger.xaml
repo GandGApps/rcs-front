@@ -158,12 +158,12 @@
             SelectedColor="{mx:ThemeColorExntension ColorKey=AccentBorderBrush}"
             Tag="AccentBorderBrush" />
 
-        <Label Grid.Row="4" Grid.Column="2">BlurColor</Label>
+        <Label Grid.Row="4" Grid.Column="2">BlurBrush</Label>
         <colorpicker:PortableColorPicker
             Grid.Row="4"
             Grid.Column="3"
-            SelectedColor="{mx:ThemeColorExntension ColorKey=BlurColor}"
-            Tag="BlurColor" />
+            SelectedColor="{mx:ThemeColorExntension ColorKey=BlurBrush}"
+            Tag="BlurBrush" />
     </Grid>
 
 

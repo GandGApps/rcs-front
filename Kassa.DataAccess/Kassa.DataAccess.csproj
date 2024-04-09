@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <None Remove="MockClient.json" />
+    <None Remove="MockCouriers.json" />
     <None Remove="MockDistricts.json" />
     <None Remove="MockIngredients.json" />
     <None Remove="MockReceipts.json" />
@@ -20,6 +21,7 @@
     <EmbeddedResource Include="MockAdditive.json" />
     <EmbeddedResource Include="MockCategories.json" />
     <EmbeddedResource Include="MockClient.json" />
+    <EmbeddedResource Include="MockCouriers.json" />
     <EmbeddedResource Include="MockDistricts.json" />
     <EmbeddedResource Include="MockIngredients.json" />
     <EmbeddedResource Include="MockProducts.json" />
