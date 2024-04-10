@@ -60,6 +60,43 @@ public partial class AllDeliveriesPage : ReactiveUserControl<AllDeliveriesPageVm
 
             this.Bind(ViewModel, vm => vm.IsPickup, v => v.IsPickUp.IsChecked)
                 .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel,
+                vm => vm.IsKeyboardVisible,
+                v => v.Keyboard.Visibility,
+                visibility => visibility ? Visibility.Visible : Visibility.Collapsed
+            ).DisposeWith(disposables);
+
+            this.Bind(ViewModel,
+                vm => vm.IsKeyboardVisible,
+                v => v.IsKeyboardEnabled.IsChecked
+            ).DisposeWith(disposables);
+
+            this.Bind(ViewModel,
+                vm => vm.SearchedText,
+                v => v.SearchTextBox.Text
+            ).DisposeWith(disposables);
+
+            this.Bind(ViewModel,
+                vm => vm.SearchedText,
+                v => v.Keyboard.Text
+            ).DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel,
+                vm => vm.IsKeyboardVisible,
+                v => v.KeyboardVisibilityText.Text,
+                x => x ? "Вкл" : "Выкл"
+            ).DisposeWith(disposables);
         });
+    }
+
+    private void ClearSearchText(object sender, MouseButtonEventArgs e)
+    {
+        ViewModel!.SearchedText = string.Empty;
+    }
+
+    private void ScrollViewerGotFocus(object sender, RoutedEventArgs e)
+    {
+        ViewModel!.IsKeyboardVisible = false;
     }
 }

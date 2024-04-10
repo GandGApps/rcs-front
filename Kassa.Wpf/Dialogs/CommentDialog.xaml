@@ -34,15 +34,15 @@
 
                 <Path
                     Grid.Column="0"
-                    Width="40"
-                    Height="32"
-                    Margin="22,0,0,0"
+                    Width="{mx:AdaptiveSize 40}"
+                    Height="{mx:AdaptiveSize 32}"
+                    Margin="{mx:AdaptiveSize Thickness='22,0,0,0'}"
                     VerticalAlignment="Center"
                     Data="{StaticResource MessageIcon}"
                     Fill="{DynamicResource SurfaceBrush}" />
                 <TextBlock
                     Grid.Column="1"
-                    Margin="24,0,0,0"
+                    Margin="{mx:AdaptiveSize Thickness='24,0,0,0'}"
                     VerticalAlignment="Center"
                     FontWeight="Normal"
                     Style="{DynamicResource Header}"
@@ -50,8 +50,8 @@
             </Grid>
             <Border
                 Grid.Row="1"
-                Width="1280"
-                Margin="0,0,0,12"
+                Width="{mx:AdaptiveSize 1280}"
+                Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
                 Style="{DynamicResource Separator}" />
 
             <ScrollViewer
@@ -63,28 +63,28 @@
                     x:Name="CommentTextBox"
                     AcceptsReturn="True"
                     BorderThickness="0"
-                    FontSize="28"
+                    FontSize="{mx:AdaptiveSize 28}"
                     TextWrapping="Wrap" />
             </ScrollViewer>
 
             <Path
                 Grid.Row="2"
-                Width="136"
-                Height="105"
+                Width="{mx:AdaptiveSize 136}"
+                Height="{mx:AdaptiveSize 105}"
                 Data="{StaticResource MessageIcon}"
                 Fill="{DynamicResource AccentBrush2}" />
 
             <controls:Keyboard
                 x:Name="Keyboard"
                 Grid.Row="3"
-                Margin="0,0,0,15"
+                Margin="{mx:AdaptiveSize Thickness='0,0,0,15'}"
                 VerticalAlignment="Bottom"
                 Visibility="Collapsed" />
 
             <Border
                 Grid.Row="4"
-                Margin="0,0,0,10"
-                Padding="20,4,2,4"
+                Margin="{mx:AdaptiveSize Thickness='0,0,0,10'}"
+                Padding="{mx:AdaptiveSize Thickness='20,4,2,4'}"
                 Style="{StaticResource DialogFooter}">
                 <Grid>
 
@@ -96,18 +96,18 @@
 
                     <controls:ButtonWithCornerRaduis
                         x:Name="BackButton"
-                        Padding="0,15,0,15"
+                        Padding="{mx:AdaptiveSize Thickness='0,15,0,15'}"
                         Background="Transparent">
                         <StackPanel Orientation="Horizontal">
                             <Path
-                                Width="13"
-                                Height="22.7"
+                                Width="{mx:AdaptiveSize 13}"
+                                Height="{mx:AdaptiveSize 22.7}"
                                 Data="{StaticResource Arrow}"
                                 Fill="White" />
                             <TextBlock
-                                Margin="7,0,0,0"
+                                Margin="{mx:AdaptiveSize Thickness='7,0,0,0'}"
                                 VerticalAlignment="Center"
-                                FontSize="13"
+                                FontSize="{mx:AdaptiveSize 13}"
                                 Foreground="White"
                                 Text="Назад" />
                         </StackPanel>

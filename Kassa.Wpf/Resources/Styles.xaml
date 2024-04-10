@@ -169,6 +169,7 @@
         <Setter Property="Foreground" Value="{DynamicResource DefaultButtonForeground}" />
         <Setter Property="BorderBrush" Value="{DynamicResource DefaultButtonBackground}" />
         <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Border.CornerRadius" Value="{mx:AdaptiveSize CornerRadius='28'}" />
         <Setter Property="Template">
             <Setter.Value>
 
@@ -183,7 +184,7 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{mx:AdaptiveSize CornerRadius='28'}">
+                        CornerRadius="{TemplateBinding Border.CornerRadius}">
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                     </Border>
                 </ControlTemplate>

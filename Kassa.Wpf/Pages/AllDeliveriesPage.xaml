@@ -351,6 +351,12 @@
 
         </Grid>
 
+        <controls:Keyboard
+            x:Name="Keyboard"
+            Grid.Row="2"
+            Margin="{mx:AdaptiveSize Thickness='10,10,10,95'}"
+            VerticalAlignment="Bottom" />
+
 
     </Grid>
 
@@ -360,10 +366,55 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
+            <CheckBox x:Name="IsKeyboardEnabled" Style="{StaticResource KeyboardCheckbox}">
+                <StackPanel VerticalAlignment="Center">
+                    <Path Style="{StaticResource KeyboardCheckboxIcon}" />
+                    <TextBlock Style="{StaticResource KeyboardCheckboxText}">
+                        <Run Text="Клавиатура" />
+                        <Run x:Name="KeyboardVisibilityText" Text="Выкл" />
+                    </TextBlock>
+                </StackPanel>
+            </CheckBox>
+
+            <Border
+                Grid.Column="1"
+                Width="{mx:AdaptiveSize 320}"
+                Style="{StaticResource SearchTextBoxBorder}">
+                <Grid VerticalAlignment="Center">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <controls:TextBoxWithoutVirtualKeyboard x:Name="SearchTextBox" Style="{StaticResource SearchTextBox}" />
+
+                    <Path
+                        Grid.Column="1"
+                        Width="{mx:AdaptiveSize 24}"
+                        Height="{mx:AdaptiveSize 24}"
+                        Style="{StaticResource SearchTextBoxIcon}" />
+
+                </Grid>
+            </Border>
+
+            <Border
+                Grid.Column="2"
+                Margin="{mx:AdaptiveSize Thickness='10,0,0,0'}"
+                HorizontalAlignment="Left"
+                MouseDown="ClearSearchText"
+                Style="{StaticResource ClearSearchTextBorder}">
+                <Path Style="{StaticResource ClearSearchTextIcon}" />
+            </Border>
+
             <controls:ButtonWithIcon
-                Grid.Column="0"
+                Grid.Column="4"
                 Width="{mx:AdaptiveSize 165}"
                 HorizontalAlignment="Right"
                 VerticalContentAlignment="Center"
@@ -394,7 +445,7 @@
             </controls:ButtonWithIcon>
 
             <controls:ButtonWithIcon
-                Grid.Column="1"
+                Grid.Column="5"
                 Width="{mx:AdaptiveSize 165}"
                 HorizontalAlignment="Right"
                 VerticalContentAlignment="Center"

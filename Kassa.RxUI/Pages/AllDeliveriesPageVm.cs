@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -13,12 +14,13 @@ using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
+using Kassa.DataAccess.Model;
 using Kassa.RxUI.Dialogs;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI.Pages;
-public class AllDeliveriesPageVm : PageViewModel
+public sealed class AllDeliveriesPageVm : PageViewModel
 {
     public AllDeliveriesPageVm()
     {
@@ -127,7 +129,7 @@ public class AllDeliveriesPageVm : PageViewModel
     public extern int OnTheWayOrders
     {
         [ObservableAsProperty]
-        get; 
+        get;
     }
 
     [Reactive]
@@ -136,34 +138,51 @@ public class AllDeliveriesPageVm : PageViewModel
         get; set;
     }
 
+    [Reactive]
+    public string SearchedText
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public bool IsKeyboardVisible
+    {
+        get; set;
+    }
+
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
 
         var orderService = await Locator.GetInitializedService<IOrdersService>();
-        var filter = this.WhenAnyValue(x => x.IsPickup, x => x.IsDelivery, x => x.Date)
-            .Select<(bool isPickup, bool isDelivery, DateTime date), Func<OrderDto, bool>>(x =>
+        var filter = this.WhenAnyValue(x => x.IsPickup, x => x.IsDelivery, x => x.Date, x => x.SearchedText)
+            .Select<(bool isPickup, bool isDelivery, DateTime date, string searchedText), Func<OrderDto, bool>>(x =>
             {
+                Func<OrderDto,bool> WithSearchedText(Func<OrderDto, bool> predicate)
+                {
+                    return new Func<OrderDto, bool>(model => predicate(model) && IsMatch(model, x.searchedText));
+                }
+
                 if (!x.isPickup && !x.isDelivery)
                 {
-                    return new Func<OrderDto, bool>(model => model.CreatedAt.Date == x.date.Date);
+                    return WithSearchedText(model => model.CreatedAt.Date == x.date.Date);
                 }
 
                 if (x.isPickup && x.isDelivery)
                 {
-                    return new Func<OrderDto, bool>(model => model.CreatedAt.Date == x.date.Date);
+                    return WithSearchedText(model => model.CreatedAt.Date == x.date.Date);
                 }
 
                 if (x.isPickup)
                 {
-                    return new Func<OrderDto, bool>(model => model.CreatedAt.Date == x.date.Date && model.IsPickup);
+                    return WithSearchedText(model => model.CreatedAt.Date == x.date.Date && model.IsPickup);
                 }
 
                 if (x.isDelivery)
                 {
-                    return new Func<OrderDto, bool>(model => model.CreatedAt.Date == x.date.Date && model.IsDelivery);
+                    return WithSearchedText(model => model.CreatedAt.Date == x.date.Date && model.IsDelivery);
                 }
 
-                return new Func<OrderDto, bool>(model => model.CreatedAt.Date == x.date.Date);
+                return WithSearchedText(model => model.CreatedAt.Date == x.date.Date);
             });
 
         var streetService = await Locator.GetInitializedService<IStreetService>();
@@ -179,55 +198,47 @@ public class AllDeliveriesPageVm : PageViewModel
 
         var changeSet = collection.ToObservableChangeSet().RefCount();
 
-        changeSet
-            .AutoRefresh(x => x.Status)
-            .Filter(x => x.Status == "Неподтвержден")
-            .Count()
-            .ToPropertyEx(this, x => x.InUncomfiredOrders)
+        CalculateOrderCountByStatusAndBind(changeSet, OrderStatus.Unconfirmed, x => x.InUncomfiredOrders)
             .DisposeWith(disposables);
 
-        changeSet
-            .AutoRefresh(x => x.Status)
-            .Filter(x => x.Status == "Новый")
-            .Count()
-            .ToPropertyEx(this, x => x.NewOrders)
+        CalculateOrderCountByStatusAndBind(changeSet, OrderStatus.New, x => x.NewOrders)
             .DisposeWith(disposables);
 
-        changeSet
-            .AutoRefresh(x => x.Status)
-            .Filter(x => x.Status == "Готовится")
-            .Count()
-            .ToPropertyEx(this, x => x.InCookingOrders)
+        CalculateOrderCountByStatusAndBind(changeSet, OrderStatus.InCooking, x => x.InCookingOrders)
             .DisposeWith(disposables);
 
-        changeSet
-            .AutoRefresh(x => x.Status)
-            .Filter(x => x.Status == "Готов")
-            .Count()
-            .ToPropertyEx(this, x => x.ReadyOrders)
+        CalculateOrderCountByStatusAndBind(changeSet, OrderStatus.Ready, x => x.ReadyOrders)
             .DisposeWith(disposables);
 
-        changeSet
-            .AutoRefresh(x => x.Status)
-            .Filter(x => x.Status == "Отменен")
-            .Count()
-            .ToPropertyEx(this, x => x.CanceledOrders)
+        CalculateOrderCountByStatusAndBind(changeSet, OrderStatus.Canceled, x => x.CanceledOrders)
             .DisposeWith(disposables);
 
-        changeSet
-            .AutoRefresh(x => x.Status)
-            .Filter(x => x.Status == "Закрытый")
-            .Count()
-            .ToPropertyEx(this, x => x.CompletedOrders)
+        CalculateOrderCountByStatusAndBind(changeSet, OrderStatus.Completed, x => x.CompletedOrders)
             .DisposeWith(disposables);
 
-        changeSet
-            .AutoRefresh(x => x.Status)
-            .Filter(x => x.Status == "В пути")
-            .Count()
-            .ToPropertyEx(this, x => x.OnTheWayOrders)
+        CalculateOrderCountByStatusAndBind(changeSet, OrderStatus.OnTheWay, x => x.OnTheWayOrders)
             .DisposeWith(disposables);
+
 
         Orders = collection;
     }
+
+    private IDisposable CalculateOrderCountByStatusAndBind(
+        IObservable<IChangeSet<OrderRowViewModel>> changeSet,
+        OrderStatus orderStatus,
+        Expression<Func<AllDeliveriesPageVm, int>> propertyExpression)
+    {
+        return changeSet
+                .AutoRefresh(x => x.Status)
+                .Filter(x => x.Order.Status == orderStatus)
+                .Count()
+                .ToPropertyEx(this, propertyExpression);
+    }
+
+    private static bool IsMatch(OrderDto model, string text) => string.IsNullOrWhiteSpace(text) || 
+                                                                 model.FirstName.Contains(text, StringComparison.OrdinalIgnoreCase) ||
+                                                                 model.LastName.Contains(text, StringComparison.OrdinalIgnoreCase) ||
+                                                                 model.Phone.Contains(text, StringComparison.OrdinalIgnoreCase) ||
+                                                                 model.House.Contains(text, StringComparison.OrdinalIgnoreCase) ||
+                                                                 model.Id.ToString("N").Contains(text, StringComparison.OrdinalIgnoreCase);
 }
