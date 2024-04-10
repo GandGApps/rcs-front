@@ -14,7 +14,8 @@ namespace Kassa.RxUI;
 
 public class ClientViewModel : ReactiveObject
 {
-    public ClientViewModel(ClientDto dto, AllClientsDialogViewModel? allClientsDialogView)
+
+    public ClientViewModel(ClientDto dto)
     {
         Id = dto.Id;
         FirstName = dto.FirstName;
@@ -31,6 +32,10 @@ public class ClientViewModel : ReactiveObject
         Card = dto.Card;
         AddressNote = dto.AddressNote;
         Miscellaneous = dto.Miscellaneous;
+    }
+
+    public ClientViewModel(ClientDto dto, AllClientsDialogViewModel? allClientsDialogView) : this(dto)
+    {
         AllClientsDialogVm = allClientsDialogView;
 
         if (allClientsDialogView is null)

@@ -17,7 +17,7 @@ using System.Reactive.Linq;
 using DynamicData;
 
 namespace Kassa.RxUI.Pages;
-public sealed class NewDeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
+public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
 {
     private readonly IOrderEditService _order;
     private readonly ICashierService _cashierService;
@@ -25,7 +25,7 @@ public sealed class NewDeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
 
     private Action<bool>? _isMultiSelectSetter;
 
-    public NewDeliveryOrderEditPageVm(IOrderEditService order, ICashierService cashierService, IAdditiveService additiveService)
+    public DeliveryOrderEditPageVm(IOrderEditService order, ICashierService cashierService, IAdditiveService additiveService)
     {
         _order = order;
         _cashierService = cashierService;

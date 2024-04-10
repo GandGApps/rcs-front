@@ -31,6 +31,13 @@ public partial class StatusEllipsedButton : ButtonWithCornerRaduis
         new PropertyMetadata(string.Empty)
     );
 
+    public static readonly DependencyProperty IsCheckedProperty = DependencyProperty.Register(
+        nameof(IsChecked),
+        typeof(bool),
+        typeof(StatusEllipsedButton),
+        new PropertyMetadata(false)
+    );
+
     public string EllipseText
     {
         get => (string)GetValue(EllipseTextProperty);
@@ -43,6 +50,11 @@ public partial class StatusEllipsedButton : ButtonWithCornerRaduis
         set => SetValue(StatusTextProperty, value);
     }
 
+    public bool IsChecked
+    {
+        get => (bool)GetValue(IsCheckedProperty);
+        set => SetValue(IsCheckedProperty, value);
+    }
 
     public StatusEllipsedButton()
     {

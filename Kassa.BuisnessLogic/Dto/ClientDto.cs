@@ -57,10 +57,7 @@ public class ClientDto
         get; set;
     }
 
-    public string Address
-    {
-        get; set;
-    }
+    public string Address => $"{House} {Building} {Entrance} {Floor} {Apartment} {Intercom}";
 
     public string AddressNote
     {

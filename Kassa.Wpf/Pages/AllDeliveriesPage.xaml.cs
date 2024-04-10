@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kassa.RxUI;
 using Kassa.RxUI.Pages;
 using ReactiveUI;
 
@@ -98,5 +99,15 @@ public partial class AllDeliveriesPage : ReactiveUserControl<AllDeliveriesPageVm
     private void ScrollViewerGotFocus(object sender, RoutedEventArgs e)
     {
         ViewModel!.IsKeyboardVisible = false;
+    }
+
+    private void Orders_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+    {
+        var datagrrid = (DataGrid)sender;
+
+        if (datagrrid.SelectedItem is OrderRowViewModel orderRowViewModel)
+        {
+            ViewModel!.EditOrderCommand.Execute(orderRowViewModel.Order);
+        }
     }
 }

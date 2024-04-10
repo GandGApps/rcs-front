@@ -55,6 +55,26 @@ public sealed class AllDeliveriesPageVm : PageViewModel
 
             await MainViewModel.DialogOpenCommand.Execute(allClientsDialogViewModel).FirstAsync();
         }).DisposeWith(InternalDisposables);
+
+        EditOrderCommand = ReactiveCommand.CreateFromTask<OrderDto>(async order =>
+        {
+            var cashierService = await Locator.GetInitializedService<ICashierService>();
+            var additiveService = await Locator.GetInitializedService<IAdditiveService>();
+            var clientService = await Locator.GetInitializedService<IClientService>();
+            var courierService = await Locator.GetInitializedService<ICourierService>();
+            var districtService = await Locator.GetInitializedService<IDistrictService>();
+            var streetService = await Locator.GetInitializedService<IStreetService>();
+
+            var client = order.ClientId.HasValue ? await clientService.GetClientById(order.ClientId.Value) : null;
+            var courier = order.CourierId.HasValue ? await courierService.GetCourierById(order.CourierId.Value) : null;
+            var district = order.DistrictId.HasValue ? await districtService.GetDistrictById(order.DistrictId.Value) : null;
+            var street = order.StreetId.HasValue ? await streetService.GetStreetById(order.StreetId.Value) : null;
+
+            var editDeliveryPageVm = new EditDeliveryPageVm(cashierService, additiveService, client, courier, order, district, street);
+
+            MainViewModel.GoToPageCommand.Execute(editDeliveryPageVm).Subscribe();
+
+        }).DisposeWith(InternalDisposables);
     }
 
     public ReactiveCommand<Unit, Unit> GoToPickUpCommand
@@ -150,6 +170,11 @@ public sealed class AllDeliveriesPageVm : PageViewModel
         get; set;
     }
 
+    public ReactiveCommand<OrderDto, Unit> EditOrderCommand
+    {
+        get;
+    }
+
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
 
@@ -157,7 +182,7 @@ public sealed class AllDeliveriesPageVm : PageViewModel
         var filter = this.WhenAnyValue(x => x.IsPickup, x => x.IsDelivery, x => x.Date, x => x.SearchedText)
             .Select<(bool isPickup, bool isDelivery, DateTime date, string searchedText), Func<OrderDto, bool>>(x =>
             {
-                Func<OrderDto,bool> WithSearchedText(Func<OrderDto, bool> predicate)
+                Func<OrderDto, bool> WithSearchedText(Func<OrderDto, bool> predicate)
                 {
                     return new Func<OrderDto, bool>(model => predicate(model) && IsMatch(model, x.searchedText));
                 }
@@ -235,7 +260,7 @@ public sealed class AllDeliveriesPageVm : PageViewModel
                 .ToPropertyEx(this, propertyExpression);
     }
 
-    private static bool IsMatch(OrderDto model, string text) => string.IsNullOrWhiteSpace(text) || 
+    private static bool IsMatch(OrderDto model, string text) => string.IsNullOrWhiteSpace(text) ||
                                                                  model.FirstName.Contains(text, StringComparison.OrdinalIgnoreCase) ||
                                                                  model.LastName.Contains(text, StringComparison.OrdinalIgnoreCase) ||
                                                                  model.Phone.Contains(text, StringComparison.OrdinalIgnoreCase) ||

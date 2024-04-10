@@ -1,54 +1,62 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Reactive.Disposables;
 using System.Reactive;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
-using Kassa.BuisnessLogic;
-using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
-using Kassa.RxUI.Dialogs;
-using ReactiveUI;
+using Kassa.BuisnessLogic;
 using ReactiveUI.Fody.Helpers;
+using ReactiveUI;
+using System.Reactive.Linq;
+using Kassa.BuisnessLogic.Dto;
+using Kassa.RxUI.Dialogs;
+using Kassa.DataAccess.Model;
 
 namespace Kassa.RxUI.Pages;
-public class NewDeliveryPageVm : PageViewModel
+public sealed class EditDeliveryPageVm : PageViewModel
 {
     private IOrderEditService _orderEdit = null!;
     private IPaymentService _paymentService = null!;
     private readonly ICashierService _cashierService;
     private readonly IAdditiveService _additiveService;
 
-    public NewDeliveryPageVm(ICashierService cashierService, IAdditiveService additiveService) : this(cashierService, additiveService, null)
-    {
-        IsNewClient = true;
-    }
 
-    public NewDeliveryPageVm(ICashierService cashierService, IAdditiveService additiveService, ClientViewModel? clientViewModel)
+    public EditDeliveryPageVm(
+        ICashierService cashierService,
+        IAdditiveService additiveService,
+        ClientDto? client,
+        CourierDto? courier,
+        OrderDto order,
+        DistrictDto? district,
+        StreetDto? street)
     {
         _cashierService = cashierService;
         _additiveService = additiveService;
 
-        DeliveryId = Guid.NewGuid();
-        Client = clientViewModel;
+        DeliveryId = order.Id;
+        Client = client;
 
-        Phone = Client?.Phone ?? string.Empty;
-        NameWithMiddleName = $"{clientViewModel?.FirstName} {clientViewModel?.MiddleName}";
-        House = Client?.House ?? string.Empty;
-        Building = Client?.Building ?? string.Empty;
-        Entrance = Client?.Entrance ?? string.Empty;
-        Floor = Client?.Floor ?? string.Empty;
-        Apartment = Client?.Apartment ?? string.Empty;
-        Intercom = Client?.Intercom ?? string.Empty;
-        Card = Client?.Card ?? string.Empty;
-        AddressNote = Client?.AddressNote ?? string.Empty;
-        LastName = Client?.LastName ?? string.Empty;
-        FirstName = Client?.FirstName ?? string.Empty;
-        MiddleName = Client?.MiddleName ?? string.Empty;
-        Miscellaneous = Client?.Miscellaneous ?? string.Empty;
+        Phone = order.Phone;
+        NameWithMiddleName = $"{order.FirstName} {order.MiddleName}";
+        House = order.House;
+        Building = order.Building;
+        Entrance = order.Entrance;
+        Floor = order.Floor;
+        Apartment = order.Apartment;
+        Intercom = order.Intercom;
+        Card = order.Card;
+        AddressNote = order.AddressNote;
+        LastName = order.LastName;
+        FirstName = order.FirstName;
+        MiddleName = order.MiddleName;
+        Miscellaneous = order.Miscellaneous;
+        IsDelivery = order.IsDelivery;
+        IsPickup = order.IsPickup;
+        IsOutOfTurn = order.IsOutOfTurn;
+        Problem = order.Problem;
+        IsProblematicDelivery = order.IsProblematicDelivery;
+        CourierViewModel = courier is null ? null : new CourierViewModel(courier);
+        Street = order.StreetId.HasValue ? new StreetViewModel(street) : null;
+        District = order.DistrictId.HasValue ? new DistrictViewModel(district) : null;
+        
+
         IsClientOpenned = true;
 
         this.WhenAnyValue(x => x.IsPickup, x => x.IsDelivery, (isPickup, isDelivery) => isPickup ? "Самовывоз" : isDelivery ? "Доставка курьером" : string.Empty)
@@ -87,7 +95,7 @@ public class NewDeliveryPageVm : PageViewModel
             Street = streetDialog.SelectedItem;
         }).DisposeWith(InternalDisposables);
 
-        
+
 
         BackButtonCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -99,45 +107,6 @@ public class NewDeliveryPageVm : PageViewModel
             await MainViewModel.GoBackCommand.Execute().FirstAsync();
 
         }).DisposeWith(InternalDisposables);
-
-        /*SwitchClientCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            if (MainViewModel.Router.GetCurrentViewModel() is NewDeliveryPageVm)
-            {
-                return;
-            }
-
-            await MainViewModel.Router.NavigateBack.Execute().FirstAsync();
-
-        }).DisposeWith(InternalDisposables);
-
-        SwitchOrderCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            var currentVm = MainViewModel.Router.GetCurrentViewModel();
-
-            if (currentVm is IOrderEditVm)
-            {
-                return;
-            }
-
-            await SwitchClientCommand.Execute().FirstAsync();
-
-            await MainViewModel.Router.Navigate.Execute(OrderEditPageVm).FirstAsync();
-
-        }).DisposeWith(InternalDisposables);
-
-        SwitchToPaymentCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            if (MainViewModel.Router.GetCurrentViewModel() is IPaymentVm)
-            {
-                return;
-            }
-
-            await SwitchClientCommand.Execute().FirstAsync();
-
-            await MainViewModel.Router.Navigate.Execute(PaymentPageVm).FirstAsync();
-
-        }).DisposeWith(InternalDisposables);*/
 
         WriteProblemCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -225,38 +194,6 @@ public class NewDeliveryPageVm : PageViewModel
                 return;
             }
 
-            if (IsNewClient)
-            {
-
-                if (!IsAllAddressInfoFilled())
-                {
-                    await MainViewModel.OkMessage("Не все данные адреса заполнены. Они обязательны для нового клиента.");
-                    return;
-                }
-
-                var client = new ClientDto
-                {
-                    Id = Guid.NewGuid(),
-                    AddressNote = AddressNote,
-                    Apartment = Apartment,
-                    Building = Building,
-                    Card = Card,
-                    StreetId = Street!.Id,
-                    Entrance = Entrance,
-                    Floor = Floor,
-                    House = House,
-                    Intercom = Intercom,
-                    LastName = LastName,
-                    FirstName = separetedNameWithMiddleName[0],
-                    MiddleName = separetedNameWithMiddleName[1],
-                    Miscellaneous = Miscellaneous,
-                    Phone = Phone
-                };
-
-                var clientService = await Locator.GetInitializedService<IClientService>();
-                await clientService.AddClient(client);
-            }
-
             var loading = MainViewModel.ShowLoadingDialog("Сохранение заказа");
 
             order.AddressNote = AddressNote;
@@ -286,13 +223,18 @@ public class NewDeliveryPageVm : PageViewModel
             order.CreatedAt = DateTime.UtcNow;
 
             var ordersService = await Locator.GetInitializedService<IOrdersService>();
-            await ordersService.AddOrder(order);
+            await ordersService.UpdateOrder(order);
 
             await loading.CloseAsync();
 
             await MainViewModel.OkMessage("Заказ сохранен");
             await BackButtonCommand.Execute().FirstAsync();
 
+        }).DisposeWith(InternalDisposables);
+
+        EditStatusCommand = ReactiveCommand.Create<OrderStatus>(status =>
+        {
+            OrderStatus = status;
         }).DisposeWith(InternalDisposables);
 
 #if DEBUG
@@ -327,7 +269,7 @@ public class NewDeliveryPageVm : PageViewModel
         get; set;
     }
 
-    public ClientViewModel? Client
+    public ClientDto? Client
     {
         get;
     }
@@ -384,6 +326,7 @@ public class NewDeliveryPageVm : PageViewModel
     {
         get; set;
     }
+
 
     [Reactive]
     public string? Comment
@@ -496,16 +439,6 @@ public class NewDeliveryPageVm : PageViewModel
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> SwitchOrderCommand
-    {
-        get;
-    }
-
-    public ReactiveCommand<Unit, Unit> SwitchToPaymentCommand
-    {
-        get;
-    }
-
     public ReactiveCommand<Unit, Unit> BackButtonCommand
     {
         get;
@@ -517,6 +450,11 @@ public class NewDeliveryPageVm : PageViewModel
     }
 
     public ReactiveCommand<Unit, Unit> SaveCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<OrderStatus, Unit> EditStatusCommand
     {
         get;
     }
@@ -533,13 +471,14 @@ public class NewDeliveryPageVm : PageViewModel
         get; set;
     } = null!;
 
-    public ReactiveCommand<Unit, Unit> SwitchClientCommand
+    [Reactive]
+    public bool IsClientOpenned
     {
-        get;
+        get; set;
     }
 
     [Reactive]
-    public bool IsClientOpenned
+    public OrderStatus OrderStatus
     {
         get; set;
     }

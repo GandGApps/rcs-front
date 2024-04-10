@@ -13,10 +13,20 @@ namespace Kassa.RxUI;
 public class DistrictViewModel : ReactiveObject
 {
 
-    public DistrictViewModel(AllDistrictsDialogViewModel districtsDialogViewModel, DistrictDto districtDto)
+    public DistrictViewModel(DistrictDto districtDto)
     {
+
         Id = districtDto.Id;
         Name = districtDto.Name;
+
+        SelectCommand = ReactiveCommand.Create(() =>
+        {
+
+        });
+    }
+
+    public DistrictViewModel(AllDistrictsDialogViewModel districtsDialogViewModel, DistrictDto districtDto) : this(districtDto)
+    {
 
         SelectCommand = ReactiveCommand.Create(() =>
         {

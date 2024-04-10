@@ -258,6 +258,7 @@
             ColumnHeaderStyle="{DynamicResource PrimaryDataGridColumnHeader}"
             IsReadOnly="True"
             ItemsSource="{Binding Orders}"
+            MouseDoubleClick="Orders_MouseDoubleClick"
             RowStyle="{DynamicResource DataGridRowStyle}"
             Style="{StaticResource PrimaryDataGrid}">
             <DataGrid.Columns>

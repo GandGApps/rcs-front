@@ -874,6 +874,7 @@
         <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='3'}" />
         <Setter Property="Margin" Value="0" />
         <Setter Property="Width" Value="{mx:AdaptiveSize 105}" />
+        <Setter Property="Opacity" Value="0.5" />
 
         <Setter Property="Template">
             <Setter.Value>
@@ -882,16 +883,24 @@
                         Padding="{TemplateBinding Padding}"
                         Background="{TemplateBinding Background}"
                         ClipToBounds="True"
-                        CornerRadius="{TemplateBinding CornerRadius}">
+                        CornerRadius="{TemplateBinding CornerRadius}"
+                        Opacity="{TemplateBinding Opacity}">
 
                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                     </Border>
+
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
 
-    <Style BasedOn="{StaticResource StatusEllipsedButton}" TargetType="local:StatusEllipsedButton" />
+    <Style BasedOn="{StaticResource StatusEllipsedButton}" TargetType="local:StatusEllipsedButton">
+        <Style.Triggers>
+            <Trigger Property="IsCancel" Value="True">
+                <Setter Property="Opacity" Value="1" />
+            </Trigger>
+        </Style.Triggers>
+    </Style>
 
     <Style
         x:Key="TopIconnedButton"

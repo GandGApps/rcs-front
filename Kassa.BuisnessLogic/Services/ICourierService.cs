@@ -15,7 +15,7 @@ public interface ICourierService: IInitializableService
     {
         get;
     }
-    public ValueTask<CourierDto?> GetCouriersById(Guid id);
+    public ValueTask<CourierDto?> GetCourierById(Guid id);
     public Task UpdateCourier(CourierDto courier);
     public Task AddClient(CourierDto courier);
     public Task DeleteCourier(Guid id);

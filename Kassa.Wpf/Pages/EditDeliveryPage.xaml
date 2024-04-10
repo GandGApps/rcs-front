@@ -1,8 +1,9 @@
 ﻿<rxui:ReactiveUserControl
-    x:Class="Kassa.Wpf.Pages.NewDeliveryPage"
+    x:Class="Kassa.Wpf.Pages.EditDeliveryPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:behaviors="clr-namespace:Kassa.Wpf.Behaviors"
+    xmlns:bl="clr-namespace:Kassa.BuisnessLogic.Dto;assembly=Kassa.BuisnessLogic"
     xmlns:ctrl="clr-namespace:Kassa.Wpf.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
@@ -13,10 +14,10 @@
     xmlns:vm="clr-namespace:Kassa.RxUI.Pages;assembly=Kassa.RxUI"
     xmlns:wnd="clr-namespace:Kassa.Wpf"
     Padding="{mx:AdaptiveSize Thickness='0,0,0,60'}"
-    d:DataContext="{d:DesignInstance Type=vm:NewDeliveryPageVm}"
+    d:DataContext="{d:DesignInstance Type=vm:EditDeliveryPageVm}"
     d:DesignHeight="740"
     d:DesignWidth="1560"
-    x:TypeArguments="vm:NewDeliveryPageVm"
+    x:TypeArguments="vm:EditDeliveryPageVm"
     Background="{DynamicResource Theme}"
     mc:Ignorable="d">
 
@@ -542,7 +543,7 @@
                 Padding="{mx:AdaptiveSize Thickness='50,15,50,30'}"
                 Background="{DynamicResource SecondaryBackground}">
 
-                <Grid Opacity="0.5">
+                <Grid>
 
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="1*" />
@@ -556,7 +557,7 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
 
-                        <ctrl:ButtonWithCornerRaduis Style="{StaticResource TopIconnedButton}">
+                        <ctrl:ButtonWithCornerRaduis Opacity="0.5" Style="{StaticResource TopIconnedButton}">
                             <Grid>
 
                                 <Grid.RowDefinitions>
@@ -578,7 +579,10 @@
                             </Grid>
                         </ctrl:ButtonWithCornerRaduis>
 
-                        <ctrl:ButtonWithCornerRaduis Grid.Column="1" Style="{StaticResource TopIconnedButton}">
+                        <ctrl:ButtonWithCornerRaduis
+                            Grid.Column="1"
+                            Opacity="0.5"
+                            Style="{StaticResource TopIconnedButton}">
                             <Grid>
 
                                 <Grid.RowDefinitions>
@@ -618,27 +622,39 @@
                         </Grid.ColumnDefinitions>
 
                         <ctrl:StatusEllipsedButton
+                            x:Name="CancelStatusButton"
                             Grid.Column="0"
+                            CommandParameter="{mx:OrderStatus OrderStatus=Canceled}"
                             EllipseText="0"
                             StatusText="ОТМЕНИТЬ" />
                         <ctrl:StatusEllipsedButton
+                            x:Name="UnconfirmedStatusButton"
                             Grid.Column="1"
+                            CommandParameter="{mx:OrderStatus OrderStatus=Unconfirmed}"
                             EllipseText="1"
                             StatusText="НЕПОДТВ." />
                         <ctrl:StatusEllipsedButton
+                            x:Name="CookingStatusButton"
                             Grid.Column="2"
+                            CommandParameter="{mx:OrderStatus OrderStatus=InCooking}"
                             EllipseText="2"
                             StatusText="ГОТОВИТЬ" />
                         <ctrl:StatusEllipsedButton
+                            x:Name="SendStatusButton"
                             Grid.Column="3"
+                            CommandParameter="{mx:OrderStatus OrderStatus=OnTheWay}"
                             EllipseText="3"
                             StatusText="ОТПРАВИТЬ" />
                         <ctrl:StatusEllipsedButton
+                            x:Name="DeliveredStatusButton"
                             Grid.Column="4"
+                            CommandParameter="{mx:OrderStatus OrderStatus=Delivered}"
                             EllipseText="4"
                             StatusText="ДОСТАВЛ." />
                         <ctrl:StatusEllipsedButton
+                            x:Name="CompleatedStatusButton"
                             Grid.Column="5"
+                            CommandParameter="{mx:OrderStatus OrderStatus=Completed}"
                             EllipseText="5"
                             StatusText="ЗАКРЫТЬ" />
 

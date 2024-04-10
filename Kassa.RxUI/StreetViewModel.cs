@@ -5,6 +5,7 @@ using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Dto;
+using Kassa.DataAccess.Model;
 using Kassa.RxUI.Dialogs;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -12,12 +13,20 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI;
 public class StreetViewModel : ReactiveObject
 {
-    public StreetViewModel(StreetsDialogViewModel streets, StreetDto streetDto)
+    public StreetViewModel(StreetDto streetDto)
     {
         Id = streetDto.Id;
         Name = streetDto.Name;
         DistrictId = streetDto.DistrictId;
 
+        SelectCommand = ReactiveCommand.Create(() =>
+        {
+
+        });
+    }
+
+    public StreetViewModel(StreetsDialogViewModel streets, StreetDto streetDto) : this(streetDto)
+    {
         SelectCommand = ReactiveCommand.Create(() =>
         {
             streets.SelectedItem = this;

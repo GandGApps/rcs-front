@@ -43,7 +43,7 @@
             Panel.ZIndex="10"
             Background="{DynamicResource BlurBrush}"
             Visibility="Collapsed">
-            <rxui:RoutedViewHost x:Name="DialogHost" />
+            <rxui:RoutedViewHost x:Name="DialogHost" Duration="0" />
         </Border>
         <Border Grid.RowSpan="2">
 
@@ -66,7 +66,8 @@
                 <rxui:RoutedViewHost
                     x:Name="RoutedViewHost"
                     Grid.Row="0"
-                    Grid.RowSpan="2" />
+                    Grid.RowSpan="2"
+                    Duration="0" />
 
                 <Border
                     x:Name="Footer"

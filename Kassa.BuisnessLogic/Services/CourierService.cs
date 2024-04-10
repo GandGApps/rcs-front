@@ -35,7 +35,7 @@ internal class CourierService(IRepository<Courier> repository) : BaseInitializab
         await repository.Delete(courier);
         RuntimeCouriers.Remove(id);
     }
-    public async ValueTask<CourierDto?> GetCouriersById(Guid id)
+    public async ValueTask<CourierDto?> GetCourierById(Guid id)
     {
         var courier = await repository.Get(id);
 

@@ -21,9 +21,9 @@ using ReactiveUI;
 
 namespace Kassa.Wpf.Pages;
 
-public partial class NewDeliveryOrderEditPage : ReactiveUserControl<NewDeliveryOrderEditPageVm>
+public partial class DeliveryOrderEditPage : ReactiveUserControl<DeliveryOrderEditPageVm>
 {
-    public NewDeliveryOrderEditPage()
+    public DeliveryOrderEditPage()
     {
         InitializeComponent();
 

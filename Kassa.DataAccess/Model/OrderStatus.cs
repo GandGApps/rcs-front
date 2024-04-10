@@ -29,5 +29,9 @@ public enum OrderStatus
     /// <summary>
     /// Отменен
     /// </summary>
-    Canceled
+    Canceled,
+    /// <summary>
+    /// Доставлен
+    /// </summary>
+    Delivered,
 }
