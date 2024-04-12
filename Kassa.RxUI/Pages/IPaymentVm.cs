@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using System.Reactive;
 using Kassa.BuisnessLogic.Services;
+using Kassa.DataAccess.Model;
 using ReactiveUI;
 
 namespace Kassa.RxUI.Pages;

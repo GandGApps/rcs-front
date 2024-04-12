@@ -1,13 +1,23 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.DataAccess.Model;
 
-namespace Kassa.BuisnessLogic.Services;
-public interface IPaymentService : IInitializableService, INotifyPropertyChanged
+namespace Kassa.BuisnessLogic.Dto;
+public class PaymentInfoDto : IModel
 {
+    public Guid Id
+    {
+        get; set;
+    }
+
+    public Guid OrderId
+    {
+        get; set;
+    }
+
     public double Cash
     {
         get; set;
@@ -30,35 +40,21 @@ public interface IPaymentService : IInitializableService, INotifyPropertyChanged
 
     public double ToDeposit
     {
-        get;
+        get; set;
     }
 
     public double ToEntered
     {
-        get;
+        get; set;
     }
 
     public double Change
     {
-        get;
+        get; set;
     }
 
     public bool WithSalesReceipt
     {
         get; set;
     }
-
-    public IOrderEditService Order
-    {
-        get;
-    }
-
-    [Obsolete("Use PayAndSaveOrder")]
-    public Task Pay();
-
-    public Task PayAndSaveOrder();
-    public Task PrintReceiptToEmail();
-    public Task SetEmailToReceiptSending(string email);
-    public Task PayWithBankCard(double money);
-
 }

@@ -82,7 +82,7 @@ public record ProductDto : ICategoryItemDto, IModel
         get;
     } = null;
 
-    public virtual ReceiptDto Receipt
+    public virtual ReceiptDto? Receipt
     {
         get; set;
     }

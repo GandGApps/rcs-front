@@ -17,7 +17,7 @@ using Kassa.DataAccess.Model;
 using ReactiveUI;
 
 namespace Kassa.BuisnessLogic.Services;
-internal class OrderEditService(
+internal sealed class OrderEditService(
     IProductService productService,
     ICategoryService categoryService,
     IAdditiveService additiveService,

@@ -9,7 +9,7 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess.Repositories;
 
 namespace Kassa.BuisnessLogic.Services;
-public class StreetService : BaseInitializableService, IStreetService
+internal class StreetService : BaseInitializableService, IStreetService
 {
     private readonly IStreetRepository _streetRepository;
     public StreetService(IStreetRepository streetRepository)
@@ -34,9 +34,14 @@ public class StreetService : BaseInitializableService, IStreetService
         return streetsDto;
     }
 
-    public async ValueTask<StreetDto> GetStreetById(Guid id)
+    public async ValueTask<StreetDto?> GetStreetById(Guid id)
     {
         var street = await _streetRepository.Get(id);
+
+        if (street == null)
+        {
+            return null;
+        }
 
         var dto = Mapper.MapStreetToDto(street);
 

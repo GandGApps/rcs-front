@@ -177,11 +177,6 @@ public class DesignerProductViewModel : ReactiveObject
         get; set;
     } = null!;
 
-    public ViewModelActivator Activator
-    {
-        get;
-    }
-
     [Reactive]
     public string[] Categories
     {

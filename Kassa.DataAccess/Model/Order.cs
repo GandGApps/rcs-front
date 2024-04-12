@@ -159,4 +159,14 @@ public class Order : IModel
     {
         get; set;
     }
+
+    public PaymentInfo? PaymentInfo
+    {
+        get; set;
+    }
+
+    public Guid? PaymentInfoId
+    {
+        get; set;
+    }
 }

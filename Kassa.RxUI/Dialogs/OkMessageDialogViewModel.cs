@@ -24,5 +24,5 @@ public class OkMessageDialogViewModel : DialogViewModel
     public string Icon
     {
         get; set;
-    }
+    } = string.Empty;
 }

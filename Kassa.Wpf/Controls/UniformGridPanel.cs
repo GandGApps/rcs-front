@@ -12,13 +12,13 @@ using System.Windows;
 namespace Kassa.Wpf.Controls;
 public class UniformGridPanel : VirtualizingPanel, IScrollInfo
 {
-    private Size _extent = new Size(0, 0);
-    private Size _viewport = new Size(0, 0);
-    private Point _offset = new Point(0, 0);
+    private Size _extent = new(0, 0);
+    private Size _viewport = new(0, 0);
+    private Point _offset = new(0, 0);
     private bool _canHorizontallyScroll = false;
     private bool _canVerticallyScroll = false;
-    private ScrollViewer _owner;
-    private int _scrollLength = 25;
+    private ScrollViewer? _owner;
+    private readonly int _scrollLength = 25;
 
     //-----------------------------------------
     //
@@ -62,14 +62,8 @@ public class UniformGridPanel : VirtualizingPanel, IScrollInfo
     /// </summary>
     public int Columns
     {
-        get
-        {
-            return (int)this.GetValue(ColumnsProperty);
-        }
-        set
-        {
-            this.SetValue(ColumnsProperty, value);
-        }
+        get => (int)GetValue(ColumnsProperty);
+        set => SetValue(ColumnsProperty, value);
     }
 
     /// <summary>
@@ -77,14 +71,8 @@ public class UniformGridPanel : VirtualizingPanel, IScrollInfo
     /// </summary>
     public int Rows
     {
-        get
-        {
-            return (int)this.GetValue(RowsProperty);
-        }
-        set
-        {
-            this.SetValue(RowsProperty, value);
-        }
+        get => (int)GetValue(RowsProperty);
+        set => SetValue(RowsProperty, value);
     }
 
     /// <summary>
@@ -92,14 +80,8 @@ public class UniformGridPanel : VirtualizingPanel, IScrollInfo
     /// </summary>
     public Orientation Orientation
     {
-        get
-        {
-            return (Orientation)this.GetValue(OrientationProperty);
-        }
-        set
-        {
-            this.SetValue(OrientationProperty, value);
-        }
+        get => (Orientation)GetValue(OrientationProperty);
+        set => SetValue(OrientationProperty, value);
     }
 
     #endregion Public Properties
@@ -143,25 +125,25 @@ public class UniformGridPanel : VirtualizingPanel, IScrollInfo
         GetVisibleRange(out firstVisibleItemIndex, out lastVisibleItemIndex);
 
         // We need to access InternalChildren before the generator to work around a bug
-        UIElementCollection children = this.InternalChildren;
-        IItemContainerGenerator generator = this.ItemContainerGenerator;
+        var children = InternalChildren;
+        var generator = ItemContainerGenerator;
 
         // Get the generator position of the first visible data item
-        GeneratorPosition startPos = generator.GeneratorPositionFromIndex(firstVisibleItemIndex);
+        var startPos = generator.GeneratorPositionFromIndex(firstVisibleItemIndex);
 
         // Get index where we'd insert the child for this position. If the item is realized
         // (position.Offset == 0), it's just position.Index, otherwise we have to add one to
         // insert after the corresponding child
-        int childIndex = (startPos.Offset == 0) ? startPos.Index : startPos.Index + 1;
+        var childIndex = (startPos.Offset == 0) ? startPos.Index : startPos.Index + 1;
 
         using (generator.StartAt(startPos, GeneratorDirection.Forward, true))
         {
-            for (int itemIndex = firstVisibleItemIndex; itemIndex <= lastVisibleItemIndex; ++itemIndex, ++childIndex)
+            for (var itemIndex = firstVisibleItemIndex; itemIndex <= lastVisibleItemIndex; ++itemIndex, ++childIndex)
             {
                 bool newlyRealized;
 
                 // Get or create the child
-                UIElement child = generator.GenerateNext(out newlyRealized) as UIElement;
+                var child = (UIElement)generator.GenerateNext(out newlyRealized);
 
                 childIndex = Math.Max(0, childIndex);
 
@@ -170,11 +152,11 @@ public class UniformGridPanel : VirtualizingPanel, IScrollInfo
                     // Figure out if we need to insert the child at the end or somewhere in the middle
                     if (childIndex >= children.Count)
                     {
-                        base.AddInternalChild(child);
+                        AddInternalChild(child);
                     }
                     else
                     {
-                        base.InsertInternalChild(childIndex, child);
+                        InsertInternalChild(childIndex, child);
                     }
 
                     generator.PrepareItemContainer(child);
@@ -209,15 +191,15 @@ public class UniformGridPanel : VirtualizingPanel, IScrollInfo
     /// <returns>Size used</returns>
     protected override Size ArrangeOverride(Size finalSize)
     {
-        IItemContainerGenerator generator = this.ItemContainerGenerator;
+        var generator = ItemContainerGenerator;
 
         UpdateScrollInfo(finalSize);
 
-        for (int i = 0; i < this.Children.Count; i++)
+        for (var i = 0; i < Children.Count; i++)
         {
-            UIElement child = this.Children[i];
+            var child = Children[i];
 
-            int itemIndex = generator.IndexFromGeneratorPosition(new GeneratorPosition(i, 0));
+            var itemIndex = generator.IndexFromGeneratorPosition(new GeneratorPosition(i, 0));
 
             ArrangeChild(itemIndex, child, finalSize);
         }
@@ -242,13 +224,13 @@ public class UniformGridPanel : VirtualizingPanel, IScrollInfo
     /// <param name="maxDesiredGenerated">last item index that should be visible</param>
     private void CleanUpItems(int minDesiredGenerated, int maxDesiredGenerated)
     {
-        UIElementCollection children = this.InternalChildren;
-        IItemContainerGenerator generator = this.ItemContainerGenerator;
+        var children = InternalChildren;
+        var generator = ItemContainerGenerator;
 
-        for (int i = children.Count - 1; i >= 0; i--)
+        for (var i = children.Count - 1; i >= 0; i--)
         {
-            GeneratorPosition childGeneratorPos = new GeneratorPosition(i, 0);
-            int itemIndex = generator.IndexFromGeneratorPosition(childGeneratorPos);
+            var childGeneratorPos = new GeneratorPosition(i, 0);
+            var itemIndex = generator.IndexFromGeneratorPosition(childGeneratorPos);
             if (itemIndex < minDesiredGenerated || itemIndex > maxDesiredGenerated)
             {
                 generator.Remove(childGeneratorPos, 1);
@@ -264,18 +246,18 @@ public class UniformGridPanel : VirtualizingPanel, IScrollInfo
     /// <returns></returns>
     private Size MeasureExtent(Size availableSize, int itemsCount)
     {
-        Size childSize = GetChildSize(availableSize);
+        var childSize = GetChildSize(availableSize);
 
-        if (this.Orientation == System.Windows.Controls.Orientation.Horizontal)
+        if (Orientation == Orientation.Horizontal)
         {
-            return new Size((this.Columns * childSize.Width) * Math.Ceiling((double)itemsCount / (this.Columns * this.Rows)), _viewport.Height);
+            return new Size((Columns * childSize.Width) * Math.Ceiling((double)itemsCount / (Columns * Rows)), _viewport.Height);
         }
         else
         {
-            var pageHeight = (this.Rows * childSize.Height);
+            var pageHeight = (Rows * childSize.Height);
 
             var sizeWidth = _viewport.Width;
-            var sizeHeight = pageHeight * Math.Ceiling((double)itemsCount / (this.Rows * this.Columns));
+            var sizeHeight = pageHeight * Math.Ceiling((double)itemsCount / (Rows * Columns));
 
             return new Size(sizeWidth, sizeHeight);
         }
@@ -290,28 +272,28 @@ public class UniformGridPanel : VirtualizingPanel, IScrollInfo
     /// <param name="finalSize"></param>
     private void ArrangeChild(int index, UIElement child, Size finalSize)
     {
-        int row = index / this.Columns;
-        int column = index % this.Columns;
+        var row = index / Columns;
+        var column = index % Columns;
 
         double xPosition, yPosition;
 
         int currentPage;
-        Size childSize = GetChildSize(finalSize);
+        var childSize = GetChildSize(finalSize);
 
-        if (this.Orientation == System.Windows.Controls.Orientation.Horizontal)
+        if (Orientation == Orientation.Horizontal)
         {
-            currentPage = (int)Math.Floor((double)index / (this.Columns * this.Rows));
+            currentPage = (int)Math.Floor((double)index / (Columns * Rows));
 
-            xPosition = (currentPage * this._viewport.Width) + (column * childSize.Width);
-            yPosition = (row % this.Rows) * childSize.Height;
+            xPosition = (currentPage * _viewport.Width) + (column * childSize.Width);
+            yPosition = (row % Rows) * childSize.Height;
 
-            xPosition -= this._offset.X;
-            yPosition -= this._offset.Y;
+            xPosition -= _offset.X;
+            yPosition -= _offset.Y;
         }
         else
         {
-            xPosition = (column * childSize.Width) - this._offset.X;
-            yPosition = (row * childSize.Height) - this._offset.Y;
+            xPosition = (column * childSize.Width) - _offset.X;
+            yPosition = (row * childSize.Height) - _offset.Y;
         }
 
         child.Arrange(new Rect(xPosition, yPosition, childSize.Width, childSize.Height));
@@ -324,8 +306,8 @@ public class UniformGridPanel : VirtualizingPanel, IScrollInfo
     /// <returns>Returns the size of the child</returns>
     private Size GetChildSize(Size availableSize)
     {
-        double width = availableSize.Width / this.Columns;
-        double height = availableSize.Height / this.Rows;
+        var width = availableSize.Width / Columns;
+        var height = availableSize.Height / Rows;
 
         return new Size(width, height);
     }
@@ -337,18 +319,18 @@ public class UniformGridPanel : VirtualizingPanel, IScrollInfo
     /// <param name="lastVisibleItemIndex">The item index of the last visible item</param>
     private void GetVisibleRange(out int firstVisibleItemIndex, out int lastVisibleItemIndex)
     {
-        Size childSize = GetChildSize(this._extent);
+        //var childSize = GetChildSize(_extent);
 
-        int pageSize = this.Columns * this.Rows;
-        int pageNumber = this.Orientation == System.Windows.Controls.Orientation.Horizontal ?
-            (int)Math.Floor((double)this._offset.X / this._viewport.Width) :
-            (int)Math.Floor((double)this._offset.Y / this._viewport.Height);
+        var pageSize = Columns * Rows;
+        var pageNumber = Orientation == Orientation.Horizontal ?
+            (int)Math.Floor((double)_offset.X / _viewport.Width) :
+            (int)Math.Floor((double)_offset.Y / _viewport.Height);
 
         firstVisibleItemIndex = (pageNumber * pageSize);
         lastVisibleItemIndex = firstVisibleItemIndex + (pageSize * 2) - 1;
 
-        ItemsControl itemsControl = ItemsControl.GetItemsOwner(this);
-        int itemCount = itemsControl.HasItems ? itemsControl.Items.Count : 0;
+        var itemsControl = ItemsControl.GetItemsOwner(this);
+        var itemCount = itemsControl.HasItems ? itemsControl.Items.Count : 0;
 
 
         if (lastVisibleItemIndex >= itemCount)
@@ -370,128 +352,74 @@ public class UniformGridPanel : VirtualizingPanel, IScrollInfo
 
     public bool CanHorizontallyScroll
     {
-        get
-        {
-            return _canHorizontallyScroll;
-        }
-        set
-        {
-            _canHorizontallyScroll = value;
-        }
+        get => _canHorizontallyScroll;
+        set => _canHorizontallyScroll = value;
     }
 
     public bool CanVerticallyScroll
     {
-        get
-        {
-            return _canVerticallyScroll;
-        }
-        set
-        {
-            _canVerticallyScroll = value;
-        }
+        get => _canVerticallyScroll;
+        set => _canVerticallyScroll = value;
     }
 
     /// <summary>
     /// Get the extent height
     /// </summary>
-    public double ExtentHeight
-    {
-        get
-        {
-            return this._extent.Height;
-        }
-    }
+    public double ExtentHeight => _extent.Height;
 
     /// <summary>
     /// Get the extent width
     /// </summary>
-    public double ExtentWidth
-    {
-        get
-        {
-            return this._extent.Width;
-        }
-    }
+    public double ExtentWidth => _extent.Width;
 
     /// <summary>
     /// Get the current horizontal offset
     /// </summary>
-    public double HorizontalOffset
-    {
-        get
-        {
-            return this._offset.X;
-        }
-    }
+    public double HorizontalOffset => _offset.X;
 
     /// <summary>
     /// Get the current vertical offset
     /// </summary>
-    public double VerticalOffset
-    {
-        get
-        {
-            return this._offset.Y;
-        }
-    }
+    public double VerticalOffset => _offset.Y;
 
     /// <summary>
     /// Get/Set the scrollowner
     /// </summary>
-    public System.Windows.Controls.ScrollViewer ScrollOwner
+    public ScrollViewer? ScrollOwner
     {
-        get
-        {
-            return this._owner;
-        }
-        set
-        {
-            this._owner = value;
-        }
+        get => _owner;
+        set => _owner = value;
     }
 
     /// <summary>
     /// Get the Viewport Height
     /// </summary>
-    public double ViewportHeight
-    {
-        get
-        {
-            return _viewport.Height;
-        }
-    }
+    public double ViewportHeight => _viewport.Height;
 
     /// <summary>
     /// Get the Viewport Width
     /// </summary>
-    public double ViewportWidth
-    {
-        get
-        {
-            return _viewport.Width;
-        }
-    }
+    public double ViewportWidth => _viewport.Width;
 
 
 
     public void LineLeft()
     {
-        this.SetHorizontalOffset(this._offset.X - _scrollLength);
+        SetHorizontalOffset(_offset.X - _scrollLength);
     }
 
     public void LineRight()
     {
-        this.SetHorizontalOffset(this._offset.X + _scrollLength);
+        SetHorizontalOffset(_offset.X + _scrollLength);
     }
 
     public void LineUp()
     {
-        this.SetVerticalOffset(this._offset.Y - _scrollLength);
+        SetVerticalOffset(_offset.Y - _scrollLength);
     }
     public void LineDown()
     {
-        this.SetVerticalOffset(this._offset.Y + _scrollLength);
+        SetVerticalOffset(_offset.Y + _scrollLength);
     }
 
     public Rect MakeVisible(System.Windows.Media.Visual visual, Rect rectangle)
@@ -501,25 +429,25 @@ public class UniformGridPanel : VirtualizingPanel, IScrollInfo
 
     public void MouseWheelDown()
     {
-        if (this.Orientation == System.Windows.Controls.Orientation.Horizontal)
+        if (Orientation == Orientation.Horizontal)
         {
-            this.SetHorizontalOffset(this._offset.X + _scrollLength);
+            SetHorizontalOffset(_offset.X + _scrollLength);
         }
         else
         {
-            this.SetVerticalOffset(this._offset.Y + _scrollLength);
+            SetVerticalOffset(_offset.Y + _scrollLength);
         }
     }
 
     public void MouseWheelUp()
     {
-        if (this.Orientation == System.Windows.Controls.Orientation.Horizontal)
+        if (Orientation == Orientation.Horizontal)
         {
-            this.SetHorizontalOffset(this._offset.X - _scrollLength);
+            SetHorizontalOffset(_offset.X - _scrollLength);
         }
         else
         {
-            this.SetVerticalOffset(this._offset.Y - _scrollLength);
+            SetVerticalOffset(_offset.Y - _scrollLength);
         }
     }
 
@@ -535,22 +463,22 @@ public class UniformGridPanel : VirtualizingPanel, IScrollInfo
 
     public void PageDown()
     {
-        this.SetVerticalOffset(this._offset.Y + _viewport.Width);
+        SetVerticalOffset(_offset.Y + _viewport.Width);
     }
 
     public void PageUp()
     {
-        this.SetVerticalOffset(this._offset.Y - _viewport.Width);
+        SetVerticalOffset(_offset.Y - _viewport.Width);
     }
 
     public void PageLeft()
     {
-        this.SetHorizontalOffset(this._offset.X - _viewport.Width);
+        SetHorizontalOffset(_offset.X - _viewport.Width);
     }
 
     public void PageRight()
     {
-        this.SetHorizontalOffset(this._offset.X + _viewport.Width);
+        SetHorizontalOffset(_offset.X + _viewport.Width);
     }
 
 
@@ -558,10 +486,7 @@ public class UniformGridPanel : VirtualizingPanel, IScrollInfo
     {
         _offset.X = Math.Max(0, offset);
 
-        if (_owner != null)
-        {
-            _owner.InvalidateScrollInfo();
-        }
+        _owner?.InvalidateScrollInfo();
 
         InvalidateMeasure();
     }
@@ -570,10 +495,7 @@ public class UniformGridPanel : VirtualizingPanel, IScrollInfo
     {
         _offset.Y = Math.Max(0, offset);
 
-        if (_owner != null)
-        {
-            _owner.InvalidateScrollInfo();
-        }
+        _owner?.InvalidateScrollInfo();
 
         InvalidateMeasure();
     }
@@ -581,24 +503,22 @@ public class UniformGridPanel : VirtualizingPanel, IScrollInfo
     private void UpdateScrollInfo(Size availableSize)
     {
         // See how many items there are
-        ItemsControl itemsControl = ItemsControl.GetItemsOwner(this);
-        int itemCount = itemsControl.HasItems ? itemsControl.Items.Count : 0;
+        var itemsControl = ItemsControl.GetItemsOwner(this);
+        var itemCount = itemsControl.HasItems ? itemsControl.Items.Count : 0;
 
-        Size extent = MeasureExtent(availableSize, itemCount);
+        var extent = MeasureExtent(availableSize, itemCount);
         // Update extent
         if (extent != _extent)
         {
             _extent = extent;
-            if (_owner != null)
-                _owner.InvalidateScrollInfo();
+            _owner?.InvalidateScrollInfo();
         }
 
         // Update viewport
         if (availableSize != _viewport)
         {
             _viewport = availableSize;
-            if (_owner != null)
-                _owner.InvalidateScrollInfo();
+            _owner?.InvalidateScrollInfo();
         }
     }
 

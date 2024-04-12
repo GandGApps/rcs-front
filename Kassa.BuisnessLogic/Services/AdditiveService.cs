@@ -167,6 +167,15 @@ public sealed class AdditiveService(IAdditiveRepository repository, IReceiptServ
     {
         this.ThrowIfNotInitialized();
 
+        var model = repository.Get(additiveDto.Id);
+
+        if (model is null)
+        {
+            throw new ArgumentNullException(nameof(additiveDto));
+        }
+
+        await repository.Update(Mapper.MapAdditiveDtoToAdditive(additiveDto));
+
         RuntimeAdditives.AddOrUpdate(additiveDto);
     }
 

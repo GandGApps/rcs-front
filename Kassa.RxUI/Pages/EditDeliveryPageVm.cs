@@ -53,8 +53,8 @@ public sealed class EditDeliveryPageVm : PageViewModel
         Problem = order.Problem;
         IsProblematicDelivery = order.IsProblematicDelivery;
         CourierViewModel = courier is null ? null : new CourierViewModel(courier);
-        Street = order.StreetId.HasValue ? new StreetViewModel(street) : null;
-        District = order.DistrictId.HasValue ? new DistrictViewModel(district) : null;
+        Street = order.StreetId.HasValue ? new StreetViewModel(street!) : null;
+        District = order.DistrictId.HasValue ? new DistrictViewModel(district!) : null;
         
 
         IsClientOpenned = true;

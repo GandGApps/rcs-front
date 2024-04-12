@@ -4,91 +4,74 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.BuisnessLogic.Dto;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.BuisnessLogic.Services;
-public class CashierPaymentService(IOrderEditService cashierService) : BaseInitializableService, IPaymentService, INotifyPropertyChanged
+internal class CashierPaymentService(IOrderEditService orderEditService, IOrdersService ordersService) : BaseInitializableService, IPaymentService
 {
     public event Action? Payed;
 
-    public IOrderEditService Order => cashierService;
-    [Reactive]
+    public IOrderEditService Order => orderEditService;
+
     public double Cash
     {
         get; set;
     }
 
-    [Reactive]
     public double BankСard
     {
-        get; private set;
+        get; set;
     }
 
-    [Reactive]
     public double CashlessPayment
     {
         get; set;
     }
 
-    [Reactive]
     public double WithoutRevenue
     {
         get; set;
     }
 
-    [Reactive]
     public double ToDeposit
     {
         get; private set;
     }
 
-    [Reactive]
     public double ToEntered
     {
         get; private set;
     }
 
-    [Reactive]
-    public double Change
-    {
-        get; private set;
-    }
+    public double Change => Math.Max(0, ToEntered - ToDeposit);
 
-    [Reactive]
-    public double Total
-    {
-        get; private set;
-    }
-
-    [Reactive]
-    public double Subtotal
-    {
-        get; private set;
-    }
-
-    [Reactive]
-    public double Discount
-    {
-        get; private set;
-    }
-
-    [Reactive]
-    public double Surcharge
-    {
-        get; private set;
-    }
-
-    [Reactive]
     public bool WithSalesReceipt
     {
         get; set;
     }
 
+    [Obsolete("Use PayAndSaveOrder")]
     public async Task Pay()
     {
         Payed?.Invoke();
         await Task.Delay(1000);
+    }
+
+    public async Task PayAndSaveOrder()
+    {
+        var order = await Order.GetOrder();
+        var paymentInfo = new PaymentInfoDto()
+        {
+            Id = Guid.Empty,
+            OrderId = Order.OrderId,
+        };
+
+        order.PaymentInfo = paymentInfo;
+        order.PaymentInfoId = Guid.Empty;
+
+        await ordersService.AddOrder(order);
     }
 
     public async Task PayWithBankCard(double money)
@@ -101,7 +84,7 @@ public class CashierPaymentService(IOrderEditService cashierService) : BaseIniti
         await Task.Delay(1300);
     }
 
-    public async Task SendReceiptToEmail(string email)
+    public async Task SetEmailToReceiptSending(string email)
     {
         await Task.Delay(1000);
     }

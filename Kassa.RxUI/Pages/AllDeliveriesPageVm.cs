@@ -162,7 +162,7 @@ public sealed class AllDeliveriesPageVm : PageViewModel
     public string SearchedText
     {
         get; set;
-    }
+    } = string.Empty;
 
     [Reactive]
     public bool IsKeyboardVisible

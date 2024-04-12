@@ -11,6 +11,7 @@ using DynamicData;
 using DynamicData.Binding;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
+using Kassa.DataAccess.Model;
 using Kassa.RxUI.Dialogs;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -154,7 +155,7 @@ public class CashierPaymentPageVm : PageViewModel, IPaymentVm
 
             MainViewModel.DialogOpenCommand.Execute(loading).Subscribe();
 
-            await cashierPaymentService.Pay();
+            await cashierPaymentService.PayAndSaveOrder();
 
             await loading.CloseAsync();
 
@@ -348,7 +349,7 @@ public class CashierPaymentPageVm : PageViewModel, IPaymentVm
         get;
     }
 
-    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    protected override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
         CashierPaymentService.Order
             .BindShoppingListItems((x, y) => new ProductShoppingListItemViewModel(x, y, CashierPaymentService.Order), out var shoppingListItems)
@@ -509,6 +510,8 @@ public class CashierPaymentPageVm : PageViewModel, IPaymentVm
             }
 
         }).DisposeWith(disposables);
+
+        return ValueTask.CompletedTask;
     }
 
     private void ClearCurrentPaymentSum()

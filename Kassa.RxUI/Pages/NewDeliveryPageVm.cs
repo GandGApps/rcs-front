@@ -15,7 +15,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI.Pages;
-public class NewDeliveryPageVm : PageViewModel
+public sealed class NewDeliveryPageVm : PageViewModel
 {
     private IOrderEditService _orderEdit = null!;
     private IPaymentService _paymentService = null!;
@@ -99,45 +99,6 @@ public class NewDeliveryPageVm : PageViewModel
             await MainViewModel.GoBackCommand.Execute().FirstAsync();
 
         }).DisposeWith(InternalDisposables);
-
-        /*SwitchClientCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            if (MainViewModel.Router.GetCurrentViewModel() is NewDeliveryPageVm)
-            {
-                return;
-            }
-
-            await MainViewModel.Router.NavigateBack.Execute().FirstAsync();
-
-        }).DisposeWith(InternalDisposables);
-
-        SwitchOrderCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            var currentVm = MainViewModel.Router.GetCurrentViewModel();
-
-            if (currentVm is IOrderEditVm)
-            {
-                return;
-            }
-
-            await SwitchClientCommand.Execute().FirstAsync();
-
-            await MainViewModel.Router.Navigate.Execute(OrderEditPageVm).FirstAsync();
-
-        }).DisposeWith(InternalDisposables);
-
-        SwitchToPaymentCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            if (MainViewModel.Router.GetCurrentViewModel() is IPaymentVm)
-            {
-                return;
-            }
-
-            await SwitchClientCommand.Execute().FirstAsync();
-
-            await MainViewModel.Router.Navigate.Execute(PaymentPageVm).FirstAsync();
-
-        }).DisposeWith(InternalDisposables);*/
 
         WriteProblemCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -285,8 +246,8 @@ public class NewDeliveryPageVm : PageViewModel
             order.ClientId = Client?.Id;
             order.CreatedAt = DateTime.UtcNow;
 
-            var ordersService = await Locator.GetInitializedService<IOrdersService>();
-            await ordersService.AddOrder(order);
+
+            await _paymentService.PayAndSaveOrder();
 
             await loading.CloseAsync();
 
@@ -496,16 +457,6 @@ public class NewDeliveryPageVm : PageViewModel
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> SwitchOrderCommand
-    {
-        get;
-    }
-
-    public ReactiveCommand<Unit, Unit> SwitchToPaymentCommand
-    {
-        get;
-    }
-
     public ReactiveCommand<Unit, Unit> BackButtonCommand
     {
         get;
@@ -532,11 +483,6 @@ public class NewDeliveryPageVm : PageViewModel
     {
         get; set;
     } = null!;
-
-    public ReactiveCommand<Unit, Unit> SwitchClientCommand
-    {
-        get;
-    }
 
     [Reactive]
     public bool IsClientOpenned

@@ -13,7 +13,7 @@ public static class DependencyResolverExtensions
     /// Registers business logic services in the dependency resolver.
     /// </summary>
     /// <param name="services">The mutable dependency resolver to which the services will be registered.</param>
-    public static void RegisterBuisnessLogic(this IMutableDependencyResolver services)
+    public static void RegisterMockBuisnessLogic(this IMutableDependencyResolver services)
     {
         SplatRegistrations.SetupIOC();
 
@@ -72,8 +72,9 @@ public static class DependencyResolverExtensions
             var categoryService = Locator.Current.GetNotInitializedService<ICategoryService>();
             var additiveService = Locator.Current.GetNotInitializedService<IAdditiveService>();
             var receiptService = Locator.Current.GetNotInitializedService<IReceiptService>();
+            var ordersService = Locator.Current.GetNotInitializedService<IOrdersService>();
 
-            return new CashierService(additiveService, categoryService, productService, receiptService);
+            return new CashierService(additiveService, categoryService, productService, receiptService, ordersService);
         });
         RegisterInitializableServiceFactory<ICashierService>(services);
 

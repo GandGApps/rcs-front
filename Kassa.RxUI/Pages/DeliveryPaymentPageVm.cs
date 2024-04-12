@@ -13,6 +13,7 @@ using DynamicData.Binding;
 using DynamicData;
 using Kassa.RxUI.Dialogs;
 using System.Reactive.Linq;
+using Kassa.DataAccess.Model;
 
 namespace Kassa.RxUI.Pages;
 public class DeliveryPaymentPageVm: PageViewModel, IPaymentVm
@@ -317,11 +318,6 @@ public class DeliveryPaymentPageVm: PageViewModel, IPaymentVm
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> PayCommand
-    {
-        get;
-    }
-
     [Reactive]
     public string CurrentPaymentSumText
     {
@@ -346,7 +342,7 @@ public class DeliveryPaymentPageVm: PageViewModel, IPaymentVm
         get;
     }
 
-    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    protected override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
         CashierPaymentService.Order
             .BindShoppingListItems((x, y) => new ProductShoppingListItemViewModel(x, y, CashierPaymentService.Order), out var shoppingListItems)
@@ -507,6 +503,8 @@ public class DeliveryPaymentPageVm: PageViewModel, IPaymentVm
             }
 
         }).DisposeWith(disposables);
+
+        return ValueTask.CompletedTask;
     }
 
     private void ClearCurrentPaymentSum()

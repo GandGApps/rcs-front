@@ -9,7 +9,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.BuisnessLogic.Services;
-public abstract class BaseInitializableService : ReactiveObject, IInitializableService
+internal abstract class BaseInitializableService : ReactiveObject, IInitializableService
 {
     private readonly CompositeDisposable disposables = [];
     protected CompositeDisposable InternalDisposables => disposables;

@@ -16,6 +16,7 @@ internal class CashierService : BaseInitializableService, ICashierService
     private readonly ICategoryService _categoryService;
     private readonly IProductService _productService;
     private readonly IReceiptService _receiptService;
+    private readonly IOrdersService _ordersService;
 
 
     public IOrderEditService? CurrentOrder
@@ -29,13 +30,21 @@ internal class CashierService : BaseInitializableService, ICashierService
     }
 
 
-    public CashierService(IAdditiveService additiveService, ICategoryService categoryService, IProductService productService, IReceiptService receiptService)
+    public CashierService(
+        IAdditiveService additiveService, 
+        ICategoryService categoryService, 
+        IProductService productService, 
+        IReceiptService receiptService,
+        IOrdersService ordersService)
     {
         Orders = new(_orders);
         _additiveService = additiveService;
         _categoryService = categoryService;
         _productService = productService;
         _receiptService = receiptService;
+        _ordersService = ordersService;
+
+
     }
 
     public async ValueTask<IOrderEditService> CreateOrder(bool isDelivery)
@@ -81,7 +90,7 @@ internal class CashierService : BaseInitializableService, ICashierService
 
     public ValueTask<IPaymentService> CreatePayment(IOrderEditService order)
     {
-        var paymentService = new CashierPaymentService(order);
+        var paymentService = new CashierPaymentService(order, _ordersService);
 
         paymentService.Payed += () =>
         {
@@ -100,5 +109,16 @@ internal class CashierService : BaseInitializableService, ICashierService
         await _categoryService.Initialize();
         await _productService.Initialize();
         await _additiveService.Initialize();
+        await _receiptService.Initialize();
+        await _ordersService.Initialize();
+    }
+
+    protected async override ValueTask DisposeAsyncCore()
+    {
+        await _categoryService.DisposeAsync();
+        await _productService.DisposeAsync();
+        await _additiveService.DisposeAsync();
+        await _receiptService.DisposeAsync();
+        await _ordersService.DisposeAsync();
     }
 }

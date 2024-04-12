@@ -75,4 +75,7 @@ public static partial class Mapper
 
     public static partial Street MapDtoToStreet(StreetDto street);
     public static partial StreetDto MapStreetToDto(Street street);
+
+    public static partial PaymentInfoDto MapPaymentInfoToDto(PaymentInfo paymentInfo);
+    public static partial PaymentInfo MapDtoToPaymentInfo(PaymentInfoDto paymentInfo);
 }

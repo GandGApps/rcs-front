@@ -1,5 +1,6 @@
 ﻿using System.Reactive.Disposables;
 using System.Windows.Media;
+using Kassa.DataAccess.Model;
 using Kassa.RxUI;
 using Kassa.RxUI.Pages;
 using ReactiveUI;

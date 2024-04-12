@@ -14,7 +14,7 @@ public interface IStreetService : IInitializableService
         get;
     }
 
-    public ValueTask<StreetDto> GetStreetById(Guid id);
+    public ValueTask<StreetDto?> GetStreetById(Guid id);
 
     public ValueTask<IEnumerable<StreetDto>> GetAllStreets();
 }

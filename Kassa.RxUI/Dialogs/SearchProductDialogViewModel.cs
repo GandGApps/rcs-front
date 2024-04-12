@@ -11,7 +11,8 @@ using Splat;
 namespace Kassa.RxUI.Dialogs;
 public class SearchProductDialogViewModel : DialogViewModel
 {
-    private IProductService _productService;
+
+    private IProductService _productService = null!;
 
     [Reactive]
     public ProductViewModel? SelectedProduct
@@ -32,7 +33,7 @@ public class SearchProductDialogViewModel : DialogViewModel
     }
 
     public ReadOnlyObservableCollection<ProductDto>? FilteredProducts => _filteredProducts;
-    private ReadOnlyObservableCollection<ProductDto>? _filteredProducts;
+    private readonly ReadOnlyObservableCollection<ProductDto>? _filteredProducts;
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {

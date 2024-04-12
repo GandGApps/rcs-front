@@ -9,7 +9,7 @@ using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 
 namespace Kassa.BuisnessLogic.Services;
-internal class OrdersService(IRepository<Order> repository) : BaseInitializableService, IOrdersService
+internal class OrdersService(IRepository<Order> repository, IRepository<PaymentInfo> paymentInfos) : BaseInitializableService, IOrdersService
 {
     public IApplicationModelManager<OrderDto> RuntimeOrders
     {
@@ -19,6 +19,23 @@ internal class OrdersService(IRepository<Order> repository) : BaseInitializableS
     public async Task AddOrder(OrderDto order)
     {
         var model = Mapper.MapDtoToOrder(order);
+
+        // This was supposed to be implemented by the repository, not the service,
+        // but since it's a mock interface, we have to do it here.
+        if (order.Id == Guid.Empty)
+        {
+            order.Id = Guid.NewGuid();
+        }
+
+        if (order.PaymentInfo is PaymentInfoDto paymentInfo && paymentInfo.Id == Guid.Empty)
+        {
+            paymentInfo.Id = Guid.NewGuid();
+            paymentInfo.OrderId = order.Id;
+
+            await paymentInfos.Add(Mapper.MapDtoToPaymentInfo(paymentInfo));
+        }
+
+        // TODO:We need to remove the code above.
 
         await repository.Add(model);
 
@@ -63,12 +80,33 @@ internal class OrdersService(IRepository<Order> repository) : BaseInitializableS
         return dtos;
     }
 
-    public Task UpdateOrder(OrderDto client)
+    public async Task UpdateOrder(OrderDto order)
     {
-        var model = Mapper.MapDtoToOrder(client);
+        var model = Mapper.MapDtoToOrder(order);
 
-        RuntimeOrders.AddOrUpdate(client);
+        // This was supposed to be implemented by the repository, not the service,
+        // but since it's a mock interface, we have to do it here.
+        if (order.PaymentInfo is PaymentInfoDto paymentInfo)
+        {
+            paymentInfo.OrderId = order.Id;
+            var paymentInfoModel = Mapper.MapDtoToPaymentInfo(paymentInfo);
 
-        return repository.Update(model);
+            if (paymentInfo.Id == Guid.Empty)
+            {
+                paymentInfo.Id = Guid.NewGuid();
+                paymentInfoModel.Id = paymentInfo.Id;
+
+                await paymentInfos.Add(paymentInfoModel);
+            }
+            else
+            {
+                await paymentInfos.Update(paymentInfoModel);
+            }
+        }
+        // TODO:We need to remove the code above.
+
+        RuntimeOrders.AddOrUpdate(order);
+
+        await repository.Update(model);
     }
 }

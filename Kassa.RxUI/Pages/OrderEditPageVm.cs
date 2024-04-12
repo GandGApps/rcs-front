@@ -185,8 +185,8 @@ public class OrderEditPageVm : PageViewModel, IOrderEditVm
             await dialog.WaitDialogClose();
         });
 
-        GoToAllOrdersCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
+        GoToAllOrdersCommand = ReactiveCommand.CreateFromTask(() => {
+            return Task.CompletedTask;
         });
     }
 

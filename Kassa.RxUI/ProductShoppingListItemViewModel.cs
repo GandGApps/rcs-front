@@ -80,9 +80,8 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
             .DisposeWith(_disposables);
 
 
-        RemoveCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-
+        RemoveCommand = ReactiveCommand.CreateFromTask(() => {
+            return Task.CompletedTask;
         }).DisposeWith(_disposables); ;
 
         manager.AddPresenter(this)

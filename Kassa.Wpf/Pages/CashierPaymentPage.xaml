@@ -6,6 +6,7 @@
     xmlns:controls="clr-namespace:Kassa.Wpf.Controls"
     xmlns:ctrl="clr-namespace:Kassa.Wpf.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:data="clr-namespace:Kassa.DataAccess.Model;assembly=Kassa.DataAccess"
     xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:Kassa.Wpf.Pages"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -530,7 +531,7 @@
 
                         <RadioButton
                             x:Name="Cash"
-                            CommandParameter="{x:Static vm:PaymentType.Cash}"
+                            CommandParameter="{x:Static data:PaymentType.Cash}"
                             IsChecked="True">
                             <RadioButton.Resources>
                                 <ResourceDictionary>
@@ -569,7 +570,7 @@
                         <RadioButton
                             x:Name="BankCard"
                             Grid.Column="1"
-                            CommandParameter="{x:Static vm:PaymentType.BankCard}">
+                            CommandParameter="{x:Static data:PaymentType.BankCard}">
                             <RadioButton.Resources>
                                 <ResourceDictionary>
                                     <DataTemplate x:Key="CashierTabPanelCheckedContnet">
@@ -607,7 +608,7 @@
                         <RadioButton
                             x:Name="CashlessPayment"
                             Grid.Column="2"
-                            CommandParameter="{x:Static vm:PaymentType.CashlessPayment}">
+                            CommandParameter="{x:Static data:PaymentType.CashlessPayment}">
                             <RadioButton.Resources>
                                 <ResourceDictionary>
                                     <DataTemplate x:Key="CashierTabPanelCheckedContnet">
@@ -645,7 +646,7 @@
                         <RadioButton
                             x:Name="WithoutRevenue"
                             Grid.Column="3"
-                            CommandParameter="{x:Static vm:PaymentType.WithoutRevenue}">
+                            CommandParameter="{x:Static data:PaymentType.WithoutRevenue}">
                             <RadioButton.Resources>
                                 <ResourceDictionary>
                                     <DataTemplate x:Key="CashierTabPanelCheckedContnet">
