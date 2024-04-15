@@ -17,7 +17,7 @@ internal class CashierService : BaseInitializableService, ICashierService
     private readonly IProductService _productService;
     private readonly IReceiptService _receiptService;
     private readonly IOrdersService _ordersService;
-
+    private readonly IPaymentInfoService _paymentInfoService;
 
     public IOrderEditService? CurrentOrder
     {
@@ -31,11 +31,12 @@ internal class CashierService : BaseInitializableService, ICashierService
 
 
     public CashierService(
-        IAdditiveService additiveService, 
-        ICategoryService categoryService, 
-        IProductService productService, 
+        IAdditiveService additiveService,
+        ICategoryService categoryService,
+        IProductService productService,
         IReceiptService receiptService,
-        IOrdersService ordersService)
+        IOrdersService ordersService,
+        IPaymentInfoService paymentInfoService)
     {
         Orders = new(_orders);
         _additiveService = additiveService;
@@ -43,8 +44,7 @@ internal class CashierService : BaseInitializableService, ICashierService
         _productService = productService;
         _receiptService = receiptService;
         _ordersService = ordersService;
-
-
+        _paymentInfoService = paymentInfoService;
     }
 
     public async ValueTask<IOrderEditService> CreateOrder(bool isDelivery)
@@ -88,20 +88,42 @@ internal class CashierService : BaseInitializableService, ICashierService
         return ValueTask.CompletedTask;
     }
 
-    public ValueTask<IPaymentService> CreatePayment(IOrderEditService order)
+    public async ValueTask<IPaymentService> CreatePayment(IOrderEditService orderEdit)
     {
-        var paymentService = new CashierPaymentService(order, _ordersService);
+        var paymentService = new CashierPaymentService(orderEdit, _ordersService);
+
+        var order = await orderEdit.GetOrder();
+
+        if (order.PaymentInfoId != Guid.Empty)
+        {
+            PaymentInfoDto paymentInfo;
+
+            if (order.PaymentInfo != null)
+            {
+                paymentInfo = order.PaymentInfo;
+            }
+            else
+            {
+                paymentInfo = await _paymentInfoService.GetPaymentInfo(order.PaymentInfoId) 
+                    ?? throw new InvalidOperationException($"The PaymentInfo with {order.PaymentInfoId} id not found");
+            }
+
+            paymentService.Cash = paymentInfo.Cash;
+            paymentService.BankСard = paymentInfo.BankСard;
+            paymentService.CashlessPayment = paymentInfo.CashlessPayment;
+            paymentService.WithoutRevenue = paymentInfo.WithoutRevenue;
+        }
 
         paymentService.Payed += () =>
         {
-            _orders.Remove(order);
-            if (CurrentOrder == order)
+            _orders.Remove(orderEdit);
+            if (CurrentOrder == orderEdit)
             {
                 CurrentOrder = null;
             }
         };
 
-        return new(paymentService);
+        return paymentService;
     }
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)

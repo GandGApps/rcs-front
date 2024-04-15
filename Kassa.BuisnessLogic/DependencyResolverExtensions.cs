@@ -42,6 +42,9 @@ public static class DependencyResolverExtensions
         SplatRegistrations.Register<IClientService, ClientService>();
         RegisterInitializableServiceFactory<IClientService>(services);
 
+        SplatRegistrations.Register<IPaymentInfoService, PaymentInfoService>();
+        RegisterInitializableServiceFactory<IPaymentInfoService>(services);
+
         SplatRegistrations.Register<IStreetService, StreetService>();
         RegisterInitializableServiceFactory<IStreetService>(services);
 
@@ -73,8 +76,16 @@ public static class DependencyResolverExtensions
             var additiveService = Locator.Current.GetNotInitializedService<IAdditiveService>();
             var receiptService = Locator.Current.GetNotInitializedService<IReceiptService>();
             var ordersService = Locator.Current.GetNotInitializedService<IOrdersService>();
+            var paymentInfoService = Locator.Current.GetNotInitializedService<IPaymentInfoService>();
 
-            return new CashierService(additiveService, categoryService, productService, receiptService, ordersService);
+            return new CashierService(
+                additiveService, 
+                categoryService, 
+                productService, 
+                receiptService, 
+                ordersService,
+                paymentInfoService
+            );
         });
         RegisterInitializableServiceFactory<ICashierService>(services);
 

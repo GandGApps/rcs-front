@@ -16,7 +16,7 @@ using System.Reactive.Linq;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.RxUI.Pages;
-public class DeliveryPaymentPageVm: PageViewModel, IPaymentVm
+public sealed class DeliveryPaymentPageVm: PageViewModel, IPaymentVm
 {
     private bool _isFloat;
     private byte _afterSeparatorDigitCount;
@@ -27,21 +27,27 @@ public class DeliveryPaymentPageVm: PageViewModel, IPaymentVm
         CashVm = new()
         {
             Description = "Наличные",
+            Entered = cashierPaymentService.Cash
         };
         BankCardVm = new()
         {
             Description = "Банковская карта",
+            Entered = cashierPaymentService.BankСard
         };
         CashlessPaymentVm = new()
         {
             Description = "Безналичный расчет",
+            Entered = cashierPaymentService.CashlessPayment
         };
         WithoutRevenueVm = new()
         {
             Description = "Без выручки",
+            Entered = cashierPaymentService.WithoutRevenue
         };
 
         CashierPaymentItemVms = [CashVm, BankCardVm, CashlessPaymentVm, WithoutRevenueVm];
+
+        SetDisplayText(CashVm.Entered);
 
         SendReceiptCommand = ReactiveCommand.Create(() => { });
         EnableWithCheckboxCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -503,6 +509,22 @@ public class DeliveryPaymentPageVm: PageViewModel, IPaymentVm
             }
 
         }).DisposeWith(disposables);
+
+        CashlessPaymentVm.WhenAnyValue(x => x.Entered)
+            .Subscribe(x => CashierPaymentService.CashlessPayment = x)
+            .DisposeWith(disposables);
+
+        BankCardVm.WhenAnyValue(x => x.Entered)
+            .Subscribe(x => CashierPaymentService.BankСard = x)
+            .DisposeWith(disposables);
+
+        CashVm.WhenAnyValue(x => x.Entered)
+            .Subscribe(x => CashierPaymentService.Cash = x)
+            .DisposeWith(disposables);
+
+        WithoutRevenueVm.WhenAnyValue(x => x.Entered)
+            .Subscribe(x => CashierPaymentService.WithoutRevenue = x)
+            .DisposeWith(disposables);
 
         return ValueTask.CompletedTask;
     }

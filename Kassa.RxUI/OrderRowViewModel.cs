@@ -152,11 +152,12 @@ public sealed class OrderRowViewModel : ReactiveObject, IApplicationModelPresent
         Status = order.Status switch
         {
             OrderStatus.Unconfirmed => "Неподтвержден",
-            //OrderStatus.New => "Новый",
+            OrderStatus.New => "Новый",
             OrderStatus.InCooking => "Готовится",
             OrderStatus.Ready => "Готов",
             OrderStatus.OnTheWay => "В пути",
             OrderStatus.Completed => "Закрытый",
+            OrderStatus.Delivered => "Доставлен",
             OrderStatus.Canceled => "Отменен",
             _ => throw new NotImplementedException()
         };

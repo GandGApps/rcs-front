@@ -66,10 +66,14 @@ internal class CashierPaymentService(IOrderEditService orderEditService, IOrders
         {
             Id = Guid.Empty,
             OrderId = Order.OrderId,
+            CashlessPayment = CashlessPayment,
+            Cash = Cash,
+            BankСard = BankСard,
+            WithoutRevenue = WithoutRevenue
         };
 
         order.PaymentInfo = paymentInfo;
-        order.PaymentInfoId = Guid.Empty;
+        order.PaymentInfoId = order.PaymentInfoId;
 
         await ordersService.AddOrder(order);
     }

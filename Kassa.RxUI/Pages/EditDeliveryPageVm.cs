@@ -16,7 +16,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
     private IPaymentService _paymentService = null!;
     private readonly ICashierService _cashierService;
     private readonly IAdditiveService _additiveService;
-
+    private readonly OrderDto _orderDto;
 
     public EditDeliveryPageVm(
         ICashierService cashierService,
@@ -27,6 +27,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
         DistrictDto? district,
         StreetDto? street)
     {
+        _orderDto = order;
         _cashierService = cashierService;
         _additiveService = additiveService;
 
@@ -99,7 +100,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
 
         BackButtonCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            if (MainViewModel.Router.GetCurrentViewModel() is not NewDeliveryPageVm)
+            if (MainViewModel.Router.GetCurrentViewModel() != this)
             {
                 await MainViewModel.Router.NavigateBack.Execute().FirstAsync();
             }
@@ -221,6 +222,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
             order.CourierId = CourierViewModel?.Id;
             order.ClientId = Client?.Id;
             order.CreatedAt = DateTime.UtcNow;
+            order.Status = OrderStatus;
 
             var ordersService = await Locator.GetInitializedService<IOrdersService>();
             await ordersService.UpdateOrder(order);
@@ -487,8 +489,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
     {
         var cashierService = await Locator.GetInitializedService<ICashierService>();
 
-        _orderEdit = await cashierService.CreateOrder(true);
-        await cashierService.SelectCurrentOrder(_orderEdit);
+        _orderEdit = await cashierService.CreateOrder(_orderDto);
 
         OrderEditPageVm = new DeliveryOrderEditPageVm(_orderEdit, _cashierService, _additiveService);
 

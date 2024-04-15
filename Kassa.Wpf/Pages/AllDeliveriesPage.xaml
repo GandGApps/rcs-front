@@ -43,16 +43,18 @@
 
                 <Grid.Resources>
 
-                    <Style TargetType="RadioButton">
+                    <Style x:Key="HeaderButtonBaseStyle" TargetType="ContentControl">
                         <Setter Property="Foreground" Value="{DynamicResource AlternateForeground}" />
                         <Setter Property="Background" Value="{StaticResource ClickableBg}" />
                         <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness=6}" />
                         <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='5,0,5,0'}" />
                         <Setter Property="VerticalAlignment" Value="Center" />
                         <Setter Property="Height" Value="{mx:AdaptiveSize 52}" />
+                        <Setter Property="FontFamily" Value="{StaticResource Montseratt}" />
+
                         <Setter Property="Template">
                             <Setter.Value>
-                                <ControlTemplate TargetType="RadioButton">
+                                <ControlTemplate TargetType="ContentControl">
                                     <Border
                                         Width="{TemplateBinding Width}"
                                         Height="{TemplateBinding Height}"
@@ -71,6 +73,16 @@
                         </Setter>
 
                         <Style.Triggers>
+                            <Trigger Property="ButtonBase.IsPressed" Value="True">
+                                <Setter Property="Background" Value="{DynamicResource AccentBrush2}" />
+                            </Trigger>
+                        </Style.Triggers>
+
+                    </Style>
+
+                    <Style BasedOn="{StaticResource HeaderButtonBaseStyle}" TargetType="RadioButton">
+
+                        <Style.Triggers>
                             <Trigger Property="IsChecked" Value="True">
                                 <Setter Property="Background" Value="{DynamicResource AccentBrush2}" />
                             </Trigger>
@@ -78,8 +90,10 @@
 
                     </Style>
 
+                    <Style BasedOn="{StaticResource HeaderButtonBaseStyle}" TargetType="Button" />
+
                     <Style
-                        x:Key="RadioButtonTextBlock"
+                        x:Key="HeaderButtonTextBlock"
                         BasedOn="{StaticResource {x:Type TextBlock}}"
                         TargetType="TextBlock">
                         <Setter Property="FontWeight" Value="SemiBold" />
@@ -91,14 +105,14 @@
                     </Style>
 
                     <Style
-                        x:Key="RadioButtonIcon"
+                        x:Key="HeaderButtonIcon"
                         BasedOn="{StaticResource {x:Type Path}}"
                         TargetType="Path">
                         <Setter Property="Fill" Value="{DynamicResource AlternateForeground}" />
                         <Setter Property="Width" Value="{mx:AdaptiveSize 28}" />
                     </Style>
 
-                    <Style x:Key="RadioButtonIconImage" TargetType="Image">
+                    <Style x:Key="HeaderButtonIconImage" TargetType="Image">
                         <Setter Property="Stretch" Value="Uniform" />
                         <Setter Property="Width" Value="{mx:AdaptiveSize 28}" />
                     </Style>
@@ -111,22 +125,22 @@
 
                 <RadioButton x:Name="AllOrders" IsChecked="True">
                     <StackPanel>
-                        <Path Data="{StaticResource AllOrdersIcon}" Style="{StaticResource RadioButtonIcon}" />
-                        <TextBlock Style="{StaticResource RadioButtonTextBlock}" Text="ВСЕ ЗАКАЗЫ" />
+                        <Path Data="{StaticResource AllOrdersIcon}" Style="{StaticResource HeaderButtonIcon}" />
+                        <TextBlock Style="{StaticResource HeaderButtonTextBlock}" Text="ВСЕ ЗАКАЗЫ" />
                     </StackPanel>
                 </RadioButton>
 
                 <RadioButton x:Name="IsDelivery" Grid.Column="1">
                     <StackPanel>
-                        <Path Data="{StaticResource DeliveryTruck}" Style="{StaticResource RadioButtonIcon}" />
-                        <TextBlock Style="{StaticResource RadioButtonTextBlock}" Text="ДОСТАВКА" />
+                        <Path Data="{StaticResource DeliveryTruck}" Style="{StaticResource HeaderButtonIcon}" />
+                        <TextBlock Style="{StaticResource HeaderButtonTextBlock}" Text="ДОСТАВКА" />
                     </StackPanel>
                 </RadioButton>
 
                 <RadioButton x:Name="IsPickUp" Grid.Column="2">
                     <StackPanel>
-                        <Path Data="{StaticResource PickupIcon}" Style="{StaticResource RadioButtonIcon}" />
-                        <TextBlock Style="{StaticResource RadioButtonTextBlock}" Text="САМОВЫВОЗ" />
+                        <Path Data="{StaticResource PickupIcon}" Style="{StaticResource HeaderButtonIcon}" />
+                        <TextBlock Style="{StaticResource HeaderButtonTextBlock}" Text="САМОВЫВОЗ" />
                     </StackPanel>
                 </RadioButton>
 
@@ -135,12 +149,12 @@
                     Grid.Column="3"
                     Margin="{mx:AdaptiveSize Thickness='40,0'}" />
 
-                <RadioButton Grid.Column="4">
+                <Button Grid.Column="4">
                     <StackPanel>
-                        <Image Source="/Assets/CalendarIcon.png" Style="{StaticResource RadioButtonIconImage}" />
-                        <TextBlock Style="{StaticResource RadioButtonTextBlock}" Text="ДАТА" />
+                        <Image Source="/Assets/CalendarIcon.png" Style="{StaticResource HeaderButtonIconImage}" />
+                        <TextBlock Style="{StaticResource HeaderButtonTextBlock}" Text="ДАТА" />
                     </StackPanel>
-                </RadioButton>
+                </Button>
 
             </Grid>
 

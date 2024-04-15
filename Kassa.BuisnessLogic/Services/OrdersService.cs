@@ -31,6 +31,8 @@ internal class OrdersService(IRepository<Order> repository, IRepository<PaymentI
         {
             paymentInfo.Id = Guid.NewGuid();
             paymentInfo.OrderId = order.Id;
+            order.PaymentInfo = paymentInfo;
+            order.PaymentInfoId = paymentInfo.Id;
 
             await paymentInfos.Add(Mapper.MapDtoToPaymentInfo(paymentInfo));
         }
@@ -95,6 +97,7 @@ internal class OrdersService(IRepository<Order> repository, IRepository<PaymentI
             {
                 paymentInfo.Id = Guid.NewGuid();
                 paymentInfoModel.Id = paymentInfo.Id;
+                order.PaymentInfoId = paymentInfo.Id;
 
                 await paymentInfos.Add(paymentInfoModel);
             }
