@@ -188,6 +188,13 @@ public class OrderEditPageVm : PageViewModel, IOrderEditVm
         GoToAllOrdersCommand = ReactiveCommand.CreateFromTask(() => {
             return Task.CompletedTask;
         });
+
+        GoToAllDeliveriesPageCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var allDeliveriesPage = new AllDeliveriesPageVm();
+
+            await MainViewModel.GoToPage(allDeliveriesPage);
+        });
     }
 
     protected override ValueTask InitializeAsync(CompositeDisposable disposables)
@@ -352,6 +359,11 @@ public class OrderEditPageVm : PageViewModel, IOrderEditVm
     }
 
     public ReactiveCommand<Unit, Unit> GoToAllOrdersCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> GoToAllDeliveriesPageCommand
     {
         get;
     }

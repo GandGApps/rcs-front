@@ -46,6 +46,7 @@ public sealed class OrderRowViewModel : ReactiveObject, IApplicationModelPresent
             OrderStatus.OnTheWay => "В пути",
             OrderStatus.Completed => "Закрытый",
             OrderStatus.Canceled => "Отменен",
+            OrderStatus.Delivered => "Доставлен",
             _ => throw new NotImplementedException()
         };
 

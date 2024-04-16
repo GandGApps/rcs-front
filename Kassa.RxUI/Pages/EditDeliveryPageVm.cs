@@ -35,7 +35,6 @@ public sealed class EditDeliveryPageVm : PageViewModel
         Client = client;
 
         Phone = order.Phone;
-        NameWithMiddleName = $"{order.FirstName} {order.MiddleName}";
         House = order.House;
         Building = order.Building;
         Entrance = order.Entrance;
@@ -56,7 +55,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
         CourierViewModel = courier is null ? null : new CourierViewModel(courier);
         Street = order.StreetId.HasValue ? new StreetViewModel(street!) : null;
         District = order.DistrictId.HasValue ? new DistrictViewModel(district!) : null;
-        
+
 
         IsClientOpenned = true;
 
@@ -175,20 +174,6 @@ public sealed class EditDeliveryPageVm : PageViewModel
                 return;
             }
 
-            var separetedNameWithMiddleName = NameWithMiddleName.Split(' ', 1);
-            if (separetedNameWithMiddleName.Length == 1)
-            {
-                separetedNameWithMiddleName = [separetedNameWithMiddleName[0], string.Empty];
-            }
-            else if (separetedNameWithMiddleName.Length > 2)
-            {
-                separetedNameWithMiddleName = [separetedNameWithMiddleName[0], separetedNameWithMiddleName[1]];
-            }
-            else
-            {
-                separetedNameWithMiddleName = [string.Empty, string.Empty];
-            }
-
             if (!IsAllAddressInfoFilled() && IsDelivery)
             {
                 await MainViewModel.OkMessage("Не все данные адреса заполнены");
@@ -212,8 +197,8 @@ public sealed class EditDeliveryPageVm : PageViewModel
             order.Floor = Floor;
             order.Intercom = Intercom;
             order.LastName = LastName;
-            order.FirstName = separetedNameWithMiddleName[0];
-            order.MiddleName = separetedNameWithMiddleName[1];
+            order.FirstName = FirstName;
+            order.MiddleName =MiddleName;
             order.Phone = Phone;
             order.Miscellaneous = Miscellaneous;
             order.IsOutOfTurn = IsOutOfTurn;
@@ -277,10 +262,11 @@ public sealed class EditDeliveryPageVm : PageViewModel
     }
 
     [Reactive]
+    [Obsolete("Use name and middlename instead")]
     public string NameWithMiddleName
     {
         get; set;
-    }
+    } = string.Empty;
 
     [Reactive]
     public string House
@@ -512,7 +498,9 @@ public sealed class EditDeliveryPageVm : PageViewModel
 
     private bool IsAllClientInfoFilled()
     {
-        return !string.IsNullOrWhiteSpace(NameWithMiddleName)
+        return !string.IsNullOrWhiteSpace(FirstName)
+            && !string.IsNullOrWhiteSpace(LastName)
+            && !string.IsNullOrWhiteSpace(MiddleName)
             && !string.IsNullOrWhiteSpace(Phone)
             && !string.IsNullOrWhiteSpace(Card);
     }

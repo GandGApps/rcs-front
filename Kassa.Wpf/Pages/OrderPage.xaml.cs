@@ -30,19 +30,19 @@ public partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
             this.OneWayBind(ViewModel, x => x.ShoppingListItems, x => x.ShoppingListItems.ItemsSource)
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x => x.ShoppingList.IncreaseCommand, x => x.IncreaseButton)
+            this.BindCommand(ViewModel, x => x.ShoppingList!.IncreaseCommand, x => x.IncreaseButton)
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x => x.ShoppingList.DecreaseCommand, x => x.DecreaseButton)
+            this.BindCommand(ViewModel, x => x.ShoppingList!.DecreaseCommand, x => x.DecreaseButton)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.ShoppingList.Subtotal, x => x.SubtotalCost.Text, x => $"{x.ToString("0.##", QuantityVolumeDialogVewModel.RuCultureInfo)} ₽")
+            this.OneWayBind(ViewModel, x => x.ShoppingList!.Subtotal, x => x.SubtotalCost.Text, x => $"{x.ToString("0.##", QuantityVolumeDialogVewModel.RuCultureInfo)} ₽")
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.ShoppingList.Total, x => x.TotalCost.Text, x => $"{x.ToString("0.##", QuantityVolumeDialogVewModel.RuCultureInfo)} ₽")
+            this.OneWayBind(ViewModel, x => x.ShoppingList!.Total, x => x.TotalCost.Text, x => $"{x.ToString("0.##", QuantityVolumeDialogVewModel.RuCultureInfo)} ₽")
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x => x.ShoppingList.RemoveCommand, x => x.RemoveButton)
+            this.BindCommand(ViewModel, x => x.ShoppingList!.RemoveCommand, x => x.RemoveButton)
                 .DisposeWith(disposables);
 
             this.BindCommand(ViewModel, x => x.CreateTotalCommentCommand, x => x.TotalCommentButton)
@@ -84,7 +84,10 @@ public partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
             this.BindCommand(ViewModel,  x => x.OpenQuantityVolumeDialogCommand, x => x.QuantityVolumeButton)
                 .DisposeWith(disposables);
 
-            ViewModel.WhenAnyValue(x => x.ShoppingListItems.Count)
+            this.BindCommand(ViewModel, x => x.GoToAllDeliveriesPageCommand, x => x.GoToDeliveryButton)
+                .DisposeWith(disposables);
+
+            ViewModel.WhenAnyValue(x => x.ShoppingListItems!.Count)
                      .Buffer(2, 1)
                      .Subscribe(x =>
                      {
@@ -95,19 +98,5 @@ public partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
                      })
                      .DisposeWith(disposables);
         });
-    }
-
-    private void OpenColorChanger(object sender, RoutedEventArgs e)
-    {
-        var theme = App.GetCurrentThemeName();
-
-        if (theme == Theme.Light)
-        {
-            App.SwitchTheme(Theme.PornhubTheme);
-        }
-        else
-        {
-            App.SwitchTheme(Theme.Light);
-        }
     }
 }

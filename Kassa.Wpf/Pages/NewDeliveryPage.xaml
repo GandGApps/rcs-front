@@ -314,14 +314,19 @@
                     <StackPanel Grid.Row="1" Margin="{mx:AdaptiveSize Thickness='15,10,8,9'}">
 
                         <ctrl:Input
-                            x:Name="FullName"
-                            Label="Имя отчество"
-                            Placeholder="Имя Отчество" />
-
-                        <ctrl:Input
                             x:Name="LastName"
                             Label="Фамилия"
                             Placeholder="Фамилия" />
+
+                        <ctrl:Input
+                            x:Name="FirstName"
+                            Label="Имя"
+                            Placeholder="Имя" />
+
+                        <ctrl:Input
+                            x:Name="MiddleName"
+                            Label="Имя"
+                            Placeholder="Отчество" />
 
                         <ctrl:Input
                             x:Name="Phone"
@@ -676,16 +681,25 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
+            <Grid.Resources>
+                <Style
+                    x:Key="SwitchViewRadioButton"
+                    BasedOn="{StaticResource BorderToggleRadioButton}"
+                    TargetType="RadioButton">
+                    <Setter Property="Width" Value="{mx:AdaptiveSize 150}" />
+                    <Setter Property="GroupName" Value="CurrentView" />
+                    <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='10,0,0,0'}" />
+                    <Setter Property="Background" Value="{StaticResource ClickableBg}" />
+                </Style>
+            </Grid.Resources>
+
             <ctrl:ButtonWithCornerRaduis x:Name="BackButton" Style="{StaticResource BackButton}" />
 
             <RadioButton
                 x:Name="SwitchOrderEdit"
                 Grid.Column="1"
-                Width="{mx:AdaptiveSize 165}"
-                Margin="{mx:AdaptiveSize Thickness='30,0,0,0'}"
-                Background="{StaticResource ClickableBg}"
-                GroupName="CurrentView"
-                Style="{StaticResource BorderToggleRadioButton}">
+                Margin="{mx:AdaptiveSize Thickness='20,0,0,0'}"
+                Style="{StaticResource SwitchViewRadioButton}">
                 <Grid>
 
                     <Grid.ColumnDefinitions>
@@ -701,7 +715,7 @@
                     <TextBlock
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        FontSize="{mx:AdaptiveSize 14}"
+                        FontSize="{mx:AdaptiveSize 13}"
                         FontWeight="Medium"
                         Foreground="{DynamicResource AlternateForeground}"
                         Text="ЗАКАЗ" />
@@ -712,12 +726,8 @@
             <RadioButton
                 x:Name="SwitchClientEdit"
                 Grid.Column="2"
-                Width="{mx:AdaptiveSize 165}"
-                Margin="{mx:AdaptiveSize Thickness='15,0,0,0'}"
-                Background="{StaticResource ClickableBg}"
-                GroupName="CurrentView"
                 IsChecked="True"
-                Style="{StaticResource BorderToggleRadioButton}">
+                Style="{StaticResource SwitchViewRadioButton}">
                 <Grid>
 
                     <Grid.ColumnDefinitions>
@@ -733,7 +743,7 @@
                     <TextBlock
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        FontSize="{mx:AdaptiveSize 14}"
+                        FontSize="{mx:AdaptiveSize 13}"
                         FontWeight="Medium"
                         Foreground="{DynamicResource AlternateForeground}"
                         Text="КЛИЕНТ" />
@@ -744,8 +754,8 @@
             <CheckBox
                 x:Name="IsOutOfTurn"
                 Grid.Column="3"
-                Width="{mx:AdaptiveSize 165}"
-                Margin="{mx:AdaptiveSize Thickness='15,0,0,0'}"
+                Width="{mx:AdaptiveSize 150}"
+                Margin="{mx:AdaptiveSize Thickness='10,0,0,0'}"
                 Background="{StaticResource ClickableBg}"
                 Style="{StaticResource BorderToggleCheckbox}">
                 <Grid>
@@ -763,7 +773,7 @@
                     <TextBlock
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        FontSize="{mx:AdaptiveSize 14}"
+                        FontSize="{mx:AdaptiveSize 13}"
                         FontWeight="Medium"
                         Foreground="{DynamicResource AlternateForeground}"
                         Text="Вне очереди" />
@@ -774,10 +784,11 @@
             <ctrl:ButtonWithIcon
                 x:Name="Problem"
                 Grid.Column="5"
-                Width="{mx:AdaptiveSize 165}"
-                Margin="{mx:AdaptiveSize Thickness='15,0,0,0'}"
+                Width="{mx:AdaptiveSize 150}"
+                Margin="{mx:AdaptiveSize Thickness='10,0,0,0'}"
                 Background="{StaticResource ClickableBg}"
                 Content="Проблема"
+                FontSize="{mx:AdaptiveSize 13}"
                 FontWeight="Medium"
                 Foreground="{DynamicResource AlternateForeground}"
                 Icon="{StaticResource ProblemIcon}"
@@ -786,11 +797,7 @@
             <RadioButton
                 x:Name="Payment"
                 Grid.Column="6"
-                Width="{mx:AdaptiveSize 165}"
-                Margin="{mx:AdaptiveSize Thickness='15,0,0,0'}"
-                Background="{StaticResource ClickableBg}"
-                GroupName="CurrentView"
-                Style="{StaticResource BorderToggleRadioButton}">
+                Style="{StaticResource SwitchViewRadioButton}">
                 <Grid>
 
                     <Grid.ColumnDefinitions>
@@ -806,7 +813,7 @@
                     <TextBlock
                         Grid.Column="1"
                         VerticalAlignment="Center"
-                        FontSize="{mx:AdaptiveSize 14}"
+                        FontSize="{mx:AdaptiveSize 13}"
                         FontWeight="Medium"
                         Foreground="{DynamicResource AlternateForeground}"
                         Text="Платежи" />
@@ -817,7 +824,7 @@
             <Button
                 x:Name="Save"
                 Grid.Column="7"
-                Margin="{mx:AdaptiveSize Thickness='15,0,0,0'}"
+                Margin="{mx:AdaptiveSize Thickness='10,0,0,0'}"
                 Padding="{mx:AdaptiveSize Thickness='4'}"
                 Content="Сохранить"
                 Style="{StaticResource PrimaryButton}" />

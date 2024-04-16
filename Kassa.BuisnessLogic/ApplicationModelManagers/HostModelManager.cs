@@ -105,17 +105,7 @@ internal partial class HostModelManager<TModel> : IApplicationModelManager<TMode
 
             builder.Add(change);
 
-            if (_applicationModelPresenters.Count > 0)
-            {
-
-                foreach (var presenter in _applicationModelPresenters)
-                {
-                    if (presenter.Id == model.Id)
-                    {
-                        DisposePresenter(presenter);
-                    }
-                }
-            }
+            DisposePresentersForModel(model.Id);
 
             var changes = builder.ToImmutable();
 
@@ -194,6 +184,19 @@ internal partial class HostModelManager<TModel> : IApplicationModelManager<TMode
         _applicationModelPresenters.Remove(presenter);
 
         presenter.Dispose();
+    }
+
+    private void DisposePresentersForModel(Guid id)
+    {
+        var tmp = _applicationModelPresenters.ToImmutableArray();
+
+        foreach (var presenter in tmp)
+        {
+            if (presenter.Id == id)
+            {
+                DisposePresenter(presenter);
+            }
+        }
     }
 
     public void Dispose()

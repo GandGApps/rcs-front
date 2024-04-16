@@ -424,14 +424,16 @@ internal sealed class OrderEditService(
         }));
 
 
-        return ShoppingListItems.Subscribe(x =>
+        return ShoppingListItems.Subscribe(async x =>
         {
             foreach (var change in x.Changes)
             {
                 switch (change.Reason)
                 {
                     case ModelChangeReason.Add:
-                        observableCollection.Add(creator(change.Current, ShoppingListItems));
+                        var vm = creator(change.Current, ShoppingListItems);
+                        observableCollection.Insert(0, vm);
+                        await SelectShoppingListItem(change.Current);
                         break;
 
                     case ModelChangeReason.Remove:

@@ -35,13 +35,13 @@ public partial class EditDeliveryPage : ReactiveUserControl<EditDeliveryPageVm>
                 throw new InvalidOperationException("ViewModel is null");
             }
 
-            this.Bind(ViewModel, vm => vm.NameWithMiddleName, v => v.FullName.Text)
+            this.Bind(ViewModel, vm => vm.FirstName, v => v.FirstName.Text)
+                .DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.MiddleName, v => v.MiddleName.Text)
                 .DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.LastName, v => v.LastName.Text)
-                .DisposeWith(disposables);
-
-            this.Bind(ViewModel, vm => vm.Phone, v => v.Phone.Text)
                 .DisposeWith(disposables);
 
             this.Bind(ViewModel, vm => vm.Card, v => v.Card.Text)

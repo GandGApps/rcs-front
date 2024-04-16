@@ -144,14 +144,14 @@
             </ScrollViewer>
 
             <Button
+                x:Name="GoToDeliveryButton"
                 Grid.Column="3"
                 Padding="0"
                 HorizontalContentAlignment="Stretch"
                 VerticalContentAlignment="Stretch"
                 Background="{StaticResource ClickableBg}"
                 BorderBrush="{x:Null}"
-                BorderThickness="0"
-                Click="OpenColorChanger">
+                BorderThickness="0">
                 <Grid>
 
 

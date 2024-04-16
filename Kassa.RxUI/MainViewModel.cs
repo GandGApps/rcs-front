@@ -209,4 +209,9 @@ public class MainViewModel : ReactiveObject, IScreen
 
         return loadingDialog;
     }
+
+    public async Task GoToPage(PageViewModel pageVm)
+    {
+        await GoToPageCommand.Execute(pageVm).FirstAsync();
+    }
 }

@@ -36,7 +36,6 @@ public sealed class NewDeliveryPageVm : PageViewModel
         Client = clientViewModel;
 
         Phone = Client?.Phone ?? string.Empty;
-        NameWithMiddleName = $"{clientViewModel?.FirstName} {clientViewModel?.MiddleName}";
         House = Client?.House ?? string.Empty;
         Building = Client?.Building ?? string.Empty;
         Entrance = Client?.Entrance ?? string.Empty;
@@ -87,7 +86,7 @@ public sealed class NewDeliveryPageVm : PageViewModel
             Street = streetDialog.SelectedItem;
         }).DisposeWith(InternalDisposables);
 
-        
+
 
         BackButtonCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -166,20 +165,6 @@ public sealed class NewDeliveryPageVm : PageViewModel
                 return;
             }
 
-            var separetedNameWithMiddleName = NameWithMiddleName.Split(' ', 1);
-            if (separetedNameWithMiddleName.Length == 1)
-            {
-                separetedNameWithMiddleName = [separetedNameWithMiddleName[0], string.Empty];
-            }
-            else if (separetedNameWithMiddleName.Length > 2)
-            {
-                separetedNameWithMiddleName = [separetedNameWithMiddleName[0], separetedNameWithMiddleName[1]];
-            }
-            else
-            {
-                separetedNameWithMiddleName = [string.Empty, string.Empty];
-            }
-
             if (!IsAllAddressInfoFilled() && IsDelivery)
             {
                 await MainViewModel.OkMessage("Не все данные адреса заполнены");
@@ -208,8 +193,8 @@ public sealed class NewDeliveryPageVm : PageViewModel
                     House = House,
                     Intercom = Intercom,
                     LastName = LastName,
-                    FirstName = separetedNameWithMiddleName[0],
-                    MiddleName = separetedNameWithMiddleName[1],
+                    FirstName = FirstName,
+                    MiddleName = MiddleName,
                     Miscellaneous = Miscellaneous,
                     Phone = Phone
                 };
@@ -235,8 +220,8 @@ public sealed class NewDeliveryPageVm : PageViewModel
             order.Floor = Floor;
             order.Intercom = Intercom;
             order.LastName = LastName;
-            order.FirstName = separetedNameWithMiddleName[0];
-            order.MiddleName = separetedNameWithMiddleName[1];
+            order.FirstName = FirstName;
+            order.MiddleName = MiddleName;
             order.Phone = Phone;
             order.Miscellaneous = Miscellaneous;
             order.IsOutOfTurn = IsOutOfTurn;
@@ -294,10 +279,12 @@ public sealed class NewDeliveryPageVm : PageViewModel
     }
 
     [Reactive]
+    [Obsolete("Use name and middlename instead")]
     public string NameWithMiddleName
     {
         get; set;
-    }
+    } = string.Empty;
+
 
     [Reactive]
     public string House
@@ -518,7 +505,9 @@ public sealed class NewDeliveryPageVm : PageViewModel
 
     private bool IsAllClientInfoFilled()
     {
-        return !string.IsNullOrWhiteSpace(NameWithMiddleName)
+        return !string.IsNullOrWhiteSpace(FirstName)
+            && !string.IsNullOrWhiteSpace(LastName)
+            && !string.IsNullOrWhiteSpace(MiddleName)
             && !string.IsNullOrWhiteSpace(Phone)
             && !string.IsNullOrWhiteSpace(Card);
     }

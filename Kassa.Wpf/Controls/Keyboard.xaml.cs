@@ -154,7 +154,10 @@ public partial class Keyboard : UserControl, IActivatableView
                                             size = new(12);
                                         }
 
-                                        if (size == null) return;
+                                        if (size == null)
+                                        {
+                                            return;
+                                        }
 
                                         var binding = (BindingBase)size.ProvideValue(null!);
 
@@ -260,7 +263,7 @@ public partial class Keyboard : UserControl, IActivatableView
                                .DisposeWith(keyDisposables);
                         }
 
-                        var adaptiveWidth = new AdaptiveSizeExtension((AdaptiveMarkupExtension.GetNotAdaptivedSize(ActualWidth, MainWindow.Instance.ActualWidth) / x.LineStarWidth) * (size));
+                        var adaptiveWidth = new AdaptiveSizeExtension(AdaptiveMarkupExtension.GetNotAdaptivedSize(ActualWidth, MainWindow.Instance!.ActualWidth) / x.LineStarWidth * (size));
                         var bindingWidth = (BindingBase)adaptiveWidth.ProvideValue(null!);
 
                         var adaptiveHeight = new AdaptiveSizeExtension(x.KeyHeight + 4);

@@ -111,7 +111,7 @@
 
                     <Border
                         Grid.Column="1"
-                        Width="{mx:AdaptiveSize 320}"
+                        Width="{mx:AdaptiveSize 290}"
                         Style="{StaticResource SearchTextBoxBorder}">
                         <Grid VerticalAlignment="Center">
 
@@ -139,44 +139,44 @@
                     <Button
                         x:Name="NewGuestButton"
                         Grid.Column="3"
-                        Width="{mx:AdaptiveSize 155}"
+                        Width="{mx:AdaptiveSize 130}"
                         MinWidth="10"
                         Margin="{mx:AdaptiveSize Thickness='0,-1,3,-1'}"
                         HorizontalAlignment="Right"
-                        FontSize="{mx:AdaptiveSize 16}"
+                        FontSize="{mx:AdaptiveSize 12}"
                         Style="{StaticResource SecondaryButton}">
                         Новый гость+
                     </Button>
                     <Button
                         x:Name="SkipButton"
                         Grid.Column="4"
-                        Width="{mx:AdaptiveSize 155}"
+                        Width="{mx:AdaptiveSize 130}"
                         MinWidth="10"
                         Margin="{mx:AdaptiveSize Thickness='0,-1,3,-1'}"
                         HorizontalAlignment="Right"
-                        FontSize="{mx:AdaptiveSize 16}"
+                        FontSize="{mx:AdaptiveSize 12}"
                         Style="{StaticResource SecondaryButton}">
                         Пропустить
                     </Button>
                     <Button
                         x:Name="CancelButton"
                         Grid.Column="5"
-                        Width="{mx:AdaptiveSize 155}"
+                        Width="{mx:AdaptiveSize 130}"
                         MinWidth="10"
                         Margin="{mx:AdaptiveSize Thickness='0,-1,3,-1'}"
                         HorizontalAlignment="Right"
-                        FontSize="{mx:AdaptiveSize 16}"
+                        FontSize="{mx:AdaptiveSize 12}"
                         Style="{StaticResource SecondaryButton}">
                         Отмена
                     </Button>
                     <Button
                         x:Name="OkButton"
                         Grid.Column="6"
-                        Width="{mx:AdaptiveSize 155}"
+                        Width="{mx:AdaptiveSize 130}"
                         MinWidth="10"
                         Margin="{mx:AdaptiveSize Thickness='0,-1,0,-1'}"
                         HorizontalAlignment="Right"
-                        FontSize="{mx:AdaptiveSize 16}"
+                        FontSize="{mx:AdaptiveSize 12}"
                         Style="{StaticResource PrimaryButton}">
                         Ок
                     </Button>
