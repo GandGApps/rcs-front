@@ -42,10 +42,82 @@ public partial class Keyboard : UserControl, IActivatableView
         typeof(Keyboard)
     );
 
+    public static readonly DependencyProperty TextBoxProperty = DependencyProperty.Register(
+        nameof(TextBox),
+        typeof(TextBox),
+        typeof(Keyboard),
+        new PropertyMetadata(null)
+    );
+
+    public TextBox? TextBox
+    {
+        get => (TextBox?)GetValue(TextBoxProperty);
+        set => SetValue(TextBoxProperty, value);
+    }
+
     public ICommand EnterCommand
     {
         get => (ICommand)GetValue(EnterCommandProperty);
         set => SetValue(EnterCommandProperty, value);
+    }
+
+    public string Text
+    {
+        get => (string)GetValue(TextProperty);
+        set => SetValue(TextProperty, value);
+    }
+
+    public KeyboardInfo KeyboardInfo
+    {
+        get => (KeyboardInfo)GetValue(KeyboardInfoProperty);
+        set => SetValue(KeyboardInfoProperty, value);
+    }
+
+    private int CaretIndex
+    {
+        get => TextBox?.CaretIndex ?? Text?.Length ?? 0;
+        set
+        {
+            if (TextBox is null)
+            {
+                return;
+            }
+
+            TextBox.CaretIndex = value;
+        }
+    }
+
+    private int SelectionStart
+    {
+
+        get => TextBox?.SelectionStart ?? 0;
+        set
+        {
+
+            if (TextBox is null)
+            {
+                return;
+            }
+
+            TextBox.SelectionStart = value;
+        }
+    }
+
+    private int SelectionLength
+    {
+
+        get => TextBox?.SelectionLength ?? 0;
+        set
+        {
+
+            if (TextBox is null)
+            {
+
+                return;
+            }
+
+            TextBox.SelectionLength = value;
+        }
     }
 
     private static readonly KeySizeToGridWidthConverter _keySizeToWidthConverter = new();
@@ -199,19 +271,14 @@ public partial class Keyboard : UserControl, IActivatableView
                                 {
                                     key.Command = ReactiveCommand.Create(() =>
                                     {
-
-                                        if (Text?.Length > 0)
-                                        {
-
-                                            Text = Text.Remove(Text.Length - 1);
-                                        }
+                                        RemoveLastCharacter();
                                     });
                                 }
                                 if (key.Character is not null)
                                 {
                                     key.Command = ReactiveCommand.Create(() =>
                                     {
-                                        Text += key.Character;
+                                        AddCharacter(key.Character.Value);
                                     });
                                 }
                                 if (key.IsClear)
@@ -263,7 +330,7 @@ public partial class Keyboard : UserControl, IActivatableView
                                .DisposeWith(keyDisposables);
                         }
 
-                        var adaptiveWidth = new AdaptiveSizeExtension(AdaptiveMarkupExtension.GetNotAdaptivedSize(ActualWidth, MainWindow.Instance!.ActualWidth) / x.LineStarWidth * (size));
+                        var adaptiveWidth = new AdaptiveSizeExtension(AdaptiveMarkupExtension.GetAdaptiveSize(ActualWidth, MainWindow.Instance!.ActualWidth) / x.LineStarWidth * (size));
                         var bindingWidth = (BindingBase)adaptiveWidth.ProvideValue(null!);
 
                         var adaptiveHeight = new AdaptiveSizeExtension(x.KeyHeight + 4);
@@ -279,16 +346,40 @@ public partial class Keyboard : UserControl, IActivatableView
         });
     }
 
-    public string Text
+    private void RemoveLastCharacter()
     {
-        get => (string)GetValue(TextProperty);
-        set => SetValue(TextProperty, value);
+        if (SelectionLength > 0)
+        {
+            var tmp = SelectionLength;
+            Text = Text.Remove(SelectionStart, SelectionLength);
+            CaretIndex = tmp - 1;
+            return;
+        }
+
+        if (CaretIndex > 0)
+        {
+            var tmp = CaretIndex;
+            Text = Text.Remove(CaretIndex - 1, 1);
+            CaretIndex = tmp - 1;
+        }
     }
 
-    public KeyboardInfo KeyboardInfo
+    private void AddCharacter(char character)
     {
-        get => (KeyboardInfo)GetValue(KeyboardInfoProperty);
-        set => SetValue(KeyboardInfoProperty, value);
+        Text ??= string.Empty;
+
+        if (SelectionLength > 0)
+        {
+            var tmp = SelectionStart;
+            Text = Text.ReplaceAt(SelectionStart, SelectionLength, character.ToString());
+            CaretIndex = tmp+1;
+
+            return;
+        }
+
+        var tmpCaretIndex = CaretIndex;
+        Text = Text.Insert(CaretIndex, character.ToString());
+        CaretIndex = tmpCaretIndex + 1;
     }
 
     private class KeySizeToGridWidthConverter : IValueConverter

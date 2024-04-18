@@ -28,6 +28,9 @@ public partial class AllClientsDialog : ClosableDialog<AllClientsDialogViewModel
 
         this.WhenActivated(disposables =>
         {
+            this.BindCommand(ViewModel, x => x.NewGuestCommand, x => x.NewGuestButton)
+                .DisposeWith(disposables);
+
             this.BindCommand(ViewModel, x => x.CancelCommand, x => x.CancelButton)
                 .DisposeWith(disposables);
 

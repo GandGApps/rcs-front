@@ -80,17 +80,21 @@ public sealed class OrderRowViewModel : ReactiveObject, IApplicationModelPresent
 
         if (order.ClientId is null)
         {
-            throw new NotImplementedException();
+            Client = $"{order.FirstName} {order.MiddleName} {order.LastName}";
         }
-        var clientOptional = _clientService.RuntimeClients.Lookup(order.ClientId.Value);
-
-        if (!clientOptional.HasValue)
+        else
         {
-            throw new NotImplementedException();
-        }
-        var client = clientOptional.Value;
+            var clientOptional = _clientService.RuntimeClients.Lookup(order.ClientId.Value);
 
-        Client = $"{client.FirstName} {client.MiddleName} {client.LastName}";
+            if (!clientOptional.HasValue)
+            {
+                throw new NotImplementedException();
+            }
+            var client = clientOptional.Value;
+
+            Client = $"{client.FirstName} {client.MiddleName} {client.LastName}";
+        }
+        
 
         Comment = order.Comment;
         Value = order.TotalSum.ToString("C2");
@@ -158,8 +162,8 @@ public sealed class OrderRowViewModel : ReactiveObject, IApplicationModelPresent
             OrderStatus.Ready => "Готов",
             OrderStatus.OnTheWay => "В пути",
             OrderStatus.Completed => "Закрытый",
-            OrderStatus.Delivered => "Доставлен",
             OrderStatus.Canceled => "Отменен",
+            OrderStatus.Delivered => "Доставлен",
             _ => throw new NotImplementedException()
         };
 
@@ -193,17 +197,20 @@ public sealed class OrderRowViewModel : ReactiveObject, IApplicationModelPresent
 
         if (order.ClientId is null)
         {
-            throw new NotImplementedException();
+            Client = $"{order.FirstName} {order.MiddleName} {order.LastName}";
         }
-        var clientOptional = _clientService.RuntimeClients.Lookup(order.ClientId.Value);
-
-        if (!clientOptional.HasValue)
+        else
         {
-            throw new NotImplementedException();
-        }
-        var client = clientOptional.Value;
+            var clientOptional = _clientService.RuntimeClients.Lookup(order.ClientId.Value);
 
-        Client = $"{client.FirstName} {client.MiddleName} {client.LastName}";
+            if (!clientOptional.HasValue)
+            {
+                throw new NotImplementedException();
+            }
+            var client = clientOptional.Value;
+
+            Client = $"{client.FirstName} {client.MiddleName} {client.LastName}";
+        }
 
         Comment = order.Comment;
         Value = order.TotalSum.ToString("C2");

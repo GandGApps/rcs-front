@@ -9,5 +9,6 @@ public enum AdaptiveBreakpoint
 {
     Small,
     Medium,
-    Large
+    Large,
+    ExtraLarge
 }

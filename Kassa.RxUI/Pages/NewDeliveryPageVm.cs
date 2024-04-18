@@ -241,6 +241,10 @@ public sealed class NewDeliveryPageVm : PageViewModel
 
         }).DisposeWith(InternalDisposables);
 
+        this.WhenAnyValue(x => x.IsDelivery, x => x.IsNewClient, (isDelivery, isNewClient) => isDelivery || isNewClient)
+            .ToPropertyEx(this, x => x.IsAddressInfoVisible)
+            .DisposeWith(InternalDisposables);
+
 #if DEBUG
         Disposable.Create(() =>
         {
@@ -393,9 +397,10 @@ public sealed class NewDeliveryPageVm : PageViewModel
         get; set;
     }
 
+    [Reactive]
     public bool IsNewClient
     {
-        get;
+        get; set;
     }
 
     [Reactive]
@@ -423,6 +428,12 @@ public sealed class NewDeliveryPageVm : PageViewModel
     }
 
     public extern string CourierFullName
+    {
+        [ObservableAsProperty]
+        get;
+    }
+
+    public extern bool IsAddressInfoVisible
     {
         [ObservableAsProperty]
         get;

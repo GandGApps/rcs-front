@@ -112,6 +112,8 @@ public partial class App : Application
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
         Locator.CurrentMutable.RegisterMockDataAccess(); // TODO: Replace with real data access
         Locator.CurrentMutable.RegisterMockBuisnessLogic();
+
+        
     }
 
     protected override void OnActivated(EventArgs e)

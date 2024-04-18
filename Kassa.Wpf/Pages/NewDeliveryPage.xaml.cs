@@ -103,13 +103,13 @@ public partial class NewDeliveryPage : ReactiveUserControl<NewDeliveryPageVm>
             this.OneWayBind(ViewModel, x => x.OrderEditPageVm!.ShoppingListItems, x => x.ShoppingListItems.ItemsSource)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.IsDelivery, x => x.BasicAddressInfo.Visibility)
+            this.OneWayBind(ViewModel, x => x.IsAddressInfoVisible, x => x.BasicAddressInfo.Visibility)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.IsDelivery, x => x.AdditionalAddressInfo.Visibility)
+            this.OneWayBind(ViewModel, x => x.IsAddressInfoVisible, x => x.AdditionalAddressInfo.Visibility)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.IsDelivery, x => x.AddressNote.Visibility)
+            this.OneWayBind(ViewModel, x => x.IsAddressInfoVisible, x => x.AddressNote.Visibility)
                 .DisposeWith(disposables);
             
             this.OneWayBind(ViewModel, x => x.IsDelivery, x => x.Courier.Visibility)

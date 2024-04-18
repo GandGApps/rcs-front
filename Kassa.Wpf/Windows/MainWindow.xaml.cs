@@ -134,7 +134,7 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
 
         });
 
-#if DEBUG
+#if RELEASE
         WindowState = WindowState.Normal;
         WindowStyle = WindowStyle.SingleBorderWindow;
         ResizeMode = ResizeMode.CanResize;

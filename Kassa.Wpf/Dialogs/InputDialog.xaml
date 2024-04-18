@@ -34,7 +34,6 @@
                 <TextBlock
                     x:Name="FieldName"
                     Grid.Column="0"
-                    Margin="{mx:AdaptiveSize Thickness='24,0,0,0'}"
                     VerticalAlignment="Center"
                     FontWeight="Normal"
                     Style="{DynamicResource Header}"
@@ -43,7 +42,7 @@
             </Grid>
             <Border
                 Grid.Row="1"
-                Width="1280"
+                Width="{mx:AdaptiveSize 1280}"
                 Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
                 Style="{DynamicResource Separator}" />
 
@@ -65,7 +64,8 @@
                 x:Name="Keyboard"
                 Grid.Row="3"
                 Margin="{mx:AdaptiveSize Thickness='0,0,0,15'}"
-                VerticalAlignment="Bottom" />
+                VerticalAlignment="Bottom"
+                TextBox="{Binding ElementName=Input, Path=.}" />
 
             <Border
                 Grid.Row="4"
@@ -82,6 +82,7 @@
                     <controls:ButtonWithCornerRaduis
                         x:Name="BackButton"
                         Padding="{mx:AdaptiveSize Thickness='0,15,0,15'}"
+                        VerticalAlignment="Center"
                         Background="Transparent">
                         <StackPanel Orientation="Horizontal">
                             <Path

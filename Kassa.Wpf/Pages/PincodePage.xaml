@@ -35,13 +35,25 @@
                     Grid.Row="1"
                     Width="{mx:AdaptiveSize 124}"
                     Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
-                    Margin="{mx:AdaptiveSize Thickness='0,30,0,0'}"
+                    Margin="{mx:AdaptiveSize Thickness='0,30,0,10'}"
                     Padding="{mx:AdaptiveSize Thickness='20'}"
                     VerticalAlignment="Center"
                     Background="{DynamicResource AutorizationPageBrendLogo}"
                     CornerRadius="{mx:AdaptiveSize CornerRadius='24'}">
                     <Path Data="{StaticResource Logo}" Fill="White" />
                 </Border>
+
+                <TextBlock
+                    x:Name="StarsCount"
+                    Width="{mx:AdaptiveSize 180}"
+                    Height="{mx:AdaptiveSize 45}"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    d:Text="* * * *"
+                    FontSize="{mx:AdaptiveSize 66}"
+                    FontWeight="Bold"
+                    TextAlignment="Left" />
+
 
                 <TextBlock
                     Margin="{mx:AdaptiveSize Thickness='0,21,0,16'}"

@@ -40,11 +40,28 @@ public partial class PincodePage : ReactiveUserControl<PincodePageVm>
             this.OneWayBind(ViewModel, vm => vm.RestoranName, view => view.RestoranName.Text)
                 .DisposeWith(disposables);
 
+            this.OneWayBind(ViewModel, vm => vm.Pincode.Length, v => v.StarsCount.Text, count => GetStars(count))
+                .DisposeWith(disposables);
+
             this.OneWayBind(ViewModel, vm => vm.LicenseEndDate, view => view.LicenseEndDate.Text, date => date.ToString("dd.MM.yy"))
                 .DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.CloseCommand, view => view.CloseButton)
                 .DisposeWith(disposables);
         });
+    }
+
+    /// <summary>
+    /// return string with stars, every star 
+    /// separate by space, but not in the end
+    /// </summary>
+    private static string GetStars(int count)
+    {
+        var stars = new StringBuilder();
+        for (var i = 0; i < count; i++)
+        {
+            stars.Append("* ");
+        }
+        return stars.ToString().TrimEnd();
     }
 }

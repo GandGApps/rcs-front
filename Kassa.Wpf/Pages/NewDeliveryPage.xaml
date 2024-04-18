@@ -325,7 +325,7 @@
 
                         <ctrl:Input
                             x:Name="MiddleName"
-                            Label="Имя"
+                            Label="Отчество"
                             Placeholder="Отчество" />
 
                         <ctrl:Input

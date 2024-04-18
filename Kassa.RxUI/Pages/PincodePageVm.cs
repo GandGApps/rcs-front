@@ -52,53 +52,58 @@ public class PincodePageVm : PageViewModel
             .Where(x => x is not null && x.Length == 4)
             .Subscribe(async x =>
             {
-                Pincode = string.Empty;
-                var loading = new LoadingDialogViewModel()
+                try
                 {
-                    Message = "Запрос подключения для модуля: “SUPER_MODUL”"
-                };
+                    var loading = new LoadingDialogViewModel()
+                    {
+                        Message = "Запрос подключения для модуля: “SUPER_MODUL”"
+                    };
 
-                MainViewModel.DialogOpenCommand.Execute(loading).Subscribe();
+                    MainViewModel.DialogOpenCommand.Execute(loading).Subscribe();
 #if RELEASE
                 await Task.Delay(10_000);
 #elif DEBUG
-                await Task.Delay(700);
+                    await Task.Delay(700);
 #endif
 
-                loading.Message = "Типо 10 сек прошло";
+                    loading.Message = "Типо 10 сек прошло";
 
-                await Task.Delay(1000);
+                    await Task.Delay(1000);
 
-                if (x == "0000")
-                {
+                    if (x == "0000")
+                    {
+                        await loading.CloseAsync();
+                        await MainViewModel.Router.NavigateAndReset.Execute(new MainPageVm()).FirstAsync();
+                        return;
+                    }
+
+                    loading.Message = "Сейчас будет либо 'Неверный пинкод', либо 'Соединение не устоновлено'";
+
+                    await Task.Delay(1000);
+
                     await loading.CloseAsync();
-                    await MainViewModel.Router.NavigateAndReset.Execute(new MainPageVm()).FirstAsync();
-                    return;
+
+                    var observableTask = Random.Shared.Next(0, 2) switch
+                    {
+                        0 => MainViewModel.DialogOpenCommand.Execute(new OkMessageDialogViewModel
+                        {
+                            Icon = "JustFailed",
+                            Message = "Неверный пинкод"
+                        }).FirstAsync(),
+                        1 => MainViewModel.DialogOpenCommand.Execute(new OkMessageDialogViewModel
+                        {
+                            Icon = "LinkFailed",
+                            Message = "Соединение не устоновлено"
+                        }).FirstAsync(),
+                        _ => throw new InvalidOperationException()
+                    };
+
+                    await observableTask;
                 }
-
-                loading.Message = "Сейчас будет либо 'Неверный пинкод', либо 'Соединение не устоновлено'";
-
-                await Task.Delay(1000);
-
-                await loading.CloseAsync();
-
-                var observableTask = Random.Shared.Next(0, 2) switch
+                finally
                 {
-                    0 => MainViewModel.DialogOpenCommand.Execute(new OkMessageDialogViewModel
-                    {
-                        Icon = "JustFailed",
-                        Message = "Неверный пинкод"
-                    }).FirstAsync(),
-                    1 => MainViewModel.DialogOpenCommand.Execute(new OkMessageDialogViewModel
-                    {
-                        Icon = "LinkFailed",
-                        Message = "Соединение не устоновлено"
-                    }).FirstAsync(),
-                    _ => throw new InvalidOperationException()
-                };
-
-                await observableTask;
-
+                    Pincode = string.Empty;
+                }
             })
             .DisposeWith(disposables);
     }

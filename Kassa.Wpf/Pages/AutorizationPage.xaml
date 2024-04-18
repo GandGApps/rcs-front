@@ -90,7 +90,7 @@
                         Stretch="Uniform" />
                 </Button>
 
-                <Grid Grid.Row="2">
+                <Grid Grid.Row="2" VerticalAlignment="Center">
 
                     <Grid.RowDefinitions>
                         <RowDefinition Height="{mx:AdaptiveSize GridLength=75}" />
@@ -126,6 +126,7 @@
                             x:Name="NextButton"
                             Width="{mx:AdaptiveSize 220}"
                             Margin="{mx:AdaptiveSize Thickness='40'}"
+                            Padding="{mx:AdaptiveSize Thickness='10'}"
                             Content="Далее"
                             Style="{StaticResource PrimaryButton}" />
 
@@ -173,6 +174,7 @@
                                 x:Name="Submit"
                                 Width="{mx:AdaptiveSize 220}"
                                 Margin="{mx:AdaptiveSize Thickness='0,45,0,0'}"
+                                Padding="{mx:AdaptiveSize Thickness='10'}"
                                 Content="Войти"
                                 Style="{StaticResource PrimaryButton}" />
 
