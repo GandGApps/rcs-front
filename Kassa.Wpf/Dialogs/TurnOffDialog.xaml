@@ -20,19 +20,19 @@
                 <Grid>
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="26" />
+                        <ColumnDefinition Width="{mx:AdaptiveSize GridLength='26'}" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
                     <Path
-                        Width="26"
-                        Height="26"
+                        Width="{mx:AdaptiveSize 26}"
+                        Height="{mx:AdaptiveSize 26}"
                         Data="{StaticResource Options}"
                         Fill="#FF00BA00" />
 
                     <TextBlock
                         Grid.Column="1"
-                        Margin="23,5,0,0"
+                        Margin="{mx:AdaptiveSize Thickness='23,5,0,0'}"
                         VerticalAlignment="Bottom"
                         Text="Настройки" />
 
@@ -49,19 +49,19 @@
                 <Grid>
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="26" />
+                        <ColumnDefinition Width="{mx:AdaptiveSize GridLength='26'}" />
                         <ColumnDefinition />
                     </Grid.ColumnDefinitions>
 
                     <Path
-                        Width="26"
-                        Height="26"
+                        Width="{mx:AdaptiveSize 26}"
+                        Height="{mx:AdaptiveSize 26}"
                         Data="{StaticResource Logout}"
                         Fill="#FFE08700" />
 
                     <TextBlock
                         Grid.Column="1"
-                        Margin="23,5,0,0"
+                        Margin="{mx:AdaptiveSize Thickness='23,5,0,0'}"
                         VerticalAlignment="Bottom"
                         Text="Выйти из аккаунта" />
 
@@ -78,14 +78,14 @@
                     </Grid.ColumnDefinitions>
 
                     <Path
-                        Width="26"
-                        Height="26"
+                        Width="{mx:AdaptiveSize Thickness='26'}"
+                        Height="{mx:AdaptiveSize Thickness='26'}"
                         Data="{StaticResource TurnOffIcon}"
                         Fill="#FFF42E2E" />
 
                     <TextBlock
                         Grid.Column="1"
-                        Margin="23,5,0,0"
+                        Margin="{mx:AdaptiveSize Thickness='23,5,0,0'}"
                         VerticalAlignment="Bottom"
                         Text="Выключить устройство" />
 

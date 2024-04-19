@@ -57,7 +57,7 @@
             </Grid>
             <Border
                 Grid.Row="1"
-                Width="1280"
+                Width="{mx:AdaptiveSize 1280}"
                 Margin="{mx:AdaptiveSize Thickness='0,8,0,12'}"
                 Style="{DynamicResource Separator}" />
 
@@ -76,8 +76,8 @@
 
             <Path
                 Grid.Row="2"
-                Width="136"
-                Height="105"
+                Width="{mx:AdaptiveSize 136}"
+                Height="{mx:AdaptiveSize 105}"
                 Data="{StaticResource MessageIcon}"
                 Fill="{DynamicResource PrimaryForeground}"
                 Opacity="0.1" />

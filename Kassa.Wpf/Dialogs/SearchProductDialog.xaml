@@ -30,13 +30,13 @@
 
             <StackPanel Orientation="Horizontal">
                 <Path
-                    Width="64"
-                    Margin="22,0,0,0"
+                    Width="{mx:AdaptiveSize 64}"
+                    Margin="{mx:AdaptiveSize Thickness='22,0,0,0'}"
                     VerticalAlignment="Bottom"
                     Data="{DynamicResource SearchProductIcon}"
                     Fill="#43AF5B" />
                 <TextBlock
-                    Margin="24,0,0,0"
+                    Margin="{mx:AdaptiveSize Thickness='24,0,0,0'}"
                     VerticalAlignment="Center"
                     FontWeight="Normal"
                     Style="{DynamicResource Header}"
@@ -44,8 +44,8 @@
             </StackPanel>
             <Border
                 Grid.Row="1"
-                Width="1280"
-                Margin="0,0,0,12"
+                Width="{mx:AdaptiveSize 1280}"
+                Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
                 Style="{DynamicResource Separator}" />
 
             <ScrollViewer
@@ -76,7 +76,7 @@
 
             <Border
                 Grid.Row="4"
-                Margin="0,0,0,10"
+                Margin="{mx:AdaptiveSize Thickness='0,0,0,10'}"
                 Style="{StaticResource DialogFooter}">
                 <Grid>
 
@@ -91,14 +91,14 @@
                     <controls:ButtonWithCornerRaduis Padding="0,15,0,15" Background="Transparent">
                         <StackPanel Orientation="Horizontal">
                             <Path
-                                Width="13"
-                                Height="22.7"
+                                Width="{mx:AdaptiveSize 13}"
+                                Height="{mx:AdaptiveSize 22.7}"
                                 Data="{StaticResource Arrow}"
                                 Fill="White" />
                             <TextBlock
-                                Margin="7,0,0,0"
+                                Margin="{mx:AdaptiveSize Thickness='7,0,0,0'}"
                                 VerticalAlignment="Center"
-                                FontSize="13"
+                                FontSize="{mx:AdaptiveSize 13}"
                                 Foreground="White"
                                 Text="Назад" />
                         </StackPanel>

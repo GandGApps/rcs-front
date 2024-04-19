@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Reactive.Disposables;
@@ -330,14 +331,14 @@ public partial class Keyboard : UserControl, IActivatableView
                                .DisposeWith(keyDisposables);
                         }
 
-                        var adaptiveWidth = new AdaptiveSizeExtension(AdaptiveMarkupExtension.GetAdaptiveSize(ActualWidth, MainWindow.Instance!.ActualWidth) / x.LineStarWidth * (size));
-                        var bindingWidth = (BindingBase)adaptiveWidth.ProvideValue(null!);
+                        var targetWidth = ActualWidth / x.LineStarWidth * (size);
+                        Debug.WriteLine($"Target width for the keyboard {targetWidth}");
 
                         var adaptiveHeight = new AdaptiveSizeExtension(x.KeyHeight + 4);
                         var bindingHeight = (BindingBase)adaptiveHeight.ProvideValue(null!);
 
-                        lineGrid.SetBinding(WidthProperty, bindingWidth);
-                        lineGrid.SetBinding(HeightProperty, bindingHeight);
+                        lineGrid.Width = targetWidth;
+                        //lineGrid.SetBinding(HeightProperty, bindingHeight);
 
                         stack.Children.Add(lineGrid);
                     }

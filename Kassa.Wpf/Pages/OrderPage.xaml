@@ -845,6 +845,7 @@
                 Grid.Column="2"
                 HorizontalAlignment="Right"
                 VerticalContentAlignment="Center"
+                BorderBrush="{DynamicResource AlternateForeground}"
                 Command="{Binding GoToPaymentCommand}"
                 Content="Касса оплата"
                 Foreground="{DynamicResource AlternateForeground}"

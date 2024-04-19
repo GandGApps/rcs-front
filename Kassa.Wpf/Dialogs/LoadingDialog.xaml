@@ -7,6 +7,7 @@
     xmlns:gif="http://wpfanimatedgif.codeplex.com"
     xmlns:local="clr-namespace:Kassa.Wpf.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     xmlns:rxui="http://reactiveui.net"
     d:DataContext="{d:DesignInstance {x:Type dialogs:LoadingDialogViewModel}}"
     d:DesignHeight="450"
@@ -25,7 +26,7 @@
                 gif:ImageBehavior.AnimatedSource="/Assets/loading.gif" />
             <TextBlock
                 x:Name="Message"
-                Margin="0,40,0,0"
+                Margin="{mx:AdaptiveSize Thickness='0,40,0,0'}"
                 Style="{StaticResource Header2}"
                 Text="Loading..."
                 TextAlignment="Center"

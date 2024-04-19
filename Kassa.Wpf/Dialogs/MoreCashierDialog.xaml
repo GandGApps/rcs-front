@@ -28,9 +28,9 @@
 
                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                         <Path
-                            Width="23"
-                            Height="23"
-                            Margin="0,0,17,0"
+                            Width="{mx:AdaptiveSize 23}"
+                            Height="{mx:AdaptiveSize 23}"
+                            Margin="{mx:AdaptiveSize Thickness='0,0,17,0'}"
                             Data="{StaticResource OperationsIcon}"
                             Fill="{DynamicResource SolidPrimaryTextColor}" />
                         <TextBlock

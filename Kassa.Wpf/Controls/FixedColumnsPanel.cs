@@ -45,7 +45,7 @@ public class FixedColumnsPanel : WrapPanel
         base.ArrangeOverride(finalSize);
         var children = InternalChildren;
         var count = children.Count;
-        var rows = count / Columns + (count % Columns > 0 ? 1 : 0);
+        /*var rows = count / Columns + (count % Columns > 0 ? 1 : 0);*/
         var width = finalSize.Width / Columns;
         /*var height = finalSize.Height / rows;*/
         for (var i = 0; i < count; i++)

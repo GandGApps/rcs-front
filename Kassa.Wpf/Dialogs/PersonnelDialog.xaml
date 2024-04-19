@@ -29,8 +29,8 @@
 
                     <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
                         <Image
-                            Width="72"
-                            Height="72"
+                            Width="{mx:AdaptiveSize 72}"
+                            Height="{mx:AdaptiveSize 72}"
                             Source="/Assets/Personal.png"
                             Style="{StaticResource HeaderIcon}" />
                         <TextBlock

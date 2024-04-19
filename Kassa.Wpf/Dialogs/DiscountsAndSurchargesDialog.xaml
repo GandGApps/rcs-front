@@ -34,15 +34,15 @@
 
                 <Path
                     Grid.Column="0"
-                    Width="35"
-                    Height="38"
-                    Margin="22,0,0,0"
+                    Width="{mx:AdaptiveSize 35}"
+                    Height="{mx:AdaptiveSize 38}"
+                    Margin="{mx:AdaptiveSize Thickness='22,0,0,0'}"
                     VerticalAlignment="Bottom"
                     Data="{StaticResource GiftIcon}"
                     Fill="{DynamicResource SolidPrimaryTextColor}" />
                 <TextBlock
                     Grid.Column="1"
-                    Margin="24,0,0,0"
+                    Margin="{mx:AdaptiveSize Thickness='24,0,0,0'}"
                     VerticalAlignment="Center"
                     FontWeight="Normal"
                     Style="{DynamicResource Header}"
@@ -51,21 +51,21 @@
 
             <Border
                 Grid.Row="1"
-                Width="1280"
-                Margin="0,0,0,12"
+                Width="{mx:AdaptiveSize 1280}"
+                Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
                 Style="{DynamicResource Separator}" />
 
-            <Grid Grid.Row="2" Margin="-17,0,-17,6">
+            <Grid Grid.Row="2" Margin="{mx:AdaptiveSize Thickness='-17,0,-17,6'}">
 
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="440" />
+                    <ColumnDefinition Width="{mx:AdaptiveSize GridLength='440'}" />
                     <ColumnDefinition Width="*" />
                 </Grid.ColumnDefinitions>
 
                 <Grid.RowDefinitions>
-                    <RowDefinition Height="64" />
+                    <RowDefinition Height="{mx:AdaptiveSize GridLength='64'}" />
                     <RowDefinition Height="*" />
-                    <RowDefinition Height="64" />
+                    <RowDefinition Height="{mx:AdaptiveSize GridLength='64'}" />
                 </Grid.RowDefinitions>
 
                 <Border Grid.Row="1" Background="#F2F2F7" />
@@ -77,17 +77,17 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock
-                        Margin="24,0,0,0"
+                        Margin="{mx:AdaptiveSize Thickness='24,0,0,0'}"
                         VerticalAlignment="Center"
-                        FontSize="20"
+                        FontSize="{mx:AdaptiveSize 20}"
                         Foreground="White"
                         Text="ПОДЫТОГ" />
 
                     <TextBlock
                         Grid.Column="1"
-                        Margin="0,0,24,0"
+                        Margin="{mx:AdaptiveSize Thickness='0,0,24,0'}"
                         VerticalAlignment="Center"
-                        FontSize="24"
+                        FontSize="{mx:AdaptiveSize 24}"
                         FontWeight="Bold"
                         Foreground="White"
                         Text="0,00 р" />
@@ -101,17 +101,17 @@
                     </Grid.ColumnDefinitions>
 
                     <TextBlock
-                        Margin="24,0,0,0"
+                        Margin="{mx:AdaptiveSize Thickness='24,0,0,0'}"
                         VerticalAlignment="Center"
-                        FontSize="20"
+                        FontSize="{mx:AdaptiveSize 20}"
                         Foreground="White"
                         Text="ИТОГО" />
 
                     <TextBlock
                         Grid.Column="1"
-                        Margin="0,0,24,0"
+                        Margin="{mx:AdaptiveSize Thickness='0,0,24,0'}"
                         VerticalAlignment="Center"
-                        FontSize="24"
+                        FontSize="{mx:AdaptiveSize 24}"
                         FontWeight="Bold"
                         Foreground="White"
                         Text="0,00 р" />
@@ -120,7 +120,7 @@
 
                 <StackPanel
                     Grid.Column="1"
-                    Margin="5,0,0,0"
+                    Margin="{mx:AdaptiveSize Thickness='5,0,0,0'}"
                     Background="{DynamicResource SolidFooterColor}"
                     Orientation="Horizontal">
 
@@ -128,12 +128,12 @@
                         <Style BasedOn="{StaticResource CashierTabPanel}" TargetType="RadioButton">
                             <Setter Property="Width" Value="Auto" />
                             <Setter Property="Height" Value="Auto" />
-                            <Setter Property="Padding" Value="20,0" />
+                            <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='20,0'}" />
                             <Setter Property="HorizontalContentAlignment" Value="Center" />
                             <Setter Property="VerticalContentAlignment" Value="Center" />
                             <Setter Property="GroupName" Value="DiscountAndSurcharges" />
                             <Setter Property="FontWeight" Value="SemiBold" />
-                            <Setter Property="FontSize" Value="20" />
+                            <Setter Property="FontSize" Value="{mx:AdaptiveSize 20}" />
                         </Style>
                     </StackPanel.Resources>
 
@@ -169,7 +169,7 @@
                     Grid.Row="1"
                     Grid.RowSpan="2"
                     Grid.Column="2"
-                    Margin="6,0,0,0"
+                    Margin="{mx:AdaptiveSize Thickness='6,0,0,0'}"
                     Style="{StaticResource PrimaryScrollViewer}"
                     VerticalScrollBarVisibility="Auto" />
 
@@ -177,16 +177,16 @@
                     Grid.Row="1"
                     Grid.RowSpan="2"
                     Grid.Column="2"
-                    Width="107"
-                    Height="107"
+                    Width="{mx:AdaptiveSize 107}"
+                    Height="{mx:AdaptiveSize 107}"
                     Source="{StaticResource OpenedGiftIcon}" />
 
             </Grid>
 
             <Border
                 Grid.Row="4"
-                Margin="0,0,0,10"
-                Padding="20,4,2,4"
+                Margin="{mx:AdaptiveSize Thickness='0,0,0,10'}"
+                Padding="{mx:AdaptiveSize Thickness='20,4,2,4'}"
                 Style="{StaticResource DialogFooter}">
                 <Grid>
 
@@ -199,13 +199,13 @@
 
                         <StackPanel.Resources>
                             <Style BasedOn="{StaticResource {x:Type controls:ButtonWithIcon}}" TargetType="controls:ButtonWithIcon">
-                                <Setter Property="Width" Value="130" />
-                                <Setter Property="Margin" Value="5,0" />
-                                <Setter Property="Padding" Value="5" />
+                                <Setter Property="Width" Value="{mx:AdaptiveSize 130}" />
+                                <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='5,0'}" />
+                                <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='5'}" />
                                 <Setter Property="Foreground" Value="White" />
                             </Style>
                             <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
-                                <Setter Property="Margin" Value="0,5,0,0" />
+                                <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='0,5,0,0'}" />
                                 <Setter Property="TextWrapping" Value="Wrap" />
                                 <Setter Property="FontWeight" Value="Medium" />
                             </Style>
@@ -232,8 +232,8 @@
                     <Button
                         x:Name="PublishCommentButton"
                         Grid.Column="1"
-                        Width="220"
-                        Margin="0,-2,0,-2"
+                        Width="{mx:AdaptiveSize 220}"
+                        Margin="{mx:AdaptiveSize Thickness='0,-2,0,-2'}"
                         HorizontalAlignment="Right"
                         Style="{StaticResource PrimaryButton}">
                         Опубликовать

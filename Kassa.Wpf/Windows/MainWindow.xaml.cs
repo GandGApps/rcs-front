@@ -1,4 +1,6 @@
-﻿using System.Reactive.Disposables;
+﻿#define SMALL_WINDOW_TEST
+
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Windows;
@@ -134,7 +136,7 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
 
         });
 
-#if RELEASE
+#if SMALL_WINDOW_TEST
         WindowState = WindowState.Normal;
         WindowStyle = WindowStyle.SingleBorderWindow;
         ResizeMode = ResizeMode.CanResize;
