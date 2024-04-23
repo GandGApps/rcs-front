@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Kassa.RxUI.Dialogs;
+using ReactiveUI;
 
 namespace Kassa.Wpf.Dialogs;
 /// <summary>
@@ -23,5 +24,10 @@ public partial class PersonnelDialog : ClosableDialog<PersonnelDialogViewModel>
     public PersonnelDialog()
     {
         InitializeComponent();
+
+        this.WhenActivated(disposables =>
+        {
+
+        });
     }
 }

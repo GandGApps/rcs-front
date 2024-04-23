@@ -49,7 +49,10 @@
                         Text="Смена открыта 08.12.2023 | 18:25" />
                 </Grid>
             </Border>
-            <Button Content="Личная страница" Style="{StaticResource MenuButton}" />
+            <Button
+                x:Name="PersonalPageButton"
+                Content="Личная страница"
+                Style="{StaticResource MenuButton}" />
             <Border Style="{DynamicResource Separator}" />
             <Button Content="Сообщения" Style="{StaticResource MenuButton}">
                 <Button.Resources>

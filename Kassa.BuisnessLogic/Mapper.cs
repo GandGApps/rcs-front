@@ -78,4 +78,10 @@ public static partial class Mapper
 
     public static partial PaymentInfoDto MapPaymentInfoToDto(PaymentInfo paymentInfo);
     public static partial PaymentInfo MapDtoToPaymentInfo(PaymentInfoDto paymentInfo);
+
+    public static partial Shift MapDtoToShift(ShiftDto shift);
+    public static partial ShiftDto MapShiftToDto(Shift shift);
+
+    public static partial User MapDtoToUser(UserDto user);
+    public static partial UserDto MapUserToDto(User user);
 }

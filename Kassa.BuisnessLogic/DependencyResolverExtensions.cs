@@ -39,6 +39,10 @@ public static class DependencyResolverExtensions
         });
         RegisterInitializableServiceFactory<IAdditiveService>(services);
 
+        SplatRegistrations.RegisterLazySingleton<IAuthenticationService, AuthenticationService>();
+
+        SplatRegistrations.RegisterLazySingleton<IUserService, UserService>();
+
         SplatRegistrations.Register<IClientService, ClientService>();
         RegisterInitializableServiceFactory<IClientService>(services);
 
