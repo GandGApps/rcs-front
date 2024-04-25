@@ -143,6 +143,7 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
 #endif
     }
+
     public static void SetPageFooter(UIElement element, object? value)
     {
         element.SetValue(PageFooterProperty, value);
@@ -150,8 +151,6 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
 
     public static object? GetPageFooter(UIElement element)
     {
-        var fe = new FrameworkElement();
-
         return element.GetValue(PageFooterProperty);
     }
 

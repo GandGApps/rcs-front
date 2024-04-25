@@ -1,6 +1,8 @@
 ﻿using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows.Input;
+using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Dialogs;
 using Kassa.RxUI.Pages;
 using ReactiveUI;
@@ -166,7 +168,6 @@ public class MainViewModel : ReactiveObject, IScreen
             await okMessageDialog.WaitDialogClose();
         });
 
-
         this.WhenAnyValue(x => x.IsMainPage)
             .Subscribe(x =>
             {
@@ -175,6 +176,29 @@ public class MainViewModel : ReactiveObject, IScreen
                     IsMainPage = true;
                 }
             });
+
+        var authService = Locator.Current.GetRequiredService<IAuthService>();
+        var shiftService = Locator.Current.GetNotInitializedService<IShiftService>();
+
+        authService.CurrentAuthenticationContext.CombineLatest(shiftService.CurrentShift, (authContext, shift) => (authContext, shift))
+            .Subscribe(async x =>
+            {
+
+                if (x.authContext is null || !x.authContext.IsAuthenticated)
+                {
+                    await GoToPageAndReset(new AutorizationPageVm());
+                }
+                else if (x.shift is null)
+                {
+
+                    await GoToPageAndReset(new PincodePageVm());
+                }
+                else
+                {
+                    await GoToPageAndReset(new MainPageVm());
+                }
+            });
+
     }
 
     public async Task OkMessage(string message, string icon = "JustOk")
@@ -213,5 +237,10 @@ public class MainViewModel : ReactiveObject, IScreen
     public async Task GoToPage(PageViewModel pageVm)
     {
         await GoToPageCommand.Execute(pageVm).FirstAsync();
+    }
+
+    public async Task GoToPageAndReset(PageViewModel pageVm)
+    {
+        await GoToPageAndResetCommand.Execute(pageVm).FirstAsync();
     }
 }

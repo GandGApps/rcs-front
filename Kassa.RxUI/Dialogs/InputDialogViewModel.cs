@@ -19,11 +19,9 @@ public class InputDialogViewModel : DialogViewModel
             await CloseAsync();
 
             return Input;
-        });
-        OkCommand.DisposeWith(InternalDisposables);
+        }).DisposeWith(InternalDisposables);
 
-        CancelCommand = ReactiveCommand.CreateFromTask(CloseAsync);
-        CancelCommand.DisposeWith(InternalDisposables);
+        CancelCommand = ReactiveCommand.CreateFromTask(CloseAsync).DisposeWith(InternalDisposables);
 
         FieldName = fieldName;
 

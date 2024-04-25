@@ -89,13 +89,7 @@
         x:Key="Large"
         BasedOn="{StaticResource {x:Type TextBlock}}"
         TargetType="TextBlock">
-        <Setter Property="FontSize" Value="16" />
-
-        <Style.Triggers>
-            <DataTrigger Binding="{mx:AdaptiveMarkup Breakpoint=Medium}" Value="True">
-                <Setter Property="FontSize" Value="12" />
-            </DataTrigger>
-        </Style.Triggers>
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 16}" />
 
     </Style>
 
@@ -191,13 +185,6 @@
 
             </Setter.Value>
         </Setter>
-
-        <Style.Triggers>
-            <DataTrigger Binding="{mx:AdaptiveMarkup Breakpoint=Medium}" Value="True">
-                <Setter Property="FontSize" Value="14" />
-                <Setter Property="Padding" Value="11" />
-            </DataTrigger>
-        </Style.Triggers>
     </Style>
 
     <Style
@@ -206,6 +193,7 @@
         TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource ClickableBg}" />
         <Setter Property="BorderBrush" Value="{DynamicResource SecondaryButtonBorderBrush}" />
+
     </Style>
 
     <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="{x:Type local:ButtonWithIcon}">

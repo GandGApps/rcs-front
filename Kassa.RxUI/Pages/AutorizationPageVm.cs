@@ -5,6 +5,8 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Dialogs;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -21,17 +23,21 @@ public class AutorizationPageVm : PageViewModel
 
         LoginCommand = ReactiveCommand.CreateFromTask(async () =>
         {
+            var authService = Locator.GetRequiredService<IAuthService>();
 
-            if (Login == "admin" && Password == "admin")
+            if (string.IsNullOrWhiteSpace(Login) || string.IsNullOrWhiteSpace(Password))
             {
-                await MainViewModel.GoToPageCommand.Execute(new PincodePageVm()).FirstAsync();
-                return true;
-            }
-            else
-            {
-                Error = "Неверный логин или пароль";
+                Error = "Поля не могут быть пустыми";
                 return false;
             }
+
+            if (await authService.AuthenticateAsync(Login, Password))
+            {
+                return true;
+            }
+
+            Error = "Неверный логин или пароль";
+            return false;
         });
 
         Login = string.Empty;

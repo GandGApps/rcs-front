@@ -14,13 +14,13 @@ namespace Kassa.Wpf.MarkupExntesions;
 public class AdaptiveMarkupExtension : MarkupExtension
 {
     public const double LargeBreakpoint = 1300;
-    public const double LargeCoeficient = 0.8463;
+    public const double LargeCoeficient = 0.82;
 
     public const double MediumBreakpoint = 1200;
-    public const double MeduimCoeficient = 0.78125;
+    public const double MeduimCoeficient = 0.75;
 
     public const double SmallBreakpoint = 960;
-    public const double SmallCoeficient = 0.625;
+    public const double SmallCoeficient = 0.55;
 
     public static AdaptiveBreakpoint GetBreakpoint(double width)
     {

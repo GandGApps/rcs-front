@@ -13,4 +13,18 @@ public static class Helper
         return str.Remove(index, Math.Min(length, str.Length - index))
                 .Insert(index, replace);
     }
+
+    /// <summary>
+    /// return string with stars, every star 
+    /// separate by space, but not in the end
+    /// </summary>
+    public static string GetStars(int count)
+    {
+        var stars = new StringBuilder();
+        for (var i = 0; i < count; i++)
+        {
+            stars.Append("* ");
+        }
+        return stars.ToString().TrimEnd();
+    }
 }

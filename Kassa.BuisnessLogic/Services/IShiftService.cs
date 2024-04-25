@@ -14,7 +14,7 @@ public interface IShiftService : IInitializableService
         get;
     }
 
-    public IObservable<IShift?> CurrentShift
+    public ObservableOnlyBehaviourSubject<IShift?> CurrentShift
     {
         get;
     }

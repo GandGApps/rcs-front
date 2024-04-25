@@ -22,13 +22,17 @@ internal class ShiftService : BaseInitializableService, IShiftService
         _hostModelManager.DisposeWith(InternalDisposables);
         _currentShift.DisposeWith(InternalDisposables);
         _repository = repository;
+        CurrentShift = new(_currentShift);
     }
 
     public IApplicationModelManager<ShiftDto> RuntimeShifts => _hostModelManager;
 
-    public IObservable<IShift?> CurrentShift => _currentShift;
+    public ObservableOnlyBehaviourSubject<IShift?> CurrentShift
+    {
+        get;
+    }
 
-    public Task<bool> EnterPincode(string pincode)
+    public async Task<bool> EnterPincode(string pincode)
     {
         if (_currentShift.Value is not null)
         {
@@ -37,11 +41,18 @@ internal class ShiftService : BaseInitializableService, IShiftService
 
         if (pincode == "0000")
         {
-            _currentShift.OnNext(new MockShift(this));
-            return Task.FromResult(true);
+            var mockShift = new MockShift(this);
+
+            if (MockShift._shift?.BreakStart != null)
+            {
+                await mockShift.EndBreak();
+            }
+
+            _currentShift.OnNext(mockShift);
+            return true;
         }
 
-        return Task.FromResult(false);
+        return false;
     }
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
@@ -96,7 +107,7 @@ internal class ShiftService : BaseInitializableService, IShiftService
 
         if (foundedShift is null)
         {
-            throw new InvalidOperationException($"Client with id {shift.Id} not found");
+            throw new InvalidOperationException($"Shift with id {shift.Id} not found");
         }
 
         var updatedShift = Mapper.MapDtoToShift(shift);
@@ -115,9 +126,9 @@ internal class ShiftService : BaseInitializableService, IShiftService
         return shifts;
     }
 
-    private class MockShift(ShiftService shiftService) : IShift
+    private sealed class MockShift(ShiftService shiftService) : IShift
     {
-        private ShiftDto? _shift;
+        internal static ShiftDto? _shift;
         private readonly DateTime _start = DateTime.Now;
 
         private static readonly UserDto _mockUser = new()
@@ -134,7 +145,15 @@ internal class ShiftService : BaseInitializableService, IShiftService
 
             shiftDto.End = DateTime.Now;
 
-            await shiftService.UpdateShift(shiftDto);
+            if (shiftDto.Id == Guid.Empty)
+            {
+                await shiftService.AddShift(shiftDto);
+            }
+            else
+            {
+                await shiftService.UpdateShift(shiftDto);
+            }
+            
             shiftService._currentShift.OnNext(null);
         }
 
@@ -143,6 +162,13 @@ internal class ShiftService : BaseInitializableService, IShiftService
             var shiftDto = await CreateDto();
 
             shiftDto.BreakStart = DateTime.Now;
+
+            if (shiftDto.Id == Guid.Empty)
+            {
+                await shiftService.AddShift(shiftDto);
+                shiftService._currentShift.OnNext(null);
+                return;
+            }
 
             await shiftService.UpdateShift(shiftDto);
         }
@@ -160,7 +186,6 @@ internal class ShiftService : BaseInitializableService, IShiftService
         {
             _shift ??= new ShiftDto()
             {
-                Id = Guid.NewGuid(),
                 ManagerId = null,
                 UserId = _mockUser.Id,
                 Start = _start,

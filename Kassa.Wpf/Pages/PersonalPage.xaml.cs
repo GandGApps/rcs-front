@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,5 +25,14 @@ public partial class PersonalPage : ReactiveUserControl<PersonalPageVm>
     public PersonalPage()
     {
         InitializeComponent();
+
+        this.WhenActivated(disposables =>
+        {
+            this.BindCommand(ViewModel, vm => vm.TakeBreakCommand, v => v.TakeBreakButton)
+                .DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.SelectedShifts, v => v.Orders.ItemsSource)
+                .DisposeWith(disposables);
+        });
     }
 }

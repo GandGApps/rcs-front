@@ -36,9 +36,9 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
         get;
     }
 
-    public BaseViewModel(): this(Locator.GetRequiredService<MainViewModel>())
+    public BaseViewModel() : this(Locator.GetRequiredService<MainViewModel>())
     {
-        
+
     }
 
     public BaseViewModel(MainViewModel mainViewModel)
@@ -61,18 +61,24 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
             {
                 InternalDisposables.Dispose();
             }
-            
+
         }
     }
 
     public ValueTask InitializeAsync()
     {
+        Initialize(InternalDisposables);
         return InitializeAsync(InternalDisposables);
     }
 
     protected virtual ValueTask InitializeAsync(CompositeDisposable disposables)
     {
         return ValueTask.CompletedTask;
+    }
+
+    protected virtual void Initialize(CompositeDisposable disposables)
+    {
+
     }
 
     protected virtual void OnActivated(CompositeDisposable disposables)
