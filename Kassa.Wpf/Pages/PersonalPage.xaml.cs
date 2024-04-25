@@ -31,7 +31,7 @@ public partial class PersonalPage : ReactiveUserControl<PersonalPageVm>
             this.BindCommand(ViewModel, vm => vm.TakeBreakCommand, v => v.TakeBreakButton)
                 .DisposeWith(disposables);
 
-            this.Bind(ViewModel, vm => vm.SelectedShifts, v => v.Orders.ItemsSource)
+            this.OneWayBind(ViewModel, vm => vm.SelectedShifts, v => v.Orders.ItemsSource)
                 .DisposeWith(disposables);
         });
     }
