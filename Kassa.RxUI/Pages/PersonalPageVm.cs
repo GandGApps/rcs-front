@@ -62,17 +62,21 @@ public class PersonalPageVm : PageViewModel
             return isCorrect;
         }).DisposeWith(InternalDisposables);
 
-        SelectedShifts = new([ new() {
-            HourlyRate = 100,
-            Name = "Иванов Иван Иванович",
-            Begin = DateTime.Now.ToString(),
-            End = DateTime.Now.AddHours(8).ToString(),
-            Break = "",
-            Earned = 800,
-            Fine = 0,
-            Comment = "asdasd",
-            Manager = "Петров Петр Петрович"
-        }]);
+        SelectedShifts = new(
+        [
+            new() {
+                HourlyRate = 100,
+                Name = "Иванов Иван Иванович",
+                Begin = DateTime.Now.ToString(),
+                End = DateTime.Now.AddHours(8).ToString(),
+                Break = "",
+                Earned = 800,
+                Fine = 0,
+                Comment = "asdasd",
+                Manager = "Петров Петр Петрович"
+            }
+        ]
+        );
     }
 
     public ReadOnlyObservableCollection<ShiftRowViewModel> SelectedShifts

@@ -7,6 +7,11 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU;x64;x86</Platforms>
+    <Configurations>Debug;Release;OptimizedSmallWindow;SmallWindow</Configurations>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)'=='OptimizedSmallWindow' Or '$(Configuration)'=='SmallWindow'">
+    <DefineConstants>$(DefineConstants);SMALL_WINDOW_TEST</DefineConstants>
   </PropertyGroup>
 
   <ItemGroup>

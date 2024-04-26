@@ -338,7 +338,7 @@ public partial class Keyboard : UserControl, IActivatableView
                         var bindingHeight = (BindingBase)adaptiveHeight.ProvideValue(null!);
 
                         lineGrid.Width = targetWidth;
-                        //lineGrid.SetBinding(HeightProperty, bindingHeight);
+                        lineGrid.SetBinding(HeightProperty, bindingHeight);
 
                         stack.Children.Add(lineGrid);
                     }

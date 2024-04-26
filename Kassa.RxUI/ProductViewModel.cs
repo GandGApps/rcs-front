@@ -53,6 +53,20 @@ public sealed class ProductViewModel : ReactiveObject, IApplicationModelPresente
         _disposable = productService.RuntimeProducts.AddPresenter(this);
     }
 
+    public ProductViewModel(ProductDto product)
+    {
+        Id = product.Id;
+        Name = product.Name;
+        CurrencySymbol = product.CurrencySymbol;
+        Price = product.Price;
+        IsAdded = product.IsAdded;
+        Measure = product.Measure;
+        IsAvailable = product.IsAvailable && product.IsEnoughIngredients;
+        Icon = product.Icon;
+
+        _disposable = Disposable.Empty;
+    }
+
     public Guid Id
     {
         get;

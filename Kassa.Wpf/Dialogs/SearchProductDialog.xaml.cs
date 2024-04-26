@@ -42,12 +42,12 @@ public partial class SearchProductDialog : ClosableDialog<SearchProductDialogVie
             ).DisposeWith(disposables);
 
             this.Bind(ViewModel,
-                vm => vm.SearchedText,
+                vm => vm.SearchText,
                 v => v.SearchTextBox.Text
             ).DisposeWith(disposables);
 
             this.Bind(ViewModel,
-                vm => vm.SearchedText,
+                vm => vm.SearchText,
                 v => v.Keyboard.Text
             ).DisposeWith(disposables);
 
@@ -57,26 +57,30 @@ public partial class SearchProductDialog : ClosableDialog<SearchProductDialogVie
                 x => x ? "Вкл" : "Выкл"
             ).DisposeWith(disposables);
 
-            LayoutUpdated += async (sender, args) =>
+            async void action(object? sender, EventArgs args)
             {
                 if (!loaded && (ActualHeight > 0 || ActualWidth > 0))
                 {
 
                     await Task.Delay(300);
 
-                    this.OneWayBind(ViewModel, x => x.FilteredProducts, x => x.Products.ItemsSource)
+                    this.OneWayBind(ViewModel, x => x.FilteredItems, x => x.Products.ItemsSource)
                         .DisposeWith(disposables);
 
                     loaded = true;
                 }
-            };
+            }
+
+            LayoutUpdated += action;
+
+            Disposable.Create(() => LayoutUpdated -= action).DisposeWith(disposables);
 
         });
     }
 
     private void ClearSearchText(object sender, MouseButtonEventArgs e)
     {
-        ViewModel!.SearchedText = string.Empty;
+        ViewModel!.SearchText = string.Empty;
     }
 
     private void ScrollViewerGotFocus(object sender, RoutedEventArgs e)

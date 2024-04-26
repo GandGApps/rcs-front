@@ -26,7 +26,7 @@ public class KeyboardInfo: ReactiveObject
     public double KeyHeight
     {
         get; set;
-    } = 60;
+    } = 48;
 
     [Reactive]
     public double LineStarWidth
@@ -236,6 +236,8 @@ public class KeyboardInfo: ReactiveObject
         keyboard.Lines.Add(line4);
 
         keyboard.LineStarWidth = 3;
+
+        keyboard.KeyHeight = 64;
 
         return keyboard;
     }
