@@ -5,6 +5,8 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Pages;
 using ReactiveUI;
 
@@ -15,7 +17,14 @@ public class TurnOffDialogViewModel : DialogViewModel
     {
         LogoutCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await MainViewModel.GoToPageAndResetCommand.Execute(new PincodePageVm()).FirstAsync();
+            var shiftService = await Locator.GetInitializedService<IShiftService>();
+
+            if (shiftService.CurrentShift.Value == null)
+            {
+                throw new InvalidOperationException("Shift is not started");
+            }
+
+            await shiftService.CurrentShift.Value!.Exit();
 
             await CloseAsync();
         });

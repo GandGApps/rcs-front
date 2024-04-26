@@ -62,6 +62,49 @@ public class PersonalPageVm : PageViewModel
             return isCorrect;
         }).DisposeWith(InternalDisposables);
 
+        EndShiftCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var pincodeDialog = new EnterPincodeDialogViewModel();
+            var authentificationService = Locator.GetRequiredService<IAuthService>();
+
+            await MainViewModel.ShowDialogAndWaitClose(pincodeDialog);
+
+            if (string.IsNullOrWhiteSpace(pincodeDialog.Result))
+            {
+                return false;
+            }
+
+            var pincode = pincodeDialog.Result;
+
+            var waitDialog = MainViewModel.ShowLoadingDialog("Проверка пинкода");
+
+            var isCorrect = await authentificationService.IsManagerPincode(pincode);
+
+            await waitDialog.CloseAsync();
+
+            if (!isCorrect)
+            {
+                await MainViewModel.OkMessage("Неверный пинкод");
+            }
+            else
+            {
+                await MainViewModel.OkMessage("Смена завершена");
+
+                var shiftService = await Locator.GetInitializedService<IShiftService>();
+
+                var shift = shiftService.CurrentShift.Value;
+
+                if (shift is null)
+                {
+                    throw new InvalidOperationException("Shift is not started");
+                }
+
+                await shift.Exit();
+            }
+
+            return isCorrect;
+        }).DisposeWith(InternalDisposables);
+
         SelectedShifts = new(
         [
             new() {
@@ -101,11 +144,15 @@ public class PersonalPageVm : PageViewModel
         get;
     }
 
+    public ReactiveCommand<Unit, bool> EndShiftCommand
+    {
+        get;
+    }
+
     protected override void Initialize(CompositeDisposable disposables)
     {
         this.WhenAnyValue(x => x.IsOpennedShiftsVisible, x => !x)
             .ToPropertyEx(this, x => x.IsClosedShiftsVisible)
             .DisposeWith(disposables);
-
     }
 }

@@ -418,15 +418,9 @@
                                         TargetType="Button">
                                         <Setter Property="BorderThickness" Value="0" />
                                         <Setter Property="Background" Value="{StaticResource ClickableBg}" />
-                                        <Setter Property="Padding" Value="18" />
+                                        <Setter Property="Padding" Value="{mx:AdaptiveSize 18}" />
                                         <Setter Property="VerticalAlignment" Value="Center" />
                                         <Setter Property="HorizontalAlignment" Value="Center" />
-
-                                        <Style.Triggers>
-                                            <DataTrigger Binding="{mx:AdaptiveMarkup}" Value="True">
-                                                <Setter Property="Padding" Value="12.4" />
-                                            </DataTrigger>
-                                        </Style.Triggers>
 
                                     </Style>
 

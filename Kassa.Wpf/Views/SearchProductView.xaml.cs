@@ -1,34 +1,37 @@
-﻿using System.Reactive.Disposables;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reactive.Disposables;
+using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
-using Kassa.BuisnessLogic;
-using Kassa.BuisnessLogic.Dto;
-using Kassa.BuisnessLogic.Services;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
 using Kassa.RxUI;
 using Kassa.Wpf.Controls;
 using ReactiveUI;
 
 namespace Kassa.Wpf.Views;
+
 /// <summary>
-/// Логика взаимодействия для ProductView.xaml
+/// Interaction logic for SearchProductView.xaml
 /// </summary>
-public partial class ProductView : ButtonUserControl<ProductDto>
+public partial class SearchProductView : ButtonUserControl<ProductViewModel>
 {
-    public ProductView() 
+    public SearchProductView()
     {
         InitializeComponent();
 
         this.WhenActivated(disposables =>
         {
-            var vm = new ProductViewModel(
-                Splat.Locator.Current.GetNotInitializedService<IProductService>(),
-                ViewModel!
-            );
-
-            DataContext = vm; 
-
             Command = ProductViewModel.AddToShoppingListCommand;
-            CommandParameter = vm;
+            CommandParameter = ViewModel;
 
             if (ViewModel!.Icon is not null)
             {
@@ -54,7 +57,7 @@ public partial class ProductView : ButtonUserControl<ProductDto>
                 ProductIcon.Data = Application.Current.TryFindResource("CupOfTeaIcon") as Geometry;
             }
 
-            vm.DisposeWith(disposables);
+            ViewModel.DisposeWith(disposables);
         });
     }
 }

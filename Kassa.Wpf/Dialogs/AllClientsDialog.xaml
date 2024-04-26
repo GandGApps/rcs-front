@@ -99,6 +99,19 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
+                    <Grid.Resources>
+                        <Style
+                            x:Key="DialogButton"
+                            BasedOn="{StaticResource SecondaryButton}"
+                            TargetType="Button">
+                            <Setter Property="Width" Value="{mx:AdaptiveSize 150}" />
+                            <Setter Property="MinWidth" Value="10" />
+                            <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='0,-1,3,-1'}" />
+                            <Setter Property="HorizontalAlignment" Value="Right" />
+                            <Setter Property="FontSize" Value="{mx:AdaptiveSize 16}" />
+                        </Style>
+                    </Grid.Resources>
+
                     <CheckBox x:Name="IsKeyboardEnabled" Style="{StaticResource KeyboardCheckbox}">
                         <StackPanel VerticalAlignment="Center">
                             <Path Style="{StaticResource KeyboardCheckboxIcon}" />
@@ -139,47 +152,30 @@
                     <Button
                         x:Name="NewGuestButton"
                         Grid.Column="3"
-                        Width="{mx:AdaptiveSize 120}"
-                        MinWidth="10"
-                        Margin="{mx:AdaptiveSize Thickness='0,-1,3,-1'}"
-                        HorizontalAlignment="Right"
-                        FontSize="{mx:AdaptiveSize 10.5}"
-                        Style="{StaticResource SecondaryButton}">
-                        Новый гость+
-                    </Button>
+                        Content="Новый гость+"
+                        Style="{StaticResource DialogButton}" />
+
                     <Button
                         x:Name="SkipButton"
                         Grid.Column="4"
-                        Width="{mx:AdaptiveSize 120}"
-                        MinWidth="10"
-                        Margin="{mx:AdaptiveSize Thickness='0,-1,3,-1'}"
-                        HorizontalAlignment="Right"
-                        FontSize="{mx:AdaptiveSize 10.5}"
-                        Style="{StaticResource SecondaryButton}">
-                        Пропустить
-                    </Button>
+                        Content="Пропустить"
+                        Style="{StaticResource DialogButton}" />
+
                     <Button
                         x:Name="CancelButton"
                         Grid.Column="5"
-                        Width="{mx:AdaptiveSize 120}"
-                        MinWidth="10"
-                        Margin="{mx:AdaptiveSize Thickness='0,-1,3,-1'}"
-                        HorizontalAlignment="Right"
-                        FontSize="{mx:AdaptiveSize 10.5}"
-                        Style="{StaticResource SecondaryButton}">
-                        Отмена
-                    </Button>
+                        Content="Отмена"
+                        Style="{StaticResource DialogButton}" />
+
                     <Button
                         x:Name="OkButton"
                         Grid.Column="6"
-                        Width="{mx:AdaptiveSize 120}"
+                        Width="{mx:AdaptiveSize 150}"
                         MinWidth="10"
+                        FontSize="{mx:AdaptiveSize 16}"
                         Margin="{mx:AdaptiveSize Thickness='0,-1,0,-1'}"
-                        HorizontalAlignment="Right"
-                        FontSize="{mx:AdaptiveSize 10.5}"
-                        Style="{StaticResource PrimaryButton}">
-                        Ок
-                    </Button>
+                        Content="Ок"
+                        Style="{StaticResource PrimaryButton}" />
 
 
                 </Grid>
