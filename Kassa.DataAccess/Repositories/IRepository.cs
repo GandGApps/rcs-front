@@ -26,6 +26,7 @@ public interface IRepository<T> where T : class, IModel
 
     internal class MockRepository(Dictionary<Guid, T> items) : IRepository<T>
     {
+        public readonly Dictionary<Guid, T> _items = items;
 
         public Task<T?> Get(Guid categoryId) => Task.FromResult(items.TryGetValue(categoryId, out var value) ? value : null);
 

@@ -65,4 +65,9 @@ public class Shift : IModel
     {
         get; set;
     }
+
+    public Guid[] OrderIds
+    {
+        get; set;
+    } = [];
 }

@@ -1,0 +1,72 @@
+[
+  {
+    "Id": "b8a71e3b-7e49-4ed0-bac5-695e2e0b4293",
+    "Name": "Иванов Иван Иванович",
+    "IsAdmin": false,
+    "IsManager": false,
+    "Pincode": "0000"
+  },
+  {
+    "Id": "a7e9bbcc-98e1-46b6-a7c7-095b426c5bfc",
+    "Name": "Петров Петр Петрович",
+    "IsAdmin": false,
+    "IsManager": false,
+    "Pincode": "5678"
+  },
+  {
+    "Id": "e5bf8831-5d25-41cc-b4a7-cc46c16d15d4",
+    "Name": "Сидоров Сидор Сидорович",
+    "IsAdmin": false,
+    "IsManager": false,
+    "Pincode": "9012"
+  },
+  {
+    "Id": "dd901e41-0b0c-4c52-8e44-0cb74854841b",
+    "Name": "Козлов Козел Козлович",
+    "IsAdmin": false,
+    "IsManager": false,
+    "Pincode": "3456"
+  },
+  {
+    "Id": "63128cb5-c9f5-4b2a-9021-0414d1645460",
+    "Name": "Федоров Федор Федорович",
+    "IsAdmin": false,
+    "IsManager": false,
+    "Pincode": "7890"
+  },
+  {
+    "Id": "f38b80a3-66a1-4b3c-8967-b2cc44632b0a",
+    "Name": "Александров Александр Александрович",
+    "IsAdmin": false,
+    "IsManager": false,
+    "Pincode": "4321"
+  },
+  {
+    "Id": "3c6e3c6e-6789-4cf5-92a6-220a7a52cf9d",
+    "Name": "Николаев Николай Николаевич",
+    "IsAdmin": false,
+    "IsManager": false,
+    "Pincode": "8765"
+  },
+  {
+    "Id": "6a7d2873-773f-4524-bd39-97c1c572e468",
+    "Name": "Игнатьев Игнат Игнатьевич",
+    "IsAdmin": false,
+    "IsManager": false,
+    "Pincode": "2109"
+  },
+  {
+    "Id": "a47df832-88f8-4e15-9d1b-3b1c6713ecb9",
+    "Name": "Дмитриев Дмитрий Дмитриевич",
+    "IsAdmin": false,
+    "IsManager": false,
+    "Pincode": "6543"
+  },
+  {
+    "Id": "9109e4e9-9391-4e69-b2a2-79a4cb3f1a1f",
+    "Name": "Михайлов Михаил Михайлович",
+    "IsAdmin": true,
+    "IsManager": true,
+    "Pincode": "1111"
+  }
+]
