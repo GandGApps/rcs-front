@@ -84,4 +84,7 @@ public static partial class Mapper
 
     public static partial User MapDtoToUser(UserDto user);
     public static partial UserDto MapUserToDto(User user);
+
+    public static partial WithdrawalReason MapDtoToWithdrawalReason(WithdrawalReasonDto withdrawalReason);
+    public static partial WithdrawalReasonDto MapWithdrawalReasonToDto(WithdrawalReason withdrawalReason);
 }
