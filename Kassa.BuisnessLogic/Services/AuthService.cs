@@ -16,8 +16,14 @@ internal class AuthService : IAuthService
     };
 
     private readonly BehaviorSubject<IAuthenticationContext> _currentAuthenticationContext = new(AuthenticationContext.NotAuthenticated);
+    private readonly ObservableOnlyBehaviourSubject<IAuthenticationContext> _observableOnly;
 
-    public IObservable<IAuthenticationContext> CurrentAuthenticationContext => _currentAuthenticationContext;
+    public AuthService()
+    {
+        _observableOnly = new(_currentAuthenticationContext);
+    }
+
+    public IObservableOnlyBehaviourSubject<IAuthenticationContext> CurrentAuthenticationContext => _observableOnly;
 
     public bool IsAuthenticated => _currentAuthenticationContext.Value.IsAuthenticated;
 
@@ -62,6 +68,11 @@ internal class AuthService : IAuthService
         public UserDto? User
         {
             get; set;
+        }
+
+        public string Token
+        {
+            get;
         }
 
         public bool IsAuthenticated => User is not null;

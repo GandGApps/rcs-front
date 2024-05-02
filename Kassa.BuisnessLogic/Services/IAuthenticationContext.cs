@@ -8,6 +8,11 @@ using Kassa.BuisnessLogic.Dto;
 namespace Kassa.BuisnessLogic.Services;
 public interface IAuthenticationContext
 {
+    public string Token
+    {
+        get;
+    }
+
     public UserDto? User
     {
         get;

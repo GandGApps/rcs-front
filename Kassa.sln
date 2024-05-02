@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kassa.Shared", "Kassa.Share
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kassa.DataAccess.HttpRepository", "Kassa.DataAccess.HttpRepository\Kassa.DataAccess.HttpRepository.csproj", "{B576E22F-B41C-4A67-9765-7E4E16106753}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kassa.BuisnessLogic.Edgar", "Kassa.BuisnessLogic.Edgar\Kassa.BuisnessLogic.Edgar.csproj", "{3EF2006E-C614-4427-ADD7-0390E5CD2D06}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -153,6 +155,22 @@ Global
 		{B576E22F-B41C-4A67-9765-7E4E16106753}.SmallWindow|Any CPU.Build.0 = Debug|Any CPU
 		{B576E22F-B41C-4A67-9765-7E4E16106753}.SmallWindow|x64.ActiveCfg = Debug|Any CPU
 		{B576E22F-B41C-4A67-9765-7E4E16106753}.SmallWindow|x64.Build.0 = Debug|Any CPU
+		{3EF2006E-C614-4427-ADD7-0390E5CD2D06}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EF2006E-C614-4427-ADD7-0390E5CD2D06}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EF2006E-C614-4427-ADD7-0390E5CD2D06}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3EF2006E-C614-4427-ADD7-0390E5CD2D06}.Debug|x64.Build.0 = Debug|Any CPU
+		{3EF2006E-C614-4427-ADD7-0390E5CD2D06}.OptimizedSmallWindow|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EF2006E-C614-4427-ADD7-0390E5CD2D06}.OptimizedSmallWindow|Any CPU.Build.0 = Debug|Any CPU
+		{3EF2006E-C614-4427-ADD7-0390E5CD2D06}.OptimizedSmallWindow|x64.ActiveCfg = Debug|Any CPU
+		{3EF2006E-C614-4427-ADD7-0390E5CD2D06}.OptimizedSmallWindow|x64.Build.0 = Debug|Any CPU
+		{3EF2006E-C614-4427-ADD7-0390E5CD2D06}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EF2006E-C614-4427-ADD7-0390E5CD2D06}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EF2006E-C614-4427-ADD7-0390E5CD2D06}.Release|x64.ActiveCfg = Release|Any CPU
+		{3EF2006E-C614-4427-ADD7-0390E5CD2D06}.Release|x64.Build.0 = Release|Any CPU
+		{3EF2006E-C614-4427-ADD7-0390E5CD2D06}.SmallWindow|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EF2006E-C614-4427-ADD7-0390E5CD2D06}.SmallWindow|Any CPU.Build.0 = Debug|Any CPU
+		{3EF2006E-C614-4427-ADD7-0390E5CD2D06}.SmallWindow|x64.ActiveCfg = Debug|Any CPU
+		{3EF2006E-C614-4427-ADD7-0390E5CD2D06}.SmallWindow|x64.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

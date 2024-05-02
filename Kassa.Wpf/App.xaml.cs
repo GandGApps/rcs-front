@@ -4,8 +4,10 @@ using System.Reflection;
 using System.Windows;
 using System.Windows.Media;
 using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.Edgar;
 using Kassa.DataAccess;
 using Kassa.Wpf.Themes;
+using Microsoft.Extensions.Configuration;
 using ReactiveUI;
 using Splat;
 
@@ -106,14 +108,20 @@ public partial class App : Application
 
     public App()
     {
+        var configurationBuilder = new ConfigurationBuilder();
+
+        configurationBuilder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+
+        var config = configurationBuilder.Build();
+
         CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
         CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
 
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
         Locator.CurrentMutable.RegisterMockDataAccess(); // TODO: Replace with real data access
-        Locator.CurrentMutable.RegisterMockBuisnessLogic();
+        Locator.CurrentMutable.RegisterMockBuisnessLogic(); // TODO: Replace with real buisness logic
 
-        
+        Locator.CurrentMutable.AddEdgarBuisnessLogic();
     }
 
     protected override void OnActivated(EventArgs e)

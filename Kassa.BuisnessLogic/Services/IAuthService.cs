@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Kassa.BuisnessLogic.Services;
 public interface IAuthService
 {
-    public IObservable<IAuthenticationContext> CurrentAuthenticationContext
+    public IObservableOnlyBehaviourSubject<IAuthenticationContext> CurrentAuthenticationContext
     {
         get;
     }
