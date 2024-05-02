@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Edgar.Api;
 using Kassa.BuisnessLogic.Services;
+using Microsoft.Extensions.Configuration;
 using Splat;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
@@ -27,6 +28,7 @@ internal class AuthService : IAuthService
     public async Task<bool> AuthenticateAsync(string username, string password)
     {
         var loginRequest = new LoginTerminalRequest(username, password);
+        var config = Locator.Current.GetRequiredService<IConfiguration>();
 
         var terminalApi = Locator.Current.GetRequiredService<ITerminalApi>();
 
@@ -35,6 +37,7 @@ internal class AuthService : IAuthService
         if (response.IsSuccessStatusCode)
         {
             var token = response.Content!;
+            config["TerminalAuthToken"] = token;
 
             _currentAuthenticationContext.OnNext(new JwtAuthenticationContext
             {

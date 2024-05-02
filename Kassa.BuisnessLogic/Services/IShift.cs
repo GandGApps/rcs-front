@@ -8,7 +8,7 @@ using Kassa.BuisnessLogic.Dto;
 namespace Kassa.BuisnessLogic.Services;
 public interface IShift
 {
-    public UserDto User
+    public MemberDto Member
     {
         get; 
     }

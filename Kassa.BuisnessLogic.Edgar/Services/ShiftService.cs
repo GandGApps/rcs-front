@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Subjects;
@@ -7,17 +8,21 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
+using Kassa.BuisnessLogic.Edgar.Api;
+using Kassa.BuisnessLogic.Edgar.Dto;
+using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
+using Microsoft.Extensions.Configuration;
 
-namespace Kassa.BuisnessLogic.Services;
-internal class ShiftService : BaseInitializableService, IShiftService
+namespace Kassa.BuisnessLogic.Edgar.Services;
+internal sealed class ShiftService : BaseInitializableService, IShiftService
 {
     private readonly IRepository<Shift> _repository;
-    private readonly BehaviorSubject<IShift?> _currentShift = new(null);
+    internal readonly BehaviorSubject<IShift?> _currentShift = new(null);
     private readonly HostModelManager<ShiftDto> _hostModelManager = new();
 
-    public ShiftService(IRepository<Shift> repository)
+    public ShiftService(IRepository<Shift> repository, IRepository<Member> members)
     {
         _hostModelManager.DisposeWith(InternalDisposables);
         _currentShift.DisposeWith(InternalDisposables);
@@ -34,21 +39,27 @@ internal class ShiftService : BaseInitializableService, IShiftService
 
     public async Task<bool> EnterPincode(string pincode)
     {
-        if (_currentShift.Value is not null)
+        var pincodeRequest = new EnterPincodeRequest(pincode);
+
+        var terminalApi = Locator.GetRequiredService<ITerminalApi>();
+
+        var reponse = await terminalApi.EnterPincode(pincodeRequest);
+
+        if (reponse.IsSuccessStatusCode)
         {
-            throw new InvalidOperationException("Shift is already started");
-        }
+            var pincodeResponse = reponse.Content!;
 
-        if (pincode == "0000")
-        {
-            var mockShift = new MockShift(this);
+            var config = Locator.GetRequiredService<IConfiguration>();
+            config["MemberAuthToken"] = pincodeResponse.Token;
 
-            if (MockShift._shift?.BreakStart != null)
-            {
-                await mockShift.EndBreak();
-            }
+            var handler = new JwtSecurityTokenHandler();
+            var token = handler.ReadJwtToken(pincodeResponse.Token);
 
-            _currentShift.OnNext(mockShift);
+            var employeeId = token.Claims.First(claim => claim.Type == "employee_id").Value;
+
+
+            _currentShift.OnNext(new EdgarShift(this,new()));
+
             return true;
         }
 
@@ -126,73 +137,4 @@ internal class ShiftService : BaseInitializableService, IShiftService
         return shifts;
     }
 
-    private sealed class MockShift(ShiftService shiftService) : IShift
-    {
-        internal static ShiftDto? _shift;
-        private readonly DateTime _start = DateTime.Now;
-
-        private static readonly MemberDto _mockUser = new()
-        {
-            Id = Guid.NewGuid(),
-            Name = "Mock User"
-        };
-
-        public MemberDto Member => _mockUser;
-
-        public async Task Exit()
-        {
-            var shiftDto = await CreateDto();
-
-            shiftDto.End = DateTime.Now;
-
-            if (shiftDto.Id == Guid.Empty)
-            {
-                await shiftService.AddShift(shiftDto);
-            }
-            else
-            {
-                await shiftService.UpdateShift(shiftDto);
-            }
-            
-            shiftService._currentShift.OnNext(null);
-        }
-
-        public async Task TakeBreak()
-        {
-            var shiftDto = await CreateDto();
-
-            shiftDto.BreakStart = DateTime.Now;
-
-            if (shiftDto.Id == Guid.Empty)
-            {
-                await shiftService.AddShift(shiftDto);
-                shiftService._currentShift.OnNext(null);
-                return;
-            }
-
-            await shiftService.UpdateShift(shiftDto);
-        }
-
-        public async Task EndBreak()
-        {
-            var shiftDto = await CreateDto();
-
-            shiftDto.BreakEnd = DateTime.Now;
-
-            await shiftService.UpdateShift(shiftDto);
-        }
-
-        public ValueTask<ShiftDto> CreateDto()
-        {
-            _shift ??= new ShiftDto()
-            {
-                ManagerId = null,
-                MemberId = _mockUser.Id,
-                Start = _start,
-                Number = shiftService.RuntimeShifts.Count + 1
-            };
-
-            return new(_shift);
-        }
-    }
 }

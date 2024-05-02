@@ -8,7 +8,7 @@ using Kassa.DataAccess.Model;
 using Kassa.Shared.Collections;
 
 namespace Kassa.BuisnessLogic.ApplicationModelManagers;
-internal partial class HostModelManager<TModel> : IApplicationModelManager<TModel>
+public sealed partial class HostModelManager<TModel> : IApplicationModelManager<TModel>
     where TModel : class, IModel
 {
     private readonly Dictionary<Guid, TModel> _models = [];

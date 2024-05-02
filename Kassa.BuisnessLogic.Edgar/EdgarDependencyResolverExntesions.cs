@@ -7,6 +7,7 @@ using Kassa.BuisnessLogic.Edgar.Api;
 using Splat.Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using System.Text.Json;
+using Kassa.Shared.DelegatingHandlers;
 using Kassa.Shared;
 
 namespace Kassa.BuisnessLogic.Edgar;
@@ -37,10 +38,10 @@ public static class EdgarDependencyResolverExntesions
     {
         AddApi<ITerminalApi>(services);
 
-        _services.AddTransient<BasicAddressHandler>();
+        _services.AddTransient<SelectJwtDelegatingHandler>();
 
 #if DEBUG
-        _services.AddTransient<HttpLoggingHandler>();
+        _services.AddTransient<HttpDebugLoggingHandler>();
 #endif
 
         _serviceProvider = _services.BuildServiceProvider();

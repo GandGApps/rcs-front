@@ -16,7 +16,7 @@ public class Shift : IModel
         get; set;
     }
 
-    public Guid UserId
+    public Guid MemberId
     {
         get; set;
     }

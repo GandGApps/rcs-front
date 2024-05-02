@@ -6,9 +6,9 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kassa.BuisnessLogic.Edgar;
+namespace Kassa.Shared.DelegatingHandlers;
 
-internal sealed class HttpLoggingHandler: DelegatingHandler
+public sealed class HttpDebugLoggingHandler : DelegatingHandler
 {
     private static readonly string[] types = ["html", "text", "xml", "json", "txt", "x-www-form-urlencoded"];
 
@@ -77,7 +77,7 @@ internal sealed class HttpLoggingHandler: DelegatingHandler
                 IsTextBasedContentType(resp.Content.Headers))
             {
                 start = DateTime.Now;
-                var result = await resp.Content.ReadAsStringAsync();
+                var result = await resp.Content.ReadAsStringAsync(cancellationToken);
                 end = DateTime.Now;
 
                 Debug.WriteLine($"{msg} Content:");

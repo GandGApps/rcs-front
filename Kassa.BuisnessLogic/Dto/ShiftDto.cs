@@ -6,6 +6,10 @@ using System.Threading.Tasks;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Dto;
+
+/// <summary>
+/// Represent model <see cref="Shift"/> 
+/// </summary>
 public class ShiftDto : IModel
 {
     public Guid Id
@@ -18,7 +22,7 @@ public class ShiftDto : IModel
         get; set;
     }
 
-    public Guid UserId
+    public Guid MemberId
     {
         get; set;
     }
