@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Refit;
 
@@ -20,5 +21,5 @@ internal interface ITerminalApi
 }
 
 internal sealed record LoginTerminalRequest(string Login, string Password);
-internal sealed record EnterPincodeRequest([AliasAs("pin_code")] string Pincode);
+internal sealed record EnterPincodeRequest([property:JsonPropertyName("pin_code")] string Pincode);
 internal sealed record PincodeResponse(string Token, string IsManagerPincode);

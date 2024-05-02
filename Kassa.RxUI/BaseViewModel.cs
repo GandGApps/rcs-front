@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Services;
+using Kassa.Shared;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;

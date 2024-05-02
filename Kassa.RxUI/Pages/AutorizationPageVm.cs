@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Dialogs;
+using Kassa.Shared;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 

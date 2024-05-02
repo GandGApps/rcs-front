@@ -45,7 +45,7 @@ public static class DependencyResolverExtensions
         SplatRegistrations.Register<IShiftService, ShiftService>();
         RegisterInitializableServiceFactory<IShiftService>(services);
 
-        SplatRegistrations.RegisterLazySingleton<IUserService, UserService>();
+        SplatRegistrations.Register<IUserService, UserService>();
         RegisterInitializableServiceFactory<IUserService>(services);
 
         SplatRegistrations.Register<IClientService, ClientService>();
@@ -71,6 +71,9 @@ public static class DependencyResolverExtensions
 
         SplatRegistrations.Register<IWithdrawReasounService, WithdrawReasounService>();
         RegisterInitializableServiceFactory<IWithdrawReasounService>(services);
+
+        SplatRegistrations.Register<IMemberService, MemberService>();
+        RegisterInitializableServiceFactory<IMemberService>(services);
 
         services.Register<IReceiptService>(() =>
         {

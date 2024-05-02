@@ -5,6 +5,7 @@ using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
+using Kassa.Shared;
 using ReactiveUI;
 
 namespace Kassa.RxUI.Pages;

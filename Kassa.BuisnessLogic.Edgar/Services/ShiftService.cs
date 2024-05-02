@@ -20,14 +20,16 @@ namespace Kassa.BuisnessLogic.Edgar.Services;
 internal sealed class ShiftService : BaseInitializableService, IShiftService
 {
     private readonly IRepository<Shift> _repository;
+    private readonly IMemberService _memberService;
     internal readonly BehaviorSubject<IShift?> _currentShift = new(null);
     private readonly HostModelManager<ShiftDto> _hostModelManager = new();
 
-    public ShiftService(IRepository<Shift> repository, IRepository<Member> members)
+    public ShiftService(IRepository<Shift> repository, IMemberService memberService)
     {
         _hostModelManager.DisposeWith(InternalDisposables);
         _currentShift.DisposeWith(InternalDisposables);
         _repository = repository;
+        _memberService = memberService;
         CurrentShift = new(_currentShift);
     }
 
@@ -58,6 +60,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
             var employeeId = token.Claims.First(claim => claim.Type == "employee_id").Value;
 
+            var member = await _memberService.GetMember(Guid.Parse(employeeId));
 
             _currentShift.OnNext(new EdgarShift(this,new()));
 

@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Media;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Edgar;
+using Kassa.DataAccess.HttpRepository;
 using Kassa.DataAccess;
 using Kassa.Wpf.Themes;
 using Microsoft.Extensions.Configuration;
@@ -124,6 +125,7 @@ public partial class App : Application
         Locator.CurrentMutable.RegisterMockDataAccess(); // TODO: Replace with real data access
         Locator.CurrentMutable.RegisterMockBuisnessLogic(); // TODO: Replace with real buisness logic
 
+        Locator.CurrentMutable.AddHttpRepositoryDataAccess();
         Locator.CurrentMutable.AddEdgarBuisnessLogic();
     }
 

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.DataAccess.HttpRepository.Api;
 using Kassa.Shared;
 using Microsoft.Extensions.Configuration;
 using Refit;
@@ -19,15 +20,15 @@ internal sealed class SelectJwtDelegatingHandler : DelegatingHandler
 
         if (request.Options.TryGetValue<Type>(new(HttpRequestMessageOptions.InterfaceType), out var type))
         {
-            if (type.IsAssignableTo(typeof(ITerminalApi)))
+            /*if (type.IsAssignableTo(typeof(ITerminalApi)))
             {
                 if (!string.IsNullOrWhiteSpace(config["TerminalAuthToken"]))
                 {
                     request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", config["TerminalAuthToken"]);
                 }
 
-            }
-            else if (type.IsAssignableTo(typeof(IApiOfMemberToken)))
+            }*/
+            if (type.IsAssignableTo(typeof(IApiOfMemberToken)))
             {
                 if (!string.IsNullOrWhiteSpace(config["MemberAuthToken"]))
                 {

@@ -32,6 +32,11 @@ public static class EdgarDependencyResolverExntesions
         AddApis(services);
 
         services.RegisterConstant<IAuthService>(new AuthService());
+
+        SplatRegistrations.Register<IShiftService, ShiftService>();
+        services.RegisterInitializableServiceFactory<IShiftService>();
+
+        SplatRegistrations.SetupIOC();
     }
 
     internal static void AddApis(IMutableDependencyResolver services)

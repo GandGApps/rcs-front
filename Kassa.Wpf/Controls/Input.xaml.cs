@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using Kassa.BuisnessLogic;
 using Kassa.RxUI;
 using Kassa.RxUI.Dialogs;
+using Kassa.Shared;
 using ReactiveUI;
 using Splat;
 
