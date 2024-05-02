@@ -3,6 +3,7 @@ using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
+using Kassa.Shared;
 using Splat;
 
 namespace Kassa.BuisnessLogic;
@@ -120,17 +121,7 @@ public static class DependencyResolverExtensions
         services.RegisterConstant<IInitializableServiceFactory<T>>(new InitializableServiceFactory<T>());
     }
 
-    /// <summary>
-    /// Retrieves a required service of a specified type.
-    /// </summary>
-    /// <typeparam name="T">The type of the service to retrieve.</typeparam>
-    /// <param name="services">The read-only dependency resolver from which to retrieve the service.</param>
-    /// <returns>The requested service of type T.</returns>
-    /// <exception cref="InvalidOperationException">Thrown if the service is not registered.</exception>
-    public static T GetRequiredService<T>(this IReadonlyDependencyResolver services)
-    {
-        return services.GetService<T>() ?? throw new InvalidOperationException($"The service of type {typeof(T)} is not registered.");
-    }
+    
 
     /// <summary>
     /// Asynchronously retrieves an initialized service of a specified type. The service is initialized

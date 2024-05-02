@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Edgar.Api;
 using Kassa.BuisnessLogic.Services;
+using Kassa.Shared;
 using Microsoft.Extensions.Configuration;
 using Splat;
 

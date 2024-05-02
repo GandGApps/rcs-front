@@ -1,18 +1,17 @@
-﻿using Kassa.BuisnessLogic.Edgar.Services;
-using Kassa.BuisnessLogic.Services;
-using Microsoft.Extensions.DependencyInjection;
-using Splat;
-using Refit;
-using Kassa.BuisnessLogic.Edgar.Api;
-using Splat.Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Configuration;
-using System.Text.Json;
-using Kassa.Shared.DelegatingHandlers;
+﻿using Kassa.Shared.DelegatingHandlers;
 using Kassa.Shared;
+using Microsoft.Extensions.DependencyInjection;
+using Refit;
+using Splat;
+using System.Text.Json;
+using Kassa.DataAccess.Repositories;
+using Kassa.DataAccess.Model;
+using Microsoft.Extensions.Configuration;
+using Kassa.DataAccess.HttpRepository.Api;
 
-namespace Kassa.BuisnessLogic.Edgar;
+namespace Kassa.DataAccess.HttpRepository;
 
-public static class EdgarDependencyResolverExntesions
+public static class HttpRepositoryDependencyResolverExntesions
 {
     private static readonly ServiceCollection _services = new();
     private static readonly RefitSettings _refitSettings = new()
@@ -21,22 +20,22 @@ public static class EdgarDependencyResolverExntesions
         {
             PropertyNamingPolicy = LowerCaseNamingPolicy.Instance,
         }),
-        
+
     };
 
     private static IServiceProvider _serviceProvider = null!;
 
 
-    public static void AddEdgarBuisnessLogic(this IMutableDependencyResolver services)
+    public static void AddHttpRepositoryDataAccess(this IMutableDependencyResolver services)
     {
         AddApis(services);
 
-        services.RegisterConstant<IAuthService>(new AuthService());
+        services.RegisterConstant<IRepository<Member>>(new EmployeeRepository());
     }
 
     internal static void AddApis(IMutableDependencyResolver services)
     {
-        AddApi<ITerminalApi>(services);
+        AddApi<IEmployeeApi>(services);
 
         _services.AddTransient<SelectJwtDelegatingHandler>();
 

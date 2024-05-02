@@ -4,13 +4,12 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
-using Kassa.BuisnessLogic.Edgar.Api;
+using Kassa.Shared;
 using Microsoft.Extensions.Configuration;
 using Refit;
 using Splat;
-using Kassa.Shared;
 
-namespace Kassa.BuisnessLogic.Edgar;
+namespace Kassa.DataAccess.HttpRepository;
 internal sealed class SelectJwtDelegatingHandler : DelegatingHandler
 {
 

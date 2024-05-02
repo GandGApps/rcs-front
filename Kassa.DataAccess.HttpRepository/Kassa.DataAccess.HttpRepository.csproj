@@ -11,8 +11,4 @@
     <ProjectReference Include="..\Kassa.Shared\Kassa.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Api\" />
-  </ItemGroup>
-
 </Project>
