@@ -19,5 +19,5 @@ internal interface ITerminalApi
     public Task<IApiResponse<string>> IsManagerPincode(EnterPincodeRequest request);
 }
 
-internal sealed record LoginTerminalRequest(string Username, string Password);
+internal sealed record LoginTerminalRequest(string Login, string Password);
 internal sealed record EnterPincodeRequest([AliasAs("pin_code")] string Pincode);

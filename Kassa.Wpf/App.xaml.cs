@@ -117,6 +117,9 @@ public partial class App : Application
         CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
         CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
 
+        Locator.CurrentMutable.RegisterConstant<IConfiguration>(config);
+
+        Locator.CurrentMutable.InitializeReactiveUI(RegistrationNamespace.Wpf);
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
         Locator.CurrentMutable.RegisterMockDataAccess(); // TODO: Replace with real data access
         Locator.CurrentMutable.RegisterMockBuisnessLogic(); // TODO: Replace with real buisness logic
