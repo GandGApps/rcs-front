@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Refit;
 
 namespace Kassa.DataAccess.HttpRepository.Api;
-internal interface IOrdersApi
+internal interface IOrdersApi: IApiOfMemberToken
 {
     [Get("/orders")]
     public Task<IEnumerable<OrderDetails>> GetOrders();
@@ -147,7 +147,7 @@ internal sealed record OrderDetails
     }
 
     [property: JsonPropertyName("isDelivery")]
-    public string IsDelivery
+    public bool IsDelivery
     {
         get; set;
     }
@@ -225,7 +225,7 @@ internal sealed record OrderDetails
     }
 
     [property: JsonPropertyName("isPickup")]
-    public string IsPickup
+    public bool IsPickup
     {
         get; set;
     }

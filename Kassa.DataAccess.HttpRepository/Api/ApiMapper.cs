@@ -50,4 +50,52 @@ internal static partial class ApiMapper
 
         return order;
     }
+
+    public static DishRequest MapDishToRequest(Product product)
+    {
+
+        return new DishRequest
+        {
+            DishId = product.Id,
+            Title = product.Name,
+            FullPrice = product.Price,
+            ParentGroupId = product.CategoryId,
+        };
+    }
+
+    public static Product MapRequestToDish(DishRequest dishRequest)
+    {
+        var product = new Product
+        {
+            Id = dishRequest.DishId,
+            Name = dishRequest.Title,
+            Price = dishRequest.FullPrice,
+            CategoryId = dishRequest.ParentGroupId
+        };
+
+        return product;
+    }
+
+    public static DishGroupRequest MapCategoryToRequest(Category category)
+    {
+        return new DishGroupRequest
+        {
+            GroupModelId = category.Id,
+            Title = category.Name,
+            ParentGroupId = category.CategoryId
+        };
+    }
+
+    public static Category MapRequestToCategory(DishGroupRequest dishGroupRequest)
+    {
+        var category = new Category
+        {
+            Id = dishGroupRequest.GroupModelId,
+            Name = dishGroupRequest.Title,
+            CategoryId = dishGroupRequest.ParentGroupId
+        };
+
+        return category;
+    }
+
 }

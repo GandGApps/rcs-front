@@ -32,12 +32,16 @@ public static class HttpRepositoryDependencyResolverExntesions
 
         services.RegisterConstant<IRepository<Member>>(new EmployeeRepository());
         services.RegisterConstant<IRepository<Order>>(new OrderRepository());
+        services.RegisterConstant<IRepository<Product>>(new DishesRepository());
+        services.RegisterConstant<IRepository<Category>>(new CategoryRepository());
     }
 
     internal static void AddApis(IMutableDependencyResolver services)
     {
         AddApi<IEmployeeApi>(services);
         AddApi<IOrdersApi>(services);
+        AddApi<IDishesApi>(services);
+        AddApi<IDishGroupApi>(services);
 
         _services.AddTransient<SelectJwtDelegatingHandler>();
 

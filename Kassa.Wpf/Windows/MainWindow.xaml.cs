@@ -136,12 +136,21 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
 
         Application.Current.DispatcherUnhandledException += async (sender, e) =>
         {
+            Exception extractedException;
 
+            if (e.Exception is UnhandledErrorException unhandled)
+            {
+                extractedException = unhandled.InnerException!;
+            }
+            else
+            {
+                extractedException = e.Exception;
+            }
 #if RELEASE
-            if (e.Exception is not NotImplementedException)
+            if (extractedException is not NotImplementedException)
             {
                 e.Handled = true;
-                MessageBox.Show(e.Exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(extractedException.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
