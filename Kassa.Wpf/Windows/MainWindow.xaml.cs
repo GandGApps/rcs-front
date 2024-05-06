@@ -145,6 +145,7 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
             }
             else
             {
+                e.Handled = true;
                 await ViewModel.OkMessage("Функция еще не реализована", "JustFailed");
             }
 #endif
