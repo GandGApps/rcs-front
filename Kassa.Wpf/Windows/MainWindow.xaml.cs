@@ -134,6 +134,22 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
 
         });
 
+        Application.Current.DispatcherUnhandledException += async (sender, e) =>
+        {
+
+#if RELEASE
+            if (e.Exception is not NotImplementedException)
+            {
+                e.Handled = true;
+                MessageBox.Show(e.Exception.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            else
+            {
+                await ViewModel.OkMessage("Функция еще не реализована", "JustFailed");
+            }
+#endif
+        };
+
 #if SMALL_WINDOW_TEST
         WindowState = WindowState.Normal;
         WindowStyle = WindowStyle.SingleBorderWindow;

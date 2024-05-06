@@ -38,6 +38,7 @@ internal class AuthService : IAuthService
         if (response.IsSuccessStatusCode)
         {
             var token = response.Content!;
+            token = token.Trim('"');
             config["TerminalAuthToken"] = token;
 
             _currentAuthenticationContext.OnNext(new JwtAuthenticationContext

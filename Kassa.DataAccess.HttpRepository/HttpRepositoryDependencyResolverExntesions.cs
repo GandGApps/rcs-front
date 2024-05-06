@@ -31,11 +31,13 @@ public static class HttpRepositoryDependencyResolverExntesions
         AddApis(services);
 
         services.RegisterConstant<IRepository<Member>>(new EmployeeRepository());
+        services.RegisterConstant<IRepository<Order>>(new OrderRepository());
     }
 
     internal static void AddApis(IMutableDependencyResolver services)
     {
         AddApi<IEmployeeApi>(services);
+        AddApi<IOrdersApi>(services);
 
         _services.AddTransient<SelectJwtDelegatingHandler>();
 
@@ -60,9 +62,9 @@ public static class HttpRepositoryDependencyResolverExntesions
         return services.AddRefitClient<T>(settings)
             .AddBaseAddress()
 #if DEBUG
-            .AddHttpMessageHandler<SelectJwtDelegatingHandler>()
+            .AddHttpMessageHandler<HttpDebugLoggingHandler>()
 #endif
-            .AddHttpMessageHandler<HttpDebugLoggingHandler>();
+            .AddHttpMessageHandler<SelectJwtDelegatingHandler>(); 
     }
 
     internal static IHttpClientBuilder AddBaseAddress(this IHttpClientBuilder builder)
