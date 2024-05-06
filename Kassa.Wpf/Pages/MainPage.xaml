@@ -170,7 +170,7 @@
                         TextAlignment="Center" />
                     <TextBlock
                         Style="{DynamicResource SubHeader}"
-                        Text="Отчеты, стоплист, кухонный экран"
+                        Text="Кассовые смены, отчеты"
                         TextAlignment="Center" />
                 </StackPanel>
             </Grid>

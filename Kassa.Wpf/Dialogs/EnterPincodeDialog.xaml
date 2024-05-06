@@ -32,7 +32,7 @@
                 <TextBlock
                     x:Name="FieldName"
                     Style="{StaticResource Header}"
-                    Text="Потверждение менеджера"
+                    Text="Потверждение"
                     TextAlignment="Center" />
             </Border>
 
@@ -48,11 +48,11 @@
                 x:Name="Placeholder"
                 Grid.Row="1"
                 Margin="{mx:AdaptiveSize Thickness='30,24,30,28'}"
-                FontSize="{Binding FontSize, ElementName=FieldName}"
+                FontSize="{mx:AdaptiveSize 11}"
                 FontWeight="Regular"
                 Opacity="0.4"
                 Style="{StaticResource Header}"
-                Text="ПИНКОД"
+                Text="Введите пинкод или проведите картой"
                 TextAlignment="Center" />
 
             <controls:Keyboard

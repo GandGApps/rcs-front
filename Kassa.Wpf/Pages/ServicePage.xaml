@@ -576,10 +576,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <ctrl:ButtonWithCornerRaduis
-                x:Name="BackButton"
-                Command="{Binding GoBackCommand}"
-                Style="{StaticResource BackButton}" />
+            <ctrl:ButtonWithCornerRaduis x:Name="BackButton" Style="{StaticResource BackButton}" />
 
         </Grid>
     </wnd:MainWindow.PageFooter>

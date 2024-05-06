@@ -63,9 +63,14 @@ public class MainPageVm : PageViewModel
 
         OpenProfileDialog = CreateOpenDialogCommand(() => new ProfileDialogViewModel());
         OpenDocumnetsDialog = CreateOpenDialogCommand(() => new DocumentsDialogViewModel());
-        OpenDeliviryDialog = CreateOpenDialogCommand(() => new DeliviryDialogViewModel());
+
         OpenPersonnelDialog = CreateOpenDialogCommand(() => new PersonnelDialogViewModel());
         /*OpenServicesDialog = CreateOpenDialogCommand(() => new ServicesDialogViewModel());*/
+
+        OpenDeliviryDialog = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await MainViewModel.GoToPage(new AllDeliveriesPageVm());
+        });
 
         OpenServicesDialog = ReactiveCommand.CreateFromTask(async () =>
         {

@@ -227,7 +227,7 @@
             Style="{StaticResource PrimaryDataGrid}">
             <DataGrid.Columns>
                 <DataGridTextColumn
-                    Width="*"
+                    Width="0.3*"
                     Binding="{Binding Number}"
                     FontFamily="{StaticResource Montseratt}"
                     FontSize="{mx:AdaptiveSize 18}"
@@ -251,25 +251,25 @@
                     FontSize="{mx:AdaptiveSize 18}"
                     Header="Конец смены" />
                 <DataGridTextColumn
-                    Width="*"
+                    Width="0.5*"
                     Binding="{Binding Number}"
                     FontFamily="{StaticResource Montseratt}"
                     FontSize="{mx:AdaptiveSize 18}"
                     Header="Перерыв" />
                 <DataGridTextColumn
-                    Width="*"
+                    Width="0.5*"
                     Binding="{Binding Number}"
                     FontFamily="{StaticResource Montseratt}"
                     FontSize="{mx:AdaptiveSize 18}"
                     Header="Ставка в час" />
                 <DataGridTextColumn
-                    Width="*"
+                    Width="0.5*"
                     Binding="{Binding Number}"
                     FontFamily="{StaticResource Montseratt}"
                     FontSize="{mx:AdaptiveSize 18}"
                     Header="Заработано" />
                 <DataGridTextColumn
-                    Width="*"
+                    Width="0.5*"
                     Binding="{Binding Number}"
                     FontFamily="{StaticResource Montseratt}"
                     FontSize="{mx:AdaptiveSize 18}"
@@ -292,16 +292,16 @@
         <Grid Grid.Row="2" Margin="{mx:AdaptiveSize Thickness='0,40,0,0'}">
 
             <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.3*" />
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="0.5*" />
+                <ColumnDefinition Width="0.5*" />
+                <ColumnDefinition Width="0.5*" />
+                <ColumnDefinition Width="0.5*" />
                 <ColumnDefinition Width="1*" />
                 <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1*" />
-                <ColumnDefinition Width="1* " />
-                <ColumnDefinition Width="1* " />
-                <ColumnDefinition Width="1* " />
             </Grid.ColumnDefinitions>
 
             <Grid.Resources>

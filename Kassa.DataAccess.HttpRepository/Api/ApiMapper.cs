@@ -98,4 +98,24 @@ internal static partial class ApiMapper
         return category;
     }
 
+    public static IngridientRequest MapIngredientToRequest(Ingredient ingredient)
+    {
+
+        return new IngridientRequest(ingredient.Id, ingredient.Name, ingredient.Count);
+    }
+
+    public static Ingredient MapRequestToIngredient(IngridientRequest ingredientRequest)
+    {
+
+        var ingredient = new Ingredient
+        {
+
+            Id = ingredientRequest.Id,
+            Name = ingredientRequest.Title,
+            Count = ingredientRequest.Count
+        };
+
+        return ingredient;
+    }
+
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -24,5 +25,13 @@ public partial class ServicePage : ReactiveUserControl<ServicePageVm>
     public ServicePage()
     {
         InitializeComponent();
+
+        this.WhenActivated(disposables =>
+        {
+
+            this.BindCommand(ViewModel, vm => vm.GoBackCommand, v => v.BackButton)
+                .DisposeWith(disposables);
+
+        });
     }
 }

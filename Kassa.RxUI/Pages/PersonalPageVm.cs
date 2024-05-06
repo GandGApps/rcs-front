@@ -111,8 +111,8 @@ public class PersonalPageVm : PageViewModel
             new() {
                 HourlyRate = 100,
                 Name = "Иванов Иван Иванович",
-                Begin = DateTime.Now.ToString(),
-                End = DateTime.Now.AddHours(8).ToString(),
+                Begin = DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
+                End = DateTime.Now.AddHours(8).ToString("dd/MM/yyyy HH:mm"),
                 Break = "",
                 Earned = 800,
                 Fine = 0,
