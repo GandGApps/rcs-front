@@ -66,9 +66,9 @@ public static class EdgarDependencyResolverExntesions
         return services.AddRefitClient<T>(settings)
             .AddBaseAddress()
 #if DEBUG
-            .AddHttpMessageHandler<SelectJwtDelegatingHandler>()
+            .AddHttpMessageHandler<HttpDebugLoggingHandler>()
 #endif
-            .AddHttpMessageHandler<HttpDebugLoggingHandler>();
+            .AddHttpMessageHandler<SelectJwtDelegatingHandler>();
     }
 
     internal static IHttpClientBuilder AddBaseAddress(this IHttpClientBuilder builder)
