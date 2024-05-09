@@ -13,11 +13,16 @@ public static class BuisnessLogicExtensions
 {
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [Conditional("DEBUG")]
-    public static void ThrowIfNotInitialized<T>(this T service) where T: IInitializableService
+    public static void ThrowIfNotInitialized<T>(this T service) where T : IInitializableService
     {
         if (!service.IsInitialized)
         {
             throw new InvalidOperationException($"Service {service.GetType().Name} is not initialized");
         }
+    }
+
+    public static bool IsShiftStarted(this IShiftService shift)
+    {
+        return shift.CurrentShift.Value != null && shift.CurrentShift.Value.IsStarted.Value;
     }
 }

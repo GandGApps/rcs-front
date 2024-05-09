@@ -42,6 +42,8 @@ public static class EdgarDependencyResolverExntesions
     internal static void AddApis(IMutableDependencyResolver services)
     {
         AddApi<ITerminalApi>(services);
+        AddApi<IEmployeePostsApi>(services);
+        AddApi<IEmployeeApi>(services);
 
         _services.AddTransient<SelectJwtDelegatingHandler>();
 
@@ -65,10 +67,11 @@ public static class EdgarDependencyResolverExntesions
     {
         return services.AddRefitClient<T>(settings)
             .AddBaseAddress()
+            .AddHttpMessageHandler<SelectJwtDelegatingHandler>()
 #if DEBUG
             .AddHttpMessageHandler<HttpDebugLoggingHandler>()
 #endif
-            .AddHttpMessageHandler<SelectJwtDelegatingHandler>();
+            ;
     }
 
     internal static IHttpClientBuilder AddBaseAddress(this IHttpClientBuilder builder)

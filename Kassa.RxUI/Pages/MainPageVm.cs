@@ -62,13 +62,43 @@ public class MainPageVm : PageViewModel
         });
 
         OpenProfileDialog = CreateOpenDialogCommand(() => new ProfileDialogViewModel());
-        OpenDocumnetsDialog = CreateOpenDialogCommand(() => new DocumentsDialogViewModel());
 
-        OpenPersonnelDialog = CreateOpenDialogCommand(() => new PersonnelDialogViewModel());
-        /*OpenServicesDialog = CreateOpenDialogCommand(() => new ServicesDialogViewModel());*/
+        OpenDocumnetsDialog = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var shiftService = await Locator.GetInitializedService<IShiftService>();
+
+            if (shiftService.IsShiftStarted())
+            {
+                await MainViewModel.OkMessage("Смена не открыта", "JustFailed");
+                return;
+            }
+
+            await MainViewModel.ShowDialog(new DocumentsDialogViewModel());
+        });
+
+        OpenPersonnelDialog = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var shiftService = await Locator.GetInitializedService<IShiftService>();
+
+            if (shiftService.IsShiftStarted())
+            {
+                await MainViewModel.OkMessage("Смена не открыта", "JustFailed");
+                return;
+            }
+
+            await MainViewModel.ShowDialog(new PersonnelDialogViewModel());
+        });
 
         OpenDeliviryDialog = ReactiveCommand.CreateFromTask(async () =>
         {
+            var shiftService = await Locator.GetInitializedService<IShiftService>();
+
+            if (shiftService.IsShiftStarted())
+            {
+                await MainViewModel.OkMessage("Смена не открыта", "JustFailed");
+                return;
+            }
+
             await MainViewModel.GoToPage(new AllDeliveriesPageVm());
         });
 
@@ -83,6 +113,14 @@ public class MainPageVm : PageViewModel
             var order = await cashierService.CreateOrder(false);
             var additveService = await Locator.GetInitializedService<IAdditiveService>();
 
+            var shiftService = await Locator.GetInitializedService<IShiftService>();
+
+            if (shiftService.IsShiftStarted())
+            {
+                await MainViewModel.OkMessage("Смена не открыта", "JustFailed");
+                return;
+            }
+
             await cashierService.SelectCurrentOrder(order);
 
             await MainViewModel.GoToPageCommand.Execute(new OrderEditPageVm(order, cashierService, additveService)).FirstAsync();
@@ -93,6 +131,14 @@ public class MainPageVm : PageViewModel
             var cashierService = await Locator.GetInitializedService<ICashierService>();
             var additiveService = await Locator.GetInitializedService<IAdditiveService>();
             var order = cashierService.CurrentOrder;
+
+            var shiftService = await Locator.GetInitializedService<IShiftService>();
+
+            if (shiftService.IsShiftStarted())
+            {
+                await MainViewModel.OkMessage("Смена не открыта", "JustFailed");
+                return;
+            }
 
             if (order == null)
             {

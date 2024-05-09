@@ -17,6 +17,7 @@ using Kassa.RxUI.Pages;
 using ReactiveUI;
 
 namespace Kassa.Wpf.Pages;
+
 /// <summary>
 /// Interaction logic for PersonalPage.xaml
 /// </summary>
@@ -31,7 +32,10 @@ public partial class PersonalPage : ReactiveUserControl<PersonalPageVm>
             this.BindCommand(ViewModel, vm => vm.TakeBreakCommand, v => v.TakeBreakButton)
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, vm => vm.EndShiftCommand, v => v.CloseShiftButton)
+            this.OneWayBind(ViewModel, vm => vm.ShiftButtonText, v => v.ShiftButton.Content)
+                .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, vm => vm.ShiftCommand, v => v.ShiftButton)
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, vm => vm.SelectedShifts, v => v.Orders.ItemsSource)

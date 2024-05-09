@@ -126,18 +126,36 @@ internal class ShiftService : BaseInitializableService, IShiftService
         return shifts;
     }
 
-    private sealed class MockShift(ShiftService shiftService) : IShift
+    private sealed class MockShift : IShift
     {
         internal static ShiftDto? _shift;
         private readonly DateTime _start = DateTime.Now;
+        private readonly BehaviorSubject<bool> _isStarted;
+        private readonly ObservableOnlyBehaviourSubject<bool> _isStartedObservable;
 
         private static readonly MemberDto _mockUser = new()
         {
             Id = Guid.NewGuid(),
             Name = "Mock User"
         };
+        private readonly ShiftService shiftService;
+
+        public MockShift(ShiftService shiftService)
+        {
+            this.shiftService = shiftService;
+            _isStarted = new(_shift is not null);
+            _isStartedObservable = new(_isStarted);
+        }
 
         public MemberDto Member => _mockUser;
+
+        public IObservableOnlyBehaviourSubject<bool> IsStarted => _isStartedObservable;
+
+        public Task Start()
+        {
+            _isStarted.OnNext(true);
+            return Task.CompletedTask;
+        }
 
         public async Task Exit()
         {
@@ -157,7 +175,7 @@ internal class ShiftService : BaseInitializableService, IShiftService
             shiftService._currentShift.OnNext(null);
         }
 
-        public async Task TakeBreak()
+        public async Task TakeBreak(string pincode)
         {
             var shiftDto = await CreateDto();
 

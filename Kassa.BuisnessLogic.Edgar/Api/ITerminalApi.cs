@@ -14,7 +14,7 @@ internal interface ITerminalApi
     public Task<IApiResponse<string>> Login(LoginTerminalRequest request);
 
     [Post("/terminal/login-employee")]
-    public Task<IApiResponse<PincodeResponse>> EnterPincode(EnterPincodeRequest request);
+    public Task<IApiResponse<PincodeResponse>> EnterPincode(LoginEmployeeRequest request);
 
     [Post("/terminal/is-manager-pincode")]
     public Task<IApiResponse<string>> IsManagerPincode(EnterPincodeRequest request);
@@ -22,4 +22,8 @@ internal interface ITerminalApi
 
 internal sealed record LoginTerminalRequest(string Login, string Password);
 internal sealed record EnterPincodeRequest([property:JsonPropertyName("pin_code")] string Pincode);
-internal sealed record PincodeResponse(string Token, string IsManagerPincode);
+internal sealed record LoginEmployeeRequest([property: JsonPropertyName("pin_code")] string Pincode, [property: JsonPropertyName("date")] DateTime DateTime);
+internal sealed record PincodeResponse(
+    [property: JsonPropertyName("token")] string Token,
+    [property: JsonPropertyName("isManagerPincode")] bool IsManagerPincode,
+    [property: JsonPropertyName("isPostOpen")] bool IsPostOpen);

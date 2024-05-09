@@ -42,7 +42,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
     public async Task<bool> EnterPincode(string pincode)
     {
-        var pincodeRequest = new EnterPincodeRequest(pincode);
+        var pincodeRequest = new LoginEmployeeRequest(pincode, DateTime.UtcNow);
 
         var terminalApi = Locator.GetRequiredService<ITerminalApi>();
 
@@ -62,7 +62,13 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
             var member = await _memberService.GetMember(Guid.Parse(employeeId));
 
-            _currentShift.OnNext(new EdgarShift(this,new()));
+            _currentShift.OnNext(new EdgarShift(this,new(), pincodeResponse.IsPostOpen));
+
+            var employeePostsApi = Locator.GetRequiredService<IEmployeePostsApi>();
+
+            var employeePosts = await employeePostsApi.GetEmployeePosts(new(DateTime.Today));
+
+            await employeePostsApi.PostExists(new(DateTime.Now));
 
             return true;
         }

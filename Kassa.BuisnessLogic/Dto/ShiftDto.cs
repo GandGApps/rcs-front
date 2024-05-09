@@ -72,6 +72,11 @@ public class ShiftDto : IModel
         get; set;
     }
 
+    public bool IsStarted
+    {
+        get; set;
+    }
+
     public Guid[] OrderIds
     {
         get; set;

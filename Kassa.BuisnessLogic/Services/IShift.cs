@@ -13,8 +13,15 @@ public interface IShift
         get; 
     }
 
+    public IObservableOnlyBehaviourSubject<bool> IsStarted
+    {
+        get;
+    }
+
+    public Task Start();
+
     public Task Exit();
-    public Task TakeBreak();
+    public Task TakeBreak(string pincode);
     public Task EndBreak();
 
     public ValueTask<ShiftDto> CreateDto();

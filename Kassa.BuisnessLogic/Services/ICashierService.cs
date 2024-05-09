@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Dto;
+using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Services;
 public interface ICashierService : IInitializableService
@@ -15,6 +16,11 @@ public interface ICashierService : IInitializableService
     }
 
     public ReadOnlyObservableCollection<IOrderEditService> Orders
+    {
+        get;
+    }
+
+    public IObservableOnlyBehaviourSubject<CashierShift?> CurrentShift
     {
         get;
     }

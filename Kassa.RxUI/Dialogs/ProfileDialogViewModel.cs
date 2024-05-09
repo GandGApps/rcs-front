@@ -4,6 +4,8 @@ using System.Linq;
 using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Pages;
 using ReactiveUI;
 
@@ -19,9 +21,9 @@ public class ProfileDialogViewModel : DialogViewModel
     {
         GoToPersonalPageCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var personnelPage = new PersonalPageVm();
+            var shiftSerivce = await Locator.GetInitializedService<IShiftService>();
 
-            await personnelPage.InitializeAsync();
+            var personnelPage = new PersonalPageVm(shiftSerivce);
 
             await MainViewModel.GoToPage(personnelPage);
 

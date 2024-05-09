@@ -28,7 +28,6 @@ public partial class ServicePage : ReactiveUserControl<ServicePageVm>
 
         this.WhenActivated(disposables =>
         {
-
             this.BindCommand(ViewModel, vm => vm.GoBackCommand, v => v.BackButton)
                 .DisposeWith(disposables);
 

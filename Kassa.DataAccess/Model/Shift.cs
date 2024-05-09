@@ -61,6 +61,11 @@ public class Shift : IModel
         get; set;
     }
 
+    public bool IsStarted
+    {
+        get; set;
+    }
+
     public Guid ManagerId
     {
         get; set;

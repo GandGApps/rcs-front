@@ -15,6 +15,11 @@ public sealed class ObservableOnlyBehaviourSubject<T> : IObservableOnlyBehaviour
         _behaviorSubject = behaviorSubject;
     }
 
+    public ObservableOnlyBehaviourSubject(T value)
+    {
+        _behaviorSubject = new BehaviorSubject<T>(value);
+    }
+
     public IDisposable Subscribe(IObserver<T> observer) => _behaviorSubject.Subscribe(observer);
 
     public T Value => _behaviorSubject.Value;

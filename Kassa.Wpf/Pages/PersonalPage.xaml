@@ -109,7 +109,7 @@
                 </Button>
 
                 <Button
-                    x:Name="CloseShiftButton"
+                    x:Name="ShiftButton"
                     Grid.Column="5"
                     Padding="5"
                     Style="{StaticResource SmallRoundedCornerButton}">

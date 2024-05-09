@@ -97,7 +97,7 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
     /// The service is automatically added to InternalDisposables, which handles its disposal. Manually 
     /// calling <see cref="DisposableMixins.DisposeWith"/> on these services may lead to unexpected behavior or errors.
     /// </remarks>
-    protected async ValueTask<T> GetInitializedService<T>() where T : class, IInitializableService
+    protected async ValueTask<T> GetInitializedServiceAndDisposeWithThis<T>() where T : class, IInitializableService
     {
         var services = await Locator.GetInitializedService<T>();
 

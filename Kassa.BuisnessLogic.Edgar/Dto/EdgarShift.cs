@@ -1,19 +1,49 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Dto;
+using Kassa.BuisnessLogic.Edgar.Api;
 using Kassa.BuisnessLogic.Edgar.Services;
 using Kassa.BuisnessLogic.Services;
+using Kassa.Shared;
+using Splat;
 
 namespace Kassa.BuisnessLogic.Edgar.Dto;
-internal sealed class EdgarShift(ShiftService shiftService, MemberDto member): IShift
+internal sealed class EdgarShift : IShift
 {
     internal ShiftDto? _shift;
     private readonly DateTime _start = DateTime.Now;
+    private readonly BehaviorSubject<bool> _isStarted;
+    private readonly ShiftService _shiftService;
+    private readonly MemberDto _member;
 
-    public MemberDto Member => member;
+    public EdgarShift(ShiftService shiftService, MemberDto member, bool isStarted)
+    {
+        _shiftService = shiftService;
+        _member = member;
+
+        _isStarted= new(isStarted);
+        IsStarted = new ObservableOnlyBehaviourSubject<bool>(_isStarted);
+    }
+
+    public MemberDto Member => _member;
+
+    public IObservableOnlyBehaviourSubject<bool> IsStarted
+    {
+        get;
+    }
+
+    public async Task Start()
+    {
+        var employeeApi = Locator.Current.GetRequiredService<IEmployeeApi>();
+
+        var openPostRequest = new OpenPostRequest(DateTime.Now, 0);
+
+        await employeeApi.OpenPost(openPostRequest);
+    }
 
     public async Task Exit()
     {
@@ -23,17 +53,17 @@ internal sealed class EdgarShift(ShiftService shiftService, MemberDto member): I
 
         if (shiftDto.Id == Guid.Empty)
         {
-            await shiftService.AddShift(shiftDto);
+            await _shiftService.AddShift(shiftDto);
         }
         else
         {
-            await shiftService.UpdateShift(shiftDto);
+            await _shiftService.UpdateShift(shiftDto);
         }
 
-        shiftService._currentShift.OnNext(null);
+        _shiftService._currentShift.OnNext(null);
     }
 
-    public async Task TakeBreak()
+    public async Task TakeBreak(string pincode)
     {
         var shiftDto = await CreateDto();
 
@@ -41,12 +71,12 @@ internal sealed class EdgarShift(ShiftService shiftService, MemberDto member): I
 
         if (shiftDto.Id == Guid.Empty)
         {
-            await shiftService.AddShift(shiftDto);
-            shiftService._currentShift.OnNext(null);
+            await _shiftService.AddShift(shiftDto);
+            _shiftService._currentShift.OnNext(null);
             return;
         }
 
-        await shiftService.UpdateShift(shiftDto);
+        await _shiftService.UpdateShift(shiftDto);
     }
 
     public async Task EndBreak()
@@ -54,7 +84,7 @@ internal sealed class EdgarShift(ShiftService shiftService, MemberDto member): I
         var shiftDto = await CreateDto();
         shiftDto.BreakEnd = DateTime.Now;
 
-        await shiftService.UpdateShift(shiftDto);
+        await _shiftService.UpdateShift(shiftDto);
     }
 
     public ValueTask<ShiftDto> CreateDto()
@@ -62,9 +92,9 @@ internal sealed class EdgarShift(ShiftService shiftService, MemberDto member): I
         _shift ??= new ShiftDto()
         {
             ManagerId = null,
-            MemberId = member.Id,
+            MemberId = _member.Id,
             Start = _start,
-            Number = shiftService.RuntimeShifts.Count + 1
+            Number = _shiftService.RuntimeShifts.Count + 1
         };
 
         return new(_shift);

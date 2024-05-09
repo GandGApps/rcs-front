@@ -6,6 +6,7 @@ using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Dto;
+using Kassa.DataAccess.Model;
 using Splat;
 
 namespace Kassa.BuisnessLogic.Services;
@@ -29,6 +30,10 @@ internal class CashierService : BaseInitializableService, ICashierService
         get;
     }
 
+    public IObservableOnlyBehaviourSubject<CashierShift?> CurrentShift
+    {
+        get;
+    }
 
     public CashierService(
         IAdditiveService additiveService,
@@ -45,6 +50,8 @@ internal class CashierService : BaseInitializableService, ICashierService
         _receiptService = receiptService;
         _ordersService = ordersService;
         _paymentInfoService = paymentInfoService;
+
+        CurrentShift = new ObservableOnlyBehaviourSubject<CashierShift?>((CashierShift?)null);
     }
 
     public async ValueTask<IOrderEditService> CreateOrder(bool isDelivery)
