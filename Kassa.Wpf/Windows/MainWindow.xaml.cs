@@ -13,6 +13,7 @@ using System.Windows.Shapes;
 using Kassa.RxUI;
 using Kassa.RxUI.Dialogs;
 using Kassa.RxUI.Pages;
+using Kassa.Shared;
 using ReactiveUI;
 using Splat;
 
@@ -146,6 +147,13 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
             {
                 extractedException = e.Exception;
             }
+
+            if (extractedException is DeveloperException developerException)
+            {
+                e.Handled = true;
+                await ViewModel.OkMessage(developerException.Message, "JustFailed");
+            }
+
 #if RELEASE
             if (extractedException is not NotImplementedException)
             {

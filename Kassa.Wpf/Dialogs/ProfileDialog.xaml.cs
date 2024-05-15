@@ -30,6 +30,9 @@ public partial class ProfileDialog : ClosableDialog<ProfileDialogViewModel>
         {
             this.BindCommand(ViewModel, vm => vm.GoToPersonalPageCommand, v => v.PersonalPageButton)
                 .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, x => x.CurrentShiftOpennedDate, x => x.CurrentShiftOpennedDate.Text, x => x is null ? "Смена не открыта" : $"Смена открыта  {x:dd.MM.yyyy  HH:mm}")
+                .DisposeWith(disposables);
         });
     }
 }

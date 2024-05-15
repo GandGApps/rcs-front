@@ -70,6 +70,12 @@ public partial class MainPage : ReactiveUserControl<MainPageVm>
 
                 Environment.SetEnvironmentVariable(KassaNewUserKey, "false", EnvironmentVariableTarget.User);
             }
+
+            this.OneWayBind(ViewModel, x => x.CurrentShiftMemberName, x => x.CurrentShiftMemberName.Text)
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, x => x.CurrentShiftOpennedDate, x => x.CurrentShiftOpennedDate.Text, x => x is null ? "Смена не открыта" : $"Смена открыта  {x:dd.MM.yyyy  HH:mm}")
+                .DisposeWith(disposables);
         });
     }
 

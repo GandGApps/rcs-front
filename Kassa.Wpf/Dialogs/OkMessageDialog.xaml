@@ -14,6 +14,7 @@
     Style="{StaticResource PrimaryDialogUserControl}"
     mc:Ignorable="d">
     <Border
+        MinHeight="{mx:AdaptiveSize 200}"
         Padding="{mx:AdaptiveSize Thickness='20,14'}"
         VerticalAlignment="Center"
         Style="{StaticResource PrimaryMenu}">

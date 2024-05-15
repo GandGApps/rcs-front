@@ -387,7 +387,7 @@
                                         TargetType="Button">
                                         <Setter Property="BorderThickness" Value="0" />
                                         <Setter Property="Background" Value="{StaticResource ClickableBg}" />
-                                        <Setter Property="Padding" Value="{mx:AdaptiveSize 18}" />
+                                        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='18'}" />
                                         <Setter Property="VerticalAlignment" Value="Center" />
                                         <Setter Property="HorizontalAlignment" Value="Center" />
 

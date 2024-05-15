@@ -50,7 +50,7 @@ internal sealed record DishRequest
     }
 
     [JsonPropertyName("measureUnit")]
-    public Guid MeasureUnit
+    public Guid? MeasureUnit
     {
         get; set;
     }
@@ -74,7 +74,7 @@ internal sealed record DishRequest
     }
 
     [JsonPropertyName("allergens")]
-    public List<string> Allergens
+    public List<Guid> Allergens
     {
         get; set;
     }
@@ -93,7 +93,7 @@ internal sealed record DishRequest
     }
 
     [JsonPropertyName("modificators")]
-    public List<string> Modificators
+    public List<Guid> Modificators
     {
         get; set;
     }
@@ -117,7 +117,7 @@ internal sealed record DishRequest
     }
 
     [JsonPropertyName("portions")]
-    public List<string> Portions
+    public List<Guid> Portions
     {
         get; set;
     }
@@ -135,7 +135,7 @@ internal sealed record DishRequest
     }
 
     [JsonPropertyName("establishment_id")]
-    public Guid EstablishmentId
+    public Guid? EstablishmentId
     {
         get; set;
     }

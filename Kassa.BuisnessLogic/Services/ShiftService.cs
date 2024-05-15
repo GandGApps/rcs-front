@@ -200,6 +200,11 @@ internal class ShiftService : BaseInitializableService, IShiftService
             await shiftService.UpdateShift(shiftDto);
         }
 
+        public async Task End(string pincode)
+        {
+            await Exit();
+        }
+
         public ValueTask<ShiftDto> CreateDto()
         {
             _shift ??= new ShiftDto()

@@ -78,8 +78,8 @@
                     </Grid.ColumnDefinitions>
 
                     <Path
-                        Width="{mx:AdaptiveSize Thickness='26'}"
-                        Height="{mx:AdaptiveSize Thickness='26'}"
+                        Width="{mx:AdaptiveSize 26}"
+                        Height="{mx:AdaptiveSize 26}"
                         Data="{StaticResource TurnOffIcon}"
                         Fill="#FFF42E2E" />
 

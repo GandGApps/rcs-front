@@ -100,10 +100,12 @@
 
                 <StackPanel Grid.Row="2">
                     <TextBlock
+                        x:Name="CurrentShiftMemberName"
                         Style="{StaticResource Header}"
                         Text="Григор"
                         TextAlignment="Center" />
                     <TextBlock
+                        x:Name="CurrentShiftOpennedDate"
                         Style="{DynamicResource SubHeader}"
                         Text="Смена открыта  03.12.2023  17:50"
                         TextAlignment="Center" />

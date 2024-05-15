@@ -21,6 +21,7 @@ public interface IShift
     public Task Start();
 
     public Task Exit();
+    public Task End(string pincode);
     public Task TakeBreak(string pincode);
     public Task EndBreak();
 

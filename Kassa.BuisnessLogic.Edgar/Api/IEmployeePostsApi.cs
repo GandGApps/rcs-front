@@ -13,7 +13,7 @@ internal interface IEmployeePostsApi : IApiOfMemberToken
     public Task<IEnumerable<EmployeeResponsePost>> GetEmployeePosts(EmployeeGetPostsRequest request);
 
     [Post("/employee/open-post")]
-    public Task OpenPost(EmployeeOpenPostRequest request);
+    public Task<OpenPostRequest> OpenPost(EmployeeOpenPostRequest request);
 
     [Post("/employee/close-post")]
     public Task ClosePost(EmployeeClosePostRequest request);
@@ -24,22 +24,96 @@ internal interface IEmployeePostsApi : IApiOfMemberToken
     [Post("/employee/break-end")]
     public Task EndBreak(EmployeeBreakRequest request);
 
-    [Get("/employee/post-exists")]
-    public Task<IEnumerable<EmployeeResponsePost>> GetEmployeePosts();
     [Post("/employee/create-post")]
     public Task CreatePost(EmployeeResponsePost request);
 
-    [Post("/terminal/post-exists")]
-    public Task PostExists(PostExistsResponse postExists);
+    [Post("/employee/post-exists")]
+    public Task<PostExistsResponse> PostExists(PostExistsRequest postExists);
 }
 
+internal sealed record OpenPostRequest([property:JsonPropertyName("message")] string Message);
 
+internal sealed record PostExistsResponse
+{
+    [JsonPropertyName("exists")]
+    public bool Exists
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("posts")]
+    public CreatedPost CreatedPost
+    {
+        get; init;
+    }
+}
+
+internal sealed record CreatedPost
+{
+    [JsonPropertyName("employeepost_id")]
+    public Guid PostId
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("terminal_id")]
+    public Guid TerminalId
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("openDate")]
+    public DateTime? OpenDate
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("office_id")]
+    public Guid OfficeId
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("updatedAt")]
+    public DateTime UpdatedAt
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("createdAt")]
+    public DateTime CreatedAt
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("isOpen")]
+    public bool IsOpen
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("breakStart")]
+    public DateTime? BreakStart
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("breakEnd")]
+    public DateTime? BreakEnd
+    {
+        get; init;
+    }
+
+    public bool IsBreakNotEnded => BreakStart.HasValue && !BreakEnd.HasValue;
+}
+
+internal sealed record PostExistsRequest([property:JsonPropertyName("openDate")] DateTime CurrentDate);
 
 internal sealed record EmployeeBreakRequest([property:JsonPropertyName("date")] DateTime Date, [property:JsonPropertyName("post_id")] Guid PostId);
 
-internal sealed record EmployeeClosePostRequest([property:JsonPropertyName("closeDate")] DateTime CloseDate);
+internal sealed record EmployeeClosePostRequest([property:JsonPropertyName("closeDate")] DateTime CloseDate, [property: JsonPropertyName("post_id")] Guid PostId);
 
-internal sealed record EmployeeOpenPostRequest([property:JsonPropertyName("openDate")] DateTime OpenDate, [property: JsonPropertyName("start_sum")] double StartSum);
+internal sealed record EmployeeOpenPostRequest([property:JsonPropertyName("openDate")] DateTime OpenDate,[property: JsonPropertyName("post_id")] Guid PostId, [property: JsonPropertyName("start_sum")] double StartSum);
 
 internal sealed record EmployeeGetPostsRequest([property:JsonPropertyName("date")] DateTime Date);
 
@@ -58,13 +132,13 @@ internal sealed record EmployeeResponsePost
     }
 
     [JsonPropertyName("openDate")]
-    public DateTime OpenDate
+    public DateTime? OpenDate
     {
         get; set;
     }
 
     [JsonPropertyName("closeDate")]
-    public DateTime CloseDate
+    public DateTime? CloseDate
     {
         get; set;
     }
@@ -76,37 +150,37 @@ internal sealed record EmployeeResponsePost
     }
 
     [JsonPropertyName("start_sum")]
-    public double StartSum
+    public double? StartSum
     {
         get; set;
     }
 
     [JsonPropertyName("sales_sum")]
-    public double SalesSum
+    public double? SalesSum
     {
         get; set;
     }
 
     [JsonPropertyName("out_sum")]
-    public double OutSum
+    public double? OutSum
     {
         get; set;
     }
 
     [JsonPropertyName("in_sum")]
-    public double InSum
+    public double? InSum
     {
         get; set;
     }
 
     [JsonPropertyName("seizure_sum")]
-    public double SeizureSum
+    public double? SeizureSum
     {
         get; set;
     }
 
     [JsonPropertyName("pass_sum")]
-    public double PassSum
+    public double? PassSum
     {
         get; set;
     }

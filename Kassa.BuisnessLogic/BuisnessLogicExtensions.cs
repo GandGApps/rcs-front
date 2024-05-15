@@ -25,4 +25,20 @@ public static class BuisnessLogicExtensions
     {
         return shift.CurrentShift.Value != null && shift.CurrentShift.Value.IsStarted.Value;
     }
+
+    public static string GuidToPrettyString(this Guid guid)
+    {
+        return guid.ToString("N")[..5];
+    }
+
+    public static int GuidToPrettyInt(this Guid guid)
+    {
+        return int.Parse(guid.ToString("N")[..5], System.Globalization.NumberStyles.HexNumber) % 10000;
+    }
+
+    public static string GuidToPrettyString(this Guid? guid)
+    {
+        return guid is null ? "???" : guid.Value.ToString("N")[..5];
+    }
+
 }

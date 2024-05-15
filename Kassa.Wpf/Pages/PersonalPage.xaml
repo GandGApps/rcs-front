@@ -114,6 +114,7 @@
                     Padding="5"
                     Style="{StaticResource SmallRoundedCornerButton}">
                     <TextBlock
+                        x:Name="ShiftButtonText"
                         FontWeight="Bold"
                         Foreground="{DynamicResource AlternateForeground}"
                         Style="{StaticResource SmallTextBlock}"
@@ -252,37 +253,37 @@
                     Header="Конец смены" />
                 <DataGridTextColumn
                     Width="0.5*"
-                    Binding="{Binding Number}"
+                    Binding="{Binding Break}"
                     FontFamily="{StaticResource Montseratt}"
                     FontSize="{mx:AdaptiveSize 18}"
                     Header="Перерыв" />
                 <DataGridTextColumn
                     Width="0.5*"
-                    Binding="{Binding Number}"
+                    Binding="{Binding HourlyRate}"
                     FontFamily="{StaticResource Montseratt}"
                     FontSize="{mx:AdaptiveSize 18}"
                     Header="Ставка в час" />
                 <DataGridTextColumn
                     Width="0.5*"
-                    Binding="{Binding Number}"
+                    Binding="{Binding Earned}"
                     FontFamily="{StaticResource Montseratt}"
                     FontSize="{mx:AdaptiveSize 18}"
                     Header="Заработано" />
                 <DataGridTextColumn
                     Width="0.5*"
-                    Binding="{Binding Number}"
+                    Binding="{Binding Fine}"
                     FontFamily="{StaticResource Montseratt}"
                     FontSize="{mx:AdaptiveSize 18}"
                     Header="Штраф" />
                 <DataGridTextColumn
                     Width="*"
-                    Binding="{Binding Number}"
+                    Binding="{Binding Comment}"
                     FontFamily="{StaticResource Montseratt}"
                     FontSize="{mx:AdaptiveSize 18}"
                     Header="Комментарий" />
                 <DataGridTextColumn
                     Width="*"
-                    Binding="{Binding Number}"
+                    Binding="{Binding Manager}"
                     FontFamily="{StaticResource Montseratt}"
                     FontSize="{mx:AdaptiveSize 18}"
                     Header="Менеджер" />

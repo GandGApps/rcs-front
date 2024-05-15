@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Dialogs;
@@ -20,6 +21,8 @@ namespace Kassa.RxUI.Pages;
 public class PersonalPageVm : PageViewModel
 {
     private readonly IShiftService _shiftService;
+    
+    private readonly ObservableCollection<ShiftRowViewModel> _selectedShifts = [];
 
     public PersonalPageVm(IShiftService shiftService)
     {
@@ -122,27 +125,13 @@ public class PersonalPageVm : PageViewModel
                     throw new InvalidOperationException("Shift is not started");
                 }
 
-                await shift.Exit();
+                await shift.End(pincode);
             }
 
             return isCorrect;
         }).DisposeWith(InternalDisposables);
 
-        SelectedShifts = new(
-        [
-            new() {
-                HourlyRate = 100,
-                Name = "Иванов Иван Иванович",
-                Begin = DateTime.Now.ToString("dd/MM/yyyy HH:mm"),
-                End = DateTime.Now.AddHours(8).ToString("dd/MM/yyyy HH:mm"),
-                Break = "",
-                Earned = 800,
-                Fine = 0,
-                Comment = "asdasd",
-                Manager = "Петров Петр Петрович"
-            }
-        ]
-        );
+        SelectedShifts = new(_selectedShifts);
 
         ShiftButtonText = "Начать смену";
 
@@ -169,9 +158,34 @@ public class PersonalPageVm : PageViewModel
 
     }
 
+    [Reactive]
+    public string ManagerName
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public string CashierName
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public string ShiftNumber
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public string OpennedShiftDate
+    {
+        get; set;
+    }
+
+    [Reactive]
     public ReadOnlyObservableCollection<ShiftRowViewModel> SelectedShifts
     {
-        get;
+        get; set;
     }
 
     [Reactive]
@@ -204,7 +218,7 @@ public class PersonalPageVm : PageViewModel
     public extern ReactiveCommand<Unit, bool> ShiftCommand
     {
         [ObservableAsProperty]
-        get; 
+        get;
     }
 
     [Reactive]
@@ -213,12 +227,55 @@ public class PersonalPageVm : PageViewModel
         get; set;
     }
 
+    [Reactive]
+    public bool IsOpennedShifts
+    {
+        get; set;
+    } = true;
+
     protected override void Initialize(CompositeDisposable disposables)
     {
         this.WhenAnyValue(x => x.IsOpennedShiftsVisible, x => !x)
             .ToPropertyEx(this, x => x.IsClosedShiftsVisible)
             .DisposeWith(disposables);
 
-    }
+        _shiftService.CurrentShift.Subscribe(async shift =>
+        {
 
+            if (shift is null)
+            {
+                ManagerName = "???";
+                CashierName = "???";
+                ShiftNumber = "???";
+            }
+            else
+            {
+                CashierName = shift.Member.Name;
+                var dto = await shift.CreateDto();
+                ShiftNumber = dto.Id.GuidToPrettyString();
+                ManagerName = dto.ManagerId.GuidToPrettyString();
+                OpennedShiftDate = dto.Start is null ? "???" : dto.Start.Value.ToString("dd.MM.yyyy | HH:mm");
+            }
+
+        }).DisposeWith(disposables);
+
+
+        var isOpennedShifts = this.WhenAnyValue(x => x.IsOpennedShifts)
+                                  .Select(x =>
+                                  {
+                                  if (x)
+                                  {
+                                      return new Func<ShiftDto, bool>(x => x.End is null || x.End.Value.Date != DateTime.Today);
+                                  }
+                                  else
+                                  {
+                                      return new Func<ShiftDto, bool>(x => x.Start is null || x.Start.Value.Date == DateTime.Today || x.IsStarted);
+                                      }
+                                  });
+
+        _shiftService.RuntimeShifts.BindAndFilter(isOpennedShifts, dto => new ShiftRowViewModel(dto), out var collection)
+            .DisposeWith(disposables);
+
+        SelectedShifts = collection;
+    }
 }

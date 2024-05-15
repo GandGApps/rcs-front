@@ -62,13 +62,25 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
             var member = await _memberService.GetMember(Guid.Parse(employeeId));
 
-            _currentShift.OnNext(new EdgarShift(this,new(), pincodeResponse.IsPostOpen));
+            if (member == null)
+            {
+                throw new DeveloperException("Персонал не найден, обратитесь к Эдгару");
+            }
 
             var employeePostsApi = Locator.GetRequiredService<IEmployeePostsApi>();
 
             var employeePosts = await employeePostsApi.GetEmployeePosts(new(DateTime.Today));
 
-            await employeePostsApi.PostExists(new(DateTime.Now));
+            var exist = await employeePostsApi.PostExists(new(DateTime.Now));
+
+            var shift = new EdgarShift(this, member, exist.CreatedPost.IsOpen, exist);
+
+            if (exist.Exists && exist.CreatedPost.IsBreakNotEnded)
+            {
+                await shift.EndBreak();
+            }
+
+            _currentShift.OnNext(shift);
 
             return true;
         }

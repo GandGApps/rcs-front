@@ -32,7 +32,19 @@ public partial class PersonalPage : ReactiveUserControl<PersonalPageVm>
             this.BindCommand(ViewModel, vm => vm.TakeBreakCommand, v => v.TakeBreakButton)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, vm => vm.ShiftButtonText, v => v.ShiftButton.Content)
+            this.OneWayBind(ViewModel, vm => vm.ShiftButtonText, v => v.ShiftButtonText.Text)
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, vm => vm.ManagerName, v => v.ManagerName.Text)
+                .DisposeWith(disposables);
+            
+            this.OneWayBind(ViewModel, vm => vm.CashierName, v => v.CashierName.Text)
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, vm => vm.ShiftNumber, v => v.ShiftNumber.Text)
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, vm => vm.OpennedShiftDate, v => v.ShiftBegin.Text)
                 .DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.ShiftCommand, v => v.ShiftButton)
@@ -42,6 +54,9 @@ public partial class PersonalPage : ReactiveUserControl<PersonalPageVm>
                 .DisposeWith(disposables);
 
             this.BindCommand(ViewModel, vm => vm.GoBackCommand, v => v.BackButton)
+                .DisposeWith(disposables);
+
+            this.Bind(ViewModel, vm => vm.IsOpennedShifts, v => v.OpenShifts.IsChecked)
                 .DisposeWith(disposables);
         });
     }

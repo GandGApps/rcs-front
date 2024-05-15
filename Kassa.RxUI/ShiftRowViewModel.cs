@@ -3,12 +3,50 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
+using Kassa.BuisnessLogic.Dto;
+using Kassa.BuisnessLogic.Services;
+using Kassa.Shared;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Splat;
 
 namespace Kassa.RxUI;
-public class ShiftRowViewModel : ReactiveObject
+public sealed class ShiftRowViewModel : ReactiveObject, IApplicationModelPresenter<ShiftDto>
 {
+    private readonly IMemberService _memberService;
+
+    public Guid Id
+    {
+        get;
+    }
+
+    public ShiftRowViewModel(ShiftDto shiftDto)
+    {
+        _memberService = Locator.Current.GetRequiredService<IMemberService>();
+
+        Id = shiftDto.Id;
+        Number = shiftDto.Number;
+        Name = _memberService.RuntimeMembers.TryGetValue(shiftDto.MemberId, out var member) ? member.Name : "???";
+        Begin = shiftDto.Start?.ToString("dd.MM.yyyy | HH:mm") ?? string.Empty;
+        End = shiftDto.End?.ToString("dd.MM.yyyy | HH:mm") ?? string.Empty;
+        if (shiftDto.BreakStart != null)
+        {
+            if (shiftDto.BreakEnd.HasValue)
+            {
+                Break = $"{shiftDto.BreakStart.Value:HH:mm} - {shiftDto.BreakEnd.Value:HH:mm}";
+            }
+            else
+            {
+                Break = $"{shiftDto.BreakStart.Value:HH:mm} - ∞";
+            }
+        }
+        HourlyRate = shiftDto.HourlyRate;
+        Earned = shiftDto.Earned;
+        Fine = shiftDto.Fine;
+        Manager = !shiftDto.ManagerId.HasValue ? "???" : _memberService.RuntimeMembers.TryGetValue(shiftDto.ManagerId.Value, out var manager) ? manager.Name : "???";
+    }
+
     [Reactive]
     public int Number
     {
@@ -67,5 +105,35 @@ public class ShiftRowViewModel : ReactiveObject
     public string Manager
     {
         get; set;
+    }
+
+    public void Dispose()
+    {
+
+    }
+
+    public void ModelChanged(Change<ShiftDto> change)
+    {
+        var shiftDto = change.Current;
+
+        Number = shiftDto.Number;
+        Name = _memberService.RuntimeMembers.TryGetValue(shiftDto.MemberId, out var member) ? member.Name : "???";
+        Begin = shiftDto.Start?.ToString("dd.MM.yyyy | HH:mm") ?? string.Empty;
+        End = shiftDto.End?.ToString("dd.MM.yyyy | HH:mm") ?? string.Empty;
+        if (shiftDto.BreakStart != null)
+        {
+            if (shiftDto.BreakEnd.HasValue)
+            {
+                Break = $"{shiftDto.BreakStart.Value:HH:mm} - {shiftDto.BreakEnd.Value:HH:mm}";
+            }
+            else
+            {
+                Break = $"{shiftDto.BreakStart.Value:HH:mm} - ∞";
+            }
+        }
+        HourlyRate = shiftDto.HourlyRate;
+        Earned = shiftDto.Earned;
+        Fine = shiftDto.Fine;
+        Manager = !shiftDto.ManagerId.HasValue ? "???" : _memberService.RuntimeMembers.TryGetValue(shiftDto.ManagerId.Value, out var manager) ? manager.Name : "???";
     }
 }

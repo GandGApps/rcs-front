@@ -15,18 +15,22 @@ namespace Kassa.BuisnessLogic.Edgar.Dto;
 internal sealed class EdgarShift : IShift
 {
     internal ShiftDto? _shift;
-    private readonly DateTime _start = DateTime.Now;
+    private readonly DateTime? _start;
     private readonly BehaviorSubject<bool> _isStarted;
     private readonly ShiftService _shiftService;
     private readonly MemberDto _member;
+    private readonly PostExistsResponse _postExistsResponse;
 
-    public EdgarShift(ShiftService shiftService, MemberDto member, bool isStarted)
+    public EdgarShift(ShiftService shiftService, MemberDto member, bool isStarted, PostExistsResponse postExistsResponse)
     {
         _shiftService = shiftService;
         _member = member;
+        _postExistsResponse = postExistsResponse;
+        _start = postExistsResponse.CreatedPost.OpenDate;
 
-        _isStarted= new(isStarted);
+        _isStarted = new(isStarted);
         IsStarted = new ObservableOnlyBehaviourSubject<bool>(_isStarted);
+
     }
 
     public MemberDto Member => _member;
@@ -38,28 +42,28 @@ internal sealed class EdgarShift : IShift
 
     public async Task Start()
     {
-        var employeeApi = Locator.Current.GetRequiredService<IEmployeeApi>();
+        var shiftDto = await CreateDto();
+        var employeeApi = Locator.Current.GetRequiredService<IEmployeePostsApi>();
 
-        var openPostRequest = new OpenPostRequest(DateTime.Now, 0);
+        var openPostRequest = new EmployeeOpenPostRequest(DateTime.Now, shiftDto.Id, 0);
 
-        await employeeApi.OpenPost(openPostRequest);
+        var message = await employeeApi.OpenPost(openPostRequest);
+
+        if (message.Message.Equals("success", StringComparison.InvariantCultureIgnoreCase))
+        {
+            _isStarted.OnNext(true);
+        }
+        else
+        {
+            throw new DeveloperException("Не удалось начать смену");
+        }
     }
 
     public async Task Exit()
     {
         var shiftDto = await CreateDto();
 
-        shiftDto.End = DateTime.Now;
-
-        if (shiftDto.Id == Guid.Empty)
-        {
-            await _shiftService.AddShift(shiftDto);
-        }
-        else
-        {
-            await _shiftService.UpdateShift(shiftDto);
-        }
-
+        _shiftService.RuntimeShifts.AddOrUpdate(shiftDto);
         _shiftService._currentShift.OnNext(null);
     }
 
@@ -67,34 +71,61 @@ internal sealed class EdgarShift : IShift
     {
         var shiftDto = await CreateDto();
 
-        shiftDto.BreakStart = DateTime.Now;
+        var employeePostApi = Locator.Current.GetRequiredService<IEmployeePostsApi>();
 
-        if (shiftDto.Id == Guid.Empty)
-        {
-            await _shiftService.AddShift(shiftDto);
-            _shiftService._currentShift.OnNext(null);
-            return;
-        }
+        var now = DateTime.Now;
 
-        await _shiftService.UpdateShift(shiftDto);
+        await employeePostApi.StartBreak(new(now, shiftDto.Id));
+
+        shiftDto.BreakStart = now;
+
+        _shiftService.RuntimeShifts.AddOrUpdate(shiftDto);
+        _shiftService._currentShift.OnNext(null);
     }
 
     public async Task EndBreak()
     {
         var shiftDto = await CreateDto();
-        shiftDto.BreakEnd = DateTime.Now;
 
-        await _shiftService.UpdateShift(shiftDto);
+        var employeePostApi = Locator.Current.GetRequiredService<IEmployeePostsApi>();
+
+        var now = DateTime.Now;
+
+        await employeePostApi.EndBreak(new(now, shiftDto.Id));
+
+        shiftDto.BreakEnd = now;
+
+        _shiftService.RuntimeShifts.AddOrUpdate(shiftDto);
+        _shiftService._currentShift.OnNext(null);
+    }
+
+    public async Task End(string pincode)
+    {
+        var shiftDto = await CreateDto();
+
+        var employeePostApi = Locator.Current.GetRequiredService<IEmployeePostsApi>();
+
+        var now = DateTime.Now;
+
+        await employeePostApi.ClosePost(new(now, shiftDto.Id));
+
+        shiftDto.End = now;
+
+        _shiftService.RuntimeShifts.AddOrUpdate(shiftDto);
+        _shiftService._currentShift.OnNext(null);
     }
 
     public ValueTask<ShiftDto> CreateDto()
     {
         _shift ??= new ShiftDto()
         {
-            ManagerId = null,
+            Id = _postExistsResponse.CreatedPost.PostId,
+            IsStarted = _postExistsResponse.CreatedPost.IsOpen,
             MemberId = _member.Id,
             Start = _start,
-            Number = _shiftService.RuntimeShifts.Count + 1
+            Number = _postExistsResponse.CreatedPost.PostId.GuidToPrettyInt(),
+            BreakStart = _postExistsResponse.CreatedPost.BreakStart,
+            BreakEnd = _postExistsResponse.CreatedPost.BreakEnd
         };
 
         return new(_shift);

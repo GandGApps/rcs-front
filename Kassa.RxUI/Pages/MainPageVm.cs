@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,6 +11,7 @@ using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Dialogs;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI.Pages;
 public class MainPageVm : PageViewModel
@@ -67,7 +69,7 @@ public class MainPageVm : PageViewModel
         {
             var shiftService = await Locator.GetInitializedService<IShiftService>();
 
-            if (shiftService.IsShiftStarted())
+            if (!shiftService.IsShiftStarted())
             {
                 await MainViewModel.OkMessage("Смена не открыта", "JustFailed");
                 return;
@@ -80,7 +82,7 @@ public class MainPageVm : PageViewModel
         {
             var shiftService = await Locator.GetInitializedService<IShiftService>();
 
-            if (shiftService.IsShiftStarted())
+            if (!shiftService.IsShiftStarted())
             {
                 await MainViewModel.OkMessage("Смена не открыта", "JustFailed");
                 return;
@@ -93,7 +95,7 @@ public class MainPageVm : PageViewModel
         {
             var shiftService = await Locator.GetInitializedService<IShiftService>();
 
-            if (shiftService.IsShiftStarted())
+            if (!shiftService.IsShiftStarted())
             {
                 await MainViewModel.OkMessage("Смена не открыта", "JustFailed");
                 return;
@@ -115,7 +117,7 @@ public class MainPageVm : PageViewModel
 
             var shiftService = await Locator.GetInitializedService<IShiftService>();
 
-            if (shiftService.IsShiftStarted())
+            if (!shiftService.IsShiftStarted())
             {
                 await MainViewModel.OkMessage("Смена не открыта", "JustFailed");
                 return;
@@ -134,7 +136,7 @@ public class MainPageVm : PageViewModel
 
             var shiftService = await Locator.GetInitializedService<IShiftService>();
 
-            if (shiftService.IsShiftStarted())
+            if (!shiftService.IsShiftStarted())
             {
                 await MainViewModel.OkMessage("Смена не открыта", "JustFailed");
                 return;
@@ -148,6 +150,38 @@ public class MainPageVm : PageViewModel
 
             await MainViewModel.GoToPageCommand.Execute(new OrderEditPageVm(order, cashierService, additiveService)).FirstAsync();
         });
+    }
+
+    [Reactive]
+    public string CurrentShiftMemberName
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public DateTime? CurrentShiftOpennedDate
+    {
+        get; set;
+    }
+
+    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    {
+        var shiftService = await Locator.GetInitializedService<IShiftService>();
+
+        shiftService.CurrentShift.Subscribe(async shift =>
+        {
+            if (shift == null)
+            {
+
+                CurrentShiftMemberName = "Смена не открыта";
+            }
+            else
+            {
+                var dto = await shift.CreateDto();
+                CurrentShiftMemberName = shift.Member.Name;
+                CurrentShiftOpennedDate = dto.Start;
+            }
+        }).DisposeWith(disposables);
     }
 
     private ReactiveCommand<Unit, Unit> CreateOpenDialogCommand(Func<DialogViewModel> dialogViewModel) => ReactiveCommand.CreateFromTask(async () =>

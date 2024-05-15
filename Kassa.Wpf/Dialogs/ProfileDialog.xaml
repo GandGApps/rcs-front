@@ -45,6 +45,7 @@
                         Grid.Row="1"
                         Grid.ColumnSpan="2"
                         HorizontalAlignment="Center"
+                        x:Name="CurrentShiftOpennedDate"
                         Style="{StaticResource Header2}"
                         Text="Смена открыта 08.12.2023 | 18:25" />
                 </Grid>
