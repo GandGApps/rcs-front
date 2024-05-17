@@ -10,7 +10,7 @@ using Kassa.Shared;
 using Splat;
 
 namespace Kassa.DataAccess.HttpRepository;
-internal class IngridientRepository : IRepository<Ingredient>
+internal sealed class IngridientRepository : IRepository<Ingredient>
 {
     public Task Add(Ingredient item) => throw new NotImplementedException();
     public Task Delete(Ingredient item) => throw new NotImplementedException();
@@ -22,14 +22,18 @@ internal class IngridientRepository : IRepository<Ingredient>
 
         var ingridinets = await ingridientsApi.GetIngridients();
 
-        return ingridinets.Select(ApiMapper.MapRequestToIngredient).ToList();
+        return ingridinets.Select(ApiMapper.MapEdgarModelToIngredient).ToList();
     }
 
     public Task Update(Ingredient item)
     {
+
+        throw new DeveloperException("Логическая ошибка, обратитесь к Баястану");
+
+
         var ingridientsApi = Locator.Current.GetRequiredService<IIngridientsApi>();
 
-        var ingridientRequest = ApiMapper.MapIngredientToRequest(item);
+        var ingridientRequest = ApiMapper.MapIngredientToEdgarModel(item);
 
         return ingridientsApi.UpdateIngridients(ingridientRequest);
     }

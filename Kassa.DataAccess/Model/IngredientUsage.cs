@@ -3,12 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Kassa.DataAccess.Model;
-public class IngredientUsage: IModel
+public class IngredientUsage
 {
-    public Guid Id
-    {
-        get; set;
-    }
 
     public Guid IngredientId
     {

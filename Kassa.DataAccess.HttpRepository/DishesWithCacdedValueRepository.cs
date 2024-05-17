@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Frozen;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,8 +11,9 @@ using Kassa.Shared;
 using Splat;
 
 namespace Kassa.DataAccess.HttpRepository;
-internal sealed class DishesRepository : IRepository<Product>
+internal sealed class DishesWithCacdedValueRepository : IRepository<Product>
 {
+    private FrozenDictionary<Guid, Product>? _products;
     public async Task Add(Product item)
     {
         var dishesApi = Locator.Current.GetRequiredService<IDishesApi>();
@@ -29,7 +31,17 @@ internal sealed class DishesRepository : IRepository<Product>
     }
 
     public Task DeleteAll() => throw new NotImplementedException();
-    public Task<Product?> Get(Guid id) => throw new NotImplementedException();
+    public Task<Product?> Get(Guid id)
+    {
+        Product? product = null;
+
+        if (_products is not null)
+        {
+            _products.TryGetValue(id, out product);
+        }
+
+        return Task.FromResult(product);
+    }
 
     public async Task<IEnumerable<Product>> GetAll()
     {
@@ -37,7 +49,11 @@ internal sealed class DishesRepository : IRepository<Product>
 
         var response = await dishesApi.GetDishes();
 
-        return response.Select(ApiMapper.MapRequestToDish).ToList();
+        var dishes = response.Select(ApiMapper.MapRequestToDish).ToList();
+
+        _products = dishes.ToFrozenDictionary(d => d.Id);
+
+        return dishes;
     }
 
     public Task Update(Product item)

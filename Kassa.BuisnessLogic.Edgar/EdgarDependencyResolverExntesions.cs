@@ -9,6 +9,8 @@ using Microsoft.Extensions.Configuration;
 using System.Text.Json;
 using Kassa.Shared.DelegatingHandlers;
 using Kassa.Shared;
+using Kassa.DataAccess.Repositories;
+using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Edgar;
 
@@ -35,6 +37,16 @@ public static class EdgarDependencyResolverExntesions
 
         SplatRegistrations.Register<IShiftService, ShiftService>();
         services.RegisterInitializableServiceFactory<IShiftService>();
+
+        SplatRegistrations.Register<IProductService, ProductService>();
+        services.Register<IProductService>(() =>
+        {
+            var repository = Locator.Current.GetRequiredService<IRepository<Product>>();
+            var ingridientsService = Locator.Current.GetRequiredService<IIngridientsService>();
+            var receiptService = Locator.Current.GetNotInitializedService<IReceiptService>();
+
+            return new ProductService(repository, ingridientsService, receiptService);
+        });
 
         SplatRegistrations.SetupIOC();
     }

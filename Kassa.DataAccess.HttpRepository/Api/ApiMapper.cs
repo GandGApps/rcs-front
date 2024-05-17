@@ -98,24 +98,33 @@ internal static partial class ApiMapper
         return category;
     }
 
-    public static IngridientRequest MapIngredientToRequest(Ingredient ingredient)
+    public static IngredientResponse MapIngredientToEdgarModel(Ingredient ingredient)
     {
-
-        return new IngridientRequest(ingredient.Id, ingredient.Name, ingredient.Count);
+        return new IngredientResponse
+        {
+            IngredientsId = ingredient.Id,
+            Title = ingredient.Name,
+            Warehouse = string.Empty, // Assuming default value as it's not present in Ingredient
+            TerminalId = null, // Assuming null as default as it's not present in Ingredient
+            OfficeId = null, // Assuming null as default as it's not present in Ingredient
+            Left = ingredient.Count,
+            Price = 0, // Assuming default value as it's not present in Ingredient
+            PackagingUnit = ingredient.Measure,
+            AlcoholPercent = 0, // Assuming default value as it's not present in Ingredient
+            Code = string.Empty, // Assuming default value as it's not present in Ingredient
+            Article = string.Empty // Assuming default value as it's not present in Ingredient
+        };
     }
 
-    public static Ingredient MapRequestToIngredient(IngridientRequest ingredientRequest)
+    public static Ingredient MapEdgarModelToIngredient(IngredientResponse ingredientResponse)
     {
-
-        var ingredient = new Ingredient
+        return new Ingredient
         {
-
-            Id = ingredientRequest.Id,
-            Name = ingredientRequest.Title,
-            Count = ingredientRequest.Count
+            Id = ingredientResponse.IngredientsId,
+            Name = ingredientResponse.Title,
+            Count = ingredientResponse.Left,
+            Measure = ingredientResponse.PackagingUnit
         };
-
-        return ingredient;
     }
 
 }

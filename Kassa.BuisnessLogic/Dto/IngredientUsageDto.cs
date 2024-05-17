@@ -7,11 +7,6 @@ using System.Threading.Tasks;
 namespace Kassa.BuisnessLogic.Dto;
 public class IngredientUsageDto
 {
-    public Guid Id
-    {
-        get; set;
-    }
-
     public Guid IngredientId
     {
         get; set;

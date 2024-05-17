@@ -10,7 +10,7 @@ using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.BuisnessLogic.Edgar;
-internal class BaseInitializableService: IInitializableService
+internal abstract class BaseInitializableService: IInitializableService
 {
     private readonly CompositeDisposable disposables = [];
     protected CompositeDisposable InternalDisposables => disposables;
@@ -45,19 +45,25 @@ internal class BaseInitializableService: IInitializableService
         GC.SuppressFinalize(this);
     }
 
-    public async ValueTask Initialize()
+    async ValueTask IInitializableService.Initialize()
     {
         if (IsInitialized)
         {
             return;
         }
 
+        Initialize(InternalDisposables);
         await InitializeAsync(InternalDisposables).ConfigureAwait(false);
 
         IsInitialized = true;
     }
 
     protected virtual ValueTask InitializeAsync(CompositeDisposable disposables) => ValueTask.CompletedTask;
+
+    protected virtual void Initialize(CompositeDisposable disposables)
+    {
+
+    }
 
     protected virtual void Dispose(bool disposing)
     {

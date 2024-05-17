@@ -26,129 +26,74 @@ internal interface IDishesApi : IApiOfMemberToken
 internal sealed record DishRequest
 {
     [JsonPropertyName("dish_id")]
-    public Guid DishId
-    {
-        get; set;
-    }
+    public Guid DishId { get; init; }
 
     [JsonPropertyName("title")]
-    public string Title
-    {
-        get; set;
-    }
+    public string Title { get; init; }
 
     [JsonPropertyName("nomenclatureType")]
-    public string NomenclatureType
-    {
-        get; set;
-    }
+    public string NomenclatureType { get; init; }
 
     [JsonPropertyName("hotKey")]
-    public int HotKey
-    {
-        get; set;
-    }
+    public int HotKey { get; init; }
 
     [JsonPropertyName("measureUnit")]
-    public Guid? MeasureUnit
-    {
-        get; set;
-    }
+    public string? MeasureUnit { get; init; }
 
     [JsonPropertyName("image")]
-    public int Image
-    {
-        get; set;
-    }
+    public int Image { get; init; }
 
     [JsonPropertyName("theNutValue")]
-    public int TheNutritionalValue
-    {
-        get; set;
-    }
+    public int TheNutValue { get; init; }
 
     [JsonPropertyName("techCard")]
-    public string TechCard
-    {
-        get; set;
-    }
+    public string TechCard { get; init; }
 
     [JsonPropertyName("allergens")]
-    public List<Guid> Allergens
-    {
-        get; set;
-    }
+    public List<string> Allergens { get; init; }
 
     [JsonPropertyName("cookTech")]
-    public string CookTech
-    {
-
-        get; set;
-    }
+    public string CookTech { get; init; }
 
     [JsonPropertyName("isModifiable")]
-    public bool IsModifiable
-    {
-        get; set;
-    }
+    public bool IsModifiable { get; init; }
 
     [JsonPropertyName("modificators")]
-    public List<Guid> Modificators
-    {
-        get; set;
-    }
+    public List<string> Modificators { get; init; }
 
     [JsonPropertyName("drinkFactor")]
-    public bool DrinkFactor
-    {
-        get; set;
-    }
+    public bool DrinkFactor { get; init; }
 
     [JsonPropertyName("bulk")]
-    public string Bulk
-    {
-        get; set;
-    }
+    public string Bulk { get; init; }
 
     [JsonPropertyName("isPortion")]
-    public bool IsPortion
-    {
-        get; set;
-    }
+    public bool IsPortion { get; init; }
 
     [JsonPropertyName("portions")]
-    public List<Guid> Portions
-    {
-        get; set;
-    }
+    public List<string> Portions { get; init; }
 
     [JsonPropertyName("parentGroupId")]
-    public Guid? ParentGroupId
-    {
-        get; set;
-    }
+    public Guid? ParentGroupId { get; init; }
 
     [JsonPropertyName("office_id")]
-    public Guid OfficeId
-    {
-        get; set;
-    }
+    public Guid OfficeId { get; init; }
 
     [JsonPropertyName("establishment_id")]
-    public Guid? EstablishmentId
-    {
-        get; set;
-    }
+    public Guid? EstablishmentId { get; init; }
 
     [JsonPropertyName("ingrArray")]
-    public List<string> Ingredients
-    {
-        get; set;
-    }
+    public List<string> IngrArray { get; init; }
 
     [JsonPropertyName("full_price")]
-    public double FullPrice
-    {
-        get; set;
-    }
+    public double FullPrice { get; init; }
+
+    [JsonPropertyName("techcard_id")]
+    public Guid? TechCardId { get; init; }
+
+    [JsonPropertyName("createdAt")]
+    public DateTime CreatedAt { get; init; }
+
+    [JsonPropertyName("updatedAt")]
+    public DateTime UpdatedAt { get; init; }
 }

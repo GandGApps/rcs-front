@@ -32,7 +32,7 @@ public static class HttpRepositoryDependencyResolverExntesions
 
         services.RegisterConstant<IRepository<Member>>(new EmployeeRepository());
         services.RegisterConstant<IRepository<Order>>(new OrderRepository());
-        services.RegisterConstant<IRepository<Product>>(new DishesRepository());
+        services.RegisterConstant<IRepository<Product>>(new DishesWithCacdedValueRepository());
         services.RegisterConstant<IRepository<Category>>(new CategoryRepository());
         services.RegisterConstant<IRepository<Ingredient>>(new IngridientRepository());
     }

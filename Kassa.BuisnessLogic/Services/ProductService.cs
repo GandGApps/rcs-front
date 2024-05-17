@@ -220,7 +220,6 @@ internal sealed class ProductService(
 
             if (receipt is null)
             {
-
                 throw new InvalidOperationException($"Receipt with id {product.ReceiptId} not found");
             }
 
