@@ -5,10 +5,11 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Kassa.DataAccess.Model;
+using Kassa.Shared.DelegatingHandlers;
 using Refit;
 
 namespace Kassa.DataAccess.HttpRepository.Api;
-internal interface IEmployeeApi : IApiOfMemberToken
+internal interface IEmployeeApi : IUseMemberToken
 {
     [Get("/employee")]
     public Task<IEnumerable<EmployeeResponse>> GetMembers();

@@ -211,6 +211,17 @@ public class MainViewModel : ReactiveObject, IScreen
         }).FirstAsync();
     }
 
+    public async Task OkMessage(string message, string description, string icon = "JustOk")
+    {
+
+        await OkMessageDialogCommand.Execute(new OkMessage
+        {
+            Icon = icon,
+            Message = message,
+            Description = description
+        }).FirstAsync();
+    }
+
     public async Task ShowDialog(DialogViewModel dialog)
     {
         await DialogOpenCommand.Execute(dialog).FirstAsync();

@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Kassa.Shared.DelegatingHandlers;
 using Refit;
 
 namespace Kassa.BuisnessLogic.Edgar.Api;
 
 
-internal interface IEmployeeApi: IApiOfMemberToken
+internal interface IEmployeeApi: IUseMemberToken
 {
 
     [Post("/employee/close-post")]

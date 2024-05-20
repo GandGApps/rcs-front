@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kassa.BuisnessLogic.Edgar.Api;
+namespace Kassa.Shared.DelegatingHandlers;
 
 /// <summary>
-/// It's a marker interface for the _member token.
+/// Marker interface for services that require a terminal token
 /// </summary>
-public interface IApiOfMemberToken
-{
-}
+public interface IUseTerminalToken;

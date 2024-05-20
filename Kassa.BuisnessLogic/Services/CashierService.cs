@@ -30,7 +30,7 @@ internal class CashierService : BaseInitializableService, ICashierService
         get;
     }
 
-    public IObservableOnlyBehaviourSubject<CashierShift?> CurrentShift
+    public IObservableOnlyBehaviourSubject<ICashierShift?> CurrentShift
     {
         get;
     }
@@ -51,7 +51,7 @@ internal class CashierService : BaseInitializableService, ICashierService
         _ordersService = ordersService;
         _paymentInfoService = paymentInfoService;
 
-        CurrentShift = new ObservableOnlyBehaviourSubject<CashierShift?>((CashierShift?)null);
+        CurrentShift = new ObservableOnlyBehaviourSubject<ICashierShift?>((ICashierShift?)null);
     }
 
     public async ValueTask<IOrderEditService> CreateOrder(bool isDelivery)

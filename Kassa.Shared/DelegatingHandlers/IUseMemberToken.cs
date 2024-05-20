@@ -4,11 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kassa.DataAccess.HttpRepository.Api;
+namespace Kassa.Shared.DelegatingHandlers;
 
 /// <summary>
-/// It's a marker interface for the member token.
+/// Marker interface for services that require a member token
 /// </summary>
-public interface IApiOfMemberToken
-{
-}
+public interface IUseMemberToken;

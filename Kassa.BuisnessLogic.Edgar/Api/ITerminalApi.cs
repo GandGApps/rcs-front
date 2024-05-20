@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Kassa.Shared.DelegatingHandlers;
 using Refit;
 
 namespace Kassa.BuisnessLogic.Edgar.Api;
 
-internal interface ITerminalApi
+internal interface ITerminalApi: IUseTerminalToken
 {
     [Post("/terminal/login-terminal")]
     public Task<IApiResponse<string>> Login(LoginTerminalRequest request);

@@ -21,6 +21,12 @@ public class OkMessageDialogViewModel : DialogViewModel
     } = "OK";
 
     [Reactive]
+    public string Description
+    {
+        get; set;
+    }
+
+    [Reactive]
     public string Icon
     {
         get; set;

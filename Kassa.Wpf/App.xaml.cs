@@ -130,6 +130,8 @@ public partial class App : Application
 
         Locator.CurrentMutable.AddHttpRepositoryDataAccess();
         Locator.CurrentMutable.AddEdgarBuisnessLogic();
+
+        ApiSplatExtensions.BuildServices();
     }
 
     protected override void OnActivated(EventArgs e)

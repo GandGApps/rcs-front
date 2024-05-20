@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Dialogs;
+using Kassa.Shared;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -56,7 +57,7 @@ public class PincodePageVm : PageViewModel
             .Subscribe(async x =>
             {
                 var loading = MainViewModel.ShowLoadingDialog("Запрос подключения для модуля: “SUPER_MODUL”");
-                
+
                 try
                 {
 
@@ -77,6 +78,18 @@ public class PincodePageVm : PageViewModel
                             Message = "Подключение не удалось"
                         });
                     }
+                }
+                catch (InvalidUserOperatationException e)
+                {
+                    await MainViewModel.OkMessage(e.Message, e.Description, e.Icon);
+                }
+                catch (Exception e)
+                {
+
+                    await MainViewModel.ShowDialog(new OkMessageDialogViewModel()
+                    {
+                        Message = e.Message
+                    });
                 }
                 finally
                 {

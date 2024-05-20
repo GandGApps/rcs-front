@@ -30,6 +30,14 @@
                 Style="{StaticResource Header}"
                 TextAlignment="Center"
                 TextWrapping="Wrap" />
+
+            <TextBlock
+                x:Name="Description"
+                Margin="{mx:AdaptiveSize Thickness='0,30,0,30'}"
+                Style="{StaticResource SubHeader}"
+                TextAlignment="Center"
+                TextWrapping="Wrap" />
+
             <Button
                 x:Name="OkButton"
                 HorizontalAlignment="Center"

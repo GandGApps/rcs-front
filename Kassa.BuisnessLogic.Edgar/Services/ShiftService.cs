@@ -52,6 +52,13 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
         {
             var pincodeResponse = reponse.Content!;
 
+            var cashierService = await Locator.GetInitializedService<ICashierService>();
+
+            if (cashierService.CurrentShift.Value is null && !pincodeResponse.IsManagerPincode)
+            {
+                throw new InvalidUserOperatationException("Кассовая смена не открыта") { Description = "Дождитесь менеджера" };
+            }
+
             var config = Locator.GetRequiredService<IConfiguration>();
             config["MemberAuthToken"] = pincodeResponse.Token;
 

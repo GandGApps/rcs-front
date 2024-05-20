@@ -34,6 +34,12 @@ public partial class OkMessageDialog : ClosableDialog<OkMessageDialogViewModel>
             this.OneWayBind(ViewModel, x => x.Icon, view => view.Icon.Visibility, iconName => App.Current.TryFindResource(iconName) is null ? Visibility.Collapsed : Visibility.Visible)
                 .DisposeWith(disposables);
 
+            this.OneWayBind(ViewModel, x => x.Description, view => view.Description.Text)
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, x => x.Description, view => view.Description.Visibility, description => string.IsNullOrWhiteSpace(description) ? Visibility.Collapsed : Visibility.Visible)
+                .DisposeWith(disposables);
+
             this.OneWayBind(ViewModel, vm => vm.Message, view => view.Message.Text)
                 .DisposeWith(disposables);
 

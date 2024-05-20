@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Kassa.Shared.DelegatingHandlers;
 using Refit;
 
 namespace Kassa.BuisnessLogic.Edgar.Api;
-internal interface IEmployeePostsApi : IApiOfMemberToken
+internal interface IEmployeePostsApi : IUseMemberToken
 {
     [Post("/employee/posts")]
     public Task<IEnumerable<EmployeeResponsePost>> GetEmployeePosts(EmployeeGetPostsRequest request);

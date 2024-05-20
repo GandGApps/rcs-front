@@ -4,11 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Kassa.Shared.DelegatingHandlers;
 using Refit;
 
 namespace Kassa.DataAccess.HttpRepository.Api;
 
-internal interface IDishesApi : IApiOfMemberToken
+internal interface IDishesApi : IUseMemberToken
 {
     [Get("/dishes")]
     public Task<IEnumerable<DishRequest>> GetDishes();

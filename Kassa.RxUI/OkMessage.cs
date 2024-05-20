@@ -1,14 +1,14 @@
 ﻿namespace Kassa.RxUI;
 
-public record struct OkMessage(string Message, string Icon)
+public record struct OkMessage(string Message, string Icon, string Description = "")
 {
-    public static implicit operator (string, string)(OkMessage value)
+    public static implicit operator (string, string, string)(OkMessage value)
     {
-        return (value.Message, value.Icon);
+        return (value.Message, value.Icon, value.Description);
     }
 
-    public static implicit operator OkMessage((string, string) value)
+    public static implicit operator OkMessage((string, string, string) value)
     {
-        return new OkMessage(value.Item1, value.Item2);
+        return new OkMessage(value.Item1, value.Item2, value.Item3);
     }
 }

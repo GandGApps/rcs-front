@@ -20,7 +20,7 @@ public interface ICashierService : IInitializableService
         get;
     }
 
-    public IObservableOnlyBehaviourSubject<CashierShift?> CurrentShift
+    public IObservableOnlyBehaviourSubject<ICashierShift?> CurrentShift
     {
         get;
     }
