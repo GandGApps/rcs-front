@@ -35,10 +35,15 @@ public static class EdgarDependencyResolverExntesions
 
         services.RegisterConstant<IAuthService>(new AuthService());
 
-        SplatRegistrations.Register<IShiftService, ShiftService>();
+        services.Register<IShiftService>(() =>
+        {
+            var repository = Locator.Current.GetRequiredService<IRepository<Shift>>();
+            var memberService = Locator.Current.GetNotInitializedService<IMemberService>();
+
+            return new ShiftService(repository, memberService);
+        });
         services.RegisterInitializableServiceFactory<IShiftService>();
 
-        SplatRegistrations.Register<IProductService, ProductService>();
         services.Register<IProductService>(() =>
         {
             var repository = Locator.Current.GetRequiredService<IRepository<Product>>();
@@ -47,6 +52,19 @@ public static class EdgarDependencyResolverExntesions
 
             return new ProductService(repository, ingridientsService, receiptService);
         });
+
+        services.Register<ICashierService>(() =>
+        {
+            var additiveService = Locator.Current.GetNotInitializedService<IAdditiveService>();
+            var categoryService = Locator.Current.GetNotInitializedService<ICategoryService>();
+            var productService = Locator.Current.GetNotInitializedService<IProductService>();
+            var receiptService = Locator.Current.GetNotInitializedService<IReceiptService>();
+            var ordersService = Locator.Current.GetNotInitializedService<IOrdersService>();
+            var paymentInfoService = Locator.Current.GetNotInitializedService<IPaymentInfoService>();
+
+            return new CashierService(additiveService, categoryService, productService, receiptService, ordersService, paymentInfoService);
+        });
+        services.RegisterInitializableServiceFactory<ICashierService>();
 
         SplatRegistrations.SetupIOC();
     }
@@ -58,10 +76,7 @@ public static class EdgarDependencyResolverExntesions
         AddApi<IEmployeeApi>(services);
 
         _services.AddTransient<SelectJwtDelegatingHandler>();
-
-#if DEBUG
         _services.AddTransient<HttpDebugLoggingHandler>();
-#endif
 
         _serviceProvider = _services.BuildServiceProvider();
     }
@@ -80,9 +95,7 @@ public static class EdgarDependencyResolverExntesions
         return services.AddRefitClient<T>(settings)
             .AddBaseAddress()
             .AddHttpMessageHandler<SelectJwtDelegatingHandler>()
-#if DEBUG
             .AddHttpMessageHandler<HttpDebugLoggingHandler>()
-#endif
             ;
     }
 

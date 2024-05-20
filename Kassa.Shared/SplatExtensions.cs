@@ -19,4 +19,12 @@ public static class SplatExtensions
     {
         return services.GetService<T>() ?? throw new InvalidOperationException($"The service of type {typeof(T)} is not registered.");
     }
+
+    public static MultiLogger RegisterLoggers(this IMutableDependencyResolver services, params ILogger[] loggers)
+    {
+        var multiLogger = new MultiLogger(loggers);
+        services.RegisterConstant(multiLogger, typeof(ILogger));
+
+        return multiLogger;
+    }
 }

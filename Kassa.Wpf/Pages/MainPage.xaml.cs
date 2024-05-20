@@ -16,22 +16,31 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Kassa.RxUI.Dialogs;
 using Kassa.RxUI.Pages;
+using Kassa.Shared;
+using Kassa.Wpf.Windows;
 using ReactiveUI;
+using Splat;
 
 namespace Kassa.Wpf.Pages;
 /// <summary>
 /// Логика взаимодействия для MainPage.xaml
 /// </summary>
-public partial class MainPage : ReactiveUserControl<MainPageVm>
+public partial class MainPage : ReactiveUserControl<MainPageVm>, IEnableLogger
 {
     private const string KassaNewUserKey = "KASSA_NEW_USER";
+
+    private readonly KonamiSequence _konamiSequence = new();
 
     public MainPage()
     {
         InitializeComponent();
 
+
+
         this.WhenActivated(disposables =>
         {
+            WeakEventManager<Window, KeyEventArgs>.AddHandler(Application.Current.MainWindow, "KeyUp", ReactiveUserControl_KeyDown);
+
             this.BindCommand(ViewModel, x => x.CloseCommand, x => x.CloseButton)
                 .DisposeWith(disposables);
 
@@ -76,6 +85,10 @@ public partial class MainPage : ReactiveUserControl<MainPageVm>
 
             this.OneWayBind(ViewModel, x => x.CurrentShiftOpennedDate, x => x.CurrentShiftOpennedDate.Text, x => x is null ? "Смена не открыта" : $"Смена открыта  {x:dd.MM.yyyy  HH:mm}")
                 .DisposeWith(disposables);
+
+            Disposable
+                .Create(() => WeakEventManager<Window, KeyEventArgs>.RemoveHandler(Application.Current.MainWindow, "KeyUp", ReactiveUserControl_KeyDown))
+                .DisposeWith(disposables);
         });
     }
 
@@ -88,5 +101,38 @@ public partial class MainPage : ReactiveUserControl<MainPageVm>
     private void ButtonWithIcon_Click(object sender, RoutedEventArgs e)
     {
 
+    }
+
+    private void ReactiveUserControl_KeyDown(object? sender, KeyEventArgs e)
+    {
+
+        if (DeveloperWindow.Instance is not null)
+        {
+            return;
+        }
+
+        if (_konamiSequence.IsCompletedBy(e.Key.ToString()))
+        {
+            var logger = Locator.Current.GetRequiredService<ILogger>();
+
+            if (logger is not MultiLogger loggers)
+            {
+                return;
+            }
+
+            if (loggers.FirstOrDefault(x => x is ObservableLogger) is not ObservableLogger observableLogger)
+            {
+                return;
+            }
+
+            var observable = observableLogger.Select(x => x.Message);
+
+            var developerWindow = new DeveloperWindow(observable)
+            {
+                Owner = Window.GetWindow(this)
+            };
+
+            developerWindow.Show();
+        }
     }
 }

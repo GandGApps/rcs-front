@@ -10,313 +10,376 @@ namespace Kassa.DataAccess.HttpRepository.Api;
 internal interface IOrdersApi: IApiOfMemberToken
 {
     [Get("/orders")]
-    public Task<IEnumerable<OrderDetails>> GetOrders();
+    public Task<IEnumerable<OrderEdgarModel>> GetOrders();
 
     [Post("/orders/create")]
-    public Task AddOrder(OrderDetails order);
+    public Task AddOrder(OrderEdgarModel order);
 
-    public Task<OrderDetails> GetOrder([AliasAs("order_id")] Guid id);
+    public Task<OrderEdgarModel> GetOrder([AliasAs("order_id")] Guid id);
 }
 
-internal sealed record OrderedProduct
+internal sealed record OrderedProductEdgarModel
 {
-    [property: JsonPropertyName("count")]
-    public int Count
+    [JsonPropertyName("orderedproduct_id")]
+    public Guid Id
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("price")]
+    [JsonPropertyName("productId")]
+    public Guid ProductId
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("count")]
+    public double Count
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("price")]
     public double Price
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("productId")]
-    public string ProductId
-    {
-        get; set;
-    }
-
-    [property: JsonPropertyName("totalPrice")]
+    [JsonPropertyName("totalPrice")]
     public double TotalPrice
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("subTotalPrice")]
+    [JsonPropertyName("subTotalPrice")]
     public double SubTotalPrice
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("comment")]
-    public string? Comment
+    [JsonPropertyName("discount")]
+    public double Discount
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("additives")]
-    public List<OrderedAdditive> Additives
+    [JsonPropertyName("comment")]
+    public string Comment
     {
-        get; set;
-    } = [];
+        get; init;
+    }
+
+    [JsonPropertyName("orderAdditive")]
+    public IEnumerable<OrderedAdditiveEdgarModel> Additives
+    {
+        get; init;
+    }
 }
 
-internal sealed record OrderedAdditive
+internal sealed record OrderedAdditiveEdgarModel
 {
-    [property: JsonPropertyName("count")]
-    public string Count
+    [JsonPropertyName("additive_id")]
+    public Guid Id
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("price")]
+    [JsonPropertyName("count")]
+    public double Count
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("price")]
     public double Price
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("AdditiveId")]
-    public string AdditiveId
-    {
-        get; set;
-    }
-
-    [property: JsonPropertyName("totalPrice")]
+    [JsonPropertyName("totalPrice")]
     public double TotalPrice
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("subTotalPrice")]
+    [JsonPropertyName("subTotalPrice")]
     public double SubTotalPrice
     {
-        get; set;
+        get; init;
+    }
+
+    [JsonPropertyName("discount")]
+    public double Discount
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("measure")]
+    public string Measure
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("additiveId")]
+    public Guid AdditiveId
+    {
+        get; init;
     }
 }
 
-internal sealed record OrderDetails
+internal sealed record PaymentInfoEdgarModel
 {
-    [property: JsonPropertyName("orderId")]
-    public Guid? Id
+    [JsonPropertyName("paymentinfo_id")]
+    public Guid Id
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("orderedProduct")]
-    public IEnumerable<OrderedProduct> OrderedProduct
+    [JsonPropertyName("order_id")]
+    public Guid OrderId
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("status")]
-    public string Status
+    [JsonPropertyName("cash")]
+    public double Cash
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("deliveryTime")]
-    public string DeliveryTime
+    [JsonPropertyName("bankCard")]
+    public double BankCard
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("courierId")]
-    public Guid? CourierId
+    [JsonPropertyName("cashlessPayment")]
+    public double CashlessPayment
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("comment")]
-    public string? Comment
+    [JsonPropertyName("withoutRevenue")]
+    public double WithoutRevenue
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("totalSum")]
-    public string TotalSum
+    [JsonPropertyName("toDeposit")]
+    public double ToDeposit
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("discount")]
-    public string Discount
+    [JsonPropertyName("toEntered")]
+    public double ToEntered
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("isDelivery")]
-    public bool IsDelivery
+    [JsonPropertyName("change")]
+    public double Change
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("clientId")]
-    public Guid? ClientId
+    [JsonPropertyName("withSalesReceipt")]
+    public bool WithSalesReceipt
     {
-        get; set;
+        get; init;
+    }
+}
+
+internal sealed record OrderEdgarModel
+{
+    [JsonPropertyName("order_id")]
+    public Guid Id
+    {
+        get; init;
     }
 
-    [property: JsonPropertyName("lastName")]
-    public string LastName
-    {
-        get; set;
-    }
-
-    [property: JsonPropertyName("phone")]
-    public string Phone
-    {
-        get; set;
-    }
-
-    [property: JsonPropertyName("card")]
-    public string Card
-    {
-        get; set;
-    }
-
-    [property: JsonPropertyName("miscellaneous")]
-    public string Miscellaneous
-    {
-        get; set;
-    }
-
-    [property: JsonPropertyName("house")]
-    public string House
-    {
-        get; set;
-    }
-
-    [property: JsonPropertyName("building")]
-    public string Building
-    {
-        get; set;
-    }
-
-    [property: JsonPropertyName("entrance")]
-    public string Entrance
-    {
-        get; set;
-    }
-
-    [property: JsonPropertyName("floor")]
-    public string Floor
-    {
-        get; set;
-    }
-
-    [property: JsonPropertyName("apartment")]
-    public string Apartment
-    {
-        get; set;
-    }
-
-    [property: JsonPropertyName("intercom")]
-    public string Intercom
-    {
-        get; set;
-    }
-
-    [property: JsonPropertyName("addressNote")]
-    public string AddressNote
-    {
-        get; set;
-    }
-
-    [property: JsonPropertyName("isPickup")]
-    public bool IsPickup
-    {
-        get; set;
-    }
-
-    [property: JsonPropertyName("streetId")]
-    public Guid? StreetId
-    {
-        get; set;
-    }
-
-    [property: JsonPropertyName("districtId")]
-    public Guid? DistrictId
-    {
-        get; set;
-    }
-
-    [property: JsonPropertyName("firstName")]
-    public string FirstName
-    {
-        get; set;
-    }
-
-    [property: JsonPropertyName("middleName")]
-    public string MiddleName
-    {
-        get; set;
-    }
-
-    [property: JsonPropertyName("isOutOfTurn")]
-    public bool IsOutOfTurn
-    {
-        get; set;
-    }
-
-    [property: JsonPropertyName("isProblematicDelivery")]
+    [JsonPropertyName("isProblematicDelivery")]
     public bool IsProblematicDelivery
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("isModified")]
-    public string IsModified
+    [JsonPropertyName("status")]
+    public string Status
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("payInfCash")]
-    public double PayInfCash
+    [JsonPropertyName("created_at")]
+    public DateTime CreatedAt
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("payInfBankCart")]
-    public double PayInfBankCart
+    [JsonPropertyName("deliveryTime")]
+    public DateTime? DeliveryTime
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("payInfCashless")]
-    public double PayInfCashless
+    [JsonPropertyName("courierId")]
+    public Guid? CourierId
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("payInfWithoutRev")]
-    public double PayInfWithoutRev
+    [JsonPropertyName("dishes")]
+    public IEnumerable<OrderedProductEdgarModel> Products
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("payInfToDeposit")]
-    public double PayInfToDeposit
+    [JsonPropertyName("comment")]
+    public string Comment
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("payinfToEntered")]
-    public double PayinfToEntered
+    [JsonPropertyName("totalSum")]
+    public double TotalSum
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("payInfChange")]
-    public double PayInfChange
+    [JsonPropertyName("subTotalSum")]
+    public double SubTotalSum
     {
-        get; set;
+        get; init;
     }
 
-    [property: JsonPropertyName("payInfWithSalesReceipt")]
-    public bool PayInfWithSalesReceipt
+    [JsonPropertyName("discount")]
+    public double Discount
     {
-        get; set;
+        get; init;
+    }
+
+    [JsonPropertyName("isDelivery")]
+    public bool IsDelivery
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("clientId")]
+    public Guid? ClientId
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("lastName")]
+    public string LastName
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("phone")]
+    public string Phone
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("card")]
+    public string Card
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("miscellaneous")]
+    public string Miscellaneous
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("house")]
+    public string House
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("building")]
+    public string Building
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("entrance")]
+    public string Entrance
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("floor")]
+    public string Floor
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("apartment")]
+    public string Apartment
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("intercom")]
+    public string Intercom
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("addressNote")]
+    public string AddressNote
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("isPickup")]
+    public bool IsPickup
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("streetId")]
+    public Guid? StreetId
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("districtId")]
+    public Guid? DistrictId
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("firstName")]
+    public string FirstName
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("middleName")]
+    public string MiddleName
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("isOutOfTurn")]
+    public bool IsOutOfTurn
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("paymentInfo")]
+    public PaymentInfoEdgarModel? PaymentInfo
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("paymentinfoId")]
+    public Guid? PaymentInfoId
+    {
+        get; init;
     }
 }

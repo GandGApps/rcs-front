@@ -46,10 +46,7 @@ public static class HttpRepositoryDependencyResolverExntesions
         AddApi<IIngridientsApi>(services);
 
         _services.AddTransient<SelectJwtDelegatingHandler>();
-
-#if DEBUG
         _services.AddTransient<HttpDebugLoggingHandler>();
-#endif
 
         _serviceProvider = _services.BuildServiceProvider();
     }
@@ -67,10 +64,9 @@ public static class HttpRepositoryDependencyResolverExntesions
     {
         return services.AddRefitClient<T>(settings)
             .AddBaseAddress()
-#if DEBUG
+            .AddHttpMessageHandler<SelectJwtDelegatingHandler>()
             .AddHttpMessageHandler<HttpDebugLoggingHandler>()
-#endif
-            .AddHttpMessageHandler<SelectJwtDelegatingHandler>(); 
+            ;
     }
 
     internal static IHttpClientBuilder AddBaseAddress(this IHttpClientBuilder builder)

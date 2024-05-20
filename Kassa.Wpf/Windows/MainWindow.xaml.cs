@@ -14,6 +14,7 @@ using Kassa.RxUI;
 using Kassa.RxUI.Dialogs;
 using Kassa.RxUI.Pages;
 using Kassa.Shared;
+using Kassa.Wpf.Windows;
 using ReactiveUI;
 using Splat;
 
@@ -62,6 +63,7 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
 
         var viewLocator = Locator.Current.GetService<IViewLocator>() ??
             throw new NullReferenceException($"Service IViewLocator not found!");
+
 
         ViewModel.DialogOpenCommand = ReactiveCommand.CreateFromTask(async (DialogViewModel x) =>
         {
@@ -159,6 +161,8 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
             {
                 e.Handled = true;
                 MessageBox.Show(extractedException.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+
+                DeveloperWindow.Instance?.AddMessage(FormatException(extractedException));
             }
             else
             {
@@ -204,6 +208,23 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
     public static bool GetIsGrayscaleEffectOnDialog(UIElement element)
     {
         return (bool)element.GetValue(IsGrayscaleEffectOnDialogProperty);
+    }
+
+
+    private static string FormatException(Exception exception)
+    {
+        var sb = new StringBuilder();
+
+        sb.AppendLine(exception.Message);
+        sb.AppendLine(exception.StackTrace);
+
+        if (exception.InnerException != null)
+        {
+            sb.AppendLine("Inner exception:");
+            sb.AppendLine(FormatException(exception.InnerException));
+        }
+
+        return sb.ToString();
     }
 
 }

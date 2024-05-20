@@ -5,10 +5,11 @@ using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using Splat;
 
 namespace Kassa.Shared.DelegatingHandlers;
 
-public sealed class HttpDebugLoggingHandler : DelegatingHandler
+public sealed class HttpDebugLoggingHandler : DelegatingHandler, IEnableLogger
 {
     private static readonly string[] types = ["html", "text", "xml", "json", "txt", "x-www-form-urlencoded"];
 
@@ -18,20 +19,22 @@ public sealed class HttpDebugLoggingHandler : DelegatingHandler
         var id = Guid.NewGuid().ToString();
         var msg = $"[{id} -   Request]";
 
-        Debug.WriteLine($"{msg}========Start==========");
-        Debug.WriteLine($"{msg} {req.Method} {req.RequestUri!.PathAndQuery} {req.RequestUri.Scheme}/{req.Version}");
-        Debug.WriteLine($"{msg} Host: {req.RequestUri.Scheme}://{req.RequestUri.Host}");
+        this.Log().Info($"{msg}========Start==========");
+
+        this.Log().Info($"{msg}========Start==========");
+        this.Log().Info($"{msg} {req.Method} {req.RequestUri!.PathAndQuery} {req.RequestUri.Scheme}/{req.Version}");
+        this.Log().Info($"{msg} Host: {req.RequestUri.Scheme}://{req.RequestUri.Host}");
 
         foreach (var header in req.Headers)
         {
-            Debug.WriteLine($"{msg} {header.Key}: {string.Join(", ", header.Value)}");
+            this.Log().Info($"{msg} {header.Key}: {string.Join(", ", header.Value)}");
         }
 
         if (req.Content != null)
         {
             foreach (var header in req.Content.Headers)
             {
-                Debug.WriteLine($"{msg} {header.Key}: {string.Join(", ", header.Value)}");
+                this.Log().Info($"{msg} {header.Key}: {string.Join(", ", header.Value)}");
             }
 
             if (req.Content is StringContent || IsTextBasedContentType(req.Headers) ||
@@ -39,8 +42,8 @@ public sealed class HttpDebugLoggingHandler : DelegatingHandler
             {
                 var result = await req.Content.ReadAsStringAsync(cancellationToken);
 
-                Debug.WriteLine($"{msg} Content:");
-                Debug.WriteLine($"{msg} {result}");
+                this.Log().Info($"{msg} Content:");
+                this.Log().Info($"{msg} {result}");
             }
         }
 
@@ -50,27 +53,27 @@ public sealed class HttpDebugLoggingHandler : DelegatingHandler
 
         var end = DateTime.Now;
 
-        Debug.WriteLine($"{msg} Duration: {end - start}");
-        Debug.WriteLine($"{msg}==========End==========");
+        this.Log().Info($"{msg} Duration: {end - start}");
+        this.Log().Info($"{msg}==========End==========");
 
         msg = $"[{id} - Response]";
-        Debug.WriteLine($"{msg}=========Start=========");
+        this.Log().Info($"{msg}=========Start=========");
 
         var resp = response;
 
-        Debug.WriteLine(
+        this.Log().Info(
             $"{msg} {req.RequestUri.Scheme.ToUpper()}/{resp.Version} {(int)resp.StatusCode} {resp.ReasonPhrase}");
 
         foreach (var header in resp.Headers)
         {
-            Debug.WriteLine($"{msg} {header.Key}: {string.Join(", ", header.Value)}");
+            this.Log().Info($"{msg} {header.Key}: {string.Join(", ", header.Value)}");
         }
 
         if (resp.Content != null)
         {
             foreach (var header in resp.Content.Headers)
             {
-                Debug.WriteLine($"{msg} {header.Key}: {string.Join(", ", header.Value)}");
+                this.Log().Info($"{msg} {header.Key}: {string.Join(", ", header.Value)}");
             }
 
             if (resp.Content is StringContent || IsTextBasedContentType(resp.Headers) ||
@@ -80,15 +83,16 @@ public sealed class HttpDebugLoggingHandler : DelegatingHandler
                 var result = await resp.Content.ReadAsStringAsync(cancellationToken);
                 end = DateTime.Now;
 
-                Debug.WriteLine($"{msg} Content:");
-                Debug.WriteLine($"{msg} {result}");
-                Debug.WriteLine($"{msg} Duration: {end - start}");
+                this.Log().Info($"{msg} Content:");
+                this.Log().Info($"{msg} {result}");
+                this.Log().Info($"{msg} Duration: {end - start}");
             }
         }
 
-        Debug.WriteLine($"{msg}==========End==========");
+        this.Log().Info($"{msg}==========End==========");
         return response;
     }
+
 
     private static bool IsTextBasedContentType(HttpHeaders headers)
     {

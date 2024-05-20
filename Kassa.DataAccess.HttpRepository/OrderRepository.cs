@@ -16,7 +16,7 @@ internal sealed class OrderRepository : IRepository<Order>
     {
         var orderApi = Locator.Current.GetRequiredService<IOrdersApi>();
 
-        var request = ApiMapper.MapFullOrderToRequest(item);
+        var request = ApiMapper.MapOrderToEdgarModel(item);
 
         await orderApi.AddOrder(request);
     }
@@ -34,7 +34,7 @@ internal sealed class OrderRepository : IRepository<Order>
             return [];
         }
 
-        return orders.Select(ApiMapper.MapRequestToFullOrder).ToList();
+        return orders.Select(ApiMapper.MapEdgarModelToOrder).ToList();
     }
     public Task Update(Order item) => throw new NotImplementedException();
 }

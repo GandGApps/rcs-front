@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Kassa.BuisnessLogic.Services;
-public interface IPaymentService : IInitializableService, INotifyPropertyChanged
+public interface IPaymentService : IInitializableService
 {
     public double Cash
     {

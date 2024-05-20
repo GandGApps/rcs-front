@@ -59,15 +59,6 @@ public class PincodePageVm : PageViewModel
                 
                 try
                 {
-#if RELEASE
-                await Task.Delay(10_000);
-#elif DEBUG
-                    await Task.Delay(700);
-#endif
-
-                    loading.Message = "Типо 10 сек прошло";
-
-                    await Task.Delay(1000);
 
                     var shiftService = await Locator.GetInitializedService<IShiftService>();
 
