@@ -63,15 +63,25 @@ public class MainPageVm : PageViewModel
             await MainViewModel.DialogOpenCommand.Execute(new TurnOffDialogViewModel()).FirstAsync();
         });
 
-        OpenProfileDialog = CreateOpenDialogCommand(() => new ProfileDialogViewModel());
+        OpenProfileDialog = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var shiftService = await Locator.GetInitializedService<IShiftService>();
+
+            if (!await TryAuthorizePageAccess<PersonalPageVm>(shiftService))
+            {
+
+                return;
+            }
+
+            await MainViewModel.ShowDialog(new ProfileDialogViewModel());
+        });
 
         OpenDocumnetsDialog = ReactiveCommand.CreateFromTask(async () =>
         {
             var shiftService = await Locator.GetInitializedService<IShiftService>();
 
-            if (!shiftService.IsShiftStarted())
+            if (!await TryAuthorizePageAccess<PageViewModel>(shiftService))
             {
-                await MainViewModel.OkMessage("Смена не открыта", "JustFailed");
                 return;
             }
 
@@ -82,9 +92,8 @@ public class MainPageVm : PageViewModel
         {
             var shiftService = await Locator.GetInitializedService<IShiftService>();
 
-            if (!shiftService.IsShiftStarted())
+            if (!await TryAuthorizePageAccess<PageViewModel>(shiftService))
             {
-                await MainViewModel.OkMessage("Смена не открыта", "JustFailed");
                 return;
             }
 
@@ -95,9 +104,8 @@ public class MainPageVm : PageViewModel
         {
             var shiftService = await Locator.GetInitializedService<IShiftService>();
 
-            if (!shiftService.IsShiftStarted())
+            if (!await TryAuthorizePageAccess<AllDeliveriesPageVm>(shiftService))
             {
-                await MainViewModel.OkMessage("Смена не открыта", "JustFailed");
                 return;
             }
 
@@ -107,8 +115,14 @@ public class MainPageVm : PageViewModel
         OpenServicesDialog = ReactiveCommand.CreateFromTask(async () =>
         {
             var cashierService = await Locator.GetInitializedService<ICashierService>();
+            var shiftService = await Locator.GetInitializedService<IShiftService>();
 
-            await MainViewModel.GoToPage(new ServicePageVm(cashierService));
+            if (!await TryAuthorizePageAccess<ServicePageVm>(shiftService))
+            {
+                return;
+            }
+
+            await MainViewModel.GoToPage(new ServicePageVm(cashierService, shiftService));
         });
 
         GoToCashier = ReactiveCommand.CreateFromTask(async () =>
@@ -119,9 +133,8 @@ public class MainPageVm : PageViewModel
 
             var shiftService = await Locator.GetInitializedService<IShiftService>();
 
-            if (!shiftService.IsShiftStarted())
+            if (!await TryAuthorizePageAccess<OrderEditPageVm>(shiftService))
             {
-                await MainViewModel.OkMessage("Смена не открыта", "JustFailed");
                 return;
             }
 
@@ -138,9 +151,8 @@ public class MainPageVm : PageViewModel
 
             var shiftService = await Locator.GetInitializedService<IShiftService>();
 
-            if (!shiftService.IsShiftStarted())
+            if (!await TryAuthorizePageAccess<OrderEditPageVm>(shiftService))
             {
-                await MainViewModel.OkMessage("Смена не открыта", "JustFailed");
                 return;
             }
 
@@ -186,8 +198,4 @@ public class MainPageVm : PageViewModel
         }).DisposeWith(disposables);
     }
 
-    private ReactiveCommand<Unit, Unit> CreateOpenDialogCommand(Func<DialogViewModel> dialogViewModel) => ReactiveCommand.CreateFromTask(async () =>
-    {
-        await MainViewModel!.DialogOpenCommand.Execute(dialogViewModel()).FirstAsync();
-    });
 }

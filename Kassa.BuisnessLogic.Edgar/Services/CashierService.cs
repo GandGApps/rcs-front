@@ -149,16 +149,6 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
         await _receiptService.Initialize();
         await _ordersService.Initialize();
         await _shiftService.Initialize();
-
-        var shift = _shiftService.CurrentShift.Value;
-
-        if (shift is null)
-        {
-            this.Log().Error("Shift is not exist");
-            throw new DeveloperException("Смены не существует логически, если вы увидели это сообщение возник парадокс");
-        }
-        
-
     }
 
     protected async override ValueTask DisposeAsyncCore()

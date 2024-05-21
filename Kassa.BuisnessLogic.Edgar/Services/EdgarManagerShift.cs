@@ -20,14 +20,16 @@ internal class EdgarManagerShift : ICashierShift
     private readonly PostExistsResponse _postExistsResponse;
     private readonly BehaviorSubject<bool> _isStarted = new(false);
     private readonly DateTime? _start;
+    private readonly ShiftService _shiftService;
 
-    public EdgarManagerShift(MemberDto manager, PostExistsResponse postExistsResponse)
+    public EdgarManagerShift(MemberDto manager, PostExistsResponse postExistsResponse, ShiftService shiftService)
     {
         _manager = manager;
         IsStarted = new(_isStarted);
         _postExistsResponse = postExistsResponse;
 
         _start = postExistsResponse.CreatedPost.OpenDate;
+        _shiftService = shiftService;
     }
 
     public MemberDto Manager => _manager;
@@ -45,6 +47,8 @@ internal class EdgarManagerShift : ICashierShift
         var openShiftRequest = new TerminalOpenPostRequest(DateTime.Now, shift.Id, 0);
 
         await terminalPostApi.OpenPost(openShiftRequest).ConfigureAwait(false);
+
+        _isStarted.OnNext(true);
     }
 
     public async Task End()
@@ -55,6 +59,8 @@ internal class EdgarManagerShift : ICashierShift
         var closeShiftRequest = new TerminalClosePostRequest(DateTime.Now, shift.Id);
 
         await terminalPostApi.ClosePost(closeShiftRequest).ConfigureAwait(false);
+
+        _shiftService._currentCashierShift.OnNext(null);
     }
 
     public ValueTask<CashierShiftDto> GetCashierShiftAsync()

@@ -10,7 +10,6 @@ using Kassa.Shared;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Edgar.Api;
-using Kassa.BuisnessLogic.Edgar.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
@@ -23,7 +22,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
     private readonly IRepository<Shift> _repository;
     private readonly IMemberService _memberService;
     internal readonly BehaviorSubject<IShift?> _currentShift = new(null);
-    private readonly BehaviorSubject<ICashierShift?> _currentCashierShift = new(null);
+    internal readonly BehaviorSubject<ICashierShift?> _currentCashierShift = new(null);
     private readonly HostModelManager<ShiftDto> _hostModelManager = new();
 
     public ShiftService(IRepository<Shift> repository, IMemberService memberService)
@@ -187,7 +186,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
         var postExists = await terminalApi.PostExists(new(DateTime.Now));
 
-        var managerShift = new EdgarManagerShift(member, postExists);
+        var managerShift = new EdgarManagerShift(member, postExists, this);
 
         if (!this.IsCashierShiftStarted() && !pincodeResponse.IsManagerPincode)
         {

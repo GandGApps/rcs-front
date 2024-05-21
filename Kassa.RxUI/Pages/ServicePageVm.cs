@@ -17,11 +17,13 @@ using Splat;
 namespace Kassa.RxUI.Pages;
 public class ServicePageVm : PageViewModel
 {
+    private readonly IShiftService _shiftService;
     private readonly ICashierService _cashierService;
 
-    public ServicePageVm(ICashierService cashierService)
+    public ServicePageVm(ICashierService cashierService, IShiftService shiftService)
     {
         _cashierService = cashierService;
+        _shiftService = shiftService;
 
         SelectedOrders = new([]);
         SelectedDocuments = new([]);
@@ -30,10 +32,10 @@ public class ServicePageVm : PageViewModel
         {
             try
             {
-                if (_cashierService.IsShiftStarted())
+                if (_shiftService.IsCashierShiftStarted())
                 {
                     // if shift started, then it's not null
-                    await _cashierService.CurrentShift.Value!.End();
+                    await _shiftService.CurrentCashierShift.Value!.End();
 
                     return true;
                 }
@@ -53,15 +55,15 @@ public class ServicePageVm : PageViewModel
         {
             try
             {
-                if (_cashierService.CurrentShift.Value is null)
+                if (_shiftService.CurrentCashierShift.Value is null)
                 {
                     this.Log().Error("Shift is null");
                     return false;
                 }
 
-                if (!_cashierService.IsShiftStarted())
+                if (!_shiftService.IsShiftStarted())
                 {
-                    await _cashierService.CurrentShift.Value.Start();
+                    await _shiftService.CurrentCashierShift.Value.Start();
                     return true;
                 }
 
@@ -77,9 +79,13 @@ public class ServicePageVm : PageViewModel
             }
         });
 
-        this.WhenAnyValue(x => x.IsOpennedShifts)
+        this.WhenAnyValue(x => x.IsShiftOpenned)
             .Select(x => x ? CloseShiftCommnad : OpenShiftCommand)
             .ToPropertyEx(this, x => x.ShiftButtonCommand)
+            .DisposeWith(InternalDisposables);
+
+        _shiftService.IsCashierShiftStartedObservable()
+            .ToPropertyEx(this, x => x.IsShiftOpenned)
             .DisposeWith(InternalDisposables);
     }
 
@@ -121,16 +127,17 @@ public class ServicePageVm : PageViewModel
         get;
     }
 
-    [Reactive]
-    public bool IsOpennedShifts
+    public extern bool IsShiftOpenned
     {
-        get; set;
-    } = true;
+        [ObservableAsProperty]
+        get; 
+    } 
 
     protected override void Initialize(CompositeDisposable disposables)
     {
-        _cashierService.IsShiftStartedObservable()
-            .ToPropertyEx(this, x => x.IsOpennedShifts)
+        this.WhenAnyValue(x => x.IsShiftOpenned)
+            .Select(x => !x ? "Открыть кассовую смену" : "Закрыть кассовую смену")
+            .ToPropertyEx(this, x => x.CashierShiftButtonText)
             .DisposeWith(disposables);
 
 

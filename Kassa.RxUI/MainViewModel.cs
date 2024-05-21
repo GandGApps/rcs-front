@@ -181,7 +181,7 @@ public class MainViewModel : ReactiveObject, IScreen
         var authService = Locator.Current.GetRequiredService<IAuthService>();
         var shiftService = Locator.Current.GetNotInitializedService<IShiftService>();
 
-        authService.CurrentAuthenticationContext.CombineLatest(shiftService.CurrentShift, (authContext, shift) => (authContext, shift))
+        authService.CurrentAuthenticationContext.CombineLatest(shiftService.CurrentShift, shiftService.CurrentCashierShift, (authContext, shift, cashierShift) => (authContext, shift, cashierShift))
             .Subscribe(async x =>
             {
 
@@ -189,7 +189,7 @@ public class MainViewModel : ReactiveObject, IScreen
                 {
                     await GoToPageAndReset(new AutorizationPageVm());
                 }
-                else if (x.shift is null)
+                else if (x.shift is null && x.cashierShift is null)
                 {
 
                     await GoToPageAndReset(new PincodePageVm());

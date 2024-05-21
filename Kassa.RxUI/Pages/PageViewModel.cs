@@ -5,6 +5,7 @@ using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
 using ReactiveUI;
 
@@ -40,5 +41,42 @@ public class PageViewModel : BaseViewModel, IRoutableViewModel
     public ReactiveCommand<Unit, Unit> GoBackCommand
     {
         get;
+    }
+
+    public static async ValueTask<bool> TryAuthorizePageAccess<T>(IShiftService shiftservice) where T : PageViewModel
+    {
+        var mainViewModel = Locator.GetRequiredService<MainViewModel>();
+        var pageType = typeof(T);
+
+        // Не впускать работника в сервис
+        if (shiftservice.CurrentShift.Value != null && pageType == typeof(ServicePageVm))
+        {
+            await mainViewModel.OkMessage("Этот раздел только для менеджеров", "JustFailed");
+            return false;
+        }
+
+        // Не впускать никуда кроме сервиса если не начата кассовая смена
+        if (!shiftservice.IsCashierShiftStarted() && pageType != typeof(ServicePageVm))
+        {
+            await mainViewModel.OkMessage("Кассовая смена не открыта", "JustFailed");
+            return false;
+        }
+
+        // Не впускать менеджера никуда кроме сервиса
+        if (shiftservice.CurrentCashierShift.Value != null && shiftservice.CurrentShift.Value == null && pageType != typeof(ServicePageVm))
+        {
+            await mainViewModel.OkMessage("Этот раздел только для работников", "JustFailed");
+            return false;
+        }
+
+        // Не впускать во все страницы кроме персонального кабинета если
+        // не начата обычная смена
+        if (shiftservice.CurrentCashierShift.Value == null && !shiftservice.IsShiftStarted() && pageType != typeof(PersonalPageVm))
+        {
+            await mainViewModel.OkMessage("Смена не открыта", "JustFailed");
+            return false;
+        }
+
+        return true;
     }
 }

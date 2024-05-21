@@ -60,9 +60,7 @@ public class PincodePageVm : PageViewModel
 
                 try
                 {
-
                     var shiftService = await Locator.GetInitializedService<IShiftService>();
-
 
                     if (await shiftService.EnterPincode(x))
                     {
@@ -85,7 +83,6 @@ public class PincodePageVm : PageViewModel
                 }
                 catch (Exception e)
                 {
-
                     await MainViewModel.ShowDialog(new OkMessageDialogViewModel()
                     {
                         Message = e.Message
