@@ -20,10 +20,6 @@ public interface ICashierService : IInitializableService
         get;
     }
 
-    public IObservableOnlyBehaviourSubject<ICashierShift?> CurrentShift
-    {
-        get;
-    }
 
     public ValueTask<IOrderEditService> CreateOrder(bool isDelivery);
     public ValueTask<IOrderEditService> CreateOrder(OrderDto order);

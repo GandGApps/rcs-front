@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,6 +26,24 @@ public static class BuisnessLogicExtensions
     public static bool IsShiftStarted(this IShiftService shift)
     {
         return shift.CurrentShift.Value != null && shift.CurrentShift.Value.IsStarted.Value;
+    }
+
+    public static IObservable<bool> IsShiftStartedObservable(this IShiftService shift)
+    {
+        return shift.CurrentShift.SelectMany(x => x is null ? Observable.Return<bool?>(null) : x.IsStarted.Select(x => (bool?)x))
+            .Select(x => x.HasValue && x.Value);
+    }
+
+    
+    public static bool IsCashierShiftStarted(this IShiftService cashier)
+    {
+        return cashier.CurrentCashierShift.Value != null && cashier.CurrentCashierShift.Value.IsStarted.Value;
+    }
+
+    public static IObservable<bool> IsCashierShiftStartedObservable(this IShiftService cashier)
+    {
+        return cashier.CurrentCashierShift.SelectMany(x => x is null ? Observable.Return<bool?>(null) : x.IsStarted.Select(x => (bool?)x))
+                    .Select(x => x.HasValue && x.Value);
     }
 
     public static string GuidToPrettyString(this Guid guid)

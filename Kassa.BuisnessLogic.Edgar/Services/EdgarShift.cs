@@ -6,12 +6,11 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Edgar.Api;
-using Kassa.BuisnessLogic.Edgar.Services;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
 using Splat;
 
-namespace Kassa.BuisnessLogic.Edgar.Dto;
+namespace Kassa.BuisnessLogic.Edgar.Services;
 internal sealed class EdgarShift : IShift
 {
     internal ShiftDto? _shift;

@@ -31,6 +31,12 @@ public partial class ServicePage : ReactiveUserControl<ServicePageVm>
             this.BindCommand(ViewModel, vm => vm.GoBackCommand, v => v.BackButton)
                 .DisposeWith(disposables);
 
+            this.OneWayBind(ViewModel, vm =>  vm.CashierShiftButtonText, v => v.CloseShiftButtonText.Text)
+                .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, vm => vm.ShiftButtonCommand, v => v.CloseShiftButton)
+                .DisposeWith(disposables);
+
         });
     }
 }

@@ -85,7 +85,10 @@
                     Orientation="Horizontal">
 
                     <Button x:Name="CloseShiftButton" Style="{StaticResource SmallRoundedCornerButton}">
-                        <TextBlock Style="{StaticResource SmallRoundedCornerButtonText}" Text="Закрыть кассовую смену" />
+                        <TextBlock
+                            x:Name="CloseShiftButtonText"
+                            Style="{StaticResource SmallRoundedCornerButtonText}"
+                            Text="Закрыть кассовую смену" />
                     </Button>
 
                     <Button x:Name="WithdrawMoney" Style="{StaticResource SmallRoundedCornerButton}">

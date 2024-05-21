@@ -150,9 +150,7 @@ public class PersonalPageVm : PageViewModel
             })
             .DisposeWith(InternalDisposables);
 
-        _shiftService.CurrentShift
-            .SelectMany(x => x is null ? Observable.Return<bool?>(null) : x.IsStarted.Select(x => (bool?)x))
-            .Select(x => x.HasValue && x.Value)
+        _shiftService.IsShiftStartedObservable()
             .Select(x => x ? CloseShiftCommand : OpenShiftCommand)
             .ToPropertyEx(this, x => x.ShiftCommand);
 

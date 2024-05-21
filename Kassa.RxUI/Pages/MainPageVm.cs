@@ -106,7 +106,9 @@ public class MainPageVm : PageViewModel
 
         OpenServicesDialog = ReactiveCommand.CreateFromTask(async () =>
         {
-            await MainViewModel.GoToPage(new ServicePageVm());
+            var cashierService = await Locator.GetInitializedService<ICashierService>();
+
+            await MainViewModel.GoToPage(new ServicePageVm(cashierService));
         });
 
         GoToCashier = ReactiveCommand.CreateFromTask(async () =>

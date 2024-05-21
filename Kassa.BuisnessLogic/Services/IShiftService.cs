@@ -19,6 +19,11 @@ public interface IShiftService : IInitializableService
         get;
     }
 
+    public ObservableOnlyBehaviourSubject<ICashierShift?> CurrentCashierShift
+    {
+        get;
+    }
+
     public Task<bool> EnterPincode(string pincode);
 
     public ValueTask<ShiftDto?> GetShiftById(Guid id);

@@ -49,8 +49,9 @@ public static class EdgarDependencyResolverExntesions
             var receiptService = Locator.Current.GetNotInitializedService<IReceiptService>();
             var ordersService = Locator.Current.GetNotInitializedService<IOrdersService>();
             var paymentInfoService = Locator.Current.GetNotInitializedService<IPaymentInfoService>();
+            var shiftService = Locator.Current.GetNotInitializedService<IShiftService>();
 
-            return new CashierService(additiveService, categoryService, productService, receiptService, ordersService, paymentInfoService);
+            return new CashierService(additiveService, categoryService, productService, receiptService, ordersService, paymentInfoService, shiftService);
         });
         services.RegisterInitializableServiceFactory<ICashierService>();
 
@@ -62,5 +63,6 @@ public static class EdgarDependencyResolverExntesions
         services.AddApi<ITerminalApi>();
         services.AddApi<IEmployeePostsApi>();
         services.AddApi<IEmployeeApi>();
+        services.AddApi<ITerminalPostApi>();
     }
 }

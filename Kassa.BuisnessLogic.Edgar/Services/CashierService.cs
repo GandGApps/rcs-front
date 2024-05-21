@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Disposables;
+using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
+using Kassa.Shared;
+using Splat;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
-internal sealed class CashierService: BaseInitializableService, ICashierService
+internal sealed class CashierService : BaseInitializableService, ICashierService
 {
+    private readonly BehaviorSubject<ICashierShift?> _currentShift = new(null);
     private readonly ObservableCollection<IOrderEditService> _orders = [];
     private readonly IAdditiveService _additiveService;
     private readonly ICategoryService _categoryService;
@@ -19,6 +23,7 @@ internal sealed class CashierService: BaseInitializableService, ICashierService
     private readonly IReceiptService _receiptService;
     private readonly IOrdersService _ordersService;
     private readonly IPaymentInfoService _paymentInfoService;
+    private readonly IShiftService _shiftService;
 
     public IOrderEditService? CurrentOrder
     {
@@ -41,7 +46,8 @@ internal sealed class CashierService: BaseInitializableService, ICashierService
         IProductService productService,
         IReceiptService receiptService,
         IOrdersService ordersService,
-        IPaymentInfoService paymentInfoService)
+        IPaymentInfoService paymentInfoService,
+        IShiftService shiftService)
     {
         Orders = new(_orders);
         _additiveService = additiveService;
@@ -51,8 +57,10 @@ internal sealed class CashierService: BaseInitializableService, ICashierService
         _ordersService = ordersService;
         _paymentInfoService = paymentInfoService;
 
-        CurrentShift = new ObservableOnlyBehaviourSubject<ICashierShift?>((ICashierShift?)null);
+        CurrentShift = new ObservableOnlyBehaviourSubject<ICashierShift?>(_currentShift);
+        _shiftService = shiftService;
     }
+
 
     public async ValueTask<IOrderEditService> CreateOrder(bool isDelivery)
     {
@@ -140,6 +148,17 @@ internal sealed class CashierService: BaseInitializableService, ICashierService
         await _additiveService.Initialize();
         await _receiptService.Initialize();
         await _ordersService.Initialize();
+        await _shiftService.Initialize();
+
+        var shift = _shiftService.CurrentShift.Value;
+
+        if (shift is null)
+        {
+            this.Log().Error("Shift is not exist");
+            throw new DeveloperException("Смены не существует логически, если вы увидели это сообщение возник парадокс");
+        }
+        
+
     }
 
     protected async override ValueTask DisposeAsyncCore()
@@ -149,5 +168,8 @@ internal sealed class CashierService: BaseInitializableService, ICashierService
         await _additiveService.DisposeAsync();
         await _receiptService.DisposeAsync();
         await _ordersService.DisposeAsync();
+
+        // ShiftService created before this service, so it will be disposed after this service
     }
+
 }

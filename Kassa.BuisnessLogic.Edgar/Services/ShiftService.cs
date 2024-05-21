@@ -15,6 +15,7 @@ using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 using Microsoft.Extensions.Configuration;
+using System.Runtime.CompilerServices;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
 internal sealed class ShiftService : BaseInitializableService, IShiftService
@@ -22,6 +23,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
     private readonly IRepository<Shift> _repository;
     private readonly IMemberService _memberService;
     internal readonly BehaviorSubject<IShift?> _currentShift = new(null);
+    private readonly BehaviorSubject<ICashierShift?> _currentCashierShift = new(null);
     private readonly HostModelManager<ShiftDto> _hostModelManager = new();
 
     public ShiftService(IRepository<Shift> repository, IMemberService memberService)
@@ -31,11 +33,17 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
         _repository = repository;
         _memberService = memberService;
         CurrentShift = new(_currentShift);
+        CurrentCashierShift = new(_currentCashierShift);
     }
 
     public IApplicationModelManager<ShiftDto> RuntimeShifts => _hostModelManager;
 
     public ObservableOnlyBehaviourSubject<IShift?> CurrentShift
+    {
+        get;
+    }
+
+    public ObservableOnlyBehaviourSubject<ICashierShift?> CurrentCashierShift
     {
         get;
     }
@@ -52,13 +60,6 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
         {
             var pincodeResponse = reponse.Content!;
 
-            var cashierService = await Locator.GetInitializedService<ICashierService>();
-
-            if (cashierService.CurrentShift.Value is null && !pincodeResponse.IsManagerPincode)
-            {
-                throw new InvalidUserOperatationException("Кассовая смена не открыта") { Description = "Дождитесь менеджера" };
-            }
-
             var config = Locator.GetRequiredService<IConfiguration>();
             config["MemberAuthToken"] = pincodeResponse.Token;
 
@@ -74,20 +75,14 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
                 throw new DeveloperException("Персонал не найден, обратитесь к Эдгару");
             }
 
-            var employeePostsApi = Locator.GetRequiredService<IEmployeePostsApi>();
-
-            var employeePosts = await employeePostsApi.GetEmployeePosts(new(DateTime.Today));
-
-            var exist = await employeePostsApi.PostExists(new(DateTime.Now));
-
-            var shift = new EdgarShift(this, member, exist.CreatedPost.IsOpen, exist);
-
-            if (exist.Exists && exist.CreatedPost.IsBreakNotEnded)
+            if (pincodeResponse.IsManagerPincode)
             {
-                await shift.EndBreak();
+                await AuthenticateAndFetchCashierShiftDetails(pincodeResponse, member);
             }
-
-            _currentShift.OnNext(shift);
+            else
+            {
+                await AuthenticateAndFetchShiftDetails(pincodeResponse, member);
+            }
 
             return true;
         }
@@ -164,6 +159,42 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
         RuntimeShifts.AddOrUpdate(shifts);
 
         return shifts;
+    }
+
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    private async Task AuthenticateAndFetchShiftDetails(PincodeResponse pincodeResponse, MemberDto member)
+    {
+        var employeePostsApi = Locator.GetRequiredService<IEmployeePostsApi>();
+
+        var exist = await employeePostsApi.PostExists(new(DateTime.Now));
+
+        var shift = new EdgarShift(this, member, exist.CreatedPost.IsOpen, exist);
+
+        if (exist.Exists && exist.CreatedPost.IsBreakNotEnded)
+        {
+            await shift.EndBreak();
+        }
+
+        _currentShift.OnNext(shift);
+    }
+
+    private async Task AuthenticateAndFetchCashierShiftDetails(PincodeResponse pincodeResponse, MemberDto member)
+    {
+        var config = Locator.GetRequiredService<IConfiguration>();
+
+        var terminalApi = Locator.GetRequiredService<ITerminalPostApi>();
+
+        var postExists = await terminalApi.PostExists(new(DateTime.Now));
+
+        var managerShift = new EdgarManagerShift(member, postExists);
+
+        if (!this.IsCashierShiftStarted() && !pincodeResponse.IsManagerPincode)
+        {
+            throw new InvalidUserOperatationException("Кассовая смена не открыта") { Description = "Дождитесь менеджера" };
+        }
+
+        _currentCashierShift.OnNext(managerShift);
     }
 
 }

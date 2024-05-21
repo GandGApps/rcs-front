@@ -13,7 +13,7 @@ public interface ICashierShift
         get;
     }
 
-    public ObservableOnlyBehaviourSubject<bool> IsOpen
+    public ObservableOnlyBehaviourSubject<bool> IsStarted
     {
         get;
     }
