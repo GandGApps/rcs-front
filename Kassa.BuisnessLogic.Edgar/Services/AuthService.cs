@@ -81,11 +81,16 @@ internal class AuthService : IAuthService
             get; set;
         }
 
+        public MemberDto? Member
+        {
+            get; set;
+        }
+
         public string Token
         {
             get; set;
         } = string.Empty;
 
-        public bool IsAuthenticated => User is not null || !string.IsNullOrWhiteSpace(Token);
+        public bool IsAuthenticated => User is not null || Member is not null || !string.IsNullOrWhiteSpace(Token);
     }
 }

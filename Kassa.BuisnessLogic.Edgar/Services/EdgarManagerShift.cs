@@ -12,7 +12,7 @@ using Kassa.Shared;
 using Splat;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
-internal class EdgarManagerShift : ICashierShift
+internal class EdgarManagerShift : ITerminalShift
 {
     private CashierShiftDto? _cashierShift;
 
@@ -46,7 +46,7 @@ internal class EdgarManagerShift : ICashierShift
         var terminalPostApi = Locator.Current.GetRequiredService<ITerminalPostApi>();
         var openShiftRequest = new TerminalOpenPostRequest(DateTime.Now, shift.Id, 0);
 
-        await terminalPostApi.OpenPost(openShiftRequest).ConfigureAwait(false);
+        await terminalPostApi.OpenPost(openShiftRequest);
 
         _isStarted.OnNext(true);
     }
@@ -58,7 +58,7 @@ internal class EdgarManagerShift : ICashierShift
         var terminalPostApi = Locator.Current.GetRequiredService<ITerminalPostApi>();
         var closeShiftRequest = new TerminalClosePostRequest(DateTime.Now, shift.Id);
 
-        await terminalPostApi.ClosePost(closeShiftRequest).ConfigureAwait(false);
+        await terminalPostApi.ClosePost(closeShiftRequest);
 
         _shiftService._currentCashierShift.OnNext(null);
     }

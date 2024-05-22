@@ -20,6 +20,6 @@ internal interface IEmployeeApi : IUseMemberToken
 
 internal sealed record EmployeeResponse([property: JsonPropertyName("employeeData")] EmployeeData EmployeeData);
 
-internal sealed record EmployeeData([property: JsonPropertyName("employee_id")] Guid EmployeeId, [property: JsonPropertyName("mainData")] EmployeeMainData MainData);
+internal sealed record EmployeeData([property: JsonPropertyName("employee_id")] Guid EmployeeId, [property: JsonPropertyName("mainData")] EmployeeMainData MainData, [property:JsonPropertyName("roles")] IEnumerable<string> Roles);
 
 internal sealed record EmployeeMainData([property: JsonPropertyName("firstName")] string FirstName, [property: JsonPropertyName("middleName")] string MiddleName, [property: JsonPropertyName("LastName")] string LastName);

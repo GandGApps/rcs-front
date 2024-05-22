@@ -13,7 +13,15 @@ public interface IAuthenticationContext
         get;
     }
 
+    /// <summary>
+    /// It's terminal user, not member
+    /// </summary>
     public UserDto? User
+    {
+        get;
+    }
+
+    public MemberDto? Member
     {
         get;
     }

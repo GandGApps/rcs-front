@@ -22,7 +22,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
     private readonly IRepository<Shift> _repository;
     private readonly IMemberService _memberService;
     internal readonly BehaviorSubject<IShift?> _currentShift = new(null);
-    internal readonly BehaviorSubject<ICashierShift?> _currentCashierShift = new(null);
+    internal readonly BehaviorSubject<ITerminalShift?> _currentCashierShift = new(null);
     private readonly HostModelManager<ShiftDto> _hostModelManager = new();
 
     public ShiftService(IRepository<Shift> repository, IMemberService memberService)
@@ -42,7 +42,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
         get;
     }
 
-    public ObservableOnlyBehaviourSubject<ICashierShift?> CurrentCashierShift
+    public ObservableOnlyBehaviourSubject<ITerminalShift?> CurrentCashierShift
     {
         get;
     }
@@ -74,7 +74,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
                 throw new DeveloperException("Персонал не найден, обратитесь к Эдгару");
             }
 
-            if (pincodeResponse.IsManagerPincode)
+            if (member.IsManager)
             {
                 await AuthenticateAndFetchCashierShiftDetails(pincodeResponse, member);
             }
@@ -168,6 +168,11 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
         var exist = await employeePostsApi.PostExists(new(DateTime.Now));
 
+        if (!this.IsCashierShiftStarted() && !member.IsManager)
+        {
+            throw new InvalidUserOperatationException("Кассовая смена не открыта") { Description = "Дождитесь менеджера" };
+        }
+
         var shift = new EdgarShift(this, member, exist.CreatedPost.IsOpen, exist);
 
         if (exist.Exists && exist.CreatedPost.IsBreakNotEnded)
@@ -188,7 +193,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
         var managerShift = new EdgarManagerShift(member, postExists, this);
 
-        if (!this.IsCashierShiftStarted() && !pincodeResponse.IsManagerPincode)
+        if (!this.IsCashierShiftStarted() && !member.IsManager)
         {
             throw new InvalidUserOperatationException("Кассовая смена не открыта") { Description = "Дождитесь менеджера" };
         }

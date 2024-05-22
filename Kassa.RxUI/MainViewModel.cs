@@ -162,7 +162,8 @@ public class MainViewModel : ReactiveObject, IScreen
             var okMessageDialog = new OkMessageDialogViewModel
             {
                 Icon = msg.Icon,
-                Message = msg.Message
+                Message = msg.Message,
+                Description = msg.Description
             };
             await DialogOpenCommand.Execute(okMessageDialog).FirstAsync();
 

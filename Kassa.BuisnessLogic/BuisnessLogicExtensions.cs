@@ -9,6 +9,8 @@ using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
 using Kassa.BuisnessLogic.Services;
+using Kassa.Shared;
+using Splat;
 
 namespace Kassa.BuisnessLogic;
 public static class BuisnessLogicExtensions
@@ -34,7 +36,7 @@ public static class BuisnessLogicExtensions
             .Select(x => x.HasValue && x.Value);
     }
 
-    
+
     public static bool IsCashierShiftStarted(this IShiftService cashier)
     {
         return cashier.CurrentCashierShift.Value != null && cashier.CurrentCashierShift.Value.IsStarted.Value;
@@ -59,6 +61,27 @@ public static class BuisnessLogicExtensions
     public static string GuidToPrettyString(this Guid? guid)
     {
         return guid is null ? "???" : guid.Value.ToString("N")[..5];
+    }
+
+    public static async Task<bool> TryExitCurrentExistingShift(this IShiftService shift)
+    {
+
+        if (shift.CurrentShift.Value != null)
+        {
+            LogHost.Default.Info("Exiting current shift");
+            await shift.CurrentShift.Value!.Exit();
+            return true;
+        }
+
+        if (shift.CurrentCashierShift.Value != null)
+        {
+            LogHost.Default.Info("Exiting current cashier shift");
+            //TODO: REFACTOR SHIFT SERVICE
+
+            return true;
+        }
+
+        return false;
     }
 
 }

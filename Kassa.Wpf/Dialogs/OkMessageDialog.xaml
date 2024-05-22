@@ -33,7 +33,7 @@
 
             <TextBlock
                 x:Name="Description"
-                Margin="{mx:AdaptiveSize Thickness='0,30,0,30'}"
+                Margin="{mx:AdaptiveSize Thickness='0,0,0,30'}"
                 Style="{StaticResource SubHeader}"
                 TextAlignment="Center"
                 TextWrapping="Wrap" />

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Dto;
 
 namespace Kassa.BuisnessLogic.Services;
-public interface ICashierShift
+public interface ITerminalShift
 {
     public MemberDto Manager
     {
@@ -20,6 +20,8 @@ public interface ICashierShift
 
     public Task Start();
     public Task End();
+
+
 
     public ValueTask<CashierShiftDto> GetCashierShiftAsync();
 }

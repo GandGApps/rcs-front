@@ -29,7 +29,8 @@ internal class EmployeeRepository : IRepository<Member>
         return new Member()
         {
             Id = employee.EmployeeData.EmployeeId,
-            Name = $"{employee.EmployeeData.MainData.FirstName} {employee.EmployeeData.MainData.MiddleName} {employee.EmployeeData.MainData.LastName}"
+            Name = $"{employee.EmployeeData.MainData.FirstName} {employee.EmployeeData.MainData.MiddleName} {employee.EmployeeData.MainData.LastName}",
+            IsManager = employee.EmployeeData.Roles.Contains("manager", StringComparer.InvariantCultureIgnoreCase)
         };
     }
     public async Task<IEnumerable<Member>> GetAll()

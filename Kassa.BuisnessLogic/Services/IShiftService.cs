@@ -19,7 +19,7 @@ public interface IShiftService : IInitializableService
         get;
     }
 
-    public ObservableOnlyBehaviourSubject<ICashierShift?> CurrentCashierShift
+    public ObservableOnlyBehaviourSubject<ITerminalShift?> CurrentCashierShift
     {
         get;
     }

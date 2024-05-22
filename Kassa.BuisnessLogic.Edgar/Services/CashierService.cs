@@ -15,7 +15,7 @@ using Splat;
 namespace Kassa.BuisnessLogic.Edgar.Services;
 internal sealed class CashierService : BaseInitializableService, ICashierService
 {
-    private readonly BehaviorSubject<ICashierShift?> _currentShift = new(null);
+    private readonly BehaviorSubject<ITerminalShift?> _currentShift = new(null);
     private readonly ObservableCollection<IOrderEditService> _orders = [];
     private readonly IAdditiveService _additiveService;
     private readonly ICategoryService _categoryService;
@@ -35,7 +35,7 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
         get;
     }
 
-    public IObservableOnlyBehaviourSubject<ICashierShift?> CurrentShift
+    public IObservableOnlyBehaviourSubject<ITerminalShift?> CurrentShift
     {
         get;
     }
@@ -57,7 +57,7 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
         _ordersService = ordersService;
         _paymentInfoService = paymentInfoService;
 
-        CurrentShift = new ObservableOnlyBehaviourSubject<ICashierShift?>(_currentShift);
+        CurrentShift = new ObservableOnlyBehaviourSubject<ITerminalShift?>(_currentShift);
         _shiftService = shiftService;
     }
 

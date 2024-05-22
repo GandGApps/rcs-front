@@ -25,6 +25,4 @@ internal sealed record LoginTerminalRequest(string Login, string Password);
 internal sealed record EnterPincodeRequest([property:JsonPropertyName("pin_code")] string Pincode);
 internal sealed record LoginEmployeeRequest([property: JsonPropertyName("pin_code")] string Pincode, [property: JsonPropertyName("date")] DateTime DateTime);
 internal sealed record PincodeResponse(
-    [property: JsonPropertyName("token")] string Token,
-    [property: JsonPropertyName("isManagerPincode")] bool IsManagerPincode,
-    [property: JsonPropertyName("isPostOpen")] bool IsPostOpen);
+    [property: JsonPropertyName("token")] string Token);

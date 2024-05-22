@@ -87,6 +87,11 @@ public class ServicePageVm : PageViewModel
         _shiftService.IsCashierShiftStartedObservable()
             .ToPropertyEx(this, x => x.IsShiftOpenned)
             .DisposeWith(InternalDisposables);
+
+        this.WhenAnyValue(x => x.IsShiftOpenned)
+            .Select(x => !x ? "Открыть кассовую смену" : "Закрыть кассовую смену")
+            .ToPropertyEx(this, x => x.CashierShiftButtonText)
+            .DisposeWith(InternalDisposables);
     }
 
     public ReadOnlyObservableCollection<ServiceOrderRowViewModel> SelectedOrders
@@ -133,13 +138,4 @@ public class ServicePageVm : PageViewModel
         get; 
     } 
 
-    protected override void Initialize(CompositeDisposable disposables)
-    {
-        this.WhenAnyValue(x => x.IsShiftOpenned)
-            .Select(x => !x ? "Открыть кассовую смену" : "Закрыть кассовую смену")
-            .ToPropertyEx(this, x => x.CashierShiftButtonText)
-            .DisposeWith(disposables);
-
-
-    }
 }
