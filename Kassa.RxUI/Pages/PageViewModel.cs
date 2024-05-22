@@ -49,6 +49,30 @@ public class PageViewModel : BaseViewModel, IRoutableViewModel
         var pageType = typeof(T);
 
         // Не впускать работника в сервис
+        if (shiftservice.CurrentShift.Value is IShift shift && !shift.Member.IsManager && pageType != typeof(ServicePageVm))
+        {
+            await mainViewModel.OkMessage("Этот раздел только для менеджеров", "JustFailed");
+            return false;
+        }
+
+        // Не впускать никуда кроме сервиса если не начата кассовая смена
+        if (!shiftservice.IsCashierShiftStarted() && pageType != typeof(ServicePageVm))
+        {
+            await mainViewModel.OkMessage("Кассовая смена не открыта", "JustFailed");
+            return false;
+        }
+
+        // Не впускать во все страницы кроме персонального кабинета если
+        // не начата обычная смена
+        if (shiftservice.CurrentCashierShift.Value == null && !shiftservice.IsShiftStarted() && pageType != typeof(PersonalPageVm))
+        {
+            await mainViewModel.OkMessage("Смена не открыта", "JustFailed");
+            return false;
+        }
+
+        return true;
+
+        /*// Не впускать работника в сервис
         if (shiftservice.CurrentShift.Value != null && pageType == typeof(ServicePageVm))
         {
             await mainViewModel.OkMessage("Этот раздел только для менеджеров", "JustFailed");
@@ -77,6 +101,6 @@ public class PageViewModel : BaseViewModel, IRoutableViewModel
             return false;
         }
 
-        return true;
+        return true;*/
     }
 }
