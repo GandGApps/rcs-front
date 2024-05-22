@@ -53,6 +53,23 @@ internal class AuthService : IAuthService
         return pincode == "1234";
     }
 
+    public ValueTask<bool> LogoutAccount()
+    {
+        _currentAuthenticationContext.OnNext(AuthenticationContext.NotAuthenticated);
+        return ValueTask.FromResult(true);
+    }
+
+    public Task<bool> EnterPincode(string pincode)
+    {
+        if (pincode == "1234")
+        {
+            _currentAuthenticationContext.OnNext(AuthenticationContext.AdminAuthenticated);
+            return Task.FromResult(true);
+        }
+
+        return Task.FromResult(false);
+    }
+
     private class AuthenticationContext : IAuthenticationContext
     {
         public static readonly AuthenticationContext AdminAuthenticated = new()

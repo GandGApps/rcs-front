@@ -24,8 +24,6 @@ public interface IShiftService : IInitializableService
         get;
     }
 
-    public Task<bool> EnterPincode(string pincode);
-
     public ValueTask<ShiftDto?> GetShiftById(Guid id);
     public Task UpdateShift(ShiftDto shift);
     public Task AddShift(ShiftDto shift);

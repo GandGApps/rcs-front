@@ -24,8 +24,9 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
     internal readonly BehaviorSubject<IShift?> _currentShift = new(null);
     internal readonly BehaviorSubject<ITerminalShift?> _currentCashierShift = new(null);
     private readonly HostModelManager<ShiftDto> _hostModelManager = new();
+    private readonly IAuthService _authService;
 
-    public ShiftService(IRepository<Shift> repository, IMemberService memberService)
+    public ShiftService(IRepository<Shift> repository, IMemberService memberService, IAuthService authService)
     {
         _hostModelManager.DisposeWith(InternalDisposables);
         _currentShift.DisposeWith(InternalDisposables);
@@ -33,6 +34,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
         _memberService = memberService;
         CurrentShift = new(_currentShift);
         CurrentCashierShift = new(_currentCashierShift);
+        _authService = authService;
     }
 
     public IApplicationModelManager<ShiftDto> RuntimeShifts => _hostModelManager;
@@ -47,51 +49,21 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
         get;
     }
 
-    public async Task<bool> EnterPincode(string pincode)
-    {
-        var pincodeRequest = new LoginEmployeeRequest(pincode, DateTime.UtcNow);
-
-        var terminalApi = Locator.GetRequiredService<ITerminalApi>();
-
-        var reponse = await terminalApi.EnterPincode(pincodeRequest);
-
-        if (reponse.IsSuccessStatusCode)
-        {
-            var pincodeResponse = reponse.Content!;
-
-            var config = Locator.GetRequiredService<IConfiguration>();
-            config["MemberAuthToken"] = pincodeResponse.Token;
-
-            var handler = new JwtSecurityTokenHandler();
-            var token = handler.ReadJwtToken(pincodeResponse.Token);
-
-            var employeeId = token.Claims.First(claim => claim.Type == "employee_id").Value;
-
-            var member = await _memberService.GetMember(Guid.Parse(employeeId));
-
-            if (member == null)
-            {
-                throw new DeveloperException("Персонал не найден, обратитесь к Эдгару");
-            }
-
-            if (member.IsManager)
-            {
-                await AuthenticateAndFetchCashierShiftDetails(pincodeResponse, member);
-            }
-            else
-            {
-                await AuthenticateAndFetchShiftDetails(pincodeResponse, member);
-            }
-
-            return true;
-        }
-
-        return false;
-    }
-
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
         await GetShifts();
+
+        _authService.CurrentAuthenticationContext.Subscribe(async context =>
+        {
+
+            if (context.Member is MemberDto member)
+            {
+                await FetchShiftDetails(member);
+
+                await FetchCashierShiftDetails(member);
+            }
+
+        }).DisposeWith(disposables);
     }
 
     public async ValueTask<ShiftDto?> GetShiftById(Guid id)
@@ -160,9 +132,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
         return shifts;
     }
 
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private async Task AuthenticateAndFetchShiftDetails(PincodeResponse pincodeResponse, MemberDto member)
+    private async Task FetchShiftDetails(MemberDto member)
     {
         var employeePostsApi = Locator.GetRequiredService<IEmployeePostsApi>();
 
@@ -183,7 +153,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
         _currentShift.OnNext(shift);
     }
 
-    private async Task AuthenticateAndFetchCashierShiftDetails(PincodeResponse pincodeResponse, MemberDto member)
+    private async Task FetchCashierShiftDetails(MemberDto member)
     {
         var config = Locator.GetRequiredService<IConfiguration>();
 
@@ -195,6 +165,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
         if (!this.IsCashierShiftStarted() && !member.IsManager)
         {
+
             throw new InvalidUserOperatationException("Кассовая смена не открыта") { Description = "Дождитесь менеджера" };
         }
 

@@ -61,8 +61,9 @@ public class PincodePageVm : PageViewModel
                 try
                 {
                     var shiftService = await Locator.GetInitializedService<IShiftService>();
+                    var authService = Locator.GetRequiredService<IAuthService>();
 
-                    if (await shiftService.EnterPincode(x))
+                    if (await authService.EnterPincode(x))
                     {
                         await MainViewModel.ShowDialog(new OkMessageDialogViewModel()
                         {

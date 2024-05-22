@@ -73,14 +73,6 @@ public static class BuisnessLogicExtensions
             return true;
         }
 
-        if (shift.CurrentCashierShift.Value != null)
-        {
-            LogHost.Default.Info("Exiting current cashier shift");
-            //TODO: REFACTOR SHIFT SERVICE
-
-            return true;
-        }
-
         return false;
     }
 

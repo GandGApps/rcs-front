@@ -27,8 +27,9 @@ public static class EdgarDependencyResolverExntesions
         {
             var repository = Locator.Current.GetRequiredService<IRepository<Shift>>();
             var memberService = Locator.Current.GetNotInitializedService<IMemberService>();
+            var authService = Locator.Current.GetRequiredService<IAuthService>();
 
-            return new ShiftService(repository, memberService);
+            return new ShiftService(repository, memberService, authService);
         });
         services.RegisterInitializableServiceFactory<IShiftService>();
 

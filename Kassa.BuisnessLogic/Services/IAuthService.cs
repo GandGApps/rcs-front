@@ -17,7 +17,9 @@ public interface IAuthService
         get;
     }
 
+    public Task<bool> EnterPincode(string pincode);
     public Task<bool> AuthenticateAsync(string username, string password);
     public Task<bool> LogoutAsync();
     public Task<bool> IsManagerPincode(string pincode);
+    public ValueTask<bool> LogoutAccount();
 }
