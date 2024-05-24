@@ -49,7 +49,7 @@ public class PageViewModel : BaseViewModel, IRoutableViewModel
         var pageType = typeof(T);
 
         // Не впускать работника в сервис
-        if (shiftservice.CurrentShift.Value is IShift shift && !shift.Member.IsManager && pageType != typeof(ServicePageVm))
+        if (shiftservice.CurrentShift.Value is IShift shift && !shift.Member.IsManager && pageType == typeof(ServicePageVm))
         {
             await mainViewModel.OkMessage("Этот раздел только для менеджеров", "JustFailed");
             return false;

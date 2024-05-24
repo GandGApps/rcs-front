@@ -17,7 +17,7 @@ internal static partial class ApiMapper
         return new Order
         {
             Id = edgarModel.Id,
-            Problem = edgarModel.IsProblematicDelivery ? "Problematic Delivery" : string.Empty,
+            Problem = edgarModel.Problem,
             Status = Enum.Parse<OrderStatus>(edgarModel.Status),
             CreatedAt = edgarModel.CreatedAt,
             DeliveryTime = edgarModel.DeliveryTime,
@@ -47,8 +47,18 @@ internal static partial class ApiMapper
             MiddleName = edgarModel.MiddleName,
             IsOutOfTurn = edgarModel.IsOutOfTurn,
             IsProblematicDelivery = edgarModel.IsProblematicDelivery,
-            PaymentInfo = edgarModel.PaymentInfo != null ? MapEdgarModelToPaymentInfo(edgarModel.PaymentInfo) : null,
-            PaymentInfoId = edgarModel.PaymentInfoId
+            PaymentInfo = new PaymentInfo
+            {
+                Cash = edgarModel.PayInfCash,
+                BankСard = edgarModel.PayInfBankCart,
+                CashlessPayment = edgarModel.PayInfCashless,
+                WithoutRevenue = edgarModel.PayInfWithoutRev,
+                ToDeposit = edgarModel.PayInfToDeposit,
+                ToEntered = edgarModel.PayinfToEntered,
+                Change = edgarModel.PayInfChange,
+                WithSalesReceipt = edgarModel.PayInfWithSalesReceipt
+            },
+            PaymentInfoId = null // Adjust as necessary
         };
     }
 
@@ -105,7 +115,8 @@ internal static partial class ApiMapper
         return new OrderEdgarModel
         {
             Id = order.Id,
-            IsProblematicDelivery = order.Problem != string.Empty,
+            Problem = order.Problem,
+            IsProblematicDelivery = order.IsProblematicDelivery,
             Status = order.Status.ToString(),
             CreatedAt = order.CreatedAt,
             DeliveryTime = order.DeliveryTime,
@@ -134,8 +145,14 @@ internal static partial class ApiMapper
             FirstName = order.FirstName,
             MiddleName = order.MiddleName,
             IsOutOfTurn = order.IsOutOfTurn,
-            PaymentInfo = order.PaymentInfo != null ? MapPaymentInfoToEdgarModel(order.PaymentInfo) : null,
-            PaymentInfoId = order.PaymentInfoId
+            PayInfCash = order.PaymentInfo != null ? order.PaymentInfo.Cash : 0,
+            PayInfBankCart = order.PaymentInfo != null ? order.PaymentInfo.BankСard : 0,
+            PayInfCashless = order.PaymentInfo != null ? order.PaymentInfo.CashlessPayment : 0,
+            PayInfWithoutRev = order.PaymentInfo != null ? order.PaymentInfo.WithoutRevenue : 0,
+            PayInfToDeposit = order.PaymentInfo != null ? order.PaymentInfo.ToDeposit : 0,
+            PayinfToEntered = order.PaymentInfo != null ? order.PaymentInfo.ToEntered : 0,
+            PayInfChange = order.PaymentInfo != null ? order.PaymentInfo.Change : 0,
+            PayInfWithSalesReceipt = order.PaymentInfo != null && order.PaymentInfo.WithSalesReceipt
         };
     }
 
@@ -263,4 +280,78 @@ internal static partial class ApiMapper
         };
     }
 
+
+    public static Order MapServerResponseToOrder(EdgarOrderInfoResponse serverResponse)
+    {
+        var orderResponse = serverResponse.Order;
+        var productsResponse = serverResponse.OrderedProducts;
+
+        return new Order
+        {
+            Id = orderResponse.Id,
+            Problem = orderResponse.Problem,
+            Status = Enum.Parse<OrderStatus>(orderResponse.Status),
+            CreatedAt = orderResponse.CreatedAt,
+            DeliveryTime = orderResponse.DeliveryTime,
+            CourierId = orderResponse.CourierId,
+            Products = productsResponse?.Select(MapServerResponseToOrderedProduct).ToList() ?? new List<OrderedProduct>(),
+            Comment = orderResponse.Comment,
+            TotalSum = orderResponse.TotalSum,
+            SubtotalSum = orderResponse.SubTotalSum,
+            Discount = orderResponse.Discount,
+            IsDelivery = orderResponse.IsDelivery,
+            ClientId = orderResponse.ClientId,
+            LastName = orderResponse.LastName,
+            Phone = orderResponse.Phone,
+            Card = orderResponse.Card,
+            Miscellaneous = orderResponse.Miscellaneous,
+            House = orderResponse.House,
+            Building = orderResponse.Building,
+            Entrance = orderResponse.Entrance,
+            Floor = orderResponse.Floor,
+            Apartment = orderResponse.Apartment,
+            Intercom = orderResponse.Intercom,
+            AddressNote = orderResponse.AddressNote,
+            IsPickup = orderResponse.IsPickup,
+            StreetId = orderResponse.StreetId,
+            DistrictId = orderResponse.DistrictId,
+            FirstName = orderResponse.FirstName,
+            MiddleName = orderResponse.MiddleName,
+            IsOutOfTurn = orderResponse.IsOutOfTurn,
+            IsProblematicDelivery = orderResponse.IsProblematicDelivery,
+            PaymentInfo = orderResponse.PaymentInfoId.HasValue ? new PaymentInfo { Id = orderResponse.PaymentInfoId.Value } : null,
+            PaymentInfoId = orderResponse.PaymentInfoId
+        };
+    }
+
+    public static OrderedProduct MapServerResponseToOrderedProduct(OrderedProductEdgarResponse productResponse)
+    {
+        return new OrderedProduct
+        {
+            Id = productResponse.Id,
+            ProductId = productResponse.ProductId,
+            Count = productResponse.Count,
+            Price = productResponse.Price,
+            TotalPrice = productResponse.TotalPrice,
+            SubTotalPrice = productResponse.SubTotalPrice,
+            Discount = productResponse.Discount ?? 0,
+            Comment = productResponse.Comment ?? string.Empty,
+            Additives = productResponse.Additives?.Select(MapServerResponseToOrderedAdditive).ToList() ?? new List<OrderedAdditive>()
+        };
+    }
+
+    public static OrderedAdditive MapServerResponseToOrderedAdditive(OrderedAdditiveEdgarResponse additiveResponse)
+    {
+        return new OrderedAdditive
+        {
+            Id = additiveResponse.Id,
+            AdditiveId = additiveResponse.Id,
+            Count = additiveResponse.Count,
+            Price = additiveResponse.Price,
+            TotalPrice = additiveResponse.TotalPrice,
+            SubtotalPrice = additiveResponse.SubTotalPrice,
+            Discount = additiveResponse.Discount ?? 0,
+            Measure = additiveResponse.Measure
+        };
+    }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
@@ -15,6 +16,13 @@ internal class OrdersService(IRepository<Order> repository, IRepository<PaymentI
     {
         get;
     } = new HostModelManager<OrderDto>();
+
+    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    {
+
+        await GetOrders();
+
+    }
 
     public async Task AddOrder(OrderDto order)
     {

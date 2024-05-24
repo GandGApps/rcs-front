@@ -42,7 +42,7 @@ internal sealed record DishRequest
     public string? MeasureUnit { get; init; }
 
     [JsonPropertyName("image")]
-    public int Image { get; init; }
+    public int? Image { get; init; }
 
     [JsonPropertyName("theNutValue")]
     public int TheNutValue { get; init; }

@@ -156,6 +156,12 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
                 await ViewModel.OkMessage(developerException.Message, "JustFailed");
             }
 
+            if (extractedException is InvalidUserOperatationException invalidUserOperatationException)
+            {
+                e.Handled = true;
+                await ViewModel.OkMessage(invalidUserOperatationException.Message, invalidUserOperatationException.Description, invalidUserOperatationException.Icon);
+            }
+
 #if RELEASE
             if (extractedException is not NotImplementedException)
             {

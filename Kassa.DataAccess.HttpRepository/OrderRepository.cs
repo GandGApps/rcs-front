@@ -34,7 +34,7 @@ internal sealed class OrderRepository : IRepository<Order>
             return [];
         }
 
-        return orders.Select(ApiMapper.MapEdgarModelToOrder).ToList();
+        return orders.Select(ApiMapper.MapServerResponseToOrder).ToList();
     }
     public Task Update(Order item) => throw new NotImplementedException();
 }
