@@ -61,7 +61,7 @@ public class ServicePageVm : PageViewModel
                     return false;
                 }
 
-                if (!_shiftService.IsShiftStarted())
+                if (!_shiftService.IsCashierShiftStarted())
                 {
                     await _shiftService.CurrentCashierShift.Value.Start();
                     return true;

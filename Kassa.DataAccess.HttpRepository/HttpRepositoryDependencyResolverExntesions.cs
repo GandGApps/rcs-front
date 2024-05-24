@@ -22,6 +22,7 @@ public static class HttpRepositoryDependencyResolverExntesions
         services.RegisterConstant<IRepository<Product>>(new DishesWithCacdedValueRepository());
         services.RegisterConstant<IRepository<Category>>(new CategoryRepository());
         services.RegisterConstant<IRepository<Ingredient>>(new IngridientRepository());
+        services.RegisterConstant<IRepository<Receipt>>(new ReceiptRepository());
     }
 
     internal static void AddApis(IMutableDependencyResolver services)
@@ -31,5 +32,6 @@ public static class HttpRepositoryDependencyResolverExntesions
         services.AddApi<IDishesApi>();
         services.AddApi<IDishGroupApi>();
         services.AddApi<IIngridientsApi>();
+        services.AddApi<ITechcardApi>();
     }
 }

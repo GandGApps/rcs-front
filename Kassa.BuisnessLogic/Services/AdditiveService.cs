@@ -11,7 +11,7 @@ using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 
 namespace Kassa.BuisnessLogic.Services;
-public sealed class AdditiveService(IAdditiveRepository repository, IReceiptService receiptService) : IAdditiveService
+internal sealed class AdditiveService(IAdditiveRepository repository, IReceiptService receiptService) : IAdditiveService
 {
     public IApplicationModelManager<AdditiveDto> RuntimeAdditives
     {

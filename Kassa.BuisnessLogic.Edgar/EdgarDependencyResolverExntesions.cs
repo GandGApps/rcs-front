@@ -56,6 +56,15 @@ public static class EdgarDependencyResolverExntesions
         });
         services.RegisterInitializableServiceFactory<ICashierService>();
 
+        services.Register<IAdditiveService>(() =>
+        {
+
+            var repository = Locator.Current.GetRequiredService<IAdditiveRepository>();
+            var receiptService = Locator.Current.GetNotInitializedService<IReceiptService>();
+
+            return new AdditiveService(repository, receiptService);
+        });
+
         SplatRegistrations.SetupIOC();
     }
 

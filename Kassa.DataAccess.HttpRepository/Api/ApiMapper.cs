@@ -354,4 +354,22 @@ internal static partial class ApiMapper
             Measure = additiveResponse.Measure
         };
     }
+
+    public static Receipt MapTechcardToReceipt(TechcardEdgarResponse techcardResponse)
+    {
+        return new Receipt
+        {
+            Id = techcardResponse.TechcardId,
+            IngredientUsages = techcardResponse.Ingridients is null ? [] : techcardResponse.Ingridients.Select(MapIngridientToIngredientUsage).ToArray()
+        };
+    }
+
+    public static IngredientUsage MapIngridientToIngredientUsage(IngridientEdgarResponse ingridientResponse)
+    {
+        return new IngredientUsage
+        {
+            IngredientId = ingridientResponse.IngridientId,
+            Count = ingridientResponse.Netto 
+        };
+    }
 }
