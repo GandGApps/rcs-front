@@ -372,4 +372,33 @@ internal static partial class ApiMapper
             Count = ingridientResponse.Netto 
         };
     }
+
+    public static AdditiveEdgarModel MapAdditiveToEdgarModel(Additive additive)
+    {
+        return new AdditiveEdgarModel
+        {
+            Id = additive.Id,
+            Name = additive.Name,
+            Price = additive.Price,
+            TotalPrice = additive.Price, // Assuming total price is the same as price for this mapping
+            SubTotalPrice = additive.Price, // Assuming subtotal price is the same as price for this mapping
+        };
+    }
+
+    public static Additive MapAdditiveEdgarToAdditive(AdditiveEdgarModel edgarModel)
+    {
+        return new Additive
+        {
+            Id = edgarModel.Id,
+            Name = edgarModel.Name,
+            Price = edgarModel.Price,
+            CurrencySymbol = string.Empty, // Placeholder, update as needed
+            Measure = string.Empty, // Placeholder, update as needed
+            ProductIds = Array.Empty<Guid>(), // Placeholder, update as needed
+            Portion = 0, // Placeholder, update as needed
+            IsAvailable = true, // Default value
+            IsEnoughIngredients = true, // Default value
+        };
+    }
+
 }
