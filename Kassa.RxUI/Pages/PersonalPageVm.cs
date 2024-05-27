@@ -69,8 +69,10 @@ public class PersonalPageVm : PageViewModel
             return isCorrect;
         }).DisposeWith(InternalDisposables);
 
-        OpenShiftCommand = ReactiveCommand.CreateFromTask(async () =>
+        OpenShiftCommand = CreatePageBusyCommand(async () =>
         {
+            BusyText = "Открытие смены";
+
             var currentShift = _shiftService.CurrentShift.Value;
 
             if (currentShift is null)
@@ -80,6 +82,7 @@ public class PersonalPageVm : PageViewModel
 
             try
             {
+                
                 await currentShift.Start();
             }
             catch

@@ -32,6 +32,7 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
     {
         get;
     }
+
     public ViewModelActivator Activator
     {
         get;

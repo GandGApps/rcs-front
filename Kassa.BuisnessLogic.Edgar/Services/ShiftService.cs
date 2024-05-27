@@ -161,7 +161,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
         var postExists = await terminalApi.PostExists(new(DateTime.Now));
 
-        var managerShift = new EdgarManagerShift(member, postExists, this);
+        var managerShift = new EdgarTerminalShift(member, postExists, this);
 
         if (!this.IsCashierShiftStarted() && !member.IsManager)
         {

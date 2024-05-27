@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI.Pages;
 public class PageViewModel : BaseViewModel, IRoutableViewModel
@@ -38,9 +40,88 @@ public class PageViewModel : BaseViewModel, IRoutableViewModel
         get;
     }
 
+    [Reactive]
+    public string? BusyText
+    {
+        get; protected set;
+    }
+
     public ReactiveCommand<Unit, Unit> GoBackCommand
     {
         get;
+    }
+
+    protected ReactiveCommand<TParam, TResult> CreatePageBusyCommand<TParam, TResult>(Func<TParam, Task<TResult>> execute)
+    {
+        return ReactiveCommand.CreateFromTask(async (TParam param) =>
+        {
+            var loading = MainViewModel.ShowLoadingDialog(BusyText);
+
+            try
+            {
+                var disposable = this.WhenAnyValue(d => d.BusyText).Subscribe(text => loading.Message = text);
+
+                var result = await execute(param);
+
+                disposable.Dispose();
+
+                BusyText = null;
+
+                return result;
+            }
+            finally
+            {
+                await loading.CloseAsync();
+            }
+        });
+    }
+
+    protected ReactiveCommand<Unit, TResult> CreatePageBusyCommand<TResult>(Func<Task<TResult>> execute)
+    {
+        return ReactiveCommand.CreateFromTask(async () =>
+        {
+            var loading = MainViewModel.ShowLoadingDialog(BusyText);
+
+            try
+            {
+                var disposable = this.WhenAnyValue(d => d.BusyText).Subscribe(text => loading.Message = text);
+
+                var result = await execute();
+
+                disposable.Dispose();
+
+                BusyText = null;
+
+                return result;
+            }
+            finally
+            {
+                await loading.CloseAsync();
+            }
+        });
+    }
+
+    protected ReactiveCommand<Unit, Unit> CreatePageBusyCommand(Func<Task> execute)
+    {
+        return ReactiveCommand.CreateFromTask(async () =>
+        {
+            var loading = MainViewModel.ShowLoadingDialog(BusyText);
+
+            try
+            {
+                var disposable = this.WhenAnyValue(d => d.BusyText).Subscribe(text => loading.Message = text);
+
+                await execute();
+
+                disposable.Dispose();
+
+                BusyText = null;
+            }
+            finally
+            {
+                await loading.CloseAsync();
+            }
+        });
     }
 
     public static async ValueTask<bool> TryAuthorizePageAccess<T>(IShiftService shiftservice) where T : PageViewModel

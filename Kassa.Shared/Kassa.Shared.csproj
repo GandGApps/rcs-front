@@ -12,8 +12,8 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="8.0.0" />
     <PackageReference Include="Refit" Version="7.0.0" />
     <PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
-    <PackageReference Include="Splat" Version="15.0.1" />
-    <PackageReference Include="System.Reactive" Version="6.0.0" />
+    <PackageReference Include="Splat" Version="15.1.1" />
+    <PackageReference Include="System.Reactive" Version="6.0.1" />
   </ItemGroup>
 
 </Project>

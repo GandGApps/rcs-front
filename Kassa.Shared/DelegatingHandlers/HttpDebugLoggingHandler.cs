@@ -20,8 +20,6 @@ public sealed class HttpDebugLoggingHandler : DelegatingHandler, IEnableLogger
         var msg = $"[{id} -   Request]";
 
         this.Log().Info($"{msg}========Start==========");
-
-        this.Log().Info($"{msg}========Start==========");
         this.Log().Info($"{msg} {req.Method} {req.RequestUri!.PathAndQuery} {req.RequestUri.Scheme}/{req.Version}");
         this.Log().Info($"{msg} Host: {req.RequestUri.Scheme}://{req.RequestUri.Host}");
 

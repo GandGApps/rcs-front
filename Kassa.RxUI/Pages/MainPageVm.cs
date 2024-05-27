@@ -112,8 +112,10 @@ public class MainPageVm : PageViewModel
             await MainViewModel.GoToPage(new AllDeliveriesPageVm());
         });
 
-        OpenServicesDialog = ReactiveCommand.CreateFromTask(async () =>
+        OpenServicesDialog = CreatePageBusyCommand(async () =>
         {
+            BusyText = "Загрузка данных...";
+
             var cashierService = await Locator.GetInitializedService<ICashierService>();
             var shiftService = await Locator.GetInitializedService<IShiftService>();
 

@@ -22,7 +22,8 @@ public class AutorizationPageVm : PageViewModel
             await MainViewModel.DialogOpenCommand.Execute(new AreYouSureToTurnOffDialogViewModel(MainViewModel)).FirstAsync();
         });
 
-        LoginCommand = ReactiveCommand.CreateFromTask(async () =>
+
+        LoginCommand = CreatePageBusyCommand(async () =>
         {
             var authService = Locator.GetRequiredService<IAuthService>();
 
@@ -31,6 +32,8 @@ public class AutorizationPageVm : PageViewModel
                 Error = "Поля не могут быть пустыми";
                 return false;
             }
+
+            BusyText = "Авторизация...";
 
             if (await authService.AuthenticateAsync(Login, Password))
             {

@@ -30,31 +30,6 @@ public class CashierShift : IModel
         get; set;
     }
 
-    public DateTime? BreakStart
-    {
-        get; set;
-    }
-
-    public DateTime? BreakEnd
-    {
-        get; set;
-    }
-
-    public double HourlyRate
-    {
-        get; set;
-    }
-
-    public double Earned
-    {
-        get; set;
-    }
-
-    public double Fine
-    {
-        get; set;
-    }
-
     public string? Note
     {
         get; set;

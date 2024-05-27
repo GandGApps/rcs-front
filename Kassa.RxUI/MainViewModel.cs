@@ -123,7 +123,6 @@ public class MainViewModel : ReactiveObject, IScreen
 
         GoToPageAndResetCommand = ReactiveCommand.CreateFromTask(async (PageViewModel pageVm) =>
         {
-
             foreach (var vm in Router.NavigationStack)
             {
                 if (vm is PageViewModel page)

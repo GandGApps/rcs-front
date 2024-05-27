@@ -12,24 +12,28 @@ using Kassa.Shared;
 using Splat;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
-internal class EdgarManagerShift : ITerminalShift
+internal class EdgarTerminalShift : ITerminalShift
 {
     private CashierShiftDto? _cashierShift;
 
     private readonly MemberDto _manager;
-    private readonly PostExistsResponse _postExistsResponse;
-    private readonly BehaviorSubject<bool> _isStarted = new(false);
+    private readonly TerminalPostExistsResponse _postExistsResponse;
+    private readonly BehaviorSubject<bool> _isStarted;
     private readonly DateTime? _start;
     private readonly ShiftService _shiftService;
 
-    public EdgarManagerShift(MemberDto manager, PostExistsResponse postExistsResponse, ShiftService shiftService)
+    public EdgarTerminalShift(MemberDto manager, TerminalPostExistsResponse postExistsResponse, ShiftService shiftService)
     {
         _manager = manager;
-        IsStarted = new(_isStarted);
+        
         _postExistsResponse = postExistsResponse;
 
-        _start = postExistsResponse.CreatedPost.OpenDate;
+        _start = postExistsResponse.Posts.OpenDate;
         _shiftService = shiftService;
+
+        _isStarted = new(postExistsResponse.Posts.IsOpen);
+
+        IsStarted = new(_isStarted);
     }
 
     public MemberDto Manager => _manager;
@@ -61,19 +65,18 @@ internal class EdgarManagerShift : ITerminalShift
         await terminalPostApi.ClosePost(closeShiftRequest);
 
         _shiftService._currentCashierShift.OnNext(null);
+        _shiftService._currentShift.OnNext(null);
     }
 
     public ValueTask<CashierShiftDto> GetCashierShiftAsync()
     {
         _cashierShift ??= new CashierShiftDto()
         {
-            Id = _postExistsResponse.CreatedPost.PostId,
-            IsStarted = _postExistsResponse.CreatedPost.IsOpen,
+            Id = _postExistsResponse.PostId,
+            IsStarted = _postExistsResponse.Posts.IsOpen,
             MemberId = _manager.Id,
             Start = _start,
-            Number = _postExistsResponse.CreatedPost.PostId.GuidToPrettyInt(),
-            BreakStart = _postExistsResponse.CreatedPost.BreakStart,
-            BreakEnd = _postExistsResponse.CreatedPost.BreakEnd
+            Number = _postExistsResponse.Posts.PostId.GuidToPrettyInt(),
         };
 
         return new(_cashierShift);

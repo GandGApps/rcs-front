@@ -17,10 +17,10 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
-    <PackageReference Include="ReactiveUI" Version="19.5.41" />
+    <PackageReference Include="ReactiveUI" Version="20.1.1" />
     <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
-    <PackageReference Include="ReactiveUI.Blend" Version="19.5.41" />
-    <PackageReference Include="ReactiveUI.WPF" Version="19.5.41" />
+    <PackageReference Include="ReactiveUI.Blend" Version="20.1.1" />
+    <PackageReference Include="ReactiveUI.WPF" Version="20.1.1" />
     <PackageReference Include="PixiEditor.ColorPicker" Version="3.4.1" />
     <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
   </ItemGroup>

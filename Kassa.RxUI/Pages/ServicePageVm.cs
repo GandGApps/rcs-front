@@ -28,8 +28,9 @@ public class ServicePageVm : PageViewModel
         SelectedOrders = new([]);
         SelectedDocuments = new([]);
 
-        CloseShiftCommnad = ReactiveCommand.CreateFromTask(async () =>
+        CloseShiftCommnad = CreatePageBusyCommand(async () =>
         {
+            BusyText = "Закрытие смены";
             try
             {
                 if (_shiftService.IsCashierShiftStarted())
@@ -51,8 +52,9 @@ public class ServicePageVm : PageViewModel
             }
         });
 
-        OpenShiftCommand = ReactiveCommand.CreateFromTask(async () =>
+        OpenShiftCommand = CreatePageBusyCommand(async () =>
         {
+            BusyText = "Открытие смены";
             try
             {
                 if (_shiftService.CurrentCashierShift.Value is null)
