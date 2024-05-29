@@ -57,5 +57,11 @@ internal sealed class AdditiveRepository : IAdditiveRepository, IEnableLogger
         return additives;
     }
 
-    public Task Update(Additive item) => throw new NotImplementedException();
+    public Task Update(Additive item)
+    {
+        // TODO: Implement update
+        this.Log().Error("Update is not supported for additives");
+
+        return Task.CompletedTask;
+    }
 }

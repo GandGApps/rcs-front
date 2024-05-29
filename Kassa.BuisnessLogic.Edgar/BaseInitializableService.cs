@@ -29,11 +29,11 @@ internal abstract class BaseInitializableService: IInitializableService, IEnable
 
     public void Dispose()
     {
-        this.Log().Info("Disposing service");
+        this.Log().Info("Disposing service " + GetType());
 
         Dispose(disposing: true);
 
-        this.Log().Info("Service disposed");
+        this.Log().Info("Service disposed " + GetType());
 
         IsDisposed = true;
 
@@ -44,32 +44,32 @@ internal abstract class BaseInitializableService: IInitializableService, IEnable
     {
         var id = Guid.NewGuid();
         
-        this.Log().Info($"[{id}] Disposing service async");
+        this.Log().Info($"[{id}] Disposing service async " + GetType());
 
         await DisposeAsyncCore().ConfigureAwait(false);
 
         Dispose(disposing: false);
         GC.SuppressFinalize(this);
 
-        this.Log().Info($"[{id}] Service disposed async");
+        this.Log().Info($"[{id}] Service disposed async " + GetType());
     }
 
     async ValueTask IInitializableService.Initialize()
     {
         if (IsInitialized)
         {
-            this.Log().Warn("Service is already initialized");
+            this.Log().Warn("Service is already initialized " + GetType());
             return;
         }
 
         var id = Guid.NewGuid();
 
-        this.Log().Info($"[{id}] Initializing service");
+        this.Log().Info($"[{id}] Initializing service " + GetType()) ;
 
         Initialize(InternalDisposables);
         await InitializeAsync(InternalDisposables).ConfigureAwait(false);
 
-        this.Log().Info($"[{id}] Service initialized");
+        this.Log().Info($"[{id}] Service initialized " + GetType());
 
         IsInitialized = true;
     }

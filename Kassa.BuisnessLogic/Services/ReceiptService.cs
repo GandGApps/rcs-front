@@ -17,7 +17,7 @@ internal class ReceiptService(IRepository<Receipt> repository, IIngridientsServi
         get;
     } = new(x => x.Id);
 
-    protected override async ValueTask InitializeAsync(CompositeDisposable disposables)
+    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
         await ingridientsService.Initialize();
 

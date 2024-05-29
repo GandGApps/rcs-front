@@ -22,6 +22,7 @@ public static class DependencyResolverExtensions
         services.RegisterConstant(IRepository<Client>.CreateMock("MockClient.json"));
 
         var streets = IRepository<Street>.CreateMock("MockStreets.json");
+        var shifts = IRepository<Shift>.CreateMock("MockShifts.json");
 
         services.RegisterConstant(streets);
         services.RegisterConstant(IDistrictRepository.CreateMock("MockDistricts.json", streets));
@@ -32,7 +33,8 @@ public static class DependencyResolverExtensions
         services.RegisterConstant(IRepository<Ingredient>.CreateMock("MockIngredients.json"));
         services.RegisterConstant(IRepository<Receipt>.CreateMock("MockReceipts.json"));
         services.RegisterConstant(IRepository<Courier>.CreateMock("MockCouriers.json"));
-        services.RegisterConstant(IRepository<Shift>.CreateMock("MockShifts.json"));
+        services.RegisterConstant(shifts);
+        services.RegisterConstant<IShiftRepository>(new IShiftRepository.MockShiftRepository(shifts));
         services.RegisterConstant(IRepository<User>.CreateMock("MockUsers.json"));
         services.RegisterConstant(IRepository<WithdrawalReason>.CreateMock("MockWithdrawalReason.json"));
         services.RegisterConstant(IRepository<Member>.CreateMock("MockMembers.json"));

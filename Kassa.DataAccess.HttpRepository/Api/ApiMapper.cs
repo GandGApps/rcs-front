@@ -379,9 +379,18 @@ internal static partial class ApiMapper
         {
             Id = additive.Id,
             Name = additive.Name,
-            Price = additive.Price,
-            TotalPrice = additive.Price, // Assuming total price is the same as price for this mapping
-            SubTotalPrice = additive.Price, // Assuming subtotal price is the same as price for this mapping
+            NomenclatureType = string.Empty, // Placeholder, update as needed
+            AccountingCategory = string.Empty, // Placeholder, update as needed
+            ParentGroupId = null, // Placeholder, update as needed
+            Article = 0, // Placeholder, update as needed
+            Code = 0, // Placeholder, update as needed
+            Warehouse = Guid.Empty, // Placeholder, update as needed
+            ModificatorValue = 0, // Placeholder, update as needed
+            DishId = additive.ProductIds?.Length > 0 ? additive.ProductIds[0] : Guid.Empty,
+            TechcardId = additive.ReceiptId,
+            OfficeId = Guid.Empty, // Placeholder, update as needed
+            CreatedAt = DateTime.UtcNow, // Placeholder, update as needed
+            UpdatedAt = DateTime.UtcNow // Placeholder, update as needed
         };
     }
 
@@ -391,13 +400,14 @@ internal static partial class ApiMapper
         {
             Id = edgarModel.Id,
             Name = edgarModel.Name,
-            Price = edgarModel.Price,
             CurrencySymbol = string.Empty, // Placeholder, update as needed
+            Price = edgarModel.ModificatorValue, // Assuming modificator_value corresponds to price
             Measure = string.Empty, // Placeholder, update as needed
-            ProductIds = Array.Empty<Guid>(), // Placeholder, update as needed
+            ProductIds = [edgarModel.DishId], // Assuming dish_id corresponds to ProductIds
             Portion = 0, // Placeholder, update as needed
             IsAvailable = true, // Default value
             IsEnoughIngredients = true, // Default value
+            ReceiptId = edgarModel.TechcardId
         };
     }
 

@@ -39,7 +39,7 @@ public record Additive : IModel
     public Guid[] ProductIds
     {
         get; set;
-    }
+    } = [];
 
     /// <summary>
     /// Я забыл зачем это добавил

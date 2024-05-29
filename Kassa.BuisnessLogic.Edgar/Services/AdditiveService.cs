@@ -28,16 +28,6 @@ internal sealed class AdditiveService : BaseInitializableService, IAdditiveServi
         get;
     } = new HostModelManager<AdditiveDto>();
 
-    public bool IsInitialized
-    {
-        get; set;
-    }
-    public bool IsDisposed
-    {
-        get; set;
-    }
-
-
     public async Task DecreaseAddtiveCount(AdditiveDto additiveDto, double count = 1)
     {
         this.ThrowIfNotInitialized();
@@ -153,8 +143,6 @@ internal sealed class AdditiveService : BaseInitializableService, IAdditiveServi
 
     public async Task UpdateAdditive(AdditiveDto additiveDto)
     {
-        this.ThrowIfNotInitialized();
-
         var model = _repository.Get(additiveDto.Id);
 
         if (model is null)

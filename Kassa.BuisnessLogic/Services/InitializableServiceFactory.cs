@@ -7,12 +7,17 @@ using Kassa.Shared;
 using Splat;
 
 namespace Kassa.BuisnessLogic.Services;
-internal class InitializableServiceFactory<T> : IInitializableServiceFactory<T> where T : class, IInitializableService
+internal sealed class InitializableServiceFactory<T> : IInitializableServiceFactory<T>, IEnableLogger where T : class, IInitializableService
 {
     private T? _service;
 
     public async ValueTask<T> GetService()
     {
+        if (_service == null)
+        {
+            this.Log().Info("Initialize new instance " + typeof(T));
+        }
+
         _service ??= Locator.Current.GetRequiredService<T>();
 
         if (_service.IsDisposed)
@@ -33,10 +38,17 @@ internal class InitializableServiceFactory<T> : IInitializableServiceFactory<T> 
 
     public T GetNotInitializedService()
     {
+        if (_service == null)
+        {
+            this.Log().Info("Return new not initialized instance of service" + typeof(T));
+        }
+
         _service ??= Locator.Current.GetRequiredService<T>();
 
         if (_service.IsDisposed)
         {
+            this.Log().Info("Return new not initialized instance of service " + typeof(T));
+            
             _service = null;
             _service = Locator.Current.GetRequiredService<T>();
         }

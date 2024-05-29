@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Kassa.Shared.DelegatingHandlers;
 using Refit;
 
 namespace Kassa.DataAccess.HttpRepository.Api;
-internal interface IAdditiveApi
+internal interface IAdditiveApi: IUseMemberToken
 {
     [Get("/dishes/additives")]
     public Task<IEnumerable<AdditiveEdgarModel>> GetAdditives();
@@ -27,26 +28,74 @@ internal sealed record AdditiveEdgarModel
         get; init;
     }
 
-    [JsonPropertyName("price")]
-    public double Price
+    [JsonPropertyName("nomenclatureType")]
+    public string NomenclatureType
     {
         get; init;
     }
 
-    [JsonPropertyName("totalPrice")]
-    public double TotalPrice
+    [JsonPropertyName("accountingCategory")]
+    public string AccountingCategory
     {
         get; init;
     }
 
-    [JsonPropertyName("subTotalPrice")]
-    public double SubTotalPrice
+    [JsonPropertyName("parentgroup_id")]
+    public Guid? ParentGroupId
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("article")]
+    public int Article
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("code")]
+    public int Code
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("warehouse")]
+    public Guid Warehouse
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("modificator_value")]
+    public double ModificatorValue
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("dish_id")]
+    public Guid DishId
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("techcard_id")]
+    public Guid TechcardId
     {
         get; init;
     }
 
     [JsonPropertyName("office_id")]
-    public Guid? OfficeId
+    public Guid OfficeId
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("createdAt")]
+    public DateTime CreatedAt
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("updatedAt")]
+    public DateTime UpdatedAt
     {
         get; init;
     }
