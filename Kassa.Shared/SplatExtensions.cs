@@ -23,7 +23,7 @@ public static class SplatExtensions
         return services.GetService<T>() ?? throw new InvalidOperationException($"The service of type {typeof(T)} is not registered.");
     }
 
-    public static MultiLogger AddLoggers(this IMutableDependencyResolver services)
+    public static void AddLoggers(this IMutableDependencyResolver services)
     {
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Debug()
@@ -32,7 +32,5 @@ public static class SplatExtensions
             .CreateLogger();
 
         services.UseSerilogFullLogger();
-
-        return multiLogger;
     }
 }

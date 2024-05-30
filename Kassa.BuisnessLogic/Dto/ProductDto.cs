@@ -53,10 +53,10 @@ public record ProductDto : ICategoryItemDto, IModel
         get; set;
     } = [];
 
-    public string Icon
+    public int Image
     {
         get; set;
-    } = null!;
+    }
     public Guid? CategoryId
     {
         get; set;

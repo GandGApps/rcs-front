@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Text;
@@ -15,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Kassa.RxUI;
 using Kassa.Wpf.Controls;
+using Kassa.Wpf.Converters;
 using ReactiveUI;
 
 namespace Kassa.Wpf.Views;
@@ -30,15 +32,17 @@ public partial class SearchProductView : ButtonUserControl<ProductViewModel>
 
         this.WhenActivated(disposables =>
         {
+            Debug.Assert(ViewModel != null);
+
             Command = ProductViewModel.AddToShoppingListCommand;
             CommandParameter = ViewModel;
 
-            if (ViewModel!.Icon is not null)
+            if (ViewModel.Image >= 0)
             {
-                ViewModel.WhenAnyValue(x => x.Icon)
+                ViewModel.WhenAnyValue(x => x.Image)
                     .Subscribe(x =>
                     {
-                        var resource = Application.Current.TryFindResource(x);
+                        var resource = IntToProjectIcon.GetProjectIcon(x);
 
                         if (resource is Geometry geometry)
                         {
@@ -54,6 +58,7 @@ public partial class SearchProductView : ButtonUserControl<ProductViewModel>
             }
             else
             {
+                // TODO: Load image from internet
                 ProductIcon.Data = Application.Current.TryFindResource("CupOfTeaIcon") as Geometry;
             }
 

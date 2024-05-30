@@ -26,10 +26,10 @@ public sealed class IntToProjectIcon : IValueConverter
         throw new NotImplementedException();
     }
 
-    public static Geometry GetProjectIcon(int projectIcon)
+    public static Geometry? GetProjectIcon(int projectIcon)
     {
         var resourceKey = $"ProjectIcon{projectIcon}";
 
-        return (Geometry)Application.Current.FindResource(resourceKey);
+        return Application.Current.TryFindResource(resourceKey) as Geometry;
     }
 }

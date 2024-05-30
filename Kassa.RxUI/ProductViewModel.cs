@@ -48,7 +48,7 @@ public sealed class ProductViewModel : ReactiveObject, IApplicationModelPresente
         IsAdded = product.IsAdded;
         Measure = product.Measure;
         IsAvailable = product.IsAvailable && product.IsEnoughIngredients;
-        Icon = product.Icon;
+        Image = product.Image;
 
         _disposable = productService.RuntimeProducts.AddPresenter(this);
     }
@@ -62,7 +62,7 @@ public sealed class ProductViewModel : ReactiveObject, IApplicationModelPresente
         IsAdded = product.IsAdded;
         Measure = product.Measure;
         IsAvailable = product.IsAvailable && product.IsEnoughIngredients;
-        Icon = product.Icon;
+        Image = product.Image;
 
         _disposable = Disposable.Empty;
     }
@@ -108,7 +108,7 @@ public sealed class ProductViewModel : ReactiveObject, IApplicationModelPresente
     }
 
     [Reactive]
-    public string Icon
+    public int Image
     {
         get; set;
     }
@@ -125,7 +125,7 @@ public sealed class ProductViewModel : ReactiveObject, IApplicationModelPresente
         IsAdded = product.IsAdded;
         Measure = product.Measure;
         IsAvailable = product.IsAvailable && product.IsEnoughIngredients;
-        Icon = product.Icon;
+        Image = product.Image;
     }
 }
 

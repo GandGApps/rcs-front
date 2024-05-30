@@ -48,10 +48,10 @@ public record Product : ICategoryItem
     } = [];
 
 
-    public string Icon
+    public int Image
     {
         get; set;
-    } = null!;
+    }
 
     public Guid? CategoryId
     {

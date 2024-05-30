@@ -23,7 +23,7 @@ public class FastMenuDto : IModel
         get; set;
     }
 
-    public string Image
+    public int Image
     {
         get; set;
     }

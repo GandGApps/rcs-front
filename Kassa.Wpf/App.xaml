@@ -24,6 +24,7 @@
                 <ResourceDictionary Source="/Resources/ScrollBar.xaml" />
                 <ResourceDictionary Source="/Resources/CashierTabPanel.xaml" />
                 <ResourceDictionary Source="/Resources/DataGrid.xaml" />
+                <ResourceDictionary Source="/Resources/ProjectIcons.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
 
