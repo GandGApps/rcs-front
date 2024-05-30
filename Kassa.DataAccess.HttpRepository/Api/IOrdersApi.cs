@@ -16,7 +16,7 @@ internal interface IOrdersApi: IUseMemberToken
     [Post("/orders/create")]
     public Task AddOrder(OrderEdgarModel order);
 
-    public Task<OrderEdgarModel> GetOrder([AliasAs("order_id")] Guid id);
+    /*public Task<OrderEdgarModel> GetOrder([AliasAs("order_id")] Guid id);*/
 }
 
 internal sealed record OrderedProductEdgarModel
@@ -425,6 +425,18 @@ internal sealed record OrderEdgarModel
     {
         get; init;
     }
+
+    [JsonPropertyName("post_id")]
+    public Guid PostId
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("employeepost_id")]
+    public Guid EmployeePostId
+    {
+        get; init;
+    }
 }
 
 internal sealed record OrderedProductEdgarResponse
@@ -797,6 +809,18 @@ internal sealed record OrderEdgarResponse
 
     [JsonPropertyName("problem")]
     public string Problem
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("employeepost_id")]
+    public Guid EmployeePostId
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("post_id")]
+    public Guid PostId
     {
         get; init;
     }

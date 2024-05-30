@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Serilog;
+using Serilog.Events;
 using Splat;
+using Splat.Serilog;
 
 namespace Kassa.Shared;
 public static class SplatExtensions
@@ -20,10 +23,15 @@ public static class SplatExtensions
         return services.GetService<T>() ?? throw new InvalidOperationException($"The service of type {typeof(T)} is not registered.");
     }
 
-    public static MultiLogger RegisterLoggers(this IMutableDependencyResolver services, params ILogger[] loggers)
+    public static MultiLogger AddLoggers(this IMutableDependencyResolver services)
     {
-        var multiLogger = new MultiLogger(loggers);
-        services.RegisterConstant(multiLogger, typeof(ILogger));
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Debug()
+            .WriteTo.File("logs/Logs.txt", restrictedToMinimumLevel: LogEventLevel.Debug, rollingInterval: RollingInterval.Day)
+            .WriteTo.Debug(restrictedToMinimumLevel: LogEventLevel.Debug)
+            .CreateLogger();
+
+        services.UseSerilogFullLogger();
 
         return multiLogger;
     }

@@ -9,7 +9,7 @@ namespace Kassa.RxUI.Dialogs;
 public class LoadingDialogViewModel : DialogViewModel
 {
     [Reactive]
-    public string Message
+    public string? Message
     {
         get; set;
     } = null!;

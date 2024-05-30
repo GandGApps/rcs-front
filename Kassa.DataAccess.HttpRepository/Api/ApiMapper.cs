@@ -152,7 +152,9 @@ internal static partial class ApiMapper
             PayInfToDeposit = order.PaymentInfo != null ? order.PaymentInfo.ToDeposit : 0,
             PayinfToEntered = order.PaymentInfo != null ? order.PaymentInfo.ToEntered : 0,
             PayInfChange = order.PaymentInfo != null ? order.PaymentInfo.Change : 0,
-            PayInfWithSalesReceipt = order.PaymentInfo != null && order.PaymentInfo.WithSalesReceipt
+            PayInfWithSalesReceipt = order.PaymentInfo != null && order.PaymentInfo.WithSalesReceipt,
+            PostId = order.CashierShiftId,
+            EmployeePostId = order.ShiftId,
         };
     }
 
@@ -320,7 +322,9 @@ internal static partial class ApiMapper
             IsOutOfTurn = orderResponse.IsOutOfTurn,
             IsProblematicDelivery = orderResponse.IsProblematicDelivery,
             PaymentInfo = orderResponse.PaymentInfoId.HasValue ? new PaymentInfo { Id = orderResponse.PaymentInfoId.Value } : null,
-            PaymentInfoId = orderResponse.PaymentInfoId
+            PaymentInfoId = orderResponse.PaymentInfoId,
+            ShiftId = orderResponse.EmployeePostId,
+            CashierShiftId = orderResponse.PostId
         };
     }
 

@@ -234,7 +234,7 @@ public class MainViewModel : ReactiveObject, IScreen
         await dialog.WaitDialogClose();
     }
 
-    public LoadingDialogViewModel ShowLoadingDialog(string text)
+    public LoadingDialogViewModel ShowLoadingDialog(string? text)
     {
         var loadingDialog = new LoadingDialogViewModel
         {

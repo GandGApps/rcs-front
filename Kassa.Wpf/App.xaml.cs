@@ -119,7 +119,7 @@ public partial class App : Application
         CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
         CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
 
-        Locator.CurrentMutable.RegisterLoggers([new DebugLogger(), new ObservableLogger()]);
+        Locator.CurrentMutable.AddLoggers();
 
         Locator.CurrentMutable.RegisterConstant<IConfiguration>(config);
 

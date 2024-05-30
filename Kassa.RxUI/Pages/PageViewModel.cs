@@ -111,11 +111,12 @@ public class PageViewModel : BaseViewModel, IRoutableViewModel
             {
                 var disposable = this.WhenAnyValue(d => d.BusyText).Subscribe(text => loading.Message = text);
 
-                await execute();
+                using (disposable)
+                {
+                    await execute();
 
-                disposable.Dispose();
-
-                BusyText = null;
+                    BusyText = null;
+                }
             }
             finally
             {

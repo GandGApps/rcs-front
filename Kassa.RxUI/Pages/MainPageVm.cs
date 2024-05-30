@@ -127,8 +127,10 @@ public class MainPageVm : PageViewModel
             await MainViewModel.GoToPage(new ServicePageVm(cashierService, shiftService));
         });
 
-        GoToCashier = ReactiveCommand.CreateFromTask(async () =>
+        GoToCashier = CreatePageBusyCommand(async () =>
         {
+            BusyText = "Загрузка данных...";
+
             var cashierService = await Locator.GetInitializedService<ICashierService>();
             var order = await cashierService.CreateOrder(false);
             var additveService = await Locator.GetInitializedService<IAdditiveService>();
@@ -147,6 +149,8 @@ public class MainPageVm : PageViewModel
 
         OpenCurrentOrderCommand = CreatePageBusyCommand(async () =>
         {
+            BusyText = "Загрузка данных...";
+
             var cashierService = await Locator.GetInitializedService<ICashierService>();
             var additiveService = await Locator.GetInitializedService<IAdditiveService>();
             var order = cashierService.CurrentOrder;

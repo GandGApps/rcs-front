@@ -113,7 +113,7 @@ internal sealed record IngridientEdgarResponse
     }
 
     [JsonPropertyName("loss_percent")]
-    public double LossPercent
+    public double? LossPercent
     {
         get; init;
     }
@@ -149,7 +149,7 @@ internal sealed record IngridientEdgarResponse
     }
 
     [JsonPropertyName("measureunit_id")]
-    public Guid MeasureUnitId
+    public Guid? MeasureUnitId
     {
         get; init;
     }
