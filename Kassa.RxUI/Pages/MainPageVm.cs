@@ -145,7 +145,7 @@ public class MainPageVm : PageViewModel
             await MainViewModel.GoToPageCommand.Execute(new OrderEditPageVm(order, cashierService, additveService)).FirstAsync();
         });
 
-        OpenCurrentOrderCommand = ReactiveCommand.CreateFromTask(async () =>
+        OpenCurrentOrderCommand = CreatePageBusyCommand(async () =>
         {
             var cashierService = await Locator.GetInitializedService<ICashierService>();
             var additiveService = await Locator.GetInitializedService<IAdditiveService>();

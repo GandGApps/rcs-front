@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace Kassa.Wpf.Converters;
-public class IsValueLessThanParameter : IValueConverter
+public sealed class IsValueLessThanParameter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {

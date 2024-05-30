@@ -45,7 +45,7 @@ internal class EdgarTerminalShift : ITerminalShift
 
     public async Task Start()
     {
-        var shift = await GetCashierShiftAsync();
+        var shift = await CreateDto();
 
         var terminalPostApi = Locator.Current.GetRequiredService<ITerminalPostApi>();
         var openShiftRequest = new TerminalOpenPostRequest(DateTime.Now, shift.Id, 0);
@@ -57,7 +57,7 @@ internal class EdgarTerminalShift : ITerminalShift
 
     public async Task End()
     {
-        var shift = await GetCashierShiftAsync();
+        var shift = await CreateDto();
 
         var terminalPostApi = Locator.Current.GetRequiredService<ITerminalPostApi>();
         var closeShiftRequest = new TerminalClosePostRequest(DateTime.Now, shift.Id);
@@ -68,7 +68,7 @@ internal class EdgarTerminalShift : ITerminalShift
         _shiftService._currentShift.OnNext(null);
     }
 
-    public ValueTask<CashierShiftDto> GetCashierShiftAsync()
+    public ValueTask<CashierShiftDto> CreateDto()
     {
         _cashierShift ??= new CashierShiftDto()
         {

@@ -183,5 +183,15 @@ public class OrderDto : IModel
         get; set;
     }
 
+    public Guid ShiftId
+    {
+        get; set;
+    }
+
+    public Guid CashierShiftId
+    {
+        get; set;
+    }
+
     public string AddressWithoutStreet => $"{House} {Building} {Entrance} {Floor} {Apartment}";
 }

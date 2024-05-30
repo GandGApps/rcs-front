@@ -169,4 +169,14 @@ public class Order : IModel
     {
         get; set;
     }
+
+    public Guid ShiftId
+    {
+        get; set;
+    }
+
+    public Guid CashierShiftId
+    {
+        get; set;
+    }
 }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Text;
@@ -1085,9 +1086,9 @@ internal sealed class OrderEditService: BaseInitializableService, IOrderEditServ
         }
     }
 
-    public ValueTask<OrderDto> GetOrder()
+    public async ValueTask<OrderDto> GetOrder()
     {
-        var order = CreateOrGetOrder();
+        var order = await CreateOrGetOrder();
 
         order.Comment = _totalComment!;
         order.Products = ShoppingListItems.Values.Select(x =>
@@ -1106,18 +1107,32 @@ internal sealed class OrderEditService: BaseInitializableService, IOrderEditServ
         order.SubtotalSum = order.Products.Sum(x => x.SubTotalPrice);
         order.Discount = Discount;
 
-        return new(order);
+        return order;
     }
 
-    private OrderDto CreateOrGetOrder()
+    private async ValueTask<OrderDto> CreateOrGetOrder()
     {
-        _order ??= new OrderDto
+        if (_order != null)
+        {
+            return _order;
+        }
+
+        var shiftService = await Locator.GetInitializedService<IShiftService>();
+
+        Debug.Assert(shiftService.CurrentShift.Value != null);
+        Debug.Assert(shiftService.CurrentCashierShift.Value != null);
+
+        var cashierShift = await shiftService.CurrentCashierShift.Value.CreateDto();
+        var shift = await shiftService.CurrentShift.Value.CreateDto();
+
+        _order = new OrderDto
         {
             Status = OrderStatus.New,
             CreatedAt = DateTime.Now,
+            ShiftId = shift.Id,
+            CashierShiftId = cashierShift.Id,
+            Id = OrderId
         };
-
-        _order.Id = OrderId;
 
         return _order;
     }

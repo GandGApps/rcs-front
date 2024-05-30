@@ -8,7 +8,7 @@ using System.Windows.Data;
 
 namespace Kassa.Wpf.Converters;
 [ValueConversion(typeof(string), typeof(bool))]
-public class IsNullOrWhitespaceConverter : IValueConverter
+public sealed class IsNullOrWhitespaceConverter : IValueConverter
 {
     public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
     {
