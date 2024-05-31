@@ -1136,4 +1136,6 @@ internal sealed class OrderEditService: BaseInitializableService, IOrderEditServ
 
         return _order;
     }
+
+    public IDisposable BindFastMenu<T>(Func<FastMenuDto, IApplicationModelPresenter<FastMenuDto>> creator, out ReadOnlyObservableCollection<T> items) => throw new NotImplementedException();
 }

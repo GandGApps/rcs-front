@@ -63,6 +63,8 @@ public partial class StreetsDialog : ClosableDialog<StreetsDialogViewModel>
                 v => v.KeyboardVisibilityText.Text,
                 x => x ? "Вкл" : "Выкл"
             ).DisposeWith(disposables);
+
+            Keyboard.TextBox = SearchTextBox;
         });
     }
 

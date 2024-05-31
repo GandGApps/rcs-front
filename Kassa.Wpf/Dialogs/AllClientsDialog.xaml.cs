@@ -72,6 +72,8 @@ public partial class AllClientsDialog : ClosableDialog<AllClientsDialogViewModel
                 v => v.KeyboardVisibilityText.Text,
                 x => x ? "Вкл" : "Выкл"
             ).DisposeWith(disposables);
+
+            Keyboard.TextBox = SearchTextBox;
         });
     }
 

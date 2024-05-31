@@ -64,6 +64,8 @@ public partial class ProblemDialog : ClosableDialog<ProblemDialogViewModel>
             this.Bind(ViewModel, x => x.IsProblematicDelivery, x => x.IsProblematicDelivery.IsChecked)
                 .DisposeWith(disposables);
 
+            Keyboard.TextBox = Input;
+
         });
     }
 }

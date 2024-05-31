@@ -59,7 +59,7 @@
                 HorizontalContentAlignment="Stretch"
                 HorizontalScrollBarVisibility="Disabled"
                 Style="{StaticResource PrimaryScrollViewer}">
-                <TextBox
+                <controls:TextBoxWithoutVirtualKeyboard
                     x:Name="CommentTextBox"
                     AcceptsReturn="True"
                     BorderThickness="0"

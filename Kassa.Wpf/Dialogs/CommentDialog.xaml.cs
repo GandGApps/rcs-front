@@ -56,6 +56,8 @@ public partial class CommentDialog : ClosableDialog<CommentDialogViewModel>
 
             this.BindCommand(ViewModel, x => x.CloseCommand, x => x.BackButton)
                 .DisposeWith(disposables);
+
+            Keyboard.TextBox = CommentTextBox;
         });
     }
 }

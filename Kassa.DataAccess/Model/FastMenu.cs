@@ -15,12 +15,17 @@ public class FastMenu : IModel
         get; set;
     }
 
-    public int Icon
+    public string ImageSource
     {
         get; set;
     }
 
     public int Image
+    {
+        get; set;
+    }
+
+    public string Color
     {
         get; set;
     }

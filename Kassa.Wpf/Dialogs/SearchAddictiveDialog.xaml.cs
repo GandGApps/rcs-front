@@ -58,6 +58,8 @@ public partial class SearchAddictiveDialog : ClosableDialog<SearchAddictiveDialo
             this.OneWayBind(ViewModel, x => x.FilteredAddcitves, v => v.Addictives.ItemsSource)
                 .DisposeWith(disposables);
 
+            Keyboard.TextBox = SearchTextBox;
+
         });
     }
 

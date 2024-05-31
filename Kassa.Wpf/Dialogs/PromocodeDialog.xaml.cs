@@ -50,6 +50,8 @@ public partial class PromocodeDialog : ClosableDialog<PromocodeDialogViewModel>
 
             this.BindCommand(ViewModel, x => x.CloseCommand, x => x.BackButton)
                 .DisposeWith(disposables);
+
+            Keyboard.TextBox = CommentTextBox;
         });
     }
 }

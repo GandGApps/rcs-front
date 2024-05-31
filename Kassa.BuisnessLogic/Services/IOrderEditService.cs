@@ -57,7 +57,7 @@ public interface IOrderEditService : IInitializableService, INotifyPropertyChang
     public IDisposable BindSelectedShoppingListItems(out ReadOnlyObservableCollection<IShoppingListItemDto> shoppingListItems);
     public IDisposable BindAdditivesForSelectedProduct<T>(Func<AdditiveDto, T> creator, out ReadOnlyObservableCollection<T> additives) where T : class, IReactiveToChangeSet<Guid, AdditiveDto>;
     public IDisposable BindAdditivesForProductShoppingListItem<T>(ProductShoppingListItemDto item, Func<AdditiveShoppingListItemDto, IApplicationModelManager<AdditiveShoppingListItemDto>, T> creator, out ReadOnlyObservableCollection<T> additives) where T : class, IApplicationModelPresenter<AdditiveShoppingListItemDto>;
-
+    public IDisposable BindFastMenu<T>(Func<FastMenuDto, IApplicationModelPresenter<FastMenuDto>> creator, out ReadOnlyObservableCollection<T> items);
     public Task AddProductToShoppingList(Guid productId);
 
     public Task SelectCategory(Guid categoryId);

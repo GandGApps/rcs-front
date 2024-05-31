@@ -71,6 +71,8 @@ public partial class SearchProductDialog : ClosableDialog<SearchProductDialogVie
                 }
             }
 
+            Keyboard.TextBox = SearchTextBox;
+
             LayoutUpdated += action;
 
             Disposable.Create(() => LayoutUpdated -= action).DisposeWith(disposables);

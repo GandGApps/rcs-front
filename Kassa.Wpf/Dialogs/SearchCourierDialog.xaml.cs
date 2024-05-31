@@ -66,6 +66,8 @@ public partial class SearchCourierDialog : ClosableDialog<SearchCourierDialogVie
                 v => v.KeyboardVisibilityText.Text,
                 x => x ? "Вкл" : "Выкл"
             ).DisposeWith(disposables);
+
+            Keyboard.TextBox = SearchTextBox;
         });
     }
 
