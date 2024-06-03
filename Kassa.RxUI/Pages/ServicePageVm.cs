@@ -81,11 +81,6 @@ public class ServicePageVm : PageViewModel
             }
         });
 
-        this.WhenAnyValue(x => x.IsShiftOpenned)
-            .Select(x => x ? CloseShiftCommnad : OpenShiftCommand)
-            .ToPropertyEx(this, x => x.ShiftButtonCommand)
-            .DisposeWith(InternalDisposables);
-
         _shiftService.IsCashierShiftStartedObservable()
             .ToPropertyEx(this, x => x.IsShiftOpenned)
             .DisposeWith(InternalDisposables);
@@ -93,6 +88,11 @@ public class ServicePageVm : PageViewModel
         this.WhenAnyValue(x => x.IsShiftOpenned)
             .Select(x => !x ? "Открыть кассовую смену" : "Закрыть кассовую смену")
             .ToPropertyEx(this, x => x.CashierShiftButtonText)
+            .DisposeWith(InternalDisposables);
+
+        this.WhenAnyValue(x => x.IsShiftOpenned)
+            .Select(x => x ? CloseShiftCommnad : OpenShiftCommand)
+            .ToPropertyEx(this, x => x.ShiftButtonCommand)
             .DisposeWith(InternalDisposables);
     }
 

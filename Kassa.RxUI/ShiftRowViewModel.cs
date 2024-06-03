@@ -34,12 +34,19 @@ public sealed class ShiftRowViewModel : ReactiveObject, IApplicationModelPresent
         {
             if (shiftDto.BreakEnd.HasValue)
             {
-                Break = $"{shiftDto.BreakStart.Value:HH:mm} - {shiftDto.BreakEnd.Value:HH:mm}";
+                Break = $"{(shiftDto.BreakEnd.Value - shiftDto.BreakStart.Value).Minutes} минут";
             }
             else
             {
-                Break = $"{shiftDto.BreakStart.Value:HH:mm} - ∞";
+                // It's impossible to get here, because the break end is always set
+                Break = $"Длиться все еще";
+
+                this.Log().Error("Break end is not set for shift {ShiftId}", shiftDto.Id);
             }
+        }
+        else
+        {
+            Break = "Не было";
         }
         HourlyRate = shiftDto.HourlyRate;
         Earned = shiftDto.Earned;

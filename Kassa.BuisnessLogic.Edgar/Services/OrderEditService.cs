@@ -691,6 +691,8 @@ internal sealed class OrderEditService: BaseInitializableService, IOrderEditServ
             sourceCache.AddOrUpdate(additiveShoppingListItem);
         }
 
+        Debug.Assert(!_additivesInProductDto.ContainsKey(product.Id));
+
         _additivesInProductDto.Add(product.Id, sourceCache);
     }
 

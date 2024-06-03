@@ -8,7 +8,10 @@
     xmlns:data="clr-namespace:Kassa.DataAccess;assembly=Kassa.DataAccess"
     xmlns:local="clr-namespace:Kassa.Wpf.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    Margin="3.5,2.4"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
+    xmlns:rxui="clr-namespace:Kassa.RxUI;assembly=Kassa.RxUI"
+    Margin="{mx:AdaptiveSize Thickness='3.5,2.4'}"
+    d:DataContext="{d:DesignInstance Type=rxui:CategoryViewModel}"
     d:DesignHeight="104"
     d:DesignWidth="235"
     x:TypeArguments="bl:CategoryDto"
@@ -28,7 +31,7 @@
         <Grid
             Grid.RowSpan="3"
             Grid.ColumnSpan="2"
-            Margin="8,0"
+            Margin="{mx:AdaptiveSize Thickness='8,0'}"
             VerticalAlignment="Center">
 
             <Grid.ColumnDefinitions>
@@ -42,10 +45,10 @@
             <TextBlock
                 x:Name="ProductName"
                 Grid.Column="1"
-                Margin="9,0,0,0"
+                Margin="{mx:AdaptiveSize Thickness='9,0,0,0'}"
                 VerticalAlignment="Center"
                 d:Text="hi"
-                FontSize="16"
+                FontSize="{mx:AdaptiveSize 16}"
                 Foreground="Black"
                 Text="{Binding Name}"
                 TextWrapping="Wrap">
@@ -65,7 +68,7 @@
 
     <Button.Style>
         <Style BasedOn="{StaticResource {x:Type controls:ButtonWithCornerRaduis}}" TargetType="controls:ButtonWithCornerRaduis">
-            <Setter Property="CornerRadius" Value="11" />
+            <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius='11'}" />
             <Setter Property="Padding" Value="0" />
             <Setter Property="Margin" Value="0" />
             <Setter Property="ClipToBounds" Value="True" />

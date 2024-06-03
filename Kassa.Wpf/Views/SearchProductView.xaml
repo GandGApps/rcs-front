@@ -32,7 +32,7 @@
         <Grid
             Grid.RowSpan="3"
             Grid.ColumnSpan="2"
-            Margin="8,0"
+            Margin="{mx:AdaptiveSize Thickness='8,0'}"
             VerticalAlignment="Center">
 
             <Grid.ColumnDefinitions>
@@ -41,6 +41,8 @@
             </Grid.ColumnDefinitions>
             <Path
                 x:Name="ProductIcon"
+                Width="{mx:AdaptiveSize 50}"
+                Height="{mx:AdaptiveSize 45}"
                 d:Data="{StaticResource CupOfTeaIcon}"
                 Fill="{DynamicResource DefaultProductViewIconFill}">
                 <Path.Style>
@@ -56,9 +58,9 @@
             <TextBlock
                 x:Name="ProductName"
                 Grid.Column="1"
-                Margin="9,0,0,0"
+                Margin="{mx:AdaptiveSize Thickness='9,0,0,0'}"
                 VerticalAlignment="Center"
-                FontSize="16"
+                FontSize="{mx:AdaptiveSize 16}"
                 Foreground="Black"
                 Text="{Binding Name, Mode=OneTime}"
                 TextWrapping="Wrap">
@@ -76,7 +78,7 @@
 
         <Border
             Grid.Column="1"
-            Padding="12,1"
+            Padding="{mx:AdaptiveSize Thickness='12,1'}"
             HorizontalAlignment="Right"
             VerticalAlignment="Top"
             CornerRadius="{mx:AdaptiveSize CornerRadius=11}">
@@ -97,7 +99,7 @@
             <TextBlock
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
-                FontSize="13">
+                FontSize="{mx:AdaptiveSize 13}">
                 <TextBlock.Style>
                     <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
                         <Style.Triggers>
@@ -117,9 +119,9 @@
         <TextBlock
             Grid.Row="3"
             Grid.ColumnSpan="2"
-            Margin="10,2,10,2"
+            Margin="{mx:AdaptiveSize Thickness='10,2,10,2'}"
             HorizontalAlignment="{DynamicResource NotAvailableTextProductViewHorizontalAlignment}"
-            FontSize="11"
+            FontSize="{mx:AdaptiveSize 11}"
             Foreground="{DynamicResource NotAvailableTextProductView}"
             Text="Нет в наличии">
             <TextBlock.Style>
@@ -140,14 +142,14 @@
 
     <Button.Style>
         <Style BasedOn="{StaticResource {x:Type controls:ButtonWithCornerRaduis}}" TargetType="controls:ButtonWithCornerRaduis">
-            <Setter Property="CornerRadius" Value="11" />
+            <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius='11'}" />
             <Setter Property="Padding" Value="0" />
             <Setter Property="Margin" Value="0" />
             <Setter Property="ClipToBounds" Value="True" />
             <Setter Property="Background" Value="{DynamicResource DefaultProductViewBackground}" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="VerticalContentAlignment" Value="Stretch" />
-            <Setter Property="MinHeight" Value="104" />
+            <Setter Property="MinHeight" Value="{mx:AdaptiveSize 104}" />
 
             <Style.Triggers>
                 <DataTrigger Binding="{Binding IsAvailable}" Value="True">

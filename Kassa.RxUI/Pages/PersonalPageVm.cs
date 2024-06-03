@@ -28,7 +28,7 @@ public class PersonalPageVm : PageViewModel
     {
         _shiftService = shiftService;
 
-        TakeBreakCommand = ReactiveCommand.CreateFromTask(async () =>
+        TakeBreakCommand = CreatePageBusyCommand(async () =>
         {
             var pincodeDialog = new EnterPincodeDialogViewModel();
             var authentificationService = Locator.GetRequiredService<IAuthService>();
@@ -93,8 +93,10 @@ public class PersonalPageVm : PageViewModel
             return true;
         });
 
-        CloseShiftCommand = ReactiveCommand.CreateFromTask(async () =>
+        CloseShiftCommand = CreatePageBusyCommand(async () =>
         {
+            BusyText = "Закрытие смены";
+
             var pincodeDialog = new EnterPincodeDialogViewModel();
             var authentificationService = Locator.GetRequiredService<IAuthService>();
 

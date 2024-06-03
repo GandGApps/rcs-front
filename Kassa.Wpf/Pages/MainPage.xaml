@@ -104,7 +104,8 @@
                         x:Name="CurrentShiftMemberName"
                         Style="{StaticResource Header}"
                         Text="Григор"
-                        TextAlignment="Center" />
+                        TextAlignment="Center"
+                        TextWrapping="Wrap" />
                     <TextBlock
                         x:Name="CurrentShiftOpennedDate"
                         Style="{DynamicResource SubHeader}"

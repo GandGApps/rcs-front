@@ -1,4 +1,6 @@
-﻿using System.Reactive.Disposables;
+﻿using System.Net.Http;
+using System.Net.Sockets;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Windows;
@@ -100,7 +102,6 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
                                       footer.DataContext = ViewModel.Router.GetCurrentViewModel();
                                   }
                               }
-
                           })
                           .DisposeWith(disposables);
 
@@ -160,6 +161,12 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
             {
                 e.Handled = true;
                 await ViewModel.OkMessage(invalidUserOperatationException.Message, invalidUserOperatationException.Description, invalidUserOperatationException.Icon);
+            }
+
+            if (extractedException is HttpRequestException { HttpRequestError: HttpRequestError.ConnectionError })
+            {
+                e.Handled = true;
+                await ViewModel.OkMessage("Проблема с интернетом", "Повторите попытку позже", "JustFailed");
             }
 
 #if RELEASE
