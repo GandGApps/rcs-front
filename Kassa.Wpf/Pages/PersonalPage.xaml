@@ -138,7 +138,7 @@
                     TextAlignment="Right">
                     <Run Text="Менеджер: " /><Run x:Name="ManagerName" Text="???" /><LineBreak />
                     <Run Text="Кассир: " /><Run x:Name="CashierName" Text="???" /><LineBreak />
-                    <Run Text="Смена" /> <Run x:Name="ShiftNumber" Text="???" /><Run Text=" открыта " /><Run x:Name="ShiftBegin" Text="???" />
+                    <Run Text="Смена" /> <Run x:Name="ShiftNumber" Text="???" /><Run x:Name="ShiftState" Text=" открыта " /><Run x:Name="ShiftBegin" Text="???" />
                 </TextBlock>
 
             </Grid>

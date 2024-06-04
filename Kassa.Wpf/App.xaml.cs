@@ -132,6 +132,8 @@ public partial class App : Application
         Locator.CurrentMutable.AddEdgarBuisnessLogic();
 
         ApiSplatExtensions.BuildServices();
+
+        RxApp.SuppressViewCommandBindingMessage = true;
     }
 
     protected override void OnActivated(EventArgs e)

@@ -56,7 +56,10 @@ public partial class PersonalPage : ReactiveUserControl<PersonalPageVm>
             this.BindCommand(ViewModel, vm => vm.GoBackCommand, v => v.BackButton)
                 .DisposeWith(disposables);
 
-            this.Bind(ViewModel, vm => vm.IsOpennedShifts, v => v.OpenShifts.IsChecked)
+            this.Bind(ViewModel, vm => vm.IsOpennedShiftsVisible, v => v.OpenShifts.IsChecked)
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, vm => vm.IsShiftStarted, v => v.ShiftState.Text, x => x ? " открыта " : " закрыта ")
                 .DisposeWith(disposables);
         });
     }

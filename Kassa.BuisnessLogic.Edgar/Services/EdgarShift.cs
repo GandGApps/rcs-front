@@ -56,6 +56,10 @@ internal sealed class EdgarShift : IShift
         {
             throw new DeveloperException("Не удалось начать смену");
         }
+
+        shiftDto.Start = openPostRequest.OpenDate;
+
+        _shiftService.RuntimeShifts.AddOrUpdate(shiftDto);
     }
 
     public async Task Exit()
