@@ -163,7 +163,7 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
                 await ViewModel.OkMessage(invalidUserOperatationException.Message, invalidUserOperatationException.Description, invalidUserOperatationException.Icon);
             }
 
-            if (extractedException is HttpRequestException { HttpRequestError: HttpRequestError.ConnectionError })
+            if (extractedException is HttpRequestException { HttpRequestError: HttpRequestError.ConnectionError or HttpRequestError.NameResolutionError })
             {
                 e.Handled = true;
                 await ViewModel.OkMessage("Проблема с интернетом", "Повторите попытку позже", "JustFailed");

@@ -113,19 +113,9 @@ public partial class MainPage : ReactiveUserControl<MainPageVm>, IEnableLogger
 
         if (_konamiSequence.IsCompletedBy(e.Key.ToString()))
         {
-            var logger = Locator.Current.GetRequiredService<ILogger>();
+            var logger = Locator.Current.GetRequiredService<ObservableLogger>();
 
-            if (logger is not MultiLogger loggers)
-            {
-                return;
-            }
-
-            if (loggers.FirstOrDefault(x => x is ObservableLogger) is not ObservableLogger observableLogger)
-            {
-                return;
-            }
-
-            var observable = observableLogger.Select(x => x.Message);
+            var observable = logger.Select(x => x.Message);
 
             var developerWindow = new DeveloperWindow(observable)
             {

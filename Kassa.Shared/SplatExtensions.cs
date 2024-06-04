@@ -25,10 +25,16 @@ public static class SplatExtensions
 
     public static void AddLoggers(this IMutableDependencyResolver services)
     {
+
         Log.Logger = new LoggerConfiguration()
+#if DEBUG
             .MinimumLevel.Debug()
+#else
+            .MinimumLevel.Information()
+#endif
             .WriteTo.File("logs/Logs.txt", restrictedToMinimumLevel: LogEventLevel.Debug, rollingInterval: RollingInterval.Day)
             .WriteTo.Debug(restrictedToMinimumLevel: LogEventLevel.Debug)
+            .WriteTo.Logger(new ObservableLogger())
             .CreateLogger();
 
         services.UseSerilogFullLogger();

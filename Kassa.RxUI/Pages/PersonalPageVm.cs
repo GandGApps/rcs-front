@@ -91,7 +91,7 @@ public class PersonalPageVm : PageViewModel
             }
 
             return true;
-        });
+        }).DisposeWith(InternalDisposables);
 
         CloseShiftCommand = CreatePageBusyCommand(async () =>
         {
@@ -157,7 +157,8 @@ public class PersonalPageVm : PageViewModel
 
         _shiftService.IsShiftStartedObservable()
             .Select(x => x ? CloseShiftCommand : OpenShiftCommand)
-            .ToPropertyEx(this, x => x.ShiftCommand);
+            .ToPropertyEx(this, x => x.ShiftCommand)
+            .DisposeWith(InternalDisposables);
 
     }
 
@@ -244,7 +245,7 @@ public class PersonalPageVm : PageViewModel
 
         _shiftService.CurrentShift.Subscribe(async shift =>
         {
-
+            var memberService = Locator.GetNotInitializedService<IMemberService>();
             if (shift is null)
             {
                 ManagerName = "???";
@@ -256,8 +257,8 @@ public class PersonalPageVm : PageViewModel
                 CashierName = shift.Member.Name;
                 var dto = await shift.CreateDto();
                 ShiftNumber = dto.Id.GuidToPrettyString();
-                ManagerName = dto.ManagerId.GuidToPrettyString();
-                OpennedShiftDate = dto.Start is null ? "???" : dto.Start.Value.ToString("dd.MM.yyyy | HH:mm");
+                ManagerName = (await memberService.GetMember(dto.MemberId))?.Name ?? "???";
+                OpennedShiftDate = dto.Start is null ? string.Empty : dto.Start.Value.ToString("dd.MM.yyyy | HH:mm");
             }
 
         }).DisposeWith(disposables);

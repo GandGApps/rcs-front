@@ -685,7 +685,7 @@
 
                 </Border>
 
-                <StackPanel Grid.Row="1" Margin="0,13,0,40">
+                <StackPanel Grid.Row="1" Margin="{mx:AdaptiveSize Thickness='0,13,0,40'}">
 
                     <TextBlock
                         x:Name="PaymentTypeName"
