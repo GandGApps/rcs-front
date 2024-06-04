@@ -35,7 +35,7 @@ public partial class PersonalPage : ReactiveUserControl<PersonalPageVm>
             this.OneWayBind(ViewModel, vm => vm.ShiftButtonText, v => v.ShiftButtonText.Text)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, vm => vm.ManagerName, v => v.ManagerName.Text)
+            /*this.OneWayBind(ViewModel, vm => vm.ManagerName, v => v.ManagerName.Text)
                 .DisposeWith(disposables);
             
             this.OneWayBind(ViewModel, vm => vm.CashierName, v => v.CashierName.Text)
@@ -45,7 +45,7 @@ public partial class PersonalPage : ReactiveUserControl<PersonalPageVm>
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, vm => vm.OpennedShiftDate, v => v.ShiftBegin.Text)
-                .DisposeWith(disposables);
+                .DisposeWith(disposables);*/
 
             this.BindCommand(ViewModel, vm => vm.ShiftCommand, v => v.ShiftButton)
                 .DisposeWith(disposables);
@@ -59,8 +59,9 @@ public partial class PersonalPage : ReactiveUserControl<PersonalPageVm>
             this.Bind(ViewModel, vm => vm.IsOpennedShiftsVisible, v => v.OpenShifts.IsChecked)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, vm => vm.IsShiftStarted, v => v.ShiftState.Text, x => x ? " открыта " : " закрыта ")
-                .DisposeWith(disposables);
+            /*this.OneWayBind(ViewModel, vm => vm.IsShiftStarted, v => v.ShiftState.Text, x => x ? " открыта " : " закрыта ")
+                .DisposeWith(disposables);*/
+
         });
     }
 }

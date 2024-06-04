@@ -124,16 +124,7 @@
                     BorderBrush="{DynamicResource AlternateForeground}"
                     BorderThickness="{mx:AdaptiveSize Thickness='1.2,0,0,0'}" />
 
-                <TextBlock
-                    Grid.Column="4"
-                    VerticalAlignment="Center"
-                    Foreground="{StaticResource AlternateForeground}"
-                    Style="{StaticResource SmallTextBlock}"
-                    TextAlignment="Right">
-                    <Run Text="Менеджер: " /><Run x:Name="ManagerName" Text="???" /><LineBreak />
-                    <Run Text="Кассир: " /><Run x:Name="CashierName" Text="???" /><LineBreak />
-                    <Run Text="Смена" /> <Run x:Name="ShiftNumber" Text="???" /><Run Text=" открыта " /><Run x:Name="ShiftBegin" Text="???" />
-                </TextBlock>
+                <ctrl:ShiftStateDetail Grid.Column="4" />
 
             </Grid>
 
