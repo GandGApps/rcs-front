@@ -8,7 +8,7 @@ using Kassa.Shared.DelegatingHandlers;
 using Refit;
 
 namespace Kassa.DataAccess.HttpRepository.Api;
-internal interface IAdditiveApi: IUseMemberToken
+internal interface IAdditiveApi : IUseMemberToken
 {
     [Get("/dishes/additives")]
     public Task<IEnumerable<AdditiveEdgarModel>> GetAdditives();
@@ -59,7 +59,7 @@ internal sealed record AdditiveEdgarModel
     }
 
     [JsonPropertyName("warehouse")]
-    public Guid Warehouse
+    public Guid? Warehouse
     {
         get; init;
     }
@@ -70,11 +70,11 @@ internal sealed record AdditiveEdgarModel
         get; init;
     }
 
-    [JsonPropertyName("dish_id")]
-    public Guid DishId
+    [JsonPropertyName("dishes")]
+    public AdditiveToDishFk[] Dishes
     {
         get; init;
-    }
+    } = [];
 
     [JsonPropertyName("techcard_id")]
     public Guid TechcardId
@@ -96,6 +96,15 @@ internal sealed record AdditiveEdgarModel
 
     [JsonPropertyName("updatedAt")]
     public DateTime UpdatedAt
+    {
+        get; init;
+    }
+}
+
+internal sealed record AdditiveToDishFk
+{
+    [JsonPropertyName("dish_id")]
+    public Guid DishId
     {
         get; init;
     }

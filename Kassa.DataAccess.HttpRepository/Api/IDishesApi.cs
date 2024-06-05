@@ -59,8 +59,8 @@ internal sealed record DishRequest
     [JsonPropertyName("isModifiable")]
     public bool IsModifiable { get; init; }
 
-    [JsonPropertyName("modificators")]
-    public List<string> Modificators { get; init; }
+    /*[JsonPropertyName("modificators")]
+    public List<string> Modificators { get; init; }*/
 
     [JsonPropertyName("drinkFactor")]
     public bool DrinkFactor { get; init; }

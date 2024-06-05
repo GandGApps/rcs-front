@@ -379,7 +379,8 @@ internal static partial class ApiMapper
         };
     }
 
-    public static AdditiveEdgarModel MapAdditiveToEdgarModel(Additive additive)
+
+    /*public static AdditiveEdgarModel MapAdditiveToEdgarModel(Additive additive)
     {
         return new AdditiveEdgarModel
         {
@@ -398,7 +399,7 @@ internal static partial class ApiMapper
             CreatedAt = DateTime.UtcNow, // Placeholder, update as needed
             UpdatedAt = DateTime.UtcNow // Placeholder, update as needed
         };
-    }
+    }*/
 
     public static Additive MapAdditiveEdgarToAdditive(AdditiveEdgarModel edgarModel)
     {
@@ -409,7 +410,7 @@ internal static partial class ApiMapper
             CurrencySymbol = string.Empty, // Placeholder, update as needed
             Price = edgarModel.ModificatorValue, // Assuming modificator_value corresponds to price
             Measure = string.Empty, // Placeholder, update as needed
-            ProductIds = [edgarModel.DishId], // Assuming dish_id corresponds to ProductIds
+            ProductIds = edgarModel.Dishes.Select(x => x.DishId).ToArray(),
             Portion = 0, // Placeholder, update as needed
             IsAvailable = true, // Default value
             IsEnoughIngredients = true, // Default value

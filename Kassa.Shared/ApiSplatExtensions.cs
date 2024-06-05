@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Kassa.Shared.DelegatingHandlers;
 using Microsoft.Extensions.Configuration;
@@ -19,6 +20,7 @@ public static class ApiSplatExtensions
         ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions()
         {
             PropertyNamingPolicy = LowerCaseNamingPolicy.Instance,
+            Converters = { new DefaultIfNullConverter<int>(), new DefaultIfNullConverter<double>(), new DefaultIfNullConverter<bool>() }
         }),
 
     };

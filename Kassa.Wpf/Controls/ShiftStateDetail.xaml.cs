@@ -26,7 +26,11 @@ namespace Kassa.Wpf.Controls;
 /// </summary>
 public sealed partial class ShiftStateDetail : UserControl, IApplicationModelPresenter<ShiftDto>, IActivatableView
 {
-    public static readonly DependencyProperty ShiftDtoProperty = DependencyProperty.Register("ShiftDto", typeof(ShiftDto), typeof(ShiftStateDetail), new PropertyMetadata(null, ShiftDtoPropertyChanged));
+    public static readonly DependencyPropertyKey ShiftDtoProperty = DependencyProperty.RegisterReadOnly(
+        "ShiftDto",
+        typeof(ShiftDto),
+        typeof(ShiftStateDetail),
+        new PropertyMetadata(null, ShiftDtoPropertyChanged));
 
     private static void ShiftDtoPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -81,8 +85,8 @@ public sealed partial class ShiftStateDetail : UserControl, IApplicationModelPre
     public ShiftDto? ShiftDto
     {
 
-        get => (ShiftDto?)GetValue(ShiftDtoProperty);
-        set => SetValue(ShiftDtoProperty, value);
+        get => (ShiftDto?)GetValue(ShiftDtoProperty.DependencyProperty);
+        private set => SetValue(ShiftDtoProperty, value);
     }
     Guid IApplicationModelPresenter<ShiftDto>.Id => ShiftDto.Id;
 
