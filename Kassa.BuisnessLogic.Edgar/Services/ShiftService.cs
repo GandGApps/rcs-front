@@ -15,6 +15,7 @@ using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 using Microsoft.Extensions.Configuration;
 using System.Runtime.CompilerServices;
+using System.Net.WebSockets;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
 internal sealed class ShiftService : BaseInitializableService, IShiftService
@@ -58,9 +59,9 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
             if (context.Member is MemberDto member)
             {
-                await FetchShiftDetails(member);
+                var managerShift = await FetchCashierShiftDetails(member);
 
-                await FetchCashierShiftDetails(member);
+                await FetchShiftDetails(member, managerShift);
             }
 
         }).DisposeWith(disposables);
@@ -132,11 +133,12 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
         return shifts;
     }
 
-    private async Task FetchShiftDetails(MemberDto member)
+    private async Task FetchShiftDetails(MemberDto member, EdgarTerminalShift edgarTerminalShift)
     {
         var employeePostsApi = Locator.GetRequiredService<IEmployeePostsApi>();
+        var managerShift = await edgarTerminalShift.CreateDto();
 
-        var exist = await employeePostsApi.PostExists(new(DateTime.Now));
+        var exist = await employeePostsApi.PostExists(new(DateTime.Now, managerShift.Id));
 
         if (!this.IsCashierShiftStarted() && !member.IsManager)
         {
@@ -153,7 +155,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
         _currentShift.OnNext(shift);
     }
 
-    private async Task FetchCashierShiftDetails(MemberDto member)
+    private async Task<EdgarTerminalShift> FetchCashierShiftDetails(MemberDto member)
     {
         var config = Locator.GetRequiredService<IConfiguration>();
 
@@ -170,6 +172,8 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
         }
 
         _currentCashierShift.OnNext(managerShift);
+
+        return managerShift;
     }
 
 }

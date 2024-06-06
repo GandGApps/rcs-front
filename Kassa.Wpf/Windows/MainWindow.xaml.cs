@@ -1,4 +1,6 @@
-﻿using System.Net.Http;
+﻿using System.Collections.Specialized;
+using System.IO;
+using System.Net.Http;
 using System.Net.Sockets;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -185,12 +187,43 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
 #endif
         };
 
+        KeyDown += CopyLogsToClipboard;
+
 #if SMALL_WINDOW_TEST
         WindowState = WindowState.Normal;
         WindowStyle = WindowStyle.SingleBorderWindow;
         ResizeMode = ResizeMode.CanResize;
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
 #endif
+    }
+
+    private void CopyLogsToClipboard(object sender, KeyEventArgs e)
+    {
+        if (e.Key == Key.D && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+        {
+            var stringCollection = GetLogs();
+
+            Clipboard.SetFileDropList(stringCollection);
+        }
+    }
+
+    private static StringCollection GetLogs()
+    {
+        var path = "./logs";
+
+        var stringCollection = new StringCollection();
+
+        if (Directory.Exists(path))
+        {
+
+            foreach (var file in Directory.GetFiles(path))
+            {
+                var fullPath =  System.IO.Path.GetFullPath(file);
+                stringCollection.Add(fullPath);
+            }
+        }
+
+        return stringCollection;
     }
 
     public static void SetPageFooter(UIElement element, object? value)
@@ -222,7 +255,6 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
     {
         return (bool)element.GetValue(IsGrayscaleEffectOnDialogProperty);
     }
-
 
     private static string FormatException(Exception exception)
     {

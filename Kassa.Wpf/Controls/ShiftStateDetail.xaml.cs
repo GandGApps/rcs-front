@@ -40,7 +40,7 @@ public sealed partial class ShiftStateDetail : UserControl, IApplicationModelPre
         }
     }
 
-    private static async void ShiftDtoPropertyChanged(ShiftStateDetail shiftStateDetail, ShiftDto dto)
+    private static async void ShiftDtoPropertyChanged(ShiftStateDetail shiftStateDetail, ShiftDto? dto)
     {
         shiftStateDetail._subcribeToDtoChanging?.Dispose();
 
@@ -61,7 +61,7 @@ public sealed partial class ShiftStateDetail : UserControl, IApplicationModelPre
         shiftStateDetail.ShiftBegin.Text = dto.Start is null ? string.Empty : dto.Start.Value.ToString("dd.MM.yyyy | HH:mm");
         shiftStateDetail.ManagerName.Text = (await memberService.GetMember(dto.ManagerId ?? Guid.Empty))?.Name ?? "???";
         shiftStateDetail.CashierName.Text = (await memberService.GetMember(dto.MemberId))?.Name ?? "???";
-        shiftStateDetail.ShiftState.Text = dto.Start is null ? " открыта " : " закрыта ";
+        shiftStateDetail.ShiftState.Text = dto.Start is null ? " закрыта " : "открыто";
 
         shiftStateDetail._subcribeToDtoChanging = shiftService.RuntimeShifts.AddPresenter(shiftStateDetail);
     }
@@ -88,7 +88,7 @@ public sealed partial class ShiftStateDetail : UserControl, IApplicationModelPre
         get => (ShiftDto?)GetValue(ShiftDtoProperty.DependencyProperty);
         private set => SetValue(ShiftDtoProperty, value);
     }
-    Guid IApplicationModelPresenter<ShiftDto>.Id => ShiftDto.Id;
+    Guid IApplicationModelPresenter<ShiftDto>.Id => ShiftDto?.Id ?? Guid.Empty;
 
     public ShiftStateDetail()
     {

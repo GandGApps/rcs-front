@@ -108,13 +108,13 @@ internal sealed record CreatedPost
     public bool IsBreakNotEnded => BreakStart.HasValue && !BreakEnd.HasValue;
 }
 
-internal sealed record PostExistsRequest([property:JsonPropertyName("openDate")] DateTime CurrentDate);
+internal sealed record PostExistsRequest([property:JsonPropertyName("openDate")] DateTime CurrentDate, [property:JsonPropertyName("terminal_shift_id")] Guid TerminalShiftId);
 
 internal sealed record EmployeeBreakRequest([property:JsonPropertyName("date")] DateTime Date, [property:JsonPropertyName("post_id")] Guid PostId);
 
 internal sealed record EmployeeClosePostRequest([property:JsonPropertyName("closeDate")] DateTime CloseDate, [property: JsonPropertyName("post_id")] Guid PostId);
 
-internal sealed record EmployeeOpenPostRequest([property:JsonPropertyName("openDate")] DateTime OpenDate,[property: JsonPropertyName("post_id")] Guid PostId, [property: JsonPropertyName("start_sum")] double StartSum);
+internal sealed record EmployeeOpenPostRequest([property:JsonPropertyName("openDate")] DateTime OpenDate,[property: JsonPropertyName("post_id")] Guid PostId, [property: JsonPropertyName("start_sum")] double StartSum, [property: JsonPropertyName("terminal_shift_id")] Guid TerminalShiftId);
 
 internal sealed record EmployeeGetPostsRequest([property:JsonPropertyName("date")] DateTime Date);
 

@@ -27,6 +27,11 @@ public class ShiftDto : IModel
         get; set;
     }
 
+    public Guid CashierShiftId
+    {
+        get; set;
+    }
+
     public DateTime? Start
     {
         get; set;

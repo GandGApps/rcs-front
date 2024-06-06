@@ -11,7 +11,7 @@ namespace Kassa.BuisnessLogic.Edgar.Api;
 internal interface ITerminalPostApi: IUseMemberToken
 {
     [Post("/terminal/post-exists")]
-    public Task<TerminalPostExistsResponse> PostExists(PostExistsRequest postExists);
+    public Task<TerminalPostExistsResponse> PostExists(TerminaPostExistsRequest postExists);
 
     [Post("/terminal/open-post")]
     public Task<OpenPostRequest> OpenPost(TerminalOpenPostRequest request);
@@ -19,6 +19,8 @@ internal interface ITerminalPostApi: IUseMemberToken
     [Post("/terminal/close-post")]
     public Task ClosePost(TerminalClosePostRequest request);
 }
+
+internal sealed record TerminaPostExistsRequest([property: JsonPropertyName("openDate")] DateTime CurrentDate);
 
 internal sealed record TerminalClosePostRequest([property: JsonPropertyName("closeDate")] DateTime CloseDate, [property: JsonPropertyName("post_id")] Guid PostId);
 

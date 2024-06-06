@@ -44,7 +44,7 @@ internal sealed class EdgarShift : IShift
         var shiftDto = await CreateDto();
         var employeeApi = Locator.Current.GetRequiredService<IEmployeePostsApi>();
 
-        var openPostRequest = new EmployeeOpenPostRequest(DateTime.Now, shiftDto.Id, 0);
+        var openPostRequest = new EmployeeOpenPostRequest(DateTime.Now, shiftDto.Id, 0, shiftDto.CashierShiftId);
 
         var message = await employeeApi.OpenPost(openPostRequest);
 

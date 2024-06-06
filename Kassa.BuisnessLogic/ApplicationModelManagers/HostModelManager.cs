@@ -37,8 +37,8 @@ public sealed partial class HostModelManager<TModel> : IApplicationModelManager<
 
         if (_applicationModelPresenters.Count > 0)
         {
-
-            foreach (var presenter in _applicationModelPresenters)
+            var immutable = _applicationModelPresenters.ToImmutableArray();
+            foreach (var presenter in immutable)
             {
                 if (presenter.Id == model.Id)
                 {
@@ -77,8 +77,8 @@ public sealed partial class HostModelManager<TModel> : IApplicationModelManager<
 
             if (_applicationModelPresenters.Count > 0)
             {
-
-                foreach (var presenter in _applicationModelPresenters)
+                var immutable = _applicationModelPresenters.ToImmutableArray();
+                foreach (var presenter in immutable)
                 {
                     if (presenter.Id == model.Id)
                     {
