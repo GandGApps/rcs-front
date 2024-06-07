@@ -108,7 +108,7 @@ internal sealed record CreatedPost
     public bool IsBreakNotEnded => BreakStart.HasValue && !BreakEnd.HasValue;
 
     [JsonPropertyName("manager")]
-    public Guid ManagerId
+    public Guid? ManagerId
     {
         get; init;
     }

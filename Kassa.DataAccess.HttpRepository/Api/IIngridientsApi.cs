@@ -37,11 +37,11 @@ internal sealed record IngredientResponse
         get; init;
     }
 
-    [JsonPropertyName("warehouse")]
+    /*[JsonPropertyName("warehouse")]
     public string Warehouse
     {
         get; init;
-    }
+    }*/
 
     [JsonPropertyName("terminal_id")]
     public Guid? TerminalId

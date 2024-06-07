@@ -261,7 +261,7 @@ internal static partial class ApiMapper
         {
             IngredientsId = ingredient.Id,
             Title = ingredient.Name,
-            Warehouse = string.Empty, // Assuming default value as it's not present in Ingredient
+            //Warehouse = string.Empty, // Assuming default value as it's not present in Ingredient
             TerminalId = null, // Assuming null as default as it's not present in Ingredient
             OfficeId = null, // Assuming null as default as it's not present in Ingredient
             Left = ingredient.Count,
