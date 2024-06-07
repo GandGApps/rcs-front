@@ -418,4 +418,27 @@ internal static partial class ApiMapper
         };
     }
 
+    public static Shift MapShiftResponseToShift(ShiftResponse shiftResponse)
+    {
+        return new Shift
+        {
+            Id = shiftResponse.EmployeePostId,
+            // Assuming Number is not available in ShiftResponse, you might need to handle it accordingly.
+            Number = 0,
+            MemberId = shiftResponse.EmployeeId,
+            CashierShiftId = shiftResponse.TerminalShiftId ?? Guid.Empty,
+            Start = shiftResponse.OpenDate,
+            End = shiftResponse.CloseDate,
+            BreakStart = shiftResponse.BreakStart,
+            BreakEnd = shiftResponse.BreakEnd,
+            // Assuming HourlyRate, Earned, Fine, Note, OrderIds are not available in ShiftResponse
+            HourlyRate = 0,
+            Earned = 0,
+            Fine = 0,
+            Note = null,
+            IsStarted = shiftResponse.IsOpen,
+            ManagerId = shiftResponse.Manager ?? Guid.Empty,
+        };
+    }
+
 }

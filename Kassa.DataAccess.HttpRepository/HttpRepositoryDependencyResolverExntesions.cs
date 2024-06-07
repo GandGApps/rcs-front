@@ -28,6 +28,11 @@ public static class HttpRepositoryDependencyResolverExntesions
         
         services.RegisterConstant<IAdditiveRepository>(additiveRepository);
         services.RegisterConstant<IRepository<Additive>>(additiveRepository);
+
+        var shiftRepository = new ShiftRepository();
+
+        services.RegisterConstant<IShiftRepository>(shiftRepository);
+        services.RegisterConstant<IRepository<Shift>>(shiftRepository);
     }
 
     internal static void AddApis(IMutableDependencyResolver services)
@@ -39,5 +44,6 @@ public static class HttpRepositoryDependencyResolverExntesions
         services.AddApi<IIngridientsApi>();
         services.AddApi<ITechcardApi>();
         services.AddApi<IAdditiveApi>();
+        services.AddApi<IEmployeePostApi>();
     }
 }

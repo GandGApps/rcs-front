@@ -27,12 +27,6 @@ internal class MemberService : BaseInitializableService, IMemberService
     {
         var members = await _repository.GetAll();
 
-        if (members is null)
-        {
-
-            return;
-        }
-
         var memberDtos = members.Select(Mapper.MapMemberToDto).ToList();
 
         RuntimeMembers.AddOrUpdate(memberDtos);

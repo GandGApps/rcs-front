@@ -52,8 +52,6 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        await GetShifts();
-
         _authService.CurrentAuthenticationContext.Subscribe(async context =>
         {
 
@@ -62,6 +60,8 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
                 var managerShift = await FetchCashierShiftDetails(member);
 
                 await FetchShiftDetails(member, managerShift);
+
+                await GetShifts();
             }
 
         }).DisposeWith(disposables);
