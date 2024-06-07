@@ -106,6 +106,18 @@ internal sealed record CreatedPost
     }
 
     public bool IsBreakNotEnded => BreakStart.HasValue && !BreakEnd.HasValue;
+
+    [JsonPropertyName("manager")]
+    public Guid ManagerId
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("terminal_shift_id")]
+    public Guid TerminalShiftId
+    {
+        get; init;
+    }
 }
 
 internal sealed record PostExistsRequest([property:JsonPropertyName("openDate")] DateTime CurrentDate, [property:JsonPropertyName("terminal_shift_id")] Guid TerminalShiftId);

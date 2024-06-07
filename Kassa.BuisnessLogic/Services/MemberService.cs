@@ -23,6 +23,21 @@ internal class MemberService : BaseInitializableService, IMemberService
 
     public IApplicationModelManager<MemberDto> RuntimeMembers => _runtimeMembers;
 
+    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    {
+        var members = await _repository.GetAll();
+
+        if (members is null)
+        {
+
+            return;
+        }
+
+        var memberDtos = members.Select(Mapper.MapMemberToDto).ToList();
+
+        RuntimeMembers.AddOrUpdate(memberDtos);
+    }
+
     public async Task<MemberDto?> GetMember(Guid id)
     {
         var member = await _repository.Get(id);

@@ -128,7 +128,9 @@ internal sealed class EdgarShift : IShift
             Start = _start,
             Number = _postExistsResponse.CreatedPost.PostId.GuidToPrettyInt(),
             BreakStart = _postExistsResponse.CreatedPost.BreakStart,
-            BreakEnd = _postExistsResponse.CreatedPost.BreakEnd
+            BreakEnd = _postExistsResponse.CreatedPost.BreakEnd,
+            ManagerId = _postExistsResponse.CreatedPost.ManagerId,
+            CashierShiftId = _postExistsResponse.CreatedPost.TerminalShiftId
         };
 
         return new(_shift);

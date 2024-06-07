@@ -46,8 +46,8 @@ internal class EmployeeRepository : IRepository<Member>
 
         return employees.Select(employee => new Member()
         {
-            Id = employee.EmployeeData.EmployeeId,
-            Name = $"{employee.EmployeeData.MainData.FirstName} {employee.EmployeeData.MainData.MiddleName} {employee.EmployeeData.MainData.LastName}"
+            Id = employee.EmployeeId,
+            Name = $"{employee.MainData.FirstName} {employee.MainData.MiddleName} {employee.MainData.LastName}"
         }).ToList();
     }
     public Task Update(Member item) => throw new NotImplementedException();

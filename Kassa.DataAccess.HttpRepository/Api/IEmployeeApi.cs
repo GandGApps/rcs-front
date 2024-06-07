@@ -12,7 +12,7 @@ namespace Kassa.DataAccess.HttpRepository.Api;
 internal interface IEmployeeApi : IUseMemberToken
 {
     [Get("/employee")]
-    public Task<IEnumerable<EmployeeResponse>> GetMembers();
+    public Task<IEnumerable<EmployeeData>> GetMembers();
 
     [Get("/employee/single")]
     public Task<EmployeeResponse?> GetMember([AliasAs("user_id")] Guid id);

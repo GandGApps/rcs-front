@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
@@ -23,7 +24,7 @@ public sealed class ShiftRowViewModel : ReactiveObject, IApplicationModelPresent
 
     public ShiftRowViewModel(ShiftDto shiftDto)
     {
-        _memberService = Locator.Current.GetRequiredService<IMemberService>();
+        _memberService = Locator.Current.GetNotInitializedService<IMemberService>();
 
         Id = shiftDto.Id;
         Number = shiftDto.Number;
@@ -103,7 +104,7 @@ public sealed class ShiftRowViewModel : ReactiveObject, IApplicationModelPresent
     }
 
     [Reactive]
-    public string Comment
+    public string? Comment
     {
         get; set;
     }
@@ -131,12 +132,19 @@ public sealed class ShiftRowViewModel : ReactiveObject, IApplicationModelPresent
         {
             if (shiftDto.BreakEnd.HasValue)
             {
-                Break = $"{shiftDto.BreakStart.Value:HH:mm} - {shiftDto.BreakEnd.Value:HH:mm}";
+                Break = $"{(shiftDto.BreakEnd.Value - shiftDto.BreakStart.Value).Minutes} минут";
             }
             else
             {
-                Break = $"{shiftDto.BreakStart.Value:HH:mm} - ∞";
+                // It's impossible to get here, because the break end is always set
+                Break = $"Длиться все еще";
+
+                this.Log().Error("Break end is not set for shift {ShiftId}", shiftDto.Id);
             }
+        }
+        else
+        {
+            Break = "Не было";
         }
         HourlyRate = shiftDto.HourlyRate;
         Earned = shiftDto.Earned;
