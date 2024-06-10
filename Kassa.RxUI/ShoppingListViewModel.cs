@@ -11,24 +11,24 @@ using Splat;
 using Kassa.BuisnessLogic.Services;
 
 namespace Kassa.RxUI;
-public class ShoppingListViewModel : ReactiveObject
+public class ShoppingListViewModel : BaseViewModel
 {
 
-    public ShoppingListViewModel(IOrderEditService cashierService)
+    public ShoppingListViewModel(IOrderEditService orderEditService)
     {
         IncreaseCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await cashierService.IncreaseSelectedProductShoppingListItem();
+            await orderEditService.IncreaseSelectedProductShoppingListItem();
         });
 
         DecreaseCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await cashierService.DecreaseSelectedProductShoppingListItem();
+            await orderEditService.DecreaseSelectedProductShoppingListItem();
         });
 
         RemoveCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await cashierService.RemoveSelectedProductShoppingListItem();
+            await orderEditService.RemoveSelectedProductShoppingListItem();
         });
 
         this.WhenAnyValue(x => x.Subtotal)

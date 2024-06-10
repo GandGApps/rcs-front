@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
+using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
@@ -15,7 +16,7 @@ using Kassa.DataAccess.Model;
 using ReactiveUI;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
-internal sealed class OrderEditService: BaseInitializableService, IOrderEditService
+internal sealed class OrderEditService : BaseInitializableService, IOrderEditService
 {
 
     private readonly IProductService _productService;
@@ -23,11 +24,25 @@ internal sealed class OrderEditService: BaseInitializableService, IOrderEditServ
     private readonly IAdditiveService _additiveService;
     private readonly IReceiptService _receiptService;
 
-    private OrderDto? _order;
+    private readonly BehaviorSubject<bool> _isMultiSelectObservable = new(false);
+    private readonly ObservableOnlyBehaviourSubject<bool> _isMultiSelect;
 
-    private string? _totalComment;
-    private ICategoryDto? _currentCategory;
-    private int? _selectedFavorite;
+    private readonly BehaviorSubject<ICategoryDto?> _currentCategoryObservable = new(null);
+    private readonly ObservableOnlyBehaviourSubject<ICategoryDto?> _currentCategory;
+
+    private readonly BehaviorSubject<int?> _selectedFavoriteObservable = new(null);
+    private readonly ObservableOnlyBehaviourSubject<int?> _selectedFavorite;
+
+    private readonly BehaviorSubject<string?> _totalCommentObservable = new(null);
+    private readonly ObservableOnlyBehaviourSubject<string?> _totalComment;
+
+    private readonly BehaviorSubject<bool> _showPriceObservable = new(false);
+    private readonly ObservableOnlyBehaviourSubject<bool> _showPrice;
+
+    private readonly BehaviorSubject<double> _discountObservable = new(0);
+    private readonly ObservableOnlyBehaviourSubject<double> _discount;
+
+    private OrderDto? _order;
 
     private readonly List<ICategoryDto> _categoriesStack = [];
     private readonly Dictionary<Guid, IApplicationModelManager<AdditiveShoppingListItemDto>> _additivesInProductDto = [];
@@ -44,61 +59,25 @@ internal sealed class OrderEditService: BaseInitializableService, IOrderEditServ
         _additiveService = additiveService;
         _receiptService = receiptService;
         _order = order;
+
+        _isMultiSelect = new(_isMultiSelectObservable);
+        _currentCategory = new(_currentCategoryObservable);
+        _selectedFavorite = new(_selectedFavoriteObservable);
+        _totalComment = new(_totalCommentObservable);
+        _showPrice = new(_showPriceObservable);
+        _discount = new(_discountObservable);
     }
 
-    public bool IsMultiSelect
-    {
-        get => _isMultiSelect;
-        set
-        {
-            if (_isMultiSelect == value)
-            {
-                return;
-            }
 
-            _isMultiSelect = value;
-            PropertyChanged?.Invoke(this, new(nameof(IsMultiSelect)));
-
-            if (!_isMultiSelect)
-            {
-                ClearSelectedShoppingListItems();
-            }
-        }
-    }
-    private bool _isMultiSelect;
 
     public IReadOnlyList<ICategoryDto> CategoriesStack => _categoriesStack;
 
-    public ICategoryDto? CurrentCategory
-    {
-        get => _currentCategory;
-        private set
-        {
-            if (_currentCategory == value)
-            {
-                return;
-            }
-
-            _currentCategory = value;
-            PropertyChanged?.Invoke(this, new(nameof(CurrentCategory)));
-        }
-    }
-
-    public int? SelectedFavourite
-    {
-        get => _selectedFavorite;
-        private set
-        {
-
-            if (_selectedFavorite == value)
-            {
-                return;
-            }
-
-            _selectedFavorite = value;
-            PropertyChanged?.Invoke(this, new(nameof(SelectedFavourite)));
-        }
-    }
+    public IObservableOnlyBehaviourSubject<ICategoryDto?> CurrentCategory => _currentCategory;
+    public IObservableOnlyBehaviourSubject<int?> SelectedFavourite => _selectedFavorite;
+    public IObservableOnlyBehaviourSubject<bool> IsMultiSelect => _isMultiSelect;
+    public IObservableOnlyBehaviourSubject<string?> TotalComment => _totalComment;
+    public IObservableOnlyBehaviourSubject<bool> ShowPrice => _showPrice;
+    public IObservableOnlyBehaviourSubject<double> Discount => _discount;
 
     public IApplicationModelManager<ProductShoppingListItemDto> ShoppingListItems
     {
@@ -110,23 +89,17 @@ internal sealed class OrderEditService: BaseInitializableService, IOrderEditServ
         get;
     } = new HostModelManager<IShoppingListItemDto>();
 
+
     public Guid OrderId
     {
         get; set;
     }
-    public double Discount
-    {
-        get;
-        set;
-    } = 1;
+
 
     public bool IsDelivery
     {
-        get;
-        set;
+        get; set;
     }
-
-    public event PropertyChangedEventHandler? PropertyChanged;
 
     public IDisposable BindSelectedCategoryItems(out ReadOnlyObservableCollection<ICategoryItemDto> categoryItems)
     {
@@ -148,7 +121,7 @@ internal sealed class OrderEditService: BaseInitializableService, IOrderEditServ
                 observeCategories?.Dispose();
                 observeproducts?.Dispose();
 
-                if (x is FavouriteCategoryDto favouriteCategory)
+                if (x.Value is FavouriteCategoryDto favouriteCategory)
                 {
                     target.AddRange(_productService.RuntimeProducts.Values
                         .Cast<ICategoryItemDto>()
@@ -497,35 +470,12 @@ internal sealed class OrderEditService: BaseInitializableService, IOrderEditServ
         return disposables;
     }
 
-    public void Dispose()
+    protected override void Dispose(bool disposing)
     {
-        if (IsDisposed)
-        {
-            return;
-        }
-
         foreach (var item in _additivesInProductDto)
         {
             item.Value.Dispose();
         }
-
-        IsDisposed = true;
-    }
-    public ValueTask DisposeAsync()
-    {
-        if (IsDisposed)
-        {
-            return ValueTask.CompletedTask;
-        }
-
-        foreach (var item in _additivesInProductDto)
-        {
-            item.Value.Dispose();
-        }
-
-        IsDisposed = true;
-
-        return ValueTask.CompletedTask;
     }
 
     public ValueTask Initialize()
@@ -561,7 +511,7 @@ internal sealed class OrderEditService: BaseInitializableService, IOrderEditServ
         }
 
         _categoriesStack.Add(category);
-        CurrentCategory = category;
+        _currentCategoryObservable.OnNext(category);
     }
     public ValueTask<bool> SelectPreviosCategory()
     {
@@ -576,12 +526,11 @@ internal sealed class OrderEditService: BaseInitializableService, IOrderEditServ
 
         if (_categoriesStack.Count == 0)
         {
-            CurrentCategory = null;
+            _currentCategoryObservable.OnNext(null);
         }
         else
         {
-
-            CurrentCategory = _categoriesStack[^1];
+            _currentCategoryObservable.OnNext(_categoriesStack[^1]);
         }
 
         return new(true);
@@ -593,8 +542,8 @@ internal sealed class OrderEditService: BaseInitializableService, IOrderEditServ
 
         _categoriesStack.Clear();
 
-        CurrentCategory = new FavouriteCategoryDto(favourite);
-        SelectedFavourite = favourite;
+        _currentCategoryObservable.OnNext(new FavouriteCategoryDto(favourite));
+        _selectedFavoriteObservable.OnNext(favourite);
 
 
         return ValueTask.CompletedTask;
@@ -602,8 +551,11 @@ internal sealed class OrderEditService: BaseInitializableService, IOrderEditServ
 
     public ValueTask SelectRootCategory()
     {
-        CurrentCategory = null;
-        SelectedFavourite = null;
+        this.ThrowIfNotInitialized();
+
+        _currentCategoryObservable.OnNext(null);
+
+        _selectedFavoriteObservable.OnNext(null);
         _categoriesStack.Clear();
 
         return ValueTask.CompletedTask;
@@ -628,9 +580,8 @@ internal sealed class OrderEditService: BaseInitializableService, IOrderEditServ
             {
                 throw new InvalidOperationException($"Not enough ingredients for product {product.Name}");
             }
-
-            
         }
+
         await _productService.DecreaseProductCount(product.Id);
 
         product = (await _productService.GetProductById(productId))!;
@@ -705,7 +656,7 @@ internal sealed class OrderEditService: BaseInitializableService, IOrderEditServ
             throw new ArgumentNullException(nameof(shoppingListItemDto));
         }
 
-        if (!IsMultiSelect)
+        if (!IsMultiSelect.Value)
         {
             ClearSelectedShoppingListItems();
         }
@@ -941,7 +892,7 @@ internal sealed class OrderEditService: BaseInitializableService, IOrderEditServ
 
     public Task WriteTotalComment(string? totalComment)
     {
-        _totalComment = totalComment;
+        _totalCommentObservable.OnNext(totalComment);
 
         return Task.CompletedTask;
     }
@@ -1092,7 +1043,7 @@ internal sealed class OrderEditService: BaseInitializableService, IOrderEditServ
     {
         var order = await CreateOrGetOrder();
 
-        order.Comment = _totalComment!;
+        order.Comment = TotalComment.Value;
         order.Products = ShoppingListItems.Values.Select(x =>
         {
             var product = Mapper.MapShoppingListItemToOrderedProductDto(x);
@@ -1107,9 +1058,19 @@ internal sealed class OrderEditService: BaseInitializableService, IOrderEditServ
 
         order.TotalSum = order.Products.Sum(x => x.TotalPrice);
         order.SubtotalSum = order.Products.Sum(x => x.SubTotalPrice);
-        order.Discount = Discount;
+        order.Discount = Discount.Value;
 
         return order;
+    }
+
+    public void SetMultiSelect(bool isMultiSelect)
+    {
+        _isMultiSelectObservable.OnNext(isMultiSelect);
+    }
+
+    public void SetShowPrice(bool showPrice)
+    {
+        _showPriceObservable.OnNext(showPrice);
     }
 
     private async ValueTask<OrderDto> CreateOrGetOrder()

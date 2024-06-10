@@ -5,82 +5,90 @@ using Kassa.BuisnessLogic.Dto;
 using ReactiveUI;
 
 namespace Kassa.RxUI.Pages;
-public interface IOrderEditVm
+public interface IOrderEditVm: IReactiveObject
 {
-    string? Category
+    public string? Category
     {
-        get;
-        set;
+        get; set;
     }
-    ReactiveCommand<Unit, Unit> CreateCommentCommand
-    {
-        get;
-    }
-    ReactiveCommand<Unit, Unit> CreatePromocodeCommand
+
+    public ReactiveCommand<Unit, Unit> CreateCommentCommand
     {
         get;
     }
-    ReactiveCommand<Unit, Unit> CreateTotalCommentCommand
+
+    public ReactiveCommand<Unit, Unit> CreatePromocodeCommand
     {
         get;
     }
-    ReadOnlyObservableCollection<ICategoryItemDto>? CurrentCategoryItems
+
+    public ReactiveCommand<Unit, Unit> CreateTotalCommentCommand
     {
         get;
     }
-    IDiscountAccesser? DiscountAccesser
-    {
-        get;
-        set;
-    }
-    ReadOnlyObservableCollection<AdditiveViewModel>? FastAdditives
+
+    public ReadOnlyObservableCollection<ICategoryItemDto>? CurrentCategoryItems
     {
         get;
     }
-    bool IsMultiSelect
+
+    public IDiscountAccesser? DiscountAccesser
     {
-        get;
-        set;
+        get; set;
     }
-    ReactiveCommand<Unit, Unit> OpenDiscountsAndSurchargesDialog
-    {
-        get;
-    }
-    ReactiveCommand<Unit, Unit> OpenMoreDialogCommand
+    
+    public ReadOnlyObservableCollection<AdditiveViewModel>? FastAdditives
     {
         get;
     }
-    ReactiveCommand<Unit, Unit> OpenQuantityVolumeDialogCommand
+
+    public ReactiveCommand<Unit, Unit> OpenDiscountsAndSurchargesDialog
     {
         get;
     }
-    ReactiveCommand<Unit, Unit> SearchAddictiveCommand
+
+    public ReactiveCommand<Unit, Unit> OpenMoreDialogCommand
     {
         get;
     }
-    ReactiveCommand<Unit, Unit> SearchProductCommand
+
+    public ReactiveCommand<Unit, Unit> OpenQuantityVolumeDialogCommand
     {
         get;
     }
-    ReactiveCommand<int, Unit> SelectFavouriteCommand
+
+    public ReactiveCommand<Unit, Unit> SearchAddictiveCommand
     {
         get;
     }
-    ReactiveCommand<Unit, Unit> SelectRootCategoryCommand
+
+    public ReactiveCommand<Unit, Unit> SearchProductCommand
     {
         get;
     }
-    ShoppingListViewModel? ShoppingList
+
+    public ReactiveCommand<int, Unit> SelectFavouriteCommand
     {
         get;
     }
-    ReadOnlyObservableCollection<ProductShoppingListItemViewModel>? ShoppingListItems
+
+    public ReactiveCommand<Unit, Unit> SelectRootCategoryCommand
     {
         get;
     }
-    string? TotalComment
+
+    public ShoppingListViewModel? ShoppingList
     {
         get;
-        set;
+    }
+
+    public ReadOnlyObservableCollection<ProductShoppingListItemViewModel>? ShoppingListItems
+    {
+        get;
+    }
+
+    public string? TotalComment
+    {
+        get;
     }
 }

@@ -51,7 +51,7 @@ public partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
             this.BindCommand(ViewModel, x => x.SearchAddictiveCommand, x => x.SearchAddictivesButton)
                 .DisposeWith(disposables);
 
-            this.Bind(ViewModel, x => x.IsMultiSelect, x => x.MultiSelectCheckbox.IsChecked)
+            this.Bind(ViewModel, x => x.ShoppingList.IsMultiSelect, x => x.MultiSelectCheckbox.IsChecked)
                 .DisposeWith(disposables);
 
             this.BindCommand(ViewModel, x => x.SelectRootCategoryCommand, x => x.AllCategories)

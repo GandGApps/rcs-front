@@ -124,6 +124,30 @@ internal sealed class OrderEditService(
         get;
         set;
     }
+    IObservableOnlyBehaviourSubject<ICategoryDto?> IOrderEditService.CurrentCategory
+    {
+        get;
+    }
+    IObservableOnlyBehaviourSubject<bool> IOrderEditService.IsMultiSelect
+    {
+        get;
+    }
+    IObservableOnlyBehaviourSubject<int?> IOrderEditService.SelectedFavourite
+    {
+        get;
+    }
+    IObservableOnlyBehaviourSubject<double> IOrderEditService.Discount
+    {
+        get;
+    }
+    public IObservableOnlyBehaviourSubject<string?> TotalComment
+    {
+        get;
+    }
+    public IObservableOnlyBehaviourSubject<bool> ShowPrice
+    {
+        get;
+    }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -1126,4 +1150,6 @@ internal sealed class OrderEditService(
     }
 
     public IDisposable BindFastMenu<T>(Func<FastMenuDto, IApplicationModelPresenter<FastMenuDto>> creator, out ReadOnlyObservableCollection<T> items) => throw new NotImplementedException();
+    public void SetMultiSelect(bool isMultiSelect) => throw new NotImplementedException();
+    public void SetShowPrice(bool showPrice) => throw new NotImplementedException();
 }

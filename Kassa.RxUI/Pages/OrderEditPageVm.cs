@@ -27,8 +27,6 @@ public class OrderEditPageVm : PageViewModel, IOrderEditVm
     private readonly ICashierService _cashierService;
     private readonly IAdditiveService _additiveService;
 
-    private Action<bool>? _isMultiSelectSetter;
-
     public OrderEditPageVm(IOrderEditService order, ICashierService cashierService, IAdditiveService additiveService)
     {
         _order = order;
@@ -56,10 +54,12 @@ public class OrderEditPageVm : PageViewModel, IOrderEditVm
         CreatePromocodeCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             var promo = new PromocodeDialogViewModel(this);
+
             promo.ApplyCommand.Subscribe(x =>
             {
                 DiscountAccesser = x;
-            });
+            })
+            ;
             var dialog = await MainViewModel.DialogOpenCommand.Execute(promo).FirstAsync();
 
             await dialog.WaitDialogClose();
@@ -118,7 +118,6 @@ public class OrderEditPageVm : PageViewModel, IOrderEditVm
 
         OpenMoreDialogCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-
             var dialog = new MoreCashierDialogViewModel(this);
 
             await MainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
@@ -195,11 +194,14 @@ public class OrderEditPageVm : PageViewModel, IOrderEditVm
 
             await MainViewModel.GoToPage(allDeliveriesPage);
         });
+
+        ShoppingList = new(_order);
+        ShoppingList.DisposeWith(InternalDisposables);
     }
 
-    protected override ValueTask InitializeAsync(CompositeDisposable disposables)
+    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        ShoppingList = new(_order);
+        await ShoppingList.InitializeAsync();
 
         _order.BindSelectedCategoryItems(out var categoryItems)
                        .DisposeWith(disposables);
@@ -209,10 +211,6 @@ public class OrderEditPageVm : PageViewModel, IOrderEditVm
 
         _order.BindAdditivesForSelectedProduct(x => new AdditiveViewModel(x, _order, _additiveService), out var fastAdditives)
                        .DisposeWith(disposables);
-
-
-        _isMultiSelectSetter = x => _order.IsMultiSelect = x;
-        IsMultiSelect = _order.IsMultiSelect;
 
         CurrentCategoryItems = categoryItems;
         ShoppingListItems = shoppingListItems;
@@ -252,36 +250,11 @@ public class OrderEditPageVm : PageViewModel, IOrderEditVm
                          .Select(x => x.Sum(x => x.SubtotalSum))
                          .Subscribe(x => ShoppingList.Subtotal = x)
                          .DisposeWith(disposables);
-
-        return ValueTask.CompletedTask;
     }
 
-    public bool IsMultiSelect
+    public ShoppingListViewModel ShoppingList
     {
-
-        get => ShoppingList != null && ShoppingList.IsMultiSelect;
-        set
-        {
-            if (ShoppingList == null)
-            {
-                return;
-            }
-
-            if (value == ShoppingList.IsMultiSelect)
-            {
-                return;
-            }
-            ShoppingList.IsMultiSelect = value;
-            _isMultiSelectSetter?.Invoke(value);
-
-            this.RaisePropertyChanged();
-        }
-    }
-
-    [Reactive]
-    public ShoppingListViewModel? ShoppingList
-    {
-        get; private set;
+        get;
     }
 
     [Reactive]
@@ -379,6 +352,7 @@ public class OrderEditPageVm : PageViewModel, IOrderEditVm
     {
         get; private set;
     }
+
     public ReactiveCommand<Unit, Unit> OpenQuantityVolumeDialogCommand
     {
         get;

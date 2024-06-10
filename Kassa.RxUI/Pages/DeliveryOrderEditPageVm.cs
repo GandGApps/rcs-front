@@ -23,8 +23,6 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
     private readonly ICashierService _cashierService;
     private readonly IAdditiveService _additiveService;
 
-    private Action<bool>? _isMultiSelectSetter;
-
     public DeliveryOrderEditPageVm(IOrderEditService order, ICashierService cashierService, IAdditiveService additiveService)
     {
         _order = order;
@@ -187,10 +185,6 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
         _order.BindAdditivesForSelectedProduct(x => new AdditiveViewModel(x, _order, _additiveService), out var fastAdditives)
                        .DisposeWith(disposables);
 
-
-        _isMultiSelectSetter = x => _order.IsMultiSelect = x;
-        IsMultiSelect = _order.IsMultiSelect;
-
         CurrentCategoryItems = categoryItems;
         ShoppingListItems = shoppingListItems;
         FastAdditives = fastAdditives;
@@ -236,23 +230,8 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
     public bool IsMultiSelect
     {
 
-        get => ShoppingList != null && ShoppingList.IsMultiSelect;
-        set
-        {
-            if (ShoppingList == null)
-            {
-                return;
-            }
-
-            if (value == ShoppingList.IsMultiSelect)
-            {
-                return;
-            }
-            ShoppingList.IsMultiSelect = value;
-            _isMultiSelectSetter?.Invoke(value);
-
-            this.RaisePropertyChanged();
-        }
+        get => _order.IsMultiSelect.Value;
+        set => _order.SetMultiSelect(value);
     }
 
     [Reactive]

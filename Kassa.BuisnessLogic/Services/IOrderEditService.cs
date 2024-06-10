@@ -8,9 +8,9 @@ using Kassa.DataAccess;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Services;
-public interface IOrderEditService : IInitializableService, INotifyPropertyChanged
+public interface IOrderEditService : IInitializableService
 {
-    public ICategoryDto? CurrentCategory
+    public IObservableOnlyBehaviourSubject<ICategoryDto?> CurrentCategory
     {
         get;
     }
@@ -20,16 +20,27 @@ public interface IOrderEditService : IInitializableService, INotifyPropertyChang
         get;
     }
 
-    public bool IsMultiSelect
-    {
-        get; set;
-    }
-    int? SelectedFavourite
+    public IObservableOnlyBehaviourSubject<bool> IsMultiSelect
     {
         get;
     }
 
-    public double Discount
+    public IObservableOnlyBehaviourSubject<int?> SelectedFavourite
+    {
+        get;
+    }
+
+    public IObservableOnlyBehaviourSubject<double> Discount
+    {
+        get;
+    }
+
+    public IObservableOnlyBehaviourSubject<string?> TotalComment
+    {
+        get;
+    }
+
+    public IObservableOnlyBehaviourSubject<bool> ShowPrice
     {
         get;
     }
@@ -43,6 +54,9 @@ public interface IOrderEditService : IInitializableService, INotifyPropertyChang
     {
         get;
     }
+
+    public void SetMultiSelect(bool isMultiSelect);
+    public void SetShowPrice(bool showPrice);
 
     /// <summary>
     /// Bind the current category to ObservableCollection, that will be updated when the category changes.
@@ -58,6 +72,7 @@ public interface IOrderEditService : IInitializableService, INotifyPropertyChang
     public IDisposable BindAdditivesForSelectedProduct<T>(Func<AdditiveDto, T> creator, out ReadOnlyObservableCollection<T> additives) where T : class, IReactiveToChangeSet<Guid, AdditiveDto>;
     public IDisposable BindAdditivesForProductShoppingListItem<T>(ProductShoppingListItemDto item, Func<AdditiveShoppingListItemDto, IApplicationModelManager<AdditiveShoppingListItemDto>, T> creator, out ReadOnlyObservableCollection<T> additives) where T : class, IApplicationModelPresenter<AdditiveShoppingListItemDto>;
     public IDisposable BindFastMenu<T>(Func<FastMenuDto, IApplicationModelPresenter<FastMenuDto>> creator, out ReadOnlyObservableCollection<T> items);
+
     public Task AddProductToShoppingList(Guid productId);
 
     public Task SelectCategory(Guid categoryId);
