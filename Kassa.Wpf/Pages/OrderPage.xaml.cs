@@ -57,12 +57,6 @@ public partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
             this.BindCommand(ViewModel, x => x.SelectRootCategoryCommand, x => x.AllCategories)
                 .DisposeWith(disposables);
 
-            /*this.BindCommand(ViewModel, x => x.SelectFavouriteCommand, x => x.FastFoodCategory)
-                .DisposeWith(disposables);
-
-            this.BindCommand(ViewModel, x => x.SelectFavouriteCommand, x => x.DrinksCategory)
-                .DisposeWith(disposables);*/
-
             this.BindCommand(ViewModel, x => x.SelectFavouriteCommand, x => x.FavoriteCategory1)
                 .DisposeWith(disposables);
 

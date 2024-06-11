@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Media;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
@@ -14,8 +15,10 @@ namespace Kassa.Wpf.Views;
 /// <summary>
 /// Логика взаимодействия для ProductView.xaml
 /// </summary>
-public partial class ProductView : ButtonUserControl<ProductDto>
+public partial class ProductView : ButtonUserControl<ProductViewModel>
 {
+    private readonly BrushConverter _brushConverter = new();
+
     public ProductView() 
     {
         InitializeComponent();
@@ -24,15 +27,8 @@ public partial class ProductView : ButtonUserControl<ProductDto>
         {
             Debug.Assert(ViewModel != null);
 
-            var vm = new ProductViewModel(
-                Splat.Locator.Current.GetNotInitializedService<IProductService>(),
-                ViewModel
-            );
-
-            DataContext = vm; 
-
             Command = ProductViewModel.AddToShoppingListCommand;
-            CommandParameter = vm;
+            CommandParameter = ViewModel;
 
             if (ViewModel.Image >= 0)
             {
@@ -59,7 +55,28 @@ public partial class ProductView : ButtonUserControl<ProductDto>
                 ProductIcon.Data = Application.Current.TryFindResource("CupOfTeaIcon") as Geometry;
             }
 
-            vm.DisposeWith(disposables);
+            this.OneWayBind(ViewModel, x => x.IsPriceVisible, x => x.PriceTextBlock.Visibility)
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, x => x.Color, x => x.Background, x =>
+            {
+                var defaultBrush = (Brush)Resources["DefaultProductViewBackground"]; 
+
+                if (x != string.Empty)
+                {
+                    return (Brush?)_brushConverter.ConvertFromString(x) ?? defaultBrush;
+                }
+
+                return (Brush)Resources["DefaultProductViewBackground"];
+
+            }).DisposeWith(disposables);
         });
+
+        Unloaded += (_, _) =>
+        {
+            Debug.Assert(ViewModel != null);
+
+            ViewModel.Dispose();
+        };
     }
 }

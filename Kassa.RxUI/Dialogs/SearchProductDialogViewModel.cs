@@ -16,8 +16,9 @@ public class SearchProductDialogViewModel : ApplicationManagedModelSearchableDia
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
         var productService = await Locator.GetInitializedService<IProductService>();
+        var orderEditService = await Locator.GetInitializedService<IOrderEditService>();
 
-        Filter(productService.RuntimeProducts, x => new ProductViewModel(x), disposables);
+        Filter(productService.RuntimeProducts, x => new ProductViewModel(orderEditService, productService, x), disposables);
     }
 
     protected override bool IsMatch(string searchText, ProductDto item)

@@ -56,6 +56,11 @@ public class CategoryDto : ICategoryItemDto, ICategoryDto
         get;
     } = [];
 
+    public string Color
+    {
+        get; set;
+    }
+
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     [return: NotNullIfNotNull(nameof(category))]
     public static CategoryDto? FromCategory(Category? category) => category == null ? null : new()

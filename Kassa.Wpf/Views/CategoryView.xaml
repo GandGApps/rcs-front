@@ -14,7 +14,7 @@
     d:DataContext="{d:DesignInstance Type=rxui:CategoryViewModel}"
     d:DesignHeight="104"
     d:DesignWidth="235"
-    x:TypeArguments="bl:CategoryDto"
+    x:TypeArguments="rxui:CategoryViewModel"
     mc:Ignorable="d">
     <Grid>
         <Grid.ColumnDefinitions>

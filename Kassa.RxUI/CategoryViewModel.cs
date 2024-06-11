@@ -53,4 +53,6 @@ public class CategoryViewModel : ReactiveObject
     public bool HasIcon => _category.HasIcon;
 
     public string? Icon => _category.Icon;
+
+    public string Color => _category.Color;
 }

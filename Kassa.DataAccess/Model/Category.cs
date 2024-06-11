@@ -17,6 +17,11 @@ public record Category : ICategoryItem
         get; set;
     }
 
+    public string Color
+    {
+        get; set;
+    }
+
     public Guid? CategoryId
     {
         get; set;

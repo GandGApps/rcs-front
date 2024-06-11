@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -23,18 +24,34 @@ namespace Kassa.Wpf.Views;
 /// <summary>
 /// Логика взаимодействия для CategoryView.xaml
 /// </summary>
-public partial class CategoryView : ButtonUserControl<CategoryDto>
+public partial class CategoryView : ButtonUserControl<CategoryViewModel>
 {
+    private static readonly BrushConverter _brushConverter = new();
+
     public CategoryView()
     {
         InitializeComponent();
 
         Command = CategoryViewModel.MoveToCategoryCommand;
+
         this.WhenActivated(disposables =>
         {
-            DataContext = new CategoryViewModel(ViewModel!);
+            Debug.Assert(ViewModel != null);
 
             CommandParameter = ViewModel;
+
+            this.OneWayBind(ViewModel, x => x.Color, x => x.Background, x =>
+            {
+                var defaultBrush = (Brush)Resources["DefaultProductViewBackground"];
+
+                if (x != string.Empty)
+                {
+                    return (Brush?)_brushConverter.ConvertFromString(x) ?? defaultBrush;
+                }
+
+                return (Brush)Resources["DefaultProductViewBackground"];
+
+            }).DisposeWith(disposables);
         });
     }
 }

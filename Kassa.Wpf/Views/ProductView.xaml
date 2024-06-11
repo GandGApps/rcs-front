@@ -13,7 +13,7 @@
     Margin="{mx:AdaptiveSize Thickness='3.5,2.4'}"
     d:DesignHeight="104"
     d:DesignWidth="235"
-    x:TypeArguments="bl:ProductDto"
+    x:TypeArguments="vm:ProductViewModel"
     Command="{Binding AddToShoppingListCommand}"
     mc:Ignorable="d">
 
@@ -104,6 +104,7 @@
             </Border.Style>
 
             <TextBlock
+                x:Name="PriceTextBlock"
                 HorizontalAlignment="Center"
                 VerticalAlignment="Center"
                 FontSize="{mx:AdaptiveSize 13}">

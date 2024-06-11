@@ -92,4 +92,8 @@ public record ProductDto : ICategoryItemDto, IModel
         get; set;
     }
 
+    public string Color
+    {
+        get; set;
+    }
 }

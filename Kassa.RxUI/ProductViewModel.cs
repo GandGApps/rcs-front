@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
@@ -18,7 +19,7 @@ using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.RxUI;
-public sealed class ProductViewModel : ReactiveObject, IApplicationModelPresenter<ProductDto>
+public sealed class ProductViewModel : ReactiveObject, IActivatableViewModel, IApplicationModelPresenter<ProductDto>
 {
     public static readonly ReactiveCommand<ProductViewModel, Unit> AddToShoppingListCommand = ReactiveCommand.CreateFromTask<ProductViewModel>(async product =>
     {
@@ -37,10 +38,15 @@ public sealed class ProductViewModel : ReactiveObject, IApplicationModelPresente
         await order.AddProductToShoppingList(product.Id);
     });
 
-    private readonly IDisposable _disposable;
+    private readonly IDisposable _disposable = Disposable.Empty;
+    private readonly IOrderEditService _orderEditService;
+    private readonly IProductService _productService;
 
-    public ProductViewModel(IProductService productService, ProductDto product)
+    public ProductViewModel(IOrderEditService orderEditService, IProductService productService, ProductDto product)
     {
+        _orderEditService = orderEditService;
+        _productService = productService;
+
         Id = product.Id;
         Name = product.Name;
         CurrencySymbol = product.CurrencySymbol;
@@ -49,23 +55,22 @@ public sealed class ProductViewModel : ReactiveObject, IApplicationModelPresente
         Measure = product.Measure;
         IsAvailable = product.IsAvailable && product.IsEnoughIngredients;
         Image = product.Image;
+        Color = product.Color;
 
         _disposable = productService.RuntimeProducts.AddPresenter(this);
+
+        this.WhenActivated(disposables =>
+        {
+            _orderEditService.ShowPrice
+                .ToPropertyEx(this, x => x.IsPriceVisible)
+                .DisposeWith(disposables);
+        });
     }
 
-    public ProductViewModel(ProductDto product)
+    public ViewModelActivator Activator
     {
-        Id = product.Id;
-        Name = product.Name;
-        CurrencySymbol = product.CurrencySymbol;
-        Price = product.Price;
-        IsAdded = product.IsAdded;
-        Measure = product.Measure;
-        IsAvailable = product.IsAvailable && product.IsEnoughIngredients;
-        Image = product.Image;
-
-        _disposable = Disposable.Empty;
-    }
+        get;
+    } = new();
 
     public Guid Id
     {
@@ -82,6 +87,12 @@ public sealed class ProductViewModel : ReactiveObject, IApplicationModelPresente
     public string CurrencySymbol
     {
         get; set;
+    }
+
+    public extern bool IsPriceVisible
+    {
+        [ObservableAsProperty]
+        get;
     }
 
     [Reactive]
@@ -113,7 +124,17 @@ public sealed class ProductViewModel : ReactiveObject, IApplicationModelPresente
         get; set;
     }
 
-    public void Dispose() => _disposable.Dispose();
+    [Reactive]
+    public string Color
+    {
+        get; set;
+    } 
+
+    public void Dispose()
+    {
+        _disposable.Dispose();
+        Activator.Dispose();
+    }
 
     public void ModelChanged(Change<ProductDto> change)
     {
@@ -126,6 +147,7 @@ public sealed class ProductViewModel : ReactiveObject, IApplicationModelPresente
         Measure = product.Measure;
         IsAvailable = product.IsAvailable && product.IsEnoughIngredients;
         Image = product.Image;
+        Color = product.Color;
     }
 }
 

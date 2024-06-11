@@ -72,4 +72,9 @@ public record Product : ICategoryItem
     {
         get; set;
     } = true;
+
+    public string Color
+    {
+        get; set;
+    }
 }
