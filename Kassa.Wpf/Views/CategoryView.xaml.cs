@@ -63,7 +63,7 @@ public partial class CategoryView : ButtonUserControl<CategoryViewModel>
             else
             {
                 // TODO: Load image from internet
-                ProductIcon.Data = Application.Current.TryFindResource("CupOfTeaIcon") as Geometry;
+                // ProductIcon.Data = Application.Current.TryFindResource("CupOfTeaIcon") as Geometry;
             }
 
             this.OneWayBind(ViewModel, x => x.Color, x => x.Background, x =>

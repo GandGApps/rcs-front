@@ -58,7 +58,7 @@ public partial class ProductView : ButtonUserControl<ProductViewModel>
             else
             {
                 // TODO: Load image from internet
-                ProductIcon.Data = Application.Current.TryFindResource("CupOfTeaIcon") as Geometry;
+                // ProductIcon.Data = Application.Current.TryFindResource("CupOfTeaIcon") as Geometry;
             }
 
 

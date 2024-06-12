@@ -53,7 +53,7 @@ internal sealed record DishGroupRequest
         get; set;
     }
 
-    [property: JsonPropertyName("color")]
+    [property: JsonPropertyName("category_color")]
     public string Color
     {
         get; set;

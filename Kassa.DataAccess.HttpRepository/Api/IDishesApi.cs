@@ -161,7 +161,7 @@ internal sealed record DishRequest
         get; init;
     }
 
-    [JsonPropertyName("color")]
+    [JsonPropertyName("category_color")]
     public string? Color
     {
         get; init;
