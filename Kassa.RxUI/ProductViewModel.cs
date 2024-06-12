@@ -5,6 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -19,7 +20,7 @@ using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.RxUI;
-public sealed class ProductViewModel : ProductHostItemVm, IActivatableViewModel, IApplicationModelPresenter<ProductDto>
+public sealed class ProductViewModel : ProductHostItemVm, IApplicationModelPresenter<ProductDto>
 {
     public static readonly ReactiveCommand<ProductViewModel, Unit> AddToShoppingListCommand = ReactiveCommand.CreateFromTask<ProductViewModel>(async product =>
     {
@@ -48,7 +49,7 @@ public sealed class ProductViewModel : ProductHostItemVm, IActivatableViewModel,
 
     private ProductDto _product;
 
-    private readonly IDisposable _disposable = Disposable.Empty;
+    private readonly CompositeDisposable _disposables = [];
     private readonly IOrderEditService _orderEditService;
     private readonly IProductService _productService;
 
@@ -68,25 +69,10 @@ public sealed class ProductViewModel : ProductHostItemVm, IActivatableViewModel,
         Color = product.Color;
         _product = product;
 
-        _disposable = productService.RuntimeProducts.AddPresenter(this);
-
-        this.WhenActivated(disposables =>
-        {
-            _orderEditService.ShowPrice
-                .ToPropertyEx(this, x => x.IsPriceVisible)
-                .DisposeWith(disposables);
-        });
+        productService.RuntimeProducts.AddPresenter(this).DisposeWith(_disposables);
     }
 
-    public ViewModelActivator Activator
-    {
-        get;
-    } = new();
-
-    public Guid Id
-    {
-        get;
-    }
+    public IOrderEditService OrderEditService => _orderEditService;
 
     [Reactive]
     public string CurrencySymbol
@@ -125,8 +111,7 @@ public sealed class ProductViewModel : ProductHostItemVm, IActivatableViewModel,
 
     public void Dispose()
     {
-        _disposable.Dispose();
-        Activator.Dispose();
+        _disposables.Dispose();
     }
 
     public void ModelChanged(Change<ProductDto> change)

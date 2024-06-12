@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
@@ -19,7 +20,7 @@ public partial class ProductView : ButtonUserControl<ProductViewModel>
 {
     private readonly BrushConverter _brushConverter = new();
 
-    public ProductView() 
+    public ProductView()
     {
         InitializeComponent();
 
@@ -29,6 +30,11 @@ public partial class ProductView : ButtonUserControl<ProductViewModel>
 
             Command = ProductViewModel.AddToShoppingListCommand;
             CommandParameter = ViewModel;
+
+            ViewModel.OrderEditService.ShowPrice
+                .Select(x => x ? Visibility.Visible : Visibility.Collapsed)
+                .Subscribe(x => PriceTextBlock.Visibility = x)
+                .DisposeWith(disposables);
 
             if (ViewModel.Image >= 0)
             {
@@ -55,19 +61,18 @@ public partial class ProductView : ButtonUserControl<ProductViewModel>
                 ProductIcon.Data = Application.Current.TryFindResource("CupOfTeaIcon") as Geometry;
             }
 
-            this.OneWayBind(ViewModel, x => x.IsPriceVisible, x => x.PriceTextBlock.Visibility)
-                .DisposeWith(disposables);
+
 
             this.OneWayBind(ViewModel, x => x.Color, x => x.Background, x =>
             {
-                var defaultBrush = (Brush)Resources["DefaultProductViewBackground"]; 
+                var defaultBrush = (Brush)App.Current.Resources["DefaultProductViewBackground"];
 
-                if (x != string.Empty)
+                if (!string.IsNullOrWhiteSpace(x))
                 {
                     return (Brush?)_brushConverter.ConvertFromString(x) ?? defaultBrush;
                 }
 
-                return (Brush)Resources["DefaultProductViewBackground"];
+                return defaultBrush;
 
             }).DisposeWith(disposables);
         });

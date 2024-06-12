@@ -69,11 +69,6 @@
                                 Orientation="Horizontal" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <view:SearchProductView ViewModel="{Binding .}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
                 </ItemsControl>
             </ScrollViewer>
 

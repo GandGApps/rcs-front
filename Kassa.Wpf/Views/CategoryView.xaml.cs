@@ -18,6 +18,7 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess;
 using Kassa.RxUI;
 using Kassa.Wpf.Controls;
+using Kassa.Wpf.Converters;
 using ReactiveUI;
 
 namespace Kassa.Wpf.Views;
@@ -40,16 +41,41 @@ public partial class CategoryView : ButtonUserControl<CategoryViewModel>
 
             CommandParameter = ViewModel;
 
+            if (ViewModel.Image >= 0)
+            {
+                ViewModel.WhenAnyValue(x => x.Image)
+                    .Subscribe(x =>
+                    {
+                        var resource = IntToProjectIcon.GetProjectIcon(x);
+
+                        if (resource is Geometry geometry)
+                        {
+                            ProductIcon.Data = geometry;
+                        }
+                        else
+                        {
+                            ProductIcon.Data = Geometry.Empty;
+                        }
+                    })
+                    .DisposeWith(disposables);
+
+            }
+            else
+            {
+                // TODO: Load image from internet
+                ProductIcon.Data = Application.Current.TryFindResource("CupOfTeaIcon") as Geometry;
+            }
+
             this.OneWayBind(ViewModel, x => x.Color, x => x.Background, x =>
             {
-                var defaultBrush = (Brush)Resources["DefaultProductViewBackground"];
+                var defaultBrush = (Brush)App.Current.Resources["DefaultProductViewBackground"];
 
-                if (x != string.Empty)
+                if (!string.IsNullOrWhiteSpace(x))
                 {
                     return (Brush?)_brushConverter.ConvertFromString(x) ?? defaultBrush;
                 }
 
-                return (Brush)Resources["DefaultProductViewBackground"];
+                return defaultBrush;
 
             }).DisposeWith(disposables);
         });

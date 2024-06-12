@@ -26,9 +26,9 @@ public class MoreCashierDialogViewModel : DialogViewModel
 
         ShowPriceCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var isStopList = orderEditService.IsStopList.Value;
+            var isPriceShowed = orderEditService.ShowPrice.Value;
 
-            orderEditService.SetShowPrice(!isStopList);
+            orderEditService.SetShowPrice(!isPriceShowed);
 
             await CloseAsync();
         });
