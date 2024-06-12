@@ -52,6 +52,18 @@ internal sealed record DishGroupRequest
     {
         get; set;
     }
+
+    [property: JsonPropertyName("color")]
+    public string Color
+    {
+        get; set;
+    }
+
+    [JsonPropertyName("image")]
+    public int? Image
+    {
+        get; init;
+    }
 }
 
 // The dish group request model.

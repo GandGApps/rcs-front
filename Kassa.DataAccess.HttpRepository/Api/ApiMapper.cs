@@ -216,6 +216,7 @@ internal static partial class ApiMapper
             FullPrice = product.Price,
             ParentGroupId = product.CategoryId,
             Image = product.Image,
+            Color = product.Color,
         };
     }
 
@@ -227,7 +228,8 @@ internal static partial class ApiMapper
             Name = dishRequest.Title,
             Price = dishRequest.FullPrice,
             CategoryId = dishRequest.ParentGroupId,
-            Image = dishRequest.Image ?? -1
+            Image = dishRequest.Image ?? -1,
+            Color = dishRequest.Color!
         };
 
         return product;
@@ -239,7 +241,9 @@ internal static partial class ApiMapper
         {
             GroupModelId = category.Id,
             Title = category.Name,
-            ParentGroupId = category.CategoryId
+            ParentGroupId = category.CategoryId,
+            Color = category.Color,
+            Image = category.Image
         };
     }
 
@@ -249,7 +253,9 @@ internal static partial class ApiMapper
         {
             Id = dishGroupRequest.GroupModelId,
             Name = dishGroupRequest.Title,
-            CategoryId = dishGroupRequest.ParentGroupId
+            CategoryId = dishGroupRequest.ParentGroupId,
+            Color = dishGroupRequest.Color,
+            Image = dishGroupRequest.Image ?? -1
         };
 
         return category;
