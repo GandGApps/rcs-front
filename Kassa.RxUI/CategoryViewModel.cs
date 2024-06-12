@@ -2,19 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.RxUI;
-public class CategoryViewModel : ReactiveObject
+public sealed class CategoryViewModel : ProductHostItemVm, IActivatableViewModel, IApplicationModelPresenter<CategoryDto>
 {
-    public static readonly ReactiveCommand<CategoryDto, Unit> MoveToCategoryCommand = ReactiveCommand.CreateFromTask<CategoryDto>(async (category) =>
+    public static readonly ReactiveCommand<CategoryViewModel, Unit> MoveToCategoryCommand = ReactiveCommand.CreateFromTask<CategoryViewModel>(async (category) =>
     {
         var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
         var order = cashierService.CurrentOrder;
@@ -40,19 +44,50 @@ public class CategoryViewModel : ReactiveObject
         await order.SelectPreviosCategory();
     });
 
-    private readonly CategoryDto _category;
-    public CategoryViewModel(CategoryDto category)
+    private readonly Guid _categoryId;
+
+
+    public CategoryViewModel(IApplicationModelManager<CategoryDto> modelManager, CategoryDto category)
     {
-        _category = category;
+        _categoryId = category.Id;
+
+        Name = category.Name;
+        HasIcon = category.HasIcon;
+        Image = category.Image;
+        Color = category.Color;
+
+        this.WhenActivated(disposables =>
+        {
+            modelManager.AddPresenter(this)
+                .DisposeWith(disposables);
+        });
     }
 
-    public Guid Id => _category.Id;
+    public Guid Id => _categoryId;
 
-    public string Name => _category.Name;
+    public ViewModelActivator Activator
+    {
+        get;
+    } = new();
 
-    public bool HasIcon => _category.HasIcon;
+    [Reactive]
+    public bool HasIcon
+    {
+        get; private set;
+    }
 
-    public string? Icon => _category.Icon;
+    public void ModelChanged(Change<CategoryDto> change)
+    {
+        var category = change.Current;
 
-    public string Color => _category.Color;
+        Name = category.Name;
+        HasIcon = category.HasIcon;
+        Image = category.Image;
+        Color = category.Color;
+    }
+
+    public void Dispose()
+    {
+        Activator.Dispose();
+    }
 }

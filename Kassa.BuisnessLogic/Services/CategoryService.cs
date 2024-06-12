@@ -6,6 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
@@ -13,10 +14,10 @@ using Kassa.DataAccess.Repositories;
 namespace Kassa.BuisnessLogic.Services;
 public sealed class CategoryService(IRepository<Category> repository) : ICategoryService
 {
-    public SourceCache<CategoryDto, Guid> RuntimeCategories
+    public IApplicationModelManager<CategoryDto> RuntimeCategories
     {
         get;
-    } = new(x => x.Id);
+    } = new HostModelManager<CategoryDto>();
 
     public bool IsInitialized
     {
@@ -39,7 +40,7 @@ public sealed class CategoryService(IRepository<Category> repository) : ICategor
         {
             var categories = await repository.GetAll();
 
-            RuntimeCategories.AddOrUpdate(categories.Select(x => ToCategoryDto(x)));
+            RuntimeCategories.AddOrUpdate(categories.Select(x => Mapper.MapCategoryToDto(x)));
 
             IsInitialized = true;
         }
@@ -68,7 +69,7 @@ public sealed class CategoryService(IRepository<Category> repository) : ICategor
 
         await repository.Delete(category);
 
-        RuntimeCategories.Remove(categoryDto);
+        RuntimeCategories.Remove(categoryDto.Id);
     }
 
     public async ValueTask<CategoryDto?> GetCategoryById(Guid id)
@@ -77,7 +78,7 @@ public sealed class CategoryService(IRepository<Category> repository) : ICategor
 
         var category = await repository.Get(id);
 
-        return ToCategoryDto(category);
+        return Mapper.MapCategoryToDto(category);
     }
 
     public async Task UpdateCategory(CategoryDto categoryDto)
@@ -114,10 +115,6 @@ public sealed class CategoryService(IRepository<Category> repository) : ICategor
     {
         RuntimeCategories.AddOrUpdate(category);
     }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    [return: NotNullIfNotNull(nameof(category))]
-    private static CategoryDto? ToCategoryDto(Category? category) => CategoryDto.FromCategory(category);
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static async Task<Category> GetCategoryOrThrow(Guid id, IRepository<Category> repository)

@@ -48,6 +48,60 @@ public static class ApplicationModelManagersExtensions
         return PackObservable(observable, filteredOservable);
     }
 
+    public static IDisposable BindAndFilter<TModel, TCast>(this IApplicationModelManager<TModel> manager, Func<TModel, bool> filter, Func<TModel, TCast> selector, ObservableCollection<TCast> collection)
+        where TModel : class, IModel
+        where TCast : class, IModel
+    {
+        var disposables = new CompositeDisposable();
+
+        collection.AddRange(manager.Values.Where(filter).Select(selector));
+
+        manager.Subscribe(changeSet =>
+        {
+            foreach (var change in changeSet.Changes)
+            {
+                var model = change.Current;
+
+                if (!filter(model))
+                {
+                    continue;
+                }
+
+                switch (change.Reason)
+                {
+
+                    case ModelChangeReason.Add:
+                        var added = selector(model);
+                        collection.Add(added);
+                        break;
+
+                    case ModelChangeReason.Replace:
+                        var replaced = collection.FirstOrDefault(x => x.Id == model.Id);
+                        if (replaced != null)
+                        {
+                            collection.Remove(replaced);
+                        }
+
+                        var newModel = selector(model);
+                        collection.Add(newModel);
+                        break;
+
+
+                    case ModelChangeReason.Remove:
+                        var removed = collection.FirstOrDefault(x => x.Id == model.Id);
+                        if (removed != null)
+                        {
+                            collection.Remove(removed);
+                        }
+                        break;
+
+                }
+            }
+
+        }).DisposeWith(disposables);
+
+        return disposables;
+    }
 
     public static IDisposable BindAndFilter<TModel, TCast>(this IApplicationModelManager<TModel> manager, Func<TModel, bool> filter, Func<TModel, TCast> selector, out ReadOnlyObservableCollection<TCast> collection)
         where TModel : class, IModel
@@ -153,14 +207,14 @@ public static class ApplicationModelManagersExtensions
 
         }).DisposeWith(disposables);
 
-       
+
 
         return disposables;
     }
 
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static IObservable<ChangeSet<TModel>> PackObservable<TModel>(IObservable<ChangeSet<TModel>> observable, IObservable<ChangeSet<TModel>> modifiedObservable)
-        where TModel : class, IModel
+       where TModel : class, IModel
     {
         if (observable is SourceApplicationModelManager<TModel> sourceApplicationModelManager)
         {

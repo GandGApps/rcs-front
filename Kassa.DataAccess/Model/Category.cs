@@ -12,7 +12,7 @@ public record Category : ICategoryItem
         get; set;
     }
 
-    public string? Icon
+    public int Image
     {
         get; set;
     }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -90,4 +91,10 @@ public static partial class Mapper
 
     public static partial Member MapDtoToMember(MemberDto member);
     public static partial MemberDto MapMemberToDto(Member member);
+
+    [return:NotNullIfNotNull("categoryDto")]
+    public static partial Category? MapDtoToCategory(CategoryDto? categoryDto);
+
+    [return:NotNullIfNotNull("category")]
+    public static partial CategoryDto? MapCategoryToDto(Category? category);
 }

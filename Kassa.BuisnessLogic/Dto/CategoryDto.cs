@@ -9,7 +9,7 @@ using Kassa.DataAccess;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Dto;
-public class CategoryDto : ICategoryItemDto, ICategoryDto
+public class CategoryDto : ICategoryItemDto, ICategoryDto, IModel
 {
     public Guid Id
     {
@@ -21,7 +21,7 @@ public class CategoryDto : ICategoryItemDto, ICategoryDto
         get; set;
     }
 
-    public string? Icon
+    public int Image
     {
         get; set;
     }
@@ -60,19 +60,6 @@ public class CategoryDto : ICategoryItemDto, ICategoryDto
     {
         get; set;
     }
-
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    [return: NotNullIfNotNull(nameof(category))]
-    public static CategoryDto? FromCategory(Category? category) => category == null ? null : new()
-    {
-
-        Id = category.Id,
-        Name = category.Name,
-        Icon = category.Icon,
-        CategoryId = category.CategoryId,
-        Categories = category.Categories,
-        Products = category.Products,
-    };
 
     public override string ToString()
     {

@@ -101,19 +101,20 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
         get; set;
     }
 
-    public IDisposable BindSelectedCategoryItems(out ReadOnlyObservableCollection<ICategoryItemDto> categoryItems)
+    public IDisposable BindSelectedCategoryItems<T>(Func<ICategoryItemDto, T> creator, out ReadOnlyObservableCollection<T> categoryItems) where T : class, IModel
     {
         this.ThrowIfNotInitialized();
 
-        var target = new ObservableCollection<ICategoryItemDto>();
-        var ordered = new ObservableCollection<ICategoryItemDto>();
+        var target = new ObservableCollection<T>();
+        var ordered = new ObservableCollection<T>();
         categoryItems = new(ordered);
-
 
         IDisposable? observeCategories = null;
         IDisposable? observeproducts = null;
 
-        var disposable = this.WhenAnyValue(x => x.CurrentCategory)
+        //TODO: create
+
+        var disposable = CurrentCategory
             .Subscribe(x =>
             {
                 target.Clear();
@@ -121,11 +122,12 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
                 observeCategories?.Dispose();
                 observeproducts?.Dispose();
 
-                if (x.Value is FavouriteCategoryDto favouriteCategory)
+                if (x is FavouriteCategoryDto favouriteCategory)
                 {
                     target.AddRange(_productService.RuntimeProducts.Values
                         .Cast<ICategoryItemDto>()
-                        .Where(x => x.Favourites.Contains(favouriteCategory.Favourite)));
+                        .Where(x => x.Favourites.Contains(favouriteCategory.Favourite))
+                        .Select(x => creator(x)));
 
                     observeproducts = _productService.RuntimeProducts
                         .Filter(p => p.Favourites.Contains(favouriteCategory.Favourite))
@@ -143,46 +145,23 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
                                 {
 
                                     case ModelChangeReason.Add:
-                                        target.Add(change.Current);
+                                        target.Add(creator(change.Current));
                                         break;
 
                                     case ModelChangeReason.Remove:
-                                        target.Remove(change.Current);
+                                        target.Remove(creator(change.Current));
                                         break;
 
                                     case ModelChangeReason.Refresh:
-                                        target.Remove(change.Previous ?? change.Current);
-                                        target.Add(change.Current);
+                                        target.Remove(change.Previous is null ? creator(change.Current) : creator(change.Previous));
+                                        target.Add(creator(change.Current));
                                         break;
                                 }
                             }
                         });
 
-                    observeCategories = _categoryService.RuntimeCategories.Connect()
-                        .Filter(c => c.Favourites.Contains(favouriteCategory.Favourite))
-                        .Subscribe(changeSet =>
-                        {
-                            foreach (var change in changeSet)
-                            {
+                    observeCategories = _categoryService.RuntimeCategories.BindAndFilter(c => c.Favourites.Contains(favouriteCategory.Favourite), x => creator(x), target);
 
-                                switch (change.Reason)
-                                {
-
-                                    case ChangeReason.Add:
-                                        target.Add(change.Current);
-                                        break;
-
-                                    case ChangeReason.Remove:
-                                        target.Remove(change.Current);
-                                        break;
-
-                                    case ChangeReason.Refresh:
-                                        target.Remove(change.Previous.Value);
-                                        target.Add(change.Current);
-                                        break;
-                                }
-                            }
-                        });
                     ordered.Clear();
                     ordered.AddRange(target.OrderBy(x =>
                     {
@@ -199,36 +178,16 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
 
                 if (x is CategoryDto category)
                 {
-                    target.AddRange(_categoryService.RuntimeCategories.Items
-                                               .Where(c => c.CategoryId == category.Id));
+                    target.AddRange(_categoryService.RuntimeCategories.Values
+                                               .Where(c => c.CategoryId == category.Id)
+                                               .Select(x => creator(x)));
 
-                    observeCategories = _categoryService.RuntimeCategories.Connect()
-                        .Filter(c => c.CategoryId == category.Id)
-                        .Subscribe(changeSet =>
-                        {
-                            foreach (var change in changeSet)
-                            {
-                                switch (change.Reason)
-                                {
-                                    case ChangeReason.Add:
-                                        target.Add(change.Current);
-                                        break;
-
-                                    case ChangeReason.Remove:
-                                        target.Remove(change.Current);
-                                        break;
-
-                                    case ChangeReason.Refresh:
-                                        target.Remove(change.Previous.Value);
-                                        target.Add(change.Current);
-                                        break;
-                                }
-                            }
-                        });
+                    observeCategories = _categoryService.RuntimeCategories.BindAndFilter(c => c.CategoryId == category.Id, x => creator(x), target);
 
                     target.AddRange(_productService.RuntimeProducts.Values
                             .Cast<ICategoryItemDto>()
-                            .Where(p => p.CategoryId == category.Id));
+                            .Where(p => p.CategoryId == category.Id)
+                            .Select(x => creator(x)));
 
                     observeproducts = _productService.RuntimeProducts
                         .Filter(p => p.CategoryId == category.Id)
@@ -245,11 +204,11 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
                                 switch (change.Reason)
                                 {
                                     case ModelChangeReason.Add:
-                                        target.Add(change.Current);
+                                        target.Add(creator(change.Current));
                                         break;
 
                                     case ModelChangeReason.Remove:
-                                        target.Remove(change.Current);
+                                        target.Remove(creator(change.Current));
                                         break;
                                 }
                             }
@@ -271,52 +230,12 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
 
                 if (x is null)
                 {
-                    observeCategories = _categoryService.RuntimeCategories.Connect()
-                        .Filter(c => c.CategoryId == null)
-                        .Subscribe(changeSet =>
-                        {
-
-                            foreach (var change in changeSet)
-                            {
-
-                                switch (change.Reason)
-                                {
-
-                                    case ChangeReason.Add:
-                                        target.Add(change.Current);
-                                        break;
-
-                                    case ChangeReason.Remove:
-                                        target.Remove(change.Current);
-                                        break;
-
-                                    case ChangeReason.Refresh:
-                                        target.Remove(change.Previous.Value);
-                                        target.Add(change.Current);
-                                        break;
-                                }
-                            }
-
-                            ordered.Clear();
-                            ordered.AddRange(target.OrderBy(x =>
-                            {
-
-                                if (x is ProductDto)
-                                {
-
-                                    return 1;
-                                }
-                                else
-                                {
-
-                                    return 0;
-                                }
-                            }));
-                        });
+                    observeCategories = _categoryService.RuntimeCategories.BindAndFilter(c => c.CategoryId == null, x => creator(x), target);
 
                     target.AddRange(_productService.RuntimeProducts.Values
                         .Cast<ICategoryItemDto>()
-                        .Where(p => p.CategoryId == null));
+                        .Where(p => p.CategoryId == null)
+                        .Select(x => creator(x)));
 
                     observeproducts = _productService.RuntimeProducts
                         .Filter(p => p.CategoryId == null)
@@ -338,16 +257,16 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
 
 
                                     case ModelChangeReason.Add:
-                                        target.Add(change.Current);
+                                        target.Add(creator(change.Current));
                                         break;
 
                                     case ModelChangeReason.Remove:
-                                        target.Remove(change.Current);
+                                        target.Remove(creator(change.Current));
                                         break;
 
                                     case ModelChangeReason.Refresh:
-                                        target.Remove(change.Previous ?? change.Current);
-                                        target.Add(change.Current);
+                                        target.Remove(change.Previous is null ? creator(change.Current) : creator(change.Previous));
+                                        target.Add(creator(change.Current));
                                         break;
                                 }
                             }

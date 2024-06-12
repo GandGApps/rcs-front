@@ -19,7 +19,7 @@ using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.RxUI;
-public sealed class ProductViewModel : ReactiveObject, IActivatableViewModel, IApplicationModelPresenter<ProductDto>
+public sealed class ProductViewModel : ProductHostItemVm, IActivatableViewModel, IApplicationModelPresenter<ProductDto>
 {
     public static readonly ReactiveCommand<ProductViewModel, Unit> AddToShoppingListCommand = ReactiveCommand.CreateFromTask<ProductViewModel>(async product =>
     {
@@ -78,12 +78,6 @@ public sealed class ProductViewModel : ReactiveObject, IActivatableViewModel, IA
     }
 
     [Reactive]
-    public string Name
-    {
-        get; set;
-    }
-
-    [Reactive]
     public string CurrencySymbol
     {
         get; set;
@@ -117,18 +111,6 @@ public sealed class ProductViewModel : ReactiveObject, IActivatableViewModel, IA
     {
         get; set;
     }
-
-    [Reactive]
-    public int Image
-    {
-        get; set;
-    }
-
-    [Reactive]
-    public string Color
-    {
-        get; set;
-    } 
 
     public void Dispose()
     {

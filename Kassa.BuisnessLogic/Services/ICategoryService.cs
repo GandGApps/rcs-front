@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess;
 
@@ -23,7 +24,7 @@ public interface ICategoryService : IInitializableService
     /// Use this property only for connect.
     /// </para>
     /// </summary>
-    public SourceCache<CategoryDto, Guid> RuntimeCategories
+    public IApplicationModelManager<CategoryDto> RuntimeCategories
     {
         get;
     }

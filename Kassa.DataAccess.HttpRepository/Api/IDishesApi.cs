@@ -49,9 +49,9 @@ internal sealed record DishRequest
 
     [JsonPropertyName("techCard")]
     public string TechCard { get; init; }
-
+/*
     [JsonPropertyName("allergens")]
-    public List<string> Allergens { get; init; }
+    public List<string> Allergens { get; init; }*/
 
     [JsonPropertyName("cookTech")]
     public string CookTech { get; init; }
@@ -83,8 +83,8 @@ internal sealed record DishRequest
     [JsonPropertyName("establishment_id")]
     public Guid? EstablishmentId { get; init; }
 
-    [JsonPropertyName("ingrArray")]
-    public List<string> IngrArray { get; init; }
+    /*[JsonPropertyName("ingrArray")]
+    public List<string> IngrArray { get; init; }*/
 
     [JsonPropertyName("full_price")]
     public double FullPrice { get; init; }

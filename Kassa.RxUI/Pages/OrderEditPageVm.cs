@@ -203,7 +203,20 @@ public class OrderEditPageVm : PageViewModel, IOrderEditVm
     {
         await ShoppingList.InitializeAsync();
 
-        _order.BindSelectedCategoryItems(out var categoryItems)
+        var productService = await Locator.GetInitializedService<IProductService>();
+        var categoryService = await Locator.GetInitializedService<ICategoryService>();
+
+        _order.BindSelectedCategoryItems<ProductHostItemVm>(x =>
+        {
+            if (x is ProductDto productDto)
+            {
+                return new ProductViewModel(_order, productService,productDto);
+            }
+            else 
+            {
+                 return new CategoryViewModel(categoryService.RuntimeCategories, (CategoryDto)x);
+            }
+        }, out var categoryItems)
                        .DisposeWith(disposables);
 
         _order.BindShoppingListItems((x, y) => new ProductShoppingListItemViewModel(x, y, _order), out var shoppingListItems)
@@ -348,12 +361,16 @@ public class OrderEditPageVm : PageViewModel, IOrderEditVm
     }
 
     [Reactive]
-    public ReadOnlyObservableCollection<ICategoryItemDto>? CurrentCategoryItems
+    public ReadOnlyObservableCollection<ProductHostItemVm>? CurrentCategoryItems
     {
         get; private set;
     }
 
     public ReactiveCommand<Unit, Unit> OpenQuantityVolumeDialogCommand
+    {
+        get;
+    }
+    ReadOnlyObservableCollection<ICategoryItemDto>? IOrderEditVm.CurrentCategoryItems
     {
         get;
     }
