@@ -23,10 +23,18 @@ public sealed class ProductViewModel : ProductHostItemVm, IActivatableViewModel,
 {
     public static readonly ReactiveCommand<ProductViewModel, Unit> AddToShoppingListCommand = ReactiveCommand.CreateFromTask<ProductViewModel>(async product =>
     {
-        var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
-        var order = cashierService.CurrentOrder;
+        var productDto = product._product;
+        var isStopList = product._orderEditService.IsStopList.Value;
 
-        if (order is null)
+
+        if (isStopList)
+        {
+            productDto.IsAvailable = !productDto.IsAvailable;
+            product._productService.RuntimeProducts.AddOrUpdate(productDto);
+            return;
+        }
+
+        if (product._orderEditService is null)
         {
             throw new InvalidOperationException("Order is not selected");
         }
@@ -35,8 +43,10 @@ public sealed class ProductViewModel : ProductHostItemVm, IActivatableViewModel,
         {
             return;
         }
-        await order.AddProductToShoppingList(product.Id);
+        await product._orderEditService.AddProductToShoppingList(product.Id);
     });
+
+    private ProductDto _product;
 
     private readonly IDisposable _disposable = Disposable.Empty;
     private readonly IOrderEditService _orderEditService;
@@ -56,6 +66,7 @@ public sealed class ProductViewModel : ProductHostItemVm, IActivatableViewModel,
         IsAvailable = product.IsAvailable && product.IsEnoughIngredients;
         Image = product.Image;
         Color = product.Color;
+        _product = product;
 
         _disposable = productService.RuntimeProducts.AddPresenter(this);
 
@@ -130,6 +141,8 @@ public sealed class ProductViewModel : ProductHostItemVm, IActivatableViewModel,
         IsAvailable = product.IsAvailable && product.IsEnoughIngredients;
         Image = product.Image;
         Color = product.Color;
+
+        _product = product;
     }
 }
 

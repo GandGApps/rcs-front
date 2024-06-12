@@ -48,9 +48,15 @@
                 Content="Добавить комментарий к блюду"
                 Style="{StaticResource MenuButton}" />
             <Border Style="{DynamicResource Separator}" />
-            <Button Content="Стоп-лист" Style="{StaticResource MenuButton}" />
+            <Button
+                x:Name="StopListButton"
+                Content="Стоп-лист"
+                Style="{StaticResource MenuButton}" />
             <Border Style="{DynamicResource Separator}" />
-            <Button Content="Показать цены блюд" Style="{StaticResource MenuButton}">
+            <Button
+                x:Name="ShowDishesPriceButton"
+                Content="Показать цены блюд"
+                Style="{StaticResource MenuButton}">
                 <Button.Resources>
                     <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius={StaticResource EndMenu}}" />

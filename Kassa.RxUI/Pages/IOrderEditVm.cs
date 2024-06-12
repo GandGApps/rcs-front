@@ -27,7 +27,7 @@ public interface IOrderEditVm: IReactiveObject
         get;
     }
 
-    public ReadOnlyObservableCollection<ICategoryItemDto>? CurrentCategoryItems
+    public ReadOnlyObservableCollection<ProductHostItemVm>? CurrentCategoryItems
     {
         get;
     }
@@ -91,4 +91,11 @@ public interface IOrderEditVm: IReactiveObject
     {
         get;
     }
+
+    public bool IsForHere
+    {
+        get;
+    }
+
+
 }

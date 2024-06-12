@@ -126,16 +126,10 @@
         x:Key="Header2"
         BasedOn="{StaticResource {x:Type TextBlock}}"
         TargetType="TextBlock">
-        <Setter Property="FontSize" Value="20" />
-        <Setter Property="FontWeight" Value="Medium" />
-        <Setter Property="LineHeight" Value="28" />
 
-        <Style.Triggers>
-            <DataTrigger Binding="{mx:AdaptiveMarkup Breakpoint=Medium}" Value="True">
-                <Setter Property="FontSize" Value="14" />
-                <Setter Property="LineHeight" Value="19" />
-            </DataTrigger>
-        </Style.Triggers>
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 20}" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="LineHeight" Value="{mx:AdaptiveSize 28}" />
 
     </Style>
 

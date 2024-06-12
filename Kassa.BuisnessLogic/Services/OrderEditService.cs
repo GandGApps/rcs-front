@@ -149,6 +149,11 @@ internal sealed class OrderEditService(
         get;
     }
 
+    public IObservableOnlyBehaviourSubject<bool> IsStopList
+    {
+        get;
+    }
+
     public event PropertyChangedEventHandler? PropertyChanged;
 
     public IDisposable BindSelectedCategoryItems<T>(Func<ICategoryItemDto, T> creator, out ReadOnlyObservableCollection<T> categoryItems) where T : class, IModel
@@ -1072,4 +1077,5 @@ internal sealed class OrderEditService(
     public IDisposable BindFastMenu<T>(Func<FastMenuDto, IApplicationModelPresenter<FastMenuDto>> creator, out ReadOnlyObservableCollection<T> items) => throw new NotImplementedException();
     public void SetMultiSelect(bool isMultiSelect) => throw new NotImplementedException();
     public void SetShowPrice(bool showPrice) => throw new NotImplementedException();
+    public void SetIsStopList(bool isStopList) => throw new NotImplementedException();
 }

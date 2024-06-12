@@ -255,15 +255,33 @@
 
                         </CheckBox>
 
-
-                        <TextBlock
+                        <Button
+                            x:Name="IsForHereButton"
                             Grid.Column="1"
-                            Style="{StaticResource Header2}"
-                            TextAlignment="Center">
-                            <Run Text="03.02  21:14" />
-                            <LineBreak />
-                            <Run Text="Здесь" />
-                        </TextBlock>
+                            Background="{StaticResource ClickableBg}">
+
+                            <Button.Style>
+                                <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+                                    <Style.Triggers>
+                                        <Trigger Property="IsPressed" Value="True">
+                                            <Setter Property="Background" Value="{DynamicResource AccentBrush2}" />
+                                        </Trigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Button.Style>
+
+                            <TextBlock
+                                Foreground="{StaticResource AlternateForeground}"
+                                Style="{StaticResource Header2}"
+                                TextAlignment="Center">
+                                <Run
+                                    x:Name="TimeWhenStart"
+                                    FontSize="{mx:AdaptiveSize 15}"
+                                    Text="03.02  21:14" />
+                                <LineBreak />
+                                <Run x:Name="IsForHereText" Text="Здесь" />
+                            </TextBlock>
+                        </Button>
 
                         <TextBlock
                             Grid.Column="2"

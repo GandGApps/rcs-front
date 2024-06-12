@@ -45,6 +45,11 @@ public interface IOrderEditService : IInitializableService
         get;
     }
 
+    public IObservableOnlyBehaviourSubject<bool> IsStopList
+    {
+        get;
+    }
+
     public Guid OrderId
     {
         get;
@@ -57,6 +62,7 @@ public interface IOrderEditService : IInitializableService
 
     public void SetMultiSelect(bool isMultiSelect);
     public void SetShowPrice(bool showPrice);
+    public void SetIsStopList(bool isStopList);
 
     /// <summary>
     /// Bind the current category to ObservableCollection, that will be updated when the category changes.

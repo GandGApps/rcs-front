@@ -19,13 +19,13 @@ using DynamicData;
 namespace Kassa.RxUI.Pages;
 public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
 {
-    private readonly IOrderEditService _order;
+    private readonly IOrderEditService _orderEditService;
     private readonly ICashierService _cashierService;
     private readonly IAdditiveService _additiveService;
 
-    public DeliveryOrderEditPageVm(IOrderEditService order, ICashierService cashierService, IAdditiveService additiveService)
+    public DeliveryOrderEditPageVm(IOrderEditService orderEditService, ICashierService cashierService, IAdditiveService additiveService)
     {
-        _order = order;
+        _orderEditService = orderEditService;
         _cashierService = cashierService;
         _additiveService = additiveService;
 
@@ -42,7 +42,7 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
 
             if (dialog.IsPublished)
             {
-                await _order!.WriteTotalComment(dialog.Comment);
+                await _orderEditService!.WriteTotalComment(dialog.Comment);
                 TotalComment = dialog.Comment;
             }
         });
@@ -62,7 +62,7 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
         SearchAddictiveCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             var additiveService = await Locator.GetInitializedService<IAdditiveService>();
-            var addictiveDialog = new SearchAddictiveDialogViewModel(additiveService, order);
+            var addictiveDialog = new SearchAddictiveDialogViewModel(additiveService, orderEditService);
             var dialog = await MainViewModel.DialogOpenCommand.Execute(addictiveDialog).FirstAsync();
 
             await dialog.WaitDialogClose();
@@ -70,22 +70,22 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
 
         SelectFavouriteCommand = ReactiveCommand.CreateFromTask(async (int x) =>
         {
-            if (_order == null)
+            if (_orderEditService == null)
             {
                 return;
             }
-            await _order.SelectFavourite(x);
+            await _orderEditService.SelectFavourite(x);
         });
 
         SelectRootCategoryCommand = ReactiveCommand.CreateFromTask(async () =>
         {
 
-            if (_order == null)
+            if (_orderEditService == null)
             {
 
                 return;
             }
-            await _order.SelectRootCategory();
+            await _orderEditService.SelectRootCategory();
         });
 
         SearchProductCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -104,16 +104,16 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
 
             await dialog.WaitDialogClose();
 
-            if (dialog.IsPublished && _order is not null)
+            if (dialog.IsPublished && _orderEditService is not null)
             {
-                await _order.WriteCommentToSelectedItems(dialog.Comment);
+                await _orderEditService.WriteCommentToSelectedItems(dialog.Comment);
             }
         });
 
         OpenMoreDialogCommand = ReactiveCommand.CreateFromTask(async () =>
         {
 
-            var dialog = new MoreCashierDialogViewModel(this);
+            var dialog = new MoreCashierDialogViewModel(this, _orderEditService);
 
             await MainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
 
@@ -155,11 +155,11 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
 
                 if (differece > 0)
                 {
-                    await _order.IncreaseProductShoppingListItem(shoppingListItem.Source, differece);
+                    await _orderEditService.IncreaseProductShoppingListItem(shoppingListItem.Source, differece);
                 }
                 else
                 {
-                    await _order.DecreaseProductShoppingListItem(shoppingListItem.Source, -differece);
+                    await _orderEditService.DecreaseProductShoppingListItem(shoppingListItem.Source, -differece);
                 }
 
                 shoppingListItem.Count = x;
@@ -174,16 +174,16 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        ShoppingList = new(_order);
+        ShoppingList = new(_orderEditService);
 
         var productService = await Locator.GetInitializedService<IProductService>();
         var categoryService = await Locator.GetInitializedService<ICategoryService>();
 
-        _order.BindSelectedCategoryItems<ProductHostItemVm>(x =>
+        _orderEditService.BindSelectedCategoryItems<ProductHostItemVm>(x =>
         {
             if (x is ProductDto productDto)
             {
-                return new ProductViewModel(_order, productService, productDto);
+                return new ProductViewModel(_orderEditService, productService, productDto);
             }
             else
             {
@@ -192,10 +192,10 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
         }, out var categoryItems)
                        .DisposeWith(disposables);
 
-        _order.BindShoppingListItems((x, y) => new ProductShoppingListItemViewModel(x, y, _order), out var shoppingListItems)
+        _orderEditService.BindShoppingListItems((x, y) => new ProductShoppingListItemViewModel(x, y, _orderEditService), out var shoppingListItems)
                        .DisposeWith(disposables);
 
-        _order.BindAdditivesForSelectedProduct(x => new AdditiveViewModel(x, _order, _additiveService), out var fastAdditives)
+        _orderEditService.BindAdditivesForSelectedProduct(x => new AdditiveViewModel(x, _orderEditService, _additiveService), out var fastAdditives)
                        .DisposeWith(disposables);
 
         CurrentCategoryItems = categoryItems;
@@ -241,8 +241,8 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
     public bool IsMultiSelect
     {
 
-        get => _order.IsMultiSelect.Value;
-        set => _order.SetMultiSelect(value);
+        get => _orderEditService.IsMultiSelect.Value;
+        set => _orderEditService.SetMultiSelect(value);
     }
 
     [Reactive]
@@ -335,8 +335,10 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
     {
         get;
     }
-    ReadOnlyObservableCollection<ICategoryItemDto>? IOrderEditVm.CurrentCategoryItems
+
+    [Reactive]
+    public bool IsForHere
     {
-        get;
+        get; set;
     }
 }

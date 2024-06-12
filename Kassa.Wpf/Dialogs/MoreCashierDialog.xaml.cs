@@ -30,6 +30,12 @@ public partial class MoreCashierDialog : ClosableDialog<MoreCashierDialogViewMod
         {
             this.BindCommand(ViewModel, x => x.AddCommentCommand, x => x.AddCommentToProductButton)
                 .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, x => x.StopListCommand, x => x.StopListButton)
+                .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, x => x.ShowPriceCommand, x => x.ShowDishesPriceButton)
+                .DisposeWith(disposables);
         });
     }
 }

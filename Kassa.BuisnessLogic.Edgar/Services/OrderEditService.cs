@@ -42,6 +42,8 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
     private readonly BehaviorSubject<double> _discountObservable = new(0);
     private readonly ObservableOnlyBehaviourSubject<double> _discount;
 
+    private readonly AdapterBehaviorSubject<bool> _isStopList = new(false);
+
     private OrderDto? _order;
 
     private readonly List<ICategoryDto> _categoriesStack = [];
@@ -78,6 +80,7 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
     public IObservableOnlyBehaviourSubject<string?> TotalComment => _totalComment;
     public IObservableOnlyBehaviourSubject<bool> ShowPrice => _showPrice;
     public IObservableOnlyBehaviourSubject<double> Discount => _discount;
+    public IObservableOnlyBehaviourSubject<bool> IsStopList => _isStopList;
 
     public IApplicationModelManager<ProductShoppingListItemDto> ShoppingListItems
     {
@@ -990,6 +993,11 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
     public void SetShowPrice(bool showPrice)
     {
         _showPriceObservable.OnNext(showPrice);
+    }
+
+    public void SetIsStopList(bool isStopList)
+    {
+        _isStopList.OnNext(isStopList);
     }
 
     private async ValueTask<OrderDto> CreateOrGetOrder()

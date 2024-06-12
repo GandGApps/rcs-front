@@ -81,6 +81,15 @@ public partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
             this.BindCommand(ViewModel, x => x.GoToAllDeliveriesPageCommand, x => x.GoToDeliveryButton)
                 .DisposeWith(disposables);
 
+            this.BindCommand(ViewModel, x => x.ForHereOrToGoCommand, x => x.IsForHereButton)
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, x => x.IsForHere, x => x.IsForHereText.Text, (bool x) => x ? "Здесь" : "С собой")
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel, x => x.WhenOrderStarted, x => x.TimeWhenStart.Text, x => x.ToString("dd.MM  HH:mm"))
+                .DisposeWith(disposables);
+
             ViewModel.WhenAnyValue(x => x.ShoppingListItems!.Count)
                      .Buffer(2, 1)
                      .Subscribe(x =>

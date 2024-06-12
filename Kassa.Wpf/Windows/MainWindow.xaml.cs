@@ -1,4 +1,5 @@
 ﻿using System.Collections.Specialized;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net.Http;
 using System.Net.Sockets;
@@ -165,7 +166,7 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
                 await ViewModel.OkMessage(invalidUserOperatationException.Message, invalidUserOperatationException.Description, invalidUserOperatationException.Icon);
             }
 
-            if (extractedException is HttpRequestException { HttpRequestError: HttpRequestError.ConnectionError or HttpRequestError.NameResolutionError })
+            if (IsHttpTimeoutException(extractedException, out var httpRequestException))
             {
                 e.Handled = true;
                 await ViewModel.OkMessage("Проблема с интернетом", "Повторите попытку позже", "JustFailed");
@@ -218,7 +219,7 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
 
             foreach (var file in Directory.GetFiles(path))
             {
-                var fullPath =  System.IO.Path.GetFullPath(file);
+                var fullPath = System.IO.Path.GetFullPath(file);
                 stringCollection.Add(fullPath);
             }
         }
@@ -270,6 +271,29 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
         }
 
         return sb.ToString();
+    }
+
+    /// <summary>
+    /// Try find inner exception of HttpRequestException
+    /// </summary>
+    /// <param name="exception"></param>
+    /// <param name="httpRequestException"></param>
+    /// <returns></returns>
+    private static bool IsHttpTimeoutException(Exception exception, [NotNullWhen(true)] out HttpRequestException? httpRequestException)
+    {
+        if (exception is HttpRequestException { HttpRequestError: HttpRequestError.ConnectionError or HttpRequestError.NameResolutionError } requestException)
+        {
+            httpRequestException = requestException;
+            return true;
+        }
+
+        if (exception.InnerException != null)
+        {
+            return IsHttpTimeoutException(exception.InnerException, out httpRequestException);
+        }
+
+        httpRequestException = null;
+        return false;
     }
 
 }
