@@ -16,6 +16,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
     private IPaymentService _paymentService = null!;
     private readonly ICashierService _cashierService;
     private readonly IAdditiveService _additiveService;
+    private readonly IProductService _productService;
     private readonly OrderDto _orderDto;
 
     public EditDeliveryPageVm(
@@ -25,7 +26,8 @@ public sealed class EditDeliveryPageVm : PageViewModel
         CourierDto? courier,
         OrderDto order,
         DistrictDto? district,
-        StreetDto? street)
+        StreetDto? street,
+        IProductService productService)
     {
         _orderDto = order;
         _cashierService = cashierService;
@@ -198,7 +200,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
             order.Intercom = Intercom;
             order.LastName = LastName;
             order.FirstName = FirstName;
-            order.MiddleName =MiddleName;
+            order.MiddleName = MiddleName;
             order.Phone = Phone;
             order.Miscellaneous = Miscellaneous;
             order.IsOutOfTurn = IsOutOfTurn;
@@ -228,6 +230,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
         Disposable.Create(() =>
         {
         }).DisposeWith(InternalDisposables);
+        _productService = productService;
 #endif
     }
 
@@ -477,7 +480,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
 
         _orderEdit = await cashierService.CreateOrder(_orderDto);
 
-        OrderEditPageVm = new DeliveryOrderEditPageVm(_orderEdit, _cashierService, _additiveService);
+        OrderEditPageVm = new DeliveryOrderEditPageVm(_orderEdit, _cashierService, _additiveService, _productService);
 
         _paymentService = await cashierService.CreatePayment(_orderEdit);
         PaymentPageVm = new(_paymentService);

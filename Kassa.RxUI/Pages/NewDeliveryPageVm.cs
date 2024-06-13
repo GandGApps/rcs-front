@@ -21,13 +21,14 @@ public sealed class NewDeliveryPageVm : PageViewModel
     private IPaymentService _paymentService = null!;
     private readonly ICashierService _cashierService;
     private readonly IAdditiveService _additiveService;
+    private readonly IProductService _productService;
 
-    public NewDeliveryPageVm(ICashierService cashierService, IAdditiveService additiveService) : this(cashierService, additiveService, null)
+    public NewDeliveryPageVm(ICashierService cashierService, IAdditiveService additiveService, IProductService productService) : this(cashierService, additiveService, null, productService)
     {
         IsNewClient = true;
     }
 
-    public NewDeliveryPageVm(ICashierService cashierService, IAdditiveService additiveService, ClientViewModel? clientViewModel)
+    public NewDeliveryPageVm(ICashierService cashierService, IAdditiveService additiveService, ClientViewModel? clientViewModel, IProductService productService)
     {
         _cashierService = cashierService;
         _additiveService = additiveService;
@@ -249,6 +250,7 @@ public sealed class NewDeliveryPageVm : PageViewModel
         Disposable.Create(() =>
         {
         }).DisposeWith(InternalDisposables);
+        _productService = productService;
 #endif
     }
 
@@ -495,7 +497,7 @@ public sealed class NewDeliveryPageVm : PageViewModel
         _orderEdit = await cashierService.CreateOrder(true);
         await cashierService.SelectCurrentOrder(_orderEdit);
 
-        OrderEditPageVm = new DeliveryOrderEditPageVm(_orderEdit, _cashierService, _additiveService);
+        OrderEditPageVm = new DeliveryOrderEditPageVm(_orderEdit, _cashierService, _additiveService, _productService);
 
         _paymentService = await cashierService.CreatePayment(_orderEdit);
         PaymentPageVm = new(_paymentService);

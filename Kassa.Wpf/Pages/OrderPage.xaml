@@ -258,15 +258,19 @@
                         <Button
                             x:Name="IsForHereButton"
                             Grid.Column="1"
-                            Background="{StaticResource ClickableBg}">
+                            BorderThickness="0">
 
                             <Button.Style>
                                 <Style BasedOn="{StaticResource {x:Type Button}}" TargetType="Button">
+
+                                    <Setter Property="Background" Value="{StaticResource ClickableBg}" />
+
                                     <Style.Triggers>
                                         <Trigger Property="IsPressed" Value="True">
                                             <Setter Property="Background" Value="{DynamicResource AccentBrush2}" />
                                         </Trigger>
                                     </Style.Triggers>
+
                                 </Style>
                             </Button.Style>
 

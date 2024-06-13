@@ -60,6 +60,7 @@ internal sealed class EdgarShift : IShift
         shiftDto.Start = openPostRequest.OpenDate;
 
         _shiftService.RuntimeShifts.AddOrUpdate(shiftDto);
+        _shiftService._currentShift.OnNext(this);
     }
 
     public async Task Exit()
@@ -103,6 +104,12 @@ internal sealed class EdgarShift : IShift
     }
 
     public async Task End(string pincode)
+    {
+        //TODO: Implement pincode check
+        await End();
+    }
+
+    internal async Task End()
     {
         var shiftDto = await CreateDto();
 

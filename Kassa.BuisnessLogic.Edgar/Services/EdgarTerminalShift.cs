@@ -25,7 +25,7 @@ internal class EdgarTerminalShift : ITerminalShift
     public EdgarTerminalShift(MemberDto manager, TerminalPostExistsResponse postExistsResponse, ShiftService shiftService)
     {
         _manager = manager;
-        
+
         _postExistsResponse = postExistsResponse;
 
         _start = postExistsResponse.Posts.OpenDate;
@@ -63,6 +63,11 @@ internal class EdgarTerminalShift : ITerminalShift
         var closeShiftRequest = new TerminalClosePostRequest(DateTime.Now, shift.Id);
 
         await terminalPostApi.ClosePost(closeShiftRequest);
+
+        if (_shiftService.CurrentShift.Value is EdgarShift edgarShift)
+        {
+            await edgarShift.End();
+        }
 
         _shiftService._currentCashierShift.OnNext(null);
         _shiftService._currentShift.OnNext(null);

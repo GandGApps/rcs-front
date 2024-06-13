@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
+using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
@@ -17,7 +18,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI.Pages;
-public class CashierPaymentPageVm : PageViewModel, IPaymentVm
+public sealed class CashierPaymentPageVm : PageViewModel, IPaymentVm
 {
 
     private bool _isFloat;
@@ -165,7 +166,12 @@ public class CashierPaymentPageVm : PageViewModel, IPaymentVm
             }
 
             await MainViewModel.OkMessage("Оплата прошла успешно", "");
-            await MainViewModel.GoToPageAndResetCommand.Execute(new MainPageVm());
+
+            var cashierService = await Locator.GetInitializedService<ICashierService>(); 
+            var order = await cashierService.CreateOrder(false);
+            var additiveService = await Locator.GetInitializedService<IAdditiveService>();
+
+            await MainViewModel.GoToPageAndResetCommand.Execute(new OrderEditPageVm(order, cashierService, additiveService));
 
 
         }, this.WhenAnyValue(x => x.IsExactAmount));

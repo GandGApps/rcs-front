@@ -21,11 +21,12 @@ using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.RxUI.Pages;
-public class OrderEditPageVm : PageViewModel, IOrderEditVm
+public sealed class OrderEditPageVm : PageViewModel, IOrderEditVm
 {
     private readonly IOrderEditService _orderEditService;
     private readonly ICashierService _cashierService;
     private readonly IAdditiveService _additiveService;
+    private readonly IProductService _productService;
 
     public OrderEditPageVm(IOrderEditService orderEditService, ICashierService cashierService, IAdditiveService additiveService)
     {
@@ -96,7 +97,7 @@ public class OrderEditPageVm : PageViewModel, IOrderEditVm
 
         SearchProductCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var searchProductDialog = new SearchProductDialogViewModel();
+            var searchProductDialog = new SearchProductDialogViewModel(_orderEditService, _productService);
             var dialog = await MainViewModel.DialogOpenCommand.Execute(searchProductDialog).FirstAsync();
 
             await dialog.WaitDialogClose();

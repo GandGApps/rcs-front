@@ -22,8 +22,9 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
     private readonly IOrderEditService _orderEditService;
     private readonly ICashierService _cashierService;
     private readonly IAdditiveService _additiveService;
+    private readonly IProductService _productService;
 
-    public DeliveryOrderEditPageVm(IOrderEditService orderEditService, ICashierService cashierService, IAdditiveService additiveService)
+    public DeliveryOrderEditPageVm(IOrderEditService orderEditService, ICashierService cashierService, IAdditiveService additiveService, IProductService productService)
     {
         _orderEditService = orderEditService;
         _cashierService = cashierService;
@@ -90,7 +91,7 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
 
         SearchProductCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var searchProductDialog = new SearchProductDialogViewModel();
+            var searchProductDialog = new SearchProductDialogViewModel(orderEditService, productService);
             var dialog = await MainViewModel.DialogOpenCommand.Execute(searchProductDialog).FirstAsync();
 
             await dialog.WaitDialogClose();
@@ -170,6 +171,7 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
 
             await dialog.WaitDialogClose();
         });
+        _productService = productService;
     }
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)

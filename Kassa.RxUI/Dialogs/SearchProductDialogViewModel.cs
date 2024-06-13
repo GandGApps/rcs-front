@@ -12,13 +12,19 @@ using Splat;
 namespace Kassa.RxUI.Dialogs;
 public class SearchProductDialogViewModel : ApplicationManagedModelSearchableDialogViewModel<ProductDto, ProductViewModel>
 {
+    private readonly IOrderEditService _orderEditService;
+    private readonly IProductService _productService;
 
-    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    public SearchProductDialogViewModel(IOrderEditService orderEditService, IProductService productService)
     {
-        var productService = await Locator.GetInitializedService<IProductService>();
-        var orderEditService = await Locator.GetInitializedService<IOrderEditService>();
+        _orderEditService = orderEditService;
+        this._productService = productService;
+    }
 
-        Filter(productService.RuntimeProducts, x => new ProductViewModel(orderEditService, productService, x), disposables);
+    protected override ValueTask InitializeAsync(CompositeDisposable disposables)
+    {
+        Filter(_productService.RuntimeProducts, x => new ProductViewModel(_orderEditService, _productService, x), disposables);
+        return new ValueTask();
     }
 
     protected override bool IsMatch(string searchText, ProductDto item)
