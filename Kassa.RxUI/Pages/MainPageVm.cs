@@ -202,10 +202,6 @@ public class MainPageVm : PageViewModel
                 CurrentShiftOpennedDate = dto.Start;
             }
         }).DisposeWith(disposables);
-
-        Disposable.Create(() =>
-        {
-        });
     }
 
 }

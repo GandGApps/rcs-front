@@ -58,10 +58,10 @@ public sealed partial class ShiftStateDetail : UserControl, IApplicationModelPre
         }
 
         shiftStateDetail.ShiftNumber.Text = dto.Number.ToString();
-        shiftStateDetail.ShiftBegin.Text = dto.Start is null ? string.Empty : dto.Start.Value.ToString("dd.MM.yyyy | HH:mm");
+        shiftStateDetail.ShiftBegin.Text = dto.IsStarted ? dto.Start is null ? string.Empty : dto.Start.Value.ToString("dd.MM.yyyy | HH:mm") : string.Empty;
         shiftStateDetail.ManagerName.Text = (await memberService.GetMember(dto.ManagerId ?? Guid.Empty))?.Name ?? "???";
         shiftStateDetail.CashierName.Text = (await memberService.GetMember(dto.MemberId))?.Name ?? "???";
-        shiftStateDetail.ShiftState.Text = dto.Start is null ? " закрыта " : "открыто";
+        shiftStateDetail.ShiftState.Text = dto.IsStarted ? " закрыта " : "открыто";
 
         shiftStateDetail._subcribeToDtoChanging = shiftService.RuntimeShifts.AddPresenter(shiftStateDetail);
     }

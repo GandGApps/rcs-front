@@ -65,6 +65,8 @@ public static class EdgarDependencyResolverExntesions
             return new AdditiveService(repository, receiptService);
         });
 
+        services.RegisterConstant<IReportShiftService>(new ReportShiftService());
+
         SplatRegistrations.SetupIOC();
     }
 

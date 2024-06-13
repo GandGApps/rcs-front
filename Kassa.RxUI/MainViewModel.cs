@@ -180,10 +180,18 @@ public class MainViewModel : ReactiveObject, IScreen
 
         var authService = Locator.Current.GetRequiredService<IAuthService>();
         var shiftService = Locator.Current.GetNotInitializedService<IShiftService>();
+        var reportShiftService = Locator.Current.GetRequiredService<IReportShiftService>();
 
-        authService.CurrentAuthenticationContext.CombineLatest(shiftService.CurrentShift, (authContext, shift) => (authContext, shift))
+        authService.CurrentAuthenticationContext.CombineLatest(shiftService.CurrentShift, reportShiftService.CurrentReportShift, (authContext, shift, report) => (authContext, shift, report))
             .Subscribe(async x =>
             {
+                if (x.report is not null)
+                {
+                    await GoToPageAndReset(new CashierShiftReportPageVm(reportShiftService, x.report));
+
+                    return;
+                }
+
 
                 if (!x.authContext.IsAuthenticated)
                 {

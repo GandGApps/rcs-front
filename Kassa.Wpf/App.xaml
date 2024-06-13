@@ -8,6 +8,7 @@
         <ResourceDictionary>
 
             <FontFamily x:Key="Montseratt">./Assets/Fonts/Montseratt/#Montserrat</FontFamily>
+            <FontFamily x:Key="LucidaConsole">./Assets/Fonts/LucidaConsole/#lucidaconsole</FontFamily>
 
             <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
             <converters:IsValueLessThanParameter x:Key="IsValueLessThanParameter" />
@@ -24,7 +25,7 @@
                 <ResourceDictionary Source="/Resources/ScrollBar.xaml" />
                 <ResourceDictionary Source="/Resources/CashierTabPanel.xaml" />
                 <ResourceDictionary Source="/Resources/DataGrid.xaml" />
-                <ResourceDictionary Source="/Resources/ProjectIcons.xaml"/>
+                <ResourceDictionary Source="/Resources/ProjectIcons.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
 

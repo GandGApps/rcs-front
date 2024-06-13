@@ -62,12 +62,19 @@ internal class EdgarTerminalShift : ITerminalShift
         var terminalPostApi = Locator.Current.GetRequiredService<ITerminalPostApi>();
         var closeShiftRequest = new TerminalClosePostRequest(DateTime.Now, shift.Id);
 
+        var reportShiftService = Locator.Current.GetRequiredService<IReportShiftService>();
+
         await terminalPostApi.ClosePost(closeShiftRequest);
 
         if (_shiftService.CurrentShift.Value is EdgarShift edgarShift)
         {
             await edgarShift.End();
         }
+
+        //TODO: Add report shift
+        reportShiftService.AddCurrentReportShift(new ReportShiftDto()
+        {
+        });
 
         _shiftService._currentCashierShift.OnNext(null);
         _shiftService._currentShift.OnNext(null);
