@@ -35,6 +35,9 @@ public record ProductShoppingListItemDto : IShoppingListItemDto
         AdditiveInfo = orderedProduct.Comment;
     }
 
+    /// <summary>
+    /// Product id
+    /// </summary>
     public Guid ItemId
     {
         get;

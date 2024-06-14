@@ -30,7 +30,7 @@ public class SearchCourierDialogViewModel : ApplicationManagedModelSearchableDia
             return SelectedItem!;
         }, okCommandCanExecute).DisposeWith(InternalDisposables);
 
-        CancelCommand = ReactiveCommand.Create(Close).DisposeWith(InternalDisposables);
+        CancelCommand = ReactiveCommand.Create(SetCloseResult).DisposeWith(InternalDisposables);
     }
 
     public ReactiveCommand<Unit, CourierViewModel> OkCommand

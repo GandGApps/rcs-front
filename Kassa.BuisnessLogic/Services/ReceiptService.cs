@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
@@ -10,7 +11,7 @@ using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 
 namespace Kassa.BuisnessLogic.Services;
-internal class ReceiptService(IRepository<Receipt> repository, IIngridientsService ingridientsService) : BaseInitializableService, IReceiptService
+internal sealed class ReceiptService(IRepository<Receipt> repository, IIngridientsService ingridientsService) : BaseInitializableService, IReceiptService
 {
     public SourceCache<ReceiptDto, Guid> RuntimeReceipts
     {
@@ -57,6 +58,7 @@ internal class ReceiptService(IRepository<Receipt> repository, IIngridientsServi
         return model == null ? null : Mapper.MapReceiptToDto(model);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public Task<bool> HasEnoughIngridients(ReceiptDto receiptDto, double count = 1)
     {
         return ingridientsService.HasEnoughIngredients(receiptDto.IngredientUsages, count);

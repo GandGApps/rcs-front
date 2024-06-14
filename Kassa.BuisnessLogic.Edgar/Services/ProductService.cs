@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
@@ -135,6 +136,7 @@ internal sealed class ProductService : BaseInitializableService, IProductService
         }
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     private async Task CheckAllIngridients((Product product, ReceiptDto receipt)? existingModel)
     {
         var products = RuntimeProducts.Values;
@@ -161,6 +163,7 @@ internal sealed class ProductService : BaseInitializableService, IProductService
         }
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     private async ValueTask HasEnoughIngredients(ProductDto product, ReceiptDto? receipt, double count)
     {
         if (receipt is null)

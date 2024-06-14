@@ -10,7 +10,7 @@ using Kassa.Shared;
 using Splat;
 
 namespace Kassa.DataAccess.HttpRepository;
-internal sealed class IngridientRepository : IRepository<Ingredient>
+internal sealed class IngridientRepository : IRepository<Ingredient>, IEnableLogger
 {
     public Task Add(Ingredient item) => throw new NotImplementedException();
     public Task Delete(Ingredient item) => throw new NotImplementedException();
@@ -27,6 +27,7 @@ internal sealed class IngridientRepository : IRepository<Ingredient>
 
     public Task Update(Ingredient item)
     {
+        this.Log().Error("Update method is not implemented");
 
         throw new DeveloperException("Логическая ошибка, обратитесь к Баястану");
 

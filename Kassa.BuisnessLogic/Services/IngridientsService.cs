@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
@@ -66,14 +67,15 @@ internal class IngridientsService(IRepository<Ingredient> repository) : BaseInit
         return dto;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public Task<bool> HasEnoughIngredients(IEnumerable<IngredientUsageDto> ingredientUsages, double count)
     {
         foreach (var usage in ingredientUsages)
         {
-            if (RuntimeIngridients.Lookup(usage.IngredientId).HasValue)
+            var lookupResult = RuntimeIngridients.Lookup(usage.IngredientId);
+            if (lookupResult.HasValue)
             {
-                var ingredientDto = RuntimeIngridients.Lookup(usage.IngredientId).Value;
-
+                var ingredientDto = lookupResult.Value;
                 if (ingredientDto.Count < usage.Count * count)
                 {
                     return Task.FromResult(false);
@@ -84,52 +86,45 @@ internal class IngridientsService(IRepository<Ingredient> repository) : BaseInit
                 return Task.FromResult(false);
             }
         }
-
         return Task.FromResult(true);
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public Task ReturnIngridients(IEnumerable<IngredientUsageDto> ingredientUsages, double count = 1)
     {
         foreach (var usage in ingredientUsages)
         {
-
-            if (RuntimeIngridients.Lookup(usage.IngredientId).HasValue)
+            var lookupResult = RuntimeIngridients.Lookup(usage.IngredientId);
+            if (lookupResult.HasValue)
             {
-
-                var ingredientDto = RuntimeIngridients.Lookup(usage.IngredientId).Value;
-
+                var ingredientDto = lookupResult.Value;
                 ingredientDto.Count += usage.Count * count;
-
                 RuntimeIngridients.AddOrUpdate(ingredientDto);
             }
             else
             {
-
-                throw new InvalidOperationException($"Ingridient with id {usage.IngredientId} not found");
+                throw new InvalidOperationException($"Ingredient with id {usage.IngredientId} not found");
             }
         }
 
         return Task.CompletedTask;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public Task SpendIngridients(IEnumerable<IngredientUsageDto> ingredientUsages, double count = 1)
     {
         foreach (var usage in ingredientUsages)
         {
-
-            if (RuntimeIngridients.Lookup(usage.IngredientId).HasValue)
+            var lookupResult = RuntimeIngridients.Lookup(usage.IngredientId);
+            if (lookupResult.HasValue)
             {
-
-                var ingredientDto = RuntimeIngridients.Lookup(usage.IngredientId).Value;
-
+                var ingredientDto = lookupResult.Value;
                 ingredientDto.Count -= usage.Count * count;
-
                 RuntimeIngridients.AddOrUpdate(ingredientDto);
             }
             else
             {
-
-                throw new InvalidOperationException($"Ingridient with id {usage.IngredientId} not found");
+                throw new InvalidOperationException($"Ingredient with id {usage.IngredientId} not found");
             }
         }
 

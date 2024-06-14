@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Subjects;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
@@ -483,6 +484,7 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
         return ValueTask.CompletedTask;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public async Task AddProductToShoppingList(Guid productId)
     {
         this.ThrowIfNotInitialized();

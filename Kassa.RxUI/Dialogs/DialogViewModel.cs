@@ -20,7 +20,7 @@ public abstract class DialogViewModel : BaseViewModel, IRoutableViewModel
         HostScreen = null!;
         _taskCompletionSource = new();
     
-        CloseCommand = ReactiveCommand.Create(Close, _onClose);
+        CloseCommand = ReactiveCommand.Create(SetCloseResult, _onClose);
     
         _onClose.OnNext(true);
     }
@@ -42,7 +42,7 @@ public abstract class DialogViewModel : BaseViewModel, IRoutableViewModel
     /// Do not call this method directly. Use <see cref="CloseAsync"/> instead.
     /// Or use <see cref="CloseCommand"/> if you want to close dialog from view.
     /// </summary>
-    protected virtual void Close()
+    protected virtual void SetCloseResult()
     {
         _taskCompletionSource.SetResult();
         _onClose.OnNext(false);

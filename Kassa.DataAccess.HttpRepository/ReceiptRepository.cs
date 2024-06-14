@@ -12,7 +12,7 @@ using Kassa.Shared;
 using Splat;
 
 namespace Kassa.DataAccess.HttpRepository;
-internal sealed class ReceiptRepository : IRepository<Receipt>
+internal sealed class ReceiptRepository : IRepository<Receipt>, IEnableLogger
 {
     private FrozenDictionary<Guid, Receipt>? _receipts;
 
@@ -46,5 +46,11 @@ internal sealed class ReceiptRepository : IRepository<Receipt>
 
         return receipts;
     }
-    public Task Update(Receipt item) => throw new NotImplementedException();
+
+    public Task Update(Receipt item)
+    {
+        this.Log().Error("Update method is not implemented");
+
+        return Task.CompletedTask;
+    }
 }
