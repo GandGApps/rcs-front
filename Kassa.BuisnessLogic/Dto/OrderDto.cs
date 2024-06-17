@@ -178,6 +178,11 @@ public class OrderDto : IModel
         get; set;
     }
 
+    public bool IsForHere
+    {
+        get; set;
+    }
+
     public Guid PaymentInfoId
     {
         get; set;

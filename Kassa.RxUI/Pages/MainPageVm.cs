@@ -134,6 +134,7 @@ public class MainPageVm : PageViewModel
             var cashierService = await Locator.GetInitializedService<ICashierService>();
             var order = await cashierService.CreateOrder(false);
             var additveService = await Locator.GetInitializedService<IAdditiveService>();
+            var productServise = await Locator.GetInitializedService<IProductService>();
 
             var shiftService = await Locator.GetInitializedService<IShiftService>();
 
@@ -144,7 +145,7 @@ public class MainPageVm : PageViewModel
 
             await cashierService.SelectCurrentOrder(order);
 
-            await MainViewModel.GoToPageCommand.Execute(new OrderEditPageVm(order, cashierService, additveService)).FirstAsync();
+            await MainViewModel.GoToPageCommand.Execute(new OrderEditPageVm(order, cashierService, additveService, productServise)).FirstAsync();
         });
 
         OpenCurrentOrderCommand = CreatePageBusyCommand(async () =>
@@ -154,6 +155,7 @@ public class MainPageVm : PageViewModel
             var cashierService = await Locator.GetInitializedService<ICashierService>();
             var additiveService = await Locator.GetInitializedService<IAdditiveService>();
             var order = cashierService.CurrentOrder;
+            var productServise = await Locator.GetInitializedService<IProductService>();
 
             var shiftService = await Locator.GetInitializedService<IShiftService>();
 
@@ -168,7 +170,7 @@ public class MainPageVm : PageViewModel
                 return;
             }
 
-            await MainViewModel.GoToPageCommand.Execute(new OrderEditPageVm(order, cashierService, additiveService)).FirstAsync();
+            await MainViewModel.GoToPageCommand.Execute(new OrderEditPageVm(order, cashierService, additiveService, productServise)).FirstAsync();
         });
     }
 

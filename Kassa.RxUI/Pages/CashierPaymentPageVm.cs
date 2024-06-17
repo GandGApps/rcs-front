@@ -170,8 +170,9 @@ public sealed class CashierPaymentPageVm : PageViewModel, IPaymentVm
             var cashierService = await Locator.GetInitializedService<ICashierService>(); 
             var order = await cashierService.CreateOrder(false);
             var additiveService = await Locator.GetInitializedService<IAdditiveService>();
+            var productService = await Locator.GetInitializedService<IProductService>();
 
-            await MainViewModel.GoToPageAndResetCommand.Execute(new OrderEditPageVm(order, cashierService, additiveService));
+            await MainViewModel.GoToPageAndResetCommand.Execute(new OrderEditPageVm(order, cashierService, additiveService, productService));
 
 
         }, this.WhenAnyValue(x => x.IsExactAmount));

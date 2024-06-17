@@ -45,6 +45,8 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
 
     private readonly AdapterBehaviorSubject<bool> _isStopList = new(false);
 
+    private readonly AdapterBehaviorSubject<bool> _isForHere = new(true);
+
     private OrderDto? _order;
 
     private readonly List<ICategoryDto> _categoriesStack = [];
@@ -82,6 +84,7 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
     public IObservableOnlyBehaviourSubject<bool> ShowPrice => _showPrice;
     public IObservableOnlyBehaviourSubject<double> Discount => _discount;
     public IObservableOnlyBehaviourSubject<bool> IsStopList => _isStopList;
+    public IObservableOnlyBehaviourSubject<bool> IsForHere => _isForHere;
 
     public IApplicationModelManager<ProductShoppingListItemDto> ShoppingListItems
     {
@@ -983,6 +986,7 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
         order.TotalSum = order.Products.Sum(x => x.TotalPrice);
         order.SubtotalSum = order.Products.Sum(x => x.SubTotalPrice);
         order.Discount = Discount.Value;
+        order.IsForHere = IsForHere.Value;
 
         return order;
     }

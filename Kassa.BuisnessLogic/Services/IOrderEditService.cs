@@ -50,6 +50,11 @@ public interface IOrderEditService : IInitializableService
         get;
     }
 
+    public IObservableOnlyBehaviourSubject<bool> IsForHere
+    {
+        get;
+    }
+
     public Guid OrderId
     {
         get;

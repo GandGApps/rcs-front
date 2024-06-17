@@ -153,6 +153,10 @@ internal sealed class OrderEditService(
     {
         get;
     }
+    public IObservableOnlyBehaviourSubject<bool> IsForHere
+    {
+        get;
+    }
 
     public event PropertyChangedEventHandler? PropertyChanged;
 

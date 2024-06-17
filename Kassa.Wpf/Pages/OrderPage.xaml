@@ -498,7 +498,10 @@
                                 <Path Data="{StaticResource NumberKeyboardIcon}" Style="{StaticResource ButtonContent}" />
                             </Button>
 
-                            <Button Grid.Column="4" Style="{DynamicResource ShoppingListButton}">
+                            <Button
+                                x:Name="PortionButton"
+                                Grid.Column="4"
+                                Style="{DynamicResource ShoppingListButton}">
                                 <Path Data="{StaticResource DicountIcon}" Style="{StaticResource ButtonContent}" />
                             </Button>
 

@@ -160,6 +160,11 @@ public class Order : IModel
         get; set;
     }
 
+    public bool IsForHere
+    {
+        get; set;
+    }
+
     public PaymentInfo? PaymentInfo
     {
         get; set;

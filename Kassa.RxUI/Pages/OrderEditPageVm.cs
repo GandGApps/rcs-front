@@ -28,11 +28,12 @@ public sealed class OrderEditPageVm : PageViewModel, IOrderEditVm
     private readonly IAdditiveService _additiveService;
     private readonly IProductService _productService;
 
-    public OrderEditPageVm(IOrderEditService orderEditService, ICashierService cashierService, IAdditiveService additiveService)
+    public OrderEditPageVm(IOrderEditService orderEditService, ICashierService cashierService, IAdditiveService additiveService, IProductService productService)
     {
         _orderEditService = orderEditService;
         _cashierService = cashierService;
         _additiveService = additiveService;
+        _productService = productService;
 
         CreateTotalCommentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -185,7 +186,8 @@ public sealed class OrderEditPageVm : PageViewModel, IOrderEditVm
             await dialog.WaitDialogClose();
         });
 
-        GoToAllOrdersCommand = ReactiveCommand.CreateFromTask(() => {
+        GoToAllOrdersCommand = ReactiveCommand.CreateFromTask(() =>
+        {
             return Task.CompletedTask;
         });
 
@@ -199,6 +201,22 @@ public sealed class OrderEditPageVm : PageViewModel, IOrderEditVm
         ForHereOrToGoCommand = ReactiveCommand.Create(() =>
         {
             IsForHere = !IsForHere;
+        });
+
+        OpenPortionDialogCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var firstSelected = ShoppingListItems?.FirstOrDefault(x => x.IsSelected);
+
+            if (firstSelected == null)
+            {
+                return;
+            }
+
+            var dialog = new PortionDialogVm(orderEditService, firstSelected);
+
+            await MainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
+
+            await dialog.WaitDialogClose();
         });
 
         ShoppingList = new(_orderEditService);
@@ -218,11 +236,11 @@ public sealed class OrderEditPageVm : PageViewModel, IOrderEditVm
         {
             if (x is ProductDto productDto)
             {
-                return new ProductViewModel(_orderEditService, productService,productDto);
+                return new ProductViewModel(_orderEditService, productService, productDto);
             }
-            else 
+            else
             {
-                 return new CategoryViewModel(categoryService.RuntimeCategories, (CategoryDto)x);
+                return new CategoryViewModel(categoryService.RuntimeCategories, (CategoryDto)x);
             }
         }, out var categoryItems)
                        .DisposeWith(disposables);
@@ -363,6 +381,11 @@ public sealed class OrderEditPageVm : PageViewModel, IOrderEditVm
     }
 
     public ReactiveCommand<Unit, Unit> ForHereOrToGoCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> OpenPortionDialogCommand
     {
         get;
     }
