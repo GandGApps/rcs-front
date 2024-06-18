@@ -1,6 +1,6 @@
 # Касса
 
-[![ci-cd](https://github.com/GandGApps/rcs-front/actions/workflows/ci-cd.yml/badge.svg?)](https://github.com/GandGApps/rcs-front/actions/workflows/ci-cd.yml/badge.svg?)
+[![ci-cd](https://github.com/GandGApps/rcs-front/actions/workflows/ci-cd.yml/badge.svg?event=push&branch=main)](https://github.com/GandGApps/rcs-front/actions/workflows/ci-cd.yml/badge.svg?)
 
 ## Задачи 
 
