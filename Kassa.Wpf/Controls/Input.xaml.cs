@@ -245,9 +245,11 @@ public partial class Input : UserControl, ICommandSource
     /// </summary>
     private static bool IsValidType(Type type)
     {
+#pragma warning disable CS0618 // Type or member is obsolete
         return type.GetInterfaces().Contains(typeof(ICustomInputDialogVm)) &&
                type.GetConstructor(Type.EmptyTypes) != null &&
                type.BaseType == typeof(DialogViewModel);
+#pragma warning restore CS0618 // Type or member is obsolete
     }
 
     private static DialogViewModel? GetCustomDialog(Type type)

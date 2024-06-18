@@ -36,9 +36,8 @@
                 Margin="{mx:AdaptiveSize Thickness='0,15,0,15'}"
                 Foreground="{DynamicResource AccentBrush2}"
                 Style="{StaticResource ExtraLarge}"
-                TextAlignment="Center">
-                <Run x:Name="ProductName" /> <Run x:Name="QuantityVolumeProduct" />
-            </TextBlock>
+                Text="Укажите на сколько частей делить блюдо"
+                TextAlignment="Center" />
 
             <Border
                 Grid.Row="2"
@@ -76,7 +75,7 @@
 
                         <Style TargetType="RadioButton">
 
-                            <Setter Property="FontSize" Value="{mx:AdaptiveSize 12}" />
+                            <Setter Property="FontSize" Value="{mx:AdaptiveSize 13}" />
                             <Setter Property="FontWeight" Value="SemiBold" />
                             <Setter Property="FontFamily" Value="{StaticResource Montseratt}" />
                             <Setter Property="HorizontalContentAlignment" Value="Center" />

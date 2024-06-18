@@ -98,13 +98,17 @@ public class DesignerAddictiveViewModel
 {
 
     [Reactive]
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     public string Name
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     {
         get; set;
     }
 
     [Reactive]
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     public string СurrencySymbol
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     {
         get; set;
     }
@@ -128,7 +132,9 @@ public class DesignerAddictiveViewModel
     }
 
     [Reactive]
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     public string Measure
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     {
         get; set;
     }
@@ -141,7 +147,9 @@ public class DesignerAddictiveViewModel
     }
 
     [Reactive]
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     public ReactiveCommand<Unit, Unit> AddToShoppingListCommand
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     {
         get; set;
     }

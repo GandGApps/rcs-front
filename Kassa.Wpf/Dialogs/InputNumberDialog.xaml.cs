@@ -45,7 +45,9 @@ public partial class InputNumberDialog : ClosableDialog<InputNumberDialogViewMod
             var clearKey = new KeyInfo { IsClear = true };
             var backspace = new KeyInfo { IsBackspace = true };
 
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
             clearKey.Command = ViewModel.ClearCommand;
+#pragma warning restore CS8602 // Dereference of a possibly null reference.
             backspace.Command = ViewModel.BackspaceCommand;
 
             var keyboard = KeyboardInfo.Numpad(backspace, clearKey);

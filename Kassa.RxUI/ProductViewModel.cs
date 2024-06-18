@@ -22,7 +22,9 @@ using Splat;
 namespace Kassa.RxUI;
 public sealed class ProductViewModel : ProductHostItemVm, IApplicationModelPresenter<ProductDto>
 {
-    public static readonly ReactiveCommand<ProductViewModel, Unit> AddToShoppingListCommand = ReactiveCommand.CreateFromTask<ProductViewModel>( async product =>
+    public static readonly ReactiveCommand<ProductViewModel, Unit> AddToShoppingListCommand = ReactiveCommand.CreateFromTask<ProductViewModel>(AddToShoppingList);
+
+    private static async Task AddToShoppingList(ProductViewModel product)
     {
         var productDto = product._product;
         var isStopList = product._orderEditService.IsStopList.Value;
@@ -45,7 +47,7 @@ public sealed class ProductViewModel : ProductHostItemVm, IApplicationModelPrese
             return;
         }
         await product._orderEditService.AddProductToShoppingList(product.Id);
-    });
+    }
 
     private ProductDto _product;
 
