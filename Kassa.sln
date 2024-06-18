@@ -17,9 +17,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kassa.Tests", "Kassa.Tests\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kassa.Shared", "Kassa.Shared\Kassa.Shared.csproj", "{8065EA1B-FB9D-4FA8-BC6B-ECD762BD5BC6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kassa.DataAccess.HttpRepository", "Kassa.DataAccess.HttpRepository\Kassa.DataAccess.HttpRepository.csproj", "{B576E22F-B41C-4A67-9765-7E4E16106753}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kassa.DataAccess.HttpRepository", "Kassa.DataAccess.HttpRepository\Kassa.DataAccess.HttpRepository.csproj", "{B576E22F-B41C-4A67-9765-7E4E16106753}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kassa.BuisnessLogic.Edgar", "Kassa.BuisnessLogic.Edgar\Kassa.BuisnessLogic.Edgar.csproj", "{3EF2006E-C614-4427-ADD7-0390E5CD2D06}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kassa.BuisnessLogic.Edgar", "Kassa.BuisnessLogic.Edgar\Kassa.BuisnessLogic.Edgar.csproj", "{3EF2006E-C614-4427-ADD7-0390E5CD2D06}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{959396B9-D7C1-41EE-846B-60FF5EF3CD68}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\ci-cd.yml = .github\workflows\ci-cd.yml
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
