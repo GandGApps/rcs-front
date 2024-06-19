@@ -68,6 +68,7 @@ public interface IOrderEditService : IInitializableService
     public void SetMultiSelect(bool isMultiSelect);
     public void SetShowPrice(bool showPrice);
     public void SetIsStopList(bool isStopList);
+    public void SetIsForHere(bool isForHere);
 
     /// <summary>
     /// Bind the current category to ObservableCollection, that will be updated when the category changes.

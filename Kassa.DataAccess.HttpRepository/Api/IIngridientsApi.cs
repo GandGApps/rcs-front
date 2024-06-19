@@ -8,7 +8,7 @@ using Kassa.Shared.DelegatingHandlers;
 using Refit;
 
 namespace Kassa.DataAccess.HttpRepository.Api;
-internal interface IIngridientsApi: IUseMemberToken
+internal interface IIngridientsApi : IUseMemberToken
 {
     [Get("/ingridients/ingridients")]
     public Task<IEnumerable<IngredientResponse>> GetIngridients();
@@ -91,5 +91,11 @@ internal sealed record IngredientResponse
         get; init;
     }
 
-    
+
+    [JsonPropertyName("sellRemainder")]
+    public bool IsSellRemainder
+    {
+        get; init;
+    }
+
 }

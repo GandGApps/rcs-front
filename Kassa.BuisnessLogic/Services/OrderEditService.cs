@@ -1082,4 +1082,5 @@ internal sealed class OrderEditService(
     public void SetMultiSelect(bool isMultiSelect) => throw new NotImplementedException();
     public void SetShowPrice(bool showPrice) => throw new NotImplementedException();
     public void SetIsStopList(bool isStopList) => throw new NotImplementedException();
+    public void SetIsForHere(bool isForHere) => throw new NotImplementedException();
 }

@@ -1006,6 +1006,11 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
         _isStopList.OnNext(isStopList);
     }
 
+    public void SetIsForHere(bool isForHere)
+    {
+        _isForHere.OnNext(isForHere);
+    }
+
     private async ValueTask<OrderDto> CreateOrGetOrder()
     {
         if (_order != null)

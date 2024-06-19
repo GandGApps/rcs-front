@@ -378,6 +378,12 @@ internal sealed record OrderEdgarModel
         get; init;
     }
 
+    [JsonPropertyName("IsForHere")]
+    public bool IsForHere
+    {
+        get; init;
+    }
+
     [JsonPropertyName("payInfCash")]
     public double PayInfCash
     {

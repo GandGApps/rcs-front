@@ -22,66 +22,30 @@ public sealed class PortionDialogVm : DialogViewModel
         _orderEditService = orderEditService;
         _productShoppingListItemVm = productShoppingListItemVm;
 
-        CountOfServing = productShoppingListItemVm.Count;
-        ServingDivider = 1;
-        TotalServing = productShoppingListItemVm.Count;
+        IntoSeveralEqualParts = new IntoSeveralEqualPartsVm(orderEditService, productShoppingListItemVm);
+        IntoTwoUnequalParts = new IntoTwoUnequalPartsVm(orderEditService, productShoppingListItemVm);
 
-        SetDividerCommand = ReactiveCommand.Create<double>(x =>
-        {
-            ServingDivider = x;
-        });
-
-        ApplyCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            var positionCount = CountOfServing ; // Нужно узнать количество продукта в позиции
-            var totalPositions = ServingDivider; // Нужно узнать количество позиций в заказе
-
-            var source = productShoppingListItemVm.Source;
-
-            var dif = source.Count - positionCount;
-
-            if (dif > 0)
-            {
-                await _orderEditService.DecreaseProductShoppingListItem(source, Math.Abs(positionCount));
-            }
-            else if (dif < 0)
-            {
-                await _orderEditService.IncreaseProductShoppingListItem(source, Math.Abs(positionCount));
-            }
-
-            for (var i = 0; i < totalPositions - 1; i++)
-            {
-                var dto = new OrderedProductDto()
-                {
-                    Id = Guid.NewGuid(),
-                    ProductId = source.ItemId,
-                    Count = positionCount,
-                    Price = source.Price,
-                    Discount = source.Discount,
-                };
-
-                await _orderEditService.AddProductToShoppingList(dto);
-            }
-
-            CloseCommand.Execute().Subscribe();
-        });
     }
 
-
-    [Reactive]
-    public double CountOfServing
+    public IntoSeveralEqualPartsVm IntoSeveralEqualParts
     {
-        get; set;
+        get;
     }
 
-    [Reactive]
-    public double ServingDivider
+    public IntoTwoUnequalPartsVm IntoTwoUnequalParts
     {
-        get; set;
+
+        get;
+    }
+
+    public extern MethodOfDivisionVm CurrentMethodOfDivision
+    {
+        [ObservableAsProperty]
+        get;
     }
 
     [Reactive]
-    public double TotalServing
+    public bool IsIntoSeveralEqualParts
     {
         get; set;
     }
@@ -96,21 +60,102 @@ public sealed class PortionDialogVm : DialogViewModel
         get;
     }
 
-    protected override void Initialize(CompositeDisposable disposables)
+    public abstract class MethodOfDivisionVm : ReactiveObject, IDisposable
     {
-        // CountOfServing / ServingDivider = TotalServing
-        // Когда CountOfServing или ServingDivider меняются, обновляем TotalServing
-        this.WhenAnyValue(x => x.CountOfServing, x => x.ServingDivider)
-            .Where(x => x.Item2 != 0) // Избегаем деления на ноль
-            .Select(x => x.Item1 * x.Item2)
-            .BindTo(this, x => x.TotalServing)
-            .DisposeWith(disposables);
+        protected readonly CompositeDisposable _disposables = [];
+        private readonly IOrderEditService _orderEditService;
+        private readonly ProductShoppingListItemViewModel _productShoppingListItemVm;
 
-        // Когда TotalServing меняется, обновляем ServingDivider
-        this.WhenAnyValue(x => x.TotalServing, x => x.CountOfServing)
-            .Where(x => x.Item2 != 0) // Избегаем деления на ноль
-            .Select(x => x.Item1 / x.Item2)
-            .BindTo(this, x => x.ServingDivider)
-            .DisposeWith(disposables);
+        public MethodOfDivisionVm(IOrderEditService orderEditService, ProductShoppingListItemViewModel productShoppingListItemVm)
+        {
+            _orderEditService = orderEditService;
+            _productShoppingListItemVm = productShoppingListItemVm;
+        }
+
+        [Reactive]
+        public double TotalServing
+        {
+            get; set;
+        }
+
+        public abstract ReactiveCommand<Unit, Unit> ApplyCommand
+        {
+            get;
+        }
+
+        public void Dispose() => _disposables.Dispose();
+    }
+
+    /// <summary>
+    /// CountOfServing / ServingDivider = TotalServing
+    /// </summary>
+    public sealed class IntoSeveralEqualPartsVm : MethodOfDivisionVm
+    {
+        [Reactive]
+        public double CountOfServing
+        {
+            get; set;
+        }
+
+        [Reactive]
+        public double ServingDivider
+        {
+            get; set;
+        }
+
+        public override ReactiveCommand<Unit, Unit> ApplyCommand
+        {
+            get;
+        }
+
+        public IntoSeveralEqualPartsVm(IOrderEditService orderEditService, ProductShoppingListItemViewModel productShoppingListItemVm) : base(orderEditService, productShoppingListItemVm)
+        {
+            // CountOfServing / ServingDivider = TotalServing
+            // Когда CountOfServing или ServingDivider меняются, обновляем TotalServing
+            this.WhenAnyValue(x => x.CountOfServing, x => x.ServingDivider)
+                .Where(x => x.Item2 != 0) // Избегаем деления на ноль
+                .Select(x => x.Item1 * x.Item2)
+                .BindTo(this, x => x.TotalServing)
+                .DisposeWith(_disposables);
+
+            // Когда TotalServing меняется, обновляем ServingDivider
+            this.WhenAnyValue(x => x.TotalServing, x => x.CountOfServing)
+                .Where(x => x.Item2 != 0) // Избегаем деления на ноль
+                .Select(x => x.Item1 / x.Item2)
+                .BindTo(this, x => x.ServingDivider)
+                .DisposeWith(_disposables);
+
+            ApplyCommand = ReactiveCommand.CreateFromTask(async () =>
+            {
+                Observable.Return(42).InvokeCommand(ApplyCommand);
+            });
+        }
+
+
+    }
+
+    public sealed class IntoTwoUnequalPartsVm : MethodOfDivisionVm
+    {
+        [Reactive]
+        public double FirstPart
+        {
+            get; set;
+        }
+
+        [Reactive]
+        public double SecondPart
+        {
+            get; set;
+        }
+
+        public override ReactiveCommand<Unit, Unit> ApplyCommand
+        {
+            get;
+        }
+
+        public IntoTwoUnequalPartsVm(IOrderEditService orderEditService, ProductShoppingListItemViewModel productShoppingListItemVm) : base(orderEditService, productShoppingListItemVm)
+        {
+
+        }
     }
 }

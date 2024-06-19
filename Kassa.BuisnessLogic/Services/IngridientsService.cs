@@ -76,6 +76,12 @@ internal class IngridientsService(IRepository<Ingredient> repository) : BaseInit
             if (lookupResult.HasValue)
             {
                 var ingredientDto = lookupResult.Value;
+
+                if (ingredientDto.IsSellRemainder)
+                {
+                    continue;
+                }
+
                 if (ingredientDto.Count < usage.Count * count)
                 {
                     return Task.FromResult(false);

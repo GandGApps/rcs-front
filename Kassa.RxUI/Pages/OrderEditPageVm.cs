@@ -201,6 +201,7 @@ public sealed class OrderEditPageVm : PageViewModel, IOrderEditVm
         ForHereOrToGoCommand = ReactiveCommand.Create(() =>
         {
             IsForHere = !IsForHere;
+            _orderEditService.SetIsForHere(IsForHere);
         });
 
         OpenPortionDialogCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -289,6 +290,13 @@ public sealed class OrderEditPageVm : PageViewModel, IOrderEditVm
                          .Select(x => x.Sum(x => x.SubtotalSum))
                          .Subscribe(x => ShoppingList.Subtotal = x)
                          .DisposeWith(disposables);
+
+        _orderEditService.IsForHere
+            .Subscribe(x =>
+            {
+                IsForHere = x;
+            })
+            .DisposeWith(disposables);
     }
 
     public ShoppingListViewModel ShoppingList

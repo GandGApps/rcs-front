@@ -8,6 +8,9 @@ using Kassa.DataAccess.Model;
 
 namespace Kassa.DataAccess.HttpRepository.Api;
 
+/// <summary>
+/// Очень многое пришлось писать вручную, так как модели не унифицированы(а точнее сам нейминг)
+/// </summary>
 [Mapper]
 internal static partial class ApiMapper
 {
@@ -47,6 +50,7 @@ internal static partial class ApiMapper
             MiddleName = edgarModel.MiddleName,
             IsOutOfTurn = edgarModel.IsOutOfTurn,
             IsProblematicDelivery = edgarModel.IsProblematicDelivery,
+            IsForHere = edgarModel.IsForHere,
             PaymentInfo = new PaymentInfo
             {
                 Cash = edgarModel.PayInfCash,
@@ -135,6 +139,7 @@ internal static partial class ApiMapper
             House = order.House,
             Building = order.Building,
             Entrance = order.Entrance,
+            IsForHere = order.IsForHere,
             Floor = order.Floor,
             Apartment = order.Apartment,
             Intercom = order.Intercom,
@@ -229,7 +234,8 @@ internal static partial class ApiMapper
             Price = dishRequest.FullPrice,
             CategoryId = dishRequest.ParentGroupId,
             Image = dishRequest.Image ?? -1,
-            Color = dishRequest.Color!
+            Color = dishRequest.Color!,
+            ReceiptId = dishRequest.TechCardId ?? Guid.Empty
         };
 
         return product;
@@ -286,7 +292,8 @@ internal static partial class ApiMapper
             Id = ingredientResponse.IngredientsId,
             Name = ingredientResponse.Title,
             Count = ingredientResponse.Left,
-            Measure = ingredientResponse.PackagingUnit
+            Measure = ingredientResponse.PackagingUnit,
+            IsSellRemainder = ingredientResponse.IsSellRemainder
         };
     }
 
@@ -416,11 +423,11 @@ internal static partial class ApiMapper
             CurrencySymbol = string.Empty, // Placeholder, update as needed
             Price = edgarModel.ModificatorValue, // Assuming modificator_value corresponds to price
             Measure = string.Empty, // Placeholder, update as needed
-            ProductIds = edgarModel.Dishes.Select(x => x.DishId).ToArray(),
+            ProductIds = edgarModel.Dishes is null ? [] : edgarModel.Dishes.Select(x => x.DishId).ToArray(),
             Portion = 0, // Placeholder, update as needed
             IsAvailable = true, // Default value
             IsEnoughIngredients = true, // Default value
-            ReceiptId = edgarModel.TechcardId
+            ReceiptId = edgarModel.TechcardId ?? Guid.Empty,
         };
     }
 

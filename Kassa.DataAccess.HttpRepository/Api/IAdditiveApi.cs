@@ -71,13 +71,13 @@ internal sealed record AdditiveEdgarModel
     }
 
     [JsonPropertyName("dishes")]
-    public AdditiveToDishFk[] Dishes
+    public AdditiveToDishFk[]? Dishes
     {
         get; init;
     } = [];
 
     [JsonPropertyName("techcard_id")]
-    public Guid TechcardId
+    public Guid? TechcardId
     {
         get; init;
     }

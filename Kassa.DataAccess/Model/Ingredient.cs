@@ -24,4 +24,9 @@ public class Ingredient : IModel
     {
         get; set;
     }
+
+    public bool IsSellRemainder
+    {
+        get; set;
+    }
 }

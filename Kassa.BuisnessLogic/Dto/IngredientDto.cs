@@ -21,4 +21,9 @@ public class IngredientDto
     {
         get; set;
     }
+
+    public bool IsSellRemainder
+    {
+        get; set;
+    }
 }
