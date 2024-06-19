@@ -22,9 +22,19 @@ public sealed class PortionDialogVm : DialogViewModel
         _orderEditService = orderEditService;
         _productShoppingListItemVm = productShoppingListItemVm;
 
-        IntoSeveralEqualParts = new IntoSeveralEqualPartsVm(orderEditService, productShoppingListItemVm);
-        IntoTwoUnequalParts = new IntoTwoUnequalPartsVm(orderEditService, productShoppingListItemVm);
+        IntoSeveralEqualParts = new IntoSeveralEqualPartsVm(orderEditService, productShoppingListItemVm).DisposeWith(InternalDisposables);
+        IntoTwoUnequalParts = new IntoTwoUnequalPartsVm(orderEditService, productShoppingListItemVm).DisposeWith(InternalDisposables);
 
+
+        this.WhenAnyValue(x => x.IsIntoSeveralEqualParts)
+            .Select<bool, MethodOfDivisionVm>(x => x ? IntoSeveralEqualParts : IntoTwoUnequalParts)
+            .ToPropertyEx(this, x => x.CurrentMethodOfDivision)
+            .DisposeWith(InternalDisposables);
+
+        IntoSeveralEqualParts.ApplyCommand.Subscribe(_ => CloseCommand.Execute().Subscribe());
+        IntoTwoUnequalParts.ApplyCommand.Subscribe(_ => CloseCommand.Execute().Subscribe());
+
+        IsIntoSeveralEqualParts = true;
     }
 
     public IntoSeveralEqualPartsVm IntoSeveralEqualParts
@@ -34,7 +44,6 @@ public sealed class PortionDialogVm : DialogViewModel
 
     public IntoTwoUnequalPartsVm IntoTwoUnequalParts
     {
-
         get;
     }
 
@@ -50,21 +59,11 @@ public sealed class PortionDialogVm : DialogViewModel
         get; set;
     }
 
-    public ReactiveCommand<double, Unit> SetDividerCommand
-    {
-        get;
-    }
-
-    public ReactiveCommand<Unit, Unit> ApplyCommand
-    {
-        get;
-    }
-
     public abstract class MethodOfDivisionVm : ReactiveObject, IDisposable
     {
         protected readonly CompositeDisposable _disposables = [];
-        private readonly IOrderEditService _orderEditService;
-        private readonly ProductShoppingListItemViewModel _productShoppingListItemVm;
+        protected readonly IOrderEditService _orderEditService;
+        protected readonly ProductShoppingListItemViewModel _productShoppingListItemVm;
 
         public MethodOfDivisionVm(IOrderEditService orderEditService, ProductShoppingListItemViewModel productShoppingListItemVm)
         {
@@ -127,8 +126,36 @@ public sealed class PortionDialogVm : DialogViewModel
 
             ApplyCommand = ReactiveCommand.CreateFromTask(async () =>
             {
-                Observable.Return(42).InvokeCommand(ApplyCommand);
-            });
+                var positionCount = CountOfServing; // Нужно узнать количество продукта в позиции
+                var totalPositions = ServingDivider; // Нужно узнать количество позиций в заказе
+
+                var source = productShoppingListItemVm.Source;
+
+                var dif = source.Count - positionCount;
+
+                if (dif > 0)
+                {
+                    await _orderEditService.DecreaseProductShoppingListItem(source, Math.Abs(positionCount));
+                }
+                else if (dif < 0)
+                {
+                    await _orderEditService.IncreaseProductShoppingListItem(source, Math.Abs(positionCount));
+                }
+
+                for (var i = 0; i < totalPositions - 1; i++)
+                {
+                    var dto = new OrderedProductDto()
+                    {
+                        Id = Guid.NewGuid(),
+                        ProductId = source.ItemId,
+                        Count = positionCount,
+                        Price = source.Price,
+                        Discount = source.Discount,
+                    };
+
+                    await _orderEditService.AddProductToShoppingList(dto);
+                }
+            }).DisposeWith(_disposables);
         }
 
 
@@ -155,7 +182,41 @@ public sealed class PortionDialogVm : DialogViewModel
 
         public IntoTwoUnequalPartsVm(IOrderEditService orderEditService, ProductShoppingListItemViewModel productShoppingListItemVm) : base(orderEditService, productShoppingListItemVm)
         {
+            // FirstPart + SecondPart = TotalServing
 
+            this.WhenAnyValue(x => x.FirstPart, x => x.SecondPart)
+                .Select(x => x.Item1 + x.Item2)
+                .BindTo(this, x => x.TotalServing)
+                .DisposeWith(_disposables);
+
+            ApplyCommand = ReactiveCommand.CreateFromTask(async () =>
+            {
+                var source = productShoppingListItemVm.Source;
+
+                var dif = source.Count - FirstPart;
+
+                if (dif > 0)
+                {
+
+                    await _orderEditService.DecreaseProductShoppingListItem(source, Math.Abs(FirstPart));
+                }
+                else if (dif < 0)
+                {
+
+                    await _orderEditService.IncreaseProductShoppingListItem(source, Math.Abs(FirstPart));
+                }
+
+                var dto = new OrderedProductDto()
+                {
+                    Id = Guid.NewGuid(),
+                    ProductId = source.ItemId,
+                    Count = SecondPart,
+                    Price = source.Price,
+                    Discount = source.Discount,
+                };
+
+                await _orderEditService.AddProductToShoppingList(dto);
+            });
         }
     }
 }

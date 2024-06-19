@@ -15,6 +15,9 @@ using Splat;
 namespace Kassa.RxUI;
 public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable, IInitializableViewModel, IAsyncDisposable
 {
+    /// <summary>
+    /// A composite disposable that stores all disposables that should be disposed when the view model is disposed.
+    /// </summary>
     protected CompositeDisposable InternalDisposables
     {
         get;
