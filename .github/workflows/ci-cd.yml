@@ -39,6 +39,13 @@ jobs:
     - name: Publish project
       run: dotnet publish --configuration Release --output ./output ./Kassa.Wpf/Kassa.Wpf.csproj
 
+    - name: Build Setup Project
+      run: |
+        choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.Windows10SDK.18362 --includeRecommended --quiet --wait"
+        "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe" ./Kassa.Wpf.Setup/Kassa.Wpf.Setup.vdproj /p:Configuration=Release
+        mkdir -p setup_output
+        Copy-Item -Path "./Kassa.Wpf.Setup/bin/Release/*" -Destination "./setup_output" -Recurse
+
     - name: Commit and Push binaries
       env:
         GITHUB_TOKEN: ${{ secrets.KASSA_TOKEN }}
@@ -53,4 +60,20 @@ jobs:
         git add .
         git commit -m "Add published binaries"
         git push -u origin bin --force
+      shell: pwsh
+
+    - name: Commit and Push setup binaries
+      env:
+        GITHUB_TOKEN: ${{ secrets.KASSA_TOKEN }}
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git fetch origin
+        git checkout -b setup origin/setup || git checkout -b setup
+        git rm -rf .
+        Copy-Item -Path ./setup_output/* -Destination . -Recurse
+        Remove-Item -Recurse -Force -Path ./setup_output
+        git add .
+        git commit -m "Add setup binaries"
+        git push -u origin setup --force
       shell: pwsh
