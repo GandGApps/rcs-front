@@ -42,9 +42,10 @@ jobs:
     - name: Build Setup Project
       run: |
         choco install visualstudio2019buildtools --package-parameters "--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --add Microsoft.VisualStudio.Component.Windows10SDK.18362 --includeRecommended --quiet --wait"
-        "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe" ./Kassa.Wpf.Setup/Kassa.Wpf.Setup.vdproj /p:Configuration=Release
-        mkdir -p setup_output
+        & "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\MSBuild\Current\Bin\MSBuild.exe" "./Kassa.Wpf.Setup/Kassa.Wpf.Setup.vdproj" /p:Configuration=Release
+        mkdir setup_output
         Copy-Item -Path "./Kassa.Wpf.Setup/bin/Release/*" -Destination "./setup_output" -Recurse
+
 
     - name: Commit and Push binaries
       env:
