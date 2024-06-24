@@ -8,6 +8,7 @@
     <UseWPF>true</UseWPF>
     <Platforms>AnyCPU;x64;x86</Platforms>
     <Configurations>Debug;Release;OptimizedSmallWindow;SmallWindow</Configurations>
+    <ApplicationIcon>Logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='OptimizedSmallWindow' Or '$(Configuration)'=='SmallWindow'">
@@ -45,6 +46,10 @@
     <None Remove="Assets\auto.png" />
     <None Remove="Assets\loading.gif" />
     <None Remove="Shaders\grayshader.ps" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Logo.ico" />
   </ItemGroup>
 
   <ItemGroup>

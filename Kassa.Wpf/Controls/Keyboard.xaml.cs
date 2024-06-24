@@ -50,6 +50,13 @@ public partial class Keyboard : UserControl, IActivatableView
         new PropertyMetadata(null)
     );
 
+    public static readonly DependencyProperty TextBoxesProperty = DependencyProperty.Register(
+        nameof(TextBoxes),
+        typeof(IEnumerable<TextBox>),
+        typeof(Keyboard),
+        new PropertyMetadata(Enumerable.Empty<TextBox>())
+    );
+
     public TextBox? TextBox
     {
         get => (TextBox?)GetValue(TextBoxProperty);
@@ -72,6 +79,12 @@ public partial class Keyboard : UserControl, IActivatableView
     {
         get => (KeyboardInfo)GetValue(KeyboardInfoProperty);
         set => SetValue(KeyboardInfoProperty, value);
+    }
+
+    public IEnumerable<TextBox> TextBoxes
+    {
+        get => (IEnumerable<TextBox>)GetValue(TextBoxesProperty);
+        set => SetValue(TextBoxesProperty, value);
     }
 
     private int CaretIndex
@@ -122,6 +135,10 @@ public partial class Keyboard : UserControl, IActivatableView
     }
 
     private static readonly KeySizeToGridWidthConverter _keySizeToWidthConverter = new();
+
+    private int _textBoxesCount;
+    private CompositeDisposable? _isFocusedEventDisposables;
+    private CompositeDisposable? _currentTextBox;
 
     public Keyboard()
     {
@@ -344,6 +361,71 @@ public partial class Keyboard : UserControl, IActivatableView
                     }
                 })
                 .DisposeWith(disposables);
+
+            this.WhenAnyValue(x => x.TextBoxes)
+                .Subscribe(x =>
+                {
+                    _isFocusedEventDisposables?.Dispose();
+                    _isFocusedEventDisposables = [];
+
+                    _textBoxesCount = x.Count();
+
+                    foreach (var textBox in x)
+                    {
+                        textBox.WhenAnyValue(x => x.IsFocused)
+                            .Where(x => x)
+                            .Subscribe(x =>
+                            {
+                                TextBox = textBox;
+                            })
+                            .DisposeWith(_isFocusedEventDisposables);
+                    }
+
+                })
+                .DisposeWith(disposables);
+
+            this.WhenAnyValue(x => x.TextBox)
+                .Subscribe(textBox =>
+                {
+                    _currentTextBox?.Dispose();
+
+                    if (textBox is null)
+                    {
+                        return;
+                    }
+
+                    Text = textBox.Text;
+
+                    // Two way binding
+
+                    // Text -> TextBox
+                    var disposable1 = this.WhenAnyValue(x => x.Text)
+                        .Subscribe(x =>
+                        {
+                            x ??= string.Empty;
+
+                            if (x != textBox.Text)
+                            {
+                                textBox.Text = x;
+                            }
+                        });
+
+                    // TextBox -> Text
+                    var disposable2 = textBox.WhenAnyValue(x => x.Text)
+                        .Subscribe(x =>
+                        {
+                            x ??= string.Empty;
+
+                            if (x != Text)
+                            {
+                                Text = x;
+                            }
+                        });
+
+                    _currentTextBox = new CompositeDisposable(disposable1, disposable2);
+
+                })
+                .DisposeWith(disposables);
         });
     }
 
@@ -373,7 +455,7 @@ public partial class Keyboard : UserControl, IActivatableView
         {
             var tmp = SelectionStart;
             Text = Text.ReplaceAt(SelectionStart, SelectionLength, character.ToString());
-            CaretIndex = tmp+1;
+            CaretIndex = tmp + 1;
 
             return;
         }

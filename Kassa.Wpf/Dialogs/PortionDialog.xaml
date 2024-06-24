@@ -58,11 +58,9 @@
                 </Grid.RowDefinitions>
 
 
-                <TextBlock
-                    x:Name="QuantityVolume"
-                    FontSize="{mx:AdaptiveSize 72}"
-                    FontWeight="Medium"
-                    TextAlignment="Center" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBox />
+                </StackPanel>
 
                 <controls:Keyboard
                     x:Name="Numpad"
@@ -130,7 +128,7 @@
 
                     </StackPanel.Resources>
 
-                    <RadioButton Content="На несколько равн. частей" />
+                    <RadioButton x:Name="IsIntoSeveralEqualPartsRadioButton" Content="На несколько равн. частей" />
                     <RadioButton Content="На две неравные части" />
 
                 </StackPanel>
