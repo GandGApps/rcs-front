@@ -6,6 +6,7 @@
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <PublishTrimmed>true</PublishTrimmed>
   </PropertyGroup>
 
 
@@ -23,7 +24,6 @@
     <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageReference Include="Octokit" Version="12.0.0" />
     <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
-    <PackageReference Include="Shellify" Version="0.4.0" />
     <PackageReference Include="SukiUI" Version="6.0.0-beta7" />
   </ItemGroup>
 
@@ -32,6 +32,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Update="appsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="appsettings.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -40,5 +43,27 @@
   <PropertyGroup Condition=" '$(OS)' == 'Windows_NT' ">
     <DefineConstants>_WINDOWS</DefineConstants>
   </PropertyGroup>
+
+  <ItemGroup Condition=" '$(OS)' == 'Windows_NT' ">
+    <COMReference Include="IWshRuntimeLibrary">
+      <WrapperTool>tlbimp</WrapperTool>
+      <VersionMinor>0</VersionMinor>
+      <VersionMajor>1</VersionMajor>
+      <Guid>f935dc20-1cf0-11d0-adb9-00c04fd58a0b</Guid>
+      <Lcid>0</Lcid>
+      <Isolated>false</Isolated>
+      <EmbedInteropTypes>true</EmbedInteropTypes>
+    </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Исключение Octokit из тримминга -->
+    <TrimmerRootAssembly Include="Octokit" />
+
+    <!-- Исключение Avalonia.Diagnostics из тримминга только в Debug конфигурации -->
+    <TrimmerRootAssembly Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
+
+    <TrimmerRootAssembly Include="IWshRuntimeLibrary" />
+  </ItemGroup>
 
 </Project>

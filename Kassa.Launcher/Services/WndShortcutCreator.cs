@@ -1,4 +1,4 @@
-﻿using Shellify;
+﻿using IWshRuntimeLibrary;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,19 +13,26 @@ namespace KassaLauncher.Services;
 
 internal sealed class WndShortcutCreator : IDesktopShortcutCreator
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="path">Path to exe</param>
+    /// <param name="name">Name for lnk</param>
+    /// <returns></returns>
     public Task CreateShortcutAsync(string path, string name)
     {
-        var shortcutPath = Environment.GetFolderPath(Environment.SpecialFolder.DesktopDirectory) + "\\" + name + ".lnk";
-        var targetPath = path;
+        var shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{name}.lnk");
+        var directoryPath = Path.GetDirectoryName(path);
 
-        var shellLink = ShellLinkFile.CreateAbsolute(targetPath);
-        var directoryTargetPath = Path.GetDirectoryName(targetPath);
+        Debug.Assert(directoryPath is not null);
 
-        Debug.Assert(directoryTargetPath is not null);
+        var shell = new WshShell();
 
-        shellLink.IconLocation = Path.Combine(directoryTargetPath, "Logo.ico");
+        var shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
+        shortcut.IconLocation = Path.Combine(directoryPath, "Logo.ico");
+        shortcut.TargetPath = path;
 
-        shellLink.SaveAs("./link.lnk");
+        shortcut.Save();
 
         return Task.CompletedTask;
     }

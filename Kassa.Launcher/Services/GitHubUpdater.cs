@@ -95,7 +95,7 @@ internal sealed class GitHubUpdater : IUpdater
 
         var totalFiles = files.Count;
 
-        for (int i = 0; i < totalFiles; i++)
+        for (var i = 0; i < totalFiles; i++)
         {
             var file = files[i];
             await DownloadAndUpdate(file.Path, file.Url, path);
@@ -104,7 +104,8 @@ internal sealed class GitHubUpdater : IUpdater
 
         if (createShortcut)
         {
-            await _shortcutCreator.CreateShortcutAsync(path, _repoInfo.AppName);
+            var exePath = Path.Combine(path, "Kassa.Wpf.exe");
+            await _shortcutCreator.CreateShortcutAsync(exePath, _repoInfo.AppName);
         }
     }
 
