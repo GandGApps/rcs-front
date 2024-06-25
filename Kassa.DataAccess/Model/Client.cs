@@ -3,7 +3,7 @@
 /// <summary>
 /// Пока что, все что известно о клиенте
 /// </summary>
-public class Client : IModel
+public class Client : IGuidId
 {
     public Guid Id
     {

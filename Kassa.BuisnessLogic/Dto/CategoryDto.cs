@@ -9,7 +9,7 @@ using Kassa.DataAccess;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Dto;
-public class CategoryDto : ICategoryItemDto, ICategoryDto, IModel
+public class CategoryDto : ICategoryItemDto, ICategoryDto, IGuidId
 {
     public Guid Id
     {

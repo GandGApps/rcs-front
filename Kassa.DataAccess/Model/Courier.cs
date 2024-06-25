@@ -2,7 +2,7 @@
 /// <summary>
 /// Пока что, все что известно о курьере
 /// </summary>
-public class Courier : IModel
+public class Courier : IGuidId
 {
     public Guid Id
     {

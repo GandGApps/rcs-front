@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Kassa.DataAccess.Model;
-public interface IModel
+public interface IGuidId
 {
     public Guid Id
     {

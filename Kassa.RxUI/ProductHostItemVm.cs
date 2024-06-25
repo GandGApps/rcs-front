@@ -8,7 +8,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI;
-public abstract class ProductHostItemVm : ReactiveObject, IModel
+public abstract class ProductHostItemVm : ReactiveObject, IGuidId
 {
 
     public Guid Id

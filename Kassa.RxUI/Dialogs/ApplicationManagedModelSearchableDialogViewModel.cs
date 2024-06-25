@@ -15,7 +15,7 @@ using DynamicData;
 
 namespace Kassa.RxUI.Dialogs;
 public abstract class ApplicationManagedModelSearchableDialogViewModel<TItem, TVm>: DialogViewModel
-    where TItem : class, IModel
+    where TItem : class, IGuidId
     where TVm : class, IApplicationModelPresenter<TItem>
 {
     protected readonly TimeSpan SearchThrottle = TimeSpan.FromMilliseconds(500);

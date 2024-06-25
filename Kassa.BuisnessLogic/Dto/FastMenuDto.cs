@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Dto;
-public class FastMenuDto : IModel
+public class FastMenuDto : IGuidId
 {
     public Guid Id
     {

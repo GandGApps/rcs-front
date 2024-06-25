@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.DataAccess.Repositories;
-public interface IRepository<T> where T : class, IModel
+public interface IRepository<T> where T : class, IGuidId
 {
     public Task<T?> Get(Guid id);
     public Task<IEnumerable<T>> GetAll();

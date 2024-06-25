@@ -9,7 +9,7 @@ using Kassa.Shared.Collections;
 
 namespace Kassa.BuisnessLogic.ApplicationModelManagers;
 public sealed partial class HostModelManager<TModel> : IApplicationModelManager<TModel>
-    where TModel : class, IModel
+    where TModel : class, IGuidId
 {
     private readonly Dictionary<Guid, TModel> _models = [];
     private readonly Subject<ChangeSet<TModel>> _changes = new();

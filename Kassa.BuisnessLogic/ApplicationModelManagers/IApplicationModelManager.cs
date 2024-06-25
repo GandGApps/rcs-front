@@ -7,7 +7,7 @@ using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.ApplicationModelManagers;
 public interface IApplicationModelManager<TModel> : IReadOnlyDictionary<Guid, TModel>, IObservable<ChangeSet<TModel>>, IDisposable
-    where TModel : class, IModel
+    where TModel : class, IGuidId
 {
     public void AddOrUpdate(TModel model);
     public void AddOrUpdate(IEnumerable<TModel> models);

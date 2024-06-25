@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Dto;
-public class UserDto : IModel
+public class UserDto : IGuidId
 {
     public Guid Id
     {

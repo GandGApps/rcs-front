@@ -20,7 +20,7 @@ using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.RxUI;
-public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListItem, IApplicationModelPresenter<ProductShoppingListItemDto>, IModel
+public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListItem, IApplicationModelPresenter<ProductShoppingListItemDto>, IGuidId
 {
     private readonly CompositeDisposable _disposables = [];
 

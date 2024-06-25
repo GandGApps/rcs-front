@@ -17,7 +17,7 @@ namespace Kassa.BuisnessLogic.ApplicationModelManagers;
 public static class ApplicationModelManagersExtensions
 {
     public static IObservable<ChangeSet<TModel>> Filter<TModel>(this IObservable<ChangeSet<TModel>> observable, Func<TModel, bool> predicate)
-        where TModel : class, IModel
+        where TModel : class, IGuidId
     {
         var filteredOservable = observable.Select(changes =>
         {
@@ -49,8 +49,8 @@ public static class ApplicationModelManagersExtensions
     }
 
     public static IDisposable BindAndFilter<TModel, TCast>(this IApplicationModelManager<TModel> manager, Func<TModel, bool> filter, Func<TModel, TCast> selector, ObservableCollection<TCast> collection)
-        where TModel : class, IModel
-        where TCast : class, IModel
+        where TModel : class, IGuidId
+        where TCast : class, IGuidId
     {
         var disposables = new CompositeDisposable();
 
@@ -104,7 +104,7 @@ public static class ApplicationModelManagersExtensions
     }
 
     public static IDisposable BindAndFilter<TModel, TCast>(this IApplicationModelManager<TModel> manager, Func<TModel, bool> filter, Func<TModel, TCast> selector, out ReadOnlyObservableCollection<TCast> collection)
-        where TModel : class, IModel
+        where TModel : class, IGuidId
         where TCast : class, IApplicationModelPresenter<TModel>
     {
         var target = new ObservableCollection<TCast>();
@@ -152,7 +152,7 @@ public static class ApplicationModelManagersExtensions
     }
 
     public static IDisposable BindAndFilter<TModel, TCast>(this IApplicationModelManager<TModel> manager, IObservable<Func<TModel, bool>> filterChangeable, Func<TModel, TCast> selector, out ReadOnlyObservableCollection<TCast> collection)
-      where TModel : class, IModel
+      where TModel : class, IGuidId
       where TCast : class, IApplicationModelPresenter<TModel>
     {
         var target = new ObservableCollection<TCast>();
@@ -214,7 +214,7 @@ public static class ApplicationModelManagersExtensions
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private static IObservable<ChangeSet<TModel>> PackObservable<TModel>(IObservable<ChangeSet<TModel>> observable, IObservable<ChangeSet<TModel>> modifiedObservable)
-       where TModel : class, IModel
+       where TModel : class, IGuidId
     {
         if (observable is SourceApplicationModelManager<TModel> sourceApplicationModelManager)
         {

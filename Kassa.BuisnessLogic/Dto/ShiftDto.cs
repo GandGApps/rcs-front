@@ -10,7 +10,7 @@ namespace Kassa.BuisnessLogic.Dto;
 /// <summary>
 /// Represent model <see cref="Shift"/> 
 /// </summary>
-public class ShiftDto : IModel
+public class ShiftDto : IGuidId
 {
     public Guid Id
     {

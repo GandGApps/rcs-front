@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Kassa.DataAccess.Model;
-public record Additive : IModel
+public record Additive : IGuidId
 {
     public Guid Id
     {

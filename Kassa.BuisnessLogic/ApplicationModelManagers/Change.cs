@@ -6,7 +6,7 @@ using Microsoft.VisualBasic;
 
 namespace Kassa.BuisnessLogic.ApplicationModelManagers;
 public readonly struct Change<TModel> : IEquatable<Change<TModel>>
-    where TModel : class, IModel
+    where TModel : class, IGuidId
 {
 
     public static Change<TModel> Add(TModel model, int index)
@@ -25,7 +25,7 @@ public readonly struct Change<TModel> : IEquatable<Change<TModel>>
     }
 
     public static Change<TDestination> Transform<TDestination>(Change<TModel> change, Func<TModel, TDestination> transform)
-        where TDestination : class, IModel
+        where TDestination : class, IGuidId
     {
         TDestination? previos;
         if (change.Previous is null)

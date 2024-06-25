@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Dto;
-public class WithdrawalReasonDto : IModel
+public class WithdrawalReasonDto : IGuidId
 {
     public Guid Id
     {

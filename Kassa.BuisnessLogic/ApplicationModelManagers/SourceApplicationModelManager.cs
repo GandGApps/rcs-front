@@ -9,7 +9,7 @@ using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.ApplicationModelManagers;
 internal sealed class SourceApplicationModelManager<TModel>(IApplicationModelManager<TModel> sourceManager, IObservable<ChangeSet<TModel>> observable) : IObservable<ChangeSet<TModel>>
-     where TModel : class, IModel
+     where TModel : class, IGuidId
 {
     public IDisposable Subscribe(IObserver<ChangeSet<TModel>> observer) => observable.Subscribe(observer);
 

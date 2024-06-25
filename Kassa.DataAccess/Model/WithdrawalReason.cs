@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Kassa.DataAccess.Model;
-public class WithdrawalReason : IModel
+public class WithdrawalReason : IGuidId
 {
     public Guid Id
     {

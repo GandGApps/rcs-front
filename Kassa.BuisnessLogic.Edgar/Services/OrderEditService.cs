@@ -108,7 +108,7 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
         get; set;
     }
 
-    public IDisposable BindSelectedCategoryItems<T>(Func<ICategoryItemDto, T> creator, out ReadOnlyObservableCollection<T> categoryItems) where T : class, IModel
+    public IDisposable BindSelectedCategoryItems<T>(Func<ICategoryItemDto, T> creator, out ReadOnlyObservableCollection<T> categoryItems) where T : class, IGuidId
     {
         this.ThrowIfNotInitialized();
 
@@ -310,7 +310,7 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
         });
     }
 
-    public IDisposable BindShoppingListItems<T>(Func<ProductShoppingListItemDto, IApplicationModelManager<ProductShoppingListItemDto>, T> creator, out ReadOnlyObservableCollection<T> shoppingListItems) where T : class, IModel
+    public IDisposable BindShoppingListItems<T>(Func<ProductShoppingListItemDto, IApplicationModelManager<ProductShoppingListItemDto>, T> creator, out ReadOnlyObservableCollection<T> shoppingListItems) where T : class, IGuidId
     {
         this.ThrowIfNotInitialized();
 

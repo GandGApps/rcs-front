@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.DataAccess;
-public interface ICategoryItem: IModel
+public interface ICategoryItem: IGuidId
 {
     public Guid? CategoryId
     {

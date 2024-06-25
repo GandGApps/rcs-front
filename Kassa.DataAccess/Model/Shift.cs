@@ -4,7 +4,7 @@ using System.Text;
 using System.Text.Json;
 
 namespace Kassa.DataAccess.Model;
-public class Shift : IModel
+public class Shift : IGuidId
 {
     public Guid Id
     {

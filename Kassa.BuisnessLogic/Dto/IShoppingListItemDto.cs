@@ -2,7 +2,7 @@
 
 namespace Kassa.BuisnessLogic.Dto;
 
-public interface IShoppingListItemDto: IModel
+public interface IShoppingListItemDto: IGuidId
 {
     public Guid ItemId
     {

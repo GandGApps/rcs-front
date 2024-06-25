@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Dto;
-public record AdditiveDto : IModel
+public record AdditiveDto : IGuidId
 {
     public Guid Id
     {

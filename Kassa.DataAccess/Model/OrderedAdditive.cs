@@ -1,6 +1,6 @@
 ﻿namespace Kassa.DataAccess.Model;
 
-public class OrderedAdditive : IModel
+public class OrderedAdditive : IGuidId
 {
     public Guid Id
     {

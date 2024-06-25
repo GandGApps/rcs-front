@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Kassa.DataAccess.Model;
-public class Member : IModel
+public class Member : IGuidId
 {
     public Guid Id
     {

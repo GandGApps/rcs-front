@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Dto;
-public record AdditiveShoppingListItemDto : IShoppingListItemDto, IModel
+public record AdditiveShoppingListItemDto : IShoppingListItemDto, IGuidId
 {
 
     public AdditiveShoppingListItemDto(ProductShoppingListItemDto productShopping,AdditiveDto additiveDto)

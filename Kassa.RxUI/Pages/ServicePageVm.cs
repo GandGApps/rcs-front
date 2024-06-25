@@ -8,8 +8,12 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using DynamicData;
 using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Services;
+using Kassa.DataAccess.Model;
+using Microsoft.VisualBasic;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -17,16 +21,27 @@ using Splat;
 namespace Kassa.RxUI.Pages;
 public class ServicePageVm : PageViewModel
 {
+
     private readonly IShiftService _shiftService;
     private readonly ICashierService _cashierService;
+    private readonly IOrdersService _ordersService;
 
-    public ServicePageVm(ICashierService cashierService, IShiftService shiftService)
+    private readonly ObservableCollection<ServiceOrderRowViewModel> _openOrders = [];
+    private readonly ObservableCollection<ServiceOrderRowViewModel> _closedOrders = [];
+    private readonly ObservableCollection<ServiceOrderRowViewModel> _ordersOfClosedCashShifts = [];
+
+
+    public ServicePageVm(ICashierService cashierService, IShiftService shiftService, IOrdersService ordersService)
     {
         _cashierService = cashierService;
         _shiftService = shiftService;
+        _ordersService = ordersService;
 
-        SelectedOrders = new([]);
         SelectedDocuments = new([]);
+
+        OpenOrders = new(_openOrders);
+        ClosedOrders = new(_closedOrders);
+        OrdersOfClosedCashShifts = new(_ordersOfClosedCashShifts);
 
         CloseShiftCommnad = CreatePageBusyCommand(async () =>
         {
@@ -94,9 +109,42 @@ public class ServicePageVm : PageViewModel
             .Select(x => x ? CloseShiftCommnad : OpenShiftCommand)
             .ToPropertyEx(this, x => x.ShiftButtonCommand)
             .DisposeWith(InternalDisposables);
+
+        var disposables = new CompositeDisposable();
+
+        _shiftService.IsCashierShiftStartedObservable()
+            .Subscribe(x =>
+            {
+
+                if (disposables.Count > 0)
+                {
+                    disposables.Dispose();
+                    disposables = [];
+                }
+
+                if (x)
+                {
+                    _openOrders.Clear();
+                    _closedOrders.Clear();
+                    _ordersOfClosedCashShifts.Clear();
+
+                }
+
+            }).DisposeWith(InternalDisposables);
     }
 
-    public ReadOnlyObservableCollection<ServiceOrderRowViewModel> SelectedOrders
+
+    public ReadOnlyObservableCollection<ServiceOrderRowViewModel> OpenOrders
+    {
+        get;
+    }
+
+    public ReadOnlyObservableCollection<ServiceOrderRowViewModel> ClosedOrders
+    {
+        get;
+    }
+
+    public ReadOnlyObservableCollection<ServiceOrderRowViewModel> OrdersOfClosedCashShifts
     {
         get;
     }
@@ -137,7 +185,66 @@ public class ServicePageVm : PageViewModel
     public extern bool IsShiftOpenned
     {
         [ObservableAsProperty]
-        get; 
-    } 
+        get;
+    }
+
+
+    private static void InitOpenOrders(IOrdersService ordersService)
+    {
+
+    }
+
+    private static IDisposable InitAndFilterAndSelectThenSubscribeToRuntimes<T1, T2>(Func<T1, bool> filter, Func<T1, T2> selector, IApplicationModelManager<T1> manager, ObservableCollection<T2> target) 
+        where T1 : class, IGuidId
+        where T2: class, IGuidId
+    {
+        var first = manager.Values.Where(filter).Select(selector);
+
+        target.AddRange(first);
+
+        return manager.Subscribe(changeSet =>
+        {
+            foreach (var change in changeSet.Changes)
+            {
+                var model = change.Current;
+
+                if (!filter(model))
+                {
+                    continue;
+                }
+
+                switch (change.Reason)
+                {
+
+                    case ModelChangeReason.Add:
+                        var added = selector(model);
+                        target.Add(added);
+                        break;
+
+                    case ModelChangeReason.Replace:
+                        var replaced = target.FirstOrDefault(x => x.Id == model.Id);
+                        if (replaced != null)
+                        {
+                            target.Remove(replaced);
+                        }
+
+                        var newModel = selector(model);
+                        target.Add(newModel);
+                        break;
+
+
+                    case ModelChangeReason.Remove:
+                        var removed = target.FirstOrDefault(x => x.Id == model.Id);
+                        if (removed != null)
+                        {
+                            target.Remove(removed);
+                        }
+                        break;
+
+                }
+            }
+
+        })
+    }
 
 }

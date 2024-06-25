@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.ApplicationModelManagers;
-public readonly struct ChangeSet<TModel> where TModel : class, IModel
+public readonly struct ChangeSet<TModel> where TModel : class, IGuidId
 {
 
     /// <summary>

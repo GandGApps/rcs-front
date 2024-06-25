@@ -7,7 +7,7 @@ using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.ApplicationModelManagers;
 public interface IApplicationModelPresenter<TModel>: IDisposable
-    where TModel : class, IModel
+    where TModel : class, IGuidId
 {
     public Guid Id
     {

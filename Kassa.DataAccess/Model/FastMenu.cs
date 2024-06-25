@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Kassa.DataAccess.Model;
-public class FastMenu : IModel
+public class FastMenu : IGuidId
 {
     public Guid Id
     {
