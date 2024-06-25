@@ -1041,7 +1041,7 @@ internal sealed class OrderEditService(
         }
     }
 
-    public ValueTask<OrderDto> GetOrder()
+    public OrderDto GetOrder()
     {
         var order = CreateOrGetOrder();
 
@@ -1062,7 +1062,7 @@ internal sealed class OrderEditService(
         order.SubtotalSum = order.Products.Sum(x => x.SubTotalPrice);
         order.Discount = Discount;
 
-        return new(order);
+        return order;
     }
 
     private OrderDto CreateOrGetOrder()

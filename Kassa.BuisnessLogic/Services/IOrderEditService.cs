@@ -113,6 +113,6 @@ public interface IOrderEditService : IInitializableService
     public Task RemoveSelectedProductShoppingListItem();
     public ValueTask SelectFavourite(int favourite);
 
-    public ValueTask<OrderDto> GetOrder();
+    public OrderDto GetOrder();
     public Task AddProductToShoppingList(OrderedProductDto orderedProduct);
 }

@@ -11,6 +11,7 @@ using System.Windows.Input;
 using DynamicData;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
+using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
 using Microsoft.VisualBasic;
@@ -128,6 +129,8 @@ public class ServicePageVm : PageViewModel
                     _closedOrders.Clear();
                     _ordersOfClosedCashShifts.Clear();
 
+                   
+
                 }
 
             }).DisposeWith(InternalDisposables);
@@ -188,11 +191,11 @@ public class ServicePageVm : PageViewModel
         get;
     }
 
-
-    private static void InitOpenOrders(IOrdersService ordersService)
+    private IDisposable BindOpenOrders(IOrdersService ordersService, ObservableCollection<ServiceOrderRowViewModel> target)
     {
 
     }
+
 
     private static IDisposable InitAndFilterAndSelectThenSubscribeToRuntimes<T1, T2>(Func<T1, bool> filter, Func<T1, T2> selector, IApplicationModelManager<T1> manager, ObservableCollection<T2> target) 
         where T1 : class, IGuidId
@@ -244,7 +247,7 @@ public class ServicePageVm : PageViewModel
                 }
             }
 
-        })
+        });
     }
 
 }

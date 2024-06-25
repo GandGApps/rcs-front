@@ -18,7 +18,7 @@ public class SearchProductDialogViewModel : ApplicationManagedModelSearchableDia
     public SearchProductDialogViewModel(IOrderEditService orderEditService, IProductService productService)
     {
         _orderEditService = orderEditService;
-        this._productService = productService;
+        _productService = productService;
     }
 
     protected override ValueTask InitializeAsync(CompositeDisposable disposables)
