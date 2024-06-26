@@ -51,7 +51,7 @@ public class ProfileDialogViewModel : DialogViewModel
             }
             else
             {
-                var dto = await shift.CreateDto();
+                var dto = shift.CreateDto();
                 CurrentShiftOpennedDate = dto.Start;
             }
         }).DisposeWith(disposables);

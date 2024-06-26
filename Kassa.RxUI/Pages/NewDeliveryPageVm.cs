@@ -152,7 +152,7 @@ public sealed class NewDeliveryPageVm : PageViewModel
                 return;
             }
 
-            var order = await _orderEdit.GetOrder();
+            var order = _orderEdit.GetOrder();
 
             if (!order.Products.Any())
             {

@@ -118,13 +118,14 @@ public class MainPageVm : PageViewModel
 
             var cashierService = await Locator.GetInitializedService<ICashierService>();
             var shiftService = await Locator.GetInitializedService<IShiftService>();
+            var orderService = await Locator.GetInitializedService<IOrdersService>();
 
             if (!await TryAuthorizePageAccess<ServicePageVm>(shiftService))
             {
                 return;
             }
 
-            await MainViewModel.GoToPage(new ServicePageVm(cashierService, shiftService));
+            await MainViewModel.GoToPage(new ServicePageVm(cashierService, shiftService, orderService));
         });
 
         GoToCashier = CreatePageBusyCommand(async () =>
@@ -199,7 +200,7 @@ public class MainPageVm : PageViewModel
             }
             else
             {
-                var dto = await shift.CreateDto();
+                var dto = shift.CreateDto();
                 CurrentShiftMemberName = shift.Member.Name;
                 CurrentShiftOpennedDate = dto.Start;
             }

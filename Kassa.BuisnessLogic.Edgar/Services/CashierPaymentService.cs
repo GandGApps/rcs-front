@@ -67,7 +67,7 @@ internal sealed class CashierPaymentService: BaseInitializableService, IPaymentS
 
     public async Task PayAndSaveOrder()
     {
-        var order = await Order.GetOrder();
+        var order = Order.GetOrder();
         var paymentInfo = new PaymentInfoDto()
         {
             Id = Guid.Empty,

@@ -107,7 +107,7 @@ public sealed partial class ShiftStateDetail : UserControl, IApplicationModelPre
                     return;
                 }
 
-                ShiftDto = await shift.CreateDto();
+                ShiftDto = shift.CreateDto();
             }).DisposeWith(disposables);
 
         });

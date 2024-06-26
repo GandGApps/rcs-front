@@ -966,9 +966,9 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
         }
     }
 
-    public async ValueTask<OrderDto> GetOrder()
+    public OrderDto GetOrder()
     {
-        var order = await CreateOrGetOrder();
+        var order = CreateOrGetOrder();
 
         order.Comment = TotalComment.Value;
         order.Products = ShoppingListItems.Values.Select(x =>
@@ -1011,20 +1011,20 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
         _isForHere.OnNext(isForHere);
     }
 
-    private async ValueTask<OrderDto> CreateOrGetOrder()
+    private OrderDto CreateOrGetOrder()
     {
         if (_order != null)
         {
             return _order;
         }
 
-        var shiftService = await Locator.GetInitializedService<IShiftService>();
+        var shiftService = Locator.GetNotInitializedService<IShiftService>();
 
         Debug.Assert(shiftService.CurrentShift.Value != null);
         Debug.Assert(shiftService.CurrentCashierShift.Value != null);
 
-        var cashierShift = await shiftService.CurrentCashierShift.Value.CreateDto();
-        var shift = await shiftService.CurrentShift.Value.CreateDto();
+        var cashierShift = shiftService.CurrentCashierShift.Value.CreateDto();
+        var shift = shiftService.CurrentShift.Value.CreateDto();
 
         _order = new OrderDto
         {

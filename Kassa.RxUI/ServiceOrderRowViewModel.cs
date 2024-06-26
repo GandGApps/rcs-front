@@ -9,9 +9,10 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
 using ReactiveUI;
+using Splat;
 
 namespace Kassa.RxUI;
-public class ServiceOrderRowViewModel : ReactiveObject, IGuidId, IApplicationModelPresenter<OrderDto>
+public sealed class ServiceOrderRowViewModel : ReactiveObject, IGuidId, IApplicationModelPresenter<OrderDto>
 {
     private readonly IShiftService _shiftService;
     private readonly IProductService _productService;
@@ -30,9 +31,20 @@ public class ServiceOrderRowViewModel : ReactiveObject, IGuidId, IApplicationMod
         Id = order.Id;
         Number = order.Id.GuidToPrettyInt();
         Time = order.CreatedAt.ToString("dd.MM.yyyy | HH:mm");
-        CashierName = shiftService.Run;
+        CashierName = shiftService.ToString();
         Amount = order.Products.Sum(x => x.TotalPrice + x.Additives.Sum(x => x.TotalPrice)).ToString("F2");
-        Composition = string.Join(", ", order.Products.Take(4).Select(x => x.N));
+        Composition = string.Join(", ", order.Products.Take(4).Select(x =>
+        {
+            var productDto = productService.RuntimeProducts.TryGetValue(x.ProductId, out var product) ? product : null;
+
+
+            if (productDto is null)
+            {
+                this.Log().Error($"Product with id {x.ProductId} not found");
+            }
+
+            return productDto?.Name ?? "Неизвестный продукт";
+        }));
     }
 
     public int Number
@@ -69,4 +81,7 @@ public class ServiceOrderRowViewModel : ReactiveObject, IGuidId, IApplicationMod
     {
         get; set;
     }
+
+    public void ModelChanged(Change<OrderDto> change) => throw new NotImplementedException();
+    public void Dispose() {}
 }

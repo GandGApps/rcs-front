@@ -25,5 +25,5 @@ public interface IShift
     public Task TakeBreak(string pincode);
     public Task EndBreak();
 
-    public ValueTask<ShiftDto> CreateDto();
+    public ShiftDto CreateDto();
 }

@@ -256,7 +256,7 @@ public class PersonalPageVm : PageViewModel
             else
             {
                 CashierName = shift.Member.Name;
-                var dto = await shift.CreateDto();
+                var dto = shift.CreateDto();
                 ShiftNumber = dto.Id.GuidToPrettyString();
                 ManagerName = (await memberService.GetMember(dto.ManagerId ?? Guid.Empty))?.Name ?? "???";
                 OpennedShiftDate = dto.Start is null ? string.Empty : dto.Start.Value.ToString("dd.MM.yyyy | HH:mm");
@@ -275,7 +275,7 @@ public class PersonalPageVm : PageViewModel
 
         if (_shiftService.CurrentShift.Value is IShift shift)
         {
-            CurrentShift = new ShiftRowViewModel(await shift.CreateDto());
+            CurrentShift = new ShiftRowViewModel(shift.CreateDto());
         }
 
         IsOpennedShiftsVisible = true;

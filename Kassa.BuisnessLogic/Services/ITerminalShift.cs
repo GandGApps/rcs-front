@@ -23,5 +23,5 @@ public interface ITerminalShift
 
 
 
-    public ValueTask<CashierShiftDto> CreateDto();
+    public CashierShiftDto CreateDto();
 }

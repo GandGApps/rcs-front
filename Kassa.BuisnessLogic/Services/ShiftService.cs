@@ -165,7 +165,7 @@ internal class ShiftService : BaseInitializableService, IShiftService
 
         public async Task Exit()
         {
-            var shiftDto = await CreateDto();
+            var shiftDto = CreateDto();
 
             shiftDto.End = DateTime.Now;
 
@@ -183,7 +183,7 @@ internal class ShiftService : BaseInitializableService, IShiftService
 
         public async Task TakeBreak(string pincode)
         {
-            var shiftDto = await CreateDto();
+            var shiftDto = CreateDto();
 
             shiftDto.BreakStart = DateTime.Now;
 
@@ -199,7 +199,7 @@ internal class ShiftService : BaseInitializableService, IShiftService
 
         public async Task EndBreak()
         {
-            var shiftDto = await CreateDto();
+            var shiftDto = CreateDto();
 
             shiftDto.BreakEnd = DateTime.Now;
 
@@ -211,7 +211,7 @@ internal class ShiftService : BaseInitializableService, IShiftService
             await Exit();
         }
 
-        public ValueTask<ShiftDto> CreateDto()
+        public ShiftDto CreateDto()
         {
             _shift ??= new ShiftDto()
             {
@@ -221,7 +221,7 @@ internal class ShiftService : BaseInitializableService, IShiftService
                 Number = shiftService.RuntimeShifts.Count + 1
             };
 
-            return new(_shift);
+            return _shift;
         }
     }
 }

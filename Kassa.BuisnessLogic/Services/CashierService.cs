@@ -99,7 +99,7 @@ internal class CashierService : BaseInitializableService, ICashierService
     {
         var paymentService = new CashierPaymentService(orderEdit, _ordersService);
 
-        var order = await orderEdit.GetOrder();
+        var order = orderEdit.GetOrder();
 
         if (order.PaymentInfoId != Guid.Empty)
         {

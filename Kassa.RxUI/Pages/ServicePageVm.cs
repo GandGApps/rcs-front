@@ -193,7 +193,7 @@ public class ServicePageVm : PageViewModel
 
     private IDisposable BindOpenOrders(IOrdersService ordersService, ObservableCollection<ServiceOrderRowViewModel> target)
     {
-
+        throw new NotImplementedException();
     }
 
 

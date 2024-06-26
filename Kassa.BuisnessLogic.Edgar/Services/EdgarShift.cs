@@ -41,7 +41,7 @@ internal sealed class EdgarShift : IShift
 
     public async Task Start()
     {
-        var shiftDto = await CreateDto();
+        var shiftDto = CreateDto();
         var employeeApi = Locator.Current.GetRequiredService<IEmployeePostsApi>();
 
         var openPostRequest = new EmployeeOpenPostRequest(DateTime.Now, shiftDto.Id, 0, shiftDto.CashierShiftId);
@@ -65,7 +65,7 @@ internal sealed class EdgarShift : IShift
 
     public async Task Exit()
     {
-        var shiftDto = await CreateDto();
+        var shiftDto = CreateDto();
 
         _shiftService.RuntimeShifts.AddOrUpdate(shiftDto);
         _shiftService._currentShift.OnNext(null);
@@ -73,7 +73,7 @@ internal sealed class EdgarShift : IShift
 
     public async Task TakeBreak(string pincode)
     {
-        var shiftDto = await CreateDto();
+        var shiftDto = CreateDto();
 
         var employeePostApi = Locator.Current.GetRequiredService<IEmployeePostsApi>();
 
@@ -89,7 +89,7 @@ internal sealed class EdgarShift : IShift
 
     public async Task EndBreak()
     {
-        var shiftDto = await CreateDto();
+        var shiftDto = CreateDto();
 
         var employeePostApi = Locator.Current.GetRequiredService<IEmployeePostsApi>();
 
@@ -111,7 +111,7 @@ internal sealed class EdgarShift : IShift
 
     internal async Task End()
     {
-        var shiftDto = await CreateDto();
+        var shiftDto = CreateDto();
 
         var employeePostApi = Locator.Current.GetRequiredService<IEmployeePostsApi>();
 
@@ -125,7 +125,7 @@ internal sealed class EdgarShift : IShift
         _shiftService._currentShift.OnNext(null);
     }
 
-    public ValueTask<ShiftDto> CreateDto()
+    public ShiftDto CreateDto()
     {
         _shift ??= new ShiftDto()
         {
@@ -140,6 +140,6 @@ internal sealed class EdgarShift : IShift
             CashierShiftId = _postExistsResponse.CreatedPost.TerminalShiftId
         };
 
-        return new(_shift);
+        return _shift;
     }
 }
