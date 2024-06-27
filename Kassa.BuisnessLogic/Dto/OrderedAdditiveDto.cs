@@ -42,7 +42,7 @@ public class OrderedAdditiveDto
         get; set;
     }
 
-    public string Measure
+    public string? Measure
     {
         get; set;
     }

@@ -10,14 +10,14 @@ public class IngredientDto
     public string Name
     {
         get; set;
-    }
+    } = string.Empty;
 
     public double Count
     {
         get; set;
     }
 
-    public string Measure
+    public string? Measure
     {
         get; set;
     }

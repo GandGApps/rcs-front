@@ -29,7 +29,7 @@ public abstract class ProductHostItemVm : ReactiveObject, IGuidId
     }
 
     [Reactive]
-    public string Color
+    public string? Color
     {
         get; protected set;
     } 

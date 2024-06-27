@@ -19,7 +19,7 @@ public class CategoryDto : ICategoryItemDto, ICategoryDto, IGuidId
     public string Name
     {
         get; set;
-    }
+    } = string.Empty;
 
     public int Image
     {
@@ -39,12 +39,12 @@ public class CategoryDto : ICategoryItemDto, ICategoryDto, IGuidId
     public virtual ICollection<Category> Categories
     {
         get; set;
-    }
+    } = [];
 
     public virtual ICollection<Product> Products
     {
         get; set;
-    }
+    } = [];
 
     public ICollection<ICategoryItem>? Items
     {
@@ -56,7 +56,7 @@ public class CategoryDto : ICategoryItemDto, ICategoryDto, IGuidId
         get;
     } = [];
 
-    public string Color
+    public string? Color
     {
         get; set;
     }

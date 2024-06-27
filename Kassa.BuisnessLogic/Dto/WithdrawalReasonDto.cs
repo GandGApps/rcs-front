@@ -16,5 +16,5 @@ public class WithdrawalReasonDto : IGuidId
     public string Name
     {
         get; set;
-    }
+    } = string.Empty;
 }

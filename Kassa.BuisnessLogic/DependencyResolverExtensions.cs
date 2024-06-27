@@ -10,6 +10,7 @@ namespace Kassa.BuisnessLogic;
 
 public static class DependencyResolverExtensions
 {
+    [Obsolete("Use RegisterMockBuisnessLogic instead")]
     /// <summary>
     /// Registers business logic services in the dependency resolver.
     /// </summary>
@@ -39,8 +40,6 @@ public static class DependencyResolverExtensions
             return new AdditiveService(repository, receiptService);
         });
         RegisterInitializableServiceFactory<IAdditiveService>(services);
-
-        SplatRegistrations.RegisterLazySingleton<IAuthService, AuthService>();
 
         SplatRegistrations.Register<IShiftService, ShiftService>();
         RegisterInitializableServiceFactory<IShiftService>(services);
@@ -83,28 +82,6 @@ public static class DependencyResolverExtensions
             return new ReceiptService(repository, ingridientsService);
         });
         RegisterInitializableServiceFactory<IReceiptService>(services);
-
-        services.Register<ICashierService>(() =>
-        {
-            var productService = Locator.Current.GetNotInitializedService<IProductService>();
-            var categoryService = Locator.Current.GetNotInitializedService<ICategoryService>();
-            var additiveService = Locator.Current.GetNotInitializedService<IAdditiveService>();
-            var receiptService = Locator.Current.GetNotInitializedService<IReceiptService>();
-            var ordersService = Locator.Current.GetNotInitializedService<IOrdersService>();
-            var paymentInfoService = Locator.Current.GetNotInitializedService<IPaymentInfoService>();
-
-            return new CashierService(
-                additiveService, 
-                categoryService, 
-                productService, 
-                receiptService, 
-                ordersService,
-                paymentInfoService
-            );
-        });
-        RegisterInitializableServiceFactory<ICashierService>(services);
-
-
     }
 
     /// <summary>

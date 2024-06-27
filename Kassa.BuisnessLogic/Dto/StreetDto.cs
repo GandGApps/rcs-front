@@ -15,7 +15,7 @@ public class StreetDto
     public string Name
     {
         get; set;
-    }
+    } = string.Empty;
 
     public Guid DistrictId
     {

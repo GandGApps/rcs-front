@@ -92,7 +92,7 @@ public record ProductDto : ICategoryItemDto, IGuidId
         get; set;
     }
 
-    public string Color
+    public string? Color
     {
         get; set;
     }

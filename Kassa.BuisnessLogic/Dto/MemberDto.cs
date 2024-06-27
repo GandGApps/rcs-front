@@ -16,7 +16,7 @@ public class MemberDto: IGuidId
     public string Name
     {
         get; set;
-    }
+    } = string.Empty;
 
     public bool IsAdmin
     {

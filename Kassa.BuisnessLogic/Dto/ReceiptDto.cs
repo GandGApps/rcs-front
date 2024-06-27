@@ -16,5 +16,5 @@ public class ReceiptDto
     public IngredientUsageDto[] IngredientUsages
     {
         get; set;
-    }
+    } = [];
 }

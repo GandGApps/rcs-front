@@ -235,7 +235,7 @@ public sealed class CashierPaymentPageVm : PageViewModel, IPaymentVm
 
             MainViewModel.DialogOpenCommand.Execute(loading).Subscribe();
 
-            await cashierPaymentService.PayAndSaveOrder();
+            await cashierPaymentService.PayAndSaveOrderThenDispose();
 
             await loading.CloseAsync();
 

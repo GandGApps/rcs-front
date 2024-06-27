@@ -424,6 +424,6 @@ public sealed class OrderEditPageVm : PageViewModel, IOrderEditVm
     [Reactive]
     public DateTime WhenOrderStarted
     {
-        get; protected set;
+        get; set;
     }
 }

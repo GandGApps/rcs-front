@@ -58,14 +58,7 @@ internal sealed class CashierPaymentService: BaseInitializableService, IPaymentS
         get; set;
     }
 
-    [Obsolete("Use PayAndSaveOrder")]
-    public async Task Pay()
-    {
-        Payed?.Invoke();
-        await Task.Delay(1000);
-    }
-
-    public async Task PayAndSaveOrder()
+    public async Task PayAndSaveOrderThenDispose()
     {
         var order = Order.GetOrder();
         var paymentInfo = new PaymentInfoDto()
@@ -82,6 +75,12 @@ internal sealed class CashierPaymentService: BaseInitializableService, IPaymentS
         order.PaymentInfoId = order.PaymentInfoId;
 
         await _ordersService.AddOrder(order);
+
+        // It's need for CashierService
+        Payed?.Invoke();
+        Order.Dispose();
+
+        Dispose();
     }
 
     public async Task PayWithBankCard(double money)

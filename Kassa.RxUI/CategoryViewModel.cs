@@ -67,8 +67,6 @@ public sealed class CategoryViewModel : ProductHostItemVm, IActivatableViewModel
         });
     }
 
-    public Guid Id => _categoryId;
-
     public ViewModelActivator Activator
     {
         get;

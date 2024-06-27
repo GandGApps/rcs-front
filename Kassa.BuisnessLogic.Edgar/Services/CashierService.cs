@@ -136,6 +136,8 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
             {
                 CurrentOrder = null;
             }
+
+            orderEdit.Dispose();
         };
 
         return paymentService;

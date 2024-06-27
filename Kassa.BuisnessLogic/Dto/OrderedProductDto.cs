@@ -43,7 +43,7 @@ public class OrderedProductDto
         get; set;
     }
 
-    public string Comment
+    public string? Comment
     {
         get; set;
     }
@@ -51,5 +51,5 @@ public class OrderedProductDto
     public IEnumerable<OrderedAdditiveDto> Additives
     {
         get; set;
-    }
+    } = [];
 }

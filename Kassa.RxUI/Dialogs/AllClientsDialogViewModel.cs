@@ -34,7 +34,7 @@ public class AllClientsDialogViewModel : SearchableDialogViewModel<ClientDto, Cl
             var cashierService = await Locator.GetInitializedService<ICashierService>();
             var additiveService = await Locator.GetInitializedService<IAdditiveService>();
 
-            var newDeliveryPageVm = new NewDeliveryPageVm(cashierService, additiveService,null)
+            var newDeliveryPageVm = new NewDeliveryPageVm(cashierService, additiveService, null)
             {
                 IsPickup = IsPickup,
                 IsDelivery = IsDelivery

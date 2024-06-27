@@ -18,7 +18,7 @@ public class FastMenuDto : IGuidId
         get; set;
     }
 
-    public string ImageSource
+    public string? ImageSource
     {
         get; set;
     }
@@ -28,7 +28,7 @@ public class FastMenuDto : IGuidId
         get; set;
     }
 
-    public string Color
+    public string? Color
     {
         get; set;
     }

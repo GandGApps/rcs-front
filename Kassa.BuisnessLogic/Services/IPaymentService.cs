@@ -53,10 +53,13 @@ public interface IPaymentService : IInitializableService
         get;
     }
 
-    [Obsolete("Use PayAndSaveOrder")]
-    public Task Pay();
-
-    public Task PayAndSaveOrder();
+    /// <summary>
+    /// Pay and save order then dispose
+    /// </summary>
+    /// <remarks>
+    /// Attention! This method also dispose <see cref="IOrderEditService"/> 
+    /// </remarks>
+    public Task PayAndSaveOrderThenDispose();
     public Task PrintReceiptToEmail();
     public Task SetEmailToReceiptSending(string email);
     public Task PayWithBankCard(double money);
