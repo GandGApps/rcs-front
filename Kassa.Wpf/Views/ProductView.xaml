@@ -14,7 +14,6 @@
     d:DesignHeight="104"
     d:DesignWidth="235"
     x:TypeArguments="vm:ProductViewModel"
-    Command="{Binding AddToShoppingListCommand}"
     mc:Ignorable="d">
 
     <d:DesignProperties.DataContext>

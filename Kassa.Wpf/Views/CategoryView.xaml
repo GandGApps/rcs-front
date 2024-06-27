@@ -50,7 +50,6 @@
                 d:Text="hi"
                 FontSize="{mx:AdaptiveSize 16}"
                 Foreground="Black"
-                Text="{Binding Name}"
                 TextWrapping="Wrap">
                 <TextBlock.Style>
                     <Style BasedOn="{StaticResource {x:Type TextBlock}}" TargetType="TextBlock">
@@ -75,7 +74,7 @@
             <Setter Property="Background" Value="{DynamicResource CategoryViewBackground}" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
             <Setter Property="VerticalContentAlignment" Value="Stretch" />
-            <Setter Property="MinHeight" Value="104" />
+            <Setter Property="MinHeight" Value="{mx:AdaptiveSize 104}" />
         </Style>
     </Button.Style>
 

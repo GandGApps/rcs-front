@@ -942,12 +942,12 @@
                         <Setter Property="BorderBrush" Value="{StaticResource ClickableBg}" />
 
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding IsExactAmount}" Value="False">
+                            <Trigger Property="IsEnabled" Value="False">
                                 <Setter Property="IsHitTestVisible" Value="False" />
                                 <Setter Property="Opacity" Value="0.2" />
                                 <Setter Property="BorderBrush" Value="{DynamicResource AlternateForeground}" />
                                 <Setter Property="Background" Value="{StaticResource ClickableBg}" />
-                            </DataTrigger>
+                            </Trigger>
                         </Style.Triggers>
                     </Style>
                 </Button.Style>

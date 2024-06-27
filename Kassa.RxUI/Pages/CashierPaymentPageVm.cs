@@ -147,6 +147,85 @@ public sealed class CashierPaymentPageVm : PageViewModel, IPaymentVm
             }
         });
 
+        this.WhenAnyValue(x => x.IsEmail, x => x.IsPrinter, x => x.WithReceipt, (email, printer, withReceipt) =>
+            {
+                if (!withReceipt)
+                {
+                    return "Распечатать, переслать чек";
+                }
+
+                if (withReceipt)
+                {
+                    if (!email && !printer)
+                    {
+                        IsPrinter = true;
+                        return "Переслать чек";
+                    }
+                }
+
+                if (email)
+                {
+                    return "Отправить на почту";
+                }
+                else if (printer)
+                {
+
+                    return "Переслать чек";
+                }
+                else
+                {
+                    return "Распечатать, переслать чек";
+                }
+            })
+            .ToPropertyEx(this, x => x.ReceiptActionText)
+            .DisposeWith(InternalDisposables);
+
+        this.WhenAnyValue(x => x.IsEmail, x => x.IsPrinter, (email, printer) =>
+            {
+                if (email)
+                {
+                    return "EmailIcon";
+                }
+                else if (printer)
+                {
+                    return "PrinterIcon";
+                }
+                else
+                {
+                    return "PrinterIcon";
+                }
+            })
+            .ToPropertyEx(this, x => x.ReceiptActionIcon)
+            .DisposeWith(InternalDisposables);
+
+
+        CashierPaymentItemVms.ToObservableChangeSet()
+            .AutoRefresh(x => x.Entered)
+            .ToCollection()
+            .Select(x => x.Sum(x => x.Entered))
+            .ToPropertyEx(this, x => x.ToEntered)
+            .DisposeWith(InternalDisposables);
+
+        this.WhenAnyValue(x => x.ToEntered, x => x.Total, (entered, total) => Math.Max(0, total - entered))
+            .ToPropertyEx(this, x => x.ToEnter)
+            .DisposeWith(InternalDisposables);
+
+        this.WhenAnyValue(x => x.ToEnter, x => x.ToEntered, x => x.Total, (toEnter, entered, total) => Math.Max(0, entered - total))
+            .ToPropertyEx(this, x => x.Change)
+            .DisposeWith(InternalDisposables);
+
+        this.WhenAnyValue(x => x.Total, x => x.ToEntered, (total, entered) => total <= entered)
+            .ToPropertyEx(this, x => x.IsExactAmount)
+            .DisposeWith(InternalDisposables);
+
+        this.WhenAnyValue(x => x.CurrentPaymentSumText, (text) =>
+            {
+                text = text.Replace(',', '.');
+                return string.IsNullOrWhiteSpace(text) ? 0 : text.EndsWith('.') ? double.Parse(text[..^1]) : double.Parse(text);
+            })
+            .ToPropertyEx(this, x => x.CurrentPaymentSum)
+            .DisposeWith(InternalDisposables);
+
         PayCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             var loading = new LoadingDialogViewModel()
@@ -167,7 +246,7 @@ public sealed class CashierPaymentPageVm : PageViewModel, IPaymentVm
 
             await MainViewModel.OkMessage("Оплата прошла успешно", "");
 
-            var cashierService = await Locator.GetInitializedService<ICashierService>(); 
+            var cashierService = await Locator.GetInitializedService<ICashierService>();
             var order = await cashierService.CreateOrder(false);
             var additiveService = await Locator.GetInitializedService<IAdditiveService>();
             var productService = await Locator.GetInitializedService<IProductService>();
@@ -375,81 +454,7 @@ public sealed class CashierPaymentPageVm : PageViewModel, IPaymentVm
             .Subscribe(x => Total = x)
             .DisposeWith(disposables);
 
-        this.WhenAnyValue(x => x.IsEmail, x => x.IsPrinter, x => x.WithReceipt, (email, printer, withReceipt) =>
-            {
-                if (!withReceipt)
-                {
-                    return "Распечатать, переслать чек";
-                }
-
-                if (withReceipt)
-                {
-                    if (!email && !printer)
-                    {
-                        IsPrinter = true;
-                        return "Переслать чек";
-                    }
-                }
-
-                if (email)
-                {
-                    return "Отправить на почту";
-                }
-                else if (printer)
-                {
-
-                    return "Переслать чек";
-                }
-                else
-                {
-                    return "Распечатать, переслать чек";
-                }
-            })
-            .ToPropertyEx(this, x => x.ReceiptActionText)
-            .DisposeWith(disposables);
-
-        this.WhenAnyValue(x => x.IsEmail, x => x.IsPrinter, (email, printer) =>
-            {
-                if (email)
-                {
-                    return "EmailIcon";
-                }
-                else if (printer)
-                {
-                    return "PrinterIcon";
-                }
-                else
-                {
-                    return "PrinterIcon";
-                }
-            })
-            .ToPropertyEx(this, x => x.ReceiptActionIcon)
-            .DisposeWith(disposables);
-
-
-        CashierPaymentItemVms.ToObservableChangeSet()
-            .AutoRefresh(x => x.Entered)
-            .ToCollection()
-            .Select(x => x.Sum(x => x.Entered))
-            .ToPropertyEx(this, x => x.ToEntered)
-            .DisposeWith(disposables);
-
-        this.WhenAnyValue(x => x.ToEntered, x => x.Total, (entered, total) => Math.Max(0, total - entered))
-            .ToPropertyEx(this, x => x.ToEnter)
-            .DisposeWith(disposables);
-
-        this.WhenAnyValue(x => x.ToEnter, x => x.ToEntered, x => x.Total, (toEnter, entered, total) => Math.Max(0, entered - total))
-            .ToPropertyEx(this, x => x.Change)
-            .DisposeWith(disposables);
-
-        this.WhenAnyValue(x => x.CurrentPaymentSumText, (text) =>
-            {
-                text = text.Replace(',', '.');
-                return string.IsNullOrWhiteSpace(text) ? 0 : text.EndsWith('.') ? double.Parse(text[..^1]) : double.Parse(text);
-            })
-            .ToPropertyEx(this, x => x.CurrentPaymentSum)
-            .DisposeWith(disposables);
-
+        
         this.WhenAnyValue(x => x.CurrentPaymentType, x => x.CurrentPaymentSum, x => x.Locker)
             .Subscribe<(PaymentType type, double sum, bool locker)>(x =>
             {
@@ -475,11 +480,6 @@ public sealed class CashierPaymentPageVm : PageViewModel, IPaymentVm
                     WithoutRevenueVm.Entered = x.sum;
                 }
             })
-            .DisposeWith(disposables);
-
-
-        this.WhenAnyValue(x => x.Total, x => x.ToEntered, (total, entered) => total <= entered)
-            .ToPropertyEx(this, x => x.IsExactAmount)
             .DisposeWith(disposables);
 
 

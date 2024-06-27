@@ -62,20 +62,6 @@ public partial class ProductView : ButtonUserControl<ProductViewModel>
             }
 
 
-            // NOTE: This is a bug. The background color should be set in the style. Or full by code behind.
-            /*this.OneWayBind(ViewModel, x => x.Color, x => x.Background, x =>
-            {
-                var defaultBrush = (Brush)App.Current.Resources["DefaultProductViewBackground"];
-
-                if (!string.IsNullOrWhiteSpace(x))
-                {
-                    return (Brush?)_brushConverter.ConvertFromString(x) ?? defaultBrush;
-                }
-
-                return defaultBrush;
-
-            }).DisposeWith(disposables);*/
-
             ViewModel.WhenAnyValue(x => x.Color)
                 .Subscribe(x =>
                 {

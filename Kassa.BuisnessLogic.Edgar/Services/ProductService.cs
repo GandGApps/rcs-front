@@ -50,10 +50,6 @@ internal sealed class ProductService : BaseInitializableService, IProductService
 
             await _receiptService.SpendIngridients(receipt, count);
             await CheckAllIngridients((product, receipt));
-
-            await _productRepository.Update(product);
-
-            await UpdateProduct(Mapper.MapProductToProductDto(product));
         }
 
         
@@ -94,9 +90,6 @@ internal sealed class ProductService : BaseInitializableService, IProductService
             await _receiptService.ReturnIngridients(receipt, count);
             await CheckAllIngridients((product, receipt));
 
-            await _productRepository.Update(product);
-
-            await UpdateProduct(Mapper.MapProductToProductDto(product));
         }
     }
 

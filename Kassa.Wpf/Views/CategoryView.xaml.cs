@@ -66,18 +66,21 @@ public partial class CategoryView : ButtonUserControl<CategoryViewModel>
                 // ProductIcon.Data = Application.Current.TryFindResource("CupOfTeaIcon") as Geometry;
             }
 
-            this.OneWayBind(ViewModel, x => x.Color, x => x.Background, x =>
-            {
-                var defaultBrush = (Brush)App.Current.Resources["DefaultProductViewBackground"];
-
-                if (!string.IsNullOrWhiteSpace(x))
+            ViewModel.WhenAnyValue(x => x.Color)
+                .Subscribe(x =>
                 {
-                    return (Brush?)_brushConverter.ConvertFromString(x) ?? defaultBrush;
-                }
+                    var defaultBrush = (Brush)App.Current.Resources["DefaultProductViewBackground"];
 
-                return defaultBrush;
+                    if (string.IsNullOrWhiteSpace(x))
+                    {
+                        return;
+                    }
 
-            }).DisposeWith(disposables);
+                    SetCurrentValue(BackgroundProperty, (Brush?)_brushConverter.ConvertFromString(x) ?? defaultBrush);
+                })
+                .DisposeWith(disposables);
+
+
         });
     }
 }

@@ -70,6 +70,7 @@ public sealed class ProductViewModel : ProductHostItemVm, IApplicationModelPrese
         Image = product.Image;
         Color = product.Color;
         _product = product;
+        HasIcon = product.Image >= 0;
 
         productService.RuntimeProducts.AddPresenter(this).DisposeWith(_disposables);
     }
@@ -99,6 +100,7 @@ public sealed class ProductViewModel : ProductHostItemVm, IApplicationModelPrese
     {
         get; set;
     }
+
     [Reactive]
     public string Measure
     {
@@ -107,6 +109,12 @@ public sealed class ProductViewModel : ProductHostItemVm, IApplicationModelPrese
 
     [Reactive]
     public bool IsAvailable
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public bool HasIcon
     {
         get; set;
     }
@@ -128,76 +136,8 @@ public sealed class ProductViewModel : ProductHostItemVm, IApplicationModelPrese
         IsAvailable = product.IsAvailable && product.IsEnoughIngredients;
         Image = product.Image;
         Color = product.Color;
+        HasIcon = product.Image >= 0;
 
         _product = product;
     }
-}
-
-[EditorBrowsable(EditorBrowsableState.Never)]
-public class DesignerProductViewModel : ReactiveObject
-{
-    public int Id
-    {
-        get; set;
-    }
-    [Reactive]
-    public string Name
-    {
-        get; set;
-    } = null!;
-    [Reactive]
-    public string CurrencySymbol
-    {
-        get; set;
-    } = null!;
-    [Reactive]
-    public double Price
-    {
-        get; set;
-    }
-    [Reactive]
-    public bool IsAdded
-    {
-        get; set;
-    }
-    [Reactive]
-    public double Count
-    {
-        get; set;
-    }
-    [Reactive]
-    public string Measure
-    {
-        get; set;
-    } = null!;
-
-    [Reactive]
-    public bool IsAvailable
-    {
-        get; set;
-    }
-
-    [Reactive]
-    public string Icon
-    {
-        get; set;
-    } = null!;
-
-    [Reactive]
-    public bool HasIcon
-    {
-        get; set;
-    }
-
-    [Reactive]
-    public ReactiveCommand<Unit, Unit> AddToShoppingListCommand
-    {
-        get; set;
-    } = null!;
-
-    [Reactive]
-    public string[] Categories
-    {
-        get; set;
-    } = [];
 }

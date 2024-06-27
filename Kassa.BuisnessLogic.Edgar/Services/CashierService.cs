@@ -64,36 +64,36 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
 
     public async ValueTask<IOrderEditService> CreateOrder(bool isDelivery)
     {
-        var order = new OrderEditService(_productService, _categoryService, _additiveService, _receiptService, null)
+        var orderEdit = new OrderEditService(_productService, _categoryService, _additiveService, _receiptService, null)
         {
             IsDelivery = isDelivery
         };
 
-        await order.Initialize();
+        await orderEdit.Initialize();
 
-        order.DisposeWith(InternalDisposables);
+        orderEdit.DisposeWith(InternalDisposables);
 
-        return order;
+        return orderEdit;
 
     }
 
     public async ValueTask<IOrderEditService> CreateOrder(OrderDto order)
     {
-        var orderService = new OrderEditService(_productService, _categoryService, _additiveService, _receiptService, order)
+        var orderEdit = new OrderEditService(_productService, _categoryService, _additiveService, _receiptService, order)
         {
             IsDelivery = order.IsDelivery
         };
 
-        await orderService.Initialize();
+        await orderEdit.Initialize();
 
-        orderService.DisposeWith(InternalDisposables);
+        orderEdit.DisposeWith(InternalDisposables);
 
         foreach (var product in order.Products)
         {
-            await orderService.AddProductToShoppingList(product);
+            await orderEdit.AddProductToShoppingList(product);
         }
 
-        return orderService;
+        return orderEdit;
     }
 
 
