@@ -304,6 +304,8 @@ public sealed class OrderEditPageVm : PageViewModel, IOrderEditVm
         get;
     }
 
+    public IOrderEditService OrderEditService => _orderEditService;
+
     [Reactive]
     public ReadOnlyObservableCollection<ProductShoppingListItemViewModel>? ShoppingListItems
     {

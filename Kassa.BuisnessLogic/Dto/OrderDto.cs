@@ -199,4 +199,6 @@ public class OrderDto : IGuidId
     }
 
     public string AddressWithoutStreet => $"{House} {Building} {Entrance} {Floor} {Apartment}";
+
+    
 }

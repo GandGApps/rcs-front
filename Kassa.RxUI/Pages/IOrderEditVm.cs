@@ -2,11 +2,17 @@
 using System.Reactive;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
+using Kassa.BuisnessLogic.Services;
 using ReactiveUI;
 
 namespace Kassa.RxUI.Pages;
 public interface IOrderEditVm: IReactiveObject
 {
+    public IOrderEditService OrderEditService
+    {
+        get;
+    }
+
     public string? Category
     {
         get; set;

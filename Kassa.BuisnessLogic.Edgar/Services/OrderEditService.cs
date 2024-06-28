@@ -108,6 +108,11 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
         get; set;
     }
 
+    public DateTime WhenOrderStarted
+    {
+        get; set;
+    }
+
     public IDisposable BindSelectedCategoryItems<T>(Func<ICategoryItemDto, T> creator, out ReadOnlyObservableCollection<T> categoryItems) where T : class, IGuidId
     {
         this.ThrowIfNotInitialized();

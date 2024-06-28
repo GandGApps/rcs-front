@@ -66,7 +66,8 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
     {
         var orderEdit = new OrderEditService(_productService, _categoryService, _additiveService, _receiptService, null)
         {
-            IsDelivery = isDelivery
+            IsDelivery = isDelivery,
+            WhenOrderStarted = DateTime.Now
         };
 
         await orderEdit.Initialize();
@@ -81,7 +82,8 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
     {
         var orderEdit = new OrderEditService(_productService, _categoryService, _additiveService, _receiptService, order)
         {
-            IsDelivery = order.IsDelivery
+            IsDelivery = order.IsDelivery,
+            WhenOrderStarted = order.CreatedAt
         };
 
         await orderEdit.Initialize();

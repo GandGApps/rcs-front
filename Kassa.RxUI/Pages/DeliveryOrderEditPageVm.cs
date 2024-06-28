@@ -343,4 +343,8 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
     {
         get; set;
     }
+    public IOrderEditService OrderEditService
+    {
+        get;
+    }
 }

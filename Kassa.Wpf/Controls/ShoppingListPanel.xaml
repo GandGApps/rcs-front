@@ -10,7 +10,6 @@
     d:DesignWidth="800"
     mc:Ignorable="d">
     <Border
-        Height="{Binding ActualHeight, ElementName=CashierTabPanel}"
         Margin="{mx:AdaptiveSize Thickness='0,3,0,0'}"
         Padding="{mx:AdaptiveSize Thickness='12'}"
         Background="{DynamicResource ShoppingListTopMenu}"
@@ -108,7 +107,7 @@
                     Height="{mx:AdaptiveSize 17}"
                     Data="{StaticResource DocsIcon}"
                     Fill="White" />
-                <Run Text="20" />
+                <Run x:Name="OrderId" Text="20" />
             </TextBlock>
 
             <TextBlock
@@ -120,7 +119,10 @@
                     Height="{mx:AdaptiveSize 20}"
                     Data="{StaticResource UserIcon}"
                     Fill="White" />
-                <Run x:Name="CashierName" Text="Григор" />
+                <Run
+                    x:Name="CashierName"
+                    FontSize="{mx:AdaptiveSize 14}"
+                    Text="Григор" />
             </TextBlock>
 
         </Grid>

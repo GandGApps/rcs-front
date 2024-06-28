@@ -14,8 +14,10 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Services;
 using ReactiveUI;
+using Splat;
 
 namespace Kassa.Wpf.Controls;
 /// <summary>
@@ -69,6 +71,7 @@ public sealed partial class ShoppingListPanel : UserControl
                     })
                     .DisposeWith(panel._disposables);
 
+                panel.OrderId.Text = orderEditService.OrderId.ToString("N")[..2];
             }
         }
     }
@@ -78,6 +81,11 @@ public sealed partial class ShoppingListPanel : UserControl
     public ShoppingListPanel()
     {
         InitializeComponent();
+
+        var shiftService = Locator.Current.GetNotInitializedService<IShiftService>();
+        var currentShift = shiftService.CurrentShift.Value;
+
+        Shift = currentShift;
     }
 
     public IOrderEditService? OrderEditService
