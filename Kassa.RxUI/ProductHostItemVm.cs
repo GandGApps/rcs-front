@@ -13,7 +13,7 @@ public abstract class ProductHostItemVm : ReactiveObject, IGuidId
 
     public Guid Id
     {
-        get; protected set;
+        get; protected init;
     }
 
     [Reactive]

@@ -55,6 +55,7 @@ public sealed class CategoryViewModel : ProductHostItemVm, IActivatableViewModel
     {
         _categoryId = category.Id;
 
+        Id = _categoryId;
         Name = category.Name;
         HasIcon = category.HasIcon;
         Image = category.Image;

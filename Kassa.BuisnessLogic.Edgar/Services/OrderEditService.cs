@@ -987,6 +987,8 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
         order.SubtotalSum = order.Products.Sum(x => x.SubTotalPrice);
         order.Discount = Discount.Value;
         order.IsForHere = IsForHere.Value;
+        
+        // Need ordersService update
 
         return order;
     }

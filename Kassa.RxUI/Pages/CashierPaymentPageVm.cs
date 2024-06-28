@@ -251,6 +251,8 @@ public sealed class CashierPaymentPageVm : PageViewModel, IPaymentVm
             var additiveService = await Locator.GetInitializedService<IAdditiveService>();
             var productService = await Locator.GetInitializedService<IProductService>();
 
+            await cashierService.SelectCurrentOrder(order);
+
             await MainViewModel.GoToPageAndResetCommand.Execute(new OrderEditPageVm(order, cashierService, additiveService, productService));
 
 

@@ -80,6 +80,8 @@ public partial class CategoryView : ButtonUserControl<CategoryViewModel>
                 })
                 .DisposeWith(disposables);
 
+            this.OneWayBind(ViewModel, vm => vm.Name, v => v.ProductName.Text)
+                .DisposeWith(disposables);
 
         });
     }

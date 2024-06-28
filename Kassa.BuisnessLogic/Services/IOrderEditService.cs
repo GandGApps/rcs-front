@@ -65,6 +65,11 @@ public interface IOrderEditService : IInitializableService
         get;
     }
 
+    public DateTime WhenOrderStarted
+    {
+        get;
+    }
+
     public void SetMultiSelect(bool isMultiSelect);
     public void SetShowPrice(bool showPrice);
     public void SetIsStopList(bool isStopList);
