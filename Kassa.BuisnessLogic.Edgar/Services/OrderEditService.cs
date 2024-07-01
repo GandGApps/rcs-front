@@ -994,6 +994,8 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
         order.IsForHere = IsForHere.Value;
         
         // Need ordersService update
+        var ordersService = Locator.GetNotInitializedService<IOrdersService>();
+        ordersService.RuntimeOrders.AddOrUpdate(order);
 
         return order;
     }

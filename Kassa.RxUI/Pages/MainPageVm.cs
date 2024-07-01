@@ -119,13 +119,14 @@ public class MainPageVm : PageViewModel
             var cashierService = await Locator.GetInitializedService<ICashierService>();
             var shiftService = await Locator.GetInitializedService<IShiftService>();
             var orderService = await Locator.GetInitializedService<IOrdersService>();
+            var productService = await Locator.GetInitializedService<IProductService>();
 
             if (!await TryAuthorizePageAccess<ServicePageVm>(shiftService))
             {
                 return;
             }
 
-            await MainViewModel.GoToPage(new ServicePageVm(cashierService, shiftService, orderService));
+            await MainViewModel.GoToPage(new ServicePageVm(cashierService, shiftService, orderService, productService));
         });
 
         GoToCashier = CreatePageBusyCommand(async () =>

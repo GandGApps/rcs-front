@@ -32,25 +32,6 @@ public partial class App : Application
         return merged[key];
     }
 
-    /// <summary>
-    /// Get current theme name
-    /// </summary>
-    /// <returns>$"Themes/{themeName}Generated.xaml" theme name</returns>
-    public static Theme GetCurrentThemeName()
-    {
-        var app = (App)Current;
-        var merged = app.Resources.MergedDictionaries[0];
-
-        var themeName = merged.Source.OriginalString.Split('/').LastOrDefault()?.Split('.').FirstOrDefault();
-
-        if (string.IsNullOrEmpty(themeName))
-            throw new Exception("Theme name is null or empty");
-
-        themeName = themeName[..^"Generated".Length];
-
-        return Enum.Parse<Theme>(themeName);
-    }
-
     public App()
     {
         var configurationBuilder = new ConfigurationBuilder();

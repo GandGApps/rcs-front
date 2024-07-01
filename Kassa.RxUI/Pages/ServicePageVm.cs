@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Disposables;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using DynamicData;
+using DynamicData.Binding;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
@@ -26,21 +28,21 @@ public class ServicePageVm : PageViewModel
     private readonly IShiftService _shiftService;
     private readonly ICashierService _cashierService;
     private readonly IOrdersService _ordersService;
+    private readonly IProductService _productService;
 
-    private readonly ObservableCollection<ServiceOrderRowViewModel> _openOrders = [];
     private readonly ObservableCollection<ServiceOrderRowViewModel> _closedOrders = [];
     private readonly ObservableCollection<ServiceOrderRowViewModel> _ordersOfClosedCashShifts = [];
 
 
-    public ServicePageVm(ICashierService cashierService, IShiftService shiftService, IOrdersService ordersService)
+    public ServicePageVm(ICashierService cashierService, IShiftService shiftService, IOrdersService ordersService, IProductService productService)
     {
         _cashierService = cashierService;
         _shiftService = shiftService;
         _ordersService = ordersService;
+        _productService = productService;
 
         SelectedDocuments = new([]);
 
-        OpenOrders = new(_openOrders);
         ClosedOrders = new(_closedOrders);
         OrdersOfClosedCashShifts = new(_ordersOfClosedCashShifts);
 
@@ -125,15 +127,60 @@ public class ServicePageVm : PageViewModel
 
                 if (x)
                 {
-                    _openOrders.Clear();
                     _closedOrders.Clear();
                     _ordersOfClosedCashShifts.Clear();
 
-                   
+                    // Closed orders in the current cashier shift
+                    InitAndFilterAndSelectThenSubscribeToRuntimes(x =>
+                    {
+                        Debug.Assert(_shiftService.CurrentCashierShift.Value != null);
 
+                        var cashierShiftId = _shiftService.CurrentCashierShift.Value.CreateDto().Id;
+
+                        if (x.CashierShiftId == cashierShiftId && x.PaymentInfo != null)
+                        {
+                            return true;
+                        }
+
+                        return false;
+                    },
+                        x => new ServiceOrderRowViewModel(x, shiftService, _productService, _cashierService),
+                        ordersService.RuntimeOrders,
+                        _closedOrders)
+                        .DisposeWith(disposables);
+
+                    // Closed orders in the closed cashier shifts
+                    InitAndFilterAndSelectThenSubscribeToRuntimes(x =>
+                    {
+                        Debug.Assert(_shiftService.CurrentCashierShift.Value != null);
+
+                        var cashierShiftId = _shiftService.CurrentCashierShift.Value.CreateDto().Id;
+
+                        if (x.CashierShiftId != cashierShiftId && x.PaymentInfo != null)
+                        {
+                            return true;
+                        }
+
+                        return false;
+                    },
+                        x => new ServiceOrderRowViewModel(x, shiftService, _productService, _cashierService),
+                        ordersService.RuntimeOrders,
+                        _ordersOfClosedCashShifts)
+                        .DisposeWith(disposables);
                 }
 
             }).DisposeWith(InternalDisposables);
+
+        _cashierService.Orders.ToObservableChangeSet()
+            .Transform(x => new ServiceOrderRowViewModel(x.GetOrder(), shiftService, _productService, _cashierService))
+            .Bind(out var openOrders)
+            .DisposeMany()
+            .Subscribe()
+            .DisposeWith(InternalDisposables);
+
+        OpenOrders = openOrders;
+
+        
     }
 
 

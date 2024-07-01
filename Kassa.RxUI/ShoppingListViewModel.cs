@@ -34,12 +34,8 @@ public class ShoppingListViewModel : BaseViewModel
         this.WhenAnyValue(x => x.Subtotal)
             .Select(x => x * (1-Discount))
             .Subscribe(x => Total = x);
-    }
 
-    public ObservableCollection<ProductShoppingListItemViewModel> AddictiveViewModels
-    {
-        get;
-    } = [];
+    }
 
     public ReactiveCommand<Unit, Unit> IncreaseCommand
     {

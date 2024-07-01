@@ -256,34 +256,6 @@ public sealed class OrderEditPageVm : PageViewModel, IOrderEditVm
         ShoppingListItems = shoppingListItems;
         FastAdditives = fastAdditives;
 
-        this.WhenAnyValue(x => x.DiscountAccesser)
-            .Subscribe(x =>
-            {
-                foreach (var item in ShoppingList.AddictiveViewModels)
-                {
-                    if (x is IDiscountAccesser discountAccesser)
-                    {
-                        item.HasDiscount = true;
-                        if (double.IsNaN(discountAccesser.AccessDicsount(item.ItemId)))
-                        {
-                            item.HasDiscount = false;
-                            item.Discount = 0;
-                        }
-                        else
-                        {
-                            item.Discount = discountAccesser.AccessDicsount(item.ItemId);
-                        }
-                        continue;
-                    }
-
-                    item.HasDiscount = false;
-                    item.Discount = 0;
-                }
-
-
-            })
-            .DisposeWith(disposables);
-
         ShoppingListItems.ToObservableChangeSet()
                          .AutoRefresh(x => x.SubtotalSum)
                          .ToCollection()

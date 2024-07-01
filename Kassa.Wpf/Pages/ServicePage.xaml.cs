@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Text;
@@ -28,6 +29,8 @@ public partial class ServicePage : ReactiveUserControl<ServicePageVm>
 
         this.WhenActivated(disposables =>
         {
+            Debug.Assert(ViewModel != null);
+
             this.BindCommand(ViewModel, vm => vm.GoBackCommand, v => v.BackButton)
                 .DisposeWith(disposables);
 
@@ -36,6 +39,11 @@ public partial class ServicePage : ReactiveUserControl<ServicePageVm>
 
             this.BindCommand(ViewModel, vm => vm.ShiftButtonCommand, v => v.CloseShiftButton)
                 .DisposeWith(disposables);
+
+
+            DataGridOpenOrders.ItemsSource = ViewModel.OpenOrders;
+            DataGridClosedOrders.ItemsSource = ViewModel.ClosedOrders;
+            DataGridClosedShiftClosedOrder.ItemsSource = ViewModel.OrdersOfClosedCashShifts;
 
         });
     }

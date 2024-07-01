@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,11 +28,12 @@ public sealed class ServiceOrderRowViewModel : ReactiveObject, IGuidId, IApplica
         _shiftService = shiftService;
         _productService = productService;
 
+        Debug.Assert(shiftService.CurrentShift.Value != null);
 
         Id = order.Id;
         Number = order.Id.GuidToPrettyInt();
         Time = order.CreatedAt.ToString("dd.MM.yyyy | HH:mm");
-        CashierName = shiftService.ToString();
+        CashierName = shiftService.CurrentShift.Value.Member.Name;
         Amount = order.Products.Sum(x => x.TotalPrice + x.Additives.Sum(x => x.TotalPrice)).ToString("F2");
         Composition = string.Join(", ", order.Products.Take(4).Select(x =>
         {
@@ -45,6 +47,9 @@ public sealed class ServiceOrderRowViewModel : ReactiveObject, IGuidId, IApplica
 
             return productDto?.Name ?? "Неизвестный продукт";
         }));
+
+        ExternalNumber = "???";
+        ReceiptNumber = "???";
     }
 
     public int Number
@@ -82,6 +87,32 @@ public sealed class ServiceOrderRowViewModel : ReactiveObject, IGuidId, IApplica
         get; set;
     }
 
-    public void ModelChanged(Change<OrderDto> change) => throw new NotImplementedException();
+    public void ModelChanged(Change<OrderDto> change)
+    {
+        var order = change.Current;
+
+        Debug.Assert(_shiftService.CurrentShift.Value != null);
+
+        Number = order.Id.GuidToPrettyInt();
+        Time = order.CreatedAt.ToString("dd.MM.yyyy | HH:mm");
+        CashierName = _shiftService.CurrentShift.Value.Member.Name;
+        Amount = order.Products.Sum(x => x.TotalPrice + x.Additives.Sum(x => x.TotalPrice)).ToString("F2");
+        Composition = string.Join(", ", order.Products.Take(4).Select(x =>
+        {
+            var productDto = _productService.RuntimeProducts.TryGetValue(x.ProductId, out var product) ? product : null;
+
+
+            if (productDto is null)
+            {
+                this.Log().Error($"Product with id {x.ProductId} not found");
+            }
+
+            return productDto?.Name ?? "Неизвестный продукт";
+        }));
+
+        ExternalNumber = "???";
+        ReceiptNumber = "???";
+    }
+
     public void Dispose() {}
 }
