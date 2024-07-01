@@ -23,14 +23,6 @@ public partial class App : Application
 {
     public static readonly CultureInfo RuCulture = new("ru-RU");
 
-    public static void SetThemeResource(string key, object value)
-    {
-        var app = (App)Current;
-        var merged = app.Resources.MergedDictionaries[0];
-
-        merged[key] = value;
-    }
-
     public static object GetThemeResource(string key)
     {
 
@@ -39,22 +31,6 @@ public partial class App : Application
 
         return merged[key];
     }
-
-    public static void SwitchTheme(Theme theme) => SwitchTheme(theme.ToString());
-
-    public static void SwitchTheme(string themeName)
-    {
-        var app = (App)Current;
-
-        var theme = new ResourceDictionary
-        {
-            Source = new Uri($"Themes/{themeName}Generated.xaml", UriKind.Relative)
-        };
-
-        app.Resources.MergedDictionaries.Insert(0,theme);
-        app.Resources.MergedDictionaries.RemoveAt(1);
-    }
-
 
     /// <summary>
     /// Get current theme name
