@@ -25,10 +25,11 @@ public sealed class CategoryViewModel : ProductHostItemVm, IActivatableViewModel
 
         if (order is null)
         {
+            
 #if DEBUG
             throw new InvalidOperationException("Order is not selected");
 #else
-            this.Log().Error("Order is not selected");
+            LogHost.Default.Error("Order is not selected");
 #endif
         }
 
