@@ -12,6 +12,8 @@ using Kassa.Wpf.Themes;
 using Microsoft.Extensions.Configuration;
 using ReactiveUI;
 using Splat;
+using Kassa.BuisnessLogic.Services;
+using Kassa.Wpf.Services;
 
 namespace Kassa.Wpf;
 /// <summary>
@@ -20,41 +22,6 @@ namespace Kassa.Wpf;
 public partial class App : Application
 {
     public static readonly CultureInfo RuCulture = new("ru-RU");
-
-    private static readonly Dictionary<string, string[]> _lightTheme = new()
-{
-    { "Theme", new[] { "SubtotalButtonBorderBrush", "SubtotalSeparator" } },
-    { "SecondaryBackground", new[] { "DefaultAdditiveViewBackground", "PricingDetailsButtonBackground", "ProductHostBackground", "MultiSelectCheckBoxCheckedBackground" } },
-    { "SurfaceBrush", new[] { "DefaultProductViewIconFill", "NotAvailableProductViewIconFill", "SelecteProductViewIconFill", "DefaultAdditiveViewIconFill", "NotAvailbaleAdditiveViewIconFill", "SelectedAdditiveViewIconFill", "TopBarIconFill", "CategoryViewIconFill", "ShoppingListTopMenu" } },
-    { "DisabledBrush", new[] { "DisabledButtonBackground" } },
-    { "AccentBrush", new[] { "DefaultButtonBackground", "DialogButtonHover" } },
-    { "AccentBrush2", new[] { "SelectedProductViewBackground", "SelecteProductViewPriceBackground", "SelectedAdditiveViewBackground", "AccentTabPanel" } },
-    { "AccentBrush3", []},
-    { "SecondaryBrush", new[] { "DefaultProductViewBackground", "DefaultCardBackground", "DialogHeaderBackground", "KeyBackground", "CategoryViewBackground" } },
-    { "PrimaryForeground", new[] { "DefaultProductViewForeground", "NotAvailableProductProductViewForeground", "SelectedProductViewForeground", "DefaultAdditiveViewForeground", "NotAvailbaleAdditiveViewForeground", "SelectedAdditiveViewForeground", "PricingDetailsButtonForeground", "ProductHostForeground" } },
-    { "AlternateForeground", new[] { "DefaultButtonForeground", "IconOnlyButtonIconFill", "MultiSelectCheckBoxForeground", "WorkingShiftForeground", "ReceiptNumberForeground", "UserForeground", "DownMenuBackButtonForeground", "DownMenuSelectedBrush", "DownMenuIconFillBrush", "TabPanelIconFill", "DefaultMainButton" } },
-    { "SecondaryForeground", new[] { "DefaultProdcutViewPriceForeground", "SelecteProdcutViewPriceForeground", "DefaultAdditveViewMeasureForeground", "NotAvailbaleAdditveViewMeasureForeground", "SelectedAdditveViewMeasureForeground", "TopBarForegeround", "KeyForeground", "DialogSubheaderForeground" } },
-    { "DangerBrush", new[] { "NotAvailableProdcutViewPriceForeground", "NotAvailableTextProductView", "NotAvailbaleTextAdditveView", "DialogTurnOffDevice" } },
-    { "DangerBrushAlpha", new[] { "NotAvailableProductViewBackground", "NotAvailableProductViewPriceBackground", "NotAvailbaleAdditiveViewBackground" } },
-    { "SuccessBrush", new[] { "DialogOptionsIconFill" } },
-    { "TopShadowBrush", [] },
-    { "BottomShadowBrush", [] },
-    { "AccentBorderBrush", [] },
-    { "BlurBrush", [] },
-};
-
-    public static void SetSolidBrush(string brushKey, Color color)
-    {
-        var app = (App)Current;
-        var merged = app.Resources.MergedDictionaries[0];
-
-        foreach (var key in _lightTheme[brushKey])
-        {
-            merged[key] = new SolidColorBrush(color);
-        }
-
-        merged[brushKey] = new SolidColorBrush(color);
-    }
 
     public static void SetThemeResource(string key, object value)
     {
@@ -122,6 +89,8 @@ public partial class App : Application
         Locator.CurrentMutable.AddLoggers();
 
         Locator.CurrentMutable.RegisterConstant<IConfiguration>(config);
+
+        Locator.CurrentMutable.RegisterConstant<IPrinter>(new Printer());
 
         Locator.CurrentMutable.InitializeReactiveUI(RegistrationNamespace.Wpf);
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
+using Kassa.Shared;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
 internal sealed class CashierPaymentService: BaseInitializableService, IPaymentService
@@ -58,6 +59,7 @@ internal sealed class CashierPaymentService: BaseInitializableService, IPaymentS
         get; set;
     }
 
+    /// <inheritdoc/>
     public async Task PayAndSaveOrderThenDispose()
     {
         var order = Order.GetOrder();
@@ -79,6 +81,10 @@ internal sealed class CashierPaymentService: BaseInitializableService, IPaymentS
         // It's need for CashierService
         Payed?.Invoke();
         Order.Dispose();
+
+        var printer = Splat.Locator.Current.GetRequiredService<IPrinter>();
+
+        await printer.PrintAsync(order);
 
         Dispose();
     }

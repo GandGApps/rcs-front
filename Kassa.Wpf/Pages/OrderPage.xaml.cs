@@ -1,4 +1,5 @@
-﻿using System.Reactive.Disposables;
+﻿using System.Diagnostics;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Windows;
 using Kassa.RxUI;
@@ -19,15 +20,13 @@ public partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
 
         this.WhenActivated(disposables =>
         {
+            Debug.Assert(ViewModel != null);
             NavigateBackButton.Command = CategoryViewModel.NavigateBackCategoryCommand;
-
+            
             this.OneWayBind(ViewModel, x => x.FastAdditives, x => x.FastAddictives.ItemsSource)
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, x => x.CurrentCategoryItems, x => x.ProductsHost.ItemsSource)
-                .DisposeWith(disposables);
-
-            this.OneWayBind(ViewModel, x => x.ShoppingListItems, x => x.ShoppingListItems.ItemsSource)
                 .DisposeWith(disposables);
 
             this.BindCommand(ViewModel, x => x.ShoppingList!.IncreaseCommand, x => x.IncreaseButton)
@@ -82,17 +81,7 @@ public partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
                 .DisposeWith(disposables);
 
             ShoppingListPanel.OrderEditService = ViewModel.OrderEditService;
-
-            ViewModel.WhenAnyValue(x => x.ShoppingListItems!.Count)
-                     .Buffer(2, 1)
-                     .Subscribe(x =>
-                     {
-                         if (x[0] < x[1])
-                         {
-                             ScrollViewerForShoppingListItems.ScrollToEnd();
-                         }
-                     })
-                     .DisposeWith(disposables);
+            ShoppingListItems.OrderEditService = ViewModel.OrderEditService;
         });
     }
 }

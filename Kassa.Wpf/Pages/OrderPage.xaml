@@ -204,18 +204,7 @@
 
                 <controls:ShoppingListPanel x:Name="ShoppingListPanel" Height="{Binding ActualHeight, ElementName=CashierTabPanel}" />
 
-                <ScrollViewer
-                    x:Name="ScrollViewerForShoppingListItems"
-                    Grid.Row="1"
-                    Style="{StaticResource PrimaryScrollViewer}"
-                    VerticalScrollBarVisibility="Auto">
-
-                    <i:Interaction.Behaviors>
-                        <behaviors:ScrollViewerFixingBehavior />
-                    </i:Interaction.Behaviors>
-
-                    <ItemsControl x:Name="ShoppingListItems" Margin="0,11,0,0" />
-                </ScrollViewer>
+                <controls:ShoppingList x:Name="ShoppingListItems" Grid.Row="1" />
 
                 <Border
                     Grid.Row="2"
