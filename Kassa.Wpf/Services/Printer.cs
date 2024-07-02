@@ -11,7 +11,7 @@ using Windows.Devices.Enumeration;
 using Windows.Devices.PointOfService;
 
 namespace Kassa.Wpf.Services;
-internal sealed class Printer : IPrinter
+internal sealed class Printer : IPrinter, IEnableLogger
 {
 
     private static async Task<PosPrinter?> FindFirst()
@@ -21,6 +21,7 @@ internal sealed class Printer : IPrinter
 
         if (devices.Count == 0)
         {
+            LogHost.Default.Warn("No printer found");
             return null;
         }
 
@@ -29,6 +30,7 @@ internal sealed class Printer : IPrinter
 
         if (printer == null)
         {
+            LogHost.Default.Warn("Failed to create printer");
             return null;
         }
 
@@ -41,6 +43,7 @@ internal sealed class Printer : IPrinter
 
         if (posPrinter == null)
         {
+            this.Log().Warn("No printer found");
             return;
         }
 
@@ -104,6 +107,7 @@ internal sealed class Printer : IPrinter
 
         if (posPrinter == null)
         {
+            this.Log().Warn("No printer found");
             return;
         }
 

@@ -54,27 +54,3 @@ jobs:
         git commit -m "Add published binaries"
         git push -u origin bin --force
       shell: pwsh
-
-
-      # Build and publish Kassa.Launcher
-    - name: Build Kassa.Launcher project
-      run: dotnet build --configuration Release ./Kassa.Launcher/Kassa.Launcher.csproj
-
-    - name: Publish Kassa.Launcher project
-      run: dotnet publish --configuration Release --output ./output-launcher -p:PublishSingleFile=true -p:PublishReadyToRun=true -r win-x64 -p:SelfContained=true ./Kassa.Launcher/Kassa.Launcher.csproj
-
-    - name: Commit and Push Kassa.Launcher binaries
-      env:
-        GITHUB_TOKEN: ${{ secrets.KASSA_TOKEN }}
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git fetch origin
-        git checkout -b launcher-bin origin/launcher-bin || git checkout -b launcher-bin
-        git rm -rf .
-        Copy-Item -Path ./output-launcher/* -Destination . -Recurse
-        Remove-Item -Recurse -Force -Path ./output-launcher
-        git add .
-        git commit -m "Add published Kassa.Launcher binaries"
-        git push -u origin launcher-bin --force
-      shell: pwsh
