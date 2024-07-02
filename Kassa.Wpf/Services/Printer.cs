@@ -16,25 +16,9 @@ internal sealed class Printer : IPrinter, IEnableLogger
 
     private static async Task<PosPrinter?> FindFirst()
     {
-        var deviceSelector = PosPrinter.GetDeviceSelector();
-        var devices = await DeviceInformation.FindAllAsync(deviceSelector);
+        var device = await PosPrinter.GetDefaultAsync();
 
-        if (devices.Count == 0)
-        {
-            LogHost.Default.Warn("No printer found");
-            return null;
-        }
-
-        var deviceInfo = devices[0];
-        var printer = await PosPrinter.FromIdAsync(deviceInfo.Id);
-
-        if (printer == null)
-        {
-            LogHost.Default.Warn("Failed to create printer");
-            return null;
-        }
-
-        return printer;
+        return device;
     }
 
     public async Task PrintAsync(ReportShiftDto reportShift)
@@ -47,8 +31,15 @@ internal sealed class Printer : IPrinter, IEnableLogger
             return;
         }
 
+        this.Log().Info("Printer found");
+
         using var claimedPosPrinter = await posPrinter.ClaimPrinterAsync();
+
+        this.Log().Info("Printer claimed");
+
         var job = claimedPosPrinter.Receipt.CreateJob();
+
+        this.Log().Info("Job created");
 
         job.PrintLine("-----------------------------------------");
         job.PrintLine("Торговое");
@@ -111,8 +102,15 @@ internal sealed class Printer : IPrinter, IEnableLogger
             return;
         }
 
+        this.Log().Info("Printer found");
+
         using var claimedPosPrinter = await posPrinter.ClaimPrinterAsync();
+
+        this.Log().Info("Printer claimed");
+
         var job = claimedPosPrinter.Receipt.CreateJob();
+
+        this.Log().Info("Job created");
 
         var productIndex = 0;
         var productService = await Locator.Current.GetInitializedService<IProductService>();
