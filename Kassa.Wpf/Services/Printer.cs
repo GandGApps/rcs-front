@@ -19,7 +19,7 @@ internal sealed class Printer : IPrinter, IEnableLogger
     {
         var device = await PosPrinter.GetDefaultAsync();
 
-        LogHost.Default.Debug($"Printer found: {device?.DeviceId ?? "not found"}");
+        LogHost.Default.Info($"Printer found: {device?.DeviceId ?? "not found"}");
 
         var devicePicker = new DevicePicker();
         devicePicker.Filter.SupportedDeviceSelectors.Add(PosPrinter.GetDeviceSelector());
@@ -32,7 +32,7 @@ internal sealed class Printer : IPrinter, IEnableLogger
             return null;
         }
 
-        LogHost.Default.Debug($"Printer found: {deviceInformation.Id}");
+        LogHost.Default.Info($"Printer found: {deviceInformation.Id}");
 
         return device ?? await PosPrinter.FromIdAsync(deviceInformation.Id);
     }

@@ -55,6 +55,11 @@ public class MainViewModel : ReactiveObject, IScreen
         get;
     }
 
+    public ReactiveCommand<PageViewModel, PageViewModel> GoToPageAndResetButNotMainCommand
+    {
+        get;
+    }
+
     public ReactiveCommand<Unit, Unit> GoBackCommand
     {
         get;
@@ -136,6 +141,32 @@ public class MainViewModel : ReactiveObject, IScreen
             Router.NavigationStack.Clear();
 
             await Router.Navigate.Execute(pageVm).FirstAsync();
+
+            return pageVm;
+        });
+
+        GoToPageAndResetButNotMainCommand = ReactiveCommand.CreateFromTask(async (PageViewModel pageVm) =>
+        {
+            while (Router.NavigationStack.Count > 0)
+            {
+                var currentPage = Router.NavigationStack[^1];
+
+                if (currentPage is MainPageVm)
+                {
+                    break;
+                }
+
+                Router.NavigationStack.Remove(currentPage);
+
+                if (currentPage is PageViewModel pageViewModel)
+                {
+                    pageVm.Activator.Deactivate();
+
+                    await pageVm.DisposeAsync();
+                }
+            }
+
+            await GoToPage(pageVm);
 
             return pageVm;
         });

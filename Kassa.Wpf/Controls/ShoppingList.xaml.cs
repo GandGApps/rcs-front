@@ -28,7 +28,7 @@ public sealed partial class ShoppingList : UserControl
 {
 
     public static readonly DependencyProperty OrderEditServiceProperty =
-        DependencyProperty.Register(nameof(OrderEditService), typeof(IOrderEditService), typeof(ShoppingList), new PropertyMetadata());
+        DependencyProperty.Register(nameof(OrderEditService), typeof(IOrderEditService), typeof(ShoppingList), new PropertyMetadata(OrderEditServiceChanged));
 
     public static readonly DependencyPropertyKey ShoppingListItemsProperty =
         DependencyProperty.RegisterReadOnly(nameof(ShoppingListItems), typeof(ReadOnlyCollection<ProductShoppingListItemViewModel>), typeof(ShoppingList), new PropertyMetadata());

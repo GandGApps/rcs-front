@@ -253,7 +253,7 @@ public sealed class CashierPaymentPageVm : PageViewModel, IPaymentVm
 
             await cashierService.SelectCurrentOrder(order);
 
-            await MainViewModel.GoToPageAndResetCommand.Execute(new OrderEditPageVm(order, cashierService, additiveService, productService));
+            await MainViewModel.GoToPageAndResetButNotMainCommand.Execute(new OrderEditPageVm(order, cashierService, additiveService, productService));
 
 
         }, this.WhenAnyValue(x => x.IsExactAmount));

@@ -8,6 +8,7 @@
     xmlns:local="clr-namespace:Kassa.Wpf.Controls"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
+    xmlns:view="clr-namespace:Kassa.Wpf.Views"
     d:DesignHeight="450"
     d:DesignWidth="800"
     mc:Ignorable="d">
@@ -21,7 +22,14 @@
             <behaviors:ScrollViewerFixingBehavior />
         </i:Interaction.Behaviors>
 
-        <ItemsControl x:Name="Items" Margin="{mx:AdaptiveSize Thickness='0,11,0,0'}" />
+        <ItemsControl x:Name="Items" Margin="{mx:AdaptiveSize Thickness='0,11,0,0'}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <view:ShoppingListItemView ViewModel="{Binding ., Mode=OneTime}" />
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+
     </ScrollViewer>
 
 </UserControl>
