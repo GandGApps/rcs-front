@@ -47,7 +47,7 @@ public partial class App : Application
 
         Locator.CurrentMutable.RegisterConstant<IConfiguration>(config);
 
-        Locator.CurrentMutable.RegisterConstant<IPrinter>(new Printer());
+        Locator.CurrentMutable.RegisterConstant<IPrinter>(new McPrinter());
 
         Locator.CurrentMutable.InitializeReactiveUI(RegistrationNamespace.Wpf);
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
