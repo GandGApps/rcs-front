@@ -49,7 +49,7 @@ internal sealed class McPrinter : IPrinter,IEnableLogger
 
     public async Task PrintAsync(ReportShiftDto reportShift)
     {
-#if
+#if MC_PRINTER
         var posPrinter = await FindFirstAsync();
 
         if (posPrinter == null)
@@ -115,7 +115,7 @@ internal sealed class McPrinter : IPrinter,IEnableLogger
 
     public async Task PrintAsync(OrderDto order)
     {
-#if
+#if MC_PRINTER
         var posPrinter = await FindFirstAsync();
 
         if (posPrinter == null)
