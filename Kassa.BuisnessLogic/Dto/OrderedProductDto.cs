@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Kassa.DataAccess;
 
 namespace Kassa.BuisnessLogic.Dto;
-public class OrderedProductDto
+
+public sealed class OrderedProductDto
 {
     public Guid Id
     {

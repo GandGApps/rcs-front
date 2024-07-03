@@ -38,7 +38,7 @@ public static class ApiSplatExtensions
         _serviceProvider = _services.BuildServiceProvider();
     }
 
-    public static void AddApi<T>(this IMutableDependencyResolver services, RefitSettings? settings = null) where T : class
+    public static void AddApi<T>(this IMutableDependencyResolver services, RefitSettings? settings = null, JsonSerializerContext serializerContext = null) where T : class
     {
         settings ??= _refitSettings;
 

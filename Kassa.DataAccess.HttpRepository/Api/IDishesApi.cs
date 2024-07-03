@@ -168,3 +168,9 @@ internal sealed record DishRequest
     }
 
 }
+
+[JsonSerializable(typeof(DishRequest))]
+internal partial class DishRequestJsonContext : JsonSerializerContext
+{
+
+}

@@ -11,42 +11,44 @@ using Splat;
 namespace Kassa.Shared;
 public sealed class ObservableLogger : ILogger, IObservable<LogInfo>, Serilog.ILogger
 {
-    private readonly Subject<LogInfo> subject = new();
+    private static readonly Subject<LogInfo> _subject = new();
+
+    public static IObservable<LogInfo> LogStream => _subject;
 
     public LogLevel Level
     {
         get;
     }
 
-    public IDisposable Subscribe(IObserver<LogInfo> observer) => subject.Subscribe(observer);
+    public IDisposable Subscribe(IObserver<LogInfo> observer) => _subject.Subscribe(observer);
     public void Write([Localizable(false)] string message, LogLevel logLevel)
     {
         var logInfo = new LogInfo(logLevel, message, null, null);
-        subject.OnNext(logInfo);
+        _subject.OnNext(logInfo);
     }
 
     public void Write(Exception exception, [Localizable(false)] string message, LogLevel logLevel)
     {
         var logInfo = new LogInfo(logLevel, message, null, exception);
-        subject.OnNext(logInfo);
+        _subject.OnNext(logInfo);
     }
 
     public void Write([Localizable(false)] string message, [Localizable(false)] Type type, LogLevel logLevel)
     {
         var logInfo = new LogInfo(logLevel, message, type, null);
-        subject.OnNext(logInfo);
+        _subject.OnNext(logInfo);
     }
 
     public void Write(Exception exception, [Localizable(false)] string message, [Localizable(false)] Type type, LogLevel logLevel)
     {
         var logInfo = new LogInfo(logLevel, message, type, exception);
-        subject.OnNext(logInfo);
+        _subject.OnNext(logInfo);
     }
 
     public void Write(LogEvent logEvent)
     {
         var logInfo = new LogInfo(ToLogLever(logEvent.Level), logEvent.RenderMessage(), null, logEvent.Exception);
-        subject.OnNext(logInfo);
+        _subject.OnNext(logInfo);
     }
 
     private static LogLevel ToLogLever(LogEventLevel logEvent) => logEvent switch

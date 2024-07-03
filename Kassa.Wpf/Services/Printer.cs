@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
@@ -18,7 +19,22 @@ internal sealed class Printer : IPrinter, IEnableLogger
     {
         var device = await PosPrinter.GetDefaultAsync();
 
-        return device;
+        LogHost.Default.Debug($"Printer found: {device?.DeviceId ?? "not found"}");
+
+        var devicePicker = new DevicePicker();
+        devicePicker.Filter.SupportedDeviceSelectors.Add(PosPrinter.GetDeviceSelector());
+
+        var deviceInformation = await devicePicker.PickSingleDeviceAsync(new());
+
+        if (deviceInformation == null)
+        {
+            LogHost.Default.Warn("No printer found");
+            return null;
+        }
+
+        LogHost.Default.Debug($"Printer found: {deviceInformation.Id}");
+
+        return device ?? await PosPrinter.FromIdAsync(deviceInformation.Id);
     }
 
     public async Task PrintAsync(ReportShiftDto reportShift)
@@ -153,7 +169,7 @@ internal sealed class Printer : IPrinter, IEnableLogger
     private static void LeftAndRightText(ClaimedPosPrinter claimedPosPrinter, ReceiptPrintJob receiptPrintJob, string left, string right)
     {
         var totalSize = left.Length + right.Length;
-        var formatedText = $"{left}{new string(' ',totalSize)}{right}";
+        var formatedText = $"{left}{new string(' ', totalSize)}{right}";
 
         receiptPrintJob.PrintLine(formatedText);
     }

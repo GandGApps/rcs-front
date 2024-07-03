@@ -25,6 +25,8 @@ public static class SplatExtensions
 
     public static void AddLoggers(this IMutableDependencyResolver services)
     {
+        var basePath = AppDomain.CurrentDomain.BaseDirectory;
+        var path = Path.Combine(basePath, "logs", "Logs.txt");
 
         Log.Logger = new LoggerConfiguration()
 #if DEBUG
@@ -32,7 +34,7 @@ public static class SplatExtensions
 #else
             .MinimumLevel.Information()
 #endif
-            .WriteTo.File("logs/Logs.txt", restrictedToMinimumLevel: LogEventLevel.Debug, rollingInterval: RollingInterval.Day)
+            .WriteTo.File(path, restrictedToMinimumLevel: LogEventLevel.Debug, rollingInterval: RollingInterval.Day)
             .WriteTo.Debug(restrictedToMinimumLevel: LogEventLevel.Debug)
             .WriteTo.Logger(new ObservableLogger())
             .CreateLogger();
