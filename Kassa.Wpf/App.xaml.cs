@@ -58,8 +58,6 @@ public partial class App : Application
             Locator.CurrentMutable.RegisterConstant<IPrinter>(new McPrinter());
         }
 
-        Locator.CurrentMutable.RegisterConstant<IPrinter>(new McPrinter());
-
         Locator.CurrentMutable.InitializeReactiveUI(RegistrationNamespace.Wpf);
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
         Locator.CurrentMutable.RegisterMockDataAccess(); // TODO: Replace with real data access
