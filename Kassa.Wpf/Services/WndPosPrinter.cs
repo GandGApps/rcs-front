@@ -12,34 +12,27 @@ using Windows.Devices.Enumeration;
 using Windows.Devices.PointOfService;
 
 namespace Kassa.Wpf.Services;
-internal sealed class Printer : IPrinter, IEnableLogger
+internal sealed class WndPosPrinter : IPrinter, IEnableLogger
 {
-
-    private static async Task<PosPrinter?> FindFirst()
+    private static async Task<PosPrinter?> FindFirstPrinter()
     {
         var device = await PosPrinter.GetDefaultAsync();
 
         LogHost.Default.Info($"Printer found: {device?.DeviceId ?? "not found"}");
 
-        var devicePicker = new DevicePicker();
-        devicePicker.Filter.SupportedDeviceSelectors.Add(PosPrinter.GetDeviceSelector());
+        var deviceCollection = await DeviceInformation.FindAllAsync();
 
-        var deviceInformation = await devicePicker.PickSingleDeviceAsync(new());
-
-        if (deviceInformation == null)
+        foreach (var deviceInfo in deviceCollection)
         {
-            LogHost.Default.Warn("No printer found");
-            return null;
+            LogHost.Default.Info($"Device found: {deviceInfo.Name}");
         }
 
-        LogHost.Default.Info($"Printer found: {deviceInformation.Id}");
-
-        return device ?? await PosPrinter.FromIdAsync(deviceInformation.Id);
+        return device;
     }
 
     public async Task PrintAsync(ReportShiftDto reportShift)
     {
-        using var posPrinter = await FindFirst();
+        using var posPrinter = await FindFirstPrinter();
 
         if (posPrinter == null)
         {
@@ -110,7 +103,7 @@ internal sealed class Printer : IPrinter, IEnableLogger
 
     public async Task PrintAsync(OrderDto order)
     {
-        using var posPrinter = await FindFirst();
+        using var posPrinter = await FindFirstPrinter();
 
         if (posPrinter == null)
         {

@@ -47,6 +47,17 @@ public partial class App : Application
 
         Locator.CurrentMutable.RegisterConstant<IConfiguration>(config);
 
+        var posLib = config.GetValue<string>("PosLib");
+
+        if (string.Equals(posLib, "wndpos", StringComparison.InvariantCultureIgnoreCase))
+        {
+            Locator.CurrentMutable.RegisterConstant<IPrinter>(new WndPosPrinter());
+        }
+        else if (string.Equals(posLib, "microsoft", StringComparison.InvariantCultureIgnoreCase))
+        {
+            Locator.CurrentMutable.RegisterConstant<IPrinter>(new McPrinter());
+        }
+
         Locator.CurrentMutable.RegisterConstant<IPrinter>(new McPrinter());
 
         Locator.CurrentMutable.InitializeReactiveUI(RegistrationNamespace.Wpf);

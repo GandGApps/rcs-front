@@ -10,7 +10,7 @@ namespace Kassa.BuisnessLogic;
 
 public static class DependencyResolverExtensions
 {
-    [Obsolete("Use RegisterMockBuisnessLogic instead")]
+    [Obsolete]
     /// <summary>
     /// Registers business logic services in the dependency resolver.
     /// </summary>
