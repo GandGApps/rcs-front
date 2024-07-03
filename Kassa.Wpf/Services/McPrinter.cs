@@ -12,16 +12,20 @@ using Splat;
 namespace Kassa.Wpf.Services;
 internal sealed class McPrinter : IPrinter,IEnableLogger
 {
+#if MC_PRINTER
     private readonly PosExplorer explorer;
     private PosPrinter printer;
-
+#endif
     public McPrinter()
     {
+#if MC_PRINTET
         explorer = new PosExplorer();
+#endif
     }
 
     private async Task<PosPrinter?> FindFirstAsync()
     {
+#if MC_PRINTER
         try
         {
             var deviceInfo = explorer.GetDevice("PosPrinter");
@@ -39,11 +43,13 @@ internal sealed class McPrinter : IPrinter,IEnableLogger
         {
             LogHost.Default.Error($"Error finding printer: {ex.Message}");
         }
+#endif
         return null;
     }
 
     public async Task PrintAsync(ReportShiftDto reportShift)
     {
+#if
         var posPrinter = await FindFirstAsync();
 
         if (posPrinter == null)
@@ -104,10 +110,12 @@ internal sealed class McPrinter : IPrinter,IEnableLogger
         job.AppendLine("Внимание! Приведенные суммы могут отличаться от сумм фискального регистратора!");
 
         posPrinter.PrintNormal(PrinterStation.Receipt, job.ToString());
+#endif
     }
 
     public async Task PrintAsync(OrderDto order)
     {
+#if
         var posPrinter = await FindFirstAsync();
 
         if (posPrinter == null)
@@ -140,6 +148,7 @@ internal sealed class McPrinter : IPrinter,IEnableLogger
         }
 
         posPrinter.PrintNormal(PrinterStation.Receipt, job.ToString());
+#endif
     }
 
     private static string CenterText(string text)
