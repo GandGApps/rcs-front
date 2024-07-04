@@ -33,9 +33,9 @@ internal sealed class WndPosPrinter : IPrinter, IEnableLogger
             }
         }
 
-        deviceCollection = await DeviceInformation.FindAllAsync(PosPrinter.GetDeviceSelector());
+        deviceCollection = await DeviceInformation.FindAllAsync(PosPrinter.GetDeviceSelector(PosConnectionTypes.Local));
 
-        LogHost.Default.Info($"Device collection found with selector {PosPrinter.GetDeviceSelector()}: {deviceCollection.Count}");
+        LogHost.Default.Info($"Device collection found with selector {PosPrinter.GetDeviceSelector(PosConnectionTypes.Local)}: {deviceCollection.Count}");
 
         return device;
     }

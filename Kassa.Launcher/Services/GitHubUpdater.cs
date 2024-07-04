@@ -107,6 +107,8 @@ internal sealed class GitHubUpdater : IUpdater
             var exePath = Path.Combine(path, "Kassa.Wpf.exe");
             await _shortcutCreator.CreateShortcutAsync(exePath, _repoInfo.AppName);
         }
+
+        Environment.SetEnvironmentVariable("KASSA_INSTALL_PATH", path, EnvironmentVariableTarget.User);
     }
 
     public async Task<bool> UpdateAsync(Action<double> progress)
