@@ -21,10 +21,16 @@ internal sealed class WndPosPrinter : IPrinter, IEnableLogger
         LogHost.Default.Info($"Printer found: {device?.DeviceId ?? "not found"}");
 
         var deviceCollection = await DeviceInformation.FindAllAsync();
+        // TODO: Remove as soon as possible
+        var uniqueDevices = new HashSet<string>();
 
         foreach (var deviceInfo in deviceCollection)
         {
-            LogHost.Default.Info($"Device found: {deviceInfo.Name}");
+            // TODO: Remove as soon as possible
+            if (uniqueDevices.Add(deviceInfo.Name))
+            {
+                LogHost.Default.Info($"Device found: {deviceInfo.Name}");
+            }
         }
 
         return device;
