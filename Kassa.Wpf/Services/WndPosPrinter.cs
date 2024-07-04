@@ -33,6 +33,10 @@ internal sealed class WndPosPrinter : IPrinter, IEnableLogger
             }
         }
 
+        deviceCollection = await DeviceInformation.FindAllAsync(PosPrinter.GetDeviceSelector());
+
+        LogHost.Default.Info($"Device collection found with selector {PosPrinter.GetDeviceSelector()}: {deviceCollection.Count}");
+
         return device;
     }
 
