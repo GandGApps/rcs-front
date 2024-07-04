@@ -47,15 +47,24 @@ public partial class App : Application
 
         Locator.CurrentMutable.RegisterConstant<IConfiguration>(config);
 
-        var posLib = config.GetValue<string>("PosLib");
+        var posLibString = config.GetValue<string>("PosLib");
 
-        if (string.Equals(posLib, "wndpos", StringComparison.InvariantCultureIgnoreCase))
+        var poslib = Enum.TryParse<PosLib>(posLibString, true, out var pos) ? pos : PosLib.Wndpos;
+
+        switch (poslib)
         {
-            Locator.CurrentMutable.RegisterConstant<IPrinter>(new WndPosPrinter());
-        }
-        else if (string.Equals(posLib, "microsoft", StringComparison.InvariantCultureIgnoreCase))
-        {
-            Locator.CurrentMutable.RegisterConstant<IPrinter>(new McPrinter());
+            case PosLib.Wndpos:
+                Locator.CurrentMutable.RegisterConstant<IPrinter>(new WndPosPrinter());
+                break;
+            case PosLib.Mcpos:
+                Locator.CurrentMutable.RegisterConstant<IPrinter>(new McPrinter());
+                break;
+            case PosLib.Escpos:
+                var port = config.GetValue<string>("EscposPrinterPort");
+                Locator.CurrentMutable.RegisterConstant<IPrinter>(new EscPosPrinter(port));
+                break;
+            default:
+                break;
         }
 
         Locator.CurrentMutable.InitializeReactiveUI(RegistrationNamespace.Wpf);
