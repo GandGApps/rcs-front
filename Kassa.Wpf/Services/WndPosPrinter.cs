@@ -29,7 +29,7 @@ internal sealed class WndPosPrinter : IPrinter, IEnableLogger
             // TODO: Remove as soon as possible
             if (uniqueDevices.Add(deviceInfo.Name))
             {
-                LogHost.Default.Info($"Device found: {deviceInfo.Name}");
+                LogHost.Default.Info($"Device found: {deviceInfo.Name} ||| Device kind: {deviceInfo.Kind}");
             }
         }
 
