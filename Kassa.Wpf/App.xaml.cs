@@ -19,7 +19,7 @@ namespace Kassa.Wpf;
 /// <summary>
 /// Interaction logic for App.xaml
 /// </summary>
-public partial class App : Application
+public partial class App : Application, IEnableLogger
 {
     public static readonly CultureInfo RuCulture = new("ru-RU");
 
@@ -50,6 +50,8 @@ public partial class App : Application
         var posLibString = config.GetValue<string>("PosLib");
 
         var poslib = Enum.TryParse<PosLib>(posLibString, true, out var pos) ? pos : PosLib.Wndpos;
+
+        this.Log().Info($"Selected poslib: {poslib}");
 
         switch (poslib)
         {
