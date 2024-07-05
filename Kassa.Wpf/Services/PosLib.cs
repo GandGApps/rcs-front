@@ -9,5 +9,6 @@ public enum PosLib
 {
     Wndpos,
     Mcpos,
-    Escpos
+    Escpos,
+    EscposUsb,
 }

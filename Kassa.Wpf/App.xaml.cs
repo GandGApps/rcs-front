@@ -63,6 +63,10 @@ public partial class App : Application
                 var port = config.GetValue<string>("EscposPrinterPort");
                 Locator.CurrentMutable.RegisterConstant<IPrinter>(new EscPosPrinter(port));
                 break;
+            case PosLib.EscposUsb:
+                var printerName = config.GetValue<string>("EscposUsbPrinterName");
+                Locator.CurrentMutable.RegisterConstant<IPrinter>(new EscPosUsbPrinter(printerName));
+                break;
             default:
                 break;
         }
