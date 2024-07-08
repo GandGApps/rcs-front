@@ -14,6 +14,8 @@ using ReactiveUI;
 using Splat;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Wpf.Services;
+using System.IO;
+using System.Runtime.CompilerServices;
 
 namespace Kassa.Wpf;
 /// <summary>
@@ -22,6 +24,8 @@ namespace Kassa.Wpf;
 public partial class App : Application, IEnableLogger
 {
     public static readonly CultureInfo RuCulture = new("ru-RU");
+
+    public static FontFamily LucidaConsoleFont => Unsafe.As<App>(Application.Current).LucidaConsoleFontFamily;
 
     public static object GetThemeResource(string key)
     {
@@ -32,11 +36,17 @@ public partial class App : Application, IEnableLogger
         return merged[key];
     }
 
+    public FontFamily LucidaConsoleFontFamily = null!;
+
+    
+
     public App()
     {
+        var basePath = AppDomain.CurrentDomain.BaseDirectory;;
+
         var configurationBuilder = new ConfigurationBuilder();
 
-        configurationBuilder.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+        configurationBuilder.AddJsonFile(Path.Combine(basePath, "appsettings.json"), optional: false, reloadOnChange: true);
 
         var config = configurationBuilder.Build();
 
@@ -58,17 +68,18 @@ public partial class App : Application, IEnableLogger
             case PosLib.Wndpos:
                 Locator.CurrentMutable.RegisterConstant<IPrinter>(new WndPosPrinter());
                 break;
-            case PosLib.Mcpos:
-                Locator.CurrentMutable.RegisterConstant<IPrinter>(new McPrinter());
-                break;
             case PosLib.Escpos:
                 var port = config.GetValue<string>("EscposPrinterPort");
                 Locator.CurrentMutable.RegisterConstant<IPrinter>(new EscPosPrinter(port));
                 break;
-            case PosLib.EscposUsb:
+            case PosLib.Wnd:
+                Locator.CurrentMutable.RegisterConstant<IPrinter>(new WndPrinter());
+                break;
+            // TODO: Fix or remove this implementation
+            /*case PosLib.EscposUsb:
                 var printerName = config.GetValue<string>("EscposUsbPrinterName");
                 Locator.CurrentMutable.RegisterConstant<IPrinter>(new EscPosUsbPrinter(printerName));
-                break;
+                break;*/
             default:
                 break;
         }
@@ -89,6 +100,8 @@ public partial class App : Application, IEnableLogger
     protected override void OnActivated(EventArgs e)
     {
         base.OnActivated(e);
+
+        LucidaConsoleFontFamily = (FontFamily)Resources["LucidaConsole"];
     }
 }
 

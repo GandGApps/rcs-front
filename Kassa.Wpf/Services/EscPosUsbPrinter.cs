@@ -9,8 +9,14 @@ using ESC_POS_USB_NET.Printer;
 using Splat;
 using Kassa.BuisnessLogic;
 
-
 namespace Kassa.Wpf.Services;
+
+
+[Obsolete("This implementation don't work")]
+/// <summary>
+/// Don't work, need to be fixed or 
+/// removed from the project
+/// </summary>
 internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger
 {
     private readonly string _printerName;

@@ -14,7 +14,7 @@ using Splat;
 namespace Kassa.Wpf.Services;
 internal sealed class EscPosPrinter : BuisnessLogic.Services.IPrinter, IEnableLogger
 {
-    private BasePrinter? _printer;
+    private readonly BasePrinter? _printer;
 
     public EscPosPrinter(string port)
     {
