@@ -20,7 +20,7 @@ namespace Kassa.Wpf.Services;
 /// Implementation of <see cref="IPrinter"/> for Wnd printer.
 /// This implementation use <see cref="PrintDialog"/> for printing.
 /// </summary>
-internal sealed class WndPrinter : IPrinter, IEnableLogger
+internal sealed class WndPrinter(bool useDefaultPrinter) : IPrinter, IEnableLogger
 {
     public Task PrintAsync(ReportShiftDto reportShift)
     {
@@ -30,11 +30,15 @@ internal sealed class WndPrinter : IPrinter, IEnableLogger
     public async Task PrintAsync(OrderDto order)
     {
         var printDialog = new PrintDialog();
-        var printer = LocalPrintServer.GetDefaultPrintQueue();
 
-        this.Log().Info($"Printer found: {printer.Name}");
+        if (useDefaultPrinter)
+        {
+            var printer = LocalPrintServer.GetDefaultPrintQueue();
 
-        printDialog.PrintQueue = printer;
+            this.Log().Info($"Printer found: {printer.Name}");
+
+            printDialog.PrintQueue = printer;
+        }
 
         var document = new FlowDocument();
 

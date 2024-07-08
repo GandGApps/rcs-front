@@ -73,7 +73,8 @@ public partial class App : Application, IEnableLogger
                 Locator.CurrentMutable.RegisterConstant<IPrinter>(new EscPosPrinter(port));
                 break;
             case PosLib.Wnd:
-                Locator.CurrentMutable.RegisterConstant<IPrinter>(new WndPrinter());
+                var useDefaultPrinter = config.GetValue<bool>("UseDefaultPrinter");
+                Locator.CurrentMutable.RegisterConstant<IPrinter>(new WndPrinter(useDefaultPrinter));
                 break;
             // TODO: Fix or remove this implementation
             /*case PosLib.EscposUsb:
