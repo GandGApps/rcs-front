@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Microsoft.Extensions.Options;
 using Splat;
@@ -22,9 +23,11 @@ public sealed class PosPrinterSelector : IEnableLogger, IPrinter
             {
                 PrinterPosLib.Wnd => new WndPrinter(false),
                 PrinterPosLib.Wndpos => new WndPosPrinter(),
-                PrinterPosLib.Escpos => new EscPosPrinter(),
                 _ => throw new NotImplementedException()
             });
         });
     }
+
+    public Task PrintAsync(ReportShiftDto reportShift) => _printer.PrintAsync(reportShift);
+    public Task PrintAsync(OrderDto order) => _printer.PrintAsync(order);
 }

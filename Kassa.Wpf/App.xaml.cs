@@ -62,6 +62,10 @@ public partial class App : Application, IEnableLogger
 
         this.Log().Info($"Selected poslib: {poslib}");
 
+        var magneticStripeReader = new WndPosMagneticStripeReader();
+
+        Dispatcher.InvokeAsync(async () => await magneticStripeReader.TryClaim());
+
         switch (poslib)
         {
             case PrinterPosLib.Wndpos:

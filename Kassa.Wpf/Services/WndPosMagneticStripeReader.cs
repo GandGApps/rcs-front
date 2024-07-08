@@ -75,6 +75,12 @@ internal sealed class WndPosMagneticStripeReader : IMagneticStripeReader, IEnabl
 
     internal sealed class WndPosMagneticStripe : IMagneticStripe
     {
+        public bool IsDisposed
+        {
+            get;
+        }
+
+        public void Dispose() => throw new NotImplementedException();
 
         public ValueTask<string> ReadPincode()
         {
