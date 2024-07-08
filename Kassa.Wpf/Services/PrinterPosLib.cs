@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Kassa.Wpf.Services;
-public enum PosLib
+public enum PrinterPosLib
 {
     /// <summary>
     /// IPrinter implementation is <see cref="WndPrinter"/>

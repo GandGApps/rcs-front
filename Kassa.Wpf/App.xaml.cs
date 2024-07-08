@@ -25,7 +25,11 @@ public partial class App : Application, IEnableLogger
 {
     public static readonly CultureInfo RuCulture = new("ru-RU");
 
-    public static FontFamily LucidaConsoleFont => Unsafe.As<App>(Application.Current).LucidaConsoleFontFamily;
+    public static FontFamily LucidaConsoleFont => Unsafe.As<App>(Current).LucidaConsoleFontFamily; // using Unsafe.As is safe here because App is a singleton
+
+    public static bool IsDevelopment => Unsafe.As<App>(Current)._enviromentName == "Development"; // using Unsafe.As is safe here because App is a singleton
+
+    public static bool IsProduction => Unsafe.As<App>(Current)._enviromentName == "Production"; // using Unsafe.As is safe here because App is a singleton
 
     public static object GetThemeResource(string key)
     {
@@ -36,48 +40,48 @@ public partial class App : Application, IEnableLogger
         return merged[key];
     }
 
+
     public FontFamily LucidaConsoleFontFamily = null!;
 
-    
+    private readonly string _enviromentName = "Production";
 
     public App()
     {
-        var basePath = AppDomain.CurrentDomain.BaseDirectory;;
+        var basePath = AppDomain.CurrentDomain.BaseDirectory;
 
-        var configurationBuilder = new ConfigurationBuilder();
-
-        configurationBuilder.AddJsonFile(Path.Combine(basePath, "appsettings.json"), optional: false, reloadOnChange: true);
-
-        var config = configurationBuilder.Build();
+        var config = Locator.CurrentMutable.AddConfiguration("appsettings.json");
 
         CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
         CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
 
         Locator.CurrentMutable.AddLoggers();
 
-        Locator.CurrentMutable.RegisterConstant<IConfiguration>(config);
+        var posLibString = config.GetValue<string>(nameof(PrinterPosLib));
 
-        var posLibString = config.GetValue<string>("PosLib");
-
-        var poslib = Enum.TryParse<PosLib>(posLibString, true, out var pos) ? pos : PosLib.Wndpos;
+        var poslib = Enum.TryParse<PrinterPosLib>(posLibString, true, out var pos) ? pos : PrinterPosLib.Wndpos;
 
         this.Log().Info($"Selected poslib: {poslib}");
 
         switch (poslib)
         {
-            case PosLib.Wndpos:
+            case PrinterPosLib.Wndpos:
                 Locator.CurrentMutable.RegisterConstant<IPrinter>(new WndPosPrinter());
                 break;
-            case PosLib.Escpos:
+            case PrinterPosLib.Escpos:
                 var port = config.GetValue<string>("EscposPrinterPort");
+                if (string.IsNullOrWhiteSpace(port))
+                {
+                    this.Log().Error("Port for Escpos printer is not set");
+                    break;
+                }
                 Locator.CurrentMutable.RegisterConstant<IPrinter>(new EscPosPrinter(port));
                 break;
-            case PosLib.Wnd:
+            case PrinterPosLib.Wnd:
                 var useDefaultPrinter = config.GetValue<bool>("UseDefaultPrinter");
                 Locator.CurrentMutable.RegisterConstant<IPrinter>(new WndPrinter(useDefaultPrinter));
                 break;
             // TODO: Fix or remove this implementation
-            /*case PosLib.EscposUsb:
+            /*case PrinterPosLib.EscposUsb:
                 var printerName = config.GetValue<string>("EscposUsbPrinterName");
                 Locator.CurrentMutable.RegisterConstant<IPrinter>(new EscPosUsbPrinter(printerName));
                 break;*/

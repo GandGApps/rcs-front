@@ -17,8 +17,6 @@
 
   <ItemGroup>
     <PackageReference Include="ESC-POS-USB-NET" Version="1.1.3" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
     <PackageReference Include="POSForDotNet.SDK" Version="1.14.1" />
     <PackageReference Include="ReactiveUI" Version="20.1.1" />
     <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />

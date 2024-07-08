@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 using Serilog;
 using Serilog.Events;
 using Splat;
@@ -40,5 +41,33 @@ public static class SplatExtensions
             .CreateLogger();
 
         services.UseSerilogFullLogger();
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="initialJsonFileName">In that json file the key "Environment"</param>
+    /// <returns></returns>
+    public static IConfiguration AddConfiguration(this IMutableDependencyResolver services, string initialJsonFileName, Action<ConfigurationBuilder>? builder = null)
+    {
+        var basePath = AppDomain.CurrentDomain.BaseDirectory;
+        var configurationBuilder = new ConfigurationBuilder();
+        
+        configurationBuilder.AddJsonFile(Path.Combine(basePath, initialJsonFileName), optional: false);
+
+        var tempConfig = configurationBuilder.Build();
+
+        var environment = tempConfig.GetValue("Environment", "Production");
+
+        configurationBuilder.AddEnvironmentVariables();
+        configurationBuilder.AddJsonFile(Path.Combine(basePath, $"appsettings.{environment}.json"), optional: true);
+
+        builder?.Invoke(configurationBuilder);
+
+        var config = configurationBuilder.Build();
+
+        services.RegisterConstant(config);
+
+        return config;
     }
 }

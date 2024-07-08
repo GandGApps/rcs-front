@@ -95,6 +95,6 @@ internal sealed class WndPrinter(bool useDefaultPrinter) : IPrinter, IEnableLogg
 
         this.Log().Info("Printing document");
 
-        printDialog.PrintDocument(documentPaginatorSource.DocumentPaginator, "Order");
+        printDialog.PrintDocument(documentPaginatorSource.DocumentPaginator, "Order")
     }
 }
