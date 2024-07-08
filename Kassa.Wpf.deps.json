@@ -13,8 +13,6 @@
           "Kassa.BuisnessLogic.Edgar": "1.0.0",
           "Kassa.DataAccess.HttpRepository": "1.0.0",
           "Kassa.RxUI": "1.0.0",
-          "Microsoft.Extensions.Configuration.Binder": "8.0.1",
-          "Microsoft.Extensions.Configuration.Json": "8.0.0",
           "POSForDotNet.SDK": "1.14.1",
           "PixiEditor.ColorPicker": "3.4.1",
           "ReactiveUI": "20.1.1",
@@ -708,7 +706,9 @@
       "Kassa.Shared/1.0.0": {
         "dependencies": {
           "Microsoft.Extensions.Configuration": "8.0.0",
+          "Microsoft.Extensions.Configuration.Binder": "8.0.1",
           "Microsoft.Extensions.Configuration.EnvironmentVariables": "8.0.0",
+          "Microsoft.Extensions.Configuration.Json": "8.0.0",
           "Refit": "7.0.0",
           "Refit.HttpClientFactory": "7.0.0",
           "Serilog": "3.1.1",
