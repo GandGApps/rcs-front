@@ -197,8 +197,28 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
 
     private void TryDetectMsr(object sender, TextCompositionEventArgs e)
     {
-        LogHost.Default.Info("Text inputed");
-        LogHost.Default.Info($"Text: {e.Text}");
+        // Log full info about TextCompositionEventArgs
+
+        var stringBuilder = new StringBuilder();
+
+        stringBuilder.AppendLine($"Text input event raised:");
+        stringBuilder.AppendLine($"\tText: {e.Text}");
+        stringBuilder.AppendLine($"\tControlText: {e.ControlText}");
+        stringBuilder.AppendLine($"\tIsHandled: {e.Handled}");
+        stringBuilder.AppendLine($"\tSource: {e.Source}");
+        stringBuilder.AppendLine($"\tSystemText: {e.SystemText}");
+
+        var textComposition = e.TextComposition;
+
+        stringBuilder.AppendLine();
+        stringBuilder.AppendLine($"\tTextComposition:");
+        stringBuilder.AppendLine($"\t\tControlText: {textComposition.ControlText}");
+        stringBuilder.AppendLine($"\t\tSystemText: {textComposition.SystemText}");
+        stringBuilder.AppendLine($"\t\tText: {textComposition.Text}");
+        stringBuilder.AppendLine($"\t\tAutoComplete: {textComposition.AutoComplete}");
+        stringBuilder.AppendLine($"\t\tCompositionText: {textComposition.CompositionText}");
+
+        LogHost.Default.Info(stringBuilder.ToString());
     }
 
     private void CopyLogsToClipboard(object sender, KeyEventArgs e)
