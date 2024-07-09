@@ -2,24 +2,14 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Net.Http;
-using System.Net.Sockets;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using Kassa.RxUI;
 using Kassa.RxUI.Dialogs;
-using Kassa.RxUI.Pages;
 using Kassa.Shared;
-using Kassa.Wpf.Windows;
 using ReactiveUI;
 using Splat;
 
@@ -51,7 +41,7 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
         get; private set;
     } = null!;
 
-
+    private readonly KeyConverter _keyConverter = new();
 
     public MainWindow()
     {
@@ -194,6 +184,7 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
         };
 
         KeyDown += CopyLogsToClipboard;
+        TextInput += TryDetectMsr;
 
 #if SMALL_WINDOW_TEST
         WindowState = WindowState.Normal;
@@ -203,8 +194,15 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
 #endif
     }
 
+    private void TryDetectMsr(object sender, TextCompositionEventArgs e)
+    {
+        LogHost.Default.Info("Text inputed");
+        LogHost.Default.Info($"Text: {e.Text}");
+    }
+
     private void CopyLogsToClipboard(object sender, KeyEventArgs e)
     {
+
         if (e.Key == Key.D && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
         {
             var stringCollection = GetLogs();
@@ -213,15 +211,16 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
         }
     }
 
+
+
     private static StringCollection GetLogs()
     {
-        var path = "./logs";
+        var path = App.BasePath;
 
         var stringCollection = new StringCollection();
 
         if (Directory.Exists(path))
         {
-
             foreach (var file in Directory.GetFiles(path))
             {
                 var fullPath = System.IO.Path.GetFullPath(file);

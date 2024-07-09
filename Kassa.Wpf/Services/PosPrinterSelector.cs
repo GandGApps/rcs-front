@@ -15,6 +15,7 @@ public sealed class PosPrinterSelector : IEnableLogger, IPrinter
 
     public PosPrinterSelector(IOptionsMonitor<PrinterPosLib> printerPosLib)
     {
+
         printerPosLib.OnChange((lib) =>
         {
             this.Log().Info($"PrinterPosLib changed to {lib}");

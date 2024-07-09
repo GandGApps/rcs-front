@@ -25,16 +25,30 @@ public partial class App : Application, IEnableLogger
 {
     public static readonly CultureInfo RuCulture = new("ru-RU");
 
-    public static FontFamily LucidaConsoleFont => Unsafe.As<App>(Current).LucidaConsoleFontFamily; // using Unsafe.As is safe here because App is a singleton
+    /// <summary>
+    /// I dislike always having to use <see cref="Application.Current"/> to get the current instance of <see cref="App"/>.
+    /// I always need to cast, which is why I created this property.
+    /// </summary>
+    public static new App Current => Unsafe.As<App>(Application.Current); // using Unsafe.As is safe here because App is a singleton
 
-    public static bool IsDevelopment => Unsafe.As<App>(Current)._enviromentName == "Development"; // using Unsafe.As is safe here because App is a singleton
+    public static FontFamily LucidaConsoleFont => Current.LucidaConsoleFontFamily;
 
-    public static bool IsProduction => Unsafe.As<App>(Current)._enviromentName == "Production"; // using Unsafe.As is safe here because App is a singleton
+    public static bool IsDevelopment => string.Equals(EnvironmentName, "Development", StringComparison.InvariantCultureIgnoreCase); // using Unsafe.As is safe here because App is a singleton
+
+    public static bool IsProduction => string.Equals(EnvironmentName, "Production", StringComparison.InvariantCultureIgnoreCase); // using Unsafe.As is safe here because App is a singleton
+
+    public static string EnvironmentName
+    {
+        get; private set;
+    } = null!;
+
+    public static string BasePath => AppDomain.CurrentDomain.BaseDirectory;
+
+    public static string LogsPath => Path.Combine(BasePath, "logs", "Logs.txt");
 
     public static object GetThemeResource(string key)
     {
-
-        var app = (App)Current;
+        var app = Current;
         var merged = app.Resources.MergedDictionaries[0];
 
         return merged[key];
@@ -43,18 +57,16 @@ public partial class App : Application, IEnableLogger
 
     public FontFamily LucidaConsoleFontFamily = null!;
 
-    private readonly string _enviromentName = "Production";
-
     public App()
     {
-        var basePath = AppDomain.CurrentDomain.BaseDirectory;
-
         var config = Locator.CurrentMutable.AddConfiguration("appsettings.json");
+
+        EnvironmentName = config.GetValue<string>("Environment") ?? "Production";
 
         CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
         CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
 
-        Locator.CurrentMutable.AddLoggers();
+        Locator.CurrentMutable.AddLoggers(LogsPath);
 
         var posLibString = config.GetValue<string>(nameof(PrinterPosLib));
 
@@ -112,5 +124,6 @@ public partial class App : Application, IEnableLogger
 
         LucidaConsoleFontFamily = (FontFamily)Resources["LucidaConsole"];
     }
+
 }
 
