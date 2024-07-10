@@ -48,14 +48,14 @@ public static class SplatExtensions
         var basePath = AppDomain.CurrentDomain.BaseDirectory;
         var configurationBuilder = new ConfigurationBuilder();
         
-        configurationBuilder.AddJsonFile(Path.Combine(basePath, initialJsonFileName), optional: false);
+        configurationBuilder.AddJsonFile(Path.Combine(basePath, $"{initialJsonFileName}.json"), optional: false);
 
         var tempConfig = configurationBuilder.Build();
 
         var environment = tempConfig.GetValue("Environment", "Production");
 
         configurationBuilder.AddEnvironmentVariables();
-        configurationBuilder.AddJsonFile(Path.Combine(basePath, $"appsettings.{environment}.json"), optional: true);
+        configurationBuilder.AddJsonFile(Path.Combine(basePath, $"{initialJsonFileName}.{environment}.json"), optional: true);
 
         builder?.Invoke(configurationBuilder);
 
