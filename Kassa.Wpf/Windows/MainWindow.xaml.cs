@@ -10,6 +10,7 @@ using System.Windows.Input;
 using Kassa.RxUI;
 using Kassa.RxUI.Dialogs;
 using Kassa.Shared;
+using Kassa.Wpf.Services;
 using Kassa.Wpf.Windows;
 using ReactiveUI;
 using Splat;
@@ -31,6 +32,8 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
         DependencyProperty.RegisterAttached("IsGrayscaleEffectOnDialog", typeof(bool), typeof(MainWindow));
 
     private bool _isGrayscaleEffectOnDialog = false;
+
+    private readonly MsrKeyboardDetector _msrKeyboardDetector = new();
 
     public static FrameworkElement? Root
     {
@@ -197,28 +200,12 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
 
     private void TryDetectMsr(object sender, TextCompositionEventArgs e)
     {
-        // Log full info about TextCompositionEventArgs
+        if (_msrKeyboardDetector.IsMsr(e.Text, out var data))
+        {
+            LogHost.Default.Info("Msr data: {0}", data);
 
-        var stringBuilder = new StringBuilder();
-
-        stringBuilder.AppendLine($"Text input event raised:");
-        stringBuilder.AppendLine($"\tText: {e.Text}");
-        stringBuilder.AppendLine($"\tControlText: {e.ControlText}");
-        stringBuilder.AppendLine($"\tIsHandled: {e.Handled}");
-        stringBuilder.AppendLine($"\tSource: {e.Source}");
-        stringBuilder.AppendLine($"\tSystemText: {e.SystemText}");
-
-        var textComposition = e.TextComposition;
-
-        stringBuilder.AppendLine();
-        stringBuilder.AppendLine($"\tTextComposition:");
-        stringBuilder.AppendLine($"\t\tControlText: {textComposition.ControlText}");
-        stringBuilder.AppendLine($"\t\tSystemText: {textComposition.SystemText}");
-        stringBuilder.AppendLine($"\t\tText: {textComposition.Text}");
-        stringBuilder.AppendLine($"\t\tAutoComplete: {textComposition.AutoComplete}");
-        stringBuilder.AppendLine($"\t\tCompositionText: {textComposition.CompositionText}");
-
-        LogHost.Default.Info(stringBuilder.ToString());
+            MsrKeyboard.Instance?.OnMsrCardData(data);
+        }
     }
 
     private void CopyLogsToClipboard(object sender, KeyEventArgs e)

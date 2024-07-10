@@ -59,7 +59,7 @@ public partial class App : Application, IEnableLogger
 
     public App()
     {
-        var config = Locator.CurrentMutable.AddConfiguration("appsettings.json");
+        var config = Locator.CurrentMutable.AddConfiguration("appsettings");
 
         EnvironmentName = config.GetValue<string>("Environment") ?? "Production";
 
@@ -68,42 +68,8 @@ public partial class App : Application, IEnableLogger
 
         Locator.CurrentMutable.AddLoggers(LogsPath);
 
-        var posLibString = config.GetValue<string>(nameof(PrinterPosLib));
-
-        var poslib = Enum.TryParse<PrinterPosLib>(posLibString, true, out var pos) ? pos : PrinterPosLib.Wndpos;
-
-        this.Log().Info($"Selected poslib: {poslib}");
-
-        var magneticStripeReader = new WndPosMagneticStripeReader();
-
-        Dispatcher.InvokeAsync(async () => await magneticStripeReader.TryClaim());
-
-        switch (poslib)
-        {
-            case PrinterPosLib.Wndpos:
-                Locator.CurrentMutable.RegisterConstant<IPrinter>(new WndPosPrinter());
-                break;
-            case PrinterPosLib.Escpos:
-                var port = config.GetValue<string>("EscposPrinterPort");
-                if (string.IsNullOrWhiteSpace(port))
-                {
-                    this.Log().Error("Port for Escpos printer is not set");
-                    break;
-                }
-                Locator.CurrentMutable.RegisterConstant<IPrinter>(new EscPosPrinter(port));
-                break;
-            case PrinterPosLib.Wnd:
-                var useDefaultPrinter = config.GetValue<bool>("UseDefaultPrinter");
-                Locator.CurrentMutable.RegisterConstant<IPrinter>(new WndPrinter(useDefaultPrinter));
-                break;
-            // TODO: Fix or remove this implementation
-            /*case PrinterPosLib.EscposUsb:
-                var printerName = config.GetValue<string>("EscposUsbPrinterName");
-                Locator.CurrentMutable.RegisterConstant<IPrinter>(new EscPosUsbPrinter(printerName));
-                break;*/
-            default:
-                break;
-        }
+        Locator.CurrentMutable.AddPrinterPosLib(config);
+        Locator.CurrentMutable.AddMsrReaderLib(config);
 
         Locator.CurrentMutable.InitializeReactiveUI(RegistrationNamespace.Wpf);
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());

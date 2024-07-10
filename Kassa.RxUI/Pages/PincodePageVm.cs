@@ -46,6 +46,21 @@ public class PincodePageVm : PageViewModel
             await MainViewModel.DialogOpenCommand.Execute(new PincodeTurnOffDialogViewModel()).FirstAsync();
         });
 
+        Locator.GetRequiredService<IMagneticStripeReader>().CardData
+            .Subscribe(async x =>
+            {
+                var data = await x.ReadPincode();
+
+                if (data.Length > 4)
+                {
+                    Pincode = data[..4];
+                }
+                else if(data.Length == 4)
+                {
+                    Pincode = data;
+                }
+            })
+            .DisposeWith(InternalDisposables);
     }
 
     protected override void OnActivated(CompositeDisposable disposables)

@@ -24,16 +24,12 @@ public static class SplatExtensions
         return services.GetService<T>() ?? throw new InvalidOperationException($"The service of type {typeof(T)} is not registered.");
     }
 
-    public static void AddLoggers(this IMutableDependencyResolver services, string? path = null)
+    public static void AddLoggers(this IMutableDependencyResolver services, string? path = null, LogEventLevel logEventLevel = LogEventLevel.Debug)
     {
         path ??= Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs", "Logs.txt");
 
         Log.Logger = new LoggerConfiguration()
-#if DEBUG
-            .MinimumLevel.Debug()
-#else
-            .MinimumLevel.Information()
-#endif
+            .MinimumLevel.Is(logEventLevel)
             .WriteTo.File(path, restrictedToMinimumLevel: LogEventLevel.Debug, rollingInterval: RollingInterval.Day)
             .WriteTo.Debug(restrictedToMinimumLevel: LogEventLevel.Debug)
             .WriteTo.Logger(new ObservableLogger())

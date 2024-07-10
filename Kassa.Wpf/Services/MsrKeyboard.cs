@@ -26,7 +26,7 @@ internal sealed class MsrKeyboard : IMagneticStripeReader
     private readonly Subject<IMagneticStripe> _cardData = new();
 
 
-    public void OnCardData(string data)
+    public void OnMsrCardData(string data)
     {
         _cardData.OnNext(new MagneticStripe(data));
     }
