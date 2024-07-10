@@ -9,6 +9,7 @@ using Kassa.BuisnessLogic.Services;
 namespace Kassa.Wpf.Services;
 internal sealed class MsrKeyboard : IMagneticStripeReader
 {
+    private readonly StringBuilder stringBuilder;
 
     public static MsrKeyboard Instance
     {

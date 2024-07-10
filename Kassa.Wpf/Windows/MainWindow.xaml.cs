@@ -200,12 +200,14 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
 
     private void TryDetectMsr(object sender, TextCompositionEventArgs e)
     {
-        if (_msrKeyboardDetector.IsMsr(e.Text, out var data))
+        if (e.Handled)
         {
-            LogHost.Default.Info("Msr data: {0}", data);
-
-            MsrKeyboard.Instance?.OnMsrCardData(data);
+            return;
         }
+
+        _msrKeyboardDetector.TryDetect(e.Text);
+
+        LogHost.Default.Debug($"TryDetectMsr: \n\t {e.Text} \n\t RoutingStrategy:{e.RoutedEvent.RoutingStrategy} \n\t IsHandled:{e.Handled}");
     }
 
     private void CopyLogsToClipboard(object sender, KeyEventArgs e)

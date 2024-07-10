@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using ReactiveUI;
+using System.Timers;
 using Splat;
 
 namespace Kassa.Wpf.Services;
@@ -11,42 +12,52 @@ namespace Kassa.Wpf.Services;
 /// <summary>
 /// Helper class for <see cref="MsrKeyboard"/> to detect keyboard input.
 /// </summary>
-internal sealed class MsrKeyboardDetector: IEnableLogger
+internal sealed class MsrKeyboardDetector : ReactiveObject, IEnableLogger
 {
     private readonly StringBuilder _buffer = new();
-    private readonly TimeSpan _timeout = TimeSpan.FromMilliseconds(100);
-    private DateTime _lastKeystroke = DateTime.Now;
+    private readonly System.Timers.Timer _timer;
+    private const int TimeoutMs = 180;
 
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="text"></param>
-    /// <param name="data">Final data from Msr</param>
-    /// <returns></returns>
-    public bool IsMsr(string? text, [NotNullWhen(true)] out string? data)
+    public MsrKeyboardDetector()
     {
-        var elapsed = DateTime.Now - _lastKeystroke;
-        if (elapsed > _timeout)
+        _timer = new(TimeoutMs);
+        _timer.Elapsed += OnTimedEvent;
+        _timer.AutoReset = false;
+    }
+
+    public void TryDetect(string? text)
+    {
+        if (text == null)
         {
-            this.Log().Info("Msr timeout. Clear buffer");
-            _buffer.Clear();
+            return;
         }
 
-        _lastKeystroke = DateTime.Now;
+        this.Log().Debug("TryDetect called with text: {text}", text);
 
-        if (text == " " && _buffer.Length > 0)
-        {
-            this.Log().Info("Msr data: {0}", _buffer);
-            data = _buffer.ToString();
-            _buffer.Clear();
-            return true;
-        }
-
+        _timer.Stop();
         _buffer.Append(text);
 
-        
-        data = null;
-        return false;
+        this.Log().Debug("Current buffer content: {buffer}", _buffer.ToString());
+
+        _timer.Start();
+
+        this.Log().Debug("Timer restarted");
+    }
+
+    private void OnTimedEvent(object? sender, ElapsedEventArgs e)
+    {
+        this.Log().Debug("Timer elapsed");
+
+        var data = _buffer.ToString();
+        if (!string.IsNullOrEmpty(data))
+        {
+            this.Log().Debug("Buffer has data, calling OnMsrCardData");
+            MsrKeyboard.Instance.OnMsrCardData(data);
+            _buffer.Clear();
+        }
+        else
+        {
+            this.Log().Debug("Buffer is empty, not calling OnMsrCardData");
+        }
     }
 }
