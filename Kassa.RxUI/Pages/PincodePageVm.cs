@@ -47,6 +47,7 @@ public class PincodePageVm : PageViewModel
         });
 
         Locator.GetRequiredService<IMagneticStripeReader>().CardData
+            .SubscribeOn(RxApp.MainThreadScheduler)
             .Subscribe(async x =>
             {
                 var data = await x.ReadPincode();
