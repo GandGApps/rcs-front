@@ -6,6 +6,7 @@ using System.Text;
 using ReactiveUI;
 using System.Timers;
 using Splat;
+using System.Windows.Threading;
 
 namespace Kassa.Wpf.Services;
 
@@ -52,7 +53,7 @@ internal sealed class MsrKeyboardDetector : ReactiveObject, IEnableLogger
         if (!string.IsNullOrEmpty(data))
         {
             this.Log().Debug("Buffer has data, calling OnMsrCardData");
-            MsrKeyboard.Instance.OnMsrCardData(data);
+            Dispatcher.CurrentDispatcher.Invoke(() => MsrKeyboard.Instance.OnMsrCardData(data));
             _buffer.Clear();
         }
         else
