@@ -61,7 +61,7 @@ public static class SplatExtensions
 
         var config = configurationBuilder.Build();
 
-        services.RegisterConstant(config);
+        services.RegisterConstant<IConfiguration>(config);
 
         return config;
     }
