@@ -12,6 +12,7 @@ using Kassa.RxUI.Dialogs;
 using Kassa.Shared;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Splat;
 
 namespace Kassa.RxUI.Pages;
 public class PincodePageVm : PageViewModel
@@ -50,7 +51,11 @@ public class PincodePageVm : PageViewModel
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(async x =>
             {
+                this.Log().Debug("CardData received: {data}", x);
+
                 var data = await x.ReadPincode();
+
+                this.Log().Debug("Pincode received: {data}", data);
 
                 if (data.Length > 4)
                 {

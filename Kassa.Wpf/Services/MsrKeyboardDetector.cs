@@ -13,7 +13,7 @@ namespace Kassa.Wpf.Services;
 /// <summary>
 /// Helper class for <see cref="MsrKeyboard"/> to detect keyboard input.
 /// </summary>
-internal sealed class MsrKeyboardDetector : ReactiveObject, IEnableLogger
+internal sealed class MsrKeyboardDetector : IEnableLogger
 {
     private readonly StringBuilder _buffer = new();
     private readonly System.Timers.Timer _timer;
