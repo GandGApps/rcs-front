@@ -58,11 +58,11 @@ internal sealed record AdditiveEdgarModel
         get; init;
     }
 
-    [JsonPropertyName("warehouse")]
+    /*[JsonPropertyName("warehouse")]
     public Guid? Warehouse
     {
         get; init;
-    }
+    }*/
 
     [JsonPropertyName("modificator_value")]
     public double ModificatorValue
