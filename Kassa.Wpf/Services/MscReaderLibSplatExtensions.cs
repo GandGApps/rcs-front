@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using Kassa.BuisnessLogic.Services;
 using Microsoft.Extensions.Configuration;
 using Splat;
@@ -18,7 +19,9 @@ internal static class MscReaderLibSplatExtensions
         switch (msrReaderLib)
         {
             case MsrReaderLib.MsrPos:
-                services.RegisterConstant<IMagneticStripeReader>(new WndPosMagneticStripeReader());
+                var msrPos = new WndPosMagneticStripeReader();
+                Dispatcher.CurrentDispatcher.InvokeAsync(async () => await msrPos.TryClaim());
+                services.RegisterConstant<IMagneticStripeReader>(msrPos);
                 break;
             case MsrReaderLib.MsrKeyboard:
                 services.RegisterConstant<IMagneticStripeReader>(MsrKeyboard.Instance);
