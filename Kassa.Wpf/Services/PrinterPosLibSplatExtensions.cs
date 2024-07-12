@@ -23,6 +23,7 @@ internal static class PrinterPosLibSplatExtensions
                 services.RegisterConstant<IPrinter>(new WndPosPrinter());
                 break;
             case PrinterPosLib.Escpos:
+
                 var port = config.GetValue<string>("EscposPrinterPort");
                 if (string.IsNullOrWhiteSpace(port))
                 {
@@ -43,6 +44,8 @@ internal static class PrinterPosLibSplatExtensions
             default:
                 break;
         }
+
+        LogHost.Default.Info($"Using PrinterPosLib: {printerPosLib}");
     }
 
 }

@@ -46,7 +46,7 @@
                     VerticalAlignment="Center"
                     FontWeight="Normal"
                     Style="{DynamicResource Header}"
-                    Text="Добавки" />
+                    Text="Переслать чек по email" />
             </Grid>
             <Border
                 Grid.Row="1"

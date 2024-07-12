@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Threading;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
@@ -14,6 +15,15 @@ using Windows.Devices.PointOfService;
 namespace Kassa.Wpf.Services;
 internal sealed class WndPosPrinter : IPrinter, IEnableLogger
 {
+
+    public WndPosPrinter()
+    {
+        Dispatcher.CurrentDispatcher.InvokeAsync(async () =>
+        {
+            await FindFirstPrinter();
+        });
+    }
+
     private static async Task<PosPrinter?> FindFirstPrinter()
     {
         var device = await PosPrinter.GetDefaultAsync();
