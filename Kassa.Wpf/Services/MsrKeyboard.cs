@@ -6,9 +6,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using Kassa.BuisnessLogic.Services;
+using Splat;
 
 namespace Kassa.Wpf.Services;
-internal sealed class MsrKeyboard : IMagneticStripeReader
+internal sealed class MsrKeyboard : IMagneticStripeReader, IEnableLogger
 {
 
     public static MsrKeyboard Instance
@@ -29,7 +30,9 @@ internal sealed class MsrKeyboard : IMagneticStripeReader
 
     public void OnMsrCardData(string data)
     {
-        Dispatcher.CurrentDispatcher.InvokeAsync(() => _cardData.OnNext(new MagneticStripe(data)));
+        _cardData.OnNext(new MagneticStripe(data));
+
+        this.Log().Debug("OnMsrCardData called with data: {data}", data);
     }
 
     public IObservable<IMagneticStripe> CardData => _cardData;

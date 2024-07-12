@@ -52,8 +52,8 @@ internal sealed class MsrKeyboardDetector : IEnableLogger
         var data = _buffer.ToString();
         if (!string.IsNullOrEmpty(data))
         {
-            this.Log().Debug("Buffer has data, calling OnMsrCardData");
-            Dispatcher.CurrentDispatcher.InvokeAsync(() => MsrKeyboard.Instance.OnMsrCardData(data));
+            this.Log().Debug("Buffer has data:{{data}}, calling OnMsrCardData", data);
+            MsrKeyboard.Instance.OnMsrCardData(data);
             _buffer.Clear();
         }
         else

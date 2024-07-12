@@ -21,9 +21,11 @@ internal static class MscReaderLibSplatExtensions
             case MsrReaderLib.MsrPos:
                 var msrPos = new WndPosMagneticStripeReader();
                 Dispatcher.CurrentDispatcher.InvokeAsync(async () => await msrPos.TryClaim());
+                LogHost.Default.Info("MsrPos reader is used");
                 services.RegisterConstant<IMagneticStripeReader>(msrPos);
                 break;
             case MsrReaderLib.MsrKeyboard:
+                LogHost.Default.Info("MsrKeyboard reader is used");
                 services.RegisterConstant<IMagneticStripeReader>(MsrKeyboard.Instance);
                 break;
         }
