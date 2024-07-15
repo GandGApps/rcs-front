@@ -87,6 +87,10 @@ internal sealed class CashierPaymentService: BaseInitializableService, IPaymentS
             var printer = Splat.Locator.Current.GetRequiredService<IPrinter>();
 
             await printer.PrintAsync(order);
+
+            var cashDrawer = Splat.Locator.Current.GetRequiredService<ICashDrawer>();
+
+            await cashDrawer.Open();
         }
          
         Dispose(); // Nothing to dispose, and doesn't need to be called

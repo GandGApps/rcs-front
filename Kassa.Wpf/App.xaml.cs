@@ -63,7 +63,7 @@ public partial class App : Application, IEnableLogger
 
         EnvironmentName = config.GetValue<string>("Environment") ?? "Production";
 
-        if (EnvironmentName == "Development")
+        if (IsDevelopment)
         {
             Dispatcher.InvokeAsync(() => DeviceHelper.LogAllDevices());
         }

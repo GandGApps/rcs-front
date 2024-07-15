@@ -7,5 +7,6 @@ using System.Threading.Tasks;
 namespace Kassa.Wpf.Services;
 public enum CashDrawerPosLib
 {
-    WndPosLib
+    WndPosLib,
+    RawSerialPort
 }

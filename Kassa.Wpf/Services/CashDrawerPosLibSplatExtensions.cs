@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Ports;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,6 +24,28 @@ internal static class CashDrawerPosLibSplatExtensions
 
             case CashDrawerPosLib.WndPosLib:
                 services.RegisterConstant<ICashDrawer>(new WndPosCashDrawer());
+                break;
+            case CashDrawerPosLib.RawSerialPort:
+                var rawBytesString = config.GetValue($"{nameof(RawSerialPort)}.RawBytes", "00")!;
+
+                try
+                {
+                    var rawBytes = Convert.FromHexString(rawBytesString);
+                }
+                catch(Exception exc)
+                {
+                    LogHost.Default.Error(exc, $"Error parsing {nameof(RawSerialPort)}.RawBytes");
+                    return;
+                }
+
+                var port = config.GetValue<string>($"{nameof(RawSerialPort)}.Port")!;
+
+                if (!SerialPort.GetPortNames().Any(x => x == port))
+                {
+                    LogHost.Default.Error($"Port {port} not found");
+                    return;
+                }
+
                 break;
             default:
                 break;

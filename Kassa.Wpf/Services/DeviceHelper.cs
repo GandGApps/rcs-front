@@ -16,7 +16,7 @@ internal static class DeviceHelper
     // the DeviceWatcher will let us see the devices as they are discovered,
     // whereas FindAllAsync returns results only after discovery is complete.
 
-    public static async Task<T?> GetFirstDeviceAsyncWithDeviceInformation<T>(string selector, Func<string, Task<T>> convertAsync)
+    public static async Task<T?> GetFirstDeviceAsync<T>(string selector, Func<string, Task<T>> convertAsync)
         where T : class
     {
         var completionSource = new TaskCompletionSource<T?>();
@@ -86,7 +86,7 @@ internal static class DeviceHelper
         }
     }
 
-    public static async Task<T?> GetFirstDeviceAsync<T>(string selector, Func<string, Task<T>> convertAsync) where T: class
+    public static async Task<T?> GetFirstDeviceAsyncWithDeviceInformation<T>(string selector, Func<string, Task<T>> convertAsync) where T: class
     {
         var deviceCollection = await DeviceInformation.FindAllAsync(selector);
 
@@ -97,7 +97,7 @@ internal static class DeviceHelper
             return await convertAsync(deviceInfo.Id);
         }
 
-        return null
+        return null;
     }
 
     public static Task<MagneticStripeReader?> GetFirstMagneticStripeReaderAsync(PosConnectionTypes connectionTypes = PosConnectionTypes.All) => GetFirstDeviceAsync(MagneticStripeReader.GetDeviceSelector(connectionTypes), async (id) => await MagneticStripeReader.FromIdAsync(id));
