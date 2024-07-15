@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Splat;
 using Windows.Devices.Enumeration;
 using Windows.Devices.PointOfService;
 
@@ -15,7 +16,7 @@ internal static class DeviceHelper
     // the DeviceWatcher will let us see the devices as they are discovered,
     // whereas FindAllAsync returns results only after discovery is complete.
 
-    public static async Task<T?> GetFirstDeviceAsync<T>(string selector, Func<string, Task<T>> convertAsync)
+    public static async Task<T?> GetFirstDeviceAsyncWithDeviceInformation<T>(string selector, Func<string, Task<T>> convertAsync)
         where T : class
     {
         var completionSource = new TaskCompletionSource<T?>();
@@ -65,5 +66,41 @@ internal static class DeviceHelper
         return result;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <remarks>Use it only for Development Environment</remarks>
+    public static async Task LogAllDevices()
+    {
+        var deviceCollection = await DeviceInformation.FindAllAsync();
+
+        // TODO: Remove as soon as possible
+        var uniqueDevices = new HashSet<string>();
+
+        foreach (var deviceInfo in deviceCollection)
+        {
+            if (uniqueDevices.Add(deviceInfo.Name))
+            {
+                LogHost.Default.Debug($"Device found: {deviceInfo.Name} ||| Device kind: {deviceInfo.Kind}");
+            }
+        }
+    }
+
+    public static async Task<T?> GetFirstDeviceAsync<T>(string selector, Func<string, Task<T>> convertAsync) where T: class
+    {
+        var deviceCollection = await DeviceInformation.FindAllAsync(selector);
+
+        if (deviceCollection.Count > 0)
+        {
+
+            var deviceInfo = deviceCollection[0];
+            return await convertAsync(deviceInfo.Id);
+        }
+
+        return null
+    }
+
     public static Task<MagneticStripeReader?> GetFirstMagneticStripeReaderAsync(PosConnectionTypes connectionTypes = PosConnectionTypes.All) => GetFirstDeviceAsync(MagneticStripeReader.GetDeviceSelector(connectionTypes), async (id) => await MagneticStripeReader.FromIdAsync(id));
+
+    public static Task<CashDrawer?> GetFirstCashDrawerAsync(PosConnectionTypes connectionTypes = PosConnectionTypes.All) => GetFirstDeviceAsync(CashDrawer.GetDeviceSelector(connectionTypes), async (id) => await CashDrawer.FromIdAsync(id));
 }

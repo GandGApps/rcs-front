@@ -63,13 +63,19 @@ public partial class App : Application, IEnableLogger
 
         EnvironmentName = config.GetValue<string>("Environment") ?? "Production";
 
+        if (EnvironmentName == "Development")
+        {
+            Dispatcher.InvokeAsync(() => DeviceHelper.LogAllDevices());
+        }
+
         CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
         CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
 
         Locator.CurrentMutable.AddLoggers(LogsPath);
 
         Locator.CurrentMutable.AddPrinterPosLib(config);
-        Locator.CurrentMutable.AddMsrReaderLib(config);
+        Locator.CurrentMutable.AddMsrReaderPosLib(config);
+        Locator.CurrentMutable.AddCashDrawerPosLib(config);
 
         Locator.CurrentMutable.InitializeReactiveUI(RegistrationNamespace.Wpf);
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());

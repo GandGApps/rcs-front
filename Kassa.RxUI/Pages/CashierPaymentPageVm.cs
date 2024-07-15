@@ -14,6 +14,7 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
 using Kassa.RxUI.Dialogs;
+using Kassa.Shared;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -235,7 +236,7 @@ public sealed class CashierPaymentPageVm : PageViewModel, IPaymentVm
 
             MainViewModel.DialogOpenCommand.Execute(loading).Subscribe();
 
-            await cashierPaymentService.PayAndSaveOrderThenDispose();
+            await cashierPaymentService.PayAndSaveOrderThenDispose(IsPrinter);
 
             await loading.CloseAsync();
 

@@ -59,7 +59,7 @@ public interface IPaymentService : IInitializableService
     /// <remarks>
     /// Attention! This method also dispose <see cref="IOrderEditService"/> 
     /// </remarks>
-    public Task PayAndSaveOrderThenDispose();
+    public Task PayAndSaveOrderThenDispose(bool printCheck);
     public Task PrintReceiptToEmail();
     public Task SetEmailToReceiptSending(string email);
     public Task PayWithBankCard(double money);

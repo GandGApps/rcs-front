@@ -11,7 +11,7 @@ using Splat;
 namespace Kassa.Wpf.Services;
 internal static class MscReaderLibSplatExtensions
 {
-    public static void AddMsrReaderLib(this IMutableDependencyResolver services, IConfiguration configuration)
+    public static void AddMsrReaderPosLib(this IMutableDependencyResolver services, IConfiguration configuration)
     {
         var msrReaderLibString = configuration.GetValue<string>(nameof(MsrReaderLib));
         var msrReaderLib = Enum.TryParse<MsrReaderLib>(msrReaderLibString, true, out var pos) ? pos : MsrReaderLib.MsrPos;
