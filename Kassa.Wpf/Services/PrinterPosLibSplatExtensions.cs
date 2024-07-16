@@ -40,6 +40,8 @@ internal static class PrinterPosLibSplatExtensions
             // TODO: Fix or remove this implementation
             case PrinterPosLib.EscposUsb:
                 var printerName = config.GetValue<string>("EscposUsbPrinterName");
+                EncodingProvider ppp = CodePagesEncodingProvider.Instance;
+                Encoding.RegisterProvider(ppp);
                 services.RegisterConstantAndDiagnose<IPrinter>(new EscPosUsbPrinter(printerName));
                 break;
             default:
