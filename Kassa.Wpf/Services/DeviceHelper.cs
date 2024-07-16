@@ -92,7 +92,6 @@ internal static class DeviceHelper
 
         if (deviceCollection.Count > 0)
         {
-
             var deviceInfo = deviceCollection[0];
             return await convertAsync(deviceInfo.Id);
         }

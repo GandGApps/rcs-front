@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Concurrency;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
@@ -38,6 +39,21 @@ public static class SplatExtensions
         services.UseSerilogFullLogger();
     }
 
+    public static async void RegisterConstantAndDiagnose<T>(this IMutableDependencyResolver services, T service)
+    {
+        if (service is IDevelopmentDiagnostics serviceDiagnose)
+        {
+            if (await serviceDiagnose.CheckService())
+            {
+                services.RegisterConstant(service);
+            }
+        }
+        else
+        {
+            services.RegisterConstant(service);
+        }
+    }
+
     /// <summary>
     /// 
     /// </summary>
@@ -47,7 +63,7 @@ public static class SplatExtensions
     {
         var basePath = AppDomain.CurrentDomain.BaseDirectory;
         var configurationBuilder = new ConfigurationBuilder();
-        
+
         configurationBuilder.AddJsonFile(Path.Combine(basePath, $"{initialJsonFileName}.json"), optional: false);
 
         var tempConfig = configurationBuilder.Build();

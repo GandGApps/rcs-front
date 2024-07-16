@@ -21,8 +21,6 @@ public enum PrinterPosLib
     /// IPrinter implementation is <see cref="EscPosPrinter"/>
     /// </summary>
     Escpos,
-
-    [Obsolete("This implementation don't work")]
     /// <summary>
     /// IPrinter implementation is <see cref="EscPosUsbPrinter"/>
     /// </summary>

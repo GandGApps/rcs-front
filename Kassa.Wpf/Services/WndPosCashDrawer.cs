@@ -19,7 +19,7 @@ internal sealed class WndPosCashDrawer : ICashDrawer, IEnableLogger
 
         if (cashDrawer == null)
         {
-            LogHost.Default.Debug($"Trying find printer with DeviceWatcher");
+            LogHost.Default.Debug($"Trying find cash drawer with DeviceWatcher");
 
             cashDrawer = await DeviceHelper.GetFirstCashDrawerAsync();
 
@@ -28,7 +28,7 @@ internal sealed class WndPosCashDrawer : ICashDrawer, IEnableLogger
 
         if (cashDrawer == null)
         {
-            LogHost.Default.Debug($"Trying find printer with DeviceInformation");
+            LogHost.Default.Debug($"Trying find cash drawer with DeviceInformation");
 
             cashDrawer = await DeviceHelper.GetFirstDeviceAsyncWithDeviceInformation(
                 CashDrawer.GetDeviceSelector(),

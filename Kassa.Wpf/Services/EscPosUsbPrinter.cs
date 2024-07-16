@@ -8,16 +8,12 @@ using Kassa.BuisnessLogic.Services;
 using ESC_POS_USB_NET.Printer;
 using Splat;
 using Kassa.BuisnessLogic;
+using Kassa.Shared;
 
 namespace Kassa.Wpf.Services;
 
 
-[Obsolete("This implementation don't work")]
-/// <summary>
-/// Don't work, need to be fixed or 
-/// removed from the project
-/// </summary>
-internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger
+internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDiagnostics
 {
     private readonly string _printerName;
 
@@ -36,6 +32,21 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger
         {
             LogHost.Default.Error(ex, $"Error on creating printer");
             return null;
+        }
+    }
+
+    public ValueTask<bool> CheckService()
+    {
+        try
+        {
+            var printer = new Printer(_printerName);
+
+            return new(true);
+        }
+        catch (Exception ex)
+        {
+            this.Log().Error(ex, $"Error on creating printer");
+            return new(false);
         }
     }
 

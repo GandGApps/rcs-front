@@ -71,6 +71,8 @@ public partial class App : Application, IEnableLogger
         CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
         CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
 
+        Locator.CurrentMutable.AddDispatherAdapter();
+
         Locator.CurrentMutable.AddLoggers(LogsPath);
 
         Locator.CurrentMutable.AddPrinterPosLib(config);
