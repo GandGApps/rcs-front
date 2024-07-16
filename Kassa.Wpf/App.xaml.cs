@@ -16,6 +16,9 @@ using Kassa.BuisnessLogic.Services;
 using Kassa.Wpf.Services;
 using System.IO;
 using System.Runtime.CompilerServices;
+using Kassa.Wpf.Services.PosPrinters;
+using Kassa.Wpf.Services.MagneticStripeReaders;
+using Kassa.Wpf.Services.CashDrawers;
 
 namespace Kassa.Wpf;
 /// <summary>

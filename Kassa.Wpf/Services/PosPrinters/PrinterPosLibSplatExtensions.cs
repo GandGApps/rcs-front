@@ -8,7 +8,7 @@ using Kassa.Shared;
 using Microsoft.Extensions.Configuration;
 using Splat;
 
-namespace Kassa.Wpf.Services;
+namespace Kassa.Wpf.Services.PosPrinters;
 internal static class PrinterPosLibSplatExtensions
 {
 
@@ -37,10 +37,9 @@ internal static class PrinterPosLibSplatExtensions
                 var useDefaultPrinter = config.GetValue<bool>("UseDefaultPrinter");
                 services.RegisterConstantAndDiagnose<IPrinter>(new WndPrinter(useDefaultPrinter));
                 break;
-            // TODO: Fix or remove this implementation
             case PrinterPosLib.EscposUsb:
                 var printerName = config.GetValue<string>("EscposUsbPrinterName");
-                EncodingProvider ppp = CodePagesEncodingProvider.Instance;
+                var ppp = CodePagesEncodingProvider.Instance;
                 Encoding.RegisterProvider(ppp);
                 services.RegisterConstantAndDiagnose<IPrinter>(new EscPosUsbPrinter(printerName));
                 break;

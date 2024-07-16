@@ -11,7 +11,7 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Splat;
 
-namespace Kassa.Wpf.Services;
+namespace Kassa.Wpf.Services.PosPrinters;
 internal sealed class EscPosPrinter : BuisnessLogic.Services.IPrinter, IEnableLogger
 {
     private readonly BasePrinter? _printer;
@@ -33,7 +33,7 @@ internal sealed class EscPosPrinter : BuisnessLogic.Services.IPrinter, IEnableLo
             this.Log().Error(exc, "Error creating printer");
         }
 
-       
+
     }
 
     public async Task PrintAsync(ReportShiftDto reportShift)

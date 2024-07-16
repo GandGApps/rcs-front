@@ -8,7 +8,7 @@ using System.Timers;
 using Splat;
 using System.Windows.Threading;
 
-namespace Kassa.Wpf.Services;
+namespace Kassa.Wpf.Services.MagneticStripeReaders;
 
 /// <summary>
 /// Helper class for <see cref="MsrKeyboard"/> to detect keyboard input.

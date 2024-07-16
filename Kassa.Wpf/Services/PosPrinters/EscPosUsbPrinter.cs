@@ -10,8 +10,7 @@ using Splat;
 using Kassa.BuisnessLogic;
 using Kassa.Shared;
 
-namespace Kassa.Wpf.Services;
-
+namespace Kassa.Wpf.Services.PosPrinters;
 
 internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDiagnostics
 {
@@ -20,6 +19,8 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
     public EscPosUsbPrinter(string printerName)
     {
         _printerName = printerName;
+
+        EscPosUsbPrinterContainer.Printer = GetPrinter(printerName);
     }
 
     public static Printer? GetPrinter(string printerName)
@@ -86,6 +87,7 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
         }
 
         printer.PartialPaperCut();
+
         printer.PrintDocument();
 
 

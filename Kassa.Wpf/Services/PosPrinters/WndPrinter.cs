@@ -14,7 +14,7 @@ using Splat;
 using Kassa.BuisnessLogic;
 using System.Windows;
 
-namespace Kassa.Wpf.Services;
+namespace Kassa.Wpf.Services.PosPrinters;
 
 /// <summary>
 /// Implementation of <see cref="IPrinter"/> for Wnd printer.

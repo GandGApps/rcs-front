@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Kassa.Wpf.Services;
+namespace Kassa.Wpf.Services.MagneticStripeReaders;
 internal enum MsrReaderLib
 {
     MsrPos,

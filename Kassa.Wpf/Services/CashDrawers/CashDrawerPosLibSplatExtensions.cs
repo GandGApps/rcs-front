@@ -5,10 +5,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Services;
+using Kassa.Wpf.Services.PosPrinters;
 using Microsoft.Extensions.Configuration;
 using Splat;
 
-namespace Kassa.Wpf.Services;
+namespace Kassa.Wpf.Services.CashDrawers;
 internal static class CashDrawerPosLibSplatExtensions
 {
 
@@ -32,7 +33,7 @@ internal static class CashDrawerPosLibSplatExtensions
                 {
                     var rawBytes = Convert.FromHexString(rawBytesString);
                 }
-                catch(Exception exc)
+                catch (Exception exc)
                 {
                     LogHost.Default.Error(exc, $"Error parsing {nameof(RawSerialPort)}.RawBytes");
                     return;
@@ -46,6 +47,18 @@ internal static class CashDrawerPosLibSplatExtensions
                     return;
                 }
 
+                break;
+            case CashDrawerPosLib.EscposUsb:
+
+                var printerImplementation = config.GetValue<string>(nameof(PrinterPosLib));
+
+                if (config.GetValue<string>(nameof(PrinterPosLib)) != nameof(PrinterPosLib.EscposUsb))
+                {
+                    LogHost.Default.Error($"PrinterPosLib should be {nameof(PrinterPosLib.EscposUsb)}");
+                    return;
+                }
+
+                services.RegisterConstant<ICashDrawer>(new EscposUsb());
                 break;
             default:
                 break;

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Services;
 
-namespace Kassa.Wpf.Services;
+namespace Kassa.Wpf.Services.CashDrawers;
 internal sealed class RawSerialPort(byte[] rawBytes, string port) : ICashDrawer
 {
 

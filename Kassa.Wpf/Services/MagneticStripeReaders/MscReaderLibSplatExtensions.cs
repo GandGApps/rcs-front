@@ -8,7 +8,7 @@ using Kassa.BuisnessLogic.Services;
 using Microsoft.Extensions.Configuration;
 using Splat;
 
-namespace Kassa.Wpf.Services;
+namespace Kassa.Wpf.Services.MagneticStripeReaders;
 internal static class MscReaderLibSplatExtensions
 {
     public static void AddMsrReaderPosLib(this IMutableDependencyResolver services, IConfiguration configuration)

@@ -8,7 +8,7 @@ using System.Windows.Threading;
 using Kassa.BuisnessLogic.Services;
 using Splat;
 
-namespace Kassa.Wpf.Services;
+namespace Kassa.Wpf.Services.MagneticStripeReaders;
 internal sealed class MsrKeyboard : IMagneticStripeReader, IEnableLogger
 {
 

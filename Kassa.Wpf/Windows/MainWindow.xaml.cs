@@ -10,7 +10,7 @@ using System.Windows.Input;
 using Kassa.RxUI;
 using Kassa.RxUI.Dialogs;
 using Kassa.Shared;
-using Kassa.Wpf.Services;
+using Kassa.Wpf.Services.MagneticStripeReaders;
 using Kassa.Wpf.Windows;
 using ReactiveUI;
 using Splat;

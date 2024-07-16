@@ -9,7 +9,7 @@ using Kassa.BuisnessLogic.Services;
 using Splat;
 using Windows.Devices.PointOfService;
 
-namespace Kassa.Wpf.Services;
+namespace Kassa.Wpf.Services.MagneticStripeReaders;
 
 /// <summary>
 /// Implementation of <see cref="IMagneticStripeReader"/> for Wnd magnetic stripe reader.

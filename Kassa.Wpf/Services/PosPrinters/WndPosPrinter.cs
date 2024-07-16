@@ -12,7 +12,7 @@ using Splat;
 using Windows.Devices.Enumeration;
 using Windows.Devices.PointOfService;
 
-namespace Kassa.Wpf.Services;
+namespace Kassa.Wpf.Services.PosPrinters;
 internal sealed class WndPosPrinter : IPrinter, IEnableLogger
 {
 
