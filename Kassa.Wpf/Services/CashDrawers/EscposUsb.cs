@@ -20,7 +20,7 @@ internal sealed class EscposUsb : ICashDrawer, IEnableLogger
 
         // Posible concurrency issue
         // Need to use lock with <see cref="EscPosUsbPrinter"/>
-        EscPosUsbPrinterContainer.Printer.OpenDrawer();
+        EscPosUsbPrinterContainer.Printer.Append(new byte[] { 27, 112, 0 });
         EscPosUsbPrinterContainer.Printer.PrintDocument();
 
         return Task.CompletedTask;
