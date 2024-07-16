@@ -14,7 +14,7 @@ namespace Kassa.Wpf.Services.PosPrinters;
 
 internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDiagnostics
 {
-    private readonly string _printerName;
+    internal readonly string _printerName;
 
     public EscPosUsbPrinter(string printerName)
     {

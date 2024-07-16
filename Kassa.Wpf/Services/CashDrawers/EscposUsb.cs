@@ -12,16 +12,27 @@ internal sealed class EscposUsb : ICashDrawer, IEnableLogger
 {
     public Task Open()
     {
-        if (EscPosUsbPrinterContainer.Printer == null)
+
+        var printerImplementation = Locator.Current.GetService<IPrinter>();
+
+        if (printerImplementation is not EscPosUsbPrinter usbPrinter)
         {
-            this.Log().Warn("No printer found");
+            this.Log().Error("Printer is not EscPosUsbPrinter");
+
             return Task.CompletedTask;
         }
 
-        // Posible concurrency issue
-        // Need to use lock with <see cref="EscPosUsbPrinter"/>
-        EscPosUsbPrinterContainer.Printer.Append(new byte[] { 27, 112, 0 });
-        EscPosUsbPrinterContainer.Printer.PrintDocument();
+        var printer = EscPosUsbPrinter.GetPrinter(usbPrinter._printerName);
+
+        if (printer == null)
+        {
+            this.Log().Error("Printer is null");
+
+            return Task.CompletedTask;
+        }
+
+        printer.OpenDrawer();
+        printer.PrintDocument();
 
         return Task.CompletedTask;
     }
