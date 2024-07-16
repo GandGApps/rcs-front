@@ -29,10 +29,12 @@ public static class SplatExtensions
     {
         path ??= Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs", "Logs.txt");
 
+        const string template = "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} ({SourceContext})[{Level:u3}]: {Message:lj}{NewLine}{Exception}";  
+
         Log.Logger = new LoggerConfiguration()
             .MinimumLevel.Is(logEventLevel)
-            .WriteTo.File(path, restrictedToMinimumLevel: LogEventLevel.Debug, rollingInterval: RollingInterval.Day)
-            .WriteTo.Debug(restrictedToMinimumLevel: LogEventLevel.Debug)
+            .WriteTo.File(path, restrictedToMinimumLevel: LogEventLevel.Debug, rollingInterval: RollingInterval.Day, outputTemplate: template)
+            .WriteTo.Debug(restrictedToMinimumLevel: LogEventLevel.Debug, outputTemplate: template)
             .WriteTo.Logger(new ObservableLogger())
             .CreateLogger();
 

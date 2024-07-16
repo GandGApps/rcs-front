@@ -148,6 +148,8 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
                 extractedException = e.Exception;
             }
 
+            LogHost.Default.Error(extractedException, "Unhandled exception");
+
             if (extractedException is DeveloperException developerException)
             {
                 e.Handled = true;

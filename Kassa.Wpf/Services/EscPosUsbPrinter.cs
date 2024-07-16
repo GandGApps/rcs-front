@@ -68,6 +68,8 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
         var productService = await Locator.Current.GetInitializedService<IProductService>();
         var additiveService = await Locator.Current.GetInitializedService<IAdditiveService>();
 
+        printer.Append("Кто прочитает тот л");
+
         foreach (var orderedProduct in order.Products)
         {
             productIndex++;
@@ -83,6 +85,7 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
             }
         }
 
+        printer.PartialPaperCut();
         printer.PrintDocument();
 
 
