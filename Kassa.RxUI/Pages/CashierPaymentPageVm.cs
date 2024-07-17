@@ -155,28 +155,12 @@ public sealed class CashierPaymentPageVm : PageViewModel, IPaymentVm
                     return "Распечатать, переслать чек";
                 }
 
-                if (withReceipt)
-                {
-                    if (!email && !printer)
-                    {
-                        IsPrinter = true;
-                        return "Переслать чек";
-                    }
-                }
-
                 if (email)
                 {
                     return "Отправить на почту";
                 }
-                else if (printer)
-                {
 
-                    return "Распечатать";
-                }
-                else
-                {
-                    return "";
-                }
+                return "Распечатать";
             })
             .ToPropertyEx(this, x => x.ReceiptActionText)
             .DisposeWith(InternalDisposables);
@@ -248,6 +232,10 @@ public sealed class CashierPaymentPageVm : PageViewModel, IPaymentVm
                 receiptBehavior |= ReceiptBehavior.PrintReceipt;
             }
 
+            cashierPaymentService.Cash = CashVm.Entered;
+            cashierPaymentService.BankСard = BankCardVm.Entered;
+            cashierPaymentService.CashlessPayment = CashlessPaymentVm.Entered;
+            cashierPaymentService.WithoutRevenue = WithoutRevenueVm.Entered;
 
             await cashierPaymentService.PayAndSaveOrderThenDispose(receiptBehavior);
 
