@@ -171,11 +171,11 @@ public sealed class CashierPaymentPageVm : PageViewModel, IPaymentVm
                 else if (printer)
                 {
 
-                    return "Переслать чек";
+                    return "Распечатать";
                 }
                 else
                 {
-                    return "Распечатать, переслать чек";
+                    return "";
                 }
             })
             .ToPropertyEx(this, x => x.ReceiptActionText)
@@ -236,7 +236,20 @@ public sealed class CashierPaymentPageVm : PageViewModel, IPaymentVm
 
             MainViewModel.DialogOpenCommand.Execute(loading).Subscribe();
 
-            await cashierPaymentService.PayAndSaveOrderThenDispose(IsPrinter);
+            var receiptBehavior = ReceiptBehavior.NoPrintReceipt;
+
+            if (IsEmail)
+            {
+                receiptBehavior |= ReceiptBehavior.SendToEmail;
+            }
+
+            if (IsPrinter)
+            {
+                receiptBehavior |= ReceiptBehavior.PrintReceipt;
+            }
+
+
+            await cashierPaymentService.PayAndSaveOrderThenDispose(receiptBehavior);
 
             await loading.CloseAsync();
 
@@ -298,8 +311,7 @@ public sealed class CashierPaymentPageVm : PageViewModel, IPaymentVm
     [Reactive]
     public bool WithReceipt
     {
-        get;
-        set;
+        get; set;
     }
 
     [Reactive]

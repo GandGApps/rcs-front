@@ -233,7 +233,7 @@ public sealed class NewDeliveryPageVm : PageViewModel
             order.CreatedAt = DateTime.UtcNow;
 
 
-            await _paymentService.PayAndSaveOrderThenDispose(false);
+            await _paymentService.PayAndSaveOrderThenDispose(ReceiptBehavior.NoPrintReceipt);
 
             await loading.CloseAsync();
 

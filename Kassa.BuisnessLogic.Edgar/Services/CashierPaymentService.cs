@@ -60,7 +60,7 @@ internal sealed class CashierPaymentService: BaseInitializableService, IPaymentS
     }
 
     /// <inheritdoc/>
-    public async Task PayAndSaveOrderThenDispose(bool printCheck)
+    public async Task PayAndSaveOrderThenDispose(ReceiptBehavior receiptBehavior)
     {
         var order = Order.GetOrder();
         var paymentInfo = new PaymentInfoDto()
@@ -82,12 +82,15 @@ internal sealed class CashierPaymentService: BaseInitializableService, IPaymentS
         Payed?.Invoke();
         Order.Dispose();
 
-        if (printCheck)
+        if (receiptBehavior == ReceiptBehavior.PrintReceipt)
         {
             var printer = Splat.Locator.Current.GetRequiredService<IPrinter>();
 
             await printer.PrintAsync(order);
+        }
 
+        if (Cash > 0)
+        {
             var cashDrawer = Splat.Locator.Current.GetRequiredService<ICashDrawer>();
 
             await cashDrawer.Open();

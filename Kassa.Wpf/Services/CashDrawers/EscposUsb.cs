@@ -15,6 +15,7 @@ internal sealed class EscposUsb : ICashDrawer, IEnableLogger
 
         var printerImplementation = Locator.Current.GetService<IPrinter>();
 
+        // Simple way to test if the printer is EscPosUsbPrinter
         if (printerImplementation is not EscPosUsbPrinter usbPrinter)
         {
             this.Log().Error("Printer is not EscPosUsbPrinter");
@@ -22,6 +23,7 @@ internal sealed class EscposUsb : ICashDrawer, IEnableLogger
             return Task.CompletedTask;
         }
 
+        // And also simple way to get the printer name
         var printer = EscPosUsbPrinter.GetPrinter(usbPrinter._printerName);
 
         if (printer == null)
