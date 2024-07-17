@@ -17,7 +17,6 @@ public class EmaiEditlDialogViewModel : DialogViewModel
             if (!string.IsNullOrWhiteSpace(Email))
             {
                 _paymentVm.IsEmail = true;
-                _paymentVm.IsPrinter = false;
             }
 
             _paymentVm.Email = Email;

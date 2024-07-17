@@ -17,31 +17,31 @@ public sealed class HttpDebugLoggingHandler : DelegatingHandler, IEnableLogger
     {
         var req = request;
         var id = Guid.NewGuid().ToString();
-        var msg = $"[{id} -   Request]";
+        var msg = $"[{id} - Request]";
+        var logBuilder = new StringBuilder();
 
-        this.Log().Info($"{msg}========Start==========");
-        this.Log().Info($"{msg} {req.Method} {req.RequestUri!.PathAndQuery} {req.RequestUri.Scheme}/{req.Version}");
-        this.Log().Info($"{msg} Host: {req.RequestUri.Scheme}://{req.RequestUri.Host}");
+        logBuilder.AppendLine($"Request start {msg}:");
+        logBuilder.AppendLine($"{req.Method} {req.RequestUri!.PathAndQuery} {req.RequestUri.Scheme}/{req.Version}");
+        logBuilder.AppendLine($"Host: {req.RequestUri.Scheme}://{req.RequestUri.Host}");
 
         foreach (var header in req.Headers)
         {
-            this.Log().Info($"{msg} {header.Key}: {string.Join(", ", header.Value)}");
+            logBuilder.AppendLine($"{header.Key}: {string.Join(", ", header.Value)}");
         }
 
         if (req.Content != null)
         {
             foreach (var header in req.Content.Headers)
             {
-                this.Log().Info($"{msg} {header.Key}: {string.Join(", ", header.Value)}");
+                logBuilder.AppendLine($"{header.Key}: {string.Join(", ", header.Value)}");
             }
 
             if (req.Content is StringContent || IsTextBasedContentType(req.Headers) ||
                 IsTextBasedContentType(req.Content.Headers))
             {
                 var result = await req.Content.ReadAsStringAsync(cancellationToken);
-
-                this.Log().Info($"{msg} Content:");
-                this.Log().Info($"{msg} {result}");
+                logBuilder.AppendLine($"Content:");
+                logBuilder.AppendLine($"{result}");
             }
         }
 
@@ -51,27 +51,29 @@ public sealed class HttpDebugLoggingHandler : DelegatingHandler, IEnableLogger
 
         var end = DateTime.Now;
 
-        this.Log().Info($"{msg} Duration: {end - start}");
-        this.Log().Info($"{msg}==========End==========");
+        logBuilder.AppendLine($"Duration: {end - start}");
+
+        this.Log().Debug(logBuilder.ToString());
 
         msg = $"[{id} - Response]";
-        this.Log().Info($"{msg}=========Start=========");
+        logBuilder.Clear();
+
+        logBuilder.AppendLine($"Request end {msg}:");
 
         var resp = response;
 
-        this.Log().Info(
-            $"{msg} {req.RequestUri.Scheme.ToUpper()}/{resp.Version} {(int)resp.StatusCode} {resp.ReasonPhrase}");
+        logBuilder.AppendLine($"{req.RequestUri.Scheme.ToUpper()}/{resp.Version} {(int)resp.StatusCode} {resp.ReasonPhrase}");
 
         foreach (var header in resp.Headers)
         {
-            this.Log().Info($"{msg} {header.Key}: {string.Join(", ", header.Value)}");
+            logBuilder.AppendLine($"{header.Key}: {string.Join(", ", header.Value)}");
         }
 
         if (resp.Content != null)
         {
             foreach (var header in resp.Content.Headers)
             {
-                this.Log().Info($"{msg} {header.Key}: {string.Join(", ", header.Value)}");
+                logBuilder.AppendLine($"{header.Key}: {string.Join(", ", header.Value)}");
             }
 
             if (resp.Content is StringContent || IsTextBasedContentType(resp.Headers) ||
@@ -81,22 +83,28 @@ public sealed class HttpDebugLoggingHandler : DelegatingHandler, IEnableLogger
                 var result = await resp.Content.ReadAsStringAsync(cancellationToken);
                 end = DateTime.Now;
 
-                this.Log().Info($"{msg} Content:");
-                this.Log().Info($"{msg} {result}");
-                this.Log().Info($"{msg} Duration: {end - start}");
+                logBuilder.AppendLine($"Content:");
+                logBuilder.AppendLine($"{result}");
+                logBuilder.AppendLine($"Duration: {end - start}");
             }
         }
 
-        this.Log().Info($"{msg}==========End==========");
+        this.Log().Debug(logBuilder.ToString());
+
         return response;
+
     }
 
 
     private static bool IsTextBasedContentType(HttpHeaders headers)
     {
         IEnumerable<string> values;
-        if (!headers.TryGetValues("Content-Type", out values))
+
+        if (!headers.TryGetValues("Content-Type", out values!))
+        {
             return false;
+        }
+
         var header = string.Join(" ", values).ToLowerInvariant();
 
         return types.Any(t => header.Contains(t));

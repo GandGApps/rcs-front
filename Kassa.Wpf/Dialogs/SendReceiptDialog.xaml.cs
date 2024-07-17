@@ -36,7 +36,6 @@ public partial class SendReceiptDialog : ClosableDialog<SendReceiptDialogViewMod
 
             if (!(ViewModel.PaymentVm.IsPrinter || ViewModel.PaymentVm.IsEmail))
             {
-                ViewModel.PaymentVm.IsPrinter = true;
                 ViewModel.PaymentVm.IsEmail = false;
             }
 

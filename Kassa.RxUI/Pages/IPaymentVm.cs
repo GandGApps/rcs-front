@@ -77,8 +77,7 @@ public interface IPaymentVm
     }
     bool IsPrinter
     {
-        get;
-        set;
+        get; 
     }
     ReactiveCommand<double, Unit> PlusCommand
     {
