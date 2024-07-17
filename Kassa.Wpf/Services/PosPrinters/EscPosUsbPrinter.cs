@@ -86,7 +86,7 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
             }
         }
 
-        printer.PartialPaperCut();
+        printer.Append(new byte[] { 0x1B, 0x69, 0x43, 0x02 });
 
         printer.PrintDocument();
 
