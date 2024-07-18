@@ -128,6 +128,7 @@
                             Margin="{mx:AdaptiveSize Thickness='40'}"
                             Padding="{mx:AdaptiveSize Thickness='10'}"
                             Content="Далее"
+                            FocusVisualStyle="{x:Null}"
                             Style="{StaticResource PrimaryButton}" />
 
                     </StackPanel>

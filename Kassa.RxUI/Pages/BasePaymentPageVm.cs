@@ -132,21 +132,22 @@ public abstract class BasePaymentPageVm: PageViewModel, IPaymentVm
 
         ExactAmountCommand = ReactiveCommand.Create(() =>
         {
+            var exactAmount = Total - ToEntered < 0 ? Total : ToEnter;
             if (CurrentPaymentType == PaymentType.Cash)
             {
-                SetDisplayText(ToEnter);
+                SetDisplayText(exactAmount);
             }
             else if (CurrentPaymentType == PaymentType.BankCard)
             {
-                SetDisplayText(ToEnter);
+                SetDisplayText(exactAmount);
             }
             else if (CurrentPaymentType == PaymentType.CashlessPayment)
             {
-                SetDisplayText(ToEnter);
+                SetDisplayText(exactAmount);
             }
             else if (CurrentPaymentType == PaymentType.WithoutRevenue)
             {
-                SetDisplayText(ToEnter);
+                SetDisplayText(exactAmount);
             }
         });
 

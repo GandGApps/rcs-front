@@ -46,6 +46,7 @@ public partial class InputDialog : ClosableDialog<InputDialogViewModel>
             this.Bind(ViewModel, x => x.FieldName, x => x.FieldName.Text)
                 .DisposeWith(disposables);
 
+            Input.Focus();
         });
     }
 }
