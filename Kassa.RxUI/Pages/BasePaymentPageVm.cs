@@ -227,15 +227,20 @@ public abstract class BasePaymentPageVm: PageViewModel, IPaymentVm
 
             var receiptBehavior = ReceiptBehavior.NoPrintReceipt;
 
-            if (IsEmail)
+            if (WithReceipt)
             {
-                receiptBehavior |= ReceiptBehavior.SendToEmail;
+                if (IsEmail)
+                {
+                    receiptBehavior |= ReceiptBehavior.SendToEmail;
+                }
+
+                if (IsPrinter)
+                {
+                    receiptBehavior |= ReceiptBehavior.PrintReceipt;
+                }
             }
 
-            if (IsPrinter)
-            {
-                receiptBehavior |= ReceiptBehavior.PrintReceipt;
-            }
+            
 
             cashierPaymentService.Cash = CashVm.Entered;
             cashierPaymentService.BankСard = BankCardVm.Entered;

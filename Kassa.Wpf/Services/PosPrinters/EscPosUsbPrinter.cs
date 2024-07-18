@@ -86,14 +86,15 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
             }
         }
 
+        // Добавляем бумагу для отрыва
+        printer.Append("\n");
+        printer.Append("\n");
+        printer.Append("\n");
+        printer.Append("\n");
+        printer.Append("\n");
+
+        // ESC i C 2 - отрыв бумаги
         printer.Append(new byte[] { 0x1B, 0x69, 0x43, 0x02 });
-
-        printer.Append("\n");
-        printer.Append("\n");
-        printer.Append("\n");
-        printer.Append("\n");
-        printer.Append("\n");
-
 
         printer.PrintDocument();
 
