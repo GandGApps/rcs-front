@@ -96,6 +96,12 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
         // ESC i C 2 - отрыв бумаги
         printer.Append(new byte[] { 0x1B, 0x69, 0x43, 0x02 });
 
+        // Отключая звук ESC B NUL
+        printer.Append(new byte[] { 0x1B, 0x42, 0x00 });
+
+        // Отключаем звук ESC BEL NUL
+        printer.Append(new byte[] { 0x1B, 0x07, 0x00 });
+
         printer.PrintDocument();
 
 
