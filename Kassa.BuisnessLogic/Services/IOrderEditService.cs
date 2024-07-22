@@ -8,116 +8,12 @@ using Kassa.DataAccess;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Services;
+
+[Obsolete("Remove as soon as posible")]
 public interface IOrderEditService : IInitializableService
 {
-    public IObservableOnlyBehaviourSubject<ICategoryDto?> CurrentCategory
-    {
-        get;
-    }
 
-    public IReadOnlyList<ICategoryDto> CategoriesStack
-    {
-        get;
-    }
-
-    public IObservableOnlyBehaviourSubject<bool> IsMultiSelect
-    {
-        get;
-    }
-
-    public IObservableOnlyBehaviourSubject<int?> SelectedFavourite
-    {
-        get;
-    }
-
-    public IObservableOnlyBehaviourSubject<double> Discount
-    {
-        get;
-    }
-
-    public IObservableOnlyBehaviourSubject<string?> TotalComment
-    {
-        get;
-    }
-
-    public IObservableOnlyBehaviourSubject<bool> ShowPrice
-    {
-        get;
-    }
-
-    public IObservableOnlyBehaviourSubject<bool> IsStopList
-    {
-        get;
-    }
-
-    public IObservableOnlyBehaviourSubject<bool> IsForHere
-    {
-        get;
-    }
-
-    public Guid OrderId
-    {
-        get;
-    }
-
-    public bool IsDelivery
-    {
-        get;
-    }
-
-    public DateTime WhenOrderStarted
-    {
-        get;
-    }
-
-    public void SetMultiSelect(bool isMultiSelect);
-    public void SetShowPrice(bool showPrice);
-    public void SetIsStopList(bool isStopList);
-    public void SetIsForHere(bool isForHere);
-
-    /// <summary>
-    /// Bind the current category to ObservableCollection, that will be updated when the category changes.
-    /// <para>
-    /// It's need only for cashier page.
-    /// </para>
-    /// </summary>
-    /// <param name="categoryItems"></param>
-    /// <returns></returns>
-    public IDisposable BindSelectedCategoryItems<T>(Func<ICategoryItemDto, T> creator, out ReadOnlyObservableCollection<T> categoryItems) where T : class, IGuidId;
-    public IDisposable BindShoppingListItems<T>(Func<ProductShoppingListItemDto, IApplicationModelManager<ProductShoppingListItemDto>, T> creator, out ReadOnlyObservableCollection<T> shoppingListItems) where T : class, IGuidId;
-    public IDisposable BindSelectedShoppingListItems(out ReadOnlyObservableCollection<IShoppingListItemDto> shoppingListItems);
-    public IDisposable BindAdditivesForSelectedProduct<T>(Func<AdditiveDto, T> creator, out ReadOnlyObservableCollection<T> additives) where T : class, IReactiveToChangeSet<Guid, AdditiveDto>;
-    public IDisposable BindAdditivesForProductShoppingListItem<T>(ProductShoppingListItemDto item, Func<AdditiveShoppingListItemDto, IApplicationModelManager<AdditiveShoppingListItemDto>, T> creator, out ReadOnlyObservableCollection<T> additives) where T : class, IApplicationModelPresenter<AdditiveShoppingListItemDto>;
-    public IDisposable BindFastMenu<T>(Func<FastMenuDto, IApplicationModelPresenter<FastMenuDto>> creator, out ReadOnlyObservableCollection<T> items);
-
-    public Task AddProductToShoppingList(Guid productId);
-
-    public Task SelectCategory(Guid categoryId);
-    public Task SelectShoppingListItem(IShoppingListItemDto shoppingListItemDto);
-    public Task UnselectShoppingListItem(IShoppingListItemDto shoppingListItemDto);
-
-    /// <summary>
-    /// Select the previos category in the list.
-    /// </summary>
-    /// <returns> true if the previous category exists</returns>
-    public ValueTask<bool> SelectPreviosCategory();
-
-    public ValueTask SelectRootCategory();
-
-    public Task AddAdditiveToSelectedProducts(Guid additiveId);
-    public Task WriteCommentToSelectedItems(string? comment);
-    public Task WriteTotalComment(string? comment);
     public bool IsAdditiveAdded(Guid additiveId);
-
-    public Task IncreaseSelectedProductShoppingListItem(double count = 1);
-    public Task DecreaseSelectedProductShoppingListItem(double count = 1);
-
-    public Task IncreaseProductShoppingListItem(ProductShoppingListItemDto item, double count = 1);
-    public Task DecreaseProductShoppingListItem(ProductShoppingListItemDto item, double count = 1);
-
-    public Task RemoveSelectedProductShoppingListItem();
-    public ValueTask SelectFavourite(int favourite);
-
+    
     public OrderDto GetOrder();
-    public Task AddProductToShoppingList(OrderedProductDto orderedProduct);
 }

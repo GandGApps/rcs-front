@@ -11,7 +11,7 @@ using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 
 namespace Kassa.BuisnessLogic.Services;
-internal class IngridientsService(IRepository<Ingredient> repository) : BaseInitializableService, IIngridientsService
+internal sealed class IngridientsService(IRepository<Ingredient> repository) : BaseInitializableService, IIngridientsService
 {
     public SourceCache<IngredientDto, Guid> RuntimeIngridients
     {

@@ -10,20 +10,20 @@ using Kassa.DataAccess.Model;
 namespace Kassa.BuisnessLogic.Services;
 public interface ICashierService : IInitializableService
 {
-    public IOrderEditService? CurrentOrder
+    public OrderEditDto? CurrentOrder
     {
         get;
     }
 
-    public ReadOnlyObservableCollection<IOrderEditService> Orders
+    public ReadOnlyObservableCollection<OrderEditDto> Orders
     {
         get;
     }
 
 
-    public ValueTask<IOrderEditService> CreateOrder(bool isDelivery);
-    public ValueTask<IOrderEditService> CreateOrder(OrderDto order);
-    public ValueTask<IPaymentService> CreatePayment(IOrderEditService order);
+    public ValueTask<OrderEditDto> CreateOrder(bool isDelivery);
+    public ValueTask<OrderEditDto> CreateOrder(OrderDto order);
+    public ValueTask<IPaymentService> CreatePayment(OrderEditDto order);
 
-    public ValueTask SelectCurrentOrder(IOrderEditService order);
+    public ValueTask SelectCurrentOrder(OrderEditDto order);
 }

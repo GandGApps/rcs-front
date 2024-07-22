@@ -21,4 +21,6 @@ public interface IIngridientsService: IInitializableService
     public ValueTask<IngredientDto?> GetIngridient(Guid id);
     public Task SpendIngridients(IEnumerable<IngredientUsageDto> ingredientUsages, double count = 1);
     public Task ReturnIngridients(IEnumerable<IngredientUsageDto> ingredientUsages, double count = 1);
+
+    public IStorageScope CreateStorageScope();
 }
