@@ -5,18 +5,19 @@ using System.Reactive.Disposables;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
-using DynamicData;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
+using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 
-namespace Kassa.BuisnessLogic.Services;
+namespace Kassa.BuisnessLogic.Edgar.Services;
 internal sealed class IngridientsService(IRepository<Ingredient> repository) : BaseInitializableService, IIngridientsService
 {
-    public SourceCache<IngredientDto, Guid> RuntimeIngridients
+    public IApplicationModelManager<IngredientDto> RuntimeIngridients
     {
         get;
-    } = new(x => x.Id);
+    } = new HostModelManager<IngredientDto>();
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
@@ -49,7 +50,7 @@ internal sealed class IngridientsService(IRepository<Ingredient> repository) : B
 
         await repository.Delete(ingridient);
 
-        RuntimeIngridients.RemoveKey(id);
+        RuntimeIngridients.Remove(id);
     }
     public async ValueTask<IngredientDto?> GetIngridient(Guid id)
     {
@@ -72,11 +73,8 @@ internal sealed class IngridientsService(IRepository<Ingredient> repository) : B
     {
         foreach (var usage in ingredientUsages)
         {
-            var lookupResult = RuntimeIngridients.Lookup(usage.IngredientId);
-            if (lookupResult.HasValue)
+            if (RuntimeIngridients.TryGetValue(usage.IngredientId, out var ingredientDto))
             {
-                var ingredientDto = lookupResult.Value;
-
                 if (ingredientDto.IsSellRemainder)
                 {
                     continue;
@@ -100,10 +98,8 @@ internal sealed class IngridientsService(IRepository<Ingredient> repository) : B
     {
         foreach (var usage in ingredientUsages)
         {
-            var lookupResult = RuntimeIngridients.Lookup(usage.IngredientId);
-            if (lookupResult.HasValue)
+            if (RuntimeIngridients.TryGetValue(usage.IngredientId, out var ingredientDto))
             {
-                var ingredientDto = lookupResult.Value;
                 ingredientDto.Count += usage.Count * count;
                 RuntimeIngridients.AddOrUpdate(ingredientDto);
             }
@@ -121,10 +117,8 @@ internal sealed class IngridientsService(IRepository<Ingredient> repository) : B
     {
         foreach (var usage in ingredientUsages)
         {
-            var lookupResult = RuntimeIngridients.Lookup(usage.IngredientId);
-            if (lookupResult.HasValue)
+            if (RuntimeIngridients.TryGetValue(usage.IngredientId, out var ingredientDto))
             {
-                var ingredientDto = lookupResult.Value;
                 ingredientDto.Count -= usage.Count * count;
                 RuntimeIngridients.AddOrUpdate(ingredientDto);
             }
@@ -153,4 +147,6 @@ internal sealed class IngridientsService(IRepository<Ingredient> repository) : B
             RuntimeIngridients.Dispose();
         }
     }
+
+    public IStorageScope CreateStorageScope() => throw new NotImplementedException();
 }

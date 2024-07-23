@@ -6,29 +6,32 @@ using System.Reactive.Disposables;
 using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
-using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.BuisnessLogic;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI;
-using DynamicData.Binding;
+using Kassa.BuisnessLogic.Dto;
 using Kassa.RxUI.Dialogs;
 using System.Reactive.Linq;
+using DynamicData.Binding;
 using DynamicData;
 
 namespace Kassa.RxUI.Pages;
-public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
+public abstract class BaseOrderEditPageVm: BaseViewModel, IOrderEditVm
 {
-    private readonly IOrderEditService _orderEditService;
+    private readonly OrderEditDto _orderEditDto;
     private readonly ICashierService _cashierService;
     private readonly IAdditiveService _additiveService;
     private readonly IProductService _productService;
+    private readonly IStorageScope _storageScope;
 
-    public DeliveryOrderEditPageVm(IOrderEditService orderEditService, ICashierService cashierService, IAdditiveService additiveService, IProductService productService)
+    public BaseOrderEditPageVm(OrderEditDto orderEditDto, IStorageScope storageScope, ICashierService cashierService, IAdditiveService additiveService, IProductService productService)
     {
-        _orderEditService = orderEditService;
+        _orderEditDto = orderEditDto;
         _cashierService = cashierService;
         _additiveService = additiveService;
+        _productService = productService;
+        _storageScope = storageScope;
 
         CreateTotalCommentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -43,7 +46,7 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
 
             if (dialog.IsPublished)
             {
-                await _orderEditService!.WriteTotalComment(dialog.Comment);
+                await _orderEditDto!.WriteTotalComment(dialog.Comment);
                 TotalComment = dialog.Comment;
             }
         });
@@ -51,10 +54,12 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
         CreatePromocodeCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             var promo = new PromocodeDialogViewModel(this);
+
             promo.ApplyCommand.Subscribe(x =>
             {
                 DiscountAccesser = x;
-            });
+            })
+            ;
             var dialog = await MainViewModel.DialogOpenCommand.Execute(promo).FirstAsync();
 
             await dialog.WaitDialogClose();
@@ -63,7 +68,7 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
         SearchAddictiveCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             var additiveService = await Locator.GetInitializedService<IAdditiveService>();
-            var addictiveDialog = new SearchAddictiveDialogViewModel(additiveService, orderEditService);
+            var addictiveDialog = new SearchAddictiveDialogViewModel(additiveService, orderEditDto);
             var dialog = await MainViewModel.DialogOpenCommand.Execute(addictiveDialog).FirstAsync();
 
             await dialog.WaitDialogClose();
@@ -71,27 +76,27 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
 
         SelectFavouriteCommand = ReactiveCommand.CreateFromTask(async (int x) =>
         {
-            if (_orderEditService == null)
+            if (_orderEditDto == null)
             {
                 return;
             }
-            await _orderEditService.SelectFavourite(x);
+            await _orderEditDto.SelectFavourite(x);
         });
 
         SelectRootCategoryCommand = ReactiveCommand.CreateFromTask(async () =>
         {
 
-            if (_orderEditService == null)
+            if (_orderEditDto == null)
             {
 
                 return;
             }
-            await _orderEditService.SelectRootCategory();
+            await _orderEditDto.SelectRootCategory();
         });
 
         SearchProductCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var searchProductDialog = new SearchProductDialogViewModel(orderEditService, productService);
+            var searchProductDialog = new SearchProductDialogViewModel(_orderEditDto, _productService);
             var dialog = await MainViewModel.DialogOpenCommand.Execute(searchProductDialog).FirstAsync();
 
             await dialog.WaitDialogClose();
@@ -105,16 +110,15 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
 
             await dialog.WaitDialogClose();
 
-            if (dialog.IsPublished && _orderEditService is not null)
+            if (dialog.IsPublished && _orderEditDto is not null)
             {
-                await _orderEditService.WriteCommentToSelectedItems(dialog.Comment);
+                await _orderEditDto.WriteCommentToSelectedItems(dialog.Comment);
             }
         });
 
         OpenMoreDialogCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-
-            var dialog = new MoreCashierDialogViewModel(this, _orderEditService);
+            var dialog = new MoreCashierDialogViewModel(this, _orderEditDto);
 
             await MainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
 
@@ -128,6 +132,14 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
             await MainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
 
             await dialog.WaitDialogClose();
+        });
+
+        GoToPaymentCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var payment = await _cashierService.CreatePayment(orderEditDto);
+            var paymentPage = new CashierPaymentPageVm(payment);
+
+            MainViewModel.GoToPageCommand.Execute(paymentPage).Subscribe();
         });
 
         OpenQuantityVolumeDialogCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -156,11 +168,11 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
 
                 if (differece > 0)
                 {
-                    await _orderEditService.IncreaseProductShoppingListItem(shoppingListItem.Source, differece);
+                    await _orderEditDto.IncreaseProductShoppingListItem(shoppingListItem.Source, differece);
                 }
                 else
                 {
-                    await _orderEditService.DecreaseProductShoppingListItem(shoppingListItem.Source, -differece);
+                    await _orderEditDto.DecreaseProductShoppingListItem(shoppingListItem.Source, -differece);
                 }
 
                 shoppingListItem.Count = x;
@@ -171,40 +183,60 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
 
             await dialog.WaitDialogClose();
         });
-        _productService = productService;
+
+        GoToAllOrdersCommand = ReactiveCommand.CreateFromTask(() =>
+        {
+            return Task.CompletedTask;
+        });
+
+        GoToAllDeliveriesPageCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var allDeliveriesPage = new AllDeliveriesPageVm();
+
+            await MainViewModel.GoToPage(allDeliveriesPage);
+        });
+
+        ForHereOrToGoCommand = ReactiveCommand.Create(() =>
+        {
+            IsForHere = !IsForHere;
+            _orderEditDto.SetIsForHere(IsForHere);
+        });
+
+        OpenPortionDialogCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var firstSelected = ShoppingListItems?.FirstOrDefault(x => x.IsSelected);
+
+            if (firstSelected == null)
+            {
+                return;
+            }
+
+            var dialog = new PortionDialogVm(orderEditDto, firstSelected);
+
+            await MainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
+
+            await dialog.WaitDialogClose();
+        });
+
+        ShoppingList = new(_orderEditDto);
+        ShoppingList.DisposeWith(InternalDisposables);
     }
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        ShoppingList = new(_orderEditService);
+        WhenOrderStarted = DateTime.Now;
+
+        await ShoppingList.InitializeAsync();
 
         var productService = await Locator.GetInitializedService<IProductService>();
         var categoryService = await Locator.GetInitializedService<ICategoryService>();
-
-        _orderEditService.BindSelectedCategoryItems<ProductHostItemVm>(x =>
-        {
-            if (x is ProductDto productDto)
-            {
-                return new ProductViewModel(_orderEditService, productService, productDto);
-            }
-            else
-            {
-                return new CategoryViewModel(categoryService.RuntimeCategories, (CategoryDto)x);
-            }
-        }, out var categoryItems)
-                       .DisposeWith(disposables);
-
-        _orderEditService.BindShoppingListItems((x, y) => new ProductShoppingListItemViewModel(x, y, _orderEditService), out var shoppingListItems)
-                       .DisposeWith(disposables);
-
-        _orderEditService.BindAdditivesForSelectedProduct(x => new AdditiveViewModel(x, _orderEditService, _additiveService), out var fastAdditives)
-                       .DisposeWith(disposables);
 
         CurrentCategoryItems = categoryItems;
         ShoppingListItems = shoppingListItems;
         FastAdditives = fastAdditives;
 
-        ShoppingListItems.ToObservableChangeSet()
+        ShoppingList.ProductShoppingListItems
+                         .ToObservableChangeSet()
                          .AutoRefresh(x => x.SubtotalSum)
                          .ToCollection()
                          .Select(x => x.Sum(x => x.SubtotalSum))
@@ -212,23 +244,13 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
                          .DisposeWith(disposables);
     }
 
-    [Reactive]
-    public bool IsMultiSelect
+    public ShoppingListViewModel ShoppingList
     {
-        get; set;
+        get;
     }
 
-    [Reactive]
-    public ShoppingListViewModel? ShoppingList
-    {
-        get; private set;
-    }
+    public IStorageScope StorageScope => _storageScope;
 
-    [Reactive]
-    public ReadOnlyObservableCollection<ProductShoppingListItemViewModel>? ShoppingListItems
-    {
-        get; private set;
-    }
 
     [Reactive]
     public ReadOnlyObservableCollection<AdditiveViewModel>? FastAdditives
@@ -293,6 +315,31 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
         get;
     }
 
+    public ReactiveCommand<Unit, Unit> GoToPaymentCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> GoToAllOrdersCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> GoToAllDeliveriesPageCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> ForHereOrToGoCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> OpenPortionDialogCommand
+    {
+        get;
+    }
+
     [Reactive]
     public IDiscountAccesser? DiscountAccesser
     {
@@ -304,6 +351,7 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
     {
         get; private set;
     }
+
     public ReactiveCommand<Unit, Unit> OpenQuantityVolumeDialogCommand
     {
         get;
@@ -312,10 +360,12 @@ public sealed class DeliveryOrderEditPageVm : PageViewModel, IOrderEditVm
     [Reactive]
     public bool IsForHere
     {
-        get; set;
+        get; private set;
     }
-    public IOrderEditService OrderEditDto
+
+    [Reactive]
+    public DateTime WhenOrderStarted
     {
-        get;
+        get; set;
     }
 }

@@ -6,10 +6,12 @@ using System.Threading.Tasks;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Dto;
-public sealed class OrderEditDto(Guid id)
+public sealed class OrderEditDto
 {
-
-    public Guid Id => id;
+    public Guid Id
+    {
+        get; set;
+    }
 
     public string Problem
     {
@@ -23,7 +25,7 @@ public sealed class OrderEditDto(Guid id)
 
     public DateTime CreatedAt
     {
-        get;
+        get; set;
     }
 
     public DateTime? DeliveryTime
@@ -57,7 +59,7 @@ public sealed class OrderEditDto(Guid id)
         get; set;
     }
 
-    public List<OrderedProductDto> Products
+    public List<ProductShoppingListItemDto> Products
     {
         get;
     } = [];

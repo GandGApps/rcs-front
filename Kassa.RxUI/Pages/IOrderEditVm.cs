@@ -6,9 +6,10 @@ using Kassa.BuisnessLogic.Services;
 using ReactiveUI;
 
 namespace Kassa.RxUI.Pages;
-public interface IOrderEditVm: IReactiveObject
+public interface IOrderEditVm : IReactiveObject
 {
-    public IOrderEditService OrderEditService
+
+    public IStorageScope StorageScope
     {
         get;
     }
@@ -42,7 +43,7 @@ public interface IOrderEditVm: IReactiveObject
     {
         get; set;
     }
-    
+
     public ReadOnlyObservableCollection<AdditiveViewModel>? FastAdditives
     {
         get;
@@ -84,11 +85,6 @@ public interface IOrderEditVm: IReactiveObject
     }
 
     public ShoppingListViewModel? ShoppingList
-    {
-        get;
-    }
-
-    public ReadOnlyObservableCollection<ProductShoppingListItemViewModel>? ShoppingListItems
     {
         get;
     }

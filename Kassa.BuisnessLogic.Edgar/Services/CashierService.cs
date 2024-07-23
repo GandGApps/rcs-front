@@ -77,15 +77,43 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
 
     public ValueTask<OrderEditDto> CreateOrder(bool isDelivery)
     {
+        var order = new OrderEditDto()
+        {
+            Id = Guid.NewGuid(),
+            CreatedAt = DateTime.Now,
+            Status = OrderStatus.New,
+            IsForHere = !isDelivery,
+            ShowPrice = true,
+            IsStopList = false,
+            IsDelivery = isDelivery,
+        };
 
-        var order = new OrderEditDto(isDelivery);
         _orders.Add(order);
+
         return new(order);
     }
 
     public ValueTask<OrderEditDto> CreateOrder(OrderDto order)
     {
+        var orderEdit = new OrderEditDto()
+        {
 
+            Id = order.Id,
+            CreatedAt = order.CreatedAt,
+            Status = order.Status,
+            IsForHere = order.IsForHere,
+            IsDelivery = order.IsDelivery,
+            DeliveryTime = order.DeliveryTime,
+            CourierId = order.CourierId,
+            Comment = order.Comment,
+        };
+
+        orderEdit.Products.AddRange(order.Products);
+
+
+        _orders.Add(orderEdit);
+
+        return new(orderEdit);
     }
 
     public ValueTask<IPaymentService> CreatePayment(OrderEditDto order)

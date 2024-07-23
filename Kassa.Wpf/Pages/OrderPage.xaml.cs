@@ -29,10 +29,10 @@ public partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
             this.OneWayBind(ViewModel, x => x.CurrentCategoryItems, x => x.ProductsHost.ItemsSource)
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x => x.ShoppingList!.IncreaseCommand, x => x.IncreaseButton)
+            this.BindCommand(ViewModel, x => x.ShoppingList!.IncreaseSelectedCommand, x => x.IncreaseButton)
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x => x.ShoppingList!.DecreaseCommand, x => x.DecreaseButton)
+            this.BindCommand(ViewModel, x => x.ShoppingList!.DecreaseSelectedCommand, x => x.DecreaseButton)
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, x => x.ShoppingList!.Subtotal, x => x.SubtotalCost.Text, x => $"{x.ToString("0.##", QuantityVolumeDialogVewModel.RuCultureInfo)} ₽")
@@ -80,8 +80,8 @@ public partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
             this.BindCommand(ViewModel, x => x.GoToAllDeliveriesPageCommand, x => x.GoToDeliveryButton)
                 .DisposeWith(disposables);
 
-            ShoppingListPanel.OrderEditService = ViewModel.OrderEditService;
-            ShoppingListItems.OrderEditService = ViewModel.OrderEditService;
+            ShoppingListPanel.OrderEditService = ViewModel.OrderEditDto;
+            ShoppingListItems.OrderEditService = ViewModel.OrderEditDto;
         });
     }
 }

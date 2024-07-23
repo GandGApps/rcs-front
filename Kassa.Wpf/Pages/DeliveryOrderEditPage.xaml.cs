@@ -41,12 +41,12 @@ public partial class DeliveryOrderEditPage : ReactiveUserControl<DeliveryOrderEd
                 .DisposeWith(disposables);
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-            this.BindCommand(ViewModel, x => x.ShoppingList.IncreaseCommand, x => x.IncreaseButton)
+            this.BindCommand(ViewModel, x => x.ShoppingList.IncreaseSelectedCommand, x => x.IncreaseButton)
                 .DisposeWith(disposables);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-            this.BindCommand(ViewModel, x => x.ShoppingList.DecreaseCommand, x => x.DecreaseButton)
+            this.BindCommand(ViewModel, x => x.ShoppingList.DecreaseSelectedCommand, x => x.DecreaseButton)
                 .DisposeWith(disposables);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 

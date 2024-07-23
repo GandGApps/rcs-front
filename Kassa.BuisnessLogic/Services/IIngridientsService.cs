@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 
 namespace Kassa.BuisnessLogic.Services;
 public interface IIngridientsService: IInitializableService
 {
-    public SourceCache<IngredientDto, Guid> RuntimeIngridients
+    public IApplicationModelManager<IngredientDto> RuntimeIngridients
     {
         get;
     }

@@ -10,10 +10,10 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI;
-public class AddictiveForShoppingListItem : ReactiveObject, IShoppingListItem
+public class AddictiveForShoppingListItemVm : ReactiveObject, IShoppingListItemVm
 {
 
-    public AddictiveForShoppingListItem()
+    public AddictiveForShoppingListItemVm()
     {
         this.WhenAnyValue(x => x.IsSelected)
             .Subscribe(x =>
@@ -27,23 +27,23 @@ public class AddictiveForShoppingListItem : ReactiveObject, IShoppingListItem
                 {
                     if (!x)
                     {
-                        ShoppingListViewModel.CurrentItems.Remove(this);
+                        ShoppingListViewModel.SelectedItems.Remove(this);
                     }
                     else
                     {
-                        ShoppingListViewModel.CurrentItems.Add(this);
+                        ShoppingListViewModel.SelectedItems.Add(this);
                     }
                 }
                 else
                 {
                     if (!x)
                     {
-                        ShoppingListViewModel.CurrentItems.Remove(this);
+                        ShoppingListViewModel.SelectedItems.Remove(this);
                     }
                     else
                     {
-                        ShoppingListViewModel.CurrentItems.Clear();
-                        ShoppingListViewModel.CurrentItems.Add(this);
+                        ShoppingListViewModel.SelectedItems.Clear();
+                        ShoppingListViewModel.SelectedItems.Add(this);
                     }
                 }
             });

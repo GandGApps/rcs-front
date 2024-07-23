@@ -9,40 +9,48 @@ using DynamicData.Aggregation;
 using Kassa.BuisnessLogic;
 using Splat;
 using Kassa.BuisnessLogic.Services;
+using Kassa.BuisnessLogic.Dto;
+using Kassa.RxUI.Pages;
 
 namespace Kassa.RxUI;
 public class ShoppingListViewModel : BaseViewModel
 {
+    private readonly ObservableCollection<ProductShoppingListItemViewModel> _productShoppingListItems = [];
+    private readonly IOrderEditVm _orderEditVm;
 
-    public ShoppingListViewModel(IOrderEditService orderEditService)
+    public ShoppingListViewModel(IOrderEditVm orderEditVm)
     {
-        IncreaseCommand = ReactiveCommand.CreateFromTask(async () =>
+        _orderEditVm = orderEditVm;
+        ProductShoppingListItems = new(_productShoppingListItems);
+
+        IncreaseSelectedCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await orderEditService.IncreaseSelectedProductShoppingListItem();
+
         });
 
-        DecreaseCommand = ReactiveCommand.CreateFromTask(async () =>
+        DecreaseSelectedCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await orderEditService.DecreaseSelectedProductShoppingListItem();
+            await orderEditVm.DecreaseSelectedProductShoppingListItem();
         });
 
         RemoveCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await orderEditService.RemoveSelectedProductShoppingListItem();
+            await orderEditVm.RemoveSelectedProductShoppingListItem();
         });
 
         this.WhenAnyValue(x => x.Subtotal)
-            .Select(x => x * (1-Discount))
+            .Select(x => x  -Discount)
             .Subscribe(x => Total = x);
+
 
     }
 
-    public ReactiveCommand<Unit, Unit> IncreaseCommand
+    public ReactiveCommand<Unit, Unit> IncreaseSelectedCommand
     {
         get;
     }
 
-    public ReactiveCommand<Unit, Unit> DecreaseCommand
+    public ReactiveCommand<Unit, Unit> DecreaseSelectedCommand
     {
         get;
     }
@@ -52,7 +60,6 @@ public class ShoppingListViewModel : BaseViewModel
         get;
     }
 
-    [Reactive]
     public bool IsMultiSelect
     {
         get; set;
@@ -64,10 +71,16 @@ public class ShoppingListViewModel : BaseViewModel
         get; set;
     } 
 
-    public ObservableCollection<IShoppingListItem> CurrentItems
+    public ObservableCollection<IShoppingListItemVm> SelectedItems
     {
         get;
     } = [];
+
+
+    public ReadOnlyObservableCollection<ProductShoppingListItemViewModel> ProductShoppingListItems
+    {
+        get;
+    }
 
     [Reactive]
     public double Subtotal

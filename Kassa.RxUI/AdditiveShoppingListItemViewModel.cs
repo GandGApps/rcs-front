@@ -12,7 +12,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI;
-public sealed class AdditiveShoppingListItemViewModel : ReactiveObject, IShoppingListItem, IApplicationModelPresenter<AdditiveShoppingListItemDto>
+public sealed class AdditiveShoppingListItemViewModel : ReactiveObject, IShoppingListItemVm, IApplicationModelPresenter<AdditiveShoppingListItemDto>
 {
 
     public Guid Id

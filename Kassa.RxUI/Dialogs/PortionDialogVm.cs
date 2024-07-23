@@ -8,23 +8,23 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
+using Kassa.RxUI.Pages;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI.Dialogs;
 public sealed class PortionDialogVm : DialogViewModel
 {
-    private readonly IOrderEditService _orderEditService;
+    private readonly IOrderEditVm _orderEditVm;
     private readonly ProductShoppingListItemViewModel _productShoppingListItemVm;
 
-    public PortionDialogVm(IOrderEditService orderEditService, ProductShoppingListItemViewModel productShoppingListItemVm)
+    public PortionDialogVm(IOrderEditVm orderEditVm, ProductShoppingListItemViewModel productShoppingListItemVm)
     {
-        _orderEditService = orderEditService;
+        _orderEditVm = orderEditVm;
         _productShoppingListItemVm = productShoppingListItemVm;
 
-        IntoSeveralEqualParts = new IntoSeveralEqualPartsVm(orderEditService, productShoppingListItemVm).DisposeWith(InternalDisposables);
-        IntoTwoUnequalParts = new IntoTwoUnequalPartsVm(orderEditService, productShoppingListItemVm).DisposeWith(InternalDisposables);
-
+        IntoSeveralEqualParts = new IntoSeveralEqualPartsVm(orderEditVm, productShoppingListItemVm).DisposeWith(InternalDisposables);
+        IntoTwoUnequalParts = new IntoTwoUnequalPartsVm(orderEditVm, productShoppingListItemVm).DisposeWith(InternalDisposables);
 
         this.WhenAnyValue(x => x.IsIntoSeveralEqualParts)
             .Select<bool, MethodOfDivisionVm>(x => x ? IntoSeveralEqualParts : IntoTwoUnequalParts)
@@ -62,12 +62,12 @@ public sealed class PortionDialogVm : DialogViewModel
     public abstract class MethodOfDivisionVm : ReactiveObject, IDisposable
     {
         protected readonly CompositeDisposable _disposables = [];
-        protected readonly IOrderEditService _orderEditService;
+        protected readonly IOrderEditVm _orderEditVm;
         protected readonly ProductShoppingListItemViewModel _productShoppingListItemVm;
 
-        public MethodOfDivisionVm(IOrderEditService orderEditService, ProductShoppingListItemViewModel productShoppingListItemVm)
+        public MethodOfDivisionVm(IOrderEditVm orderEditVm, ProductShoppingListItemViewModel productShoppingListItemVm)
         {
-            _orderEditService = orderEditService;
+            _orderEditVm = orderEditVm;
             _productShoppingListItemVm = productShoppingListItemVm;
         }
 
@@ -82,7 +82,9 @@ public sealed class PortionDialogVm : DialogViewModel
             get;
         }
 
+#pragma warning disable CA1816 // Dispose methods should call SuppressFinalize
         public void Dispose() => _disposables.Dispose();
+#pragma warning restore CA1816 // Dispose methods should call SuppressFinalize
     }
 
     /// <summary>
@@ -107,7 +109,7 @@ public sealed class PortionDialogVm : DialogViewModel
             get;
         }
 
-        public IntoSeveralEqualPartsVm(IOrderEditService orderEditService, ProductShoppingListItemViewModel productShoppingListItemVm) : base(orderEditService, productShoppingListItemVm)
+        public IntoSeveralEqualPartsVm(IOrderEditVm orderEditVm, ProductShoppingListItemViewModel productShoppingListItemVm) : base(orderEditVm, productShoppingListItemVm)
         {
             // CountOfServing / ServingDivider = TotalServing
             // Когда CountOfServing или ServingDivider меняются, обновляем TotalServing
@@ -135,11 +137,11 @@ public sealed class PortionDialogVm : DialogViewModel
 
                 if (dif > 0)
                 {
-                    await _orderEditService.DecreaseProductShoppingListItem(source, Math.Abs(positionCount));
+                    await _orderEditVm.Products(source, Math.Abs(positionCount));
                 }
                 else if (dif < 0)
                 {
-                    await _orderEditService.IncreaseProductShoppingListItem(source, Math.Abs(positionCount));
+                    await _orderEditVm.IncreaseProductShoppingListItem(source, Math.Abs(positionCount));
                 }
 
                 for (var i = 0; i < totalPositions - 1; i++)
@@ -153,7 +155,7 @@ public sealed class PortionDialogVm : DialogViewModel
                         Discount = source.Discount,
                     };
 
-                    await _orderEditService.AddProductToShoppingList(dto);
+                    await _orderEditVm.AddProductToShoppingList(dto);
                 }
             }).DisposeWith(_disposables);
         }
@@ -180,7 +182,7 @@ public sealed class PortionDialogVm : DialogViewModel
             get;
         }
 
-        public IntoTwoUnequalPartsVm(IOrderEditService orderEditService, ProductShoppingListItemViewModel productShoppingListItemVm) : base(orderEditService, productShoppingListItemVm)
+        public IntoTwoUnequalPartsVm(IOrderEditVm orderEditVm, ProductShoppingListItemViewModel productShoppingListItemVm) : base(orderEditVm, productShoppingListItemVm)
         {
             // FirstPart + SecondPart = TotalServing
 
@@ -198,12 +200,12 @@ public sealed class PortionDialogVm : DialogViewModel
                 if (dif > 0)
                 {
 
-                    await _orderEditService.DecreaseProductShoppingListItem(source, Math.Abs(FirstPart));
+                    await _orderEditVm.DecreaseProductShoppingListItem(source, Math.Abs(FirstPart));
                 }
                 else if (dif < 0)
                 {
 
-                    await _orderEditService.IncreaseProductShoppingListItem(source, Math.Abs(FirstPart));
+                    await _orderEditVm.IncreaseProductShoppingListItem(source, Math.Abs(FirstPart));
                 }
 
                 var dto = new OrderedProductDto()
@@ -215,7 +217,7 @@ public sealed class PortionDialogVm : DialogViewModel
                     Discount = source.Discount,
                 };
 
-                await _orderEditService.AddProductToShoppingList(dto);
+                await _orderEditVm.AddProductToShoppingList(dto);
             });
         }
     }

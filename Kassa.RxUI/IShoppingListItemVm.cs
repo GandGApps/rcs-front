@@ -5,7 +5,7 @@ using ReactiveUI;
 
 namespace Kassa.RxUI;
 
-public interface IShoppingListItem
+public interface IShoppingListItemVm: IReactiveObject
 {
     double Count
     {
