@@ -61,7 +61,7 @@ public partial class DeliveryOrderEditPage : ReactiveUserControl<DeliveryOrderEd
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 
 #pragma warning disable CS8602 // Dereference of a possibly null reference.
-            this.BindCommand(ViewModel, x => x.ShoppingList.RemoveCommand, x => x.RemoveButton)
+            this.BindCommand(ViewModel, x => x.ShoppingList.RemoveSelectedCommand, x => x.RemoveButton)
                 .DisposeWith(disposables);
 #pragma warning restore CS8602 // Dereference of a possibly null reference.
 

@@ -10,6 +10,7 @@ using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess;
+using Kassa.RxUI.Pages;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -23,32 +24,34 @@ public sealed class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Gui
         {
             return;
         }
+        var orderEditVm = additive._orderEditVm;
 
-        var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
-        var additiveService = await Locator.Current.GetInitializedService<IAdditiveService>();
-        var order = cashierService.CurrentOrder;
-
-        if (order is null)
+        if (orderEditVm is null)
         {
             throw new InvalidOperationException("Order is not initialized");
         }
 
-
-        await order.AddAdditiveToSelectedProducts(additive.Id);
-
-        var additiveDto = await additiveService.GetAdditiveById(additive.Id);
+        var additiveDto =  additive._additiveDto;
 
         if (additiveDto is null)
         {
             throw new InvalidOperationException("Additive not found");
         }
-        additive.IsAdded = order.IsAdditiveAdded(additive.Id);
+
+        additive.IsAdded = additive.IsAdditiveAdded();
+
+        await orderEditVm.ShoppingList.AddAdditiveToSelectedProducst(additiveDto);
     });
 
     private readonly CompositeDisposable _disposables = [];
+    private readonly IOrderEditVm _orderEditVm;
 
-    public AdditiveViewModel(AdditiveDto additive, IOrderEditService order, IAdditiveService additiveService)
+    private AdditiveDto _additiveDto;
+
+    public AdditiveViewModel(AdditiveDto additive, IOrderEditVm orderEditVm, IAdditiveService additiveService)
     {
+        _additiveDto = additive;
+
         Id = additive.Id;
 
         Name = additive.Name;
@@ -65,14 +68,13 @@ public sealed class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Gui
             .Subscribe(UpdateSource)
             .DisposeWith(_disposables);
 
-        if (order.IsInitialized)
-        {
-            IsAdded = order.IsAdditiveAdded(additive.Id);
-        }
+        IsAdded = IsAdditiveAdded();
 
         AddToShoppingListCommand.DisposeWith(_disposables);
 
         additiveService.RuntimeAdditives.AddPresenter(this).DisposeWith(_disposables);
+
+        _orderEditVm = orderEditVm;
     }
 
 
@@ -144,10 +146,7 @@ public sealed class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Gui
         UpdateSource(additive);
     }
 
-    public void Dispose()
-    {
-        _disposables.Dispose();
-    }
+    public void Dispose() => _disposables.Dispose();
 
 
     private void UpdateSource(AdditiveDto additive)
@@ -158,5 +157,12 @@ public sealed class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Gui
         Portion = additive.Portion;
         Measure = additive.Measure;
         IsAvailable = additive.IsAvailable && additive.IsEnoughIngredients;
+
+        _additiveDto = additive;
+    }
+
+    private bool IsAdditiveAdded()
+    {
+        return _orderEditVm.ShoppingList.SelectedItems.Any(x => x is AdditiveShoppingListItemViewModel additive && additive.Id == Id);
     }
 }

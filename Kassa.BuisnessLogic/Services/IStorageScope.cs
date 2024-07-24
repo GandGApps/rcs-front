@@ -16,6 +16,15 @@ namespace Kassa.BuisnessLogic.Services;
 public interface IStorageScope : IDisposable
 {
 
+    public Task<bool> HasEnoughIngredients(ReceiptDto receiptDto, double count) =>
+        HasEnoughIngredients(receiptDto.IngredientUsages, count);
+
+    public Task SpendIngredients(ReceiptDto receiptDto, double count) =>
+        SpendIngredients(receiptDto.IngredientUsages, count);
+
+    public Task ReturnIngredients(ReceiptDto receiptDto, double count) =>
+        ReturnIngredients(receiptDto.IngredientUsages, count);
+
     public Task<bool> HasEnoughIngredients(IEnumerable<IngredientUsageDto> ingredientUsages, double count);
     public Task SpendIngredients(IEnumerable<IngredientUsageDto> ingredientUsages, double count);
     public Task ReturnIngredients(IEnumerable<IngredientUsageDto> ingredientUsages, double count);

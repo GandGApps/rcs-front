@@ -46,7 +46,6 @@ public abstract class BaseOrderEditPageVm: BaseViewModel, IOrderEditVm
 
             if (dialog.IsPublished)
             {
-                await _orderEditDto!.WriteTotalComment(dialog.Comment);
                 TotalComment = dialog.Comment;
             }
         });

@@ -15,36 +15,41 @@ using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
+using Kassa.RxUI.Pages;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.RxUI;
-public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListItemVm, IApplicationModelPresenter<ProductShoppingListItemDto>, IGuidId
+public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListItemVm, IApplicationModelPresenter<ProductDto>, IGuidId
 {
     private readonly CompositeDisposable _disposables = [];
+    private readonly ObservableCollection<AdditiveShoppingListItemViewModel> _additives = [];
+    private readonly IOrderEditVm _orderEditVm;
+    private readonly IReceiptService _receiptService;
 
-    public ProductShoppingListItemViewModel(ProductShoppingListItemDto product, IApplicationModelManager<ProductShoppingListItemDto> manager, IOrderEditService order)
+    public ProductShoppingListItemViewModel(ProductDto product, IApplicationModelManager<ProductDto> manager, IOrderEditVm orderEditVm, IReceiptService receiptService)
     {
-        Source = product;
-        _source = product;
-        Id = product.Id;
+        _orderEditVm = orderEditVm;
+        _receiptService = receiptService;
 
-        if (order.IsInitialized)
-        {
-            order.BindAdditivesForProductShoppingListItem(product, (x,y) => new AdditiveShoppingListItemViewModel(x,y), out var additives)
-                .DisposeWith(_disposables);
-            Additives = additives;
-        }
-        else
-        {
-            Additives = new([]);
-        }
+        Id = product.Id;
+        ProductDto = product;
+        Additives = new(_additives);
 
         this.WhenAnyValue(x => x.IsSelected)
             .Subscribe(x =>
             {
+                var shoppingList = orderEditVm.ShoppingList;
+                if (x)
+                {
+                    shoppingList.SelectedItems.Add(this);
+                }
+                else
+                {
 
+                    shoppingList.SelectedItems.Remove(this);
+                }
             })
             .DisposeWith(_disposables);
 
@@ -86,17 +91,13 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
 
         manager.AddPresenter(this)
             .DisposeWith(_disposables);
+
+        Count = 1;
     }
 
     public Guid Id
     {
         get;
-    }
-
-    [Reactive]
-    public Guid ItemId
-    {
-        get; set;
     }
 
     [Reactive]
@@ -192,44 +193,52 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
     {
         get; set;
     }
+
     public ReactiveCommand<Unit, Unit> RemoveCommand
     {
         get;
     }
 
-    public ProductShoppingListItemDto Source
+    public ProductDto ProductDto
     {
-        get => _source;
-        set
-        {
-            _source = value;
-            this.RaisePropertyChanged();
-            Update(value);
-        }
+        get; private set;
     }
-    private ProductShoppingListItemDto _source;
 
-    public IShoppingListItemDto SourceDto => Source;
-
-    public void ModelChanged(BuisnessLogic.ApplicationModelManagers.Change<ProductShoppingListItemDto> change)
+    public void ModelChanged(BuisnessLogic.ApplicationModelManagers.Change<ProductDto> change)
     {
         var model = change.Current;
 
         Update(model);
     }
 
-    private void Update(ProductShoppingListItemDto product)
+    private void Update(ProductDto product)
     {
-        Count = product.Count;
         Price = product.Price;
         Measure = product.Measure;
         Name = product.Name;
         CurrencySymbol = product.CurrencySymbol;
-        ItemId = product.ItemId;
-        IsSelected = product.IsSelected;
-        AdditiveInfo = product.AdditiveInfo;
-        HasAdditiveInfo = !string.IsNullOrEmpty(product.AdditiveInfo);
+        ProductDto = product;
     }
 
     public void Dispose() => _disposables.Dispose();
+
+    public async Task AddAdditive(AdditiveDto additive)
+    {
+        var storageScope = _orderEditVm.StorageScope;
+
+        var receipt = await _receiptService.GetReceipt(additive.ReceiptId);
+
+        if (receipt is null)
+        {
+            this.Log().Error("Receipt not found for additive {0}", additive.ReceiptId);
+            return;
+        }
+
+        if (await storageScope.HasEnoughIngredients(receipt, 1))
+        {
+            var additiveVm = new AdditiveShoppingListItemViewModel(additive, _orderEditVm, _receiptService);
+
+            _additives.Add(additiveVm);
+        }
+    }
 }

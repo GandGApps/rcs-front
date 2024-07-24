@@ -84,7 +84,7 @@ public interface IOrderEditVm : IReactiveObject
         get;
     }
 
-    public ShoppingListViewModel? ShoppingList
+    public ShoppingListViewModel ShoppingList
     {
         get;
     }

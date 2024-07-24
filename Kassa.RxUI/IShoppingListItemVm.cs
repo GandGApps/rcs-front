@@ -63,11 +63,6 @@ public interface IShoppingListItemVm: IReactiveObject
         set;
     }
 
-    IShoppingListItemDto SourceDto
-    {
-        get;
-    }
-
     ReactiveCommand<Unit, Unit> RemoveCommand
     {
         get; 

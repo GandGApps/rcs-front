@@ -41,7 +41,7 @@ public partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
             this.OneWayBind(ViewModel, x => x.ShoppingList!.Total, x => x.TotalCost.Text, x => $"{x.ToString("0.##", QuantityVolumeDialogVewModel.RuCultureInfo)} ₽")
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x => x.ShoppingList!.RemoveCommand, x => x.RemoveButton)
+            this.BindCommand(ViewModel, x => x.ShoppingList!.RemoveSelectedCommand, x => x.RemoveButton)
                 .DisposeWith(disposables);
 
             this.BindCommand(ViewModel, x => x.CreateTotalCommentCommand, x => x.TotalCommentButton)
