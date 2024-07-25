@@ -28,12 +28,31 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
     private readonly IOrderEditVm _orderEditVm;
     private readonly IReceiptService _receiptService;
     private readonly IAdditiveService _additiveService;
+    private readonly IApplicationModelManager<ProductDto> _manager;
 
-    public ProductShoppingListItemViewModel(ProductDto product, IApplicationModelManager<ProductDto> manager, IOrderEditVm orderEditVm, IReceiptService receiptService, IAdditiveService additiveService)
+    public ProductShoppingListItemViewModel(
+        ProductShoppingListItemDto productShoppingListItem,
+        ProductDto product,
+        IApplicationModelManager<ProductDto> manager,
+        IOrderEditVm orderEditVm,
+        IReceiptService receiptService,
+        IAdditiveService additiveService): this(product, manager, orderEditVm, receiptService, additiveService)
+    {
+        OrderedId = productShoppingListItem.Id;
+        Comment = productShoppingListItem.Comment;
+    }
+
+    public ProductShoppingListItemViewModel(
+        ProductDto product,
+        IApplicationModelManager<ProductDto> manager,
+        IOrderEditVm orderEditVm,
+        IReceiptService receiptService,
+        IAdditiveService additiveService)
     {
         _orderEditVm = orderEditVm;
         _additiveService = additiveService;
         _receiptService = receiptService;
+        _manager = manager;
 
         Id = product.Id;
         ProductDto = product;
@@ -55,7 +74,7 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
             })
             .DisposeWith(_disposables);
 
-        this.WhenAnyValue(x => x.AdditiveInfo)
+        this.WhenAnyValue(x => x.Comment)
             .Select(x => !string.IsNullOrEmpty(x))
             .Subscribe(x => HasAdditiveInfo = x)
             .DisposeWith(_disposables);
@@ -102,6 +121,11 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
     {
         get;
     }
+
+    public Guid OrderedId
+    {
+        get; private set;
+    } = Guid.Empty;
 
     [Reactive]
     public ShoppingListViewModel ShoppingListViewModel
@@ -152,7 +176,7 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
     } = null!;
 
     [Reactive]
-    public string? AdditiveInfo
+    public string? Comment
     {
         get; set;
     }
@@ -262,5 +286,65 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
         var additiveShoppingListItemViewModel = new AdditiveShoppingListItemViewModel(additive, _additiveService.RuntimeAdditives, _orderEditVm);
 
         _additives.Add(additiveShoppingListItemViewModel);
+    }
+
+    /// <summary>
+    /// This method removes the additive from the product additive list and returns the ingredients to the storage
+    /// </summary>
+    public async Task RemoveAdditive(AdditiveShoppingListItemViewModel additive)
+    {
+        var storageScope = _orderEditVm.StorageScope;
+
+        var receipt = await _receiptService.GetReceipt(additive.AdditiveDto.ReceiptId);
+
+        if (receipt is null)
+        {
+            this.Log().Error("Receipt not found for additive {0}", additive.AdditiveDto.ReceiptId);
+            return;
+        }
+
+        await storageScope.ReturnIngredients(receipt, additive.Count);
+
+        RemoveAdditiveUnsafe(additive);
+    }
+
+    /// <summary>
+    /// Use this method only if you are sure that the additive ingredients returned to the storage
+    /// </summary>
+    /// <remarks>
+    /// This method does not return the ingredients to the storage.
+    /// To return the ingredients to the storage, use the <see cref="RemoveAdditive(AdditiveShoppingListItemViewModel)"/> method.
+    /// </remarks>
+    public void RemoveAdditiveUnsafe(AdditiveShoppingListItemViewModel additive)
+    {
+        _additives.Remove(additive);
+    }
+
+    /// <summary>
+    /// Use this method only if you are sure that the product is available in the storage
+    /// </summary>
+    /// <remarks>
+    /// This method does not check the availability of the additive/product in the storage.
+    /// It also does not consume any ingredients.
+    /// You need to spend the ingredients manually.
+    /// </remarks>
+    public ProductShoppingListItemViewModel CreateCopyUnsafe()
+    {
+        var copy = new ProductShoppingListItemViewModel(ProductDto, _manager, _orderEditVm, _receiptService, _additiveService)
+        {
+            Count = Count,
+            Comment = Comment,
+            IsSelected = IsSelected,
+            HasDiscount = HasDiscount,
+            Discount = Discount,
+            OrderedId = OrderedId
+        };
+
+        foreach (var additive in Additives)
+        {
+            copy.AddAdditiveUnsafe(additive.AdditiveDto);
+        }
+
+        return copy;
     }
 }

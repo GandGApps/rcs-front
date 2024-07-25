@@ -97,4 +97,7 @@ public static partial class Mapper
 
     [return:NotNullIfNotNull("category")]
     public static partial CategoryDto? MapCategoryToDto(Category? category);
+
+
+    public static partial OrderDto MapOrderEditDtoToOrderDto(OrderEditDto orderEditDto);
 }

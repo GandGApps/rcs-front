@@ -22,10 +22,19 @@ public sealed class AdditiveShoppingListItemViewModel : ReactiveObject, IShoppin
     }
 
     private readonly CompositeDisposable _disposables = [];
+    private AdditiveDto _additiveDto;
+
+    public AdditiveShoppingListItemViewModel(OrderedAdditiveDto orderedAdditiveDto, AdditiveDto additive, IApplicationModelManager<AdditiveDto> modelManager, IOrderEditVm orderEditVm)
+        : this(additive, modelManager, orderEditVm)
+    {
+        OrderedId = orderedAdditiveDto.Id;
+    }
 
     public AdditiveShoppingListItemViewModel(AdditiveDto additive, IApplicationModelManager<AdditiveDto> modelManager, IOrderEditVm orderEditVm)
     {
+        _additiveDto = additive;
         Id = additive.Id;
+
 
         modelManager.AddPresenter(this)
             .DisposeWith(_disposables);
@@ -49,8 +58,10 @@ public sealed class AdditiveShoppingListItemViewModel : ReactiveObject, IShoppin
         RemoveCommand = ReactiveCommand.Create(() =>
         {
             modelManager.Remove(additive.Id);
-        });
+        }).DisposeWith(_disposables);
     }
+
+    public AdditiveDto AdditiveDto => _additiveDto;
 
     [Reactive]
     public string Name
@@ -74,7 +85,7 @@ public sealed class AdditiveShoppingListItemViewModel : ReactiveObject, IShoppin
     public double Count
     {
         get; set;
-    }
+    } = 1;
 
     [Reactive]
     public string Measure
@@ -102,6 +113,11 @@ public sealed class AdditiveShoppingListItemViewModel : ReactiveObject, IShoppin
 
     [Reactive]
     public bool HasDiscount
+    {
+        get; set;
+    }
+
+    public Guid OrderedId
     {
         get; set;
     }
@@ -135,6 +151,8 @@ public sealed class AdditiveShoppingListItemViewModel : ReactiveObject, IShoppin
     public void ModelChanged(Change<AdditiveDto> change)
     {
         var current = change.Current;
+
+        _additiveDto = current;
 
         Update(current);
     }

@@ -24,14 +24,42 @@ public abstract class BaseOrderEditPageVm: BaseViewModel, IOrderEditVm
     private readonly IAdditiveService _additiveService;
     private readonly IProductService _productService;
     private readonly IStorageScope _storageScope;
+    private readonly ICategoryService _categoryService;
+    private readonly IReceiptService _receiptService;
 
-    public BaseOrderEditPageVm(OrderEditDto orderEditDto, IStorageScope storageScope, ICashierService cashierService, IAdditiveService additiveService, IProductService productService)
+    private readonly ObservableCollection<ProductHostItemVm> _currentCategoryItems = [];
+
+    protected readonly List<HostHistory> _hostNavigationStack = [];
+
+    public BaseOrderEditPageVm(
+        OrderEditDto orderEditDto,
+        IStorageScope storageScope,
+        ICashierService cashierService,
+        IAdditiveService additiveService,
+        IProductService productService,
+        ICategoryService categoryService,
+        IReceiptService receiptService)
     {
         _orderEditDto = orderEditDto;
         _cashierService = cashierService;
         _additiveService = additiveService;
         _productService = productService;
         _storageScope = storageScope;
+        _categoryService = categoryService;
+        _receiptService = receiptService;
+
+        CurrentHostedItems = new(_currentCategoryItems);
+
+        ShoppingList = new(this, _productService, _receiptService, _additiveService);
+        ShoppingList.DisposeWith(InternalDisposables);
+
+        ShoppingList.ProductShoppingListItems
+            .ToObservableChangeSet()
+            .AutoRefresh(x => x.SubtotalSum)
+            .ToCollection()
+            .Select(x => x.Sum(x => x.SubtotalSum))
+            .Subscribe(x => ShoppingList.Subtotal = x)
+            .DisposeWith(InternalDisposables);
 
         CreateTotalCommentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -67,35 +95,73 @@ public abstract class BaseOrderEditPageVm: BaseViewModel, IOrderEditVm
         SearchAddictiveCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             var additiveService = await Locator.GetInitializedService<IAdditiveService>();
-            var addictiveDialog = new SearchAddictiveDialogViewModel(additiveService, orderEditDto);
+            var addictiveDialog = new SearchAddictiveDialogViewModel(additiveService, this);
             var dialog = await MainViewModel.DialogOpenCommand.Execute(addictiveDialog).FirstAsync();
 
             await dialog.WaitDialogClose();
         });
 
-        SelectFavouriteCommand = ReactiveCommand.CreateFromTask(async (int x) =>
+        SelectFavouriteCommand = ReactiveCommand.Create((int x) =>
         {
             if (_orderEditDto == null)
             {
                 return;
             }
-            await _orderEditDto.SelectFavourite(x);
+
+            _currentCategoryItems.Clear();
+
+            // Unsafe method, because it doesn't use repository
+            // Maybe it should be refactored to use repository
+
+            var favouriteCategories = _categoryService.RuntimeCategories.Values
+                .Where(category => category.Favourites.Contains(x))
+                .Select(dto => new CategoryViewModel(_categoryService.RuntimeCategories, dto, this));
+
+            var favouriteProducts = _productService.RuntimeProducts.Values
+                .Where(product => product.Favourites.Contains(x))
+                .Select(dto => new ProductViewModel(this, _productService, dto));
+
+            _currentCategoryItems.AddRange(favouriteCategories);
+            _currentCategoryItems.AddRange(favouriteProducts);
+
+            var array = new ProductHostItemVm[_currentCategoryItems.Count];
+            _currentCategoryItems.CopyTo(array, 0);
+
+            _hostNavigationStack.Add(HostHistory.CreateFavourite(x, array));
+
+            CurrentFavourite = x;
         });
 
-        SelectRootCategoryCommand = ReactiveCommand.CreateFromTask(async () =>
+        SelectRootCategoryCommand = ReactiveCommand.Create(() =>
         {
+            _currentCategoryItems.Clear();
 
-            if (_orderEditDto == null)
-            {
+            var rootCategories = _categoryService.RuntimeCategories.Values
+                .Where(category => category.CategoryId == null)
+                .Select(dto => new CategoryViewModel(_categoryService.RuntimeCategories, dto, this));
 
-                return;
-            }
-            await _orderEditDto.SelectRootCategory();
+            var rootProducts = _productService.RuntimeProducts.Values
+                .Where(product => product.CategoryId == null)
+                .Select(dto => new ProductViewModel(this, _productService, dto));
+
+            _currentCategoryItems.AddRange(rootCategories);
+            _currentCategoryItems.AddRange(rootProducts);
+
+            _hostNavigationStack.Clear();
+
+            var array = new ProductHostItemVm[_currentCategoryItems.Count];
+            _currentCategoryItems.CopyTo(array, 0);
+
+            _hostNavigationStack.Add(HostHistory.CreateRoot(array));
+
+            CurrentCategory = null;
         });
+
+        SelectRootCategoryCommand.Execute().Subscribe();
 
         SearchProductCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var searchProductDialog = new SearchProductDialogViewModel(_orderEditDto, _productService);
+            var searchProductDialog = new SearchProductDialogViewModel(this, _productService);
             var dialog = await MainViewModel.DialogOpenCommand.Execute(searchProductDialog).FirstAsync();
 
             await dialog.WaitDialogClose();
@@ -105,32 +171,32 @@ public abstract class BaseOrderEditPageVm: BaseViewModel, IOrderEditVm
         {
             var dialog = new CommentDialogViewModel(this);
 
-            await MainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
+            await MainViewModel.ShowDialogAndWaitClose(dialog);
 
-            await dialog.WaitDialogClose();
-
-            if (dialog.IsPublished && _orderEditDto is not null)
+            if (dialog.IsPublished)
             {
-                await _orderEditDto.WriteCommentToSelectedItems(dialog.Comment);
+                foreach (var item in ShoppingList.SelectedItems)
+                {
+                    if (item is ProductShoppingListItemViewModel product)
+                    {
+                        product.Comment = dialog.Comment;
+                    }
+                }
             }
         });
 
         OpenMoreDialogCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var dialog = new MoreCashierDialogViewModel(this, _orderEditDto);
+            var dialog = new MoreCashierDialogViewModel(this);
 
-            await MainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
-
-            await dialog.WaitDialogClose();
+            await MainViewModel.ShowDialogAndWaitClose(dialog);
         });
 
         OpenDiscountsAndSurchargesDialog = ReactiveCommand.CreateFromTask(async () =>
         {
             var dialog = new DiscountsAndSurchargesDialogViewModel();
 
-            await MainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
-
-            await dialog.WaitDialogClose();
+            await MainViewModel.ShowDialogAndWaitClose(dialog);
         });
 
         GoToPaymentCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -143,11 +209,7 @@ public abstract class BaseOrderEditPageVm: BaseViewModel, IOrderEditVm
 
         OpenQuantityVolumeDialogCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            if (ShoppingListItems == null)
-            {
-                return;
-            }
-            var shoppingListItem = ShoppingListItems.FirstOrDefault(x => x.IsSelected);
+            var shoppingListItem = ShoppingList.SelectedItems.OfType<ProductShoppingListItemViewModel>().FirstOrDefault();
 
             if (shoppingListItem == null)
             {
@@ -158,29 +220,26 @@ public abstract class BaseOrderEditPageVm: BaseViewModel, IOrderEditVm
 
             dialog.OkCommand.Subscribe(async x =>
             {
-                var differece = x - shoppingListItem.Count;
+                var difference = x - shoppingListItem.Count;
 
-                if (differece == 0)
+                if (difference == 0)
                 {
                     return;
                 }
 
-                if (differece > 0)
+                if (difference > 0)
                 {
-                    await _orderEditDto.IncreaseProductShoppingListItem(shoppingListItem.Source, differece);
+                    await ShoppingList.IncreaseProductShoppingListItemViewModel(shoppingListItem, difference);
                 }
                 else
                 {
-                    await _orderEditDto.DecreaseProductShoppingListItem(shoppingListItem.Source, -differece);
+                    await ShoppingList.DecreaseProductShoppingListItemViewModel(shoppingListItem, -difference);
                 }
 
                 shoppingListItem.Count = x;
             });
 
-            await MainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
-
-
-            await dialog.WaitDialogClose();
+            await MainViewModel.ShowDialogAndWaitClose(dialog);
         });
 
         GoToAllOrdersCommand = ReactiveCommand.CreateFromTask(() =>
@@ -198,49 +257,43 @@ public abstract class BaseOrderEditPageVm: BaseViewModel, IOrderEditVm
         ForHereOrToGoCommand = ReactiveCommand.Create(() =>
         {
             IsForHere = !IsForHere;
-            _orderEditDto.SetIsForHere(IsForHere);
         });
 
         OpenPortionDialogCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var firstSelected = ShoppingListItems?.FirstOrDefault(x => x.IsSelected);
+            var firstSelected = ShoppingList.SelectedItems.OfType<ProductShoppingListItemViewModel>().FirstOrDefault();
 
             if (firstSelected == null)
             {
                 return;
             }
 
-            var dialog = new PortionDialogVm(orderEditDto, firstSelected);
+            var dialog = new PortionDialogVm(this, firstSelected);
 
-            await MainViewModel.DialogOpenCommand.Execute(dialog).FirstAsync();
-
-            await dialog.WaitDialogClose();
+            await MainViewModel.ShowDialogAndWaitClose(dialog);
         });
 
-        ShoppingList = new(_orderEditDto);
-        ShoppingList.DisposeWith(InternalDisposables);
-    }
+        NavigateBackCategoryCommand = ReactiveCommand.Create(() =>
+        {
+            var last = _hostNavigationStack.Last();
 
-    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
-    {
-        WhenOrderStarted = DateTime.Now;
+            if (last.IsRoot)
+            {
+                return;
+            }
 
-        await ShoppingList.InitializeAsync();
+            last.Dispose();
+            
+            _hostNavigationStack.RemoveAt(_hostNavigationStack.Count - 1);
+            
+            last = _hostNavigationStack.Last();
 
-        var productService = await Locator.GetInitializedService<IProductService>();
-        var categoryService = await Locator.GetInitializedService<ICategoryService>();
+            _currentCategoryItems.Clear();
+            _currentCategoryItems.AddRange(last.Items);
 
-        CurrentCategoryItems = categoryItems;
-        ShoppingListItems = shoppingListItems;
-        FastAdditives = fastAdditives;
-
-        ShoppingList.ProductShoppingListItems
-                         .ToObservableChangeSet()
-                         .AutoRefresh(x => x.SubtotalSum)
-                         .ToCollection()
-                         .Select(x => x.Sum(x => x.SubtotalSum))
-                         .Subscribe(x => ShoppingList.Subtotal = x)
-                         .DisposeWith(disposables);
+            CurrentFavourite = last.Favourite;
+            CurrentCategory = last.IsCategory ? _categoryService.RuntimeCategories[last.CategoryId] : null;
+        });
     }
 
     public ShoppingListViewModel ShoppingList
@@ -339,16 +392,20 @@ public abstract class BaseOrderEditPageVm: BaseViewModel, IOrderEditVm
         get;
     }
 
+    public ReactiveCommand<Unit, Unit> NavigateBackCategoryCommand
+    {
+        get;
+    }
+
     [Reactive]
     public IDiscountAccesser? DiscountAccesser
     {
         get; set;
     }
 
-    [Reactive]
-    public ReadOnlyObservableCollection<ProductHostItemVm>? CurrentCategoryItems
+    public ReadOnlyObservableCollection<ProductHostItemVm>? CurrentHostedItems
     {
-        get; private set;
+        get; 
     }
 
     public ReactiveCommand<Unit, Unit> OpenQuantityVolumeDialogCommand
@@ -366,5 +423,79 @@ public abstract class BaseOrderEditPageVm: BaseViewModel, IOrderEditVm
     public DateTime WhenOrderStarted
     {
         get; set;
+    }
+
+    [Reactive]
+    public CategoryDto? CurrentCategory
+    {
+        get; private set;
+    }
+
+    [Reactive]
+    public int CurrentFavourite
+    {
+        get; private set;
+    }
+
+    [Reactive]
+    public bool IsStopList
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public bool IsShowPrice
+    {
+        get; set;
+    }
+
+    public void MoveToCategoryUnsafe(Guid id)
+    {
+        _currentCategoryItems.Clear();
+
+        var categories = _categoryService.RuntimeCategories.Values
+            .Where(category => category.CategoryId == id)
+            .Select(dto => new CategoryViewModel(_categoryService.RuntimeCategories, dto, this));
+
+        var products = _productService.RuntimeProducts.Values
+            .Where(product => product.CategoryId == id)
+            .Select(dto => new ProductViewModel(this, _productService, dto));
+
+        _currentCategoryItems.AddRange(categories);
+        _currentCategoryItems.AddRange(products);
+    }
+
+    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    {
+        WhenOrderStarted = DateTime.Now;
+
+        await ShoppingList.InitializeAsync();
+    }
+
+    protected readonly struct HostHistory(Guid categoryId, int favourite, ProductHostItemVm[] items)
+    {
+        public static HostHistory CreateFavourite(int favourite, ProductHostItemVm[] items) => new(Guid.Empty, favourite, items);
+        public static HostHistory CreateRoot(ProductHostItemVm[] items) => new(Guid.Empty, -1, items);
+        public static HostHistory CreateCategory(Guid categoryId, ProductHostItemVm[] items) => new(categoryId, -1, items);
+
+        public static readonly HostHistory Empty = new(Guid.Empty, -1, []);
+
+        public readonly Guid CategoryId => categoryId;
+        public readonly int Favourite => favourite;
+        public readonly ProductHostItemVm[] Items => items;
+
+        public readonly bool IsRoot => categoryId == Guid.Empty && Favourite == -1;
+        public readonly bool IsFavourite => categoryId == Guid.Empty && Favourite != -1;
+        public readonly bool IsCategory => !IsFavourite;
+        public readonly bool IsEmpty => items.Length == 0 && categoryId == Guid.Empty && Favourite == -1;
+
+        
+        public readonly void Dispose()
+        {
+            foreach (var item in items)
+            {
+                item.Dispose();
+            }
+        }
     }
 }

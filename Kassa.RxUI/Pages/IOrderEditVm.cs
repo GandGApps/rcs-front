@@ -34,7 +34,7 @@ public interface IOrderEditVm : IReactiveObject
         get;
     }
 
-    public ReadOnlyObservableCollection<ProductHostItemVm>? CurrentCategoryItems
+    public ReadOnlyObservableCollection<ProductHostItemVm>? CurrentHostedItems
     {
         get;
     }
@@ -84,6 +84,11 @@ public interface IOrderEditVm : IReactiveObject
         get;
     }
 
+    public ReactiveCommand<Unit, Unit> NavigateBackCategoryCommand
+    {
+        get;
+    }
+
     public ShoppingListViewModel ShoppingList
     {
         get;
@@ -99,5 +104,25 @@ public interface IOrderEditVm : IReactiveObject
         get;
     }
 
+    public CategoryDto? CurrentCategory
+    {
+        get; 
+    }
 
+    public bool IsStopList
+    {
+        get; set;
+    }
+
+    public int CurrentFavourite
+    {
+        get;
+    }
+    bool IsShowPrice
+    {
+        get; set;
+    }
+
+    public void MoveToCategoryUnsafe(Guid id);
+    public void MoveToCategoryUnsafe(CategoryDto category) => MoveToCategoryUnsafe(category.Id);
 }

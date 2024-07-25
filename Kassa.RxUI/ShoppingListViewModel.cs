@@ -14,7 +14,8 @@ using Kassa.RxUI.Pages;
 using System.Reactive.Disposables;
 
 namespace Kassa.RxUI;
-public class ShoppingListViewModel : BaseViewModel
+
+public sealed class ShoppingListViewModel : BaseViewModel
 {
     private readonly ObservableCollection<ProductShoppingListItemViewModel> _productShoppingListItems = [];
     private readonly IOrderEditVm _orderEditVm;
@@ -196,7 +197,20 @@ public class ShoppingListViewModel : BaseViewModel
     public void AddProductShoppingListItemUnsafe(ProductDto product)
     {
         var productShoppingListItemVm = new ProductShoppingListItemViewModel(product, _productService.RuntimeProducts, _orderEditVm, _receiptService, _additiveService);
-        _productShoppingListItems.Add(productShoppingListItemVm);
+        AddProductShoppingListItemUnsafe(productShoppingListItemVm);
+    }
+
+    /// <summary>
+    /// Use this method only if you are sure that the product is available in storage.
+    /// </summary>
+    /// <remarks>
+    /// This method does not check if the product is available in storage.
+    /// It also does not consume any ingredients.
+    /// Use the <see cref="AddProductShoppingListItem(ProductDto)"/> method if you are not sure.
+    /// </remarks>
+    public void AddProductShoppingListItemUnsafe(ProductShoppingListItemViewModel product)
+    {
+        _productShoppingListItems.Add(product);
     }
 
     public async Task AddAdditiveToSelectedProducst(AdditiveDto additive)
@@ -224,6 +238,42 @@ public class ShoppingListViewModel : BaseViewModel
 
             // I'm sure this is safe because I have checked that the additive is available in storage
             product.AddAdditiveUnsafe(additive);
+        }
+    }
+
+    public async Task IncreaseProductShoppingListItemViewModel(ProductShoppingListItemViewModel product, double count)
+    {
+        var receipt = await _receiptService.GetReceipt(product.ProductDto.ReceiptId);
+
+        if (receipt is null)
+        {
+            this.Log().Error("Receipt not found for product {0}", product.ProductDto.ReceiptId);
+            return;
+        }
+
+        if (await _orderEditVm.StorageScope.HasEnoughIngredients(receipt, count))
+        {
+            await _orderEditVm.StorageScope.SpendIngredients(receipt, count);
+
+            product.Count += count;
+        }
+    }
+
+    public async Task DecreaseProductShoppingListItemViewModel(ProductShoppingListItemViewModel product, double count)
+    {
+        var receipt = await _receiptService.GetReceipt(product.ProductDto.ReceiptId);
+
+        if (receipt is null)
+        {
+            this.Log().Error("Receipt not found for product {0}", product.ProductDto.ReceiptId);
+            return;
+        }
+
+        if (product.Count >= count)
+        {
+            await _orderEditVm.StorageScope.ReturnIngredients(receipt, count);
+
+            product.Count -= count;
         }
     }
 }

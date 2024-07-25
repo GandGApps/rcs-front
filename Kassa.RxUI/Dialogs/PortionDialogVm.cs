@@ -17,8 +17,9 @@ public sealed class PortionDialogVm : DialogViewModel
 {
     private readonly IOrderEditVm _orderEditVm;
     private readonly ProductShoppingListItemViewModel _productShoppingListItemVm;
+    private readonly IReceiptService _receiptService;
 
-    public PortionDialogVm(IOrderEditVm orderEditVm, ProductShoppingListItemViewModel productShoppingListItemVm)
+    public PortionDialogVm(IOrderEditVm orderEditVm, IReceiptService, ProductShoppingListItemViewModel productShoppingListItemVm)
     {
         _orderEditVm = orderEditVm;
         _productShoppingListItemVm = productShoppingListItemVm;
@@ -131,31 +132,49 @@ public sealed class PortionDialogVm : DialogViewModel
                 var positionCount = CountOfServing; // Нужно узнать количество продукта в позиции
                 var totalPositions = ServingDivider; // Нужно узнать количество позиций в заказе
 
-                var source = productShoppingListItemVm.Source;
+                var source = productShoppingListItemVm;
 
                 var dif = source.Count - positionCount;
 
                 if (dif > 0)
                 {
-                    await _orderEditVm.Products(source, Math.Abs(positionCount));
+                    await _orderEditVm.ShoppingList.DecreaseProductShoppingListItemViewModel(source, Math.Abs(positionCount));
                 }
                 else if (dif < 0)
                 {
-                    await _orderEditVm.IncreaseProductShoppingListItem(source, Math.Abs(positionCount));
+                    await _orderEditVm.ShoppingList.IncreaseProductShoppingListItemViewModel(source, Math.Abs(positionCount));
                 }
+
+                if (totalPositions == 1)
+                {
+                    return;
+                }
+
+                var vm = source.CreateCopyUnsafe();
+
+                // Clear all additives
+                var array = new AdditiveShoppingListItemViewModel[vm.Additives.Count];
+                vm.Additives.CopyTo(array, 0);
+
+                foreach (var additive in array)
+                {
+                    vm.RemoveAdditiveUnsafe(additive);
+                }
+
+                var receipt = await _orderEditVm.StorageScope.GetReceipt(vm.ProductDto.ReceiptId);
 
                 for (var i = 0; i < totalPositions - 1; i++)
                 {
-                    var dto = new OrderedProductDto()
-                    {
-                        Id = Guid.NewGuid(),
-                        ProductId = source.ItemId,
-                        Count = positionCount,
-                        Price = source.Price,
-                        Discount = source.Discount,
-                    };
+                    var copyOfVm = vm.CreateCopyUnsafe();
 
-                    await _orderEditVm.AddProductToShoppingList(dto);
+                    // I'm not sure about this line
+                    // since I'm not certain if all ingredients are accounted for
+                    _orderEditVm.ShoppingList.AddProductShoppingListItemUnsafe(copyOfVm);
+
+                    // Need to spend ingrdients
+                    _orderEditVm.StorageScope.SpendIngredients(vm.ProductDto.ReceiptId, 1);
+
+                    //await _orderEditVm.AddProductToShoppingList(dto);
                 }
             }).DisposeWith(_disposables);
         }

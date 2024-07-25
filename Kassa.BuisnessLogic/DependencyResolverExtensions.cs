@@ -65,8 +65,8 @@ public static class DependencyResolverExtensions
         SplatRegistrations.Register<ICourierService, CourierService>();
         RegisterInitializableServiceFactory<ICourierService>(services);
 
-        SplatRegistrations.Register<IOrdersService, OrdersService>();
-        RegisterInitializableServiceFactory<IOrdersService>(services);
+        /*SplatRegistrations.Register<IOrdersService, OrdersService>();
+        RegisterInitializableServiceFactory<IOrdersService>(services);*/
 
         SplatRegistrations.Register<IWithdrawReasounService, WithdrawReasounService>();
         RegisterInitializableServiceFactory<IWithdrawReasounService>(services);

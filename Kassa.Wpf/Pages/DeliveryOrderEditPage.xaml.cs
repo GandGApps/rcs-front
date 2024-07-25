@@ -34,7 +34,7 @@ public partial class DeliveryOrderEditPage : ReactiveUserControl<DeliveryOrderEd
             this.OneWayBind(ViewModel, x => x.FastAdditives, x => x.FastAddictives.ItemsSource)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.CurrentCategoryItems, x => x.ProductsHost.ItemsSource)
+            this.OneWayBind(ViewModel, x => x.CurrentHostedItems, x => x.ProductsHost.ItemsSource)
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, x => x.ShoppingListItems, x => x.ShoppingListItems.ItemsSource)

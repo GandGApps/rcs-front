@@ -23,7 +23,7 @@ internal sealed class ProductService : BaseInitializableService, IProductService
     {
         _productRepository = repository;
         _ingridientsService = ingridientsService;
-        this._receiptService = receiptService;
+        _receiptService = receiptService;
     }
 
     public IApplicationModelManager<ProductDto> RuntimeProducts => _runtimeProducts;

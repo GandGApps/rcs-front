@@ -67,4 +67,12 @@ public interface IShoppingListItemVm: IReactiveObject
     {
         get; 
     }
+
+    /// <summary>
+    /// If the item is ordered, this property contains the id of the ordered item. <see cref="OrderedProductDto"/> or <see cref="OrderedAdditiveDto"/>
+    /// </summary>
+    Guid OrderedId
+    {
+        get;
+    }
 }

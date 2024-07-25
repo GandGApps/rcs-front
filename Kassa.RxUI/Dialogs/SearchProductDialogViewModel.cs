@@ -5,6 +5,7 @@ using DynamicData;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
+using Kassa.RxUI.Pages;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -12,18 +13,18 @@ using Splat;
 namespace Kassa.RxUI.Dialogs;
 public class SearchProductDialogViewModel : ApplicationManagedModelSearchableDialogViewModel<ProductDto, ProductViewModel>
 {
-    private readonly IOrderEditService _orderEditService;
+    private readonly IOrderEditVm _orderEditVm;
     private readonly IProductService _productService;
 
-    public SearchProductDialogViewModel(IOrderEditService orderEditService, IProductService productService)
+    public SearchProductDialogViewModel(IOrderEditVm orderEditVm, IProductService productService)
     {
-        _orderEditService = orderEditService;
+        _orderEditVm = orderEditVm;
         _productService = productService;
     }
 
     protected override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        Filter(_productService.RuntimeProducts, x => new ProductViewModel(_orderEditService, _productService, x), disposables);
+        Filter(_productService.RuntimeProducts, x => new ProductViewModel(_orderEditVm, _productService, x), disposables);
         return new ValueTask();
     }
 
