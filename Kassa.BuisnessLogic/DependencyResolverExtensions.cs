@@ -10,7 +10,7 @@ namespace Kassa.BuisnessLogic;
 
 public static class DependencyResolverExtensions
 {
-    [Obsolete]
+    [Obsolete("Remove asap")]
     /// <summary>
     /// Registers business logic services in the dependency resolver.
     /// </summary>
@@ -59,8 +59,8 @@ public static class DependencyResolverExtensions
         SplatRegistrations.Register<IDistrictService, DistrictService>();
         RegisterInitializableServiceFactory<IDistrictService>(services);
 
-        SplatRegistrations.Register<IIngridientsService, IngridientsService>();
-        RegisterInitializableServiceFactory<IIngridientsService>(services);
+        /*SplatRegistrations.Register<IIngridientsService, IngridientsService>();
+        RegisterInitializableServiceFactory<IIngridientsService>(services);*/
 
         SplatRegistrations.Register<ICourierService, CourierService>();
         RegisterInitializableServiceFactory<ICourierService>(services);

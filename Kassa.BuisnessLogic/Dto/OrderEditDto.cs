@@ -71,7 +71,7 @@ public sealed class OrderEditDto
 
     public double TotalSum => SubtotalSum - Discount;
 
-    public double SubtotalSum => Products.Sum(p => p.TotalPrice);
+    public double SubtotalSum => Products.Sum(p => p.TotalSum);
 
     public double Discount
     {

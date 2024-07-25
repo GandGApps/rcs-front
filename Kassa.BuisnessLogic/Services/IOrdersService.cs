@@ -14,6 +14,7 @@ public interface IOrdersService: IInitializableService
         get;
     }
 
+    public Task<OrderDto> CreateOrderAsync(OrderEditDto orderEditDto);
     public ValueTask<OrderDto?> GetOrderById(Guid id);
     public Task UpdateOrder(OrderDto order);
     public Task AddOrder(OrderDto order);

@@ -20,12 +20,14 @@ public class ShoppingListViewModel : BaseViewModel
     private readonly IOrderEditVm _orderEditVm;
     private readonly IProductService _productService;
     private readonly IReceiptService _receiptService;
+    private readonly IAdditiveService _additiveService;
 
-    public ShoppingListViewModel(IOrderEditVm orderEditVm, IProductService productService, IReceiptService receiptService)
+    public ShoppingListViewModel(IOrderEditVm orderEditVm, IProductService productService, IReceiptService receiptService, IAdditiveService additiveService)
     {
         _orderEditVm = orderEditVm;
         _productService = productService;
         _receiptService = receiptService;
+        _additiveService = additiveService;
 
         ProductShoppingListItems = new(_productShoppingListItems);
 
@@ -153,6 +155,12 @@ public class ShoppingListViewModel : BaseViewModel
         get; set;
     }
 
+    /// <summary>
+    /// This method adds a product to the shopping list and spends the ingredients from the storage
+    /// </summary>
+    /// <remarks>
+    /// If you sure that the product is available in storage, you can use <see cref="AddProductShoppingListItemUnsafe(ProductDto)"/> method
+    /// </remarks>
     public async Task AddProductShoppingListItem(ProductDto product)
     {
         var receipt = await _receiptService.GetReceipt(product.ReceiptId);
@@ -173,35 +181,49 @@ public class ShoppingListViewModel : BaseViewModel
             return;
         }
 
-        var productShoppingListItemVm = new ProductShoppingListItemViewModel(product, _productService.RuntimeProducts, _orderEditVm, _receiptService);
+        // I'm sure this is safe because I have checked that the product is available in storage
+        AddProductShoppingListItemUnsafe(product);
+    }
+
+    /// <summary>
+    /// Use this method only if you are sure that the product is available in storage.
+    /// </summary>
+    /// <remarks>
+    /// This method does not check if the product is available in storage.
+    /// It also does not consume any ingredients.
+    /// Use the <see cref="AddProductShoppingListItem(ProductDto)"/> method if you are not sure.
+    /// </remarks>
+    public void AddProductShoppingListItemUnsafe(ProductDto product)
+    {
+        var productShoppingListItemVm = new ProductShoppingListItemViewModel(product, _productService.RuntimeProducts, _orderEditVm, _receiptService, _additiveService);
         _productShoppingListItems.Add(productShoppingListItemVm);
     }
 
     public async Task AddAdditiveToSelectedProducst(AdditiveDto additive)
     {
         var selectedProducts = _orderEditVm.ShoppingList.SelectedItems.OfType<ProductShoppingListItemViewModel>();
+        var receipt = await _receiptService.GetReceipt(additive.ReceiptId);
+
+        if (receipt is null)
+        {
+            this.Log().Error("Receipt not found for product {0}", additive.ReceiptId);
+            return;
+        }
 
         foreach (var product in selectedProducts)
         {
-            var receipt = await _receiptService.GetReceipt(product.ProductDto.ReceiptId);
-
-            if (receipt is null)
-            {
-                this.Log().Error("Receipt not found for product {0}", product.ProductDto.ReceiptId);
-                continue;
-            }
-
             if (await _orderEditVm.StorageScope.HasEnoughIngredients(receipt, 1))
             {
                 await _orderEditVm.StorageScope.SpendIngredients(receipt, 1);
             }
             else
             {
-                this.Log().Error("Not enough ingredients for product {0}", product.ProductDto.ReceiptId);
+                this.Log().Error("Not enough ingredients for product {0}", additive.ReceiptId);
                 continue;
             }
 
-            await product.AddAdditive(additive);
+            // I'm sure this is safe because I have checked that the additive is available in storage
+            product.AddAdditiveUnsafe(additive);
         }
     }
 }

@@ -27,10 +27,12 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
     private readonly ObservableCollection<AdditiveShoppingListItemViewModel> _additives = [];
     private readonly IOrderEditVm _orderEditVm;
     private readonly IReceiptService _receiptService;
+    private readonly IAdditiveService _additiveService;
 
-    public ProductShoppingListItemViewModel(ProductDto product, IApplicationModelManager<ProductDto> manager, IOrderEditVm orderEditVm, IReceiptService receiptService)
+    public ProductShoppingListItemViewModel(ProductDto product, IApplicationModelManager<ProductDto> manager, IOrderEditVm orderEditVm, IReceiptService receiptService, IAdditiveService additiveService)
     {
         _orderEditVm = orderEditVm;
+        _additiveService = additiveService;
         _receiptService = receiptService;
 
         Id = product.Id;
@@ -64,7 +66,7 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
             .DisposeWith(_disposables);
 
         this.WhenAnyValue(x => x.Count, x => x.Price, x => x.AddictiveTotalSum)
-            .Select(x => ((x.Item1 * x.Item2) + x.Item3) * (1 -  Discount))
+            .Select(x => ((x.Item1 * x.Item2) + x.Item3) * (1 - Discount))
             .Subscribe(x => TotalSum = x)
             .DisposeWith(_disposables);
 
@@ -85,7 +87,8 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
             .DisposeWith(_disposables);
 
 
-        RemoveCommand = ReactiveCommand.CreateFromTask(() => {
+        RemoveCommand = ReactiveCommand.CreateFromTask(() =>
+        {
             return Task.CompletedTask;
         }).DisposeWith(_disposables); ;
 
@@ -222,6 +225,12 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
 
     public void Dispose() => _disposables.Dispose();
 
+    /// <summary>
+    /// This method adds a additive to the product additive list and spends the ingredients from the storage
+    /// </summary>
+    /// <remarks>
+    /// If you sure that the product is available in storage, you can use <see cref="AddAdditiveUnsafe(ProductDto)"/> method
+    /// </remarks>
     public async Task AddAdditive(AdditiveDto additive)
     {
         var storageScope = _orderEditVm.StorageScope;
@@ -236,9 +245,22 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
 
         if (await storageScope.HasEnoughIngredients(receipt, 1))
         {
-            var additiveVm = new AdditiveShoppingListItemViewModel(additive, _orderEditVm, _receiptService);
-
-            _additives.Add(additiveVm);
+            AddAdditiveUnsafe(additive);
         }
+    }
+
+    /// <summary>
+    /// Use this method only if you are sure that the additive is available in the storage
+    /// </summary>
+    /// <remarks>
+    /// This method does not check the availability of the additive in the storage.
+    /// It also does not consume any ingredients.
+    /// Use the <see cref="AddAdditive(AdditiveDto)"/> method if you are not sure.
+    /// </remarks>
+    public void AddAdditiveUnsafe(AdditiveDto additive)
+    {
+        var additiveShoppingListItemViewModel = new AdditiveShoppingListItemViewModel(additive, _additiveService.RuntimeAdditives, _orderEditVm);
+
+        _additives.Add(additiveShoppingListItemViewModel);
     }
 }

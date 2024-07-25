@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
+using Kassa.RxUI.Pages;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -22,7 +23,7 @@ public sealed class AdditiveShoppingListItemViewModel : ReactiveObject, IShoppin
 
     private readonly CompositeDisposable _disposables = [];
 
-    public AdditiveShoppingListItemViewModel(AdditiveDto additive, IApplicationModelManager<AdditiveDto> modelManager)
+    public AdditiveShoppingListItemViewModel(AdditiveDto additive, IApplicationModelManager<AdditiveDto> modelManager, IOrderEditVm orderEditVm)
     {
         Id = additive.Id;
 
@@ -30,6 +31,20 @@ public sealed class AdditiveShoppingListItemViewModel : ReactiveObject, IShoppin
             .DisposeWith(_disposables);
 
         Update(additive);
+
+        this.WhenAnyValue(x => x.IsSelected)
+            .Subscribe(x =>
+            {
+                if (x)
+                {
+                    orderEditVm.ShoppingList.SelectedItems.Add(this);
+                }
+                else
+                {
+                    orderEditVm.ShoppingList.SelectedItems.Remove(this);
+                }
+            })
+            .DisposeWith(_disposables);
 
         RemoveCommand = ReactiveCommand.Create(() =>
         {

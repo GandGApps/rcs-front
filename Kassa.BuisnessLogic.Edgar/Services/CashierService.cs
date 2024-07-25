@@ -6,6 +6,8 @@ using System.Reactive.Disposables;
 using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
+using DynamicData;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
@@ -93,11 +95,10 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
         return new(order);
     }
 
-    public ValueTask<OrderEditDto> CreateOrder(OrderDto order)
+    public async ValueTask<OrderEditDto> CreateOrder(OrderDto order)
     {
         var orderEdit = new OrderEditDto()
         {
-
             Id = order.Id,
             CreatedAt = order.CreatedAt,
             Status = order.Status,
@@ -108,12 +109,30 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
             Comment = order.Comment,
         };
 
-        orderEdit.Products.AddRange(order.Products);
+        if (order.Products is not null)
+        {
+            foreach (var orderedProduct in order.Products)
+            {
+                var product = await _productService.GetProductById(orderedProduct.ProductId);
 
+                if (product is null)
+                {
+#if DEBUG
+                    ThrowHelper.ThrowInvalidOperationException($"Product with id={orderedProduct.ProductId} not found");
+#elif RELEASE
+                    this.Log().Error("Product with id={0} not found", orderedProduct.ProductId);
+                    continue;
+#endif
+                }
+
+                var productShoppingListItem = new ProductShoppingListItemDto(orderedProduct, product);
+                orderEdit.Products.Add(productShoppingListItem);
+            }
+        }
 
         _orders.Add(orderEdit);
 
-        return new(orderEdit);
+        return orderEdit;
     }
 
     public ValueTask<IPaymentService> CreatePayment(OrderEditDto order)
@@ -125,10 +144,7 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
     {
         CurrentOrder = order;
 
-        if (_orders.Contains(order))
-        {
-            _orders.Remove(order);
-        }
+        _orders.Remove(order);
 
         return ValueTask.CompletedTask;
     }

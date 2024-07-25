@@ -450,8 +450,8 @@ public abstract class BasePaymentPageVm: PageViewModel, IPaymentVm
 
     protected override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        CashierPaymentService.Order
-            .BindShoppingListItems((x, y) => new ProductShoppingListItemViewModel(x, y, CashierPaymentService.Order), out var shoppingListItems)
+        CashierPaymentService.OrderEditDto
+            .BindShoppingListItems((x, y) => new ProductShoppingListItemViewModel(x, y, CashierPaymentService.OrderEditDto), out var shoppingListItems)
             .DisposeWith(disposables);
 
         ShoppingListItems = shoppingListItems;

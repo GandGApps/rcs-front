@@ -813,7 +813,7 @@ internal sealed class OrderEditService : BaseInitializableService, IOrderEditSer
 
             if (shoppingListItem is ProductShoppingListItemDto product)
             {
-                product.AdditiveInfo = comment;
+                product.Comment = comment;
                 ShoppingListItems.AddOrUpdate(product);
                 SelectedShoppingListItems.AddOrUpdate(product);
             }

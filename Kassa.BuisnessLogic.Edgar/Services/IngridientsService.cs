@@ -148,5 +148,8 @@ internal sealed class IngridientsService(IRepository<Ingredient> repository) : B
         }
     }
 
-    public IStorageScope CreateStorageScope() => throw new NotImplementedException();
+    public IStorageScope CreateStorageScope()
+    {
+        return new StorageScope(this);
+    }
 }

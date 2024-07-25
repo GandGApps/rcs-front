@@ -33,7 +33,7 @@ public interface IStorageScope : IDisposable
     /// Confirm changes
     /// </summary>
     /// <remarks>
-    /// Also disposes the scope
+    /// Also disposes the scope. Or when call <see cref="IDisposable.Dispose"/> it will be called.
     /// </remarks>
     public void Submit();
 }

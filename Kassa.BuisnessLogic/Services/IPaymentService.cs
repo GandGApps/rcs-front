@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.BuisnessLogic.Dto;
 
 namespace Kassa.BuisnessLogic.Services;
 public interface IPaymentService : IInitializableService
@@ -48,7 +49,7 @@ public interface IPaymentService : IInitializableService
         get; set;
     }
 
-    public IOrderEditService Order
+    public OrderEditDto OrderEditDto
     {
         get;
     }
@@ -56,9 +57,6 @@ public interface IPaymentService : IInitializableService
     /// <summary>
     /// Pay and save order then dispose
     /// </summary>
-    /// <remarks>
-    /// Attention! This method also dispose <see cref="IOrderEditService"/> 
-    /// </remarks>
     public Task PayAndSaveOrderThenDispose(ReceiptBehavior receiptBehavior);
     public Task PrintReceiptToEmail();
     public Task SetEmailToReceiptSending(string email);
