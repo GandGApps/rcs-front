@@ -17,21 +17,52 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Pages;
 public sealed class NewDeliveryPageVm : PageViewModel
 {
-    private IOrderEditService _orderEdit = null!;
+    private readonly OrderEditDto _orderEdit;
     private IPaymentService _paymentService = null!;
     private readonly ICashierService _cashierService;
     private readonly IAdditiveService _additiveService;
     private readonly IProductService _productService;
+    private readonly IOrdersService _ordersService;
+    private readonly ICategoryService _categoryService;
+    private readonly IReceiptService _receiptService;
+    private readonly IIngridientsService _ingridientsService;
+    private readonly IStorageScope _storageScope;
 
-    public NewDeliveryPageVm(ICashierService cashierService, IAdditiveService additiveService, IProductService productService) : this(cashierService, additiveService, null, productService)
+    public NewDeliveryPageVm(
+        OrderEditDto orderEditDto,
+        ICashierService cashierService,
+        IAdditiveService additiveService,
+        IProductService productService,
+        IOrdersService ordersService,
+        ICategoryService categoryService,
+        IReceiptService receiptService,
+        IIngridientsService ingridientsService) :
+        this(orderEditDto, cashierService, additiveService, null, productService, ordersService, categoryService, receiptService, ingridientsService)
     {
         IsNewClient = true;
     }
 
-    public NewDeliveryPageVm(ICashierService cashierService, IAdditiveService additiveService, ClientViewModel? clientViewModel, IProductService productService)
+    public NewDeliveryPageVm(
+        OrderEditDto orderEditDto,
+        ICashierService cashierService,
+        IAdditiveService additiveService,
+        ClientViewModel? clientViewModel,
+        IProductService productService,
+        IOrdersService ordersService,
+        ICategoryService categoryService,
+        IReceiptService receiptService,
+        IIngridientsService ingridientsService)
     {
+        _orderEdit = orderEditDto;
+
         _cashierService = cashierService;
         _additiveService = additiveService;
+        _productService = productService;
+        _ordersService = ordersService;
+        _categoryService = categoryService;
+        _receiptService = receiptService;
+        _ingridientsService = ingridientsService;
+        _storageScope = _ingridientsService.CreateStorageScope();
 
         DeliveryId = Guid.NewGuid();
         Client = clientViewModel;
@@ -152,7 +183,7 @@ public sealed class NewDeliveryPageVm : PageViewModel
                 return;
             }
 
-            var order = _orderEdit.GetOrder();
+            var order = await _ordersService.CreateOrderAsync(_orderEdit);
 
             if (!order.Products.Any())
             {
@@ -250,7 +281,6 @@ public sealed class NewDeliveryPageVm : PageViewModel
         Disposable.Create(() =>
         {
         }).DisposeWith(InternalDisposables);
-        _productService = productService;
 #endif
     }
 
@@ -494,20 +524,19 @@ public sealed class NewDeliveryPageVm : PageViewModel
     {
         var cashierService = await Locator.GetInitializedService<ICashierService>();
 
-        _orderEdit = await cashierService.CreateOrder(true);
-        await cashierService.SelectCurrentOrder(_orderEdit);
-
-        OrderEditPageVm = new DeliveryOrderEditPageVm(_orderEdit, _cashierService, _additiveService, _productService);
+        OrderEditPageVm = new DeliveryOrderEditPageVm(_orderEdit, _storageScope, _cashierService, _additiveService, _productService, _categoryService, _receiptService, _ingridientsService);
 
         _paymentService = await cashierService.CreatePayment(_orderEdit);
-        PaymentPageVm = new(_paymentService);
+        PaymentPageVm = new(OrderEditPageVm, _paymentService, _cashierService, _additiveService, _productService, _ingridientsService, _receiptService, _categoryService);
 
         await OrderEditPageVm.InitializeAsync();
         await PaymentPageVm.InitializeAsync();
 
+        // Just being lazy to write DisposeWith for each disposable
+        // And being stupid because I also wrote Dispose for each disposable
+        // I'll keep this as a reminder
         Disposable.Create(() =>
         {
-            _orderEdit.Dispose();
             OrderEditPageVm.Dispose();
 
             _paymentService.Dispose();

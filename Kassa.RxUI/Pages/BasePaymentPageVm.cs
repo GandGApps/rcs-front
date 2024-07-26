@@ -7,14 +7,17 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using DynamicData;
 using DynamicData.Binding;
 using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
 using Kassa.RxUI.Dialogs;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Splat;
 
 namespace Kassa.RxUI.Pages;
 public abstract class BasePaymentPageVm: PageViewModel, IPaymentVm
@@ -22,9 +25,55 @@ public abstract class BasePaymentPageVm: PageViewModel, IPaymentVm
     protected bool _isFloat;
     protected byte _afterSeparatorDigitCount;
 
-    public BasePaymentPageVm(IPaymentService cashierPaymentService)
+    protected readonly ICashierService _cashierService;
+    protected readonly IAdditiveService _additiveService;
+    protected readonly IProductService _productService;
+    protected readonly IIngridientsService _ingridientsService;
+    protected readonly IOrderEditVm _orderEditVm;
+    protected readonly IReceiptService _receiptService;
+    protected readonly ICategoryService _categoryService;
+
+    protected ObservableCollection<ProductShoppingListItemViewModel> _shoppingListItems;
+
+    public BasePaymentPageVm(
+        IOrderEditVm orderEditVm,
+        IPaymentService paymentService,
+        ICashierService cashierService,
+        IAdditiveService additiveService,
+        IProductService productService,
+        IIngridientsService ingridientsService,
+        IReceiptService receiptService,
+        ICategoryService categoryService)
     {
-        CashierPaymentService = cashierPaymentService;
+        PaymentService = paymentService;
+
+        _orderEditVm = orderEditVm;
+        _cashierService = cashierService;
+        _additiveService = additiveService;
+        _productService = productService;
+        _ingridientsService = ingridientsService;
+        _receiptService = receiptService;
+        _categoryService = categoryService;
+
+        _shoppingListItems = new(new List<ProductShoppingListItemViewModel>(paymentService.OrderEditDto.Products.Count));
+
+        foreach (var item in paymentService.OrderEditDto.Products)
+        {
+            if(!_productService.RuntimeProducts.TryGetValue(item.ItemId, out var product))
+            {
+#if DEBUG
+                ThrowHelper.ThrowInvalidOperationException("Product not found");
+#elif RELEASE
+                this.Log().Error("Product not found");
+                continue;
+#endif
+            }
+
+            var vm = new ProductShoppingListItemViewModel(item, product, _productService.RuntimeProducts, _orderEditVm, _receiptService, _additiveService);
+            _shoppingListItems.Add(vm);
+        }
+
+        ShoppingListItems = new(_shoppingListItems);
 
         CashVm = new()
         {
@@ -214,10 +263,9 @@ public abstract class BasePaymentPageVm: PageViewModel, IPaymentVm
             .ToPropertyEx(this, x => x.CurrentPaymentSum)
             .DisposeWith(InternalDisposables);
 
-        // TODO: Replace with busy command
+        // TODO: Replace with page busy command
         PayCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-
             var loading = new LoadingDialogViewModel()
             {
                 Message = "Оплата..."
@@ -242,12 +290,12 @@ public abstract class BasePaymentPageVm: PageViewModel, IPaymentVm
 
             
 
-            cashierPaymentService.Cash = CashVm.Entered;
-            cashierPaymentService.BankСard = BankCardVm.Entered;
-            cashierPaymentService.CashlessPayment = CashlessPaymentVm.Entered;
-            cashierPaymentService.WithoutRevenue = WithoutRevenueVm.Entered;
+            paymentService.Cash = CashVm.Entered;
+            paymentService.BankСard = BankCardVm.Entered;
+            paymentService.CashlessPayment = CashlessPaymentVm.Entered;
+            paymentService.WithoutRevenue = WithoutRevenueVm.Entered;
 
-            await cashierPaymentService.PayAndSaveOrderThenDispose(receiptBehavior);
+            await paymentService.PayAndSaveOrderThenDispose(receiptBehavior);
 
             await loading.CloseAsync();
 
@@ -258,28 +306,25 @@ public abstract class BasePaymentPageVm: PageViewModel, IPaymentVm
 
             await MainViewModel.OkMessage("Оплата прошла успешно", "");
 
-            var cashierService = await Locator.GetInitializedService<ICashierService>();
-            var order = await cashierService.CreateOrder(false);
-            var additiveService = await Locator.GetInitializedService<IAdditiveService>();
-            var productService = await Locator.GetInitializedService<IProductService>();
+            var order = await _cashierService.CreateOrder(false);
 
-            await cashierService.SelectCurrentOrder(order);
+            await _cashierService.SelectCurrentOrder(order);
 
-            await MainViewModel.GoToPageAndResetButNotMainCommand.Execute(new OrderEditPageVm(order, cashierService, additiveService, productService));
+            var orderEditPageVm = new OrderEditPageVm(order, _ingridientsService.CreateStorageScope(), _cashierService, _additiveService, _productService, _categoryService, _receiptService, _ingridientsService);
 
+            await MainViewModel.GoToPageAndResetButNotMainCommand.Execute(orderEditPageVm);
 
         }, this.WhenAnyValue(x => x.IsExactAmount));
     }
 
-    public IPaymentService CashierPaymentService
+    public IPaymentService PaymentService
     {
         get;
     }
 
-    [Reactive]
-    public ReadOnlyObservableCollection<ProductShoppingListItemViewModel>? ShoppingListItems
+    public ReadOnlyObservableCollection<ProductShoppingListItemViewModel> ShoppingListItems
     {
-        get; set;
+        get; 
     }
 
     public ReactiveCommand<PaymentType, Unit> SetPaymentTypeCommand
@@ -450,12 +495,6 @@ public abstract class BasePaymentPageVm: PageViewModel, IPaymentVm
 
     protected override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        CashierPaymentService.OrderEditDto
-            .BindShoppingListItems((x, y) => new ProductShoppingListItemViewModel(x, y, CashierPaymentService.OrderEditDto), out var shoppingListItems)
-            .DisposeWith(disposables);
-
-        ShoppingListItems = shoppingListItems;
-
         ShoppingListItems.ToObservableChangeSet()
                          .AutoRefresh(x => x.SubtotalSum)
                          .ToCollection()

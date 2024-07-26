@@ -347,4 +347,19 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
 
         return copy;
     }
+
+    public ProductShoppingListItemViewModel CreateCopyWithoutAdditive()
+    {
+        var copy = new ProductShoppingListItemViewModel(ProductDto, _manager, _orderEditVm, _receiptService, _additiveService)
+        {
+            Count = Count,
+            Comment = Comment,
+            IsSelected = IsSelected,
+            HasDiscount = HasDiscount,
+            Discount = Discount,
+            OrderedId = Guid.Empty // Reset the ordered id, because it is a new position
+        };
+
+        return copy;
+    }
 }

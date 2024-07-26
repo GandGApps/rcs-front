@@ -19,7 +19,14 @@ using DynamicData;
 namespace Kassa.RxUI.Pages;
 public sealed class DeliveryOrderEditPageVm : BaseOrderEditPageVm
 {
-    public DeliveryOrderEditPageVm(OrderEditDto orderEditDto, IStorageScope storageScope, ICashierService cashierService, IAdditiveService additiveService, IProductService productService) : base(orderEditDto, storageScope, cashierService, additiveService, productService)
+    public DeliveryOrderEditPageVm(OrderEditDto orderEditDto,
+        IStorageScope storageScope,
+        ICashierService cashierService,
+        IAdditiveService additiveService,
+        IProductService productService,
+        ICategoryService categoryService,
+        IReceiptService receiptService,
+        IIngridientsService ingridientsService) : base(orderEditDto, storageScope, cashierService, additiveService, productService, categoryService, receiptService, ingridientsService)
     {
     }
 }

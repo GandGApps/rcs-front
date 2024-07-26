@@ -17,7 +17,7 @@ using DynamicData.Binding;
 using DynamicData;
 
 namespace Kassa.RxUI.Pages;
-public abstract class BaseOrderEditPageVm: BaseViewModel, IOrderEditVm
+public abstract class BaseOrderEditPageVm: PageViewModel, IOrderEditVm
 {
     private readonly OrderEditDto _orderEditDto;
     private readonly ICashierService _cashierService;
@@ -26,6 +26,7 @@ public abstract class BaseOrderEditPageVm: BaseViewModel, IOrderEditVm
     private readonly IStorageScope _storageScope;
     private readonly ICategoryService _categoryService;
     private readonly IReceiptService _receiptService;
+    private readonly IIngridientsService _ingridientsService;
 
     private readonly ObservableCollection<ProductHostItemVm> _currentCategoryItems = [];
 
@@ -38,7 +39,8 @@ public abstract class BaseOrderEditPageVm: BaseViewModel, IOrderEditVm
         IAdditiveService additiveService,
         IProductService productService,
         ICategoryService categoryService,
-        IReceiptService receiptService)
+        IReceiptService receiptService,
+        IIngridientsService ingridientsService)
     {
         _orderEditDto = orderEditDto;
         _cashierService = cashierService;
@@ -47,6 +49,7 @@ public abstract class BaseOrderEditPageVm: BaseViewModel, IOrderEditVm
         _storageScope = storageScope;
         _categoryService = categoryService;
         _receiptService = receiptService;
+        _ingridientsService = ingridientsService;
 
         CurrentHostedItems = new(_currentCategoryItems);
 
@@ -202,7 +205,7 @@ public abstract class BaseOrderEditPageVm: BaseViewModel, IOrderEditVm
         GoToPaymentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             var payment = await _cashierService.CreatePayment(orderEditDto);
-            var paymentPage = new CashierPaymentPageVm(payment);
+            var paymentPage = new CashierPaymentPageVm(this,payment, cashierService, additiveService, productService, ingridientsService, receiptService, categoryService);
 
             MainViewModel.GoToPageCommand.Execute(paymentPage).Subscribe();
         });
@@ -268,7 +271,7 @@ public abstract class BaseOrderEditPageVm: BaseViewModel, IOrderEditVm
                 return;
             }
 
-            var dialog = new PortionDialogVm(this, firstSelected);
+            var dialog = new PortionDialogVm(this, _receiptService, firstSelected);
 
             await MainViewModel.ShowDialogAndWaitClose(dialog);
         });

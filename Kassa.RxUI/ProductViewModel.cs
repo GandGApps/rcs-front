@@ -114,7 +114,7 @@ public sealed class ProductViewModel : ProductHostItemVm, IApplicationModelPrese
         get; set;
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
         _disposables.Dispose();
     }

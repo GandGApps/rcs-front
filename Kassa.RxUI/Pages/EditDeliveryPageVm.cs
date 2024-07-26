@@ -12,11 +12,14 @@ using Kassa.DataAccess.Model;
 namespace Kassa.RxUI.Pages;
 public sealed class EditDeliveryPageVm : PageViewModel
 {
-    private IOrderEditService _orderEdit = null!;
+    private OrderEditDto _orderEdit = null!;
     private IPaymentService _paymentService = null!;
     private readonly ICashierService _cashierService;
     private readonly IAdditiveService _additiveService;
     private readonly IProductService _productService;
+    private readonly IReceiptService _receiptService;
+    private readonly IIngridientsService _ingridientsService;
+    private readonly ICategoryService _categoryService;
     private readonly OrderDto _orderDto;
 
     public EditDeliveryPageVm(
@@ -27,11 +30,18 @@ public sealed class EditDeliveryPageVm : PageViewModel
         OrderDto order,
         DistrictDto? district,
         StreetDto? street,
-        IProductService productService)
+        IProductService productService,
+        IReceiptService receiptService,
+        IIngridientsService ingridientsService,
+        ICategoryService categoryService)
     {
         _orderDto = order;
         _cashierService = cashierService;
         _additiveService = additiveService;
+        _productService = productService;
+        _receiptService = receiptService;
+        _ingridientsService = ingridientsService;
+        _categoryService = categoryService;
 
         DeliveryId = order.Id;
         Client = client;
@@ -162,9 +172,9 @@ public sealed class EditDeliveryPageVm : PageViewModel
                 return;
             }
 
-            var order = _orderEdit.GetOrder();
+            var orderEdit = _orderEdit;
 
-            if (!order.Products.Any())
+            if (orderEdit.Products.Count == 0)
             {
                 await MainViewModel.OkMessage("Не выбраны товары");
                 return;
@@ -184,34 +194,37 @@ public sealed class EditDeliveryPageVm : PageViewModel
 
             var loading = MainViewModel.ShowLoadingDialog("Сохранение заказа");
 
-            order.AddressNote = AddressNote;
-            order.Comment = Comment;
-            order.Apartment = Apartment;
-            order.Building = Building;
-            order.Card = Card;
-            order.Id = DeliveryId;
-            order.IsDelivery = IsDelivery;
-            order.IsPickup = IsPickup;
-            order.DistrictId = District?.Id;
-            order.StreetId = Street?.Id;
-            order.House = House;
-            order.Entrance = Entrance;
-            order.Floor = Floor;
-            order.Intercom = Intercom;
-            order.LastName = LastName;
-            order.FirstName = FirstName;
-            order.MiddleName = MiddleName;
-            order.Phone = Phone;
-            order.Miscellaneous = Miscellaneous;
-            order.IsOutOfTurn = IsOutOfTurn;
-            order.IsProblematicDelivery = IsProblematicDelivery;
-            order.Problem = Problem;
-            order.CourierId = CourierViewModel?.Id;
-            order.ClientId = Client?.Id;
-            order.CreatedAt = DateTime.UtcNow;
-            order.Status = OrderStatus;
+            orderEdit.AddressNote = AddressNote;
+            orderEdit.Comment = Comment;
+            orderEdit.Apartment = Apartment;
+            orderEdit.Building = Building;
+            orderEdit.Card = Card;
+            orderEdit.Id = DeliveryId;
+            orderEdit.IsDelivery = IsDelivery;
+            orderEdit.IsPickup = IsPickup;
+            orderEdit.DistrictId = District?.Id;
+            orderEdit.StreetId = Street?.Id;
+            orderEdit.House = House;
+            orderEdit.Entrance = Entrance;
+            orderEdit.Floor = Floor;
+            orderEdit.Intercom = Intercom;
+            orderEdit.LastName = LastName;
+            orderEdit.FirstName = FirstName;
+            orderEdit.MiddleName = MiddleName;
+            orderEdit.Phone = Phone;
+            orderEdit.Miscellaneous = Miscellaneous;
+            orderEdit.IsOutOfTurn = IsOutOfTurn;
+            orderEdit.IsProblematicDelivery = IsProblematicDelivery;
+            orderEdit.Problem = Problem;
+            orderEdit.CourierId = CourierViewModel?.Id;
+            orderEdit.ClientId = Client?.Id;
+            orderEdit.CreatedAt = DateTime.UtcNow;
+            orderEdit.Status = OrderStatus;
 
             var ordersService = await Locator.GetInitializedService<IOrdersService>();
+
+            var order = await ordersService.CreateOrderAsync(orderEdit);
+
             await ordersService.UpdateOrder(order);
 
             await loading.CloseAsync();
@@ -230,7 +243,6 @@ public sealed class EditDeliveryPageVm : PageViewModel
         Disposable.Create(() =>
         {
         }).DisposeWith(InternalDisposables);
-        _productService = productService;
 #endif
     }
 
@@ -480,17 +492,18 @@ public sealed class EditDeliveryPageVm : PageViewModel
 
         _orderEdit = await cashierService.CreateOrder(_orderDto);
 
-        OrderEditPageVm = new DeliveryOrderEditPageVm(_orderEdit, _cashierService, _additiveService, _productService);
+        var storageScope = _ingridientsService.CreateStorageScope();
+
+        OrderEditPageVm = new DeliveryOrderEditPageVm(_orderEdit, storageScope, _cashierService, _additiveService, _productService, _categoryService, _receiptService, _ingridientsService);
 
         _paymentService = await cashierService.CreatePayment(_orderEdit);
-        PaymentPageVm = new(_paymentService);
+        PaymentPageVm = new(OrderEditPageVm, _paymentService, _cashierService, _additiveService, _productService, _ingridientsService, _receiptService, _categoryService);
 
         await OrderEditPageVm.InitializeAsync();
         await PaymentPageVm.InitializeAsync();
 
         Disposable.Create(() =>
         {
-            _orderEdit.Dispose();
             OrderEditPageVm.Dispose();
 
             _paymentService.Dispose();

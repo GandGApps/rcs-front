@@ -122,11 +122,21 @@ internal sealed class OrdersService(IRepository<Order> repository, IRepository<P
         await repository.Update(model);
     }
 
+
+    // Not sure if this is the right way to implement this method
     public Task<OrderDto> CreateOrderAsync(OrderEditDto orderEditDto)
     {
-        var orderDto = Mapper.MapOrderEditDtoToOrderDto(orderEditDto);
+        var orderDto = CreateOrderUnsafe(orderEditDto);
 
         // Maybe we should add the order to the repository here?
         return Task.FromResult(orderDto);
+    }
+
+    public OrderDto CreateOrderUnsafe(OrderEditDto orderEditDto)
+    {
+
+        var orderDto = Mapper.MapOrderEditDtoToOrderDto(orderEditDto);
+
+        return orderDto;
     }
 }

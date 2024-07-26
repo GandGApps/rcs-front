@@ -85,6 +85,12 @@ public record ProductShoppingListItemDto : IShoppingListItemDto
         get;
         set;
     }
+
+    public List<AdditiveShoppingListItemDto> Additives
+    {
+        get;
+    } = [];
+
     public double SubtotalSum => Price * Count;
     public double TotalSum => SubtotalSum * Discount;
 
