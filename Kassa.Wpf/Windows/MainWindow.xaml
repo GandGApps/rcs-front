@@ -2,6 +2,7 @@
     x:Class="Kassa.Wpf.MainWindow"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:ctrl="clr-namespace:Kassa.Wpf.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:debug="debug-mode"
     xmlns:effects="clr-namespace:Kassa.Wpf.Effects"
@@ -43,7 +44,7 @@
             Panel.ZIndex="10"
             Background="{DynamicResource BlurBrush}"
             Visibility="Collapsed">
-            <rxui:RoutedViewHost x:Name="DialogHost" Duration="0" />
+            <ctrl:SimpleRouter x:Name="DialogHost" />
         </Border>
         <Border Grid.RowSpan="2">
 
@@ -63,11 +64,10 @@
                     <RowDefinition Height="{mx:AdaptiveSize GridLength={StaticResource FooterSizeAsGridLength}}" />
                 </Grid.RowDefinitions>
 
-                <rxui:RoutedViewHost
+                <ctrl:SimpleRouter
                     x:Name="RoutedViewHost"
                     Grid.Row="0"
-                    Grid.RowSpan="2"
-                    Duration="0" />
+                    Grid.RowSpan="2" />
 
                 <Border
                     x:Name="Footer"

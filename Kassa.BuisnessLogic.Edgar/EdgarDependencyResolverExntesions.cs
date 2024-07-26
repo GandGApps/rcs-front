@@ -76,6 +76,13 @@ public static class EdgarDependencyResolverExntesions
         });
         services.RegisterInitializableServiceFactory<IOrdersService>();
 
+        services.Register<IIngridientsService>(() =>
+        {
+            var repository = Locator.Current.GetRequiredService<IRepository<Ingredient>>();
+
+            return new IngridientsService(repository);
+        });
+        services.RegisterInitializableServiceFactory<IIngridientsService>();
 
         SplatRegistrations.SetupIOC();
     }

@@ -6,6 +6,7 @@ using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Services;
+using Kassa.Shared;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 
@@ -54,7 +55,7 @@ internal abstract class BaseInitializableService: IInitializableService, IEnable
         this.Log().Info($"[{id}] Service disposed async " + GetType());
     }
 
-    async ValueTask IInitializableService.Initialize()
+    async ValueTask IInitializable.Initialize()
     {
         if (IsInitialized)
         {

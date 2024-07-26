@@ -19,6 +19,7 @@ using System.Runtime.CompilerServices;
 using Kassa.Wpf.Services.PosPrinters;
 using Kassa.Wpf.Services.MagneticStripeReaders;
 using Kassa.Wpf.Services.CashDrawers;
+using Kassa.Wpf.Controls;
 
 namespace Kassa.Wpf;
 /// <summary>
@@ -89,6 +90,8 @@ public partial class App : Application, IEnableLogger
 
         Locator.CurrentMutable.AddHttpRepositoryDataAccess();
         Locator.CurrentMutable.AddEdgarBuisnessLogic();
+
+        typeof(SimpleRouter).TypeInitializer!.Invoke(null, null);
 
         ApiSplatExtensions.BuildServices();
     }
