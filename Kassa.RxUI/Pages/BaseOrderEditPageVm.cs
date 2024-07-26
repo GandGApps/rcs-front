@@ -419,7 +419,7 @@ public abstract class BaseOrderEditPageVm: PageViewModel, IOrderEditVm
     [Reactive]
     public bool IsForHere
     {
-        get; private set;
+        get; set;
     }
 
     [Reactive]

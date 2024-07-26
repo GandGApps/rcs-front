@@ -80,8 +80,8 @@ public partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
             this.BindCommand(ViewModel, x => x.GoToAllDeliveriesPageCommand, x => x.GoToDeliveryButton)
                 .DisposeWith(disposables);
 
-            ShoppingListPanel.OrderEditService = ViewModel.OrderEditDto;
-            ShoppingListItems.OrderEditService = ViewModel.OrderEditDto;
+            ShoppingListPanel.OrderEditVm = ViewModel.OrderEditDto;
+            ShoppingListItems.ShoppinngListVm = ViewModel.OrderEditDto;
         });
     }
 }

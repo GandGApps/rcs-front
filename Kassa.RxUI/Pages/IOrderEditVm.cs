@@ -101,7 +101,7 @@ public interface IOrderEditVm : IReactiveObject
 
     public bool IsForHere
     {
-        get;
+        get; set;
     }
 
     public CategoryDto? CurrentCategory
@@ -121,6 +121,14 @@ public interface IOrderEditVm : IReactiveObject
     bool IsShowPrice
     {
         get; set;
+    }
+    DateTime WhenOrderStarted
+    {
+        get;
+    }
+    bool IsMultiSelect
+    {
+        get;
     }
 
     public void MoveToCategoryUnsafe(Guid id);
