@@ -325,6 +325,8 @@ public abstract class BaseOrderEditPageVm: PageViewModel, IOrderEditVm
         get; set;
     }
 
+    public Guid OrderId => _orderEditDto.Id;
+
     public ReactiveCommand<Unit, Unit> CreateTotalCommentCommand
     {
         get;

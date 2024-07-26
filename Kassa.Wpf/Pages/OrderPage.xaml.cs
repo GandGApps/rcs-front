@@ -21,7 +21,8 @@ public partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
         this.WhenActivated(disposables =>
         {
             Debug.Assert(ViewModel != null);
-            NavigateBackButton.Command = CategoryViewModel.NavigateBackCategoryCommand;
+
+            NavigateBackButton.Command = ViewModel.NavigateBackCategoryCommand;
             
             this.OneWayBind(ViewModel, x => x.FastAdditives, x => x.FastAddictives.ItemsSource)
                 .DisposeWith(disposables);
@@ -80,8 +81,8 @@ public partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
             this.BindCommand(ViewModel, x => x.GoToAllDeliveriesPageCommand, x => x.GoToDeliveryButton)
                 .DisposeWith(disposables);
 
-            ShoppingListPanel.OrderEditVm = ViewModel.OrderEditDto;
-            ShoppingListItems.ShoppinngListVm = ViewModel.OrderEditDto;
+            ShoppingListPanel.OrderEditVm = ViewModel;
+            ShoppingListItems.ShoppinngListVm = ViewModel.ShoppingList;
         });
     }
 }

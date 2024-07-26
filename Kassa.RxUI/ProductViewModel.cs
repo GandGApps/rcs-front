@@ -70,12 +70,23 @@ public sealed class ProductViewModel : ProductHostItemVm, IApplicationModelPrese
         HasIcon = product.Image >= 0;
 
         productService.RuntimeProducts.AddPresenter(this).DisposeWith(_disposables);
+        
+        orderEditVm.WhenAnyValue(x => x.IsShowPrice)
+            .ToPropertyEx(this, x => x.IsPriceShowed)
+            .DisposeWith(_disposables); 
+            
     }
 
     [Reactive]
     public string CurrencySymbol
     {
         get; set;
+    }
+
+    public extern bool IsPriceShowed
+    {
+        [ObservableAsProperty]
+        get; 
     }
 
     public extern bool IsPriceVisible

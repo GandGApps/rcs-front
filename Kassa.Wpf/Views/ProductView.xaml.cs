@@ -31,7 +31,7 @@ public partial class ProductView : ButtonUserControl<ProductViewModel>
             Command = ProductViewModel.AddToShoppingListCommand;
             CommandParameter = ViewModel;
 
-            ViewModel.OrderEditService.ShowPrice
+            ViewModel.WhenAnyValue(x => x.IsPriceShowed)
                 .Select(x => x ? Visibility.Visible : Visibility.Collapsed)
                 .Subscribe(x => PriceTextBlock.Visibility = x)
                 .DisposeWith(disposables);

@@ -46,7 +46,6 @@ public sealed partial class ShoppingListPanel : UserControl
 
     private static void OnOrderEditServiceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-
         if (d is ShoppingListPanel panel)
         {
             panel._disposables?.Dispose();
@@ -65,7 +64,8 @@ public sealed partial class ShoppingListPanel : UserControl
 
                 panel.TimeWhenStart.Text = orderEditVm.WhenOrderStarted.ToString("dd.MM  HH:mm");
 
-                orderEditVm.IsMultiSelect
+                orderEditVm.ShoppingList
+                    .WhenAnyValue(x => x.IsMultiSelect)
                     .ObserveOn(RxApp.MainThreadScheduler)
                     .Subscribe(isMultiSelect =>
                     {
@@ -119,8 +119,6 @@ public sealed partial class ShoppingListPanel : UserControl
             return;
         }
 
-        var isMultiSelect = OrderEditVm.IsMultiSelect.Value;
-
-        OrderEditVm.SetMultiSelect(!isMultiSelect);
+        OrderEditVm.ShoppingList.IsMultiSelect = !OrderEditVm.ShoppingList.IsMultiSelect;
     }
 }

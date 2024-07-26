@@ -9,6 +9,11 @@ namespace Kassa.RxUI.Pages;
 public interface IOrderEditVm : IReactiveObject
 {
 
+    public Guid OrderId
+    {
+        get;
+    }
+
     public IStorageScope StorageScope
     {
         get;
@@ -106,7 +111,7 @@ public interface IOrderEditVm : IReactiveObject
 
     public CategoryDto? CurrentCategory
     {
-        get; 
+        get;
     }
 
     public bool IsStopList
@@ -123,10 +128,6 @@ public interface IOrderEditVm : IReactiveObject
         get; set;
     }
     DateTime WhenOrderStarted
-    {
-        get;
-    }
-    bool IsMultiSelect
     {
         get;
     }
