@@ -103,7 +103,5 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
         printer.Append(new byte[] { 0x1B, 0x07, 0x00 });
 
         printer.PrintDocument();
-
-
     }
 }

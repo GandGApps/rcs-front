@@ -12,6 +12,7 @@ using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess;
+using Kassa.RxUI.Pages;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -20,13 +21,13 @@ namespace Kassa.RxUI.Dialogs;
 public class SearchAddictiveDialogViewModel : DialogViewModel
 {
     private readonly IAdditiveService _additiveService;
-    private readonly IOrderEditService _order;
+    private readonly IOrderEditVm _orderEditVm;
 
-    public SearchAddictiveDialogViewModel(IAdditiveService additiveService, IOrderEditService order)
+    public SearchAddictiveDialogViewModel(IAdditiveService additiveService, IOrderEditVm orderEditVm)
     {
         IsKeyboardVisible = false;
         _additiveService = additiveService;
-        _order = order;
+        _orderEditVm = orderEditVm;
     }
 
 
@@ -52,7 +53,7 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
                             switch (change.Reason)
                             {
                                 case ModelChangeReason.Add:
-                                    observableCollection.Add(new AdditiveViewModel(change.Current, _order, _additiveService));
+                                    observableCollection.Add(new AdditiveViewModel(change.Current, _orderEditVm, _additiveService));
                                     break;
                                 case ModelChangeReason.Remove:
                                     observableCollection.Remove(observableCollection.First(x => x.Id == change.Current.Id));
@@ -63,7 +64,7 @@ public class SearchAddictiveDialogViewModel : DialogViewModel
 
                 var filteredAdditives = _additiveService.RuntimeAdditives.Values
                     .Where(additive => additive.Name.Contains(text, StringComparison.OrdinalIgnoreCase))
-                    .Select(additive => new AdditiveViewModel(additive, _order, _additiveService));
+                    .Select(additive => new AdditiveViewModel(additive, _orderEditVm, _additiveService));
 
                 observableCollection.Clear();
                 observableCollection.AddRange(filteredAdditives);

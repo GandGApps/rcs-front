@@ -16,5 +16,4 @@ public static partial class Mapper
     [MapperIgnoreSource(nameof(ClientViewModel.Changing))]
     [MapperIgnoreSource(nameof(ClientViewModel.ThrownExceptions))]
     public static partial ClientDto ClientVmToDto(this ClientViewModel viewModel);
-
 }

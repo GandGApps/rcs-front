@@ -11,24 +11,20 @@ using ReactiveUI;
 namespace Kassa.RxUI.Dialogs;
 public class MoreCashierDialogViewModel : DialogViewModel
 {
-    public MoreCashierDialogViewModel(IOrderEditVm orderEditVm, IOrderEditService orderEditService)
+    public MoreCashierDialogViewModel(IOrderEditVm orderEditVm)
     {
         AddCommentCommand = orderEditVm.CreateCommentCommand;
 
         StopListCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var isStopList = orderEditService.IsStopList.Value;
-
-            orderEditService.SetIsStopList(!isStopList);
+            orderEditVm.IsStopList = !orderEditVm.IsStopList;
 
             await CloseAsync();
         });
 
         ShowPriceCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var isPriceShowed = orderEditService.ShowPrice.Value;
-
-            orderEditService.SetShowPrice(!isPriceShowed);
+            orderEditVm.IsShowPrice = !orderEditVm.IsShowPrice;
 
             await CloseAsync();
         });

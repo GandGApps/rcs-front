@@ -15,40 +15,66 @@ using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
+using Kassa.RxUI.Pages;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.RxUI;
-public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListItem, IApplicationModelPresenter<ProductShoppingListItemDto>, IGuidId
+public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShoppingListItemVm, IApplicationModelPresenter<ProductDto>, IGuidId
 {
     private readonly CompositeDisposable _disposables = [];
+    private readonly ObservableCollection<AdditiveShoppingListItemViewModel> _additives = [];
+    private readonly IOrderEditVm _orderEditVm;
+    private readonly IReceiptService _receiptService;
+    private readonly IAdditiveService _additiveService;
+    private readonly IApplicationModelManager<ProductDto> _manager;
 
-    public ProductShoppingListItemViewModel(ProductShoppingListItemDto product, IApplicationModelManager<ProductShoppingListItemDto> manager, IOrderEditService order)
+    public ProductShoppingListItemViewModel(
+        ProductShoppingListItemDto productShoppingListItem,
+        ProductDto product,
+        IApplicationModelManager<ProductDto> manager,
+        IOrderEditVm orderEditVm,
+        IReceiptService receiptService,
+        IAdditiveService additiveService): this(product, manager, orderEditVm, receiptService, additiveService)
     {
-        Source = product;
-        _source = product;
-        Id = product.Id;
+        OrderedId = productShoppingListItem.Id;
+        Comment = productShoppingListItem.Comment;
+    }
 
-        if (order.IsInitialized)
-        {
-            order.BindAdditivesForProductShoppingListItem(product, (x,y) => new AdditiveShoppingListItemViewModel(x,y), out var additives)
-                .DisposeWith(_disposables);
-            Additives = additives;
-        }
-        else
-        {
-            Additives = new([]);
-        }
+    public ProductShoppingListItemViewModel(
+        ProductDto product,
+        IApplicationModelManager<ProductDto> manager,
+        IOrderEditVm orderEditVm,
+        IReceiptService receiptService,
+        IAdditiveService additiveService)
+    {
+        _orderEditVm = orderEditVm;
+        _additiveService = additiveService;
+        _receiptService = receiptService;
+        _manager = manager;
+
+        Id = product.Id;
+        ProductDto = product;
+        Additives = new(_additives);
 
         this.WhenAnyValue(x => x.IsSelected)
             .Subscribe(x =>
             {
+                var shoppingList = orderEditVm.ShoppingList;
+                if (x)
+                {
+                    shoppingList.SelectedItems.Add(this);
+                }
+                else
+                {
 
+                    shoppingList.SelectedItems.Remove(this);
+                }
             })
             .DisposeWith(_disposables);
 
-        this.WhenAnyValue(x => x.AdditiveInfo)
+        this.WhenAnyValue(x => x.Comment)
             .Select(x => !string.IsNullOrEmpty(x))
             .Subscribe(x => HasAdditiveInfo = x)
             .DisposeWith(_disposables);
@@ -59,7 +85,7 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
             .DisposeWith(_disposables);
 
         this.WhenAnyValue(x => x.Count, x => x.Price, x => x.AddictiveTotalSum)
-            .Select(x => ((x.Item1 * x.Item2) + x.Item3) * (1 -  Discount))
+            .Select(x => ((x.Item1 * x.Item2) + x.Item3) * (1 - Discount))
             .Subscribe(x => TotalSum = x)
             .DisposeWith(_disposables);
 
@@ -80,12 +106,15 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
             .DisposeWith(_disposables);
 
 
-        RemoveCommand = ReactiveCommand.CreateFromTask(() => {
+        RemoveCommand = ReactiveCommand.CreateFromTask(() =>
+        {
             return Task.CompletedTask;
         }).DisposeWith(_disposables); ;
 
         manager.AddPresenter(this)
             .DisposeWith(_disposables);
+
+        Count = 1;
     }
 
     public Guid Id
@@ -93,11 +122,10 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
         get;
     }
 
-    [Reactive]
-    public Guid ItemId
+    public Guid OrderedId
     {
-        get; set;
-    }
+        get; private set;
+    } = Guid.Empty;
 
     [Reactive]
     public ShoppingListViewModel ShoppingListViewModel
@@ -148,7 +176,7 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
     } = null!;
 
     [Reactive]
-    public string? AdditiveInfo
+    public string? Comment
     {
         get; set;
     }
@@ -192,44 +220,146 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
     {
         get; set;
     }
+
     public ReactiveCommand<Unit, Unit> RemoveCommand
     {
         get;
     }
 
-    public ProductShoppingListItemDto Source
+    public ProductDto ProductDto
     {
-        get => _source;
-        set
-        {
-            _source = value;
-            this.RaisePropertyChanged();
-            Update(value);
-        }
+        get; private set;
     }
-    private ProductShoppingListItemDto _source;
 
-    public IShoppingListItemDto SourceDto => Source;
-
-    public void ModelChanged(BuisnessLogic.ApplicationModelManagers.Change<ProductShoppingListItemDto> change)
+    public void ModelChanged(BuisnessLogic.ApplicationModelManagers.Change<ProductDto> change)
     {
         var model = change.Current;
 
         Update(model);
     }
 
-    private void Update(ProductShoppingListItemDto product)
+    private void Update(ProductDto product)
     {
-        Count = product.Count;
         Price = product.Price;
         Measure = product.Measure;
         Name = product.Name;
         CurrencySymbol = product.CurrencySymbol;
-        ItemId = product.ItemId;
-        IsSelected = product.IsSelected;
-        AdditiveInfo = product.AdditiveInfo;
-        HasAdditiveInfo = !string.IsNullOrEmpty(product.AdditiveInfo);
+        ProductDto = product;
     }
 
     public void Dispose() => _disposables.Dispose();
+
+    /// <summary>
+    /// This method adds a additive to the product additive list and spends the ingredients from the storage
+    /// </summary>
+    /// <remarks>
+    /// If you sure that the product is available in storage, you can use <see cref="AddAdditiveUnsafe(ProductDto)"/> method
+    /// </remarks>
+    public async Task AddAdditive(AdditiveDto additive)
+    {
+        var storageScope = _orderEditVm.StorageScope;
+
+        var receipt = await _receiptService.GetReceipt(additive.ReceiptId);
+
+        if (receipt is null)
+        {
+            this.Log().Error("Receipt not found for additive {0}", additive.ReceiptId);
+            return;
+        }
+
+        if (await storageScope.HasEnoughIngredients(receipt, 1))
+        {
+            AddAdditiveUnsafe(additive);
+        }
+    }
+
+    /// <summary>
+    /// Use this method only if you are sure that the additive is available in the storage
+    /// </summary>
+    /// <remarks>
+    /// This method does not check the availability of the additive in the storage.
+    /// It also does not consume any ingredients.
+    /// Use the <see cref="AddAdditive(AdditiveDto)"/> method if you are not sure.
+    /// </remarks>
+    public void AddAdditiveUnsafe(AdditiveDto additive)
+    {
+        var additiveShoppingListItemViewModel = new AdditiveShoppingListItemViewModel(additive, _additiveService.RuntimeAdditives, _orderEditVm);
+
+        _additives.Add(additiveShoppingListItemViewModel);
+    }
+
+    /// <summary>
+    /// This method removes the additive from the product additive list and returns the ingredients to the storage
+    /// </summary>
+    public async Task RemoveAdditive(AdditiveShoppingListItemViewModel additive)
+    {
+        var storageScope = _orderEditVm.StorageScope;
+
+        var receipt = await _receiptService.GetReceipt(additive.AdditiveDto.ReceiptId);
+
+        if (receipt is null)
+        {
+            this.Log().Error("Receipt not found for additive {0}", additive.AdditiveDto.ReceiptId);
+            return;
+        }
+
+        await storageScope.ReturnIngredients(receipt, additive.Count);
+
+        RemoveAdditiveUnsafe(additive);
+    }
+
+    /// <summary>
+    /// Use this method only if you are sure that the additive ingredients returned to the storage
+    /// </summary>
+    /// <remarks>
+    /// This method does not return the ingredients to the storage.
+    /// To return the ingredients to the storage, use the <see cref="RemoveAdditive(AdditiveShoppingListItemViewModel)"/> method.
+    /// </remarks>
+    public void RemoveAdditiveUnsafe(AdditiveShoppingListItemViewModel additive)
+    {
+        _additives.Remove(additive);
+    }
+
+    /// <summary>
+    /// Use this method only if you are sure that the product is available in the storage
+    /// </summary>
+    /// <remarks>
+    /// This method does not check the availability of the additive/product in the storage.
+    /// It also does not consume any ingredients.
+    /// You need to spend the ingredients manually.
+    /// </remarks>
+    public ProductShoppingListItemViewModel CreateCopyUnsafe()
+    {
+        var copy = new ProductShoppingListItemViewModel(ProductDto, _manager, _orderEditVm, _receiptService, _additiveService)
+        {
+            Count = Count,
+            Comment = Comment,
+            IsSelected = IsSelected,
+            HasDiscount = HasDiscount,
+            Discount = Discount,
+            OrderedId = OrderedId
+        };
+
+        foreach (var additive in Additives)
+        {
+            copy.AddAdditiveUnsafe(additive.AdditiveDto);
+        }
+
+        return copy;
+    }
+
+    public ProductShoppingListItemViewModel CreateCopyWithoutAdditive()
+    {
+        var copy = new ProductShoppingListItemViewModel(ProductDto, _manager, _orderEditVm, _receiptService, _additiveService)
+        {
+            Count = Count,
+            Comment = Comment,
+            IsSelected = IsSelected,
+            HasDiscount = HasDiscount,
+            Discount = Discount,
+            OrderedId = Guid.Empty // Reset the ordered id, because it is a new position
+        };
+
+        return copy;
+    }
 }

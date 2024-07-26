@@ -32,7 +32,7 @@ public record ProductShoppingListItemDto : IShoppingListItemDto
         Count = orderedProduct.Count;
         Discount = orderedProduct.Discount;
         HasDiscount = orderedProduct.Discount < 1;
-        AdditiveInfo = orderedProduct.Comment;
+        Comment = orderedProduct.Comment;
     }
 
     /// <summary>
@@ -85,10 +85,16 @@ public record ProductShoppingListItemDto : IShoppingListItemDto
         get;
         set;
     }
+
+    public List<AdditiveShoppingListItemDto> Additives
+    {
+        get;
+    } = [];
+
     public double SubtotalSum => Price * Count;
     public double TotalSum => SubtotalSum * Discount;
 
-    public string? AdditiveInfo
+    public string? Comment
     {
         get; set;
     }

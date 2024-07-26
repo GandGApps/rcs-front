@@ -20,7 +20,7 @@ public interface IProductService : IInitializableService
     /// Every change in the database will be reflected in this cache.
     /// </para>
     /// <para>
-    /// Don't use this property to update products. Use <see cref="UpdateProduct(Product)"/> instead. 
+    /// Don't use this property to update products. Use <see cref="UpdateProduct(ProductDto)"/> instead. 
     /// Use this property only for connect.
     /// </para>
     /// </summary>

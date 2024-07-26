@@ -15,6 +15,7 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess;
 using Kassa.DataAccess.Model;
+using Kassa.RxUI.Pages;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -27,7 +28,7 @@ public sealed class ProductViewModel : ProductHostItemVm, IApplicationModelPrese
     private static async Task AddToShoppingList(ProductViewModel product)
     {
         var productDto = product._product;
-        var isStopList = product._orderEditService.IsStopList.Value;
+        var isStopList = product._orderEditVm.IsStopList;
 
 
         if (isStopList)
@@ -37,27 +38,23 @@ public sealed class ProductViewModel : ProductHostItemVm, IApplicationModelPrese
             return;
         }
 
-        if (product._orderEditService is null)
-        {
-            throw new InvalidOperationException("Order is not selected");
-        }
-
         if (!product.IsAvailable)
         {
             return;
         }
-        await product._orderEditService.AddProductToShoppingList(product.Id);
+
+        await product._orderEditVm.ShoppingList.AddProductShoppingListItem(product._product);
     }
 
     private ProductDto _product;
 
     private readonly CompositeDisposable _disposables = [];
-    private readonly IOrderEditService _orderEditService;
+    private readonly IOrderEditVm _orderEditVm;
     private readonly IProductService _productService;
 
-    public ProductViewModel(IOrderEditService orderEditService, IProductService productService, ProductDto product)
+    public ProductViewModel(IOrderEditVm orderEditVm, IProductService productService, ProductDto product)
     {
-        _orderEditService = orderEditService;
+        _orderEditVm = orderEditVm;
         _productService = productService;
 
         Id = product.Id;
@@ -73,14 +70,23 @@ public sealed class ProductViewModel : ProductHostItemVm, IApplicationModelPrese
         HasIcon = product.Image >= 0;
 
         productService.RuntimeProducts.AddPresenter(this).DisposeWith(_disposables);
+        
+        orderEditVm.WhenAnyValue(x => x.IsShowPrice)
+            .ToPropertyEx(this, x => x.IsPriceShowed)
+            .DisposeWith(_disposables); 
+            
     }
-
-    public IOrderEditService OrderEditService => _orderEditService;
 
     [Reactive]
     public string CurrencySymbol
     {
         get; set;
+    }
+
+    public extern bool IsPriceShowed
+    {
+        [ObservableAsProperty]
+        get; 
     }
 
     public extern bool IsPriceVisible
@@ -119,7 +125,7 @@ public sealed class ProductViewModel : ProductHostItemVm, IApplicationModelPrese
         get; set;
     }
 
-    public void Dispose()
+    public override void Dispose()
     {
         _disposables.Dispose();
     }

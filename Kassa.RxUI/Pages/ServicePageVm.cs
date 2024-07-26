@@ -172,7 +172,7 @@ public class ServicePageVm : PageViewModel
             }).DisposeWith(InternalDisposables);
 
         _cashierService.Orders.ToObservableChangeSet()
-            .Transform(x => new ServiceOrderRowViewModel(x.GetOrder(), shiftService, _productService, _cashierService))
+            .Transform(x => new ServiceOrderRowViewModel(x, shiftService, _productService, _cashierService))
             .Bind(out var openOrders)
             .DisposeMany()
             .Subscribe()

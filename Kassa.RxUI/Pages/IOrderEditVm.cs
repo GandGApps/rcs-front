@@ -6,9 +6,15 @@ using Kassa.BuisnessLogic.Services;
 using ReactiveUI;
 
 namespace Kassa.RxUI.Pages;
-public interface IOrderEditVm: IReactiveObject
+public interface IOrderEditVm : IReactiveObject
 {
-    public IOrderEditService OrderEditService
+
+    public Guid OrderId
+    {
+        get;
+    }
+
+    public IStorageScope StorageScope
     {
         get;
     }
@@ -33,7 +39,7 @@ public interface IOrderEditVm: IReactiveObject
         get;
     }
 
-    public ReadOnlyObservableCollection<ProductHostItemVm>? CurrentCategoryItems
+    public ReadOnlyObservableCollection<ProductHostItemVm>? CurrentHostedItems
     {
         get;
     }
@@ -42,7 +48,7 @@ public interface IOrderEditVm: IReactiveObject
     {
         get; set;
     }
-    
+
     public ReadOnlyObservableCollection<AdditiveViewModel>? FastAdditives
     {
         get;
@@ -83,12 +89,12 @@ public interface IOrderEditVm: IReactiveObject
         get;
     }
 
-    public ShoppingListViewModel? ShoppingList
+    public ReactiveCommand<Unit, Unit> NavigateBackCategoryCommand
     {
         get;
     }
 
-    public ReadOnlyObservableCollection<ProductShoppingListItemViewModel>? ShoppingListItems
+    public ShoppingListViewModel ShoppingList
     {
         get;
     }
@@ -100,8 +106,32 @@ public interface IOrderEditVm: IReactiveObject
 
     public bool IsForHere
     {
+        get; set;
+    }
+
+    public CategoryDto? CurrentCategory
+    {
         get;
     }
 
+    public bool IsStopList
+    {
+        get; set;
+    }
 
+    public int CurrentFavourite
+    {
+        get;
+    }
+    bool IsShowPrice
+    {
+        get; set;
+    }
+    DateTime WhenOrderStarted
+    {
+        get;
+    }
+
+    public void MoveToCategoryUnsafe(Guid id);
+    public void MoveToCategoryUnsafe(CategoryDto category) => MoveToCategoryUnsafe(category.Id);
 }

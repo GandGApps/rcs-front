@@ -23,6 +23,34 @@ public sealed class ServiceOrderRowViewModel : ReactiveObject, IGuidId, IApplica
         get;
     }
 
+    public ServiceOrderRowViewModel(OrderEditDto order, IShiftService shiftService, IProductService productService, ICashierService cashierService)
+    {
+        _shiftService = shiftService;
+        _productService = productService;
+
+        Debug.Assert(shiftService.CurrentShift.Value != null);
+
+        Id = order.Id;
+        Number = order.Id.GuidToPrettyInt();
+        Time = order.CreatedAt.ToString("dd.MM.yyyy | HH:mm");
+        CashierName = shiftService.CurrentShift.Value.Member.Name;
+        Amount = order.Products.Sum(x => x.TotalSum + x.Additives.Sum(x => x.TotalSum)).ToString("F2");
+        Composition = string.Join(", ", order.Products.Take(4).Select(x =>
+        {
+            var productDto = productService.RuntimeProducts.TryGetValue(x.ItemId, out var product) ? product : null;
+
+            if (productDto is null)
+            {
+                this.Log().Error($"Product with id {x.ItemId} not found");
+            }
+
+            return productDto?.Name ?? "Неизвестный продукт";
+        }));
+
+        ExternalNumber = "???";
+        ReceiptNumber = "???";
+    }
+
     public ServiceOrderRowViewModel(OrderDto order, IShiftService shiftService, IProductService productService, ICashierService cashierService)
     {
         _shiftService = shiftService;

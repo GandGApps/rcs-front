@@ -6,73 +6,43 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess;
+using Kassa.RxUI.Pages;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.RxUI;
-public sealed class CategoryViewModel : ProductHostItemVm, IActivatableViewModel, IApplicationModelPresenter<CategoryDto>
+public sealed class CategoryViewModel : ProductHostItemVm, IApplicationModelPresenter<CategoryDto>
 {
-    public static readonly ReactiveCommand<CategoryViewModel, Unit> MoveToCategoryCommand = ReactiveCommand.CreateFromTask<CategoryViewModel>(async (category) =>
+    public static readonly ReactiveCommand<CategoryViewModel, Unit> MoveToCategoryCommand = ReactiveCommand.Create<CategoryViewModel>((category) =>
     {
-        var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
-        var order = cashierService.CurrentOrder;
-
-        if (order is null)
-        {
-#if DEBUG
-            throw new InvalidOperationException("Order is not selected");
-#else
-            LogHost.Default.Error("Order is not selected");
-            return;
-#endif
-        }
-
-        await order.SelectCategory(category.Id);
+        category._orderEditVm.MoveToCategoryUnsafe(category.Id);
     });
 
-    public static readonly ReactiveCommand<Unit, Unit> NavigateBackCategoryCommand = ReactiveCommand.CreateFromTask(async () =>
+    private readonly IOrderEditVm _orderEditVm;
+
+    private CategoryDto _category;
+    private readonly IDisposable _disposable;
+
+    public CategoryViewModel(IApplicationModelManager<CategoryDto> modelManager, CategoryDto category, IOrderEditVm orderEditVm)
     {
-        var cashierService = await Locator.Current.GetInitializedService<ICashierService>();
-        var order = cashierService.CurrentOrder;
+        _orderEditVm = orderEditVm;
+        _category = category;
 
-        if (order is null)
-        {
-            throw new InvalidOperationException("Order is not selected");
-        }
-
-        await order.SelectPreviosCategory();
-    });
-
-    private readonly Guid _categoryId;
-
-
-    public CategoryViewModel(IApplicationModelManager<CategoryDto> modelManager, CategoryDto category)
-    {
-        _categoryId = category.Id;
-
-        Id = _categoryId;
+        Id = _category.Id;
         Name = category.Name;
         HasIcon = category.HasIcon;
         Image = category.Image;
         Color = category.Color;
 
-        this.WhenActivated(disposables =>
-        {
-            modelManager.AddPresenter(this)
-                .DisposeWith(disposables);
-        });
+        _disposable = modelManager.AddPresenter(this);
     }
-
-    public ViewModelActivator Activator
-    {
-        get;
-    } = new();
 
     [Reactive]
     public bool HasIcon
@@ -88,10 +58,9 @@ public sealed class CategoryViewModel : ProductHostItemVm, IActivatableViewModel
         HasIcon = category.HasIcon;
         Image = category.Image;
         Color = category.Color;
+
+        _category = category;
     }
 
-    public void Dispose()
-    {
-        Activator.Dispose();
-    }
+    public override void Dispose() => _disposable.Dispose();
 }

@@ -1,6 +1,8 @@
-﻿namespace Kassa.BuisnessLogic.Dto;
+﻿using Kassa.DataAccess.Model;
 
-public class IngredientDto
+namespace Kassa.BuisnessLogic.Dto;
+
+public class IngredientDto: IGuidId
 {
     public Guid Id
     {

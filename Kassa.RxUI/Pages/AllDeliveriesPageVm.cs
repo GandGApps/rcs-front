@@ -65,13 +65,16 @@ public sealed class AllDeliveriesPageVm : PageViewModel
             var districtService = await Locator.GetInitializedService<IDistrictService>();
             var streetService = await Locator.GetInitializedService<IStreetService>();
             var productService = await Locator.GetInitializedService<IProductService>();
+            var receiptService = await Locator.GetInitializedService<IReceiptService>();
+            var ingridientsService = await Locator.GetInitializedService<IIngridientsService>();
+            var categoryService = await Locator.GetInitializedService<ICategoryService>();
 
             var client = order.ClientId.HasValue ? await clientService.GetClientById(order.ClientId.Value) : null;
             var courier = order.CourierId.HasValue ? await courierService.GetCourierById(order.CourierId.Value) : null;
             var district = order.DistrictId.HasValue ? await districtService.GetDistrictById(order.DistrictId.Value) : null;
             var street = order.StreetId.HasValue ? await streetService.GetStreetById(order.StreetId.Value) : null;
 
-            var editDeliveryPageVm = new EditDeliveryPageVm(cashierService, additiveService, client, courier, order, district, street, productService);
+            var editDeliveryPageVm = new EditDeliveryPageVm(cashierService, additiveService, client, courier, order, district, street, productService, receiptService, ingridientsService, categoryService);
 
             MainViewModel.GoToPageCommand.Execute(editDeliveryPageVm).Subscribe();
 

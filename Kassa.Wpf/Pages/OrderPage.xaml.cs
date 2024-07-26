@@ -21,18 +21,19 @@ public partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
         this.WhenActivated(disposables =>
         {
             Debug.Assert(ViewModel != null);
-            NavigateBackButton.Command = CategoryViewModel.NavigateBackCategoryCommand;
+
+            NavigateBackButton.Command = ViewModel.NavigateBackCategoryCommand;
             
             this.OneWayBind(ViewModel, x => x.FastAdditives, x => x.FastAddictives.ItemsSource)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.CurrentCategoryItems, x => x.ProductsHost.ItemsSource)
+            this.OneWayBind(ViewModel, x => x.CurrentHostedItems, x => x.ProductsHost.ItemsSource)
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x => x.ShoppingList!.IncreaseCommand, x => x.IncreaseButton)
+            this.BindCommand(ViewModel, x => x.ShoppingList!.IncreaseSelectedCommand, x => x.IncreaseButton)
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x => x.ShoppingList!.DecreaseCommand, x => x.DecreaseButton)
+            this.BindCommand(ViewModel, x => x.ShoppingList!.DecreaseSelectedCommand, x => x.DecreaseButton)
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, x => x.ShoppingList!.Subtotal, x => x.SubtotalCost.Text, x => $"{x.ToString("0.##", QuantityVolumeDialogVewModel.RuCultureInfo)} ₽")
@@ -41,7 +42,7 @@ public partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
             this.OneWayBind(ViewModel, x => x.ShoppingList!.Total, x => x.TotalCost.Text, x => $"{x.ToString("0.##", QuantityVolumeDialogVewModel.RuCultureInfo)} ₽")
                 .DisposeWith(disposables);
 
-            this.BindCommand(ViewModel, x => x.ShoppingList!.RemoveCommand, x => x.RemoveButton)
+            this.BindCommand(ViewModel, x => x.ShoppingList!.RemoveSelectedCommand, x => x.RemoveButton)
                 .DisposeWith(disposables);
 
             this.BindCommand(ViewModel, x => x.CreateTotalCommentCommand, x => x.TotalCommentButton)
@@ -80,8 +81,8 @@ public partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
             this.BindCommand(ViewModel, x => x.GoToAllDeliveriesPageCommand, x => x.GoToDeliveryButton)
                 .DisposeWith(disposables);
 
-            ShoppingListPanel.OrderEditService = ViewModel.OrderEditService;
-            ShoppingListItems.OrderEditService = ViewModel.OrderEditService;
+            ShoppingListPanel.OrderEditVm = ViewModel;
+            ShoppingListItems.ShoppinngListVm = ViewModel.ShoppingList;
         });
     }
 }

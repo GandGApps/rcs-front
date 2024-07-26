@@ -19,6 +19,7 @@ namespace Kassa.RxUI.Dialogs;
 public class AllClientsDialogViewModel : SearchableDialogViewModel<ClientDto, ClientViewModel>
 {
     private readonly IClientService _clientService;
+    
 
     public AllClientsDialogViewModel(IClientService clientService)
     {
@@ -33,8 +34,15 @@ public class AllClientsDialogViewModel : SearchableDialogViewModel<ClientDto, Cl
         {
             var cashierService = await Locator.GetInitializedService<ICashierService>();
             var additiveService = await Locator.GetInitializedService<IAdditiveService>();
+            var productService = await Locator.GetInitializedService<IProductService>();
+            var ordersService = await Locator.GetInitializedService<IOrdersService>();
+            var categoryService = await Locator.GetInitializedService<ICategoryService>();
+            var receiptService = await Locator.GetInitializedService<IReceiptService>();
+            var ingridientsService = await Locator.GetInitializedService<IIngridientsService>();
 
-            var newDeliveryPageVm = new NewDeliveryPageVm(cashierService, additiveService, null)
+            var orderEditDto = await cashierService.CreateOrder(true);
+
+            var newDeliveryPageVm = new NewDeliveryPageVm(orderEditDto, cashierService, additiveService, productService, ordersService, categoryService, receiptService, ingridientsService)
             {
                 IsPickup = IsPickup,
                 IsDelivery = IsDelivery
@@ -50,8 +58,14 @@ public class AllClientsDialogViewModel : SearchableDialogViewModel<ClientDto, Cl
             var cashierService = await Locator.GetInitializedService<ICashierService>();
             var additiveService = await Locator.GetInitializedService<IAdditiveService>();
             var productService = await Locator.GetInitializedService<IProductService>();
+            var ordersService = await Locator.GetInitializedService<IOrdersService>();
+            var categoryService = await Locator.GetInitializedService<ICategoryService>();
+            var receiptService = await Locator.GetInitializedService<IReceiptService>();
+            var ingridientsService = await Locator.GetInitializedService<IIngridientsService>();
 
-            var newDeliveryPageVm = new NewDeliveryPageVm(cashierService, additiveService, SelectedItem, productService)
+            var orderEditDto = await cashierService.CreateOrder(true);
+
+            var newDeliveryPageVm = new NewDeliveryPageVm(orderEditDto, cashierService, additiveService, SelectedItem, productService, ordersService, categoryService, receiptService, ingridientsService)
             {
                 IsPickup = IsPickup,
                 IsDelivery = IsDelivery
@@ -68,8 +82,14 @@ public class AllClientsDialogViewModel : SearchableDialogViewModel<ClientDto, Cl
             var cashierService = await Locator.GetInitializedService<ICashierService>();
             var additiveService = await Locator.GetInitializedService<IAdditiveService>();
             var productService = await Locator.GetInitializedService<IProductService>();
+            var ordersService = await Locator.GetInitializedService<IOrdersService>();
+            var categoryService = await Locator.GetInitializedService<ICategoryService>();
+            var receiptService = await Locator.GetInitializedService<IReceiptService>();
+            var ingridientsService = await Locator.GetInitializedService<IIngridientsService>();
 
-            var newClientPageVm = new NewDeliveryPageVm(cashierService,additiveService, productService)
+            var orderEditDto = await cashierService.CreateOrder(true);
+
+            var newDeliveryPageVm = new NewDeliveryPageVm(orderEditDto, cashierService, additiveService, SelectedItem, productService, ordersService, categoryService, receiptService, ingridientsService)
             {
                 IsPickup = IsPickup,
                 IsDelivery = IsDelivery
@@ -77,7 +97,7 @@ public class AllClientsDialogViewModel : SearchableDialogViewModel<ClientDto, Cl
 
             await CloseAsync();
 
-            await MainViewModel.GoToPageCommand.Execute(newClientPageVm).FirstAsync();
+            await MainViewModel.GoToPageCommand.Execute(newDeliveryPageVm).FirstAsync();
         });
 
     }

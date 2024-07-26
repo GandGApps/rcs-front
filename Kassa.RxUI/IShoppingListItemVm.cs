@@ -5,7 +5,7 @@ using ReactiveUI;
 
 namespace Kassa.RxUI;
 
-public interface IShoppingListItem
+public interface IShoppingListItemVm: IReactiveObject
 {
     double Count
     {
@@ -63,13 +63,16 @@ public interface IShoppingListItem
         set;
     }
 
-    IShoppingListItemDto SourceDto
-    {
-        get;
-    }
-
     ReactiveCommand<Unit, Unit> RemoveCommand
     {
         get; 
+    }
+
+    /// <summary>
+    /// If the item is ordered, this property contains the id of the ordered item. See <see cref="OrderedProductDto"/> or <see cref="OrderedAdditiveDto"/>
+    /// </summary>
+    Guid OrderedId
+    {
+        get;
     }
 }

@@ -10,7 +10,7 @@ using Kassa.Shared;
 using Splat;
 
 namespace Kassa.DataAccess.HttpRepository;
-internal class EmployeeRepository : IRepository<Member>
+internal sealed class EmployeeRepository : IRepository<Member>
 {
     public Task Add(Member item) => throw new NotImplementedException();
     public Task Delete(Member item) => throw new NotImplementedException();

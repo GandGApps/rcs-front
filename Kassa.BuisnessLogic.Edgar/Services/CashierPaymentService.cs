@@ -11,16 +11,16 @@ namespace Kassa.BuisnessLogic.Edgar.Services;
 internal sealed class CashierPaymentService: BaseInitializableService, IPaymentService
 {
     public event Action? Payed;
-    private readonly IOrderEditService _orderEditService;
+    private readonly OrderEditDto _orderEditDto;
     private readonly IOrdersService _ordersService;
 
-    public CashierPaymentService(IOrderEditService orderEditService, IOrdersService ordersService)
+    public CashierPaymentService(OrderEditDto orderEditService, IOrdersService ordersService)
     {
-        _orderEditService = orderEditService;
+        _orderEditDto = orderEditService;
         _ordersService = ordersService;
     }
 
-    public IOrderEditService Order => _orderEditService;
+    public OrderEditDto OrderEditDto => _orderEditDto;
 
     public double Cash
     {
@@ -62,25 +62,10 @@ internal sealed class CashierPaymentService: BaseInitializableService, IPaymentS
     /// <inheritdoc/>
     public async Task PayAndSaveOrderThenDispose(ReceiptBehavior receiptBehavior)
     {
-        var order = Order.GetOrder();
-        var paymentInfo = new PaymentInfoDto()
-        {
-            Id = Guid.Empty,
-            OrderId = Order.OrderId,
-            CashlessPayment = CashlessPayment,
-            Cash = Cash,
-            BankСard = BankСard,
-            WithoutRevenue = WithoutRevenue
-        };
-
-        order.PaymentInfo = paymentInfo;
-        order.PaymentInfoId = order.PaymentInfoId;
-
-        await _ordersService.AddOrder(order);
+        var order = await _ordersService.CreateOrderAsync(_orderEditDto);
 
         // It's need for CashierService
         Payed?.Invoke();
-        Order.Dispose();
 
         if (receiptBehavior == ReceiptBehavior.PrintReceipt)
         {
@@ -96,21 +81,24 @@ internal sealed class CashierPaymentService: BaseInitializableService, IPaymentS
             await cashDrawer.Open();
         }
          
-        Dispose(); // Nothing to dispose, and doesn't need to be called
+        Dispose(); // Nothing to dispose, and doesn't need to be called, but it's here for consistency
     }
 
     public async Task PayWithBankCard(double money)
     {
+        // TODO: Implement bank card payment
         await Task.Delay(2000);
         BankСard += money;
     }
     public async Task PrintReceiptToEmail()
     {
+        // TODO: Implement email sending
         await Task.Delay(1300);
     }
 
     public async Task SetEmailToReceiptSending(string email)
     {
+        // TODO: Implement email setting
         await Task.Delay(1000);
     }
 }

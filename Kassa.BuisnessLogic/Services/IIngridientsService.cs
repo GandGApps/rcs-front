@@ -4,12 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DynamicData;
+using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 
 namespace Kassa.BuisnessLogic.Services;
 public interface IIngridientsService: IInitializableService
 {
-    public SourceCache<IngredientDto, Guid> RuntimeIngridients
+    public IApplicationModelManager<IngredientDto> RuntimeIngridients
     {
         get;
     }
@@ -21,4 +22,6 @@ public interface IIngridientsService: IInitializableService
     public ValueTask<IngredientDto?> GetIngridient(Guid id);
     public Task SpendIngridients(IEnumerable<IngredientUsageDto> ingredientUsages, double count = 1);
     public Task ReturnIngridients(IEnumerable<IngredientUsageDto> ingredientUsages, double count = 1);
+
+    public IStorageScope CreateStorageScope();
 }

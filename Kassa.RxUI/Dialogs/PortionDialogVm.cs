@@ -6,25 +6,30 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
+using Kassa.RxUI.Pages;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Splat;
 
 namespace Kassa.RxUI.Dialogs;
 public sealed class PortionDialogVm : DialogViewModel
 {
-    private readonly IOrderEditService _orderEditService;
+    // Perhaps I need to remove these fields
+    private readonly IOrderEditVm _orderEditVm;
     private readonly ProductShoppingListItemViewModel _productShoppingListItemVm;
+    private readonly IReceiptService _receiptService;
 
-    public PortionDialogVm(IOrderEditService orderEditService, ProductShoppingListItemViewModel productShoppingListItemVm)
+    public PortionDialogVm(IOrderEditVm orderEditVm, IReceiptService receiptService, ProductShoppingListItemViewModel productShoppingListItemVm)
     {
-        _orderEditService = orderEditService;
+        _receiptService = receiptService;
+        _orderEditVm = orderEditVm;
         _productShoppingListItemVm = productShoppingListItemVm;
 
-        IntoSeveralEqualParts = new IntoSeveralEqualPartsVm(orderEditService, productShoppingListItemVm).DisposeWith(InternalDisposables);
-        IntoTwoUnequalParts = new IntoTwoUnequalPartsVm(orderEditService, productShoppingListItemVm).DisposeWith(InternalDisposables);
-
+        IntoSeveralEqualParts = new IntoSeveralEqualPartsVm(orderEditVm, receiptService, productShoppingListItemVm).DisposeWith(InternalDisposables);
+        IntoTwoUnequalParts = new IntoTwoUnequalPartsVm(orderEditVm,receiptService, productShoppingListItemVm).DisposeWith(InternalDisposables);
 
         this.WhenAnyValue(x => x.IsIntoSeveralEqualParts)
             .Select<bool, MethodOfDivisionVm>(x => x ? IntoSeveralEqualParts : IntoTwoUnequalParts)
@@ -62,13 +67,15 @@ public sealed class PortionDialogVm : DialogViewModel
     public abstract class MethodOfDivisionVm : ReactiveObject, IDisposable
     {
         protected readonly CompositeDisposable _disposables = [];
-        protected readonly IOrderEditService _orderEditService;
+        protected readonly IOrderEditVm _orderEditVm;
+        protected readonly IReceiptService _receiptService;
         protected readonly ProductShoppingListItemViewModel _productShoppingListItemVm;
 
-        public MethodOfDivisionVm(IOrderEditService orderEditService, ProductShoppingListItemViewModel productShoppingListItemVm)
+        public MethodOfDivisionVm(IOrderEditVm orderEditVm, IReceiptService receiptService, ProductShoppingListItemViewModel productShoppingListItemVm)
         {
-            _orderEditService = orderEditService;
+            _orderEditVm = orderEditVm;
             _productShoppingListItemVm = productShoppingListItemVm;
+            _receiptService = receiptService;
         }
 
         [Reactive]
@@ -82,7 +89,9 @@ public sealed class PortionDialogVm : DialogViewModel
             get;
         }
 
+#pragma warning disable CA1816 // Dispose methods should call SuppressFinalize
         public void Dispose() => _disposables.Dispose();
+#pragma warning restore CA1816 // Dispose methods should call SuppressFinalize
     }
 
     /// <summary>
@@ -107,7 +116,7 @@ public sealed class PortionDialogVm : DialogViewModel
             get;
         }
 
-        public IntoSeveralEqualPartsVm(IOrderEditService orderEditService, ProductShoppingListItemViewModel productShoppingListItemVm) : base(orderEditService, productShoppingListItemVm)
+        public IntoSeveralEqualPartsVm(IOrderEditVm orderEditVm, IReceiptService receiptService, ProductShoppingListItemViewModel productShoppingListItemVm) : base(orderEditVm, receiptService, productShoppingListItemVm)
         {
             // CountOfServing / ServingDivider = TotalServing
             // Когда CountOfServing или ServingDivider меняются, обновляем TotalServing
@@ -129,31 +138,50 @@ public sealed class PortionDialogVm : DialogViewModel
                 var positionCount = CountOfServing; // Нужно узнать количество продукта в позиции
                 var totalPositions = ServingDivider; // Нужно узнать количество позиций в заказе
 
-                var source = productShoppingListItemVm.Source;
+                var source = productShoppingListItemVm;
 
                 var dif = source.Count - positionCount;
 
                 if (dif > 0)
                 {
-                    await _orderEditService.DecreaseProductShoppingListItem(source, Math.Abs(positionCount));
+                    await _orderEditVm.ShoppingList.DecreaseProductShoppingListItemViewModel(source, Math.Abs(positionCount));
                 }
                 else if (dif < 0)
                 {
-                    await _orderEditService.IncreaseProductShoppingListItem(source, Math.Abs(positionCount));
+                    await _orderEditVm.ShoppingList.IncreaseProductShoppingListItemViewModel(source, Math.Abs(positionCount));
+                }
+
+                if (totalPositions == 1)
+                {
+                    return;
+                }
+
+                var vm = source.CreateCopyWithoutAdditive();
+
+                var receipt = await _receiptService.GetReceipt(vm.ProductDto.ReceiptId);
+
+                if (receipt is null)
+                {
+#if DEBUG
+                    ThrowHelper.ThrowInvalidOperationException("Receipt is null");
+#elif RELEASE
+                    this.Log().Error("Receipt is null");
+                    return; 
+#endif
                 }
 
                 for (var i = 0; i < totalPositions - 1; i++)
                 {
-                    var dto = new OrderedProductDto()
-                    {
-                        Id = Guid.NewGuid(),
-                        ProductId = source.ItemId,
-                        Count = positionCount,
-                        Price = source.Price,
-                        Discount = source.Discount,
-                    };
+                    var copyOfVm = vm.CreateCopyUnsafe();
 
-                    await _orderEditService.AddProductToShoppingList(dto);
+                    // I'm not sure about this line
+                    // since I'm not certain if all ingredients are accounted for
+                    _orderEditVm.ShoppingList.AddProductShoppingListItemUnsafe(copyOfVm);
+
+                    // Need to spend ingrdients
+                    await _orderEditVm.StorageScope.SpendIngredients(receipt, positionCount);
+
+                    //await _orderEditVm.AddProductToShoppingList(dto);
                 }
             }).DisposeWith(_disposables);
         }
@@ -180,7 +208,7 @@ public sealed class PortionDialogVm : DialogViewModel
             get;
         }
 
-        public IntoTwoUnequalPartsVm(IOrderEditService orderEditService, ProductShoppingListItemViewModel productShoppingListItemVm) : base(orderEditService, productShoppingListItemVm)
+        public IntoTwoUnequalPartsVm(IOrderEditVm orderEditVm, IReceiptService receiptService, ProductShoppingListItemViewModel productShoppingListItemVm) : base(orderEditVm, receiptService, productShoppingListItemVm)
         {
             // FirstPart + SecondPart = TotalServing
 
@@ -191,31 +219,31 @@ public sealed class PortionDialogVm : DialogViewModel
 
             ApplyCommand = ReactiveCommand.CreateFromTask(async () =>
             {
-                var source = productShoppingListItemVm.Source;
+                // Doen't need to spend ingredients
+                // because we are not creating a new product
+                // we are just separating the existing one
+
+                var source = productShoppingListItemVm;
 
                 var dif = source.Count - FirstPart;
 
-                if (dif > 0)
-                {
+                source.Count = FirstPart;
 
-                    await _orderEditService.DecreaseProductShoppingListItem(source, Math.Abs(FirstPart));
+                var vm = source.CreateCopyWithoutAdditive();
+
+                var receipt = await _receiptService.GetReceipt(vm.ProductDto.ReceiptId);
+
+                if (receipt is null)
+                {
+#if DEBUG
+                    ThrowHelper.ThrowInvalidOperationException("Receipt is null");
+#elif RELEASE
+                    this.Log().Error("Receipt is null");
+                    return; 
+#endif
                 }
-                else if (dif < 0)
-                {
 
-                    await _orderEditService.IncreaseProductShoppingListItem(source, Math.Abs(FirstPart));
-                }
-
-                var dto = new OrderedProductDto()
-                {
-                    Id = Guid.NewGuid(),
-                    ProductId = source.ItemId,
-                    Count = SecondPart,
-                    Price = source.Price,
-                    Discount = source.Discount,
-                };
-
-                await _orderEditService.AddProductToShoppingList(dto);
+                vm.Count = SecondPart;
             });
         }
     }

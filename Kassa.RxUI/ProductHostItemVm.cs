@@ -8,7 +8,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI;
-public abstract class ProductHostItemVm : ReactiveObject, IGuidId
+public abstract class ProductHostItemVm : ReactiveObject, IGuidId, IDisposable
 {
 
     public Guid Id
@@ -32,6 +32,7 @@ public abstract class ProductHostItemVm : ReactiveObject, IGuidId
     public string? Color
     {
         get; protected set;
-    } 
+    }
 
+    public abstract void Dispose();
 }

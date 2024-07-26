@@ -6,11 +6,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
+using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 
-namespace Kassa.BuisnessLogic.Services;
-internal class OrdersService(IRepository<Order> repository, IRepository<PaymentInfo> paymentInfos) : BaseInitializableService, IOrdersService
+namespace Kassa.BuisnessLogic.Edgar.Services;
+internal sealed class OrdersService(IRepository<Order> repository, IRepository<PaymentInfo> paymentInfos) : BaseInitializableService, IOrdersService
 {
     public IApplicationModelManager<OrderDto> RuntimeOrders
     {
@@ -119,5 +120,23 @@ internal class OrdersService(IRepository<Order> repository, IRepository<PaymentI
         RuntimeOrders.AddOrUpdate(order);
 
         await repository.Update(model);
+    }
+
+
+    // Not sure if this is the right way to implement this method
+    public Task<OrderDto> CreateOrderAsync(OrderEditDto orderEditDto)
+    {
+        var orderDto = CreateOrderUnsafe(orderEditDto);
+
+        // Maybe we should add the order to the repository here?
+        return Task.FromResult(orderDto);
+    }
+
+    public OrderDto CreateOrderUnsafe(OrderEditDto orderEditDto)
+    {
+
+        var orderDto = Mapper.MapOrderEditDtoToOrderDto(orderEditDto);
+
+        return orderDto;
     }
 }

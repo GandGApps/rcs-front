@@ -12,6 +12,7 @@ using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Dialogs;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using static System.Formats.Asn1.AsnWriter;
 
 namespace Kassa.RxUI.Pages;
 public class MainPageVm : PageViewModel
@@ -135,10 +136,13 @@ public class MainPageVm : PageViewModel
 
             var cashierService = await Locator.GetInitializedService<ICashierService>();
             var order = await cashierService.CreateOrder(false);
-            var additveService = await Locator.GetInitializedService<IAdditiveService>();
+            var additiveService = await Locator.GetInitializedService<IAdditiveService>();
             var productServise = await Locator.GetInitializedService<IProductService>();
-
+            var ingredientService = await Locator.GetInitializedService<IIngridientsService>();
             var shiftService = await Locator.GetInitializedService<IShiftService>();
+            var categoryService = await Locator.GetInitializedService<ICategoryService>();
+            var receiptService = await Locator.GetInitializedService<IReceiptService>();
+            var scope = ingredientService.CreateStorageScope();
 
             if (!await TryAuthorizePageAccess<OrderEditPageVm>(shiftService))
             {
@@ -147,7 +151,10 @@ public class MainPageVm : PageViewModel
 
             await cashierService.SelectCurrentOrder(order);
 
-            await MainViewModel.GoToPageCommand.Execute(new OrderEditPageVm(order, cashierService, additveService, productServise)).FirstAsync();
+
+            var orderEditPageVm = new OrderEditPageVm(order, scope, cashierService, additiveService, productServise, categoryService, receiptService, ingredientService);
+
+            await MainViewModel.GoToPageCommand.Execute(orderEditPageVm).FirstAsync();
         });
 
         OpenCurrentOrderCommand = CreatePageBusyCommand(async () =>
@@ -158,8 +165,11 @@ public class MainPageVm : PageViewModel
             var additiveService = await Locator.GetInitializedService<IAdditiveService>();
             var order = cashierService.CurrentOrder;
             var productServise = await Locator.GetInitializedService<IProductService>();
-
+            var ingredientService = await Locator.GetInitializedService<IIngridientsService>();
             var shiftService = await Locator.GetInitializedService<IShiftService>();
+            var categoryService = await Locator.GetInitializedService<ICategoryService>();
+            var receiptService = await Locator.GetInitializedService<IReceiptService>();
+            var scope = ingredientService.CreateStorageScope();
 
             if (!await TryAuthorizePageAccess<OrderEditPageVm>(shiftService))
             {
@@ -172,7 +182,9 @@ public class MainPageVm : PageViewModel
                 return;
             }
 
-            await MainViewModel.GoToPageCommand.Execute(new OrderEditPageVm(order, cashierService, additiveService, productServise)).FirstAsync();
+            var orderEditPageVm = new OrderEditPageVm(order, scope, cashierService, additiveService, productServise, categoryService, receiptService, ingredientService);
+
+            await MainViewModel.GoToPageCommand.Execute(orderEditPageVm).FirstAsync();
         });
     }
 

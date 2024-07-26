@@ -67,6 +67,23 @@ public static class EdgarDependencyResolverExntesions
 
         services.RegisterConstant<IReportShiftService>(new ReportShiftService());
 
+        services.Register<IOrdersService>(() =>
+        {
+            var orderRepository = Locator.Current.GetRequiredService<IRepository<Order>>();
+            var paymentInfoRepository = Locator.Current.GetRequiredService<IRepository<PaymentInfo>>();
+
+            return new OrdersService(orderRepository, paymentInfoRepository);
+        });
+        services.RegisterInitializableServiceFactory<IOrdersService>();
+
+        services.Register<IIngridientsService>(() =>
+        {
+            var repository = Locator.Current.GetRequiredService<IRepository<Ingredient>>();
+
+            return new IngridientsService(repository);
+        });
+        services.RegisterInitializableServiceFactory<IIngridientsService>();
+
         SplatRegistrations.SetupIOC();
     }
 

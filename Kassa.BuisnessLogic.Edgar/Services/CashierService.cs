@@ -6,6 +6,8 @@ using System.Reactive.Disposables;
 using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
+using DynamicData;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
@@ -15,8 +17,6 @@ using Splat;
 namespace Kassa.BuisnessLogic.Edgar.Services;
 internal sealed class CashierService : BaseInitializableService, ICashierService
 {
-    private readonly BehaviorSubject<ITerminalShift?> _currentShift = new(null);
-    private readonly ObservableCollection<IOrderEditService> _orders = [];
     private readonly IAdditiveService _additiveService;
     private readonly ICategoryService _categoryService;
     private readonly IProductService _productService;
@@ -24,18 +24,14 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
     private readonly IOrdersService _ordersService;
     private readonly IPaymentInfoService _paymentInfoService;
     private readonly IShiftService _shiftService;
+    private readonly ObservableCollection<OrderEditDto> _orders = [];
 
-    public IOrderEditService? CurrentOrder
+    public OrderEditDto? CurrentOrder
     {
         get; private set;
     }
 
-    public ReadOnlyObservableCollection<IOrderEditService> Orders
-    {
-        get;
-    }
-
-    public IObservableOnlyBehaviourSubject<ITerminalShift?> CurrentShift
+    public ReadOnlyObservableCollection<OrderEditDto> Orders
     {
         get;
     }
@@ -56,94 +52,9 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
         _receiptService = receiptService;
         _ordersService = ordersService;
         _paymentInfoService = paymentInfoService;
-
-        CurrentShift = new ObservableOnlyBehaviourSubject<ITerminalShift?>(_currentShift);
         _shiftService = shiftService;
     }
 
-
-    public async ValueTask<IOrderEditService> CreateOrder(bool isDelivery)
-    {
-        var orderEdit = new OrderEditService(_productService, _categoryService, _additiveService, _receiptService, null)
-        {
-            IsDelivery = isDelivery,
-            WhenOrderStarted = DateTime.Now
-        };
-
-        await orderEdit.Initialize();
-
-        orderEdit.DisposeWith(InternalDisposables);
-
-        return orderEdit;
-
-    }
-
-    public async ValueTask<IOrderEditService> CreateOrder(OrderDto order)
-    {
-        var orderEdit = new OrderEditService(_productService, _categoryService, _additiveService, _receiptService, order)
-        {
-            IsDelivery = order.IsDelivery,
-            WhenOrderStarted = order.CreatedAt
-        };
-
-        await orderEdit.Initialize();
-
-        orderEdit.DisposeWith(InternalDisposables);
-
-        foreach (var product in order.Products)
-        {
-            await orderEdit.AddProductToShoppingList(product);
-        }
-
-        return orderEdit;
-    }
-
-
-    public ValueTask SelectCurrentOrder(IOrderEditService order)
-    {
-        CurrentOrder = order;
-        return ValueTask.CompletedTask;
-    }
-
-    public async ValueTask<IPaymentService> CreatePayment(IOrderEditService orderEdit)
-    {
-        var paymentService = new CashierPaymentService(orderEdit, _ordersService);
-
-        var order = orderEdit.GetOrder();
-
-        if (order.PaymentInfoId != Guid.Empty)
-        {
-            PaymentInfoDto paymentInfo;
-
-            if (order.PaymentInfo != null)
-            {
-                paymentInfo = order.PaymentInfo;
-            }
-            else
-            {
-                paymentInfo = await _paymentInfoService.GetPaymentInfo(order.PaymentInfoId)
-                    ?? throw new InvalidOperationException($"The PaymentInfo with {order.PaymentInfoId} id not found");
-            }
-
-            paymentService.Cash = paymentInfo.Cash;
-            paymentService.BankСard = paymentInfo.BankСard;
-            paymentService.CashlessPayment = paymentInfo.CashlessPayment;
-            paymentService.WithoutRevenue = paymentInfo.WithoutRevenue;
-        }
-
-        paymentService.Payed += () =>
-        {
-            _orders.Remove(orderEdit);
-            if (CurrentOrder == orderEdit)
-            {
-                CurrentOrder = null;
-            }
-
-            orderEdit.Dispose();
-        };
-
-        return paymentService;
-    }
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
@@ -166,4 +77,75 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
         // ShiftService created before this service, so it will be disposed after this service
     }
 
+    public ValueTask<OrderEditDto> CreateOrder(bool isDelivery)
+    {
+        var order = new OrderEditDto()
+        {
+            Id = Guid.NewGuid(),
+            CreatedAt = DateTime.Now,
+            Status = OrderStatus.New,
+            IsForHere = !isDelivery,
+            ShowPrice = true,
+            IsStopList = false,
+            IsDelivery = isDelivery,
+        };
+
+        _orders.Add(order);
+
+        return new(order);
+    }
+
+    public async ValueTask<OrderEditDto> CreateOrder(OrderDto order)
+    {
+        var orderEdit = new OrderEditDto()
+        {
+            Id = order.Id,
+            CreatedAt = order.CreatedAt,
+            Status = order.Status,
+            IsForHere = order.IsForHere,
+            IsDelivery = order.IsDelivery,
+            DeliveryTime = order.DeliveryTime,
+            CourierId = order.CourierId,
+            Comment = order.Comment,
+        };
+
+        if (order.Products is not null)
+        {
+            foreach (var orderedProduct in order.Products)
+            {
+                var product = await _productService.GetProductById(orderedProduct.ProductId);
+
+                if (product is null)
+                {
+#if DEBUG
+                    ThrowHelper.ThrowInvalidOperationException($"Product with id={orderedProduct.ProductId} not found");
+#elif RELEASE
+                    this.Log().Error("Product with id={0} not found", orderedProduct.ProductId);
+                    continue;
+#endif
+                }
+
+                var productShoppingListItem = new ProductShoppingListItemDto(orderedProduct, product);
+                orderEdit.Products.Add(productShoppingListItem);
+            }
+        }
+
+        _orders.Add(orderEdit);
+
+        return orderEdit;
+    }
+
+    public ValueTask<IPaymentService> CreatePayment(OrderEditDto order)
+    {
+        throw new NotImplementedException();
+    }
+
+    public ValueTask SelectCurrentOrder(OrderEditDto order)
+    {
+        CurrentOrder = order;
+
+        _orders.Remove(order);
+
+        return ValueTask.CompletedTask;
+    }
 }

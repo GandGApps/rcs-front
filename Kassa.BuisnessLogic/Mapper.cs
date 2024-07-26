@@ -49,7 +49,7 @@ public static partial class Mapper
     [MapProperty(nameof(ProductShoppingListItemDto.ItemId), nameof(OrderedProductDto.ProductId))]
     [MapProperty(nameof(ProductShoppingListItemDto.SubtotalSum), nameof(OrderedProductDto.SubTotalPrice))]
     [MapProperty(nameof(ProductShoppingListItemDto.TotalSum), nameof(OrderedProductDto.TotalPrice))]
-    [MapProperty(nameof(ProductShoppingListItemDto.AdditiveInfo), nameof(OrderedProductDto.Comment))]
+    [MapProperty(nameof(ProductShoppingListItemDto.Comment), nameof(OrderedProductDto.Comment))]
     [MapperIgnoreSource(nameof(ProductShoppingListItemDto.CurrencySymbol))]
     [MapperIgnoreSource(nameof(ProductShoppingListItemDto.HasDiscount))]
     [MapperIgnoreSource(nameof(ProductShoppingListItemDto.IsSelected))]
@@ -97,4 +97,7 @@ public static partial class Mapper
 
     [return:NotNullIfNotNull("category")]
     public static partial CategoryDto? MapCategoryToDto(Category? category);
+
+
+    public static partial OrderDto MapOrderEditDtoToOrderDto(OrderEditDto orderEditDto);
 }

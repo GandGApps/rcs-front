@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Services;
+using Kassa.RxUI.Pages;
 using ReactiveUI;
 using Splat;
 
@@ -25,8 +26,8 @@ namespace Kassa.Wpf.Controls;
 /// </summary>
 public sealed partial class ShoppingListPanel : UserControl
 {
-    public static readonly DependencyProperty OrderEditServiceProperty =
-        DependencyProperty.Register(nameof(OrderEditService), typeof(IOrderEditService), typeof(ShoppingListPanel), new PropertyMetadata(OnOrderEditServiceChanged));
+    public static readonly DependencyProperty OrderEditVmProperty =
+        DependencyProperty.Register(nameof(OrderEditVm), typeof(IOrderEditVm), typeof(ShoppingListPanel), new PropertyMetadata(OnOrderEditServiceChanged));
 
 
     public static readonly DependencyProperty ShiftProperty =
@@ -45,15 +46,15 @@ public sealed partial class ShoppingListPanel : UserControl
 
     private static void OnOrderEditServiceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
-
         if (d is ShoppingListPanel panel)
         {
             panel._disposables?.Dispose();
             panel._disposables = [];
 
-            if (e.NewValue is IOrderEditService orderEditService)
+            if (e.NewValue is IOrderEditVm orderEditVm)
             {
-                orderEditService.IsForHere
+                orderEditVm
+                    .WhenAnyValue(x => x.IsForHere)
                     .ObserveOn(RxApp.MainThreadScheduler)
                     .Subscribe(isForHere =>
                     {
@@ -61,9 +62,10 @@ public sealed partial class ShoppingListPanel : UserControl
                     })
                     .DisposeWith(panel._disposables);
 
-                panel.TimeWhenStart.Text = orderEditService.WhenOrderStarted.ToString("dd.MM  HH:mm");
+                panel.TimeWhenStart.Text = orderEditVm.WhenOrderStarted.ToString("dd.MM  HH:mm");
 
-                orderEditService.IsMultiSelect
+                orderEditVm.ShoppingList
+                    .WhenAnyValue(x => x.IsMultiSelect)
                     .ObserveOn(RxApp.MainThreadScheduler)
                     .Subscribe(isMultiSelect =>
                     {
@@ -71,7 +73,7 @@ public sealed partial class ShoppingListPanel : UserControl
                     })
                     .DisposeWith(panel._disposables);
 
-                panel.OrderId.Text = orderEditService.OrderId.ToString("N")[..2];
+                panel.OrderId.Text = orderEditVm.OrderId.ToString("N")[..2];
             }
         }
     }
@@ -88,10 +90,10 @@ public sealed partial class ShoppingListPanel : UserControl
         Shift = currentShift;
     }
 
-    public IOrderEditService? OrderEditService
+    public IOrderEditVm? OrderEditVm
     {
-        get => (IOrderEditService?)GetValue(OrderEditServiceProperty);
-        set => SetValue(OrderEditServiceProperty, value);
+        get => (IOrderEditVm?)GetValue(OrderEditVmProperty);
+        set => SetValue(OrderEditVmProperty, value);
     }
 
     public IShift? Shift
@@ -102,25 +104,21 @@ public sealed partial class ShoppingListPanel : UserControl
 
     private void IsForHereButtonClick(object sender, RoutedEventArgs e)
     {
-        if (OrderEditService == null)
+        if (OrderEditVm == null)
         {
             return;
         }
 
-        var isForHere = OrderEditService.IsForHere.Value;
-
-        OrderEditService.SetIsForHere(!isForHere);
+        OrderEditVm.IsForHere = !OrderEditVm.IsForHere;
     }
 
     private void MultiSelectCheckboxClick(object sender, RoutedEventArgs e)
     {
-        if (OrderEditService is null)
+        if (OrderEditVm is null)
         {
             return;
         }
 
-        var isMultiSelect = OrderEditService.IsMultiSelect.Value;
-
-        OrderEditService.SetMultiSelect(!isMultiSelect);
+        OrderEditVm.ShoppingList.IsMultiSelect = !OrderEditVm.ShoppingList.IsMultiSelect;
     }
 }

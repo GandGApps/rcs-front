@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -29,41 +30,33 @@ public partial class DeliveryOrderEditPage : ReactiveUserControl<DeliveryOrderEd
 
         this.WhenActivated(disposables =>
         {
-            NavigateBackButton.Command = CategoryViewModel.NavigateBackCategoryCommand;
+            Debug.Assert(ViewModel is not null);
+
+            NavigateBackButton.Command = ViewModel.NavigateBackCategoryCommand;
 
             this.OneWayBind(ViewModel, x => x.FastAdditives, x => x.FastAddictives.ItemsSource)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.CurrentCategoryItems, x => x.ProductsHost.ItemsSource)
+            this.OneWayBind(ViewModel, x => x.CurrentHostedItems, x => x.ProductsHost.ItemsSource)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.ShoppingListItems, x => x.ShoppingListItems.ItemsSource)
+            this.OneWayBind(ViewModel, x => x.ShoppingList.ProductShoppingListItems, x => x.ShoppingListItems.ItemsSource)
                 .DisposeWith(disposables);
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            this.BindCommand(ViewModel, x => x.ShoppingList.IncreaseCommand, x => x.IncreaseButton)
+            this.BindCommand(ViewModel, x => x.ShoppingList.IncreaseSelectedCommand, x => x.IncreaseButton)
                 .DisposeWith(disposables);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            this.BindCommand(ViewModel, x => x.ShoppingList.DecreaseCommand, x => x.DecreaseButton)
+            this.BindCommand(ViewModel, x => x.ShoppingList.DecreaseSelectedCommand, x => x.DecreaseButton)
                 .DisposeWith(disposables);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
             this.OneWayBind(ViewModel, x => x.ShoppingList.Subtotal, x => x.SubtotalCost.Text, x => $"{x.ToString("0.##", QuantityVolumeDialogVewModel.RuCultureInfo)} ₽")
                 .DisposeWith(disposables);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
             this.OneWayBind(ViewModel, x => x.ShoppingList.Total, x => x.TotalCost.Text, x => $"{x.ToString("0.##", QuantityVolumeDialogVewModel.RuCultureInfo)} ₽")
                 .DisposeWith(disposables);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            this.BindCommand(ViewModel, x => x.ShoppingList.RemoveCommand, x => x.RemoveButton)
+            this.BindCommand(ViewModel, x => x.ShoppingList.RemoveSelectedCommand, x => x.RemoveButton)
                 .DisposeWith(disposables);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
 
             this.BindCommand(ViewModel, x => x.CreateTotalCommentCommand, x => x.TotalCommentButton)
                 .DisposeWith(disposables);
@@ -71,7 +64,7 @@ public partial class DeliveryOrderEditPage : ReactiveUserControl<DeliveryOrderEd
             this.BindCommand(ViewModel, x => x.SearchAddictiveCommand, x => x.SearchAddictivesButton)
                 .DisposeWith(disposables);
 
-            this.Bind(ViewModel, x => x.IsMultiSelect, x => x.MultiSelectCheckbox.IsChecked)
+            this.Bind(ViewModel, x => x.ShoppingList.IsMultiSelect, x => x.MultiSelectCheckbox.IsChecked)
                 .DisposeWith(disposables);
 
             this.BindCommand(ViewModel, x => x.SelectRootCategoryCommand, x => x.AllCategories)
@@ -104,8 +97,7 @@ public partial class DeliveryOrderEditPage : ReactiveUserControl<DeliveryOrderEd
             this.BindCommand(ViewModel, x => x.OpenQuantityVolumeDialogCommand, x => x.QuantityVolumeButton)
                 .DisposeWith(disposables);
 
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-            ViewModel.WhenAnyValue(x => x.ShoppingListItems.Count)
+            ViewModel.WhenAnyValue(x => x.ShoppingList.ProductShoppingListItems.Count)
                      .Buffer(2, 1)
                      .Subscribe(x =>
                      {
@@ -115,7 +107,6 @@ public partial class DeliveryOrderEditPage : ReactiveUserControl<DeliveryOrderEd
                          }
                      })
                      .DisposeWith(disposables);
-#pragma warning restore CS8602 // Dereference of a possibly null reference.
         });
     }
 }

@@ -27,8 +27,8 @@ namespace Kassa.Wpf.Controls;
 public sealed partial class ShoppingList : UserControl
 {
 
-    public static readonly DependencyProperty OrderEditServiceProperty =
-        DependencyProperty.Register(nameof(OrderEditService), typeof(IOrderEditService), typeof(ShoppingList), new PropertyMetadata(OrderEditServiceChanged));
+    public static readonly DependencyProperty ShoppinngListVmProperty =
+        DependencyProperty.Register(nameof(ShoppinngListVm), typeof(ShoppingListViewModel), typeof(ShoppingList), new PropertyMetadata(OrderEditServiceChanged));
 
     public static readonly DependencyPropertyKey ShoppingListItemsProperty =
         DependencyProperty.RegisterReadOnly(nameof(ShoppingListItems), typeof(ReadOnlyCollection<ProductShoppingListItemViewModel>), typeof(ShoppingList), new PropertyMetadata());
@@ -40,14 +40,12 @@ public sealed partial class ShoppingList : UserControl
             shoppingList._disposables?.Dispose();
             shoppingList._disposables = [];
 
-            if (e.NewValue is IOrderEditService orderEditService)
+            if (e.NewValue is ShoppingListViewModel shoppingListVm)
             {
-                orderEditService.BindShoppingListItems((x, y) => new ProductShoppingListItemViewModel(x, y, orderEditService), out var shoppingListItems)
-                    .DisposeWith(shoppingList._disposables);
+                shoppingList.ShoppingListItems = shoppingListVm.ProductShoppingListItems;
+                shoppingList.Items.ItemsSource = shoppingListVm.ProductShoppingListItems;
 
-                shoppingList.Items.ItemsSource = shoppingListItems;
-
-                shoppingListItems.WhenAnyValue(x => x.Count)
+                shoppingListVm.ProductShoppingListItems.WhenAnyValue(x => x.Count)
                      .Buffer(2, 1)
                      .Subscribe(x =>
                      {
@@ -68,10 +66,10 @@ public sealed partial class ShoppingList : UserControl
         InitializeComponent();
     }
 
-    public IOrderEditService? OrderEditService
+    public ShoppingListViewModel? ShoppinngListVm
     {
-        get => (IOrderEditService?)GetValue(OrderEditServiceProperty);
-        set => SetValue(OrderEditServiceProperty, value);
+        get => (ShoppingListViewModel?)GetValue(ShoppinngListVmProperty);
+        set => SetValue(ShoppinngListVmProperty, value);
     }
 
     public ReadOnlyCollection<ProductShoppingListItemViewModel>? ShoppingListItems

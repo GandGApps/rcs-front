@@ -19,7 +19,7 @@ public interface IPaymentVm
     {
         get;
     }
-    IPaymentService CashierPaymentService
+    IPaymentService PaymentService
     {
         get;
     }
@@ -99,10 +99,9 @@ public interface IPaymentVm
     {
         get;
     }
-    ReadOnlyObservableCollection<ProductShoppingListItemViewModel>? ShoppingListItems
+    ReadOnlyObservableCollection<ProductShoppingListItemViewModel> ShoppingListItems
     {
         get;
-        set;
     }
     double Subtotal
     {

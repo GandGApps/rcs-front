@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Text;
@@ -29,10 +30,7 @@ public partial class NewDeliveryPage : ReactiveUserControl<NewDeliveryPageVm>
 
         this.WhenActivated(disposables =>
         {
-            if (ViewModel is null)
-            {
-                throw new InvalidOperationException("ViewModel is null");
-            }
+            Debug.Assert(ViewModel is not null);
 
             this.Bind(ViewModel, vm => vm.FirstName, v => v.FirstName.Text)
                 .DisposeWith(disposables);
@@ -97,10 +95,10 @@ public partial class NewDeliveryPage : ReactiveUserControl<NewDeliveryPageVm>
             this.OneWayBind(ViewModel, vm => vm.Street, v => v.StreetName.Text, s => s is null || string.IsNullOrWhiteSpace(s.Name) ? "Не задана" : s.Name)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, vm => vm.OrderEditPageVm!.ShoppingList!.Total, v => v.Price.Text, x => $"{x.ToString("0.##", QuantityVolumeDialogVewModel.RuCultureInfo)} ₽")
+            this.OneWayBind(ViewModel, vm => vm.OrderEditPageVm.ShoppingList.Total, v => v.Price.Text, x => $"{x.ToString("0.##", QuantityVolumeDialogVewModel.RuCultureInfo)} ₽")
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.OrderEditPageVm!.ShoppingListItems, x => x.ShoppingListItems.ItemsSource)
+            this.OneWayBind(ViewModel, x => x.OrderEditPageVm.ShoppingList.ProductShoppingListItems, x => x.ShoppingListItems.ItemsSource)
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, x => x.IsAddressInfoVisible, x => x.BasicAddressInfo.Visibility)
