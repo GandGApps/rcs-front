@@ -4,6 +4,7 @@ using Kassa.DataAccess;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 using Kassa.Shared;
+using Kassa.Shared.Locator;
 using Splat;
 
 namespace Kassa.BuisnessLogic;

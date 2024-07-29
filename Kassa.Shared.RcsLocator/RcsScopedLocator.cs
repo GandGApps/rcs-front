@@ -5,11 +5,19 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
+using Splat;
 
-namespace Kassa.Shared.RcsLocator;
-public sealed class RcsScopedLocator : IServiceProvider, IAsyncDisposable, IDisposable
+namespace Kassa.Shared.Locator;
+public sealed class RcsScopedLocator : IServiceProvider, IAsyncDisposable, IDisposable, IEnableLogger
 {
-    private FrozenDictionary<Type, ServiceDesciptor> _services = null!;
+    private readonly FrozenDictionary<Type, ServiceDesciptor> _services = null!;
+    private FrozenDictionary<Type, object>? _scope = null;
+
+    internal RcsScopedLocator(FrozenDictionary<Type, ServiceDesciptor> services)
+    {
+        _services = services;
+    }
 
     public object? GetService(Type serviceType) => _services[serviceType].GetService();
 
@@ -19,51 +27,92 @@ public sealed class RcsScopedLocator : IServiceProvider, IAsyncDisposable, IDisp
 
     public async ValueTask CreateScope()
     {
-        foreach (var service in _services.Values)
+        if (_scope is not null)
         {
-            service.CreateInstance();
+            ThrowHelper.ThrowInvalidOperationException("Scope already created.");
+        }
 
-            var initializer = Unsafe.As<IInitializable>(service.Instance)!;
+        var scope = new Dictionary<Type, object>(_services.Count);
 
-            if (!initializer.IsInitialized)
+        foreach (var serviceDescriptor in _services.Values)
+        {
+            var service = serviceDescriptor.GetService();
+            var initializable = Unsafe.As<IInitializable>(service);
+
+            if (initializable is not null)
             {
-                await initializer.Initialize();
+                await initializable.Initialize();
+
+                scope.Add(serviceDescriptor.ServiceType, initializable);
             }
         }
+
+        _scope = scope.ToFrozenDictionary();
     }
 
     /// <summary>
-    /// Prefer calling this method instead of Dispose.
+    /// Prefer calling this method instead of <see cref="Dispose"/>. 
     /// </summary>
+    /// <remarks>
+    /// Disposing scope will dispose all services that implement <see cref="IAsyncDisposable"/> or <see cref="IDisposable"/>.
+    /// But you can still use this object to create a new scope.
+    /// </remarks>
     public async ValueTask DisposeAsync()
     {
-        foreach (var service in _services.Values)
+        if (_scope is null)
         {
-            if (service.Instance is IAsyncDisposable disposable)
-            {
-                await disposable.DisposeAsync();
-            }
+            this.Log().Warn("Scope is not created. Nothing to dispose.");
+            return;
+        }
 
-            service.Instance = null!;
+        try
+        {
+            foreach (var service in _scope.Values)
+            {
+                if (service is IAsyncDisposable asyncDisposable)
+                {
+                    await asyncDisposable.DisposeAsync();
+                }
+                else if (service is IDisposable disposable)
+                {
+                    disposable.Dispose();
+                }
+            }
+        }
+        finally
+        {
+            _scope = null;
         }
     }
 
     /// <summary>
     /// Prefer calling <see cref="DisposeAsync"/> instead of this method.
     /// </summary>
+    /// /// <remarks>
+    /// Disposing scope will dispose all services that implement <see cref="IAsyncDisposable"/> or <see cref="IDisposable"/>.
+    /// But you can still use this object to create a new scope.
+    /// </remarks>
     public void Dispose()
     {
-        foreach (var service in _services.Values)
+        if (_scope is null)
         {
-            if (service.Instance is IDisposable disposable)
+            this.Log().Warn("Scope is not created. Nothing to dispose.");
+            return;
+        }
+
+        try
+        {
+            foreach (var service in _scope.Values)
             {
-                disposable.Dispose();
+                if (service is IDisposable disposable)
+                {
+                    disposable.Dispose();
+                }
             }
         }
-    }
-
-    internal void SetServices(FrozenDictionary<Type, ServiceDesciptor> services)
-    {
-        _services = services;
+        finally
+        {
+            _scope = null;
+        }
     }
 }
