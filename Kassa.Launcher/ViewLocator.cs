@@ -10,6 +10,7 @@ namespace KassaLauncher;
 
 public sealed class ViewLocator : IViewLocator
 {
+    // Maybe this should be a dictionary?
     public IViewFor? ResolveView<T>(T? viewModel, string? contract = null) => viewModel switch
     {
         InitVm context => new InitView { DataContext = context },

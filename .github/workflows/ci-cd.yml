@@ -1,4 +1,4 @@
-name: Build and Publish Kassa.Wpf
+name: Build and Publish Kassa Projects
 
 on:
   push:
@@ -21,36 +21,69 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore 
 
-    - name: Build project
+    - name: Build Kassa.Wpf project
       run: dotnet build --configuration Release ./Kassa.Wpf/Kassa.Wpf.csproj
 
-    - name: Test
-      run: dotnet test --no-restore --logger  "trx;LogFileName=test-results.trx" || true
+    - name: Test Kassa.Wpf
+      run: dotnet test --no-restore --logger "trx;LogFileName=test-results.trx" true
 
     - name: Test Report
       uses: dorny/test-reporter@v1
       if: always()
       with:
         name: DotNET Tests
-        path: "**/test-results.trx"                            
+        path: "**/test-results.trx"
         reporter: dotnet-trx
         fail-on-error: true
 
-    - name: Publish project
+    - name: Publish Kassa.Wpf project
       run: dotnet publish --configuration Release --output ./output ./Kassa.Wpf/Kassa.Wpf.csproj
 
-    - name: Commit and Push binaries
+    - name: Commit and Push Kassa.Wpf binaries
       env:
         GITHUB_TOKEN: ${{ secrets.KASSA_TOKEN }}
       run: |
         git config --global user.name 'github-actions[bot]'
         git config --global user.email 'github-actions[bot]@users.noreply.github.com'
         git fetch origin
-        git checkout -b bin origin/bin || git checkout -b bin
+        git checkout -b bin origin/bin
         git rm -rf .
         Copy-Item -Path ./output/* -Destination . -Recurse
         Remove-Item -Recurse -Force -Path ./output
         git add .
         git commit -m "Add published binaries"
         git push -u origin bin --force
+      shell: pwsh
+
+    - name: Check for changes in Kassa.Launcher
+      id: check_launcher_changes
+      run: |
+        git fetch origin
+        if git diff --exit-code origin/main -- Kassa.Launcher; then
+          echo "NO_CHANGES=true" >> $GITHUB_ENV
+        else
+          echo "NO_CHANGES=false" >> $GITHUB_ENV
+        fi
+
+    - name: Build and Publish Kassa.Launcher project if changed
+      if: env.NO_CHANGES == 'false'
+      run: |
+        dotnet build --configuration Release ./Kassa.Launcher/Kassa.Launcher.csproj
+        dotnet publish --configuration Release --output ./launcher-output ./Kassa.Launcher/Kassa.Launcher.csproj
+
+    - name: Commit and Push Kassa.Launcher binaries
+      if: env.NO_CHANGES == 'false'
+      env:
+        GITHUB_TOKEN: ${{ secrets.KASSA_TOKEN }}
+      run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+        git fetch origin
+        git checkout -b launcher origin/launcher
+        git rm -rf .
+        Copy-Item -Path ./launcher-output/* -Destination . -Recurse
+        Remove-Item -Recurse -Force -Path ./launcher-output
+        git add .
+        git commit -m "Add published launcher binaries"
+        git push -u origin launcher --force
       shell: pwsh
