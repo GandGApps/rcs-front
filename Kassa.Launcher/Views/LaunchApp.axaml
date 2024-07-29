@@ -13,7 +13,7 @@
     <Grid
         Width="450"
         HorizontalAlignment="Center"
-        RowDefinitions="*, Auto">
+        RowDefinitions="*, Auto, Auto">
 
         <Image
             Width="200"
@@ -28,6 +28,13 @@
             suki:ButtonExtensions.ShowProgress="{Binding LaunchAppCommand.IsExecuting^}"
             Command="{Binding LaunchAppCommand}"
             Content="Запустить" />
+
+        <Button
+            Grid.Row="2"
+            Margin="0,0,0,20"
+            Classes="Basic"
+            Click="OpenSettings"
+            Content="Настройки" />
 
     </Grid>
 </UserControl>

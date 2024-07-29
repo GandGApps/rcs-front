@@ -33,6 +33,7 @@ public partial class App : Application
         Debug.Assert(repoInfo is not null);
 
         Locator.CurrentMutable.RegisterConstant(new GitHubUpdater(repoInfo, new WndShortcutCreator()), typeof(IUpdater));
+        Locator.CurrentMutable.RegisterConstant(new JsonAppsettingsSaver(), typeof(IOptionManager));
     }
 
     public override void OnFrameworkInitializationCompleted()
