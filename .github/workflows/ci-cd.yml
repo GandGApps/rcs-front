@@ -67,14 +67,17 @@ jobs:
       with:
         dotnet-version: '8.0.x'
 
+    - name: Setup Msbuild
+      uses: warrenbuckley/Setup-MSBuild@v1
+
     - name: Restore dependencies
-      run: dotnet msbuild /t:Restore /p:RuntimeIdentifier=win-x64 /p:OutputPath=./output Kassa.Launcher/Kassa.Launcher.csproj
+      run: msbuild /t:Restore /p:RuntimeIdentifier=win-x64 /p:OutputPath=./output Kassa.Launcher/Kassa.Launcher.csproj
 
     - name: Build project
-      run: dotnet msbuild /t:Build /p:Configuration=Release /p:RuntimeIdentifier=win-x64 /p:OutputPath=./output Kassa.Launcher/Kassa.Launcher.csproj
+      run: msbuild /t:Build /p:Configuration=Release /p:RuntimeIdentifier=win-x64 /p:OutputPath=./output Kassa.Launcher/Kassa.Launcher.csproj
 
     - name: Publish project
-      run: dotnet msbuild /t:publish /p:Configuration=Release /p:TargetFramework=net8.0 /p:SelfContained=true /p:PublishReadyToRun=True -p:PublishSingleFile=true /p:RuntimeIdentifier=win-x64 /p:OutputPath=./output Kassa.Launcher/Kassa.Launcher.csproj
+      run: msbuild /t:publish /p:Configuration=Release /p:TargetFramework=net8.0 /p:SelfContained=true /p:PublishReadyToRun=True -p:PublishSingleFile=true /p:RuntimeIdentifier=win-x64 /p:OutputPath=./output Kassa.Launcher/Kassa.Launcher.csproj
 
     - name: Commit and Push binaries
       env:
