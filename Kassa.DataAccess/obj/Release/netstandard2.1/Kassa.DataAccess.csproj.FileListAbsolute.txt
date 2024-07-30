@@ -1,0 +1,11 @@
+D:\a\rcs-front\rcs-front\Kassa.DataAccess\bin\Release\netstandard2.1\Kassa.DataAccess.deps.json
+D:\a\rcs-front\rcs-front\Kassa.DataAccess\bin\Release\netstandard2.1\Kassa.DataAccess.dll
+D:\a\rcs-front\rcs-front\Kassa.DataAccess\bin\Release\netstandard2.1\Kassa.DataAccess.pdb
+D:\a\rcs-front\rcs-front\Kassa.DataAccess\obj\Release\netstandard2.1\Kassa.DataAccess.csproj.AssemblyReference.cache
+D:\a\rcs-front\rcs-front\Kassa.DataAccess\obj\Release\netstandard2.1\Kassa.DataAccess.GeneratedMSBuildEditorConfig.editorconfig
+D:\a\rcs-front\rcs-front\Kassa.DataAccess\obj\Release\netstandard2.1\Kassa.DataAccess.AssemblyInfoInputs.cache
+D:\a\rcs-front\rcs-front\Kassa.DataAccess\obj\Release\netstandard2.1\Kassa.DataAccess.AssemblyInfo.cs
+D:\a\rcs-front\rcs-front\Kassa.DataAccess\obj\Release\netstandard2.1\Kassa.DataAccess.csproj.CoreCompileInputs.cache
+D:\a\rcs-front\rcs-front\Kassa.DataAccess\obj\Release\netstandard2.1\Kassa.DataAccess.sourcelink.json
+D:\a\rcs-front\rcs-front\Kassa.DataAccess\obj\Release\netstandard2.1\Kassa.DataAccess.dll
+D:\a\rcs-front\rcs-front\Kassa.DataAccess\obj\Release\netstandard2.1\Kassa.DataAccess.pdb
