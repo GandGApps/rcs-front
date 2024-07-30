@@ -33,8 +33,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kassa.Launcher", "Kassa.Lau
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kassa.Shared.RcsLocator", "Kassa.Shared.RcsLocator\Kassa.Shared.RcsLocator.csproj", "{AB7A14AB-3629-49C4-BD66-562C74E8F447}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kassa.LauncherAutoUpdater", "Kassa.LauncherAutoUpdater\Kassa.LauncherAutoUpdater.csproj", "{35E7BC72-4A5E-4C09-93AB-894EF6C012A0}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -233,22 +231,6 @@ Global
 		{AB7A14AB-3629-49C4-BD66-562C74E8F447}.SmallWindow|Any CPU.Build.0 = Debug|Any CPU
 		{AB7A14AB-3629-49C4-BD66-562C74E8F447}.SmallWindow|x64.ActiveCfg = Debug|Any CPU
 		{AB7A14AB-3629-49C4-BD66-562C74E8F447}.SmallWindow|x64.Build.0 = Debug|Any CPU
-		{35E7BC72-4A5E-4C09-93AB-894EF6C012A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{35E7BC72-4A5E-4C09-93AB-894EF6C012A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{35E7BC72-4A5E-4C09-93AB-894EF6C012A0}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{35E7BC72-4A5E-4C09-93AB-894EF6C012A0}.Debug|x64.Build.0 = Debug|Any CPU
-		{35E7BC72-4A5E-4C09-93AB-894EF6C012A0}.OptimizedSmallWindow|Any CPU.ActiveCfg = Debug|Any CPU
-		{35E7BC72-4A5E-4C09-93AB-894EF6C012A0}.OptimizedSmallWindow|Any CPU.Build.0 = Debug|Any CPU
-		{35E7BC72-4A5E-4C09-93AB-894EF6C012A0}.OptimizedSmallWindow|x64.ActiveCfg = Debug|Any CPU
-		{35E7BC72-4A5E-4C09-93AB-894EF6C012A0}.OptimizedSmallWindow|x64.Build.0 = Debug|Any CPU
-		{35E7BC72-4A5E-4C09-93AB-894EF6C012A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{35E7BC72-4A5E-4C09-93AB-894EF6C012A0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{35E7BC72-4A5E-4C09-93AB-894EF6C012A0}.Release|x64.ActiveCfg = Release|Any CPU
-		{35E7BC72-4A5E-4C09-93AB-894EF6C012A0}.Release|x64.Build.0 = Release|Any CPU
-		{35E7BC72-4A5E-4C09-93AB-894EF6C012A0}.SmallWindow|Any CPU.ActiveCfg = Debug|Any CPU
-		{35E7BC72-4A5E-4C09-93AB-894EF6C012A0}.SmallWindow|Any CPU.Build.0 = Debug|Any CPU
-		{35E7BC72-4A5E-4C09-93AB-894EF6C012A0}.SmallWindow|x64.ActiveCfg = Debug|Any CPU
-		{35E7BC72-4A5E-4C09-93AB-894EF6C012A0}.SmallWindow|x64.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
