@@ -68,13 +68,13 @@ jobs:
         dotnet-version: '8.0.x'
 
     - name: Restore dependencies
-      run: dotnet restore 
+      run: msbuild /t:Restore /p:RuntimeIdentifier=win-x64 /p:OutputPath=./output Kassa.Launcher/Kassa.Launcher.csproj
 
     - name: Build project
-      run: dotnet build --configuration Release ./Kassa.Launcher/Kassa.Launcher.csproj
+      run: msbuild /t:Build /p:Configuration=Release /p:RuntimeIdentifier=win-x64 /p:OutputPath=./output Kassa.Launcher/Kassa.Launcher.csproj
 
     - name: Publish project
-      run: dotnet publish --configuration Release --output ./output ./Kassa.Launcher/Kassa.Launcher.csproj
+      run: msbuild /t:publish /p:Configuration=Release /p:TargetFramework=net8.0 /p:SelfContained=true /p:PublishReadyToRun=True -p:PublishSingleFile=true /p:RuntimeIdentifier=win-x64 /p:OutputPath=./output Kassa.Launcher/Kassa.Launcher.csproj
 
     - name: Commit and Push binaries
       env:
