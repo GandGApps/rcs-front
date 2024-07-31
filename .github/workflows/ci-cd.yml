@@ -72,6 +72,9 @@ jobs:
       env:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
+    - name: Added runtime
+      run: dotnet add Kassa.Launcher/Kassa.Launcher.csproj package Microsoft.NETCore.App.Runtime.win-x64 --version 8.0.7
+
     - name: Restore dependencies
       run: msbuild /t:Restore /p:RuntimeIdentifier=win-x64 /p:TargetFramework=net8.0 Kassa.Launcher/Kassa.Launcher.csproj
 
