@@ -1,4 +1,4 @@
-name: Build and Publish Kassa.Wpf
+name: Build and Publish projects
 
 on:
   push:
