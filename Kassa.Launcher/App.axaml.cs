@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
@@ -17,6 +18,8 @@ public partial class App : Application
 
     public IConfiguration Configuration => _configuration;
 
+    public static string BasePath => AppDomain.CurrentDomain.BaseDirectory;
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
@@ -32,8 +35,12 @@ public partial class App : Application
 
         Debug.Assert(repoInfo is not null);
 
-        Locator.CurrentMutable.RegisterConstant(new GitHubUpdater(repoInfo, new WndShortcutCreator()), typeof(IUpdater));
+        var githubUpdater = new GitHubUpdater(repoInfo, new WndShortcutCreator());
+
+        Locator.CurrentMutable.RegisterConstant(githubUpdater, typeof(IUpdater));
+        Locator.CurrentMutable.RegisterConstant(githubUpdater, typeof(IInstaller));
         Locator.CurrentMutable.RegisterConstant(new JsonAppsettingsSaver(), typeof(IOptionManager));
+        Locator.CurrentMutable.RegisterConstant(new EnvironmentPathManager(), typeof(IApplicationPathManager));
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -42,6 +49,11 @@ public partial class App : Application
         {
             desktop.MainWindow = new MainWindow();
             desktop.ShutdownMode = ShutdownMode.OnMainWindowClose;
+
+            if(desktop.Args?.Length > 0 && desktop.Args.Contains("--remove"))
+            {
+
+            }
         }
 
         base.OnFrameworkInitializationCompleted();

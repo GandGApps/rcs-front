@@ -1,4 +1,5 @@
 ﻿using Avalonia.Threading;
+using Kassa.Launcher.Services;
 using KassaLauncher.Services;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -15,6 +16,7 @@ public sealed class InitVm : BaseVm
 {
 
     private readonly IUpdater _updater;
+    private readonly IInstaller _installer;
 
     [Reactive]
     public bool IsInstalled
@@ -34,9 +36,10 @@ public sealed class InitVm : BaseVm
         get; private set;
     }
 
-    public InitVm(IUpdater updater)
+    public InitVm(IUpdater updater, IInstaller installer)
     {
         _updater = updater;
+        _installer = installer;
     }
 
     public async Task InitAsync()
@@ -57,7 +60,7 @@ public sealed class InitVm : BaseVm
 
         if (!IsInstalled)
         {
-            HostScreen.Router.Navigate.Execute(new InstallerVm(_updater));
+            HostScreen.Router.Navigate.Execute(new InstallerVm(_updater, _installer));
         }
         else
         {

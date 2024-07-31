@@ -1,4 +1,6 @@
-﻿using ReactiveUI;
+﻿using Kassa.Launcher.Services;
+using ReactiveUI;
+using Splat;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -15,20 +17,20 @@ public sealed class LaunchAppVm : BaseVm
 
     public LaunchAppVm()
     {
+        var pathManager = Locator.Current.GetService<IApplicationPathManager>()!;
+        var remover = Locator.Current.GetService<IRemover>()!;
+
         LaunchAppCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var path = Environment.GetEnvironmentVariable("KASSA_INSTALL_PATH", EnvironmentVariableTarget.User);
+            var path = await pathManager.GetApplicationPath();
 
             if (string.IsNullOrWhiteSpace(path))
             {
                 throw new InvalidOperationException("KASSA_INSTALL_PATH is not set.");
             }
 
-#if _WINDOWS
             path = Path.Combine(path, "Kassa.Wpf.exe");
-#else
-            path = Path.Combine(path, "Kassa");
-#endif
+
             if (!File.Exists(path))
             {
                 throw new InvalidOperationException("Kassa is not installed.");
@@ -48,9 +50,18 @@ public sealed class LaunchAppVm : BaseVm
             await process.WaitForExitAsync();
         });
 
+        RemoveCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await remover.RemoveAsync();
+        });
     }
 
     public ReactiveCommand<Unit, Unit> LaunchAppCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> RemoveCommand
     {
         get;
     }

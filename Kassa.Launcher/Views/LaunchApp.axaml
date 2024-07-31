@@ -6,14 +6,14 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:suki="clr-namespace:SukiUI.Theme;assembly=SukiUI"
     xmlns:vm="using:KassaLauncher.Vms"
-    d:DesignHeight="450"
+    d:DesignHeight="500"
     d:DesignWidth="800"
     x:DataType="vm:LaunchAppVm"
     mc:Ignorable="d">
     <Grid
         Width="450"
         HorizontalAlignment="Center"
-        RowDefinitions="*, Auto, Auto">
+        RowDefinitions="*, Auto, Auto, Auto">
 
         <Image
             Width="200"
@@ -35,6 +35,14 @@
             Classes="Basic"
             Click="OpenSettings"
             Content="Настройки" />
+
+        <Button
+            Grid.Row="3"
+            Margin="0,0,0,20"
+            Classes="Basic"
+            Command="{Binding RemoveCommand}">
+            <TextBlock Foreground="Red" Text="Удалить" />
+        </Button>
 
     </Grid>
 </UserControl>
