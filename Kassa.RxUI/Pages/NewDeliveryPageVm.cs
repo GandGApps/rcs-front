@@ -527,7 +527,7 @@ public sealed class NewDeliveryPageVm : PageViewModel
         OrderEditPageVm = new DeliveryOrderEditPageVm(_orderEdit, _storageScope, _cashierService, _additiveService, _productService, _categoryService, _receiptService, _ingridientsService);
 
         _paymentService = await cashierService.CreatePayment(_orderEdit);
-        PaymentPageVm = new(OrderEditPageVm, _paymentService, _cashierService, _additiveService, _productService, _ingridientsService, _receiptService, _categoryService);
+        PaymentPageVm = new(OrderEditPageVm.ShoppingList.ProductShoppingListItems, OrderEditPageVm, _paymentService, _cashierService, _additiveService, _productService, _ingridientsService, _receiptService, _categoryService);
 
         await OrderEditPageVm.InitializeAsync();
         await PaymentPageVm.InitializeAsync();

@@ -10,15 +10,17 @@ using Splat;
 namespace Kassa.Launcher.Services;
 internal sealed class Remover : IRemover, IEnableLogger
 {
-    public async Task RemoveAsync()
+    public async Task RemoveAsync(Action<double> progress)
     {
         var pathManager = Locator.Current.GetService<IApplicationPathManager>()!;
         var path = await pathManager.GetApplicationPath();
 
         var files = Directory.GetFiles(path);
 
+        var i = 0;
         foreach (var file in files)
         {
+            progress(i++ / files.Length);
             File.Delete(file);
             this.Log().Info($"Deleted file: {file}");
         }

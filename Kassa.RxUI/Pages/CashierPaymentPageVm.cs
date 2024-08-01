@@ -19,14 +19,15 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI.Pages;
-public sealed class CashierPaymentPageVm(IOrderEditVm orderEditVm,
+public sealed class CashierPaymentPageVm(ReadOnlyObservableCollection<ProductShoppingListItemViewModel> shoppingListItems,
+        IOrderEditVm orderEditVm,
         IPaymentService paymentService,
         ICashierService cashierService,
         IAdditiveService additiveService,
         IProductService productService,
         IIngridientsService ingridientsService,
         IReceiptService receiptService,
-        ICategoryService categoryService) : 
-    BasePaymentPageVm(orderEditVm, paymentService, cashierService, additiveService, productService, ingridientsService, receiptService, categoryService)
+        ICategoryService categoryService) :
+    BasePaymentPageVm(shoppingListItems, orderEditVm, paymentService, cashierService, additiveService, productService, ingridientsService, receiptService, categoryService)
 {
 }

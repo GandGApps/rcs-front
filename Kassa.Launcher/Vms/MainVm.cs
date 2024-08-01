@@ -25,12 +25,17 @@ public sealed class MainVm : ReactiveObject, IScreen
     {
         Router = new RoutingState();
 
-        var initVm = new InitVm(Locator.Current.GetService<IUpdater>()!, Locator.Current.GetService<IInstaller>()!);
+        var initVm = new InitVm(
+            Locator.Current.GetService<IUpdater>()!, 
+            Locator.Current.GetService<IInstaller>()!,
+            Locator.Current.GetService<IApplicationPathManager>()!);
 
-        Router.Navigate.Execute(initVm);
+        
 
         Start = ReactiveCommand.CreateRunInBackground(async void () =>
         {
+            Router.Navigate.Execute(initVm).Subscribe();
+
             await initVm.InitAsync();
         });
         

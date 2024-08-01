@@ -28,8 +28,5 @@ public partial class MainWindow : SukiWindow
         var mainVm = MainVm.Default;
 
         DataContext = mainVm;
-
-        mainVm.Start.Execute().Subscribe();
-
     }
 }

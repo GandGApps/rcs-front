@@ -1,7 +1,7 @@
 {
   "version": 1,
   "dependencies": {
-    "net8.0-windows7.0": {
+    "net8.0": {
       "Avalonia": {
         "type": "Direct",
         "requested": "[11.1.0-beta2, )",
@@ -489,7 +489,7 @@
         }
       }
     },
-    "net8.0-windows7.0/win-x64": {
+    "net8.0/win-x64": {
       "Avalonia.Angle.Windows.Natives": {
         "type": "Transitive",
         "resolved": "2.1.22045.20230930",

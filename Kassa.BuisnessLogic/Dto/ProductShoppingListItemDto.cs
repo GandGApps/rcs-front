@@ -91,7 +91,10 @@ public record ProductShoppingListItemDto : IShoppingListItemDto
         get;
     } = [];
 
-    public double SubtotalSum => Price * Count;
+    public double SubtotalSum
+    {
+        get; set;
+    }
     public double TotalSum => SubtotalSum * Discount;
 
     public string? Comment

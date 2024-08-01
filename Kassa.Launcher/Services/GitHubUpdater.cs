@@ -1,4 +1,5 @@
-﻿using Kassa.Launcher;
+﻿using CommunityToolkit.Diagnostics;
+using Kassa.Launcher;
 using Kassa.Launcher.Services;
 using Microsoft.Win32;
 using Octokit;
@@ -14,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace KassaLauncher.Services;
 
-internal sealed class GitHubUpdater : IUpdater
+internal sealed class GitHubUpdater : IUpdater, IInstaller
 {
     private readonly RepoInfo _repoInfo;
     private readonly GitHubClient _client;
@@ -22,7 +23,7 @@ internal sealed class GitHubUpdater : IUpdater
 
     private readonly IApplicationPathManager _pathManager;
 
-    public GitHubUpdater(RepoInfo repoInfo, IDesktopShortcutCreator shortcutCreator)
+    public GitHubUpdater(RepoInfo repoInfo, IDesktopShortcutCreator shortcutCreator, IApplicationPathManager applicationPathManager)
     {
         _repoInfo = repoInfo;
         _client = new GitHubClient(new ProductHeaderValue(_repoInfo.AppName))
@@ -30,7 +31,7 @@ internal sealed class GitHubUpdater : IUpdater
             Credentials = new Credentials(_repoInfo.Token)
         };
         _shortcutCreator = shortcutCreator;
-        _pathManager = Locator.Current.GetService<IApplicationPathManager>()!;
+        _pathManager = applicationPathManager;
     }
 
     public async Task<bool> CheckForUpdatesAsync(Action<double> progress)
@@ -38,7 +39,7 @@ internal sealed class GitHubUpdater : IUpdater
         var ownerRepo = _repoInfo.Repo.Split('/');
         if (ownerRepo.Length != 2)
         {
-            throw new ArgumentException("Repository should be in the format 'owner/repo'.");
+            ThrowHelper.ThrowArgumentException("Repository should be in the format 'owner/repo'.");
         }
 
         var owner = ownerRepo[0];
@@ -91,7 +92,7 @@ internal sealed class GitHubUpdater : IUpdater
         var ownerRepo = _repoInfo.Repo.Split('/');
         if (ownerRepo.Length != 2)
         {
-            throw new ArgumentException("Repository should be in the format 'owner/repo'.");
+            ThrowHelper.ThrowArgumentException("Repository should be in the format 'owner/repo'.");
         }
 
         var owner = ownerRepo[0];
@@ -125,7 +126,7 @@ internal sealed class GitHubUpdater : IUpdater
             key.SetValue("DisplayName", "Супер мега касса с кодовым именем RCS");
             key.SetValue("DisplayVersion", "0.4.10");
             key.SetValue("Publisher", "Gang bang");
-            key.SetValue("InstallLocation", path);
+            key.SetValue("InstallLocation", Path.Combine(path, "Kassa.Wpf.exe"));
             key.SetValue("UninstallString", Path.Combine(App.BasePath, "Kassa.Launcher.exe --remove"));
             key.SetValue("NoModify", 1, RegistryValueKind.DWord);
             key.SetValue("NoRepair", 1, RegistryValueKind.DWord);
@@ -139,7 +140,7 @@ internal sealed class GitHubUpdater : IUpdater
         var ownerRepo = _repoInfo.Repo.Split('/');
         if (ownerRepo.Length != 2)
         {
-            throw new ArgumentException("Repository should be in the format 'owner/repo'.");
+            ThrowHelper.ThrowArgumentException("Repository should be in the format 'owner/repo'.");
         }
 
         var owner = ownerRepo[0];

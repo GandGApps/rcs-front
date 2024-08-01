@@ -1,4 +1,6 @@
-﻿using Kassa.Launcher.Services;
+﻿using CommunityToolkit.Diagnostics;
+using Kassa.Launcher.Services;
+using Kassa.Launcher.Vms;
 using ReactiveUI;
 using Splat;
 using System;
@@ -7,6 +9,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -26,14 +29,14 @@ public sealed class LaunchAppVm : BaseVm
 
             if (string.IsNullOrWhiteSpace(path))
             {
-                throw new InvalidOperationException("KASSA_INSTALL_PATH is not set.");
+                ThrowHelper.ThrowInvalidOperationException("Kassa is not installed.");
             }
 
             path = Path.Combine(path, "Kassa.Wpf.exe");
 
             if (!File.Exists(path))
             {
-                throw new InvalidOperationException("Kassa is not installed.");
+                ThrowHelper.ThrowInvalidOperationException("Kassa is not installed.");
             }
 
             var process = new Process
@@ -52,7 +55,10 @@ public sealed class LaunchAppVm : BaseVm
 
         RemoveCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await remover.RemoveAsync();
+            var remover = Locator.Current.GetService<IRemover>()!;
+            var uninstallVm = new UninstallVm(remover);
+
+            HostScreen.Router.NavigateAndReset.Execute(uninstallVm).Subscribe();
         });
     }
 

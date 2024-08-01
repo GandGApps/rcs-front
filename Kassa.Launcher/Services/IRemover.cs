@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 namespace Kassa.Launcher.Services;
 public interface IRemover
 {
-    public Task RemoveAsync();
+    public Task RemoveAsync(Action<double> progress);
 }

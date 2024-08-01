@@ -15,7 +15,7 @@ internal sealed class EnvironmentPathManager: IApplicationPathManager
 
         if (string.IsNullOrWhiteSpace(path))
         {
-            ThrowHelper.ThrowInvalidOperationException("Application path is not set.");
+            return Task.FromResult(string.Empty);
         }
 
         return Task.FromResult(path);

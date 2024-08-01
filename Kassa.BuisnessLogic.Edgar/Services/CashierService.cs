@@ -137,7 +137,9 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
 
     public ValueTask<IPaymentService> CreatePayment(OrderEditDto order)
     {
-        throw new NotImplementedException();
+        var paymentService = new CashierPaymentService(order, _ordersService, _paymentInfoService);
+
+        return ValueTask.FromResult<IPaymentService>(paymentService);
     }
 
     public ValueTask SelectCurrentOrder(OrderEditDto order)

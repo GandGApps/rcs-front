@@ -1,4 +1,5 @@
-﻿using KassaLauncher.Vms;
+﻿using Kassa.Launcher.Vms;
+using KassaLauncher.Vms;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -16,6 +17,7 @@ public sealed class ViewLocator : IViewLocator
         InitVm context => new InitView { DataContext = context },
         InstallerVm context => new InstallerView { DataContext = context },
         LaunchAppVm context => new LaunchApp { DataContext = context },
+        UninstallVm context => new UninstallView { DataContext = context },
         _ => throw new ArgumentOutOfRangeException(nameof(viewModel))
     };
 }

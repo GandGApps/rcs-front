@@ -27,6 +27,6 @@ public partial class InstallerView : ReactiveUserControl<InstallerVm>
             Title = "Выберите папку для установки"
         });
 
-        ViewModel!.InstallPath = Uri.EscapeDataString(result != null ? result[0].Path.AbsolutePath : string.Empty);
+        ViewModel!.InstallPath = Uri.UnescapeDataString(result != null ? result[0].Path.AbsolutePath : string.Empty);
     }
 }

@@ -13,11 +13,13 @@ internal sealed class CashierPaymentService: BaseInitializableService, IPaymentS
     public event Action? Payed;
     private readonly OrderEditDto _orderEditDto;
     private readonly IOrdersService _ordersService;
+    private readonly IPaymentInfoService _paymentInfoService;
 
-    public CashierPaymentService(OrderEditDto orderEditService, IOrdersService ordersService)
+    public CashierPaymentService(OrderEditDto orderEditService, IOrdersService ordersService, IPaymentInfoService paymentInfoService)
     {
         _orderEditDto = orderEditService;
         _ordersService = ordersService;
+        _paymentInfoService = paymentInfoService;
     }
 
     public OrderEditDto OrderEditDto => _orderEditDto;
@@ -80,6 +82,20 @@ internal sealed class CashierPaymentService: BaseInitializableService, IPaymentS
 
             await cashDrawer.Open();
         }
+
+        var paymentInfo = new PaymentInfoDto
+        {
+            OrderId = order.Id,
+            Cash = Cash,
+            BankСard = BankСard,
+            CashlessPayment = CashlessPayment,
+            WithoutRevenue = WithoutRevenue,
+            ToDeposit = ToDeposit,
+            ToEntered = ToEntered,
+            WithSalesReceipt = WithSalesReceipt
+        };
+
+        await _paymentInfoService.AddPaymentInfo(paymentInfo);
          
         Dispose(); // Nothing to dispose, and doesn't need to be called, but it's here for consistency
     }

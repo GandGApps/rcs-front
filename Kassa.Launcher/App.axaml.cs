@@ -6,7 +6,9 @@ using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Kassa.Launcher.Services;
+using Kassa.Launcher.Vms;
 using KassaLauncher.Services;
+using KassaLauncher.Vms;
 using Microsoft.Extensions.Configuration;
 using Splat;
 
@@ -34,13 +36,15 @@ public partial class App : Application
         var repoInfo = _configuration.GetRequiredSection("RepoInfo").Get<RepoInfo>();
 
         Debug.Assert(repoInfo is not null);
-
-        var githubUpdater = new GitHubUpdater(repoInfo, new WndShortcutCreator());
+        
+        var pathManager = new EnvironmentPathManager();
+        var githubUpdater = new GitHubUpdater(repoInfo, new WndShortcutCreator(), pathManager);
 
         Locator.CurrentMutable.RegisterConstant(githubUpdater, typeof(IUpdater));
         Locator.CurrentMutable.RegisterConstant(githubUpdater, typeof(IInstaller));
         Locator.CurrentMutable.RegisterConstant(new JsonAppsettingsSaver(), typeof(IOptionManager));
-        Locator.CurrentMutable.RegisterConstant(new EnvironmentPathManager(), typeof(IApplicationPathManager));
+        Locator.CurrentMutable.RegisterConstant(pathManager, typeof(IApplicationPathManager));
+        Locator.CurrentMutable.RegisterConstant(new Remover(), typeof(IRemover));
     }
 
     public override void OnFrameworkInitializationCompleted()
@@ -49,10 +53,17 @@ public partial class App : Application
         {
             desktop.MainWindow = new MainWindow();
             desktop.ShutdownMode = ShutdownMode.OnMainWindowClose;
+            var mainVm = (MainVm)desktop.MainWindow.DataContext!;
 
-            if(desktop.Args?.Length > 0 && desktop.Args.Contains("--remove"))
+            if (desktop.Args?.Length > 0 && desktop.Args.Contains("--remove"))
             {
+                var remover = Locator.Current.GetService<IRemover>()!;
 
+                mainVm.Router.NavigateAndReset.Execute(new UninstallVm(remover)).Subscribe();
+            }
+            else
+            {
+                mainVm.Start.Execute().Subscribe();
             }
         }
 

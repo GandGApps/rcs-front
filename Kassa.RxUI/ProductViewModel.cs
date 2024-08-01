@@ -43,6 +43,12 @@ public sealed class ProductViewModel : ProductHostItemVm, IApplicationModelPrese
             return;
         }
 
+        if (product._orderEditVm.ShoppingList.ProductShoppingListItems.FirstOrDefault(x => x.ProductDto.Id == product.Id) is ProductShoppingListItemViewModel vm)
+        {
+            await product._orderEditVm.ShoppingList.IncreaseProductShoppingListItemViewModel(vm, 1);
+            return;
+        }
+
         await product._orderEditVm.ShoppingList.AddProductShoppingListItem(product._product);
     }
 

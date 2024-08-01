@@ -164,22 +164,26 @@ public sealed class ShoppingListViewModel : BaseViewModel
     /// </remarks>
     public async Task AddProductShoppingListItem(ProductDto product)
     {
-        var receipt = await _receiptService.GetReceipt(product.ReceiptId);
 
-        if (receipt is null)
+        if (product.ReceiptId != Guid.Empty)
         {
-            this.Log().Error("Receipt not found for product {0}", product.ReceiptId);
-            return;
-        }
+            var receipt = await _receiptService.GetReceipt(product.ReceiptId);
 
-        if (await _orderEditVm.StorageScope.HasEnoughIngredients(receipt, 1))
-        {
-            await _orderEditVm.StorageScope.SpendIngredients(receipt, 1);
-        }
-        else
-        {
-            this.Log().Error("Not enough ingredients for product {0}", product.ReceiptId);
-            return;
+            if (receipt is null)
+            {
+                this.Log().Error("Receipt not found for product {0}", product.ReceiptId);
+                return;
+            }
+
+            if (await _orderEditVm.StorageScope.HasEnoughIngredients(receipt, 1))
+            {
+                await _orderEditVm.StorageScope.SpendIngredients(receipt, 1);
+            }
+            else
+            {
+                this.Log().Error("Not enough ingredients for product {0}", product.ReceiptId);
+                return;
+            }
         }
 
         // I'm sure this is safe because I have checked that the product is available in storage
@@ -243,37 +247,55 @@ public sealed class ShoppingListViewModel : BaseViewModel
 
     public async Task IncreaseProductShoppingListItemViewModel(ProductShoppingListItemViewModel product, double count)
     {
-        var receipt = await _receiptService.GetReceipt(product.ProductDto.ReceiptId);
-
-        if (receipt is null)
+        if (product.ProductDto.ReceiptId != Guid.Empty)
         {
-            this.Log().Error("Receipt not found for product {0}", product.ProductDto.ReceiptId);
-            return;
+            var receipt = await _receiptService.GetReceipt(product.ProductDto.ReceiptId);
+
+            if (receipt is null)
+            {
+                this.Log().Error("Receipt not found for product {0}", product.ProductDto.ReceiptId);
+                return;
+            }
+
+            if (await _orderEditVm.StorageScope.HasEnoughIngredients(receipt, count))
+            {
+                await _orderEditVm.StorageScope.SpendIngredients(receipt, count);
+
+                product.Count += count;
+            }
         }
-
-        if (await _orderEditVm.StorageScope.HasEnoughIngredients(receipt, count))
+        else
         {
-            await _orderEditVm.StorageScope.SpendIngredients(receipt, count);
-
             product.Count += count;
         }
+
+       
     }
 
     public async Task DecreaseProductShoppingListItemViewModel(ProductShoppingListItemViewModel product, double count)
     {
-        var receipt = await _receiptService.GetReceipt(product.ProductDto.ReceiptId);
-
-        if (receipt is null)
+        if (product.ProductDto.ReceiptId != Guid.Empty)
         {
-            this.Log().Error("Receipt not found for product {0}", product.ProductDto.ReceiptId);
-            return;
+            var receipt = await _receiptService.GetReceipt(product.ProductDto.ReceiptId);
+
+            if (receipt is null)
+            {
+                this.Log().Error("Receipt not found for product {0}", product.ProductDto.ReceiptId);
+                return;
+            }
+
+            if (product.Count >= count)
+            {
+                await _orderEditVm.StorageScope.ReturnIngredients(receipt, count);
+
+                product.Count -= count;
+            }
         }
-
-        if (product.Count >= count)
+        else
         {
-            await _orderEditVm.StorageScope.ReturnIngredients(receipt, count);
-
             product.Count -= count;
         }
+
+        
     }
 }

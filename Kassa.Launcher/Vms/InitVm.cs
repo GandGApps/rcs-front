@@ -17,6 +17,7 @@ public sealed class InitVm : BaseVm
 
     private readonly IUpdater _updater;
     private readonly IInstaller _installer;
+    private readonly IApplicationPathManager _pathManager;
 
     [Reactive]
     public bool IsInstalled
@@ -36,15 +37,16 @@ public sealed class InitVm : BaseVm
         get; private set;
     }
 
-    public InitVm(IUpdater updater, IInstaller installer)
+    public InitVm(IUpdater updater, IInstaller installer, IApplicationPathManager pathManager)
     {
         _updater = updater;
         _installer = installer;
+        _pathManager = pathManager;
     }
 
     public async Task InitAsync()
     {
-        var installedPath = Environment.GetEnvironmentVariable("KASSA_INSTALL_PATH", EnvironmentVariableTarget.User);
+        var installedPath = await _pathManager.GetApplicationPath();
 
         if (string.IsNullOrEmpty(installedPath))
         {

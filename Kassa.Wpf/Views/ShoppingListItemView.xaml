@@ -171,7 +171,7 @@
                         FontSize="{mx:AdaptiveSize 13}"
                         Foreground="{DynamicResource ShoppingListItemViewComment}"
                         TextTrimming="CharacterEllipsis">
-                        <Run Text="{Binding AdditiveInfo}" /><Run FontSize="{mx:AdaptiveSize 16}" />
+                        <Run Text="{Binding Comment}" /><Run FontSize="{mx:AdaptiveSize 16}" />
                     </TextBlock>
 
                 </Grid>

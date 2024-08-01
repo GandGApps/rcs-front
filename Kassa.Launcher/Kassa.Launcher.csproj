@@ -2,14 +2,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net8.0-windows</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <Platforms>x64</Platforms>
-    <RestorePackagesWithLockFile>true</RestorePackagesWithLockFile>
   </PropertyGroup>
 
 
@@ -72,6 +70,12 @@
     <TrimmerRootAssembly Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" />
 
     <TrimmerRootAssembly Include="IWshRuntimeLibrary" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\UninstallView.axaml.cs">
+      <DependentUpon>UninstallView.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 
 </Project>

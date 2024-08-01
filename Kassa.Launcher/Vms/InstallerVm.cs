@@ -72,7 +72,7 @@ public sealed class InstallerVm : BaseVm
         var isInstalled = await _updater.IsInstalled(InstallPath);
         if (!isInstalled)
         {
-            Status = "Установка начата...";
+            Status = "Установка началась...";
             IsInstalling  = true;
             await _installer.InstallAsync(InstallPath, IsShortcutNeeded, UpdateProgress);
             Status = "Установка завершена. Все файлы установлены.";
