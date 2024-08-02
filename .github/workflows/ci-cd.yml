@@ -73,7 +73,10 @@ jobs:
         ACTIONS_ALLOW_UNSECURE_COMMANDS: 'true'
 
     - name: Restore dependencies
-      run: msbuild /t:Restore /p:RuntimeIdentifier=win-x64 Kassa.Launcher/Kassa.Launcher.csproj
+      run: dotnet restore 
+
+    - name: Restore dependencies
+      run: msbuild /t:Restore /p:RuntimeIdentifier=win-x64
 
     - name: Build project
       run: msbuild /t:Build /p:RuntimeIdentifier=win-x64 /p:Configuration=Release /p:OutputPath=./output Kassa.Launcher/Kassa.Launcher.csproj
