@@ -53,30 +53,7 @@ internal sealed class GitHubUpdater : IUpdater
         return changedFiles.Count > 0;
     }
 
-    public async Task InstallAsync(string path)
-    {
-        var ownerRepo = _repoInfo.Repo.Split('/');
-        if (ownerRepo.Length != 2)
-        {
-            ThrowHelper.ThrowArgumentException("Repository should be in the format 'owner/repo'.");
-        }
-
-        var owner = ownerRepo[0];
-        var repoName = ownerRepo[1];
-        var latestCommit = await _client.Repository.Commit.Get(owner, repoName, _repoInfo.Branch);
-        var tree = await _client.Git.Tree.GetRecursive(owner, repoName, latestCommit.Sha);
-        var files = tree.Tree.Where(t => t.Type == TreeType.Blob).ToList();
-
-        var totalFiles = files.Count;
-
-        for (var i = 0; i < totalFiles; i++)
-        {
-            var file = files[i];
-            await DownloadAndUpdate(file.Path, file.Url, path);
-        }
-    }
-
-    public async Task<bool> UpdateAsync()
+    public async Task<bool> UpdateAsync(Action<double> progress)
     {
         var path = _repoInfo.InstallPath;
         var ownerRepo = _repoInfo.Repo.Split('/');
@@ -100,6 +77,7 @@ internal sealed class GitHubUpdater : IUpdater
         {
             var file = changedFiles[i];
             await DownloadAndUpdate(file.Path, file.Url, path);
+            progress((i+1) / totalFiles);
         }
 
         return totalFiles > 0;

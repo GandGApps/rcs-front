@@ -1,20 +1,23 @@
 using System;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Kassa.Launcher.Services;
 using Kassa.Launcher.Vms;
+using Kassa.Shared;
 using KassaLauncher.Services;
 using KassaLauncher.Vms;
 using Microsoft.Extensions.Configuration;
+using ReactiveUI;
 using Splat;
 
 namespace KassaLauncher;
 
-public partial class App : Application
+public partial class App : Application, IEnableLogger
 {
     private IConfiguration _configuration = null!;
 
@@ -45,6 +48,13 @@ public partial class App : Application
         Locator.CurrentMutable.RegisterConstant(new JsonAppsettingsSaver(), typeof(IOptionManager));
         Locator.CurrentMutable.RegisterConstant(pathManager, typeof(IApplicationPathManager));
         Locator.CurrentMutable.RegisterConstant(new Remover(), typeof(IRemover));
+
+        Locator.CurrentMutable.AddLoggers();
+
+        RxApp.DefaultExceptionHandler = Observer.Create<Exception>(ex =>
+        {
+            this.Log().Error(ex, "An unhandled exception occurred");
+        });
     }
 
     public override void OnFrameworkInitializationCompleted()

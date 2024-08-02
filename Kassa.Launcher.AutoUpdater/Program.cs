@@ -30,5 +30,10 @@ static async Task Update(UpdateOption options)
 {
     var updater = new GitHubUpdater(options);
 
-    await updater.UpdateAsync();
+    await updater.UpdateAsync(progress =>
+    {
+        Console.WriteLine($"Checking for updates... {progress:P0}");
+    });
+
+    Console.WriteLine("1");
 }

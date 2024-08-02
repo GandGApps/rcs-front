@@ -1,8 +1,7 @@
 {
   "profiles": {
     "Kassa.Launcher": {
-      "commandName": "Project",
-      "commandLineArgs": "--remove"
+      "commandName": "Project"
     }
   }
 }
