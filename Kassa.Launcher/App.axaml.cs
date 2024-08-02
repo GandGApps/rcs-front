@@ -28,33 +28,14 @@ public partial class App : Application, IEnableLogger
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+    }
 
-        var builder = new ConfigurationBuilder()
-            .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-            .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
-
-        _configuration = builder.Build();
-
-        var repoInfo = _configuration.GetRequiredSection("RepoInfo").Get<RepoInfo>();
-
-        Debug.Assert(repoInfo is not null);
-        
-        var pathManager = new EnvironmentPathManager();
-        var githubUpdater = new GitHubUpdater(repoInfo, new WndShortcutCreator(), pathManager);
-
-        Locator.CurrentMutable.RegisterConstant(githubUpdater, typeof(IUpdater));
-        Locator.CurrentMutable.RegisterConstant(githubUpdater, typeof(IInstaller));
-        Locator.CurrentMutable.RegisterConstant(new JsonAppsettingsSaver(), typeof(IOptionManager));
-        Locator.CurrentMutable.RegisterConstant(pathManager, typeof(IApplicationPathManager));
-        Locator.CurrentMutable.RegisterConstant(new Remover(), typeof(IRemover));
-
-        Locator.CurrentMutable.AddLoggers();
-
-        RxApp.DefaultExceptionHandler = Observer.Create<Exception>(ex =>
+    public static void Exit()
+    {
+        if (Current!.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
-            this.Log().Error(ex, "An unhandled exception occurred");
-        });
+            desktop.Shutdown();
+        }
     }
 
     public override void OnFrameworkInitializationCompleted()

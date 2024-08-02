@@ -25,7 +25,8 @@
         <TextBlock
             Grid.Row="1"
             Classes="h3"
-            Text="{Binding Status}" />
+            Text="{Binding Status}"
+            TextWrapping="Wrap" />
 
     </Grid>
 

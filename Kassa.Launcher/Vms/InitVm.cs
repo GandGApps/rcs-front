@@ -18,6 +18,7 @@ public sealed class InitVm : BaseVm
     private readonly IUpdater _updater;
     private readonly IInstaller _installer;
     private readonly IApplicationPathManager _pathManager;
+    private readonly ISelfUpdater _selfUpdater;
 
     [Reactive]
     public bool IsInstalled
@@ -37,11 +38,12 @@ public sealed class InitVm : BaseVm
         get; private set;
     }
 
-    public InitVm(IUpdater updater, IInstaller installer, IApplicationPathManager pathManager)
+    public InitVm(IUpdater updater, ISelfUpdater selfUpdater, IInstaller installer, IApplicationPathManager pathManager)
     {
         _updater = updater;
         _installer = installer;
         _pathManager = pathManager;
+        _selfUpdater = selfUpdater;
     }
 
     public async Task InitAsync()
@@ -81,6 +83,26 @@ public sealed class InitVm : BaseVm
             }
 
             await Task.Delay(2000);
+
+            Dispatcher.UIThread.Invoke(() => Status = "Проверка обновлений лаунчера...");
+
+            var hasLauncherUpdates = await _selfUpdater.HasUpdates(progress =>
+            {
+                Dispatcher.UIThread.Invoke(void () => Progress = progress);
+            });
+
+            if (hasLauncherUpdates)
+            {
+                Dispatcher.UIThread.Invoke(() => Status = "Обнаружено обновление. Лаунчер будет закрыт");
+
+                await Task.Delay(3000);
+
+                await _selfUpdater.Update();
+
+                App.Exit();
+
+                return;
+            }
 
             Dispatcher.UIThread.Invoke(() => HostScreen.Router.Navigate.Execute(new LaunchAppVm()));
         }

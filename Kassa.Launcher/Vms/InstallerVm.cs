@@ -77,6 +77,9 @@ public sealed class InstallerVm : BaseVm
             await _installer.InstallAsync(InstallPath, IsShortcutNeeded, UpdateProgress);
             Status = "Установка завершена. Все файлы установлены.";
             await Task.Delay(2000);
+
+            await HostScreen.Router.NavigateAndReset.Execute(new LaunchAppVm()).FirstAsync();
+
             IsInstalling = false;
         }
         else
@@ -94,7 +97,7 @@ public sealed class InstallerVm : BaseVm
 
             await Task.Delay(2000);
 
-            await HostScreen.Router.NavigateAndReset.Execute(new LaunchAppVm());
+            await HostScreen.Router.NavigateAndReset.Execute(new LaunchAppVm()).FirstAsync();
 
             IsInstalling = false;
         }

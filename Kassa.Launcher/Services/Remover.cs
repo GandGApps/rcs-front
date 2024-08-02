@@ -16,13 +16,23 @@ internal sealed class Remover : IRemover, IEnableLogger
         var path = await pathManager.GetApplicationPath();
 
         var files = Directory.GetFiles(path);
+        var directories = Directory.GetDirectories(path);
 
-        var i = 0;
+        var i = 0d;
+        var totalFiles = directories.Length + files.Length;
+
         foreach (var file in files)
         {
-            progress(i++ / files.Length);
+            progress(i++ / totalFiles);
             File.Delete(file);
             this.Log().Info($"Deleted file: {file}");
+        }
+
+        foreach (var directory in directories)
+        {
+            progress(i++ / totalFiles);
+            Directory.Delete(directory, true);
+            this.Log().Info($"Deleted directory: {directory}");
         }
 
         RemoveRegisty();

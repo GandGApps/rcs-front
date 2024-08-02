@@ -50,7 +50,7 @@ public sealed class LaunchAppVm : BaseVm
 
             process.Start();
 
-            await process.WaitForExitAsync();
+            App.Exit();
         });
 
         RemoveCommand = ReactiveCommand.CreateFromTask(async () =>

@@ -11,6 +11,11 @@ namespace KassaLauncher;
 
 public partial class MainWindow : SukiWindow
 {
+    public static MainWindow Instance
+    {
+        get; private set;
+    }
+
     public MainWindow()
     {
         AvaloniaXamlLoader.Load(this);
@@ -18,6 +23,8 @@ public partial class MainWindow : SukiWindow
         CanResize = false;
         CanMinimize = false;
         BackgroundAnimationEnabled = true;
+
+        Instance = this;
 
         CanResize = false;
         MinWidth = Width;

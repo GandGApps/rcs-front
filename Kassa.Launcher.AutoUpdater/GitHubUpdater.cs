@@ -10,21 +10,21 @@ using Octokit;
 namespace Kassa.Launcher.AutoUpdater;
 internal sealed class GitHubUpdater : IUpdater
 {
-    private readonly RepoInfo _repoInfo;
+    private readonly BaseOption _baseOption;
     private readonly GitHubClient _client;
 
-    public GitHubUpdater(RepoInfo repoInfo)
+    public GitHubUpdater(BaseOption repoInfo)
     {
-        _repoInfo = repoInfo;
-        _client = new GitHubClient(new ProductHeaderValue(_repoInfo.AppName))
+        _baseOption = repoInfo;
+        _client = new GitHubClient(new ProductHeaderValue(_baseOption.AppName))
         {
-            Credentials = new Credentials(_repoInfo.Token)
+            Credentials = new Credentials(_baseOption.Token)
         };
     }
 
     public async Task<bool> CheckForUpdatesAsync(Action<double> progress)
     {
-        var ownerRepo = _repoInfo.Repo.Split('/');
+        var ownerRepo = _baseOption.Repo.Split('/');
         if (ownerRepo.Length != 2)
         {
             ThrowHelper.ThrowArgumentException("Repository should be in the format 'owner/repo'.");
@@ -33,17 +33,22 @@ internal sealed class GitHubUpdater : IUpdater
         var owner = ownerRepo[0];
         var repoName = ownerRepo[1];
 
-        var latestCommit = await _client.Repository.Commit.Get(owner, repoName, _repoInfo.Branch);
+        var latestCommit = await _client.Repository.Commit.Get(owner, repoName, _baseOption.Branch);
         var tree = await _client.Git.Tree.GetRecursive(owner, repoName, latestCommit.Sha);
 
         var indexer = 0d;
         var totalFiles = tree.Tree.Count(t => t.Type == TreeType.Blob);
-        var basePath = _repoInfo.InstallPath;
+        var basePath = _baseOption.InstallPath;
 
         var changedFiles = tree.Tree
             .Where(t =>
             {
-                progress(indexer / totalFiles);
+                if (t.Path.EndsWith("Kassa.Launcher.AutoUpdater"))
+                {
+                    return false;
+                }
+                
+                progress(indexer++ / totalFiles);
                 return t.Type == TreeType.Blob && (!FileExists(basePath, t.Path) || !CompareHashes(basePath, t.Path, t.Sha));
             })
             .ToList();
@@ -55,8 +60,8 @@ internal sealed class GitHubUpdater : IUpdater
 
     public async Task<bool> UpdateAsync(Action<double> progress)
     {
-        var path = _repoInfo.InstallPath;
-        var ownerRepo = _repoInfo.Repo.Split('/');
+        var path = _baseOption.InstallPath;
+        var ownerRepo = _baseOption.Repo.Split('/');
         if (ownerRepo.Length != 2)
         {
             ThrowHelper.ThrowArgumentException("Repository should be in the format 'owner/repo'.");
@@ -64,11 +69,11 @@ internal sealed class GitHubUpdater : IUpdater
 
         var owner = ownerRepo[0];
         var repoName = ownerRepo[1];
-        var latestCommit = await _client.Repository.Commit.Get(owner, repoName, _repoInfo.Branch);
+        var latestCommit = await _client.Repository.Commit.Get(owner, repoName, _baseOption.Branch);
         var tree = await _client.Git.Tree.GetRecursive(owner, repoName, latestCommit.Sha);
-        var basePath = _repoInfo.InstallPath;
+        var basePath = _baseOption.InstallPath;
         var changedFiles = tree.Tree
-            .Where(t => t.Type == TreeType.Blob && (!FileExists(basePath, t.Path) || !CompareHashes(basePath, t.Path, t.Sha)))
+            .Where(t => !t.Path.EndsWith("Kassa.Launcher.AutoUpdater.exe") && t.Type == TreeType.Blob && (!FileExists(basePath, t.Path) || !CompareHashes(basePath, t.Path, t.Sha)))
             .ToList();
 
         var totalFiles = changedFiles.Count;
@@ -77,7 +82,7 @@ internal sealed class GitHubUpdater : IUpdater
         {
             var file = changedFiles[i];
             await DownloadAndUpdate(file.Path, file.Url, path);
-            progress((i+1) / totalFiles);
+            progress((i+1d) / totalFiles);
         }
 
         return totalFiles > 0;
@@ -108,7 +113,7 @@ internal sealed class GitHubUpdater : IUpdater
     private async Task DownloadAndUpdate(string filePath, string downloadUrl, string installPath)
     {
         // Построение правильного URL для скачивания
-        var rawUrl = $"https://raw.githubusercontent.com/{_repoInfo.Repo}/{_repoInfo.Branch}/{filePath}";
+        var rawUrl = $"https://raw.githubusercontent.com/{_baseOption.Repo}/{_baseOption.Branch}/{filePath}";
         var fullPath = Path.Combine(installPath, filePath);
         var fileDirectory = Path.GetDirectoryName(fullPath);
 
