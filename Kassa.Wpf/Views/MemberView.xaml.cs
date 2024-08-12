@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -30,6 +31,9 @@ public sealed partial class MemberView : ReactiveUserControl<MemberVm>
         this.WhenActivated(disposables =>
         {
             Debug.Assert(ViewModel != null);
+
+            this.OneWayBind(ViewModel, vm => vm.Name, v => v.Name.Text)
+                .DisposeWith(disposables);
 
             SetValue(Button.CommandProperty, ViewModel.SelectCommand);
         });

@@ -35,7 +35,39 @@ public sealed partial class MemberSelectDialog : ClosableDialog<MemberSelectDial
             this.BindCommand(ViewModel, vm => vm.CloseCommand, v => v.CancelButton)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, vm => vm.Header, v => v.Header.Text)
+            this.Bind(ViewModel, x => x.SearchText, x => x.SearchTextBox.Text)
+                .DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel,
+                vm => vm.IsKeyboardVisible,
+                v => v.Keyboard.Visibility,
+                visibility => visibility ? Visibility.Visible : Visibility.Collapsed
+            ).DisposeWith(disposables);
+
+            this.Bind(ViewModel,
+                vm => vm.IsKeyboardVisible,
+                v => v.IsKeyboardEnabled.IsChecked
+            ).DisposeWith(disposables);
+
+            this.Bind(ViewModel,
+                vm => vm.SearchText,
+                v => v.SearchTextBox.Text
+            ).DisposeWith(disposables);
+
+            this.Bind(ViewModel,
+                vm => vm.SearchText,
+                v => v.Keyboard.Text
+            ).DisposeWith(disposables);
+
+            this.OneWayBind(ViewModel,
+                vm => vm.IsKeyboardVisible,
+                v => v.KeyboardVisibilityText.Text,
+                x => x ? "Вкл" : "Выкл"
+            ).DisposeWith(disposables);
+
+            Keyboard.TextBox = SearchTextBox;
+
+            this.OneWayBind(ViewModel, vm => vm.Header, v => v.Header)
                 .DisposeWith(disposables);
 
             ViewModel.WhenAnyValue(x => x.Icon)
@@ -49,5 +81,15 @@ public sealed partial class MemberSelectDialog : ClosableDialog<MemberSelectDial
                 })
                 .DisposeWith(disposables);
         });
+    }
+
+    private void ClearSearchText(object sender, MouseButtonEventArgs e)
+    {
+        ViewModel!.SearchText = string.Empty;
+    }
+
+    private void ScrollViewerGotFocus(object sender, RoutedEventArgs e)
+    {
+        ViewModel!.IsKeyboardVisible = false;
     }
 }

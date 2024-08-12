@@ -22,6 +22,7 @@ public sealed class MemberVm : ReactiveObject, IApplicationModelPresenter<Member
     {
         Id = model.Id;
         Name = model.Name;
+        MemberDto = model;
 
         SelectCommand = ReactiveCommand.Create(() =>
         {
@@ -53,9 +54,16 @@ public sealed class MemberVm : ReactiveObject, IApplicationModelPresenter<Member
         get;
     }
 
+    public MemberDto MemberDto
+    {
+        get; private set;
+    }
+
     public void ModelChanged(Change<MemberDto> change)
     {
         var model = change.Current;
+
+        MemberDto = model;
 
         Name = model.Name;
     }

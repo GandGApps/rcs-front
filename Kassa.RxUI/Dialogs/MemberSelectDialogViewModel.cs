@@ -8,14 +8,16 @@ using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using ReactiveUI;
+using System.Reactive;
 using ReactiveUI.Fody.Helpers;
+using System.Reactive.Linq;
 
 namespace Kassa.RxUI.Dialogs;
 public sealed class MemberSelectDialogViewModel : ApplicationManagedModelSearchableDialogViewModel<MemberDto, MemberVm>
 {
 
     [Reactive]
-    public string? Header
+    public object? Header
     {
         get; set;
     }
@@ -26,11 +28,21 @@ public sealed class MemberSelectDialogViewModel : ApplicationManagedModelSearcha
         get; set;
     }
 
+    public ReactiveCommand<MemberDto, MemberDto> SelectedMemberCommand
+    {
+        get;
+    }
+
     public MemberSelectDialogViewModel()
     {
+
+        SelectedMemberCommand = ReactiveCommand.Create<MemberDto, MemberDto>(x => x);
+
         SelectCommand = ReactiveCommand.CreateFromTask<MemberVm>(async x =>
         {
             SelectedItem = x;
+
+            await SelectedMemberCommand.Execute(x.MemberDto);
         });
     }
 
