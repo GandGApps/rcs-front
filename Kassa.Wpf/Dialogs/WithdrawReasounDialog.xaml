@@ -44,7 +44,7 @@
             </StackPanel>
             <Border
                 Grid.Row="1"
-                Width="1280"
+                Width="{mx:AdaptiveSize 1280}"
                 Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
                 Style="{DynamicResource Separator}" />
 
@@ -69,7 +69,7 @@
                     </ItemsControl.ItemsPanel>
                     <ItemsControl.ItemTemplate>
                         <DataTemplate>
-                            <view:WithdrawalReasonView ViewModel="{Binding .}" />
+                            <view:WithdrawalReasonView ViewModel="{Binding ., Mode=OneTime}" />
                         </DataTemplate>
                     </ItemsControl.ItemTemplate>
                 </ItemsControl>
@@ -87,6 +87,8 @@
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
+
+                    <controls:ButtonWithCornerRaduis x:Name="BackButton" Style="{StaticResource BackButton}" />
 
                     <Button
                         x:Name="CancelButton"

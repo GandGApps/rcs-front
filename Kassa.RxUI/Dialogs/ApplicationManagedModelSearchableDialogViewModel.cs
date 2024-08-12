@@ -19,7 +19,7 @@ public abstract class ApplicationManagedModelSearchableDialogViewModel<TItem, TV
     where TVm : class, IApplicationModelPresenter<TItem>
 {
     protected readonly TimeSpan SearchThrottle = TimeSpan.FromMilliseconds(500);
-    protected readonly ObservableCollection<TVm> _filteredItems = new();
+    protected readonly ObservableCollection<TVm> _filteredItems = [];
 
     public ApplicationManagedModelSearchableDialogViewModel()
     {

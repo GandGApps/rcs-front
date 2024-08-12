@@ -7,6 +7,12 @@ using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Dto;
 
 namespace Kassa.BuisnessLogic.Services;
+
+/// <summary>
+/// This service is designed exclusively for processing payments related to a specific order.
+/// It is created through the <see cref="ICashierService.CreatePayment(OrderEditDto)"/> method.
+/// For handling fund transfers, please use the <see cref="IFundsTransferService"/>.
+/// </summary>
 public interface IPaymentService : IInitializableService
 {
     public double Cash

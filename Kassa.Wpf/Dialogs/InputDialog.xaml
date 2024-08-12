@@ -74,31 +74,12 @@
                 <Grid>
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <controls:ButtonWithCornerRaduis
-                        x:Name="BackButton"
-                        Padding="{mx:AdaptiveSize Thickness='0,15,0,15'}"
-                        VerticalAlignment="Center"
-                        Background="Transparent">
-                        <StackPanel Orientation="Horizontal">
-                            <Path
-                                Width="{mx:AdaptiveSize 13}"
-                                Height="{mx:AdaptiveSize 22.7}"
-                                Data="{StaticResource Arrow}"
-                                Fill="White" />
-                            <TextBlock
-                                Margin="{mx:AdaptiveSize Thickness='7,0,0,0'}"
-                                VerticalAlignment="Center"
-                                FontSize="{mx:AdaptiveSize 13}"
-                                Foreground="White"
-                                Text="Назад" />
-                        </StackPanel>
-
-                    </controls:ButtonWithCornerRaduis>
+                    <controls:ButtonWithCornerRaduis x:Name="BackButton" Style="{StaticResource BackButton}" />
 
                     <Button
                         x:Name="CancelButton"

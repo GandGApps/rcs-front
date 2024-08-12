@@ -16,13 +16,14 @@ using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
+using Kassa.RxUI.Dialogs;
 using Microsoft.VisualBasic;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 
 namespace Kassa.RxUI.Pages;
-public class ServicePageVm : PageViewModel
+public sealed class ServicePageVm : PageViewModel
 {
 
     private readonly IShiftService _shiftService;
@@ -97,6 +98,13 @@ public class ServicePageVm : PageViewModel
                 this.Log().Error(e, "Error on open shift");
                 return false;
             }
+        });
+
+        WithdrawMoneyCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var dialog = new WithdrawReasounDialogViewModel();
+
+            await MainViewModel.ShowDialogAndWaitClose(dialog);
         });
 
         _shiftService.IsCashierShiftStartedObservable()
@@ -222,6 +230,11 @@ public class ServicePageVm : PageViewModel
     }
 
     public ReactiveCommand<Unit, bool> OpenShiftCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> WithdrawMoneyCommand
     {
         get;
     }

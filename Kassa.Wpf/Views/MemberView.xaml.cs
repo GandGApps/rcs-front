@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,20 +19,17 @@ using ReactiveUI;
 namespace Kassa.Wpf.Views;
 
 /// <summary>
-/// Interaction logic for WithdrawalReasonView.xaml
+/// Interaction logic for MemberView.xaml
 /// </summary>
-public partial class WithdrawalReasonView : ReactiveUserControl<WithdrawalReasonVm>
+public sealed partial class MemberView : ReactiveUserControl<MemberVm>
 {
-    public WithdrawalReasonView()
+    public MemberView()
     {
         InitializeComponent();
 
         this.WhenActivated(disposables =>
         {
             Debug.Assert(ViewModel != null);
-
-            this.OneWayBind(ViewModel, vm => vm.Name, v => v.Name.Text)
-                .DisposeWith(disposables);
 
             SetValue(Button.CommandProperty, ViewModel.SelectCommand);
         });

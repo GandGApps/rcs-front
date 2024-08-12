@@ -16,7 +16,7 @@ namespace Kassa.Wpf.Views;
 /// <summary>
 /// Логика взаимодействия для ProductView.xaml
 /// </summary>
-public partial class ProductView : ButtonUserControl<ProductViewModel>
+public sealed partial class ProductView : ButtonUserControl<ProductViewModel>
 {
     private readonly BrushConverter _brushConverter = new();
 

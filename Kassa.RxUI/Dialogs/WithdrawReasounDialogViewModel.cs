@@ -19,7 +19,9 @@ public sealed class WithdrawReasounDialogViewModel: ApplicationManagedModelSearc
         {
             SelectedItem = x;
 
-            await CloseAsync();
+            var memberSelectViewModel = new MemberSelectDialogViewModel();
+
+            await MainViewModel.ShowDialogAndWaitClose(memberSelectViewModel);
         });
     }
 

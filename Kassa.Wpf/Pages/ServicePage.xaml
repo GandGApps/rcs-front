@@ -91,7 +91,7 @@
                             Text="Закрыть кассовую смену" />
                     </Button>
 
-                    <Button x:Name="WithdrawMoney" Style="{StaticResource SmallRoundedCornerButton}">
+                    <Button x:Name="WithdrawMoneyButton" Style="{StaticResource SmallRoundedCornerButton}">
                         <TextBlock Style="{StaticResource SmallRoundedCornerButtonText}" Text="Изъять деньги" />
                     </Button>
 
@@ -220,7 +220,6 @@
                 CellStyle="{DynamicResource DataGridCellStyle}"
                 ColumnHeaderStyle="{DynamicResource PrimaryDataGridColumnHeader}"
                 IsReadOnly="True"
-                ItemsSource="{Binding SelectedOrders}"
                 RowStyle="{DynamicResource DataGridRowStyle}"
                 Style="{StaticResource PrimaryDataGrid}">
                 <DataGrid.Columns>
@@ -304,7 +303,6 @@
                 CellStyle="{DynamicResource DataGridCellStyle}"
                 ColumnHeaderStyle="{DynamicResource PrimaryDataGridColumnHeader}"
                 IsReadOnly="True"
-                ItemsSource="{Binding SelectedOrders}"
                 RowStyle="{DynamicResource DataGridRowStyle}"
                 Style="{StaticResource PrimaryDataGrid}">
                 <DataGrid.Columns>

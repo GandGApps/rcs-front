@@ -40,6 +40,8 @@ public partial class ServicePage : ReactiveUserControl<ServicePageVm>
             this.BindCommand(ViewModel, vm => vm.ShiftButtonCommand, v => v.CloseShiftButton)
                 .DisposeWith(disposables);
 
+            this.BindCommand(ViewModel, vm => vm.WithdrawMoneyCommand, v => v.WithdrawMoneyButton)
+                .DisposeWith(disposables);
 
             DataGridOpenOrders.ItemsSource = ViewModel.OpenOrders;
             DataGridClosedOrders.ItemsSource = ViewModel.ClosedOrders;

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
+using Kassa.RxUI.Dialogs;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -17,15 +18,21 @@ public sealed class MemberVm : ReactiveObject, IApplicationModelPresenter<Member
         get;
     }
 
-    public MemberVm(MemberDto model)
+    public MemberVm(MemberDto model, MemberSelectDialogViewModel? memberSelectDialogViewModel = null)
     {
         Id = model.Id;
         Name = model.Name;
 
         SelectCommand = ReactiveCommand.Create(() =>
         {
-
-            IsSelected = true;
+            if (memberSelectDialogViewModel != null)
+            {
+                memberSelectDialogViewModel.SelectCommand!.Execute(this).Subscribe();
+            }
+            else
+            {
+                IsSelected = !IsSelected;
+            }
         });
     }
 
