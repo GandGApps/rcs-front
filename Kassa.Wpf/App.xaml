@@ -22,6 +22,7 @@
 
                 <ResourceDictionary Source="/Dialogs/BaseDialog.xaml" />
                 <ResourceDictionary Source="/Dialogs/ClosableDialog.xaml" />
+                <ResourceDictionary Source="/Dialogs/SelectionDialogBase.xaml" />
                 <ResourceDictionary Source="/Resources/ScrollBar.xaml" />
                 <ResourceDictionary Source="/Resources/CashierTabPanel.xaml" />
                 <ResourceDictionary Source="/Resources/DataGrid.xaml" />

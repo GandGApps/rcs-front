@@ -1,0 +1,201 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:Kassa.Wpf.Behaviors"
+    xmlns:controls="clr-namespace:Kassa.Wpf.Controls"
+    xmlns:dialogs="clr-namespace:Kassa.Wpf.Dialogs"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
+    xmlns:view="clr-namespace:Kassa.Wpf.Views">
+
+    <ControlTemplate x:Key="SelectiongDialogBaseTemplate" TargetType="{x:Type dialogs:SelectionDialogBase`1}">
+        <Border Margin="{mx:AdaptiveSize Thickness='76,0,0,76'}" Padding="{TemplateBinding Padding}">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="{mx:AdaptiveSize GridLength=76}" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{mx:AdaptiveSize GridLength=76}" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Button
+                    x:Name="CloseDialog"
+                    Grid.Column="1"
+                    Background="{StaticResource ClickableBg}"
+                    BorderThickness="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type ButtonBase}">
+                            <Border
+                                x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="true">
+                                <ContentPresenter
+                                    x:Name="contentPresenter"
+                                    Margin="{TemplateBinding Padding}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Focusable="False"
+                                    RecognizesAccessKey="True"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="Button.IsDefaulted" Value="true">
+                                    <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Path
+                        Width="{mx:AdaptiveSize 76}"
+                        Height="{mx:AdaptiveSize 76}"
+                        Data="{StaticResource Close}"
+                        Fill="{DynamicResource AlternateForeground}" />
+                </Button>
+
+
+                <Border
+                    Grid.Row="1"
+                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+                    <Grid>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <ContentPresenter ContentTemplate="{TemplateBinding HeaderTemplate}" />
+
+                        <Border
+                            Grid.Row="1"
+                            Width="{mx:AdaptiveSize 1280}"
+                            Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
+                            Style="{DynamicResource Separator}" />
+
+                        <ScrollViewer
+                            x:Name="ScrollViewer"
+                            Grid.Row="2"
+                            HorizontalContentAlignment="Stretch"
+                            HorizontalScrollBarVisibility="Disabled"
+                            Style="{StaticResource PrimaryScrollViewer}">
+
+                            <i:Interaction.Behaviors>
+                                <behaviors:ScrollViewerFixingBehavior />
+                            </i:Interaction.Behaviors>
+
+                            <ItemsControl
+                                x:Name="StreetList"
+                                BorderThickness="0"
+                                ItemTemplate="{TemplateBinding ItemTemplate}">
+                                <ItemsControl.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <controls:FixedColumnsPanel
+                                            HorizontalAlignment="Stretch"
+                                            Columns="4"
+                                            Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ItemsControl.ItemsPanel>
+                            </ItemsControl>
+                        </ScrollViewer>
+
+                        <controls:Keyboard
+                            x:Name="Keyboard"
+                            Grid.Row="3"
+                            Margin="0,0,0,15"
+                            VerticalAlignment="Bottom"
+                            IsEnabled="False"
+                            Visibility="{TemplateBinding IsKeyboardEnabled}" />
+
+                        <Border
+                            Grid.Row="4"
+                            Margin="{mx:AdaptiveSize Thickness='0,0,0,10'}"
+                            Style="{StaticResource DialogFooter}">
+                            <Grid>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <CheckBox
+                                    x:Name="IsKeyboardEnabled"
+                                    IsChecked="{TemplateBinding IsKeyboardEnabled}"
+                                    Style="{StaticResource KeyboardCheckbox}">
+                                    <StackPanel VerticalAlignment="Center">
+                                        <Path Style="{StaticResource KeyboardCheckboxIcon}" />
+                                        <TextBlock Style="{StaticResource KeyboardCheckboxText}">
+                                            <Run Text="Клавиатура" />
+                                            <Run x:Name="KeyboardVisibilityText" Text="Выкл" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                </CheckBox>
+
+                                <Border
+                                    Grid.Column="1"
+                                    Width="{mx:AdaptiveSize 320}"
+                                    Style="{StaticResource SearchTextBoxBorder}">
+                                    <Grid VerticalAlignment="Center">
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <controls:TextBoxWithoutVirtualKeyboard x:Name="SearchTextBox" Style="{StaticResource SearchTextBox}" />
+
+                                        <Path Grid.Column="1" Style="{StaticResource SearchTextBoxIcon}" />
+
+                                    </Grid>
+                                </Border>
+
+                                <Border
+                                    x:Name="ClearIcon"
+                                    Grid.Column="2"
+                                    Margin="{mx:AdaptiveSize Thickness='10,0,0,0'}"
+                                    HorizontalAlignment="Left"
+                                    Style="{StaticResource ClearSearchTextBorder}">
+                                    <Path Style="{StaticResource ClearSearchTextIcon}" />
+                                </Border>
+
+
+                                <Button
+                                    x:Name="CancelButton"
+                                    Grid.Column="5"
+                                    Width="{mx:AdaptiveSize 155}"
+                                    MinWidth="10"
+                                    Margin="{mx:AdaptiveSize Thickness='0,-1,3,-1'}"
+                                    HorizontalAlignment="Right"
+                                    Content="Отмена"
+                                    FontSize="{mx:AdaptiveSize 16}"
+                                    Style="{StaticResource SecondaryButton}" />
+
+                            </Grid>
+
+                        </Border>
+
+                    </Grid>
+
+                </Border>
+
+            </Grid>
+        </Border>
+
+    </ControlTemplate>
+
+    <Style BasedOn="{StaticResource WideDialogUserControl}" TargetType="{x:Type dialogs:SelectionDialogBase`1}">
+        <Setter Property="Template" Value="{StaticResource SelectiongDialogBaseTemplate}" />
+    </Style>
+
+
+</ResourceDictionary>
