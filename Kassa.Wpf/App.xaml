@@ -10,23 +10,21 @@
             <FontFamily x:Key="Montseratt">./Assets/Fonts/Montseratt/#Montserrat</FontFamily>
             <FontFamily x:Key="LucidaConsole">./Assets/Fonts/LucidaConsole/#lucidaconsole</FontFamily>
 
-            <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
-            <converters:IsValueLessThanParameter x:Key="IsValueLessThanParameter" />
-            <converters:IsNullOrWhitespaceConverter x:Key="IsNullOrWhitespaceConverter" />
-            <converters:GuidToGridNumber x:Key="GuidToGridNumber" />
-
             <ResourceDictionary.MergedDictionaries>
+
+                <ResourceDictionary Source="/Resources/Converters.xaml" />
+
                 <ResourceDictionary Source="Themes/PornhubThemeGenerated.xaml" />
                 <ResourceDictionary Source="/Resources/Icons.xaml" />
                 <ResourceDictionary Source="Resources/Styles.xaml" />
 
                 <ResourceDictionary Source="/Dialogs/BaseDialog.xaml" />
                 <ResourceDictionary Source="/Dialogs/ClosableDialog.xaml" />
-                <ResourceDictionary Source="/Dialogs/SelectionDialogBase.xaml" />
                 <ResourceDictionary Source="/Resources/ScrollBar.xaml" />
                 <ResourceDictionary Source="/Resources/CashierTabPanel.xaml" />
                 <ResourceDictionary Source="/Resources/DataGrid.xaml" />
                 <ResourceDictionary Source="/Resources/ProjectIcons.xaml" />
+                <ResourceDictionary Source="/Dialogs/SelectionDialogBase.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
 

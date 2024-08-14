@@ -11,45 +11,15 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Kassa.RxUI.Dialogs;
 using ReactiveUI;
+using static Kassa.Wpf.Dialogs.SelectionDialog;
 
 namespace Kassa.Wpf.Dialogs;
 
 public abstract class SelectionDialogBase<T> : ClosableDialog<T> where T : BaseSelectDialogViewModel
-{
-
-    // TODO: Replace with IsKeyboardEnabled
-    public static readonly DependencyProperty IsKeyboardVisibleProperty = DependencyProperty.Register(
-        nameof(IsKeyboardVisible), typeof(bool), typeof(SelectionDialogBase<T>), new PropertyMetadata(default(bool), OnIsKeyboardVisibleChanged));
-
-    // TODO: Replace with IsKeyboardVisible
-    public static readonly DependencyProperty IsKeyboardEnabledProperty = DependencyProperty.Register(
-        nameof(IsKeyboardEnabled), typeof(bool), typeof(SelectionDialogBase<T>), new PropertyMetadata(default(bool)));
-
-    public static readonly DependencyProperty SearchTextProperty = DependencyProperty.Register(
-        nameof(SearchText), typeof(string), typeof(SelectionDialogBase<T>), new PropertyMetadata(default(string)));
-
-    public static readonly DependencyProperty KeyboardVisibilityTextProperty = DependencyProperty.Register(
-        nameof(KeyboardVisibilityText), typeof(string), typeof(SelectionDialogBase<T>), new PropertyMetadata(default(string)));
-
-    public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.Register(
-        nameof(ItemsSource), typeof(IEnumerable), typeof(SelectionDialogBase<T>), new PropertyMetadata(default(IEnumerable)));
-
+{  
     static SelectionDialogBase()
     {
         DefaultStyleKeyProperty.OverrideMetadata(typeof(SelectionDialogBase<T>), new FrameworkPropertyMetadata(typeof(SelectionDialogBase<T>)));
-    }
-
-    private static void OnIsKeyboardVisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-    {
-        if (d is SelectionDialogBase<T> dialog)
-        {
-            var value = (bool)e.NewValue;
-
-            if (!value)
-            {
-                dialog.IsKeyboardEnabled = false;
-            }
-        }
     }
 
     public bool IsKeyboardVisible
@@ -88,10 +58,10 @@ public abstract class SelectionDialogBase<T> : ClosableDialog<T> where T : BaseS
 
         this.WhenActivated(disposables =>
         {
-            this.Bind(ViewModel, x => x.SearchText, x => x.SearchText)
+            this.OneWayBind(ViewModel, x => x.SearchText, x => x.SearchText)
                 .DisposeWith(disposables);
 
-            this.Bind(ViewModel, x => x.IsKeyboardVisible, x => x.IsKeyboardEnabled)
+            this.OneWayBind(ViewModel, x => x.IsKeyboardVisible, x => x.IsKeyboardEnabled)
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, x => x.Items, x => x.ItemsSource)
@@ -103,6 +73,25 @@ public abstract class SelectionDialogBase<T> : ClosableDialog<T> where T : BaseS
                 x => x ? "Вкл" : "Выкл"
             ).DisposeWith(disposables);
         });
+    }
+
+    protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
+    {
+        base.OnPropertyChanged(e);
+
+        if (e.Property == HeaderTemplateProperty)
+        {
+        }
+
+        if (e.Property == SearchTextProperty)
+        {
+            ViewModel!.SearchText = (string)e.NewValue;
+        }
+
+        if (e.Property == IsKeyboardEnabledProperty)
+        {
+            ViewModel!.IsKeyboardVisible = (bool)e.NewValue;
+        }
     }
 
     public override void OnApplyTemplate()
