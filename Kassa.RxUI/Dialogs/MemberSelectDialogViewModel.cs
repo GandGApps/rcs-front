@@ -15,9 +15,10 @@ using System.Reactive.Linq;
 namespace Kassa.RxUI.Dialogs;
 public sealed class MemberSelectDialogViewModel : ApplicationManagedModelSearchableDialogViewModel<MemberDto, MemberVm>
 {
+    private readonly Func<MemberDto, DialogViewModel?>? _afterSelectAction;
 
     [Reactive]
-    public object? Header
+    public object? HeaderTemplateKey
     {
         get; set;
     }
@@ -33,16 +34,38 @@ public sealed class MemberSelectDialogViewModel : ApplicationManagedModelSearcha
         get;
     }
 
-    public MemberSelectDialogViewModel()
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="afterSelectAction">When a member is selected, you can return a new dialog instance, which will be displayed, or return null to close the dialog.</param>
+    public MemberSelectDialogViewModel(Func<MemberDto, DialogViewModel?>? afterSelectAction = null)
     {
+        _afterSelectAction = afterSelectAction;
 
         SelectedMemberCommand = ReactiveCommand.Create<MemberDto, MemberDto>(x => x);
 
         SelectCommand = ReactiveCommand.CreateFromTask<MemberVm>(async x =>
         {
+            x.IsSelected = true;
             SelectedItem = x;
 
             await SelectedMemberCommand.Execute(x.MemberDto);
+
+            if(_afterSelectAction == null)
+            {
+                return;
+            }
+
+            var dialog = _afterSelectAction(x.MemberDto);
+
+            if(dialog != null)
+            {
+                await MainViewModel.ShowDialogAndWaitClose(dialog);
+            }
+            else
+            {
+                await CloseCommand.Execute();
+            }
         });
     }
 
@@ -50,7 +73,7 @@ public sealed class MemberSelectDialogViewModel : ApplicationManagedModelSearcha
     {
         var memberService = await Locator.GetInitializedService<IMemberService>();
 
-        Filter(memberService.RuntimeMembers, x => new MemberVm(x), disposables);
+        Filter(memberService.RuntimeMembers, x => new MemberVm(x, this), disposables);
     }
 
     protected override bool IsMatch(string searchText, MemberDto item)

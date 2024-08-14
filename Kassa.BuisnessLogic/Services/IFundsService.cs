@@ -12,8 +12,8 @@ namespace Kassa.BuisnessLogic.Services;
 /// It provides methods to withdraw funds with a specified reason and optionally link it to a member, 
 /// as well as to deposit funds with a specified reason and member.
 /// </summary>
-public interface IFundsTransferService
+public interface IFundsService
 {
-    public Task<WithdrawalActDto> Withdrawal(double amount, Guid? memberId, WithdrawalReasonDto withdrawalReason);
+    public Task<ResultWithdrawal> Withdrawal(double amount, Guid? memberId, WithdrawalReasonDto withdrawalReason);
     public Task<DepositActDto> Deposit(double amount, Guid? memberId, DepositReasonDto depositReason);
 }
