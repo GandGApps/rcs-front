@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Disposables;
@@ -8,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI;
+using System.Reactive.Linq;
 
 namespace Kassa.RxUI.Dialogs;
 
@@ -30,12 +32,28 @@ public abstract class BaseSelectDialogViewModel: DialogViewModel
     {
         get; set;
     }
+
+    public abstract IEnumerable? Items
+    {
+        get;
+    }
 }
 
 public abstract class BaseSelectDialogViewModel<TItem, TVm> : BaseSelectDialogViewModel
     where TItem : class
     where TVm : class
 {
+    private readonly ObservableAsPropertyHelper<IEnumerable?> _items;
+
+    public BaseSelectDialogViewModel()
+    {
+        this.WhenAnyValue(x => x.FilteredItems)
+            .Select(items => (IEnumerable?)items)
+            .ToProperty(this, x => x.Items, out _items)
+            .DisposeWith(InternalDisposables);
+    }
+
+    public override IEnumerable? Items => _items.Value;
     
     [Reactive]
     public ReadOnlyObservableCollection<TVm>? FilteredItems

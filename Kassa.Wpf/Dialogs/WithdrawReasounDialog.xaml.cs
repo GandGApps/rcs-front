@@ -22,19 +22,12 @@ namespace Kassa.Wpf.Dialogs;
 /// <summary>
 /// Interaction logic for WithdrawReasounDialog.xaml
 /// </summary>
-public partial class WithdrawReasounDialog : ClosableDialog<WithdrawReasounDialogViewModel>
+public partial class WithdrawReasounDialog : SelectionDialogBase<WithdrawReasounDialogViewModel>
 {
     public WithdrawReasounDialog()
     {
         InitializeComponent();
 
-        this.WhenActivated(disposables =>
-        {
-            this.OneWayBind(ViewModel, vm => vm.FilteredItems, v => v.WithdrawList.ItemsSource)
-                .DisposeWith(disposables);
-
-            this.BindCommand(ViewModel, vm => vm.CloseCommand, v => v.CancelButton)
-                .DisposeWith(disposables);
-        });
+        
     }
 }

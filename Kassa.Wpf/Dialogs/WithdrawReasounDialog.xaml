@@ -1,4 +1,4 @@
-﻿<local:ClosableDialog
+﻿<local:SelectionDialogBase
     x:Class="Kassa.Wpf.Dialogs.WithdrawReasounDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -13,19 +13,11 @@
     xmlns:view="clr-namespace:Kassa.Wpf.Views"
     d:DataContext="{d:DesignInstance Type=dialogs:WithdrawReasounDialogViewModel}"
     x:TypeArguments="dialogs:WithdrawReasounDialogViewModel"
-    Style="{StaticResource WideDialogUserControl}"
+    Style="{StaticResource SelectionDialog}"
     mc:Ignorable="d">
-    <Border Style="{StaticResource WideDialog}">
-        <Grid>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
+    <local:SelectionDialog.HeaderTemplate>
+        <DataTemplate>
             <StackPanel Orientation="Horizontal">
                 <Path
                     Width="{mx:AdaptiveSize 32}"
@@ -42,72 +34,13 @@
                     <Run Text="Выберите тип " /><Run Foreground="{DynamicResource DangerBrush}" Text="изъятия" />
                 </TextBlock>
             </StackPanel>
-            <Border
-                Grid.Row="1"
-                Width="{mx:AdaptiveSize 1280}"
-                Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
-                Style="{DynamicResource Separator}" />
+        </DataTemplate>
+    </local:SelectionDialog.HeaderTemplate>
 
-            <ScrollViewer
-                Grid.Row="2"
-                HorizontalContentAlignment="Stretch"
-                HorizontalScrollBarVisibility="Disabled"
-                Style="{StaticResource PrimaryScrollViewer}">
+    <local:SelectionDialog.ItemTemplate>
+        <DataTemplate>
+            <view:WithdrawalReasonView ViewModel="{Binding ., Mode=OneTime}" />
+        </DataTemplate>
+    </local:SelectionDialog.ItemTemplate>
 
-                <i:Interaction.Behaviors>
-                    <behaviors:ScrollViewerFixingBehavior />
-                </i:Interaction.Behaviors>
-
-                <ItemsControl x:Name="WithdrawList" BorderThickness="0">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <controls:FixedColumnsPanel
-                                HorizontalAlignment="Stretch"
-                                Columns="4"
-                                Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <view:WithdrawalReasonView ViewModel="{Binding ., Mode=OneTime}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-
-            <Border
-                Grid.Row="4"
-                Margin="{mx:AdaptiveSize Thickness='0,0,0,10'}"
-                Style="{StaticResource DialogFooter}">
-                <Grid>
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <controls:ButtonWithCornerRaduis x:Name="BackButton" Style="{StaticResource BackButton}" />
-
-                    <Button
-                        x:Name="CancelButton"
-                        Grid.Column="3"
-                        Width="{mx:AdaptiveSize 155}"
-                        MinWidth="10"
-                        Margin="{mx:AdaptiveSize Thickness='0,-1,3,-1'}"
-                        HorizontalAlignment="Right"
-                        FontSize="{mx:AdaptiveSize 16}"
-                        Style="{StaticResource SecondaryButton}">
-                        Отмена
-                    </Button>
-
-
-                </Grid>
-
-            </Border>
-
-        </Grid>
-
-    </Border>
-</local:ClosableDialog>
+</local:SelectionDialogBase>

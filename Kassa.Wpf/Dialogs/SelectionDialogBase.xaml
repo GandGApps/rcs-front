@@ -8,7 +8,7 @@
     xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     xmlns:view="clr-namespace:Kassa.Wpf.Views">
 
-    <ControlTemplate x:Key="SelectiongDialogBaseTemplate" TargetType="{x:Type dialogs:SelectionDialogBase`1}">
+    <ControlTemplate x:Key="SelectionDialogBaseTemplate" TargetType="{x:Type dialogs:SelectionDialogBase`1}">
         <Border Margin="{mx:AdaptiveSize Thickness='76,0,0,76'}" Padding="{TemplateBinding Padding}">
             <Grid HorizontalAlignment="Center" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
 
@@ -73,7 +73,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <ContentPresenter ContentTemplate="{TemplateBinding HeaderTemplate}" />
+                        <ContentPresenter ContentTemplate="{TemplateBinding dialogs:SelectionDialog.HeaderTemplate}" />
 
                         <Border
                             Grid.Row="1"
@@ -93,9 +93,9 @@
                             </i:Interaction.Behaviors>
 
                             <ItemsControl
-                                x:Name="StreetList"
                                 BorderThickness="0"
-                                ItemTemplate="{TemplateBinding ItemTemplate}">
+                                ItemTemplate="{TemplateBinding dialogs:SelectionDialog.ItemTemplate}"
+                                ItemsSource="{TemplateBinding ItemsSource}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <controls:FixedColumnsPanel
@@ -112,8 +112,9 @@
                             Grid.Row="3"
                             Margin="0,0,0,15"
                             VerticalAlignment="Bottom"
-                            IsEnabled="False"
-                            Visibility="{TemplateBinding IsKeyboardEnabled}" />
+                            Text="{TemplateBinding SearchText}"
+                            Visibility="{TemplateBinding IsKeyboardEnabled,
+                                                         Converter={StaticResource BoolToVisibilityConverter}}" />
 
                         <Border
                             Grid.Row="4"
@@ -131,12 +132,14 @@
                                 <CheckBox
                                     x:Name="IsKeyboardEnabled"
                                     IsChecked="{TemplateBinding IsKeyboardEnabled}"
-                                    Style="{StaticResource KeyboardCheckbox}">
+                                    Style="{StaticResource KeyboardCheckbox}"
+                                    Visibility="{TemplateBinding IsKeyboardVisible,
+                                                                 Converter={StaticResource BoolToVisibilityConverter}}">
                                     <StackPanel VerticalAlignment="Center">
                                         <Path Style="{StaticResource KeyboardCheckboxIcon}" />
                                         <TextBlock Style="{StaticResource KeyboardCheckboxText}">
                                             <Run Text="Клавиатура" />
-                                            <Run x:Name="KeyboardVisibilityText" Text="Выкл" />
+                                            <Run x:Name="KeyboardVisibilityText" Text="{TemplateBinding KeyboardVisibilityText}" />
                                         </TextBlock>
                                     </StackPanel>
                                 </CheckBox>
@@ -144,7 +147,9 @@
                                 <Border
                                     Grid.Column="1"
                                     Width="{mx:AdaptiveSize 320}"
-                                    Style="{StaticResource SearchTextBoxBorder}">
+                                    Style="{StaticResource SearchTextBoxBorder}"
+                                    Visibility="{TemplateBinding IsKeyboardVisible,
+                                                                 Converter={StaticResource BoolToVisibilityConverter}}">
                                     <Grid VerticalAlignment="Center">
 
                                         <Grid.ColumnDefinitions>
@@ -152,7 +157,10 @@
                                             <ColumnDefinition Width="Auto" />
                                         </Grid.ColumnDefinitions>
 
-                                        <controls:TextBoxWithoutVirtualKeyboard x:Name="SearchTextBox" Style="{StaticResource SearchTextBox}" />
+                                        <controls:TextBoxWithoutVirtualKeyboard
+                                            x:Name="SearchTextBox"
+                                            Style="{StaticResource SearchTextBox}"
+                                            Text="{TemplateBinding SearchText}" />
 
                                         <Path Grid.Column="1" Style="{StaticResource SearchTextBoxIcon}" />
 
@@ -164,7 +172,9 @@
                                     Grid.Column="2"
                                     Margin="{mx:AdaptiveSize Thickness='10,0,0,0'}"
                                     HorizontalAlignment="Left"
-                                    Style="{StaticResource ClearSearchTextBorder}">
+                                    Style="{StaticResource ClearSearchTextBorder}"
+                                    Visibility="{TemplateBinding IsKeyboardVisible,
+                                                                 Converter={StaticResource BoolToVisibilityConverter}}">
                                     <Path Style="{StaticResource ClearSearchTextIcon}" />
                                 </Border>
 
@@ -193,8 +203,11 @@
 
     </ControlTemplate>
 
-    <Style BasedOn="{StaticResource WideDialogUserControl}" TargetType="{x:Type dialogs:SelectionDialogBase`1}">
-        <Setter Property="Template" Value="{StaticResource SelectiongDialogBaseTemplate}" />
+    <Style
+        x:Key="SelectionDialog"
+        BasedOn="{StaticResource WideDialogUserControl}"
+        TargetType="UserControl">
+        <Setter Property="Template" Value="{StaticResource SelectionDialogBaseTemplate}" />
     </Style>
 
 
