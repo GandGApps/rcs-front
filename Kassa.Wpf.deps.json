@@ -20,21 +20,21 @@
           "ReactiveUI.Fody": "19.5.41",
           "ReactiveUI.WPF": "20.1.1",
           "WpfAnimatedGif": "2.0.2",
-          "runtimepack.Microsoft.Windows.SDK.NET.Ref": "10.0.17763.31"
+          "runtimepack.Microsoft.Windows.SDK.NET.Ref": "10.0.17763.34"
         },
         "runtime": {
           "Kassa.Wpf.dll": {}
         }
       },
-      "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.17763.31": {
+      "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.17763.34": {
         "runtime": {
           "Microsoft.Windows.SDK.NET.dll": {
             "assemblyVersion": "10.0.17763.24",
-            "fileVersion": "10.0.17763.31"
+            "fileVersion": "10.0.17763.34"
           },
           "WinRT.Runtime.dll": {
             "assemblyVersion": "2.0.0.0",
-            "fileVersion": "2.0.4.44211"
+            "fileVersion": "2.0.8.46841"
           }
         }
       },
@@ -666,7 +666,10 @@
           "Riok.Mapperly": "3.5.1"
         },
         "runtime": {
-          "Kassa.BuisnessLogic.dll": {}
+          "Kassa.BuisnessLogic.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       },
       "Kassa.BuisnessLogic.Edgar/1.0.0": {
@@ -681,7 +684,10 @@
           "System.IdentityModel.Tokens.Jwt": "7.5.1"
         },
         "runtime": {
-          "Kassa.BuisnessLogic.Edgar.dll": {}
+          "Kassa.BuisnessLogic.Edgar.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       },
       "Kassa.DataAccess/1.0.0": {
@@ -690,7 +696,10 @@
           "System.Text.Json": "8.0.1"
         },
         "runtime": {
-          "Kassa.DataAccess.dll": {}
+          "Kassa.DataAccess.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       },
       "Kassa.DataAccess.HttpRepository/1.0.0": {
@@ -700,7 +709,10 @@
           "Riok.Mapperly": "3.5.1"
         },
         "runtime": {
-          "Kassa.DataAccess.HttpRepository.dll": {}
+          "Kassa.DataAccess.HttpRepository.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       },
       "Kassa.RxUI/1.0.0": {
@@ -709,7 +721,10 @@
           "ReactiveUI.Fody": "19.5.41"
         },
         "runtime": {
-          "Kassa.RxUI.dll": {}
+          "Kassa.RxUI.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       },
       "Kassa.Shared/1.0.0": {
@@ -729,7 +744,10 @@
           "System.Reactive": "6.0.1"
         },
         "runtime": {
-          "Kassa.Shared.dll": {}
+          "Kassa.Shared.dll": {
+            "assemblyVersion": "1.0.0",
+            "fileVersion": "1.0.0.0"
+          }
         }
       }
     }
@@ -740,7 +758,7 @@
       "serviceable": false,
       "sha512": ""
     },
-    "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.17763.31": {
+    "runtimepack.Microsoft.Windows.SDK.NET.Ref/10.0.17763.34": {
       "type": "runtimepack",
       "serviceable": false,
       "sha512": ""
