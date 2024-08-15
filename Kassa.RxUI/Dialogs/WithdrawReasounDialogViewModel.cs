@@ -21,7 +21,12 @@ public sealed class WithdrawReasounDialogViewModel: ApplicationManagedModelSearc
 
             var memberSelectViewModel = new MemberSelectDialogViewModel(member =>
             {
-                return null;
+                var fundActDialog = new FundActDialogViewModel
+                {
+                    Member = member.Name,
+                };
+
+                return fundActDialog;
             })
             {
                 HeaderTemplateKey = "WithdrawReasounDialog"

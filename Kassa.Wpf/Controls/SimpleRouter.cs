@@ -85,9 +85,13 @@ public sealed class SimpleRouter : ContentControl
             [typeof(Kassa.RxUI.Dialogs.TurnOffDialogViewModel)] = () => new Kassa.Wpf.Dialogs.TurnOffDialog(),
             [typeof(Kassa.RxUI.Dialogs.WithdrawReasounDialogViewModel)] = () => new Kassa.Wpf.Dialogs.WithdrawReasounDialog(),
             [typeof(Kassa.RxUI.Dialogs.MemberSelectDialogViewModel)] = () => new Kassa.Wpf.Dialogs.MemberSelectDialog(),
+            [typeof(Kassa.RxUI.Dialogs.FundActDialogViewModel)] = () => new Kassa.Wpf.Dialogs.FundActDialog(),
         };
 
         ViewsFor = viewsFor.ToFrozenDictionary();
+
+        // It's `Kostyl` for logging all views
+        // because I am to lazy to write it manually
 
         /*foreach (var ti in Assembly.GetCallingAssembly().DefinedTypes
                                    .Where(ti => ti.ImplementedInterfaces.Contains(typeof(IViewFor)) && !ti.IsAbstract))

@@ -23,7 +23,7 @@
             <Style.Triggers>
 
                 <DataTrigger Binding="{Binding HeaderTemplateKey}" Value="WithdrawReasounDialog">
-                    <Setter Property="local:SelectionDialog.HeaderTemplate">
+                    <Setter Property="local:WidePrimaryDialog.HeaderTemplate">
                         <Setter.Value>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
@@ -48,7 +48,7 @@
                 </DataTrigger>
 
                 <DataTrigger Binding="{Binding HeaderTemplateKey}" Value="DepositReasounDialog">
-                    <Setter Property="local:SelectionDialog.HeaderTemplate">
+                    <Setter Property="local:WidePrimaryDialog.HeaderTemplate">
                         <Setter.Value>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">

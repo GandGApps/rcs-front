@@ -110,6 +110,8 @@ public abstract class SelectionDialogBase<T> : ClosableDialog<T> where T : BaseS
 
             if (GetTemplateChild("ClearIcon") is UIElement clearIcon)
             {
+                // It might not be the best idea to use WeakEventManager here,
+                // but I'm not sure if it will be garbage collected or not.
                 WeakEventManager<UIElement, MouseButtonEventArgs>.AddHandler(clearIcon, nameof(MouseDown), (_, _) => ViewModel!.SearchText = string.Empty);
             }
 

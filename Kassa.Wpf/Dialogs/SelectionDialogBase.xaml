@@ -74,7 +74,7 @@
                             <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
-                        <ContentPresenter ContentTemplate="{TemplateBinding dialogs:SelectionDialog.HeaderTemplate}" />
+                        <ContentPresenter ContentTemplate="{TemplateBinding dialogs:WidePrimaryDialog.HeaderTemplate}" />
 
                         <Border
                             Grid.Row="1"
@@ -95,8 +95,8 @@
 
                             <ItemsControl
                                 BorderThickness="0"
-                                ItemTemplate="{TemplateBinding dialogs:SelectionDialog.ItemTemplate}"
-                                ItemsSource="{TemplateBinding dialogs:SelectionDialog.ItemsSource}">
+                                ItemTemplate="{TemplateBinding dialogs:WidePrimaryDialog.ItemTemplate}"
+                                ItemsSource="{TemplateBinding dialogs:WidePrimaryDialog.ItemsSource}">
                                 <ItemsControl.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <controls:FixedColumnsPanel
@@ -113,9 +113,9 @@
                             Grid.Row="3"
                             Margin="0,0,0,15"
                             VerticalAlignment="Bottom"
-                            Text="{Binding Path=(dialogs:SelectionDialog.SearchText), RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                            Text="{Binding Path=(dialogs:WidePrimaryDialog.SearchText), RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                             TextBox="{Binding ElementName=SearchTextBox, Path=.}"
-                            Visibility="{TemplateBinding dialogs:SelectionDialog.IsKeyboardEnabled,
+                            Visibility="{TemplateBinding dialogs:WidePrimaryDialog.IsKeyboardEnabled,
                                                          Converter={StaticResource BoolToVisibilityConverter}}" />
 
                         <Border
@@ -133,14 +133,14 @@
 
                                 <CheckBox
                                     x:Name="IsKeyboardEnabled"
-                                    IsChecked="{Binding Path=(dialogs:SelectionDialog.IsKeyboardEnabled), RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                    IsChecked="{Binding Path=(dialogs:WidePrimaryDialog.IsKeyboardEnabled), RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
                                     Style="{StaticResource KeyboardCheckbox}"
-                                    Visibility="{TemplateBinding dialogs:SelectionDialog.IsKeyboardVisible}">
+                                    Visibility="{TemplateBinding dialogs:WidePrimaryDialog.IsKeyboardVisible}">
                                     <StackPanel VerticalAlignment="Center">
                                         <Path Style="{StaticResource KeyboardCheckboxIcon}" />
                                         <TextBlock Style="{StaticResource KeyboardCheckboxText}">
                                             <Run Text="Клавиатура" />
-                                            <Run x:Name="KeyboardVisibilityText" Text="{TemplateBinding dialogs:SelectionDialog.KeyboardVisibilityText}" />
+                                            <Run x:Name="KeyboardVisibilityText" Text="{TemplateBinding dialogs:WidePrimaryDialog.KeyboardVisibilityText}" />
                                         </TextBlock>
                                     </StackPanel>
                                 </CheckBox>
@@ -149,7 +149,7 @@
                                     Grid.Column="1"
                                     Width="{mx:AdaptiveSize 320}"
                                     Style="{StaticResource SearchTextBoxBorder}"
-                                    Visibility="{TemplateBinding dialogs:SelectionDialog.IsKeyboardVisible}">
+                                    Visibility="{TemplateBinding dialogs:WidePrimaryDialog.IsKeyboardVisible}">
                                     <Grid VerticalAlignment="Center">
 
                                         <Grid.ColumnDefinitions>
@@ -160,7 +160,7 @@
                                         <controls:TextBoxWithoutVirtualKeyboard
                                             x:Name="SearchTextBox"
                                             Style="{StaticResource SearchTextBox}"
-                                            Text="{Binding Path=(dialogs:SelectionDialog.SearchText), RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+                                            Text="{Binding Path=(dialogs:WidePrimaryDialog.SearchText), RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
 
                                         <Path Grid.Column="1" Style="{StaticResource SearchTextBoxIcon}" />
 
@@ -173,7 +173,7 @@
                                     Margin="{mx:AdaptiveSize Thickness='10,0,0,0'}"
                                     HorizontalAlignment="Left"
                                     Style="{StaticResource ClearSearchTextBorder}"
-                                    Visibility="{TemplateBinding dialogs:SelectionDialog.IsKeyboardVisible}">
+                                    Visibility="{TemplateBinding dialogs:WidePrimaryDialog.IsKeyboardVisible}">
                                     <Path Style="{StaticResource ClearSearchTextIcon}" />
                                 </Border>
 
