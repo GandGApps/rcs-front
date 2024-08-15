@@ -77,10 +77,10 @@
 
     </UserControl.Style>
 
-    <local:SelectionDialog.ItemTemplate>
+    <local:WidePrimaryDialog.ItemTemplate>
         <DataTemplate>
             <view:MemberView ViewModel="{Binding ., Mode=OneTime}" />
         </DataTemplate>
-    </local:SelectionDialog.ItemTemplate>
+    </local:WidePrimaryDialog.ItemTemplate>
 
 </local:SelectionDialogBase>

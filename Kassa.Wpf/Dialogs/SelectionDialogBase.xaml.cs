@@ -11,7 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using Kassa.RxUI.Dialogs;
 using ReactiveUI;
-using static Kassa.Wpf.Dialogs.SelectionDialog;
+using static Kassa.Wpf.Dialogs.WidePrimaryDialog;
 
 namespace Kassa.Wpf.Dialogs;
 

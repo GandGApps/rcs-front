@@ -8,50 +8,50 @@ using System.Windows;
 using System.Windows.Controls;
 
 namespace Kassa.Wpf.Dialogs;
-public static class SelectionDialog
+public static class WidePrimaryDialog
 {
     public static readonly DependencyProperty HeaderTemplateProperty = DependencyProperty.RegisterAttached(
         "HeaderTemplate", 
         typeof(DataTemplate), 
-        typeof(SelectionDialog), 
+        typeof(WidePrimaryDialog), 
         new PropertyMetadata(default(DataTemplate)));
 
     public static readonly DependencyProperty ItemTemplateProperty = DependencyProperty.RegisterAttached(
         "ItemTemplate", 
         typeof(DataTemplate), 
-        typeof(SelectionDialog), 
+        typeof(WidePrimaryDialog), 
         new PropertyMetadata(default(DataTemplate)));
 
     // TODO: Replace with IsKeyboardEnabled
     public static readonly DependencyProperty IsKeyboardVisibleProperty = DependencyProperty.RegisterAttached(
         "IsKeyboardVisible", 
         typeof(bool), 
-        typeof(SelectionDialog), 
+        typeof(WidePrimaryDialog), 
         new PropertyMetadata(default(bool), OnIsKeyboardVisibleChanged));
 
     // TODO: Replace with IsKeyboardVisible
     public static readonly DependencyProperty IsKeyboardEnabledProperty = DependencyProperty.RegisterAttached(
         "IsKeyboardEnabled", 
         typeof(bool), 
-        typeof(SelectionDialog), 
+        typeof(WidePrimaryDialog), 
         new PropertyMetadata(default(bool)));
 
     public static readonly DependencyProperty SearchTextProperty = DependencyProperty.RegisterAttached(
         "SearchText", 
         typeof(string), 
-        typeof(SelectionDialog), 
+        typeof(WidePrimaryDialog), 
         new PropertyMetadata(default(string)));
 
     public static readonly DependencyProperty KeyboardVisibilityTextProperty = DependencyProperty.RegisterAttached(
         "KeyboardVisibilityText", 
         typeof(string), 
-        typeof(SelectionDialog), 
+        typeof(WidePrimaryDialog), 
         new PropertyMetadata(default(string)));
 
     public static readonly DependencyProperty ItemsSourceProperty = DependencyProperty.RegisterAttached(
         "ItemsSource", 
         typeof(IEnumerable), 
-        typeof(SelectionDialog), 
+        typeof(WidePrimaryDialog), 
         new PropertyMetadata(default(IEnumerable)));
 
     private static void OnIsKeyboardVisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

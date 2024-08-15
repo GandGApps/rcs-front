@@ -16,7 +16,7 @@
     Style="{StaticResource SelectionDialog}"
     mc:Ignorable="d">
 
-    <local:SelectionDialog.HeaderTemplate>
+    <local:WidePrimaryDialog.HeaderTemplate>
         <DataTemplate>
             <StackPanel Orientation="Horizontal">
                 <Path
@@ -35,12 +35,12 @@
                 </TextBlock>
             </StackPanel>
         </DataTemplate>
-    </local:SelectionDialog.HeaderTemplate>
+    </local:WidePrimaryDialog.HeaderTemplate>
 
-    <local:SelectionDialog.ItemTemplate>
+    <local:WidePrimaryDialog.ItemTemplate>
         <DataTemplate>
             <view:WithdrawalReasonView ViewModel="{Binding ., Mode=OneTime}" />
         </DataTemplate>
-    </local:SelectionDialog.ItemTemplate>
+    </local:WidePrimaryDialog.ItemTemplate>
 
 </local:SelectionDialogBase>
