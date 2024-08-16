@@ -29,7 +29,7 @@ public sealed partial class NumpadKeyboard : UserControl
         nameof(Amount),
         typeof(double),
         typeof(NumpadKeyboard),
-        new PropertyMetadata(default(double)));
+        new FrameworkPropertyMetadata(default(double), FrameworkPropertyMetadataOptions.BindsTwoWayByDefault));
 
     public double Amount
     {

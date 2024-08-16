@@ -2,17 +2,155 @@
     x:Class="Kassa.Wpf.Dialogs.FundActDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="clr-namespace:Kassa.Wpf.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialogs="clr-namespace:Kassa.RxUI.Dialogs;assembly=Kassa.RxUI"
     xmlns:local="clr-namespace:Kassa.Wpf.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     d:DataContext="{d:DesignInstance Type=dialogs:FundActDialogViewModel}"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    local:WidePrimaryDialog.SearchText="{Binding Comment, Mode=TwoWay}"
     x:TypeArguments="dialogs:FundActDialogViewModel"
-    Style="{StaticResource WidePrimaryDialogBaseStyle}"
     mc:Ignorable="d">
 
-    <TextBlock Text="EEEEEEEEEEEE" />
+    <UserControl.Style>
+
+        <Style BasedOn="{StaticResource WidePrimaryDialogBaseStyle}" TargetType="UserControl">
+            <Style.Triggers>
+
+                <DataTrigger Binding="{Binding HeaderTemplateKey}" Value="WithdrawReasounDialog">
+                    <Setter Property="local:WidePrimaryDialog.HeaderTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <Grid>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Path
+                                        Width="{mx:AdaptiveSize 32}"
+                                        Height="{mx:AdaptiveSize 27}"
+                                        Margin="{mx:AdaptiveSize Thickness='22,0,0,10'}"
+                                        VerticalAlignment="Center"
+                                        Data="{StaticResource WithdrawalIcon}"
+                                        Fill="{DynamicResource SecondaryForeground}" />
+
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Margin="{mx:AdaptiveSize Thickness='16,0,0,0'}"
+                                        VerticalAlignment="Center"
+                                        FontWeight="Normal"
+                                        Style="{DynamicResource Header}">
+                                        <Run Text="Выберите тип " /><Run Foreground="{DynamicResource DangerBrush}" Text="изъятия" />
+                                    </TextBlock>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock
+                                            HorizontalAlignment="Right"
+                                            FontSize="{mx:AdaptiveSize 15}"
+                                            Foreground="{StaticResource AccentBrush2}"
+                                            Text="Кассир"
+                                            TextAlignment="Right" />
+                                        <TextBlock
+                                            HorizontalAlignment="Right"
+                                            FontSize="{mx:AdaptiveSize 15}"
+                                            Text="{Binding ViewModel.Member, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FundActDialog}}}"
+                                            TextAlignment="Right" />
+                                    </StackPanel>
+
+                                </Grid>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+
+            </Style.Triggers>
+        </Style>
+
+    </UserControl.Style>
+
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="0.4*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Style="{StaticResource Header2}" Text="Комментарий:" />
+        <controls:TextBoxWithoutVirtualKeyboard
+            Grid.Row="1"
+            Style="{StaticResource InputDialogStyle}"
+            Text="{Binding Comment}" />
+
+        <TextBlock
+            Grid.Column="1"
+            Style="{StaticResource Header2}"
+            Text="{Binding Reason}" />
+        <Grid Grid.Row="1" Grid.Column="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="1*" />
+            </Grid.RowDefinitions>
+
+            <TextBlock
+                FontSize="{mx:AdaptiveSize 40}"
+                FontWeight="Bold"
+                Style="{StaticResource Header}"
+                TextAlignment="Center">
+                <Run Text="{Binding AmountText, Mode=OneWay}" /> <Run x:Name="CurrentPaymentSumCurrency" Text="р" />
+            </TextBlock>
+
+            <controls:NumpadKeyboard Grid.Row="1" Amount="{Binding Amount}" />
+
+        </Grid>
+
+    </Grid>
+
+    <local:WidePrimaryDialog.FooterTemplate>
+        <DataTemplate>
+            <Grid>
+
+                <CheckBox
+                    x:Name="IsKeyboardEnabled"
+                    IsChecked="{Binding Path=(local:WidePrimaryDialog.IsKeyboardEnabled), RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FundActDialog}}, Mode=TwoWay}"
+                    Style="{StaticResource KeyboardCheckbox}">
+                    <StackPanel VerticalAlignment="Center">
+                        <Path Style="{StaticResource KeyboardCheckboxIcon}" />
+                        <TextBlock Style="{StaticResource KeyboardCheckboxText}">
+                            <Run Text="Клавиатура" /><Run x:Name="KeyboardVisibilityText">
+                                <Run.Style>
+                                    <Style TargetType="Run">
+                                        <Style.Triggers>
+
+                                            <DataTrigger Binding="{Binding Path=(local:WidePrimaryDialog.IsKeyboardEnabled), RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FundActDialog}}}" Value="True">
+                                                <Setter Property="Text" Value="Вкл" />
+                                            </DataTrigger>
+
+                                            <DataTrigger Binding="{Binding Path=(local:WidePrimaryDialog.IsKeyboardEnabled), RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FundActDialog}}}" Value="False">
+                                                <Setter Property="Text" Value="Выкл" />
+                                            </DataTrigger>
+
+                                        </Style.Triggers>
+                                    </Style>
+                                </Run.Style>
+                            </Run>
+                        </TextBlock>
+                    </StackPanel>
+                </CheckBox>
+
+            </Grid>
+        </DataTemplate>
+    </local:WidePrimaryDialog.FooterTemplate>
 
 </local:WidePrimaryDialogBase>

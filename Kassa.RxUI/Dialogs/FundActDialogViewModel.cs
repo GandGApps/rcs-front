@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.Shared;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -14,6 +17,11 @@ public sealed class FundActDialogViewModel: DialogViewModel
     public FundActDialogViewModel()
     {
         ApplyCommand = ReactiveCommand.Create(() => { });
+
+        this.WhenAnyValue(x => x.Amount)
+            .Select(x => x.ToString("0.##", SharedConstants.RuCulture))
+            .ToPropertyEx(this, x => x.AmountText)
+            .DisposeWith(InternalDisposables);
     }
 
     [Reactive]
@@ -50,6 +58,12 @@ public sealed class FundActDialogViewModel: DialogViewModel
     public string ApplyButtonText
     {
         get; set;
+    }
+
+    public extern string AmountText
+    {
+        [ObservableAsProperty]
+        get;
     }
 
     public ReactiveCommand<Unit, Unit> ApplyCommand

@@ -291,7 +291,7 @@
 
                         <controls:Keyboard
                             x:Name="Keyboard"
-                            Grid.Row="3"
+                            Grid.Row="2"
                             Margin="0,0,0,15"
                             VerticalAlignment="Bottom"
                             Text="{Binding Path=(dialogs:WidePrimaryDialog.SearchText), RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"

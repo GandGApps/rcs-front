@@ -51,12 +51,7 @@
                 HorizontalContentAlignment="Stretch"
                 HorizontalScrollBarVisibility="Disabled"
                 Style="{StaticResource PrimaryScrollViewer}">
-                <controls:TextBoxWithoutVirtualKeyboard
-                    x:Name="Input"
-                    AcceptsReturn="True"
-                    BorderThickness="0"
-                    FontSize="{mx:AdaptiveSize 28}"
-                    TextWrapping="Wrap" />
+                <controls:TextBoxWithoutVirtualKeyboard x:Name="Input" Style="{StaticResource InputDialogStyle}" />
             </ScrollViewer>
 
 
