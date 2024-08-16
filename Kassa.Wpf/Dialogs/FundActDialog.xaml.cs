@@ -26,6 +26,8 @@ public sealed partial class FundActDialog : WidePrimaryDialogBase<FundActDialogV
     public FundActDialog()
     {
         InitializeComponent();
+
+        SetValue(WidePrimaryDialog.CurrentTextBoxProperty, InputComment);
     }
 
     private void InputCommentGotFocus(object sender, RoutedEventArgs e)

@@ -60,6 +60,13 @@ public static class WidePrimaryDialog
         typeof(WidePrimaryDialog),
         new PropertyMetadata(default(object)));
 
+    public static readonly DependencyProperty CurrentTextBoxProperty = DependencyProperty.RegisterAttached(
+        "CurrentTextBox",
+        typeof(TextBox),
+        typeof(WidePrimaryDialog),
+        new PropertyMetadata(default(TextBox))
+    );
+
     private static void OnIsKeyboardVisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is DependencyObject dialog)
@@ -96,4 +103,7 @@ public static class WidePrimaryDialog
 
     public static DataTemplate GetFooter(DependencyObject obj) => (DataTemplate)obj.GetValue(FooterProperty);
     public static void SetFooter(DependencyObject obj, object value) => obj.SetValue(FooterProperty, value);
+
+    public static TextBox GetCurrentTextBox(DependencyObject obj) => (TextBox)obj.GetValue(CurrentTextBoxProperty);
+    public static void SetCurrentTextBox(DependencyObject obj, TextBox textBox) => obj.SetValue(CurrentTextBoxProperty, textBox);
 }

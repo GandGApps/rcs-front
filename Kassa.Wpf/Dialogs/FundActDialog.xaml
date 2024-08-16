@@ -154,14 +154,26 @@
     <local:WidePrimaryDialog.Footer>
         <Grid>
 
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="1*" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <controls:ButtonWithCornerRaduis Command="{Binding CloseCommand}" Style="{StaticResource BackButton}" />
+
             <CheckBox
                 x:Name="IsKeyboardEnabled"
+                Grid.Column="1"
+                Margin="{mx:AdaptiveSize Thickness='20,0,0,0'}"
                 IsChecked="{Binding Path=(local:WidePrimaryDialog.IsKeyboardEnabled), RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FundActDialog}}, Mode=TwoWay}"
                 Style="{StaticResource KeyboardCheckbox}">
                 <StackPanel VerticalAlignment="Center">
                     <Path Style="{StaticResource KeyboardCheckboxIcon}" />
                     <TextBlock Style="{StaticResource KeyboardCheckboxText}">
-                        <Run Text="Клавиатура" /><Run x:Name="KeyboardVisibilityText">
+                        <Run Text="Клавиатура" /> <Run x:Name="KeyboardVisibilityText">
                             <Run.Style>
                                 <Style TargetType="Run">
                                     <Style.Triggers>
@@ -181,6 +193,18 @@
                     </TextBlock>
                 </StackPanel>
             </CheckBox>
+
+            <Button
+                x:Name="Accent"
+                Grid.Column="2"
+                Margin="{mx:AdaptiveSize Thickness='0,0,10,0'}"
+                Content="{Binding ApplyButtonText}"
+                Style="{StaticResource AccentDialogFooterButton}" />
+
+            <Button
+                x:Name="CancelButton"
+                Grid.Column="3"
+                Style="{StaticResource CancelButtonStyle}" />
 
         </Grid>
     </local:WidePrimaryDialog.Footer>
