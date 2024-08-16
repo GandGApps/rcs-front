@@ -54,11 +54,11 @@ public static class WidePrimaryDialog
         typeof(WidePrimaryDialog), 
         new PropertyMetadata(default(IEnumerable)));
 
-    public static readonly DependencyProperty FooterTemplateProperty = DependencyProperty.RegisterAttached(
-        "FooterTemplate",
-        typeof(DataTemplate),
+    public static readonly DependencyProperty FooterProperty = DependencyProperty.RegisterAttached(
+        "Footer",
+        typeof(object),
         typeof(WidePrimaryDialog),
-        new PropertyMetadata(default(DataTemplate)));
+        new PropertyMetadata(default(object)));
 
     private static void OnIsKeyboardVisibleChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
@@ -94,6 +94,6 @@ public static class WidePrimaryDialog
     public static IEnumerable GetItemsSource(DependencyObject obj) => (IEnumerable)obj.GetValue(ItemsSourceProperty);
     public static void SetItemsSource(DependencyObject obj, IEnumerable value) => obj.SetValue(ItemsSourceProperty, value);
 
-    public static DataTemplate GetFooterTemplate(DependencyObject obj) => (DataTemplate)obj.GetValue(FooterTemplateProperty);
-    public static void SetFooterTemplate(DependencyObject obj, DataTemplate value) => obj.SetValue(FooterTemplateProperty, value);
+    public static DataTemplate GetFooter(DependencyObject obj) => (DataTemplate)obj.GetValue(FooterProperty);
+    public static void SetFooter(DependencyObject obj, object value) => obj.SetValue(FooterProperty, value);
 }

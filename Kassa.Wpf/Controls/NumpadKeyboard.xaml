@@ -14,7 +14,9 @@
 
         <Grid.Resources>
             <Style BasedOn="{StaticResource BaseKeyButtonStyle}" TargetType="Button">
+
                 <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness=2}" />
+                <Setter Property="Width" Value="{Binding ActualHeight, RelativeSource={RelativeSource Self}}" />
 
                 <Style.Triggers>
 

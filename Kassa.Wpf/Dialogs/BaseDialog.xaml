@@ -304,7 +304,7 @@
                             Margin="{mx:AdaptiveSize Thickness='0,0,0,10'}"
                             Style="{StaticResource DialogFooter}">
 
-                            <ContentPresenter ContentTemplate="{TemplateBinding dialogs:WidePrimaryDialog.FooterTemplate}" />
+                            <ContentPresenter Content="{TemplateBinding dialogs:WidePrimaryDialog.Footer}" />
 
                             <!--
                             <Grid>

@@ -83,19 +83,53 @@
 
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="0.4*" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
-
-        <TextBlock Style="{StaticResource Header2}" Text="Комментарий:" />
-        <controls:TextBoxWithoutVirtualKeyboard
-            Grid.Row="1"
-            Style="{StaticResource InputDialogStyle}"
-            Text="{Binding Comment}" />
 
         <TextBlock
             Grid.Column="1"
             Style="{StaticResource Header2}"
             Text="{Binding Reason}" />
+
+        <StackPanel Grid.Row="1" VerticalAlignment="Center">
+            <Path
+                Width="{mx:AdaptiveSize 136}"
+                Height="{mx:AdaptiveSize 105}"
+                Data="{StaticResource MessageIcon}"
+                Fill="{DynamicResource PrimaryForeground}"
+                Opacity="0.1" />
+            <TextBlock
+                x:Name="Placeholder"
+                HorizontalAlignment="Center"
+                Opacity="0.15"
+                Text="Нажмите на поле для комментария">
+                <TextBlock.Style>
+                    <Style BasedOn="{StaticResource Header2}" TargetType="TextBlock">
+                        <Style.Triggers>
+
+                            <DataTrigger Binding="{Binding IsFocused, ElementName=InputComment}" Value="True">
+                                <Setter Property="Visibility" Value="Hidden" />
+                            </DataTrigger>
+
+                            <DataTrigger Binding="{Binding IsFocused, ElementName=InputComment}" Value="False">
+                                <Setter Property="Visibility" Value="Visible" />
+                            </DataTrigger>
+
+                        </Style.Triggers>
+                    </Style>
+                </TextBlock.Style>
+            </TextBlock>
+        </StackPanel>
+
+        <TextBlock Style="{StaticResource Header2}" Text="Комментарий:" />
+        <controls:TextBoxWithoutVirtualKeyboard
+            x:Name="InputComment"
+            Grid.Row="1"
+            Background="{StaticResource ClickableBg}"
+            GotFocus="InputCommentGotFocus"
+            Style="{StaticResource InputDialogStyle}"
+            Text="{Binding Comment}" />
+
         <Grid Grid.Row="1" Grid.Column="1">
 
             <Grid.RowDefinitions>
@@ -117,40 +151,38 @@
 
     </Grid>
 
-    <local:WidePrimaryDialog.FooterTemplate>
-        <DataTemplate>
-            <Grid>
+    <local:WidePrimaryDialog.Footer>
+        <Grid>
 
-                <CheckBox
-                    x:Name="IsKeyboardEnabled"
-                    IsChecked="{Binding Path=(local:WidePrimaryDialog.IsKeyboardEnabled), RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FundActDialog}}, Mode=TwoWay}"
-                    Style="{StaticResource KeyboardCheckbox}">
-                    <StackPanel VerticalAlignment="Center">
-                        <Path Style="{StaticResource KeyboardCheckboxIcon}" />
-                        <TextBlock Style="{StaticResource KeyboardCheckboxText}">
-                            <Run Text="Клавиатура" /><Run x:Name="KeyboardVisibilityText">
-                                <Run.Style>
-                                    <Style TargetType="Run">
-                                        <Style.Triggers>
+            <CheckBox
+                x:Name="IsKeyboardEnabled"
+                IsChecked="{Binding Path=(local:WidePrimaryDialog.IsKeyboardEnabled), RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FundActDialog}}, Mode=TwoWay}"
+                Style="{StaticResource KeyboardCheckbox}">
+                <StackPanel VerticalAlignment="Center">
+                    <Path Style="{StaticResource KeyboardCheckboxIcon}" />
+                    <TextBlock Style="{StaticResource KeyboardCheckboxText}">
+                        <Run Text="Клавиатура" /><Run x:Name="KeyboardVisibilityText">
+                            <Run.Style>
+                                <Style TargetType="Run">
+                                    <Style.Triggers>
 
-                                            <DataTrigger Binding="{Binding Path=(local:WidePrimaryDialog.IsKeyboardEnabled), RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FundActDialog}}}" Value="True">
-                                                <Setter Property="Text" Value="Вкл" />
-                                            </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=(local:WidePrimaryDialog.IsKeyboardEnabled), RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FundActDialog}}}" Value="True">
+                                            <Setter Property="Text" Value="Вкл" />
+                                        </DataTrigger>
 
-                                            <DataTrigger Binding="{Binding Path=(local:WidePrimaryDialog.IsKeyboardEnabled), RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FundActDialog}}}" Value="False">
-                                                <Setter Property="Text" Value="Выкл" />
-                                            </DataTrigger>
+                                        <DataTrigger Binding="{Binding Path=(local:WidePrimaryDialog.IsKeyboardEnabled), RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FundActDialog}}}" Value="False">
+                                            <Setter Property="Text" Value="Выкл" />
+                                        </DataTrigger>
 
-                                        </Style.Triggers>
-                                    </Style>
-                                </Run.Style>
-                            </Run>
-                        </TextBlock>
-                    </StackPanel>
-                </CheckBox>
+                                    </Style.Triggers>
+                                </Style>
+                            </Run.Style>
+                        </Run>
+                    </TextBlock>
+                </StackPanel>
+            </CheckBox>
 
-            </Grid>
-        </DataTemplate>
-    </local:WidePrimaryDialog.FooterTemplate>
+        </Grid>
+    </local:WidePrimaryDialog.Footer>
 
 </local:WidePrimaryDialogBase>
