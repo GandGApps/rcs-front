@@ -257,12 +257,16 @@ public sealed class RcsLocatorBuilderGenerator : IIncrementalGenerator
 
         // Generate parameters for the method (constructor parameters)
         var parameters = serviceDescriptor.Constructor.Parameters.Select(param =>
-            SyntaxFactory.Argument(SyntaxFactory.InvocationExpression(
-                SyntaxFactory.MemberAccessExpression(SyntaxKind.SimpleMemberAccessExpression,
-                    SyntaxFactory.IdentifierName("RcsLocator.Current"),
-                    SyntaxFactory.IdentifierName("GetRequiredService")))
-                .AddArgumentListArguments(SyntaxFactory.Argument(SyntaxFactory.TypeOfExpression(
-                    SyntaxFactory.ParseTypeName(param.Type.ToDisplayString()))))
+            SyntaxFactory.Argument(
+                SyntaxFactory.InvocationExpression(
+                    SyntaxFactory.MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        SyntaxFactory.IdentifierName(RcsLocatorCurrentLocator),
+                        SyntaxFactory.GenericName(RcsLocatorGetRequiredService).AddTypeArgumentListArguments(
+                            SyntaxFactory.ParseTypeName(param.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat))
+                        )
+                    )
+                )
             )
         ).ToArray();
 
@@ -271,7 +275,7 @@ public sealed class RcsLocatorBuilderGenerator : IIncrementalGenerator
             SyntaxFactory.SingletonList<StatementSyntax>(
                 SyntaxFactory.ReturnStatement(
                     SyntaxFactory.ObjectCreationExpression(
-                        SyntaxFactory.ParseTypeName(serviceDescriptor.ImplementationType.ToDisplayString()))
+                        SyntaxFactory.ParseTypeName(serviceDescriptor.ImplementationType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)))
                     .AddArgumentListArguments(parameters)
                 )
             )
@@ -279,7 +283,7 @@ public sealed class RcsLocatorBuilderGenerator : IIncrementalGenerator
 
         // Generate method declaration
         var methodDeclaration = SyntaxFactory.MethodDeclaration(
-                SyntaxFactory.ParseTypeName(serviceDescriptor.ServiceType.Name),
+                SyntaxFactory.ParseTypeName(serviceDescriptor.ServiceType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)),
                 methodName)
             .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword),
                           SyntaxFactory.Token(SyntaxKind.StaticKeyword))

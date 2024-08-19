@@ -6,8 +6,10 @@ namespace Kassa.Shared.ServiceLocator.Analyzer;
 public static class RcsLocatorBuilderGeneratorStrings
 {
     public const string RcsLocatorBuilderClassName = "RcsLocatorBuilder";
-    public const string RcsLocatorBuilderNamespace = "Kassa.Shared.Locator";
+    public const string RcsLocatorBuilderNamespace = "Kassa.Shared.ServiceLocator";
     public const string RcsLocatorBuilderFullName = $"{RcsLocatorBuilderNamespace}.{RcsLocatorBuilderClassName}";
+    public const string RcsLocatorCurrentLocator = $"RcsLocator";
+    public const string RcsLocatorGetRequiredService = $"GetRequiredService";
     public const string AddTransientMethodName = "AddTransient";
     public const string AddScopedMethodName = "AddScoped";
     public const string AddSingletonMethodName = "AddSingleton";
