@@ -22,7 +22,7 @@
         <Style BasedOn="{StaticResource SelectionDialog}" TargetType="{x:Type local:MemberSelectDialog}">
             <Style.Triggers>
 
-                <DataTrigger Binding="{Binding HeaderTemplateKey}" Value="WithdrawReasounDialog">
+                <DataTrigger Binding="{Binding HeaderTemplateKey}" Value="WithdrawReasonDialog">
                     <Setter Property="local:WidePrimaryDialog.HeaderTemplate">
                         <Setter.Value>
                             <DataTemplate>
@@ -47,7 +47,7 @@
                     </Setter>
                 </DataTrigger>
 
-                <DataTrigger Binding="{Binding HeaderTemplateKey}" Value="DepositReasounDialog">
+                <DataTrigger Binding="{Binding HeaderTemplateKey}" Value="DepositReasonDialog">
                     <Setter Property="local:WidePrimaryDialog.HeaderTemplate">
                         <Setter.Value>
                             <DataTemplate>

@@ -37,6 +37,9 @@ public partial class ServicePage : ReactiveUserControl<ServicePageVm>
             this.OneWayBind(ViewModel, vm =>  vm.CashierShiftButtonText, v => v.CloseShiftButtonText.Text)
                 .DisposeWith(disposables);
 
+            this.OneWayBind(ViewModel, vm => vm.DepositMoneyCommand, v => v.DepositMoneyButton.Command)
+                .DisposeWith(disposables);
+
             this.BindCommand(ViewModel, vm => vm.ShiftButtonCommand, v => v.CloseShiftButton)
                 .DisposeWith(disposables);
 

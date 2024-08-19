@@ -20,11 +20,11 @@ using ReactiveUI;
 namespace Kassa.Wpf.Dialogs;
 
 /// <summary>
-/// Interaction logic for WithdrawReasounDialog.xaml
+/// Interaction logic for WithdrawReasonDialog.xaml
 /// </summary>
-public partial class WithdrawReasounDialog : SelectionDialogBase<WithdrawReasonDialogViewModel>
+public partial class WithdrawReasonDialog : SelectionDialogBase<WithdrawReasonDialogViewModel>
 {
-    public WithdrawReasounDialog()
+    public WithdrawReasonDialog()
     {
         InitializeComponent();
 

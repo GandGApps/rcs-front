@@ -24,7 +24,7 @@ public sealed class WithdrawReasonDialogViewModel: ApplicationManagedModelSearch
                 var fundActDialog = new FundActDialogViewModel
                 {
                     ApplyButtonText = "Изъять",
-                    HeaderTemplateKey = "WithdrawReasounDialog",
+                    HeaderTemplateKey = "WithdrawReasonDialog",
                     Reason = x.Name,
                     Member = member.Name,
                 };
@@ -32,7 +32,7 @@ public sealed class WithdrawReasonDialogViewModel: ApplicationManagedModelSearch
                 return fundActDialog;
             })
             {
-                HeaderTemplateKey = "WithdrawReasounDialog"
+                HeaderTemplateKey = "WithdrawReasonDialog"
             };
 
             await MainViewModel.ShowDialogAndWaitClose(memberSelectViewModel);

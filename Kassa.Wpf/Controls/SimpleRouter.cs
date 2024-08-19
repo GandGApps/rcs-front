@@ -83,9 +83,10 @@ public sealed class SimpleRouter : ContentControl
             [typeof(Kassa.RxUI.Dialogs.ServicesDialogViewModel)] = () => new Kassa.Wpf.Dialogs.ServicesDialog(),
             [typeof(Kassa.RxUI.Dialogs.StreetsDialogViewModel)] = () => new Kassa.Wpf.Dialogs.StreetsDialog(),
             [typeof(Kassa.RxUI.Dialogs.TurnOffDialogViewModel)] = () => new Kassa.Wpf.Dialogs.TurnOffDialog(),
-            [typeof(Kassa.RxUI.Dialogs.WithdrawReasonDialogViewModel)] = () => new Kassa.Wpf.Dialogs.WithdrawReasounDialog(),
+            [typeof(Kassa.RxUI.Dialogs.WithdrawReasonDialogViewModel)] = () => new Kassa.Wpf.Dialogs.WithdrawReasonDialog(),
             [typeof(Kassa.RxUI.Dialogs.MemberSelectDialogViewModel)] = () => new Kassa.Wpf.Dialogs.MemberSelectDialog(),
             [typeof(Kassa.RxUI.Dialogs.FundActDialogViewModel)] = () => new Kassa.Wpf.Dialogs.FundActDialog(),
+            [typeof(Kassa.RxUI.Dialogs.DepositReasonDialogViewModel)] = () => new Kassa.Wpf.Dialogs.DepositReasonDialog(),
         };
 
         ViewsFor = viewsFor.ToFrozenDictionary();

@@ -107,6 +107,13 @@ public sealed class ServicePageVm : PageViewModel
             await MainViewModel.ShowDialogAndWaitClose(dialog);
         });
 
+        DepositMoneyCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var dialog = new DepositReasonDialogViewModel();
+
+            await MainViewModel.ShowDialogAndWaitClose(dialog);
+        });
+
         _shiftService.IsCashierShiftStartedObservable()
             .ToPropertyEx(this, x => x.IsShiftOpenned)
             .DisposeWith(InternalDisposables);

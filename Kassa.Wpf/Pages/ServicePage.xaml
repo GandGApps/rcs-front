@@ -95,7 +95,7 @@
                         <TextBlock Style="{StaticResource SmallRoundedCornerButtonText}" Text="Изъять деньги" />
                     </Button>
 
-                    <Button x:Name="DepositMoney" Style="{StaticResource SmallRoundedCornerButton}">
+                    <Button x:Name="DepositMoneyButton" Style="{StaticResource SmallRoundedCornerButton}">
                         <TextBlock Style="{StaticResource SmallRoundedCornerButtonText}" Text="Внести деньги" />
                     </Button>
 
