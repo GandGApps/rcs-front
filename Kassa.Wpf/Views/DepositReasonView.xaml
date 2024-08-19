@@ -52,11 +52,7 @@
             <Setter Property="MinHeight" Value="{mx:AdaptiveSize 80}" />
             <Setter Property="HorizontalAlignment" Value="Stretch" />
             <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-            <Style.Triggers>
-                <DataTrigger Binding="{Binding IsSelected}" Value="True">
-                    <Setter Property="Background" Value="{DynamicResource StreetViewBackgroundSelected}" />
-                </DataTrigger>
-            </Style.Triggers>
+
         </Style>
     </UserControl.Style>
 

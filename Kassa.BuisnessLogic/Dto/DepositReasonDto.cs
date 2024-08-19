@@ -17,4 +17,9 @@ public class DepositReasonDto: IGuidId
     {
         get; set;
     } = string.Empty;
+
+    public bool IsRequiredComment
+    {
+        get; set;
+    }
 }
