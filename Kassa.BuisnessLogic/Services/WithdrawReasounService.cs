@@ -10,7 +10,7 @@ using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 
 namespace Kassa.BuisnessLogic.Services;
-internal class WithdrawReasounService(IRepository<WithdrawalReason> repository) : BaseInitializableService, IWithdrawReasounService
+internal class WithdrawReasounService(IRepository<WithdrawalReason> repository) : BaseInitializableService, IWithdrawReasonService
 {
     private readonly HostModelManager<WithdrawalReasonDto> _hostModelManager = new();
 

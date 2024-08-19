@@ -22,7 +22,7 @@ namespace Kassa.Wpf.Dialogs;
 /// <summary>
 /// Interaction logic for WithdrawReasounDialog.xaml
 /// </summary>
-public partial class WithdrawReasounDialog : SelectionDialogBase<WithdrawReasounDialogViewModel>
+public partial class WithdrawReasounDialog : SelectionDialogBase<WithdrawReasonDialogViewModel>
 {
     public WithdrawReasounDialog()
     {

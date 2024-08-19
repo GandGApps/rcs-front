@@ -11,8 +11,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     xmlns:view="clr-namespace:Kassa.Wpf.Views"
-    d:DataContext="{d:DesignInstance Type=dialogs:WithdrawReasounDialogViewModel}"
-    x:TypeArguments="dialogs:WithdrawReasounDialogViewModel"
+    d:DataContext="{d:DesignInstance Type=dialogs:WithdrawReasonDialogViewModel}"
+    x:TypeArguments="dialogs:WithdrawReasonDialogViewModel"
     Style="{StaticResource SelectionDialog}"
     mc:Ignorable="d">
 

@@ -11,9 +11,9 @@ using Kassa.DataAccess.Model;
 using ReactiveUI;
 
 namespace Kassa.RxUI.Dialogs;
-public sealed class WithdrawReasounDialogViewModel: ApplicationManagedModelSearchableDialogViewModel<WithdrawalReasonDto, WithdrawalReasonVm>
+public sealed class WithdrawReasonDialogViewModel: ApplicationManagedModelSearchableDialogViewModel<WithdrawalReasonDto, WithdrawalReasonVm>
 {
-    public WithdrawReasounDialogViewModel()
+    public WithdrawReasonDialogViewModel()
     {
         SelectCommand = ReactiveCommand.CreateFromTask<WithdrawalReasonVm>(async x =>
         {
@@ -42,7 +42,7 @@ public sealed class WithdrawReasounDialogViewModel: ApplicationManagedModelSearc
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        var withdrawalReasons = await Locator.GetInitializedService<IWithdrawReasounService>();
+        var withdrawalReasons = await Locator.GetInitializedService<IWithdrawReasonService>();
 
         Filter(withdrawalReasons.RuntimeWithdrawReasouns, x => new WithdrawalReasonVm(x, this), disposables);
     }

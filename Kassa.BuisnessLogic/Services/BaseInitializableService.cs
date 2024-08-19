@@ -57,6 +57,8 @@ internal abstract class BaseInitializableService : ReactiveObject, IInitializabl
         IsInitialized = true;
     }
 
+    protected virtual ValueTask InitializeAsync() => InitializeAsync(InternalDisposables);
+
     protected virtual ValueTask InitializeAsync(CompositeDisposable disposables) => ValueTask.CompletedTask;
 
     protected virtual void Dispose(bool disposing)

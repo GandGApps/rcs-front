@@ -102,7 +102,7 @@ public sealed class ServicePageVm : PageViewModel
 
         WithdrawMoneyCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var dialog = new WithdrawReasounDialogViewModel();
+            var dialog = new WithdrawReasonDialogViewModel();
 
             await MainViewModel.ShowDialogAndWaitClose(dialog);
         });
@@ -235,6 +235,11 @@ public sealed class ServicePageVm : PageViewModel
     }
 
     public ReactiveCommand<Unit, Unit> WithdrawMoneyCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> DepositMoneyCommand
     {
         get;
     }

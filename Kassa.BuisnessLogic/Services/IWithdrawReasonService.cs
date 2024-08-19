@@ -7,7 +7,7 @@ using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 
 namespace Kassa.BuisnessLogic.Services;
-public interface IWithdrawReasounService: IInitializableService
+public interface IWithdrawReasonService: IInitializableService
 {
     public IApplicationModelManager<WithdrawalReasonDto> RuntimeWithdrawReasouns
     {
