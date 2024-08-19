@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Kassa.Shared.ServiceLocator.Analyzer": {
+      "commandName": "Project"
+    },
+    "Profile 1": {
+      "commandName": "DebugRoslynComponent",
+      "targetProject": "..\\Kassa.Shared.ServiceLocator.Analyzer.Test\\Kassa.Shared.ServiceLocator.Analyzer.Test.csproj"
+    }
+  }
+}
