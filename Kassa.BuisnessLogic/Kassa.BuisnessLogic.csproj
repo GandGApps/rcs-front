@@ -22,6 +22,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Kassa.DataAccess\Kassa.DataAccess.csproj" />
+    <ProjectReference Include="..\Kassa.Shared.RcsLocator.Analyzer\Kassa.Shared.RcsLocator.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
+    <ProjectReference Include="..\Kassa.Shared.RcsLocator\Kassa.Shared.RcsLocator.csproj" />
     <ProjectReference Include="..\Kassa.Shared\Kassa.Shared.csproj" />
   </ItemGroup>
 

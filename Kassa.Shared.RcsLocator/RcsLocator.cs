@@ -1,33 +1,48 @@
-﻿using System.Runtime.CompilerServices;
+﻿using System.Collections.Frozen;
+using System.Runtime.CompilerServices;
 using CommunityToolkit.Diagnostics;
-using Kassa.Shared.RcsLocator;
 
 namespace Kassa.Shared.Locator;
 
-public static class RcsLocator
+public sealed class RcsLocator : IServiceProvider
 {
-    public static readonly RcsLocatorBuilder Builder = new();
-
-    public static readonly RcsScopedLocator Scoped = new();
-
-    public static T GetRequiredService<T>() where T : class
+    /// <summary>
+    /// Use this only after building the locator
+    /// </summary>
+    public static RcsLocator Current
     {
-        var descriptor = Builder.FrozenServices[typeof(T)];
-        unsafe
-        {
-            return Unsafe.As<T>(descriptor.Instance ?? descriptor.Creator());
-        }
-    }
+        get; internal set;
+    } = null!;
 
     /// <summary>
-    /// You should not call this method directly. It's need for code generation only.
+    /// Build only once!;
     /// </summary>
-    /// <typeparam name="T">
-    /// Do not use this parameter. It's need for code generation only.
-    /// </typeparam>
-    public static void CreateAndInject<T>(out T instance)
+    public static readonly LocatorBuilder Services = new();
+
+    public static RcsScopedLocator Scoped => Current.RcsScopedLocator;
+
+    private readonly FrozenDictionary<Type, ServiceDesciptor> _services;
+
+    public RcsScopedLocator RcsScopedLocator
     {
-        instance = default!;
-        ThrowHelper.ThrowNotSupportedException("You should not call this method directly. It's need for code generation only.");
+        get;
+    }
+
+    internal RcsLocator(FrozenDictionary<Type, ServiceDesciptor> services, FrozenDictionary<Type, ServiceDesciptor> scopedServices)
+    {
+        RcsScopedLocator = new RcsScopedLocator(scopedServices);
+        _services = services;
+    }
+
+    public object? GetService(Type serviceType) => _services[serviceType].GetService();
+
+    public T? GetService<T>() where T : class, IInitializable => _services[typeof(T)].GetService<T>();
+
+    public T GetRequiredService<T>() where T : class, IInitializable => _services[typeof(T)].GetRequiredService<T>();
+
+
+    public static void BuildLocator()
+    {
+        Current = Services.Build();
     }
 }

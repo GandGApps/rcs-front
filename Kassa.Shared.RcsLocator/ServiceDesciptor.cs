@@ -5,33 +5,31 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 
-namespace Kassa.Shared.RcsLocator;
-internal sealed class ServiceDesciptor(Type serviceType, Func<object>? creator, object? Instance)
+namespace Kassa.Shared.Locator;
+internal sealed unsafe class ServiceDesciptor(Type serviceType, delegate*managed<object?> factory)
 {
     public Type ServiceType => serviceType;
+    public delegate* managed<object?> Factory => factory;
 
-    public Func<object>? Creator => creator;
 
-    public object? Instance
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public object? GetService() => Factory();
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public T? GetService<T>() where T : class => Unsafe.As<T>(Factory());
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public T GetRequiredService<T>() where T : class
     {
-        get; set;
-    } = Instance;
+        var service = Unsafe.As<T>(Factory());
 
-    public T GetRequiredService<T>() where T : class => Unsafe.As<T>(Instance ?? Creator!());
-
-    public T? GetService<T>() where T : class => Unsafe.As<T?>(Instance ?? Creator!());
-
-    public void CreateInstance()
-    {
-        if (Instance is not null)
+        if (service is null)
         {
-            return;
+            ThrowHelper.ThrowInvalidOperationException($"Service of type {ServiceType} is null.");
         }
 
-        Instance = Creator();
+        return service;
     }
-
-    public object? GetService() => Instance ?? Creator();
 }
-
