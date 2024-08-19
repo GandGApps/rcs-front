@@ -1,0 +1,16 @@
+D:\a\rcs-front\rcs-front\Kassa.Shared.RcsLocator\bin\Release\net8.0\Kassa.Shared.RcsLocator.deps.json
+D:\a\rcs-front\rcs-front\Kassa.Shared.RcsLocator\bin\Release\net8.0\Kassa.Shared.RcsLocator.dll
+D:\a\rcs-front\rcs-front\Kassa.Shared.RcsLocator\bin\Release\net8.0\Kassa.Shared.RcsLocator.pdb
+D:\a\rcs-front\rcs-front\Kassa.Shared.RcsLocator\bin\Release\net8.0\Kassa.Shared.dll
+D:\a\rcs-front\rcs-front\Kassa.Shared.RcsLocator\bin\Release\net8.0\Kassa.Shared.pdb
+D:\a\rcs-front\rcs-front\Kassa.Shared.RcsLocator\obj\Release\net8.0\Kassa.Shared.RcsLocator.csproj.AssemblyReference.cache
+D:\a\rcs-front\rcs-front\Kassa.Shared.RcsLocator\obj\Release\net8.0\Kassa.Shared.RcsLocator.GeneratedMSBuildEditorConfig.editorconfig
+D:\a\rcs-front\rcs-front\Kassa.Shared.RcsLocator\obj\Release\net8.0\Kassa.Shared.RcsLocator.AssemblyInfoInputs.cache
+D:\a\rcs-front\rcs-front\Kassa.Shared.RcsLocator\obj\Release\net8.0\Kassa.Shared.RcsLocator.AssemblyInfo.cs
+D:\a\rcs-front\rcs-front\Kassa.Shared.RcsLocator\obj\Release\net8.0\Kassa.Shared.RcsLocator.csproj.CoreCompileInputs.cache
+D:\a\rcs-front\rcs-front\Kassa.Shared.RcsLocator\obj\Release\net8.0\Kassa.Shared.RcsLocator.sourcelink.json
+D:\a\rcs-front\rcs-front\Kassa.Shared.RcsLocator\obj\Release\net8.0\Kassa.Sh.72EC46CA.Up2Date
+D:\a\rcs-front\rcs-front\Kassa.Shared.RcsLocator\obj\Release\net8.0\Kassa.Shared.RcsLocator.dll
+D:\a\rcs-front\rcs-front\Kassa.Shared.RcsLocator\obj\Release\net8.0\refint\Kassa.Shared.RcsLocator.dll
+D:\a\rcs-front\rcs-front\Kassa.Shared.RcsLocator\obj\Release\net8.0\Kassa.Shared.RcsLocator.pdb
+D:\a\rcs-front\rcs-front\Kassa.Shared.RcsLocator\obj\Release\net8.0\ref\Kassa.Shared.RcsLocator.dll
