@@ -1,0 +1,11 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:converters="clr-namespace:Kassa.Wpf.Converters">
+
+    <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+    <converters:IsValueLessThanParameter x:Key="IsValueLessThanParameter" />
+    <converters:IsNullOrWhitespaceConverter x:Key="IsNullOrWhitespaceConverter" />
+    <converters:GuidToGridNumber x:Key="GuidToGridNumber" />
+
+</ResourceDictionary>

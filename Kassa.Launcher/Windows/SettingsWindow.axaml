@@ -1,0 +1,196 @@
+<sukiUi:SukiWindow
+    x:Class="Kassa.Launcher.SettingsWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rxui="http://reactiveui.net"
+    xmlns:skc="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+    xmlns:sktheme="clr-namespace:SukiUI.Theme;assembly=SukiUI"
+    xmlns:st="using:System"
+    xmlns:suki="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+    xmlns:sukiUi="clr-namespace:SukiUI;assembly=SukiUI"
+    xmlns:vm="using:Kassa.Launcher.Vms"
+    x:Name="root"
+    Title="Настройки"
+    Width="720"
+    Height="585"
+    x:DataType="vm:SettingsVm"
+    mc:Ignorable="d">
+    <Grid RowDefinitions="*, Auto">
+
+        <TabControl TabStripPlacement="Left">
+            <TabItem Header="Принтер">
+                <Grid Margin="10" RowDefinitions="Auto, Auto, *, Auto">
+                    <TextBlock
+                        Grid.Row="0"
+                        Classes="h2"
+                        Text="Выберите принтер" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Text="Убедитесь что принтер подключен по usb, а так же поддерживает ESC/POS команды"
+                        TextWrapping="Wrap" />
+                    <ScrollViewer Grid.Row="2" Margin="3,8">
+                        <ItemsControl ItemsSource="{Binding Printers}">
+                            <ItemsControl.ItemsPanel />
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="vm:PrinterVm">
+                                    <suki:GlassCard
+                                        Margin="10,5"
+                                        Classes.Accent="{Binding IsSelected}"
+                                        Command="{Binding #root.ViewModel.SelectPrinterCommand}"
+                                        CommandParameter="{Binding}"
+                                        IsInteractive="True">
+                                        <TextBlock Classes="h4" Text="{Binding Name}" />
+                                    </suki:GlassCard>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+                    <TextBlock
+                        Grid.Row="3"
+                        Text="{Binding SelectedPrinter.Name, StringFormat='Выбран принтер:{0}'}"
+                        TextWrapping="Wrap" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="Денежный ящик">
+                <Grid
+                    Margin="10"
+                    ColumnDefinitions="*,*"
+                    RowDefinitions="Auto, Auto, Auto">
+
+                    <TextBlock
+                        Grid.ColumnSpan="2"
+                        Classes="h2"
+                        Text="Выберите метод подключение к денежнему ящику"
+                        TextWrapping="Wrap" />
+
+                    <suki:GlassCard
+                        Grid.Row="1"
+                        Margin="5"
+                        Classes.Accent="{Binding !IsOposOrEscPosUsbCashDrawer}"
+                        Command="{Binding SelectCashDrawerMethodCommand}"
+                        IsInteractive="True">
+
+                        <suki:GlassCard.CommandParameter>
+                            <st:Boolean>False</st:Boolean>
+                        </suki:GlassCard.CommandParameter>
+
+                        <StackPanel Margin="5">
+                            <TextBlock Classes="h3" Text="Через принтер" />
+                            <TextBlock Text="Если ваш принтер подключен по usb и подерживает ESC/POS то к денежному ящику можно подключиться через принтер" TextWrapping="Wrap" />
+                        </StackPanel>
+
+                    </suki:GlassCard>
+
+                    <suki:GlassCard
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="5"
+                        Classes.Accent="{Binding IsOposOrEscPosUsbCashDrawer}"
+                        Command="{Binding SelectCashDrawerMethodCommand}"
+                        IsInteractive="True">
+
+                        <suki:GlassCard.CommandParameter>
+                            <st:Boolean>True</st:Boolean>
+                        </suki:GlassCard.CommandParameter>
+
+                        <StackPanel Margin="5">
+                            <TextBlock Classes="h3" Text="Через OPOS" />
+                            <TextBlock Text="Если ваш денежный ящик подерживает OPOS и устоновлен соответствующий драйвер, то можно подключиться через этот метод" TextWrapping="Wrap" />
+                        </StackPanel>
+
+                    </suki:GlassCard>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Кард ридер">
+                <ScrollViewer>
+                    <Grid
+                        Margin="10"
+                        ColumnDefinitions="*,*"
+                        RowDefinitions="Auto, Auto, Auto">
+                        <TextBlock
+                            Grid.ColumnSpan="2"
+                            Classes="h2"
+                            Text="Выберите метод подключение к Кард ридеру"
+                            TextWrapping="Wrap" />
+
+                        <suki:GlassCard
+                            Grid.Row="1"
+                            Margin="5"
+                            Classes.Accent="{Binding !IsOposOrKeyboardCardReader}"
+                            Command="{Binding SelectCardReaderMethodCommand}"
+                            IsInteractive="True">
+
+                            <suki:GlassCard.CommandParameter>
+                                <st:Boolean>False</st:Boolean>
+                            </suki:GlassCard.CommandParameter>
+
+                            <StackPanel Margin="5">
+                                <TextBlock Classes="h3" Text="Как клавиатру" />
+                                <TextBlock Text="Если ваш кардридер вставляет текст(например в блокноте) и впринципе работает как клавиатура, то выберите этот метод" TextWrapping="Wrap" />
+                            </StackPanel>
+
+                        </suki:GlassCard>
+
+                        <suki:GlassCard
+                            Grid.Row="1"
+                            Grid.Column="1"
+                            Margin="5"
+                            Classes.Accent="{Binding IsOposOrKeyboardCardReader}"
+                            Command="{Binding SelectCardReaderMethodCommand}"
+                            IsInteractive="True">
+
+                            <suki:GlassCard.CommandParameter>
+                                <st:Boolean>True</st:Boolean>
+                            </suki:GlassCard.CommandParameter>
+
+                            <StackPanel Margin="5">
+                                <TextBlock Classes="h3" Text="Через OPOS" />
+                                <TextBlock Text="Если ваш кардридер подерживает OPOS и устоновлен соответствующий драйвер, то можно подключиться через этот метод" TextWrapping="Wrap" />
+                            </StackPanel>
+
+                        </suki:GlassCard>
+
+                        <StackPanel
+                            Grid.Row="2"
+                            Grid.ColumnSpan="2"
+                            Margin="0,10"
+                            IsVisible="{Binding !IsOposOrKeyboardCardReader}">
+
+                            <TextBlock
+                                Margin="0"
+                                Classes="h4"
+                                Text="Префикс" />
+                            <TextBox sktheme:TextBoxExtensions.AddDeleteButton="True" Text="{Binding PrefixCardReaderKeyboard}" />
+                            <TextBlock
+                                Margin="0,0,0,5"
+                                Text="Некоторые кардридеры вставляют префикс как специальный символ перед основными данными(например '?', '&#37;','&#35;','&#33;' и тд) укажите какой, префикс оставляет ваш кардридер, если не оставляет, оставьте это поле пустым"
+                                TextWrapping="Wrap" />
+
+                            <TextBlock
+                                Margin="0"
+                                Classes="h4"
+                                Text="Cуфикс" />
+                            <TextBox sktheme:TextBoxExtensions.AddDeleteButton="True" Text="{Binding SuffixCardReaderKeyboard}" />
+                            <TextBlock
+                                Margin="0,0,0,5"
+                                Text="Некоторые кардридеры вставляют суфикс как специальный символ после основных данных(например '?', '&#37;','&#35;','&#33;' и тд) укажите какой, префикс оставляет ваш кардридер, если не оставляет, оставьте это поле пустым"
+                                TextWrapping="Wrap" />
+
+                        </StackPanel>
+                    </Grid>
+                </ScrollViewer>
+            </TabItem>
+        </TabControl>
+
+        <Button
+            Grid.Row="1"
+            Margin="10"
+            Classes="Basic"
+            Command="{Binding SaveSettingsCommand}"
+            Content="Сохранить" />
+
+    </Grid>
+
+</sukiUi:SukiWindow>

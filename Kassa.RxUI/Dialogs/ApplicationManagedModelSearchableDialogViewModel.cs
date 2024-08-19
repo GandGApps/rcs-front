@@ -14,45 +14,15 @@ using System.Reactive.Linq;
 using DynamicData;
 
 namespace Kassa.RxUI.Dialogs;
-public abstract class ApplicationManagedModelSearchableDialogViewModel<TItem, TVm>: DialogViewModel
+public abstract class ApplicationManagedModelSearchableDialogViewModel<TItem, TVm>: BaseSelectDialogViewModel<TItem, TVm>
     where TItem : class, IGuidId
     where TVm : class, IApplicationModelPresenter<TItem>
 {
-    protected readonly TimeSpan SearchThrottle = TimeSpan.FromMilliseconds(500);
-    protected readonly ObservableCollection<TVm> _filteredItems = new();
+    protected readonly ObservableCollection<TVm> _filteredItems = [];
 
     public ApplicationManagedModelSearchableDialogViewModel()
     {
-        FilteredItems = new ReadOnlyCollection<TVm>(_filteredItems);
-    }
-
-    [Reactive]
-    public string? SearchText
-    {
-        get; set;
-    }
-
-    public ReadOnlyCollection<TVm>? FilteredItems
-    {
-        get;
-    }
-
-    [Reactive]
-    public ReactiveCommand<TVm, Unit>? SelectCommand
-    {
-        get; protected init;
-    }
-
-    [Reactive]
-    public bool IsKeyboardVisible
-    {
-        get; set;
-    }
-
-    [Reactive]
-    public TVm? SelectedItem
-    {
-        get; set;
+        FilteredItems = new ReadOnlyObservableCollection<TVm>(_filteredItems);
     }
 
 

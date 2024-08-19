@@ -16,7 +16,8 @@ using System.Reactive.Linq;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.RxUI.Pages;
-public sealed class DeliveryPaymentPageVm(IOrderEditVm orderEditVm,
+public sealed class DeliveryPaymentPageVm(ReadOnlyObservableCollection<ProductShoppingListItemViewModel> shoppingListViewModels,
+        IOrderEditVm orderEditVm,
         IPaymentService paymentService,
         ICashierService cashierService,
         IAdditiveService additiveService,
@@ -24,6 +25,6 @@ public sealed class DeliveryPaymentPageVm(IOrderEditVm orderEditVm,
         IIngridientsService ingridientsService,
         IReceiptService receiptService,
         ICategoryService categoryService) :
-    BasePaymentPageVm(orderEditVm, paymentService, cashierService, additiveService, productService, ingridientsService, receiptService, categoryService)
+    BasePaymentPageVm(shoppingListViewModels, orderEditVm, paymentService, cashierService, additiveService, productService, ingridientsService, receiptService, categoryService)
 {
 }

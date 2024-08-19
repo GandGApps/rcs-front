@@ -100,4 +100,7 @@ public static partial class Mapper
 
 
     public static partial OrderDto MapOrderEditDtoToOrderDto(OrderEditDto orderEditDto);
+
+    public static partial DepositReasonDto MapDepositReasonToDto(DepositReason depositReason);
+    public static partial DepositReason MapDtoToDepositReason(DepositReasonDto depositReason);
 }

@@ -33,9 +33,8 @@ public abstract class BasePaymentPageVm: PageViewModel, IPaymentVm
     protected readonly IReceiptService _receiptService;
     protected readonly ICategoryService _categoryService;
 
-    protected ObservableCollection<ProductShoppingListItemViewModel> _shoppingListItems;
-
     public BasePaymentPageVm(
+        ReadOnlyObservableCollection<ProductShoppingListItemViewModel> shoppingListItems,
         IOrderEditVm orderEditVm,
         IPaymentService paymentService,
         ICashierService cashierService,
@@ -55,25 +54,7 @@ public abstract class BasePaymentPageVm: PageViewModel, IPaymentVm
         _receiptService = receiptService;
         _categoryService = categoryService;
 
-        _shoppingListItems = new(new List<ProductShoppingListItemViewModel>(paymentService.OrderEditDto.Products.Count));
-
-        foreach (var item in paymentService.OrderEditDto.Products)
-        {
-            if(!_productService.RuntimeProducts.TryGetValue(item.ItemId, out var product))
-            {
-#if DEBUG
-                ThrowHelper.ThrowInvalidOperationException("Product not found");
-#elif RELEASE
-                this.Log().Error("Product not found");
-                continue;
-#endif
-            }
-
-            var vm = new ProductShoppingListItemViewModel(item, product, _productService.RuntimeProducts, _orderEditVm, _receiptService, _additiveService);
-            _shoppingListItems.Add(vm);
-        }
-
-        ShoppingListItems = new(_shoppingListItems);
+        ShoppingListItems = shoppingListItems;
 
         CashVm = new()
         {

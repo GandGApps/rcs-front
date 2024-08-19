@@ -1,0 +1,46 @@
+﻿<local:SelectionDialogBase
+    x:Class="Kassa.Wpf.Dialogs.WithdrawReasonDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:Kassa.Wpf.Behaviors"
+    xmlns:controls="clr-namespace:Kassa.Wpf.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:dialogs="clr-namespace:Kassa.RxUI.Dialogs;assembly=Kassa.RxUI"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+    xmlns:local="clr-namespace:Kassa.Wpf.Dialogs"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
+    xmlns:view="clr-namespace:Kassa.Wpf.Views"
+    d:DataContext="{d:DesignInstance Type=dialogs:WithdrawReasonDialogViewModel}"
+    x:TypeArguments="dialogs:WithdrawReasonDialogViewModel"
+    Style="{StaticResource SelectionDialog}"
+    mc:Ignorable="d">
+
+    <local:WidePrimaryDialog.HeaderTemplate>
+        <DataTemplate>
+            <StackPanel Orientation="Horizontal">
+                <Path
+                    Width="{mx:AdaptiveSize 32}"
+                    Height="{mx:AdaptiveSize 27}"
+                    Margin="{mx:AdaptiveSize Thickness='22,0,0,10'}"
+                    VerticalAlignment="Center"
+                    Data="{StaticResource WithdrawalIcon}"
+                    Fill="{DynamicResource SecondaryForeground}" />
+                <TextBlock
+                    Margin="{mx:AdaptiveSize Thickness='16,0,0,0'}"
+                    VerticalAlignment="Center"
+                    FontWeight="Normal"
+                    Style="{DynamicResource Header}">
+                    <Run Text="Выберите тип " /><Run Foreground="{DynamicResource DangerBrush}" Text="изъятия" />
+                </TextBlock>
+            </StackPanel>
+        </DataTemplate>
+    </local:WidePrimaryDialog.HeaderTemplate>
+
+    <local:WidePrimaryDialog.ItemTemplate>
+        <DataTemplate>
+            <view:WithdrawalReasonView ViewModel="{Binding ., Mode=OneTime}" />
+        </DataTemplate>
+    </local:WidePrimaryDialog.ItemTemplate>
+
+</local:SelectionDialogBase>

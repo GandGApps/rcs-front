@@ -74,6 +74,7 @@ public static class SplatExtensions
 
         configurationBuilder.AddEnvironmentVariables();
         configurationBuilder.AddJsonFile(Path.Combine(basePath, $"{initialJsonFileName}.{environment}.json"), optional: true);
+        configurationBuilder.AddJsonFile(Path.Combine(basePath, $"{initialJsonFileName}.local.json"), optional: true);
 
         builder?.Invoke(configurationBuilder);
 

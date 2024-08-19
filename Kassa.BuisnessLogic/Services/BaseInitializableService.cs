@@ -52,10 +52,12 @@ internal abstract class BaseInitializableService : ReactiveObject, IInitializabl
             return;
         }
 
-        await InitializeAsync(InternalDisposables).ConfigureAwait(false);
+        await InitializeAsync().ConfigureAwait(false);
 
         IsInitialized = true;
     }
+
+    protected virtual ValueTask InitializeAsync() => InitializeAsync(InternalDisposables);
 
     protected virtual ValueTask InitializeAsync(CompositeDisposable disposables) => ValueTask.CompletedTask;
 

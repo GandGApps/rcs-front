@@ -33,6 +33,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kassa.Launcher", "Kassa.Lau
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kassa.Shared.RcsLocator", "Kassa.Shared.RcsLocator\Kassa.Shared.RcsLocator.csproj", "{AB7A14AB-3629-49C4-BD66-562C74E8F447}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kassa.Launcher.AutoUpdater", "Kassa.Launcher.AutoUpdater\Kassa.Launcher.AutoUpdater.csproj", "{9BEC3894-96AA-435F-8350-6CBEE723A966}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Kassa.Shared.RcsLocator.Analyzer", "Kassa.Shared.RcsLocator.Analyzer\Kassa.Shared.RcsLocator.Analyzer.csproj", "{0E7C182E-FB5D-4BFB-8D09-66CAD0362748}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kassa.Shared.RcsLocator.Analyzer.ConsoleTest", "Kassa.Shared.RcsLocator.Analyzer.ConsoleTest\Kassa.Shared.RcsLocator.Analyzer.ConsoleTest.csproj", "{7CAA456B-0D2A-4D24-A0FC-A966F4BF9D33}"
@@ -235,6 +237,22 @@ Global
 		{AB7A14AB-3629-49C4-BD66-562C74E8F447}.SmallWindow|Any CPU.Build.0 = Debug|Any CPU
 		{AB7A14AB-3629-49C4-BD66-562C74E8F447}.SmallWindow|x64.ActiveCfg = Debug|Any CPU
 		{AB7A14AB-3629-49C4-BD66-562C74E8F447}.SmallWindow|x64.Build.0 = Debug|Any CPU
+		{9BEC3894-96AA-435F-8350-6CBEE723A966}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BEC3894-96AA-435F-8350-6CBEE723A966}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BEC3894-96AA-435F-8350-6CBEE723A966}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9BEC3894-96AA-435F-8350-6CBEE723A966}.Debug|x64.Build.0 = Debug|Any CPU
+		{9BEC3894-96AA-435F-8350-6CBEE723A966}.OptimizedSmallWindow|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BEC3894-96AA-435F-8350-6CBEE723A966}.OptimizedSmallWindow|Any CPU.Build.0 = Debug|Any CPU
+		{9BEC3894-96AA-435F-8350-6CBEE723A966}.OptimizedSmallWindow|x64.ActiveCfg = Debug|Any CPU
+		{9BEC3894-96AA-435F-8350-6CBEE723A966}.OptimizedSmallWindow|x64.Build.0 = Debug|Any CPU
+		{9BEC3894-96AA-435F-8350-6CBEE723A966}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BEC3894-96AA-435F-8350-6CBEE723A966}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BEC3894-96AA-435F-8350-6CBEE723A966}.Release|x64.ActiveCfg = Release|Any CPU
+		{9BEC3894-96AA-435F-8350-6CBEE723A966}.Release|x64.Build.0 = Release|Any CPU
+		{9BEC3894-96AA-435F-8350-6CBEE723A966}.SmallWindow|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BEC3894-96AA-435F-8350-6CBEE723A966}.SmallWindow|Any CPU.Build.0 = Debug|Any CPU
+		{9BEC3894-96AA-435F-8350-6CBEE723A966}.SmallWindow|x64.ActiveCfg = Debug|Any CPU
+		{9BEC3894-96AA-435F-8350-6CBEE723A966}.SmallWindow|x64.Build.0 = Debug|Any CPU
 		{0E7C182E-FB5D-4BFB-8D09-66CAD0362748}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0E7C182E-FB5D-4BFB-8D09-66CAD0362748}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E7C182E-FB5D-4BFB-8D09-66CAD0362748}.Debug|x64.ActiveCfg = Debug|Any CPU

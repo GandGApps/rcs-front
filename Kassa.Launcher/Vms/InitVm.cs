@@ -1,4 +1,5 @@
 ﻿using Avalonia.Threading;
+using Kassa.Launcher.Services;
 using KassaLauncher.Services;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -15,6 +16,9 @@ public sealed class InitVm : BaseVm
 {
 
     private readonly IUpdater _updater;
+    private readonly IInstaller _installer;
+    private readonly IApplicationPathManager _pathManager;
+    private readonly ISelfUpdater _selfUpdater;
 
     [Reactive]
     public bool IsInstalled
@@ -34,14 +38,17 @@ public sealed class InitVm : BaseVm
         get; private set;
     }
 
-    public InitVm(IUpdater updater)
+    public InitVm(IUpdater updater, ISelfUpdater selfUpdater, IInstaller installer, IApplicationPathManager pathManager)
     {
         _updater = updater;
+        _installer = installer;
+        _pathManager = pathManager;
+        _selfUpdater = selfUpdater;
     }
 
     public async Task InitAsync()
     {
-        var installedPath = Environment.GetEnvironmentVariable("KASSA_INSTALL_PATH", EnvironmentVariableTarget.User);
+        var installedPath = await _pathManager.GetApplicationPath();
 
         if (string.IsNullOrEmpty(installedPath))
         {
@@ -57,7 +64,7 @@ public sealed class InitVm : BaseVm
 
         if (!IsInstalled)
         {
-            HostScreen.Router.Navigate.Execute(new InstallerVm(_updater));
+            HostScreen.Router.Navigate.Execute(new InstallerVm(_updater, _installer));
         }
         else
         {
@@ -76,6 +83,26 @@ public sealed class InitVm : BaseVm
             }
 
             await Task.Delay(2000);
+
+            Dispatcher.UIThread.Invoke(() => Status = "Проверка обновлений лаунчера...");
+
+            var hasLauncherUpdates = await _selfUpdater.HasUpdates(progress =>
+            {
+                Dispatcher.UIThread.Invoke(void () => Progress = progress);
+            });
+
+            if (hasLauncherUpdates)
+            {
+                Dispatcher.UIThread.Invoke(() => Status = "Обнаружено обновление. Лаунчер будет закрыт");
+
+                await Task.Delay(3000);
+
+                await _selfUpdater.Update();
+
+                App.Exit();
+
+                return;
+            }
 
             Dispatcher.UIThread.Invoke(() => HostScreen.Router.Navigate.Execute(new LaunchAppVm()));
         }

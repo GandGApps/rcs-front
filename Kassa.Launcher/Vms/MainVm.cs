@@ -1,4 +1,5 @@
-﻿using KassaLauncher.Services;
+﻿using Kassa.Launcher.Services;
+using KassaLauncher.Services;
 using ReactiveUI;
 using Splat;
 using System;
@@ -24,12 +25,18 @@ public sealed class MainVm : ReactiveObject, IScreen
     {
         Router = new RoutingState();
 
-        var initVm = new InitVm(Locator.Current.GetService<IUpdater>()!);
+        var initVm = new InitVm(
+            Locator.Current.GetService<IUpdater>()!, 
+            Locator.Current.GetService<ISelfUpdater>()!,
+            Locator.Current.GetService<IInstaller>()!,
+            Locator.Current.GetService<IApplicationPathManager>()!);
 
-        Router.Navigate.Execute(initVm);
+        
 
         Start = ReactiveCommand.CreateRunInBackground(async void () =>
         {
+            Router.Navigate.Execute(initVm).Subscribe();
+
             await initVm.InitAsync();
         });
         

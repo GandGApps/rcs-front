@@ -34,6 +34,7 @@ bld/
 [Ll]ogs/
 
 !Kassa.Wpf.Setup/Release/
+Kassa.LauncherAutoUpdater
 
 # Visual Studio 2015/2017 cache/options directory
 .vs/
@@ -186,7 +187,7 @@ publish/
 *.azurePubxml
 # Note: Comment the next line if you want to checkin your web deploy settings,
 # but database connection strings (with potential passwords) will be unencrypted
-*.pubxml
+#*.pubxml
 *.publishproj
 
 # Microsoft Azure Web App publish settings. Comment the next line if you want to
@@ -363,3 +364,4 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
+/Kassa.Launcher.AutoUpdater/Properties

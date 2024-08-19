@@ -13,14 +13,14 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI;
 public sealed class WithdrawalReasonVm : ReactiveObject, IApplicationModelPresenter<WithdrawalReasonDto>
 {
-    private readonly WithdrawReasounDialogViewModel? _dialogViewModel;
+    private readonly WithdrawReasonDialogViewModel? _dialogViewModel;
 
     public Guid Id
     {
         get;
     }
 
-    public WithdrawalReasonVm(WithdrawalReasonDto withdrawalReason, WithdrawReasounDialogViewModel dialogViewModel) : this(withdrawalReason)
+    public WithdrawalReasonVm(WithdrawalReasonDto withdrawalReason, WithdrawReasonDialogViewModel dialogViewModel) : this(withdrawalReason)
     {
         _dialogViewModel = dialogViewModel;
 

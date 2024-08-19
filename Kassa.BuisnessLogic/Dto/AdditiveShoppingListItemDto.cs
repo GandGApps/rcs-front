@@ -19,7 +19,6 @@ public record AdditiveShoppingListItemDto : IShoppingListItemDto, IGuidId
         Count = 1;
         Discount = 1;
         Portion = additiveDto.Portion;
-        TotalSum = Price;
         SubtotalSum = Price;
 
         IsSelected = false;
@@ -38,7 +37,6 @@ public record AdditiveShoppingListItemDto : IShoppingListItemDto, IGuidId
         Discount = orderedAdditive.Discount;
         Portion = additiveDto.Portion;
         SubtotalSum = orderedAdditive.SubtotalPrice;
-        TotalSum = orderedAdditive.TotalPrice;
 
         IsSelected = true;
         ContainingProduct = productShopping;
@@ -92,11 +90,9 @@ public record AdditiveShoppingListItemDto : IShoppingListItemDto, IGuidId
     public double SubtotalSum
     {
         get;
+        set;
     }
-    public double TotalSum
-    {
-        get;
-    }
+    public double TotalSum => SubtotalSum + Discount;
 
     public int Portion
     {

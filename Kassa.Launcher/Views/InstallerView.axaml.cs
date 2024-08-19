@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
@@ -26,6 +27,6 @@ public partial class InstallerView : ReactiveUserControl<InstallerVm>
             Title = "Выберите папку для установки"
         });
 
-        ViewModel.InstallPath = result != null ? result[0].Path.AbsolutePath : string.Empty;
+        ViewModel!.InstallPath = Uri.UnescapeDataString(result != null ? result[0].Path.AbsolutePath : string.Empty);
     }
 }

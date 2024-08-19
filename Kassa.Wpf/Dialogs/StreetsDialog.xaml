@@ -1,4 +1,4 @@
-﻿<local:ClosableDialog
+﻿<local:SelectionDialogBase
     x:Class="Kassa.Wpf.Dialogs.StreetsDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -15,19 +15,11 @@
     d:DesignHeight="450"
     d:DesignWidth="800"
     x:TypeArguments="dialogs:StreetsDialogViewModel"
-    Style="{StaticResource WideDialogUserControl}"
+    Style="{StaticResource SelectionDialog}"
     mc:Ignorable="d">
-    <Border Style="{StaticResource WideDialog}">
-        <Grid>
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
-
+    <local:WidePrimaryDialog.HeaderTemplate>
+        <DataTemplate>
             <StackPanel Orientation="Horizontal">
                 <Path
                     Width="{mx:AdaptiveSize 36}"
@@ -43,115 +35,13 @@
                     Style="{DynamicResource Header}"
                     Text="Поиск улицы" />
             </StackPanel>
-            <Border
-                Grid.Row="1"
-                Width="1280"
-                Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
-                Style="{DynamicResource Separator}" />
+        </DataTemplate>
+    </local:WidePrimaryDialog.HeaderTemplate>
 
-            <ScrollViewer
-                Grid.Row="2"
-                HorizontalContentAlignment="Stretch"
-                GotFocus="ScrollViewerGotFocus"
-                HorizontalScrollBarVisibility="Disabled"
-                Style="{StaticResource PrimaryScrollViewer}">
+    <local:WidePrimaryDialog.ItemTemplate>
+        <DataTemplate>
+            <view:StreetView ViewModel="{Binding .}" />
+        </DataTemplate>
+    </local:WidePrimaryDialog.ItemTemplate>
 
-                <i:Interaction.Behaviors>
-                    <behaviors:ScrollViewerFixingBehavior />
-                </i:Interaction.Behaviors>
-
-                <ItemsControl x:Name="StreetList" BorderThickness="0">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <controls:FixedColumnsPanel
-                                HorizontalAlignment="Stretch"
-                                Columns="4"
-                                Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <view:StreetView ViewModel="{Binding .}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-            </ScrollViewer>
-
-            <controls:Keyboard
-                x:Name="Keyboard"
-                Grid.Row="3"
-                Margin="0,0,0,15"
-                VerticalAlignment="Bottom" />
-
-            <Border
-                Grid.Row="4"
-                Margin="{mx:AdaptiveSize Thickness='0,0,0,10'}"
-                Style="{StaticResource DialogFooter}">
-                <Grid>
-
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    <CheckBox x:Name="IsKeyboardEnabled" Style="{StaticResource KeyboardCheckbox}">
-                        <StackPanel VerticalAlignment="Center">
-                            <Path Style="{StaticResource KeyboardCheckboxIcon}" />
-                            <TextBlock Style="{StaticResource KeyboardCheckboxText}">
-                                <Run Text="Клавиатура" />
-                                <Run x:Name="KeyboardVisibilityText" Text="Выкл" />
-                            </TextBlock>
-                        </StackPanel>
-                    </CheckBox>
-
-                    <Border
-                        Grid.Column="1"
-                        Width="{mx:AdaptiveSize 320}"
-                        Style="{StaticResource SearchTextBoxBorder}">
-                        <Grid VerticalAlignment="Center">
-
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="*" />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-
-                            <controls:TextBoxWithoutVirtualKeyboard x:Name="SearchTextBox" Style="{StaticResource SearchTextBox}" />
-
-                            <Path Grid.Column="1" Style="{StaticResource SearchTextBoxIcon}" />
-
-                        </Grid>
-                    </Border>
-
-                    <Border
-                        Grid.Column="2"
-                        Margin="{mx:AdaptiveSize Thickness='10,0,0,0'}"
-                        HorizontalAlignment="Left"
-                        MouseDown="ClearSearchText"
-                        Style="{StaticResource ClearSearchTextBorder}">
-                        <Path Style="{StaticResource ClearSearchTextIcon}" />
-                    </Border>
-
-
-                    <Button
-                        x:Name="CancelButton"
-                        Grid.Column="5"
-                        Width="{mx:AdaptiveSize 155}"
-                        MinWidth="10"
-                        Margin="{mx:AdaptiveSize Thickness='0,-1,3,-1'}"
-                        HorizontalAlignment="Right"
-                        FontSize="{mx:AdaptiveSize 16}"
-                        Style="{StaticResource SecondaryButton}">
-                        Отмена
-                    </Button>
-
-
-                </Grid>
-
-            </Border>
-
-        </Grid>
-
-    </Border>
-</local:ClosableDialog>
+</local:SelectionDialogBase>

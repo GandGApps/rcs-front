@@ -17,7 +17,7 @@ using DynamicData.Binding;
 using DynamicData;
 
 namespace Kassa.RxUI.Pages;
-public abstract class BaseOrderEditPageVm: PageViewModel, IOrderEditVm
+public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
 {
     private readonly OrderEditDto _orderEditDto;
     private readonly ICashierService _cashierService;
@@ -78,6 +78,7 @@ public abstract class BaseOrderEditPageVm: PageViewModel, IOrderEditVm
             if (dialog.IsPublished)
             {
                 TotalComment = dialog.Comment;
+                _orderEditDto.Comment = dialog.Comment;
             }
         });
 
@@ -204,8 +205,41 @@ public abstract class BaseOrderEditPageVm: PageViewModel, IOrderEditVm
 
         GoToPaymentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
+            _orderEditDto.Products.Clear();
+
+            foreach (var item in ShoppingList.ProductShoppingListItems)
+            {
+                // TODO: Use object pool
+                var productItem = new ProductShoppingListItemDto(item.ProductDto)
+                {
+                    Count = item.Count,
+                    Comment = item.Comment,
+                    SubtotalSum = item.SubtotalSum,
+                    Price = item.Price,
+                    Discount = item.Discount,
+                    HasDiscount = item.HasDiscount,
+                };
+
+                foreach (var additive in item.Additives)
+                {
+                    // TODO: Use object pool
+                    var additiveItem = new AdditiveShoppingListItemDto(productItem, additive.AdditiveDto)
+                    {
+                        Count = additive.Count,
+                        Price = additive.Price,
+                        Discount = additive.Discount,
+                        HasDiscount = additive.HasDiscount,
+                        SubtotalSum = additive.SubtotalSum,
+                    };
+
+                    productItem.Additives.Add(additiveItem);
+                }
+
+                _orderEditDto.Products.Add(productItem);
+            }
+
             var payment = await _cashierService.CreatePayment(orderEditDto);
-            var paymentPage = new CashierPaymentPageVm(this,payment, cashierService, additiveService, productService, ingridientsService, receiptService, categoryService);
+            var paymentPage = new CashierPaymentPageVm(ShoppingList.ProductShoppingListItems, this, payment, cashierService, additiveService, productService, ingridientsService, receiptService, categoryService);
 
             MainViewModel.GoToPageCommand.Execute(paymentPage).Subscribe();
         });
@@ -286,9 +320,9 @@ public abstract class BaseOrderEditPageVm: PageViewModel, IOrderEditVm
             }
 
             last.Dispose();
-            
+
             _hostNavigationStack.RemoveAt(_hostNavigationStack.Count - 1);
-            
+
             last = _hostNavigationStack.Last();
 
             _currentCategoryItems.Clear();
@@ -410,7 +444,7 @@ public abstract class BaseOrderEditPageVm: PageViewModel, IOrderEditVm
 
     public ReadOnlyObservableCollection<ProductHostItemVm>? CurrentHostedItems
     {
-        get; 
+        get;
     }
 
     public ReactiveCommand<Unit, Unit> OpenQuantityVolumeDialogCommand
@@ -468,6 +502,12 @@ public abstract class BaseOrderEditPageVm: PageViewModel, IOrderEditVm
 
         _currentCategoryItems.AddRange(categories);
         _currentCategoryItems.AddRange(products);
+
+        var array = new ProductHostItemVm[_currentCategoryItems.Count];
+        _currentCategoryItems.CopyTo(array, 0);
+
+        _hostNavigationStack.Add(HostHistory.CreateCategory(id, array));
+
     }
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
@@ -491,10 +531,10 @@ public abstract class BaseOrderEditPageVm: PageViewModel, IOrderEditVm
 
         public readonly bool IsRoot => categoryId == Guid.Empty && Favourite == -1;
         public readonly bool IsFavourite => categoryId == Guid.Empty && Favourite != -1;
-        public readonly bool IsCategory => !IsFavourite;
+        public readonly bool IsCategory => CategoryId != Guid.Empty;
         public readonly bool IsEmpty => items.Length == 0 && categoryId == Guid.Empty && Favourite == -1;
 
-        
+
         public readonly void Dispose()
         {
             foreach (var item in items)

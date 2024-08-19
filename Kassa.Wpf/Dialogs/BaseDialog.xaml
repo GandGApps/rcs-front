@@ -1,7 +1,10 @@
 ﻿<ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:Kassa.Wpf.Behaviors"
+    xmlns:controls="clr-namespace:Kassa.Wpf.Controls"
     xmlns:dialogs="clr-namespace:Kassa.Wpf.Dialogs"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions">
 
     <ControlTemplate x:Key="BaseDialogTemplate" TargetType="UserControl">
@@ -90,9 +93,9 @@
     </Style>
 
     <Style x:Key="DialogFooter" TargetType="Border">
-        <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius=30}" />
+        <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius=28}" />
         <Setter Property="Background" Value="{DynamicResource DialogFooterBrush}" />
-        <Setter Property="Padding" Value="12,3,4,3" />
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='12,3,2,3'}" />
     </Style>
 
     <Style
@@ -175,5 +178,230 @@
         <Setter Property="TextBlock.LineHeight" Value="{mx:AdaptiveSize 33}" />
     </Style>
 
+    <Style
+        x:Key="DialogFooterButton"
+        BasedOn="{StaticResource SecondaryButton}"
+        TargetType="Button">
+        <Setter Property="Width" Value="{mx:AdaptiveSize 175}" />
+        <Setter Property="MinWidth" Value="10" />
+        <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='0,-1,3,-1'}" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 16}" />
+    </Style>
+
+    <Style
+        x:Key="CancelButtonStyle"
+        BasedOn="{StaticResource DialogFooterButton}"
+        TargetType="Button">
+        <Setter Property="Content" Value="Отмена" />
+    </Style>
+
+    <Style
+        x:Key="AccentDialogFooterButton"
+        BasedOn="{StaticResource PrimaryButton}"
+        TargetType="Button">
+        <Setter Property="Width" Value="{mx:AdaptiveSize 175}" />
+        <Setter Property="MinWidth" Value="10" />
+        <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='0,-1,3,-1'}" />
+        <Setter Property="HorizontalAlignment" Value="Right" />
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 16}" />
+    </Style>
+
+    <Style
+        x:Key="ClearSearchTextIconStyle"
+        BasedOn="{StaticResource ClearSearchTextBorder}"
+        TargetType="Border">
+        <Setter Property="Margin" Value="{mx:AdaptiveSize Thickness='10,0,0,0'}" />
+        <Setter Property="HorizontalAlignment" Value="Left" />
+        <Setter Property="Grid.Column" Value="2" />
+    </Style>
+
+
+    <ControlTemplate x:Key="WidePrimaryDialogBaseTemplate" TargetType="UserControl">
+        <Border Margin="{mx:AdaptiveSize Thickness='76,0,0,76'}" Padding="{TemplateBinding Padding}">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="{mx:AdaptiveSize GridLength=76}" />
+                </Grid.ColumnDefinitions>
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{mx:AdaptiveSize GridLength=76}" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Button
+                    x:Name="CloseDialog"
+                    Grid.Column="1"
+                    Background="{StaticResource ClickableBg}"
+                    BorderThickness="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type ButtonBase}">
+                            <Border
+                                x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SnapsToDevicePixels="true">
+                                <ContentPresenter
+                                    x:Name="contentPresenter"
+                                    Margin="{TemplateBinding Padding}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Focusable="False"
+                                    RecognizesAccessKey="True"
+                                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="Button.IsDefaulted" Value="true">
+                                    <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Path
+                        Width="{mx:AdaptiveSize 76}"
+                        Height="{mx:AdaptiveSize 76}"
+                        Data="{StaticResource Close}"
+                        Fill="{DynamicResource AlternateForeground}" />
+                </Button>
+
+
+                <Border
+                    Grid.Row="1"
+                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                    Style="{StaticResource WideDialog}">
+                    <Grid>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <ContentPresenter ContentTemplate="{TemplateBinding dialogs:WidePrimaryDialog.HeaderTemplate}" />
+
+                        <Border
+                            Grid.Row="1"
+                            Width="{mx:AdaptiveSize 1280}"
+                            Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
+                            Style="{DynamicResource Separator}" />
+
+                        <ScrollViewer
+                            x:Name="ScrollViewer"
+                            Grid.Row="2"
+                            HorizontalContentAlignment="Stretch"
+                            HorizontalScrollBarVisibility="Disabled"
+                            Style="{StaticResource PrimaryScrollViewer}">
+
+                            <i:Interaction.Behaviors>
+                                <behaviors:ScrollViewerFixingBehavior />
+                            </i:Interaction.Behaviors>
+
+                            <ContentPresenter />
+
+                        </ScrollViewer>
+
+                        <controls:Keyboard
+                            x:Name="Keyboard"
+                            Grid.Row="2"
+                            Margin="0,0,0,15"
+                            VerticalAlignment="Bottom"
+                            Text="{Binding Path=(dialogs:WidePrimaryDialog.SearchText), RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                            TextBox="{Binding Path=(dialogs:WidePrimaryDialog.CurrentTextBox), RelativeSource={RelativeSource TemplatedParent}}"
+                            Visibility="{TemplateBinding dialogs:WidePrimaryDialog.IsKeyboardEnabled,
+                                                         Converter={StaticResource BoolToVisibilityConverter}}" />
+
+                        <Border
+                            Grid.Row="4"
+                            Margin="{mx:AdaptiveSize Thickness='0,0,0,10'}"
+                            Style="{StaticResource DialogFooter}">
+
+                            <ContentPresenter Content="{TemplateBinding dialogs:WidePrimaryDialog.Footer}" />
+
+                            <!--
+                            <Grid>
+
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="Auto" />
+                                </Grid.ColumnDefinitions>
+
+                                <CheckBox
+                                    x:Name="IsKeyboardEnabled"
+                                    IsChecked="{Binding Path=(dialogs:WidePrimaryDialog.IsKeyboardEnabled), RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                    Style="{StaticResource KeyboardCheckbox}"
+                                    Visibility="{TemplateBinding dialogs:WidePrimaryDialog.IsKeyboardVisible,
+                                                                 Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <StackPanel VerticalAlignment="Center">
+                                        <Path Style="{StaticResource KeyboardCheckboxIcon}" />
+                                        <TextBlock Style="{StaticResource KeyboardCheckboxText}">
+                                            <Run Text="Клавиатура" />
+                                            <Run x:Name="KeyboardVisibilityText" Text="{TemplateBinding dialogs:WidePrimaryDialog.KeyboardVisibilityText}" />
+                                        </TextBlock>
+                                    </StackPanel>
+                                </CheckBox>
+
+                                <Border
+                                    Grid.Column="1"
+                                    Width="{mx:AdaptiveSize 320}"
+                                    Style="{StaticResource SearchTextBoxBorder}"
+                                    Visibility="{TemplateBinding dialogs:WidePrimaryDialog.IsKeyboardVisible,
+                                                                 Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <Grid VerticalAlignment="Center">
+
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="Auto" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <controls:TextBoxWithoutVirtualKeyboard
+                                            x:Name="SearchTextBox"
+                                            Style="{StaticResource SearchTextBox}"
+                                            Text="{Binding Path=(dialogs:WidePrimaryDialog.SearchText), RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}" />
+
+                                        <Path Grid.Column="1" Style="{StaticResource SearchTextBoxIcon}" />
+
+                                    </Grid>
+                                </Border>
+
+                                <Border
+                                    x:Name="ClearIcon"
+                                    Style="{StaticResource ClearSearchTextIconStyle}"
+                                    Visibility="{TemplateBinding dialogs:WidePrimaryDialog.IsKeyboardVisible,
+                                                                 Converter={StaticResource BoolToVisibilityConverter}}">
+                                    <Path Style="{StaticResource ClearSearchTextIcon}" />
+                                </Border>
+
+
+                                <Button x:Name="CancelButton" Style="{StaticResource CancelButtonStyle}" />
+
+                            </Grid>
+
+                            -->
+
+                        </Border>
+
+                    </Grid>
+
+                </Border>
+
+            </Grid>
+        </Border>
+
+    </ControlTemplate>
+
+    <Style
+        x:Key="WidePrimaryDialogBaseStyle"
+        BasedOn="{StaticResource WideDialogUserControl}"
+        TargetType="UserControl">
+        <Setter Property="Template" Value="{StaticResource WidePrimaryDialogBaseTemplate}" />
+    </Style>
 
 </ResourceDictionary>

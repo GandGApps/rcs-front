@@ -18,7 +18,7 @@
     mc:Ignorable="d">
 
     <UserControl.Template>
-        <ControlTemplate TargetType="{x:Type local:StreetView}">
+        <ControlTemplate TargetType="{x:Type local:WithdrawalReasonView}">
 
             <controls:ButtonWithCornerRaduis
                 x:Name="Border"
@@ -30,8 +30,8 @@
                 HorizontalContentAlignment="Stretch"
                 VerticalContentAlignment="Stretch"
                 Background="{TemplateBinding Background}"
-                Command="{TemplateBinding Command}"
-                CommandParameter="{TemplateBinding CommandParameter}"
+                Command="{TemplateBinding Button.Command}"
+                CommandParameter="{TemplateBinding Button.CommandParameter}"
                 CornerRadius="11">
 
                 <ContentPresenter
@@ -45,7 +45,7 @@
     </UserControl.Template>
 
     <UserControl.Style>
-        <Style BasedOn="{StaticResource {x:Type UserControl}}" TargetType="{x:Type local:StreetView}">
+        <Style BasedOn="{StaticResource {x:Type UserControl}}" TargetType="{x:Type local:WithdrawalReasonView}">
             <Setter Property="Background" Value="{DynamicResource DefaultAdditiveViewBackground}" />
             <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness=13}" />
             <Setter Property="Margin" Value="1" />
@@ -67,23 +67,15 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
-        <Path
-            x:Name="IsSelectedIcon"
-            Width="{mx:AdaptiveSize 11}"
-            Height="{mx:AdaptiveSize 11}"
-            Margin="0,0,4,0"
-            VerticalAlignment="Center"
-            Data="{StaticResource AcceptIcon}"
-            Fill="{DynamicResource AlternateForeground}" />
-
         <TextBlock
             x:Name="Name"
             Grid.Column="1"
             VerticalAlignment="Center"
             d:Text="Рикардо Григорович"
-            FontWeight="Medium">
+            FontWeight="Medium"
+            TextWrapping="Wrap">
             <TextBlock.Style>
-                <Style BasedOn="{StaticResource Header2}" TargetType="TextBlock" />
+                <Style BasedOn="{StaticResource SubHeader}" TargetType="TextBlock" />
             </TextBlock.Style>
         </TextBlock>
 

@@ -13,41 +13,10 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI.Dialogs;
-public abstract class SearchableDialogViewModel<TItem, TVm> : DialogViewModel
-    where TItem : notnull
+public abstract class SearchableDialogViewModel<TItem, TVm> : BaseSelectDialogViewModel<TItem, TVm>
+    where TItem : class
     where TVm : class
 {
-    protected readonly TimeSpan SearchThrottle = TimeSpan.FromMilliseconds(500);
-
-    [Reactive]
-    public string? SearchText
-    {
-        get; set;
-    }
-
-    [Reactive]
-    public ReadOnlyCollection<TVm>? FilteredItems
-    {
-        get; protected set;
-    }
-
-    [Reactive]
-    public ReactiveCommand<TVm, Unit>? SelectCommand
-    {
-        get; protected set;
-    }
-
-    [Reactive]
-    public bool IsKeyboardVisible
-    {
-        get; set;
-    }
-    [Reactive]
-    public TVm? SelectedItem
-    {
-        get; set;
-    }
-
     protected void Filter<TKey>(SourceCache<TItem, TKey> sourceCache, Func<TItem, TVm> selector, Action<TVm, TItem> updater, CompositeDisposable disposables) where TKey : notnull
 
     {

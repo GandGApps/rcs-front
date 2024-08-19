@@ -115,6 +115,8 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
             .DisposeWith(_disposables);
 
         Count = 1;
+
+        Update(ProductDto);
     }
 
     public Guid Id

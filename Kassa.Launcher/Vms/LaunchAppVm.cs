@@ -1,10 +1,15 @@
-﻿using ReactiveUI;
+﻿using CommunityToolkit.Diagnostics;
+using Kassa.Launcher.Services;
+using Kassa.Launcher.Vms;
+using ReactiveUI;
+using Splat;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,23 +20,23 @@ public sealed class LaunchAppVm : BaseVm
 
     public LaunchAppVm()
     {
+        var pathManager = Locator.Current.GetService<IApplicationPathManager>()!;
+        var remover = Locator.Current.GetService<IRemover>()!;
+
         LaunchAppCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var path = Environment.GetEnvironmentVariable("KASSA_INSTALL_PATH", EnvironmentVariableTarget.User);
+            var path = await pathManager.GetApplicationPath();
 
             if (string.IsNullOrWhiteSpace(path))
             {
-                throw new InvalidOperationException("KASSA_INSTALL_PATH is not set.");
+                ThrowHelper.ThrowInvalidOperationException("Kassa is not installed.");
             }
 
-#if _WINDOWS
             path = Path.Combine(path, "Kassa.Wpf.exe");
-#else
-            path = Path.Combine(path, "Kassa");
-#endif
+
             if (!File.Exists(path))
             {
-                throw new InvalidOperationException("Kassa is not installed.");
+                ThrowHelper.ThrowInvalidOperationException("Kassa is not installed.");
             }
 
             var process = new Process
@@ -45,12 +50,24 @@ public sealed class LaunchAppVm : BaseVm
 
             process.Start();
 
-            await process.WaitForExitAsync();
+            App.Exit();
         });
 
+        RemoveCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var remover = Locator.Current.GetService<IRemover>()!;
+            var uninstallVm = new UninstallVm(remover);
+
+            HostScreen.Router.NavigateAndReset.Execute(uninstallVm).Subscribe();
+        });
     }
 
     public ReactiveCommand<Unit, Unit> LaunchAppCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> RemoveCommand
     {
         get;
     }

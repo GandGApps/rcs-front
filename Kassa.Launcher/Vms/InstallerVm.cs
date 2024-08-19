@@ -1,4 +1,5 @@
-﻿using KassaLauncher.Services;
+﻿using Kassa.Launcher.Services;
+using KassaLauncher.Services;
 using Octokit;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -18,6 +19,7 @@ namespace KassaLauncher.Vms;
 public sealed class InstallerVm : BaseVm
 {
     private readonly IUpdater _updater;
+    private readonly IInstaller _installer;
 
     [Reactive]
     public string? Status
@@ -54,9 +56,10 @@ public sealed class InstallerVm : BaseVm
         get;
     }
 
-    public InstallerVm(IUpdater updater)
+    public InstallerVm(IUpdater updater, IInstaller installer)
     {
         _updater = updater;
+        _installer = installer;
 
         var validator = this.WhenAnyValue(x => x.InstallPath)
             .Select(path => !string.IsNullOrEmpty(path));
@@ -69,11 +72,14 @@ public sealed class InstallerVm : BaseVm
         var isInstalled = await _updater.IsInstalled(InstallPath);
         if (!isInstalled)
         {
-            Status = "Установка начата...";
+            Status = "Установка началась...";
             IsInstalling  = true;
-            await _updater.InstallAsync(InstallPath, IsShortcutNeeded, UpdateProgress);
+            await _installer.InstallAsync(InstallPath, IsShortcutNeeded, UpdateProgress);
             Status = "Установка завершена. Все файлы установлены.";
             await Task.Delay(2000);
+
+            await HostScreen.Router.NavigateAndReset.Execute(new LaunchAppVm()).FirstAsync();
+
             IsInstalling = false;
         }
         else
@@ -90,6 +96,8 @@ public sealed class InstallerVm : BaseVm
             }
 
             await Task.Delay(2000);
+
+            await HostScreen.Router.NavigateAndReset.Execute(new LaunchAppVm()).FirstAsync();
 
             IsInstalling = false;
         }
