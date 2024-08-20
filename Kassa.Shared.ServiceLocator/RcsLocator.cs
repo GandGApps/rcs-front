@@ -8,7 +8,7 @@ namespace Kassa.Shared.ServiceLocator;
 public static class RcsLocator
 {
     private static FrozenServiceLocator _serviceLocator;
-    private static Func<FrozenDictionary<Type, Func<object>>> _scopeFactory = null!;
+    private static Func<List<(Type, Func<IServiceProvider, object>)>> _scopeFactory = null!;
     private static ServiceScope _currentScope = ServiceScope.Empty;
     
     public static void SetLocator(FrozenDictionary<Type, Func<object>> servicesFactory)
@@ -16,9 +16,14 @@ public static class RcsLocator
         _serviceLocator = new(servicesFactory);
     }
 
-    public static void SetScopeFactory(Func<FrozenDictionary<Type, Func<object>>> scopeFactory)
+    public static void SetScopeFactory(Func<List<(Type, Func<IServiceProvider, object>)>> scopeFactory)
     {
         _scopeFactory = scopeFactory;
+    }
+
+    public static object? GetService(Type serviceType)
+    {
+        return _serviceLocator.GetService(serviceType);
     }
 
     public static T? GetService<T>() where T : class
@@ -42,4 +47,17 @@ public static class RcsLocator
 
         _currentScope = await ServiceScope.CreateScope(servicesFactory);
     }
+
+    public static async ValueTask DisposeScope()
+    {
+        if (_currentScope.IsEmpty)
+        {
+            return;
+        }
+
+        await _currentScope.DisposeAsync();
+        _currentScope = ServiceScope.Empty;
+    }
+
+    public static ServiceScope Scoped => _currentScope;
 }

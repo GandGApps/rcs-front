@@ -5,6 +5,7 @@ using System.Buffers;
 using System.Collections.Immutable;
 using static Kassa.Shared.ServiceLocator.Analyzer.RcsLocatorBuilderGeneratorStrings;
 using Kassa.Shared.Collections;
+using System.Collections.Frozen;
 
 namespace Kassa.Shared.ServiceLocator.Analyzer;
 
@@ -22,30 +23,56 @@ public sealed class RcsLocatorBuilderGenerator : IIncrementalGenerator
         context.RegisterSourceOutput(pipeline, static (context, serviceDescriptors) =>
         {
             context.AddSource("RcsLocatorBuilder.g.cs", RcsLocatorBuilderClassDecloration);
+            context.AddSource("RcsLocatorBuilder.scopedInjectAttr.g.cs", ScopeInjectAttributeDecloration);
+            context.AddSource("RcsLocatorBuilder.injectConstructorAttr.g.cs", InjectConstructorAttributeDecloration);
 
             var sortedDescriptors = ReportDiagnosticsAndSort(context, serviceDescriptors);
+
+            var frozenDescriptors = sortedDescriptors.ToFrozenDictionary(x => x.ServiceType, x => x, SymbolEqualityComparer.Default);
 
             using var registrationBuilder = ImmutableArrayBuilder<MethodDeclarationSyntax>.Rent();
 
             foreach (var serviceDescriptor in sortedDescriptors)
             {
-                var serviceRegister = AddServiceRegister(serviceDescriptor);
+                var serviceRegister = AddServiceRegisterAndSetSuffix(frozenDescriptors!, serviceDescriptor);
 
                 registrationBuilder.Add(serviceRegister);
+            }
+
+            using var fieldsBuilder = ImmutableArrayBuilder<FieldDeclarationSyntax>.Rent();
+
+            foreach (var serviceDescriptor in sortedDescriptors)
+            {
+                var field = AddFieldsForSingletone(serviceDescriptor);
+
+                if (field is not null)
+                {
+                    fieldsBuilder.Add(field);
+                }
             }
 
             var registrations = registrationBuilder.ToImmutable();
             registrationBuilder.Dispose();
 
+            var fields = fieldsBuilder.ToImmutable();
+            fieldsBuilder.Dispose();
+
+            var addToBuilderMethod = AddToBuilder(sortedDescriptors);
+
             var rcsLocatorBuilderClass = SyntaxFactory.ClassDeclaration(RcsLocatorBuilderClassName)
                 .AddModifiers(SyntaxFactory.Token(SyntaxKind.InternalKeyword), SyntaxFactory.Token(SyntaxKind.StaticKeyword), SyntaxFactory.Token(SyntaxKind.PartialKeyword))
-                .AddMembers([.. registrations]);
+                .AddMembers([.. fields])
+                .AddMembers([.. registrations])
+                .AddMembers(addToBuilderMethod);
 
             var namespaceDeclaration = SyntaxFactory.NamespaceDeclaration(SyntaxFactory.ParseName(RcsLocatorBuilderNamespace))
                 .AddMembers(rcsLocatorBuilderClass);
 
             var compilationUnit = SyntaxFactory.CompilationUnit()
-                .AddUsings(SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System")))
+                .AddUsings(
+                    SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("System")),
+                    SyntaxFactory.UsingDirective(SyntaxFactory.ParseName("Kassa.Shared"))
+                )
                 .AddMembers(namespaceDeclaration)
                 .NormalizeWhitespace();
 
@@ -249,7 +276,52 @@ public sealed class RcsLocatorBuilderGenerator : IIncrementalGenerator
         }
     }
 
-    private static MethodDeclarationSyntax AddServiceRegister(ServiceDescriptor serviceDescriptor)
+    /// <summary>
+    /// Added fields for the singleton services. 
+    /// </summary>
+    /// <remarks>
+    /// WARNING: Be sure you have suffix for the method name.
+    /// For example:
+    /// <code>
+    /// private static global::IServiceA? __service_{serviceDescriptor.MethodSuffix} = null!;
+    /// </code>
+    /// </remarks>
+    private static FieldDeclarationSyntax? AddFieldsForSingletone(ServiceDescriptor serviceDescriptor)
+    {
+        if (!serviceDescriptor.IsSingleton)
+        {
+            return null;
+        }
+
+        var fieldName = $"__service_{serviceDescriptor.MethodSuffix}";
+
+        var typeName = serviceDescriptor.ServiceType.ToDisplayString(
+                NullableFlowState.MaybeNull, SymbolDisplayFormat.FullyQualifiedFormat
+            );
+
+        // i don't know how create PostfixUnaryExpressionSyntax more correctly
+        var nullSupress = SyntaxFactory.ParseExpression("null!");
+
+        var fieldDeclaration = SyntaxFactory.FieldDeclaration(
+            SyntaxFactory.VariableDeclaration(
+                SyntaxFactory.ParseTypeName(typeName)
+            )
+            .AddVariables(
+                SyntaxFactory.VariableDeclarator(fieldName)
+                    .WithInitializer(
+                        SyntaxFactory.EqualsValueClause(
+                           nullSupress
+                        )
+                    )
+            )
+        )
+        .AddModifiers(SyntaxFactory.Token(SyntaxKind.PrivateKeyword), SyntaxFactory.Token(SyntaxKind.StaticKeyword));
+
+
+        return fieldDeclaration;
+    }
+
+    private static MethodDeclarationSyntax AddServiceRegisterAndSetSuffix(FrozenDictionary<ISymbol,ServiceDescriptor> allServiceDescriptors,ServiceDescriptor serviceDescriptor)
     {
         serviceDescriptor.MethodSuffix = Guid.NewGuid().ToString("N");
         // Generate method name with suffix
@@ -258,15 +330,7 @@ public sealed class RcsLocatorBuilderGenerator : IIncrementalGenerator
         // Generate parameters for the method (constructor parameters)
         var parameters = serviceDescriptor.Constructor.Parameters.Select(param =>
             SyntaxFactory.Argument(
-                SyntaxFactory.InvocationExpression(
-                    SyntaxFactory.MemberAccessExpression(
-                        SyntaxKind.SimpleMemberAccessExpression,
-                        SyntaxFactory.IdentifierName(RcsLocatorCurrentLocator),
-                        SyntaxFactory.GenericName(RcsLocatorGetRequiredService).AddTypeArgumentListArguments(
-                            SyntaxFactory.ParseTypeName(param.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat))
-                        )
-                    )
-                )
+                GetServiceFromLocator(param, serviceDescriptor.IsScoped)
             )
         ).ToArray();
 
@@ -285,8 +349,146 @@ public sealed class RcsLocatorBuilderGenerator : IIncrementalGenerator
         var methodDeclaration = SyntaxFactory.MethodDeclaration(
                 SyntaxFactory.ParseTypeName(serviceDescriptor.ServiceType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)),
                 methodName)
-            .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword),
+            .AddModifiers(SyntaxFactory.Token(SyntaxKind.PrivateKeyword),
                           SyntaxFactory.Token(SyntaxKind.StaticKeyword))
+            // If service is scoped, add the IServiceProvider serviceProvider parameter
+            .AddParameterListParameters(
+                serviceDescriptor.IsScoped
+                    ? [
+                        SyntaxFactory
+                            .Parameter(SyntaxFactory.Identifier("serviceProvider"))
+                            .WithType(SyntaxFactory.ParseTypeName("global::System.IServiceProvider"))
+                      ]
+                    : []
+            )
+            .WithBody(methodBody);
+
+        return methodDeclaration;
+    }
+
+
+    private static InvocationExpressionSyntax GetServiceFromLocator(IParameterSymbol parameterSymbol, bool isHasServiceProvider)
+    {
+        if (isHasServiceProvider)
+        {
+            // if has serviceProvider
+            // just call serviceProvider.GetRequiredService<TService>()
+
+            return SyntaxFactory.InvocationExpression(
+                SyntaxFactory.MemberAccessExpression(
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    SyntaxFactory.IdentifierName("serviceProvider"),
+                    SyntaxFactory.GenericName("GetRequiredService").AddTypeArgumentListArguments(
+                        SyntaxFactory.ParseTypeName(parameterSymbol.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat))
+                    )
+                )
+            );
+        }
+
+        var isScoped = parameterSymbol.GetAttributes().Any(a => a.AttributeClass?.Name is ScopeInjectAttributeShortName or ScopeInjectAttributeName or ScopeInjectAttributeFullName);
+
+        // is service is scoped 
+        // RcsLocator.Scoped.GetRequiredService<TService>()
+        if (isScoped)
+        {
+            return SyntaxFactory.InvocationExpression(
+                SyntaxFactory.MemberAccessExpression(
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    SyntaxFactory.MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        SyntaxFactory.IdentifierName(RcsLocatorCurrentLocator),
+                        SyntaxFactory.IdentifierName("Scoped")),
+                    SyntaxFactory.GenericName(RcsLocatorGetRequiredService).AddTypeArgumentListArguments(
+                        SyntaxFactory.ParseTypeName(parameterSymbol.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat))
+                    )
+                )
+            );
+        }
+
+        // else default RcsLocator.GetRequiredService<TService>()
+
+        return SyntaxFactory.InvocationExpression(
+                    SyntaxFactory.MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        SyntaxFactory.IdentifierName(RcsLocatorCurrentLocator),
+                        SyntaxFactory.GenericName(RcsLocatorGetRequiredService).AddTypeArgumentListArguments(
+                            SyntaxFactory.ParseTypeName(parameterSymbol.Type.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat))
+                        )
+                    )
+                );
+    }
+
+    private static MethodDeclarationSyntax AddToBuilder(ImmutableArray<ServiceDescriptor> serviceDescriptors)
+    {
+        // Gemerate method invocation for each service
+
+        // for scoped service:
+        // ServiceLocatorBuilder.AddScoped<global::IServiceA>((sp) => GetService_{serviceDescriptor.MethodSuffix}(sp));
+
+        // for transient and singleton service:
+        // ServiceLocatorBuilder.AddService<global::IServiceA>(() => GetService_{serviceDescriptor.MethodSuffix}());
+
+        using var methodBuilder = ImmutableArrayBuilder<StatementSyntax>.Rent();
+
+        foreach (var serviceDescriptor in serviceDescriptors)
+        {
+            var methodName = $"GetService_{serviceDescriptor.MethodSuffix}";
+
+            var methodInvocation = SyntaxFactory.ExpressionStatement(
+                SyntaxFactory.InvocationExpression(
+                    SyntaxFactory.MemberAccessExpression(
+                        SyntaxKind.SimpleMemberAccessExpression,
+                        SyntaxFactory.IdentifierName(ServiceLocatorBuilderName),
+                        serviceDescriptor.IsScoped
+                            ? SyntaxFactory.GenericName(ServiceLocatorBuilderAddScopedServiceMethodName).AddTypeArgumentListArguments(
+                                SyntaxFactory.ParseTypeName(serviceDescriptor.ServiceType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat))
+                            )
+                            : SyntaxFactory.GenericName(rviceLocatorBuilderAddServiceMethodName).AddTypeArgumentListArguments(
+                                SyntaxFactory.ParseTypeName(serviceDescriptor.ServiceType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat))
+                            )
+                    )
+                ).AddArgumentListArguments(
+                    SyntaxFactory.Argument(
+
+                        serviceDescriptor.IsScoped 
+                        ? SyntaxFactory.ParenthesizedLambdaExpression(
+                            SyntaxFactory.ParameterList(
+                                SyntaxFactory.SingletonSeparatedList(
+                                    SyntaxFactory.Parameter(
+                                        SyntaxFactory.Identifier("sp")
+                                    )
+                                    .WithType(SyntaxFactory.ParseTypeName("global::System.IServiceProvider"))
+                                )
+                            ),
+                            SyntaxFactory.InvocationExpression(
+                                SyntaxFactory.IdentifierName(methodName),
+                                SyntaxFactory.ArgumentList(
+                                    SyntaxFactory.SingletonSeparatedList(
+                                        SyntaxFactory.Argument(SyntaxFactory.IdentifierName("sp"))   
+                                    )
+                                )
+                            )
+                        )
+                        : SyntaxFactory.ParenthesizedLambdaExpression(
+                            SyntaxFactory.InvocationExpression(
+                                SyntaxFactory.IdentifierName(methodName)
+                            )
+                        )
+                    )
+                )
+            );
+
+            methodBuilder.Add(methodInvocation);
+        }
+
+        var methodBody = SyntaxFactory.Block(methodBuilder.ToImmutable());
+
+        var methodDeclaration = SyntaxFactory.MethodDeclaration(
+            SyntaxFactory.PredefinedType(
+                SyntaxFactory.Token(SyntaxKind.VoidKeyword)
+            ),
+            "AddToBuilder")
+            .AddModifiers(SyntaxFactory.Token(SyntaxKind.PublicKeyword), SyntaxFactory.Token(SyntaxKind.StaticKeyword))
             .WithBody(methodBody);
 
         return methodDeclaration;

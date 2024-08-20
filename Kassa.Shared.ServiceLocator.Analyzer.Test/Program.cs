@@ -1,11 +1,24 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
-using Kassa.Shared.Locator;
+using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 
 Console.WriteLine("Hello, World!");
 
 RcsLocatorBuilder.AddSingleton<IA, A>();
-RcsLocatorBuilder.AddSingleton<IB, B>();
+RcsLocatorBuilder.AddScoped<IB, B>();
+RcsLocatorBuilder.AddTransient<C>();
+RcsLocatorBuilder.AddScoped<D>();
+
+RcsLocatorBuilder.AddToBuilder();
+
+ServiceLocatorBuilder.SetLocator();
+
+await RcsLocator.ActivateScope();
+
+var d = RcsLocator.GetRequiredService<C>();
+
+Console.WriteLine(d.GetName());
 
 public interface IA
 {
@@ -17,16 +30,38 @@ public class A: IA
     public string Name => "as";
 }
 
-public interface IB
+public interface IB: IInitializable
 {
     public int Value { get; set; }
 }
 
-public class B: IB
+public class B: EmptyInitializable, IB
 {
     public int Value { get; set; }
 
     public B(IA a)
     {
     }
+}
+
+public class C
+{
+    public C(IA a, [ScopeInject] IB b)
+    {
+    }
+
+    public string GetName() => "c";
+}
+
+public class D : EmptyInitializable
+{
+    private readonly IA _a;
+    private readonly C _c;
+
+    public D(IA a, [ScopeInject] C c)
+    {
+        _a = a;
+    }
+
+    public string GetName() => _a.Name + _c.GetName();
 }

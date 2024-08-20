@@ -24,13 +24,14 @@ public readonly struct ServiceScope: IServiceProvider, IAsyncDisposable, IDispos
 
     public readonly bool IsEmpty => _services.Count == 0;
 
-    public static async ValueTask<ServiceScope> CreateScope(FrozenDictionary<Type, Func<object>> scopedServices)
+    public static async ValueTask<ServiceScope> CreateScope(List<(Type, Func<IServiceProvider,object>)> scopedServices)
     {
         var services = new Dictionary<Type, object>();
+        var tempServiceProvider = new TempServiceProvider(services);
 
         foreach (var (type, factory) in scopedServices)
         {
-            var service = factory();
+            var service = factory(tempServiceProvider);
 
             if (service is IInitializable initializable)
             {
@@ -107,6 +108,21 @@ public readonly struct ServiceScope: IServiceProvider, IAsyncDisposable, IDispos
             {
                 await asyncDisposable.DisposeAsync();
             }
+        }
+    }
+
+    private sealed class TempServiceProvider(Dictionary<Type, object> services) : IServiceProvider
+    {
+        private readonly Dictionary<Type, object> _services = services;
+
+        public object? GetService(Type serviceType)
+        {
+            if (_services.TryGetValue(serviceType, out var value))
+            {
+                return value;
+            }
+
+            return RcsLocator.GetService(serviceType);
         }
     }
 }
