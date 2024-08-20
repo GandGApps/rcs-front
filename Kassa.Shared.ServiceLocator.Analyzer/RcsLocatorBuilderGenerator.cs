@@ -338,7 +338,19 @@ public sealed class RcsLocatorBuilderGenerator : IIncrementalGenerator
         var methodBody = SyntaxFactory.Block(
             SyntaxFactory.SingletonList<StatementSyntax>(
                 SyntaxFactory.ReturnStatement(
-                    SyntaxFactory.ObjectCreationExpression(
+
+                    serviceDescriptor.IsSingleton
+                    // if is singleton, return the field ??= new TService()
+                    ? SyntaxFactory.AssignmentExpression(
+                        SyntaxKind.CoalesceAssignmentExpression,
+                        SyntaxFactory.IdentifierName($"__service_{serviceDescriptor.MethodSuffix}"),
+                        SyntaxFactory.Token(SyntaxKind.QuestionQuestionEqualsToken),
+                        SyntaxFactory.ObjectCreationExpression(
+                            SyntaxFactory.ParseTypeName(serviceDescriptor.ImplementationType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)))
+                        .AddArgumentListArguments(parameters)
+                    )
+                    // else return new TService()
+                    : SyntaxFactory.ObjectCreationExpression(
                         SyntaxFactory.ParseTypeName(serviceDescriptor.ImplementationType.ToDisplayString(SymbolDisplayFormat.FullyQualifiedFormat)))
                     .AddArgumentListArguments(parameters)
                 )

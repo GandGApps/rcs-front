@@ -20,6 +20,17 @@ var d = RcsLocator.GetRequiredService<C>();
 
 Console.WriteLine(d.GetName());
 
+
+static class Ac
+{
+    static int? a = 2;
+
+    public static int? GetA()
+    {
+        return a ??= 1;
+    }
+}
+
 public interface IA
 {
     string Name { get; }
