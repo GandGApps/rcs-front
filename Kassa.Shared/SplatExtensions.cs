@@ -25,6 +25,11 @@ public static class SplatExtensions
         return services.GetService<T>() ?? throw new InvalidOperationException($"The service of type {typeof(T)} is not registered.");
     }
 
+    public static T GetRequiredService<T>(this IServiceProvider serviceProvider)
+    {
+        return (T?)serviceProvider.GetService(typeof(T)) ?? throw new InvalidOperationException($"The service of type {typeof(T)} is not registered.");
+    }
+
     public static void AddLoggers(this IMutableDependencyResolver services, string? path = null, LogEventLevel logEventLevel = LogEventLevel.Debug)
     {
         path ??= Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs", "Logs.txt");
