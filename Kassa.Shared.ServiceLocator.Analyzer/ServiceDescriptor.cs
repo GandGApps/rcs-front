@@ -10,8 +10,8 @@ public sealed record ServiceDescriptor(
     INamedTypeSymbol ImplementationType,
     IMethodSymbol Constructor,
     Diagnostic[] Diagnostics,
-    IdentifierNameSyntax ServiceTypeSyntax,
-    IdentifierNameSyntax ImplementationTypeSyntax,
+    SimpleNameSyntax ServiceTypeSyntax,
+    SimpleNameSyntax ImplementationTypeSyntax,
     GenericNameSyntax FactorySyntax)
 {
 

@@ -48,7 +48,7 @@ namespace {RcsLocatorBuilderNamespace}
         public static void AddScoped<TService>() where TService : class, IInitializable
         {{
             // This method is needed by the source generator
-            // The body of this method is empty because this method is only a 
+            // The body of this method is empty because this method is only a marker
         }}
 
         public static void AddSingleton<TService>()
@@ -57,17 +57,22 @@ namespace {RcsLocatorBuilderNamespace}
             // The body of this method is empty because this method is only a marker
         }}
 
-        public static void AddSingleton<TService>(Func<TService> serviceCreator)
+        public static void AddService<TService>(Func<TService> serviceCreator) where TService : class 
         {{
-            // This method is needed by the source generator
-            // The body of this method is empty because this method is only a marker
+            ServiceLocatorBuilder.AddService<TService>(() => serviceCreator());
         }}
 
-        public static void AddSingleton<TService, TImplementation>(Func<TImplementation> serviceCreator)
+        public static void AddSingleton<TService>(Func<TService> serviceCreator) where TService : class 
         {{
-            // This method is needed by the source generator
-            // The body of this method is empty because this method is only a marker
+            TService service = null!;
+            ServiceLocatorBuilder.AddService<TService>(() => service ??= serviceCreator());
         }}
+
+        public static void AddSingleton<TService>(TService service) where TService : class
+        {{
+            ServiceLocatorBuilder.AddService<TService>(() => service);
+        }}
+
     }}
 }}
 ";

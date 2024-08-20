@@ -16,10 +16,9 @@ namespace Kassa.BuisnessLogic.Edgar;
 
 public static class EdgarDependencyResolverExntesions
 {
-
+    [Obsolete("Use BuisnessLogicEdgarServices instead")]
     public static void AddEdgarBuisnessLogic(this IMutableDependencyResolver services)
     {
-        AddApis(services);
 
         services.RegisterConstant<IAuthService>(new AuthService());
 
@@ -87,11 +86,4 @@ public static class EdgarDependencyResolverExntesions
         SplatRegistrations.SetupIOC();
     }
 
-    internal static void AddApis(IMutableDependencyResolver services)
-    {
-        services.AddApi<ITerminalApi>();
-        services.AddApi<IEmployeePostsApi>();
-        services.AddApi<IEmployeeApi>();
-        services.AddApi<ITerminalPostApi>();
-    }
 }

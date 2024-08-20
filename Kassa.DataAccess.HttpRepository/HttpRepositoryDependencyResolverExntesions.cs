@@ -11,11 +11,13 @@ using Kassa.DataAccess.HttpRepository.Api;
 
 namespace Kassa.DataAccess.HttpRepository;
 
+
 public static class HttpRepositoryDependencyResolverExntesions
 {
+    [Obsolete("Use HttpRepositoryServices instead")]
     public static void AddHttpRepositoryDataAccess(this IMutableDependencyResolver services)
     {
-        AddApis(services);
+        //AddApis(services);
 
         services.RegisterConstant<IRepository<Member>>(new EmployeeRepository());
         services.RegisterConstant<IRepository<Order>>(new OrderRepository());
@@ -35,7 +37,7 @@ public static class HttpRepositoryDependencyResolverExntesions
         services.RegisterConstant<IRepository<Shift>>(shiftRepository);
     }
 
-    internal static void AddApis(IMutableDependencyResolver services)
+    /*internal static void AddApis(IMutableDependencyResolver services)
     {
         services.AddApi<IEmployeeApi>();
         services.AddApi<IOrdersApi>();
@@ -45,5 +47,5 @@ public static class HttpRepositoryDependencyResolverExntesions
         services.AddApi<ITechcardApi>();
         services.AddApi<IAdditiveApi>();
         services.AddApi<IEmployeePostApi>();
-    }
+    }*/
 }

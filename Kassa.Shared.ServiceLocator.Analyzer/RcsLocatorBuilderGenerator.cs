@@ -28,13 +28,12 @@ public sealed class RcsLocatorBuilderGenerator : IIncrementalGenerator
 
             var sortedDescriptors = ReportDiagnosticsAndSort(context, serviceDescriptors);
 
-            var frozenDescriptors = sortedDescriptors.ToFrozenDictionary(x => x.ServiceType, x => x, SymbolEqualityComparer.Default);
 
             using var registrationBuilder = ImmutableArrayBuilder<MethodDeclarationSyntax>.Rent();
 
             foreach (var serviceDescriptor in sortedDescriptors)
             {
-                var serviceRegister = AddServiceRegisterAndSetSuffix(frozenDescriptors!, serviceDescriptor);
+                var serviceRegister = AddServiceRegisterAndSetSuffix(serviceDescriptor);
 
                 registrationBuilder.Add(serviceRegister);
             }
@@ -114,6 +113,11 @@ public sealed class RcsLocatorBuilderGenerator : IIncrementalGenerator
             return false;
         }
 
+        if (invocation.ArgumentList.Arguments.Count > 0)
+        {
+            return false;
+        }
+
         if (invocation.Expression is not MemberAccessExpressionSyntax memberAccess)
         {
             return false;
@@ -172,16 +176,16 @@ public sealed class RcsLocatorBuilderGenerator : IIncrementalGenerator
         {
             diagnostics = [Diagnostic.Create(Diagnostics.NotFoundConstructor, implementationType.Locations[0])];
         }
-
         return new ServiceDescriptor(
             serviceType,
             implementationType,
             constructor!,
             diagnostics,
-            (IdentifierNameSyntax)genericName.TypeArgumentList.Arguments[0],
-            (IdentifierNameSyntax)genericName.TypeArgumentList.Arguments.ElementAtOrDefault(1),
+            (SimpleNameSyntax)genericName.TypeArgumentList.Arguments[0],
+            (SimpleNameSyntax)genericName.TypeArgumentList.Arguments.ElementAtOrDefault(1),
             genericName);
     }
+
 
     private static bool ContainsErrors(SyntaxNode node)
         => node
@@ -321,7 +325,7 @@ public sealed class RcsLocatorBuilderGenerator : IIncrementalGenerator
         return fieldDeclaration;
     }
 
-    private static MethodDeclarationSyntax AddServiceRegisterAndSetSuffix(FrozenDictionary<ISymbol,ServiceDescriptor> allServiceDescriptors,ServiceDescriptor serviceDescriptor)
+    private static MethodDeclarationSyntax AddServiceRegisterAndSetSuffix(ServiceDescriptor serviceDescriptor)
     {
         serviceDescriptor.MethodSuffix = Guid.NewGuid().ToString("N");
         // Generate method name with suffix
@@ -462,7 +466,7 @@ public sealed class RcsLocatorBuilderGenerator : IIncrementalGenerator
                 ).AddArgumentListArguments(
                     SyntaxFactory.Argument(
 
-                        serviceDescriptor.IsScoped 
+                        serviceDescriptor.IsScoped
                         ? SyntaxFactory.ParenthesizedLambdaExpression(
                             SyntaxFactory.ParameterList(
                                 SyntaxFactory.SingletonSeparatedList(
@@ -476,7 +480,7 @@ public sealed class RcsLocatorBuilderGenerator : IIncrementalGenerator
                                 SyntaxFactory.IdentifierName(methodName),
                                 SyntaxFactory.ArgumentList(
                                     SyntaxFactory.SingletonSeparatedList(
-                                        SyntaxFactory.Argument(SyntaxFactory.IdentifierName("sp"))   
+                                        SyntaxFactory.Argument(SyntaxFactory.IdentifierName("sp"))
                                     )
                                 )
                             )

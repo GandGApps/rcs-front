@@ -4,7 +4,7 @@ using Kassa.DataAccess;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 using Kassa.Shared;
-using Kassa.Shared.Locator;
+using Kassa.Shared;
 using Splat;
 
 namespace Kassa.BuisnessLogic;
@@ -20,7 +20,9 @@ public static class DependencyResolverExtensions
     {
         SplatRegistrations.SetupIOC();
 
-        SplatRegistrations.Register<ICategoryService, CategoryService>();
+
+
+        /*SplatRegistrations.Register<ICategoryService, CategoryService>();
         RegisterInitializableServiceFactory<ICategoryService>(services);
 
         services.Register<IProductService>(() =>
@@ -60,14 +62,14 @@ public static class DependencyResolverExtensions
         SplatRegistrations.Register<IDistrictService, DistrictService>();
         RegisterInitializableServiceFactory<IDistrictService>(services);
 
-        /*SplatRegistrations.Register<IIngridientsService, IngridientsService>();
-        RegisterInitializableServiceFactory<IIngridientsService>(services);*/
+        *//*SplatRegistrations.Register<IIngridientsService, IngridientsService>();
+        RegisterInitializableServiceFactory<IIngridientsService>(services);*//*
 
         SplatRegistrations.Register<ICourierService, CourierService>();
         RegisterInitializableServiceFactory<ICourierService>(services);
 
-        /*SplatRegistrations.Register<IOrdersService, OrdersService>();
-        RegisterInitializableServiceFactory<IOrdersService>(services);*/
+        *//*SplatRegistrations.Register<IOrdersService, OrdersService>();
+        RegisterInitializableServiceFactory<IOrdersService>(services);*//*
 
         SplatRegistrations.Register<IWithdrawReasonService, WithdrawReasounService>();
         RegisterInitializableServiceFactory<IWithdrawReasonService>(services);
@@ -85,9 +87,10 @@ public static class DependencyResolverExtensions
 
             return new ReceiptService(repository, ingridientsService);
         });
-        RegisterInitializableServiceFactory<IReceiptService>(services);
+        RegisterInitializableServiceFactory<IReceiptService>(services);*/
     }
 
+    [Obsolete("Remove asap")]
     /// <summary>
     /// Registers a factory for creating initializable services. This factory is responsible for 
     /// the lifecycle management of services that implement IInitializableService, including their 

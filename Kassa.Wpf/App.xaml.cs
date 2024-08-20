@@ -86,14 +86,15 @@ public partial class App : Application, IEnableLogger
         Locator.CurrentMutable.InitializeReactiveUI(RegistrationNamespace.Wpf);
         Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
         Locator.CurrentMutable.RegisterMockDataAccess(); // TODO: Replace with real data access
-        Locator.CurrentMutable.RegisterMockBuisnessLogic(); // TODO: Replace with real buisness logic
+        //Locator.CurrentMutable.RegisterBuisnessLogic(); // TODO: Replace with real buisness logic
+        BuisnessLogicServices.RegisterMockBuisnessLogic(); // TODO: Replace with real buisness logic
 
-        Locator.CurrentMutable.AddHttpRepositoryDataAccess();
-        Locator.CurrentMutable.AddEdgarBuisnessLogic();
+        HttpRepositoryServices.RegisterServices();
+        BuisnessLogicEdgarServices.RegisterBuisnessLogic();
 
         typeof(SimpleRouter).TypeInitializer!.Invoke(null, null);
 
-        ApiSplatExtensions.BuildServices();
+        ApiServiceRegistration.BuildServices();
     }
 
     protected override void OnActivated(EventArgs e)

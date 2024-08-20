@@ -7,12 +7,13 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Kassa.Shared.DelegatingHandlers;
 using Microsoft.Extensions.Configuration;
+using Kassa.Shared.ServiceLocator;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 using Splat;
 
 namespace Kassa.Shared;
-public static class ApiSplatExtensions
+public static class ApiServiceRegistration
 {
     private static readonly ServiceCollection _services = new();
     private static readonly RefitSettings _refitSettings = new()
@@ -38,16 +39,18 @@ public static class ApiSplatExtensions
         _serviceProvider = _services.BuildServiceProvider();
     }
 
-    public static void AddApi<T>(this IMutableDependencyResolver services, RefitSettings? settings = null, JsonSerializerContext serializerContext = null) where T : class
+    public static void AddApi<T>(RefitSettings? settings = null) where T : class
     {
         settings ??= _refitSettings;
 
         _services.AddBasicApi<T>(settings);
 
-        services.Register<T>(() =>
-        {
-            return _serviceProvider.GetRequiredService<T>();
-        });
+        ServiceLocatorBuilder.AddService<T>(() => _serviceProvider.GetRequiredService<T>());
+    }
+
+    public static T GetService<T>() where T : class
+    {
+        return _serviceProvider.GetRequiredService<T>();
     }
 
     public static IHttpClientBuilder AddBasicApi<T>(this IServiceCollection services, RefitSettings? settings = null) where T : class
@@ -62,7 +65,7 @@ public static class ApiSplatExtensions
     {
         return builder.ConfigureHttpClient(httpClient =>
         {
-            var configuration = Locator.Current.GetRequiredService<IConfiguration>();
+            var configuration = RcsLocator.GetRequiredService<IConfiguration>();
 
             var baseAddress = configuration["ApiConfiguration:BaseAddress"]!;
 
