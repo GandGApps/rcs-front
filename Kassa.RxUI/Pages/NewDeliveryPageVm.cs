@@ -11,6 +11,7 @@ using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Dialogs;
+using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -92,7 +93,7 @@ public sealed class NewDeliveryPageVm : PageViewModel
 
         SelectDistrictAndStreetCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var districtService = await Locator.GetInitializedService<IDistrictService>();
+            var districtService = RcsLocator.Scoped.GetRequiredService<IDistrictService>();
 
             var districtDialog = new AllDistrictsDialogViewModel(districtService);
 
@@ -103,7 +104,7 @@ public sealed class NewDeliveryPageVm : PageViewModel
                 return;
             }
 
-            var streetService = await Locator.GetInitializedService<IStreetService>();
+            var streetService = RcsLocator.Scoped.GetRequiredService<IStreetService>();
 
             var streetDialog = new StreetsDialogViewModel(districtDialog.SelectedItem, streetService);
 
@@ -151,7 +152,7 @@ public sealed class NewDeliveryPageVm : PageViewModel
 
         SelectCourierCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var courierService = await Locator.GetInitializedService<ICourierService>();
+            var courierService = RcsLocator.Scoped.GetRequiredService<ICourierService>();
             var dialog = new SearchCourierDialogViewModel(courierService);
 
             dialog.OkCommand.Subscribe(x =>
@@ -231,7 +232,7 @@ public sealed class NewDeliveryPageVm : PageViewModel
                     Phone = Phone
                 };
 
-                var clientService = await Locator.GetInitializedService<IClientService>();
+                var clientService = RcsLocator.Scoped.GetRequiredService<IClientService>();
                 await clientService.AddClient(client);
             }
 
@@ -522,7 +523,7 @@ public sealed class NewDeliveryPageVm : PageViewModel
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        var cashierService = await Locator.GetInitializedService<ICashierService>();
+        var cashierService = RcsLocator.Scoped.GetRequiredService<ICashierService>();
 
         OrderEditPageVm = new DeliveryOrderEditPageVm(_orderEdit, _storageScope, _cashierService, _additiveService, _productService, _categoryService, _receiptService, _ingridientsService);
 

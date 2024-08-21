@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using Splat;
 
-namespace Kassa.Shared;
+namespace Kassa.Shared.Logging;
 public record struct LogInfo(LogLevel LogLevel, string Message, Type? Type, Exception? Exception)
 {
     public static implicit operator (LogLevel logLevel, string message, Type? type, Exception? exception)(LogInfo value)

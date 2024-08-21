@@ -8,6 +8,7 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Edgar.Api;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
@@ -42,7 +43,7 @@ internal sealed class EdgarShift : IShift
     public async Task Start()
     {
         var shiftDto = CreateDto();
-        var employeeApi = Locator.Current.GetRequiredService<IEmployeePostsApi>();
+        var employeeApi = RcsLocator.GetRequiredService<IEmployeePostsApi>();
 
         var openPostRequest = new EmployeeOpenPostRequest(DateTime.Now, shiftDto.Id, 0, shiftDto.CashierShiftId);
 
@@ -75,7 +76,7 @@ internal sealed class EdgarShift : IShift
     {
         var shiftDto = CreateDto();
 
-        var employeePostApi = Locator.Current.GetRequiredService<IEmployeePostsApi>();
+        var employeePostApi = RcsLocator.GetRequiredService<IEmployeePostsApi>();
 
         var now = DateTime.Now;
 
@@ -91,7 +92,7 @@ internal sealed class EdgarShift : IShift
     {
         var shiftDto = CreateDto();
 
-        var employeePostApi = Locator.Current.GetRequiredService<IEmployeePostsApi>();
+        var employeePostApi = RcsLocator.GetRequiredService<IEmployeePostsApi>();
 
         var now = DateTime.Now;
 
@@ -113,7 +114,7 @@ internal sealed class EdgarShift : IShift
     {
         var shiftDto = CreateDto();
 
-        var employeePostApi = Locator.Current.GetRequiredService<IEmployeePostsApi>();
+        var employeePostApi = RcsLocator.GetRequiredService<IEmployeePostsApi>();
 
         var now = DateTime.Now;
 

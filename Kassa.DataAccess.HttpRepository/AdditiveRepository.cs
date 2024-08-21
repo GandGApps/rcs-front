@@ -8,6 +8,7 @@ using Kassa.DataAccess.HttpRepository.Api;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.DataAccess.HttpRepository;
@@ -46,7 +47,7 @@ internal sealed class AdditiveRepository : IAdditiveRepository, IEnableLogger
 
     public async Task<IEnumerable<Additive>> GetAll()
     {
-        var additiveApi = Locator.Current.GetRequiredService<IAdditiveApi>();
+        var additiveApi = RcsLocator.GetRequiredService<IAdditiveApi>();
 
         var additivesResponse = await additiveApi.GetAdditives();
 

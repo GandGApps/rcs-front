@@ -9,6 +9,7 @@ using ESC_POS_USB_NET.Printer;
 using Splat;
 using Kassa.BuisnessLogic;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 
 namespace Kassa.Wpf.Services.PosPrinters;
 
@@ -66,8 +67,8 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
         }
 
         var productIndex = 0;
-        var productService = await Locator.Current.GetInitializedService<IProductService>();
-        var additiveService = await Locator.Current.GetInitializedService<IAdditiveService>();
+        var productService = RcsLocator.Scoped.GetRequiredService<IProductService>();
+        var additiveService = RcsLocator.Scoped.GetRequiredService<IAdditiveService>();
 
         printer.Append("Кто прочитает тот л");
 

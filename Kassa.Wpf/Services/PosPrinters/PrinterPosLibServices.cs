@@ -5,14 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using Microsoft.Extensions.Configuration;
 using Splat;
 
 namespace Kassa.Wpf.Services.PosPrinters;
-internal static class PrinterPosLibSplatExtensions
+internal static class PrinterPosLibServices
 {
 
-    public static void AddPrinterPosLib(this IMutableDependencyResolver services, IConfiguration config)
+    public static void RegisterPrinterPosLib(IConfiguration config)
     {
         var printerPosLibString = config.GetValue<string>(nameof(PrinterPosLib));
 
@@ -21,7 +22,7 @@ internal static class PrinterPosLibSplatExtensions
         switch (printerPosLib)
         {
             case PrinterPosLib.Wndpos:
-                services.RegisterConstantAndDiagnose<IPrinter>(new WndPosPrinter());
+                RcsLocatorBuilder.AddSingleton<IPrinter>(new WndPosPrinter());
                 break;
             case PrinterPosLib.Escpos:
 
@@ -31,17 +32,17 @@ internal static class PrinterPosLibSplatExtensions
                     LogHost.Default.Error("Port for Escpos printer is not set");
                     break;
                 }
-                services.RegisterConstantAndDiagnose<IPrinter>(new EscPosPrinter(port));
+                RcsLocatorBuilder.AddSingleton<IPrinter>(new EscPosPrinter(port));
                 break;
             case PrinterPosLib.Wnd:
                 var useDefaultPrinter = config.GetValue<bool>("UseDefaultPrinter");
-                services.RegisterConstantAndDiagnose<IPrinter>(new WndPrinter(useDefaultPrinter));
+                RcsLocatorBuilder.AddSingleton<IPrinter>(new WndPrinter(useDefaultPrinter));
                 break;
             case PrinterPosLib.EscposUsb:
                 var printerName = config.GetValue<string>("EscposUsbPrinterName");
                 var ppp = CodePagesEncodingProvider.Instance;
                 Encoding.RegisterProvider(ppp);
-                services.RegisterConstantAndDiagnose<IPrinter>(new EscPosUsbPrinter(printerName));
+                RcsLocatorBuilder.AddSingleton<IPrinter>(new EscPosUsbPrinter(printerName));
                 break;
             default:
                 break;

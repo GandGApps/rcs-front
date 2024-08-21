@@ -9,6 +9,7 @@ using Kassa.BuisnessLogic.Edgar.Api;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
@@ -47,7 +48,7 @@ internal class EdgarTerminalShift : ITerminalShift
     {
         var shift = CreateDto();
 
-        var terminalPostApi = Locator.Current.GetRequiredService<ITerminalPostApi>();
+        var terminalPostApi = RcsLocator.GetRequiredService<ITerminalPostApi>();
         var openShiftRequest = new TerminalOpenPostRequest(DateTime.Now, shift.Id, 0);
 
         await terminalPostApi.OpenPost(openShiftRequest);
@@ -59,10 +60,10 @@ internal class EdgarTerminalShift : ITerminalShift
     {
         var shift = CreateDto();
 
-        var terminalPostApi = Locator.Current.GetRequiredService<ITerminalPostApi>();
+        var terminalPostApi = RcsLocator.GetRequiredService<ITerminalPostApi>();
         var closeShiftRequest = new TerminalClosePostRequest(DateTime.Now, shift.Id);
 
-        var reportShiftService = Locator.Current.GetRequiredService<IReportShiftService>();
+        var reportShiftService = RcsLocator.GetRequiredService<IReportShiftService>();
 
         await terminalPostApi.ClosePost(closeShiftRequest);
 

@@ -15,6 +15,7 @@ using Kassa.RxUI.Dialogs;
 using System.Reactive.Linq;
 using DynamicData.Binding;
 using DynamicData;
+using Kassa.Shared.ServiceLocator;
 
 namespace Kassa.RxUI.Pages;
 public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
@@ -98,7 +99,7 @@ public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
 
         SearchAddictiveCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var additiveService = await Locator.GetInitializedService<IAdditiveService>();
+            var additiveService = RcsLocator.Scoped.GetRequiredService<IAdditiveService>();
             var addictiveDialog = new SearchAddictiveDialogViewModel(additiveService, this);
             var dialog = await MainViewModel.DialogOpenCommand.Execute(addictiveDialog).FirstAsync();
 

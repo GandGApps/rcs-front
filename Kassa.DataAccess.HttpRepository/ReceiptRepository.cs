@@ -9,6 +9,7 @@ using Kassa.DataAccess.HttpRepository.Api;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.DataAccess.HttpRepository;
@@ -36,7 +37,7 @@ internal sealed class ReceiptRepository : IRepository<Receipt>, IEnableLogger
     }
     public async Task<IEnumerable<Receipt>> GetAll()
     {
-        var techcardApi = Locator.Current.GetRequiredService<ITechcardApi>();
+        var techcardApi = RcsLocator.GetRequiredService<ITechcardApi>();
 
         var techcards = await techcardApi.GetAllTechcards();
 

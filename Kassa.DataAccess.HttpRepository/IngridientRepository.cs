@@ -7,6 +7,7 @@ using Kassa.DataAccess.HttpRepository.Api;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.DataAccess.HttpRepository;
@@ -18,7 +19,7 @@ internal sealed class IngridientRepository : IRepository<Ingredient>, IEnableLog
     public Task<Ingredient?> Get(Guid id) => throw new NotImplementedException();
     public async Task<IEnumerable<Ingredient>> GetAll()
     {
-        var ingridientsApi = Locator.Current.GetRequiredService<IIngridientsApi>();
+        var ingridientsApi = RcsLocator.GetRequiredService<IIngridientsApi>();
 
         var ingridinets = await ingridientsApi.GetIngridients();
 
@@ -32,7 +33,7 @@ internal sealed class IngridientRepository : IRepository<Ingredient>, IEnableLog
         throw new DeveloperException("Логическая ошибка, обратитесь к Баястану");
 
 
-        var ingridientsApi = Locator.Current.GetRequiredService<IIngridientsApi>();
+        var ingridientsApi = RcsLocator.GetRequiredService<IIngridientsApi>();
 
         var ingridientRequest = ApiMapper.MapIngredientToEdgarModel(item);
 

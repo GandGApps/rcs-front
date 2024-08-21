@@ -7,6 +7,7 @@ using Kassa.DataAccess.HttpRepository.Api;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.DataAccess.HttpRepository;
@@ -14,7 +15,7 @@ internal sealed class OrderRepository : IRepository<Order>
 {
     public async Task Add(Order item)
     {
-        var orderApi = Locator.Current.GetRequiredService<IOrdersApi>();
+        var orderApi = RcsLocator.GetRequiredService<IOrdersApi>();
 
         var request = ApiMapper.MapOrderToEdgarModel(item);
 
@@ -25,7 +26,7 @@ internal sealed class OrderRepository : IRepository<Order>
     public Task<Order?> Get(Guid id) => throw new NotImplementedException();
     public async Task<IEnumerable<Order>> GetAll()
     {
-        var orderApi = Locator.Current.GetRequiredService<IOrdersApi>();
+        var orderApi = RcsLocator.GetRequiredService<IOrdersApi>();
 
         var orders = await orderApi.GetOrders();
 

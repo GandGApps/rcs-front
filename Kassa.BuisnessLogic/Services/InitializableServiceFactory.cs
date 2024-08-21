@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.BuisnessLogic.Services;
@@ -18,12 +19,12 @@ internal sealed class InitializableServiceFactory<T> : IInitializableServiceFact
             this.Log().Info("Initialize new instance " + typeof(T));
         }
 
-        _service ??= Locator.Current.GetRequiredService<T>();
+        _service ??= RcsLocator.GetRequiredService<T>();
 
         if (_service.IsDisposed)
         {
             _service = null;
-            _service = Locator.Current.GetRequiredService<T>();
+            _service = RcsLocator.GetRequiredService<T>();
         }
 
         if (_service.IsInitialized)
@@ -43,14 +44,14 @@ internal sealed class InitializableServiceFactory<T> : IInitializableServiceFact
             this.Log().Info("Return new not initialized instance of service" + typeof(T));
         }
 
-        _service ??= Locator.Current.GetRequiredService<T>();
+        _service ??= RcsLocator.GetRequiredService<T>();
 
         if (_service.IsDisposed)
         {
             this.Log().Info("Return new not initialized instance of service " + typeof(T));
             
             _service = null;
-            _service = Locator.Current.GetRequiredService<T>();
+            _service = RcsLocator.GetRequiredService<T>();
         }
 
         return _service;

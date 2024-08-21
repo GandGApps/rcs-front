@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
+using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 
 namespace Kassa.RxUI.Dialogs;
@@ -41,7 +42,7 @@ public sealed class DepositReasonDialogViewModel: ApplicationManagedModelSearcha
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        var withdrawalReasons = await Locator.GetInitializedService<IDepositReasonService>();
+        var withdrawalReasons = RcsLocator.Scoped.GetRequiredService<IDepositReasonService>();
 
         Filter(withdrawalReasons.RuntimeDepositReasons, x => new DepositReasonVm(x, this), disposables);
     }

@@ -10,6 +10,7 @@ using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Dialogs;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -81,8 +82,8 @@ public class PincodePageVm : PageViewModel
 
                 try
                 {
-                    var shiftService = await Locator.GetInitializedService<IShiftService>();
-                    var authService = Locator.GetRequiredService<IAuthService>();
+                    var shiftService = RcsLocator.Scoped.GetRequiredService<IShiftService>();
+                    var authService = RcsLocator.GetRequiredService<IAuthService>();
 
                     if (await authService.EnterPincode(x))
                     {

@@ -8,6 +8,7 @@ using Kassa.DataAccess.HttpRepository.Api;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.DataAccess.HttpRepository;
@@ -16,7 +17,7 @@ internal sealed class DishesWithCacdedValueRepository : IRepository<Product>
     private FrozenDictionary<Guid, Product>? _products;
     public async Task Add(Product item)
     {
-        var dishesApi = Locator.Current.GetRequiredService<IDishesApi>();
+        var dishesApi = RcsLocator.GetRequiredService<IDishesApi>();
 
         var dishRequest = ApiMapper.MapDishToRequest(item);
 
@@ -25,7 +26,7 @@ internal sealed class DishesWithCacdedValueRepository : IRepository<Product>
 
     public Task Delete(Product item)
     {
-        var dishesApi = Locator.Current.GetRequiredService<IDishesApi>();
+        var dishesApi = RcsLocator.GetRequiredService<IDishesApi>();
 
         return dishesApi.DeleteDish(item.Id);
     }
@@ -45,7 +46,7 @@ internal sealed class DishesWithCacdedValueRepository : IRepository<Product>
 
     public async Task<IEnumerable<Product>> GetAll()
     {
-        var dishesApi = Locator.Current.GetRequiredService<IDishesApi>();
+        var dishesApi = RcsLocator.GetRequiredService<IDishesApi>();
 
         var response = await dishesApi.GetDishes();
 
@@ -58,7 +59,7 @@ internal sealed class DishesWithCacdedValueRepository : IRepository<Product>
 
     public Task Update(Product item)
     {
-        var dishesApi = Locator.Current.GetRequiredService<IDishesApi>();
+        var dishesApi = RcsLocator.GetRequiredService<IDishesApi>();
 
         var dishRequest = ApiMapper.MapDishToRequest(item);
 

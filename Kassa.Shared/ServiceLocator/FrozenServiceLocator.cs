@@ -24,14 +24,26 @@ public readonly struct FrozenServiceLocator(FrozenDictionary<Type, Func<object>>
             return factory();
         }
 
+        if (serviceType.IsGenericType)
+        {
+            var genericServiceType = serviceType.GetGenericTypeDefinition();
+
+            if (_servicesFactory.TryGetValue(genericServiceType, out factory))
+            {
+                var genericFactory = (Func<Type[],object>)factory();
+
+                return genericFactory(serviceType.GenericTypeArguments);
+            }
+        }
+
         return null;
     }
 
-    public T? GetService<T>() where T: class
+    public T? GetService<T>() where T : class
     {
         var service = GetService(typeof(T));
 
-        if(service == null)
+        if (service == null)
         {
             return null;
         }
@@ -40,11 +52,11 @@ public readonly struct FrozenServiceLocator(FrozenDictionary<Type, Func<object>>
         return Unsafe.As<T>(service);
     }
 
-    public T GetRequiredService<T>() where T: class
+    public T GetRequiredService<T>() where T : class
     {
         var service = GetService<T>();
 
-        if(service == null)
+        if (service == null)
         {
             throw new InvalidOperationException($"Service of type {typeof(T).Name} is not registered");
         }

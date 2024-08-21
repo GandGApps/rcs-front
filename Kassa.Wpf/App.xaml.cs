@@ -20,6 +20,7 @@ using Kassa.Wpf.Services.PosPrinters;
 using Kassa.Wpf.Services.MagneticStripeReaders;
 using Kassa.Wpf.Services.CashDrawers;
 using Kassa.Wpf.Controls;
+using Kassa.Shared.ServiceLocator;
 
 namespace Kassa.Wpf;
 /// <summary>
@@ -63,7 +64,7 @@ public partial class App : Application, IEnableLogger
 
     public App()
     {
-        var config = Locator.CurrentMutable.AddConfiguration("appsettings");
+        var config = SharedServices.AddConfiguration("appsettings");
 
         EnvironmentName = config.GetValue<string>("Environment") ?? "Production";
 
@@ -75,16 +76,15 @@ public partial class App : Application, IEnableLogger
         CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
         CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
 
-        Locator.CurrentMutable.AddDispatherAdapter();
+        PresentationLayerServices.RegisterDispatherAdapter();
 
-        Locator.CurrentMutable.AddLoggers(LogsPath);
+        SharedServices.AddLoggers(LogsPath);
 
-        Locator.CurrentMutable.AddPrinterPosLib(config);
-        Locator.CurrentMutable.AddMsrReaderPosLib(config);
-        Locator.CurrentMutable.AddCashDrawerPosLib(config);
+        PrinterPosLibServices.RegisterPrinterPosLib(config);
+        MscReaderLibServices.RegisterMsrReaderPosLib(config);
+        CashDrawerPosLibServices.RegisterCashDrawerPosLib(config);
 
         Locator.CurrentMutable.InitializeReactiveUI(RegistrationNamespace.Wpf);
-        Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetCallingAssembly());
         Locator.CurrentMutable.RegisterMockDataAccess(); // TODO: Replace with real data access
         //Locator.CurrentMutable.RegisterBuisnessLogic(); // TODO: Replace with real buisness logic
         BuisnessLogicServices.RegisterMockBuisnessLogic(); // TODO: Replace with real buisness logic
@@ -95,6 +95,8 @@ public partial class App : Application, IEnableLogger
         typeof(SimpleRouter).TypeInitializer!.Invoke(null, null);
 
         ApiServiceRegistration.BuildServices();
+        RcsLocatorBuilder.AddToBuilder();
+        ServiceLocatorBuilder.SetLocator();
     }
 
     protected override void OnActivated(EventArgs e)

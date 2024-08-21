@@ -11,6 +11,7 @@ using ReactiveUI;
 using System.Reactive;
 using ReactiveUI.Fody.Helpers;
 using System.Reactive.Linq;
+using Kassa.Shared.ServiceLocator;
 
 namespace Kassa.RxUI.Dialogs;
 public sealed class MemberSelectDialogViewModel : ApplicationManagedModelSearchableDialogViewModel<MemberDto, MemberVm>
@@ -71,7 +72,7 @@ public sealed class MemberSelectDialogViewModel : ApplicationManagedModelSearcha
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        var memberService = await Locator.GetInitializedService<IMemberService>();
+        var memberService = RcsLocator.Scoped.GetRequiredService<IMemberService>();
 
         Filter(memberService.RuntimeMembers, x => new MemberVm(x, this), disposables);
     }

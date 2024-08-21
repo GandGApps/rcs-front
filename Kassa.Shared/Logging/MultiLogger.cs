@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Splat;
 
-namespace Kassa.Shared;
+namespace Kassa.Shared.Logging;
 public sealed class MultiLogger : ICollection<ILogger>, ILogger
 {
 

@@ -8,6 +8,7 @@ using System.Reactive.Linq;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.RxUI.Dialogs;
 using Kassa.DataAccess.Model;
+using Kassa.Shared.ServiceLocator;
 
 namespace Kassa.RxUI.Pages;
 public sealed class EditDeliveryPageVm : PageViewModel
@@ -81,7 +82,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
 
         SelectDistrictAndStreetCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var districtService = await Locator.GetInitializedService<IDistrictService>();
+            var districtService = RcsLocator.Scoped.GetRequiredService<IDistrictService>();
 
             var districtDialog = new AllDistrictsDialogViewModel(districtService);
 
@@ -92,7 +93,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
                 return;
             }
 
-            var streetService = await Locator.GetInitializedService<IStreetService>();
+            var streetService = RcsLocator.Scoped.GetRequiredService<IStreetService>();
 
             var streetDialog = new StreetsDialogViewModel(districtDialog.SelectedItem, streetService);
 
@@ -140,7 +141,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
 
         SelectCourierCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var courierService = await Locator.GetInitializedService<ICourierService>();
+            var courierService = RcsLocator.Scoped.GetRequiredService<ICourierService>();
             var dialog = new SearchCourierDialogViewModel(courierService);
 
             dialog.OkCommand.Subscribe(x =>
@@ -221,7 +222,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
             orderEdit.CreatedAt = DateTime.UtcNow;
             orderEdit.Status = OrderStatus;
 
-            var ordersService = await Locator.GetInitializedService<IOrdersService>();
+            var ordersService = RcsLocator.Scoped.GetRequiredService<IOrdersService>();
 
             var order = await ordersService.CreateOrderAsync(orderEdit);
 
@@ -488,7 +489,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        var cashierService = await Locator.GetInitializedService<ICashierService>();
+        var cashierService = RcsLocator.Scoped.GetRequiredService<ICashierService>();
 
         _orderEdit = await cashierService.CreateOrder(_orderDto);
 

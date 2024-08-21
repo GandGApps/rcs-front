@@ -28,7 +28,7 @@ public static class DependencyResolverExtensions
         services.Register<IProductService>(() =>
         {
 
-            var repository = Locator.Current.GetRequiredService<IRepository<Product>>();
+            var repository = RcsLocator.GetRequiredService<IRepository<Product>>();
             var receiptService = Locator.Current.GetNotInitializedService<IReceiptService>();
 
             return new ProductService(repository, receiptService);
@@ -37,7 +37,7 @@ public static class DependencyResolverExtensions
 
         services.Register<IAdditiveService>(() =>
         {
-            var repository = Locator.Current.GetRequiredService<IAdditiveRepository>();
+            var repository = RcsLocator.GetRequiredService<IAdditiveRepository>();
             var receiptService = Locator.Current.GetNotInitializedService<IReceiptService>();
 
             return new AdditiveService(repository, receiptService);
@@ -83,7 +83,7 @@ public static class DependencyResolverExtensions
         services.Register<IReceiptService>(() =>
         {
             var ingridientsService = Locator.Current.GetNotInitializedService<IIngridientsService>();
-            var repository = Locator.Current.GetRequiredService<IRepository<Receipt>>();
+            var repository = RcsLocator.GetRequiredService<IRepository<Receipt>>();
 
             return new ReceiptService(repository, ingridientsService);
         });

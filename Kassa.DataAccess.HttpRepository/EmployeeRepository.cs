@@ -7,6 +7,7 @@ using Kassa.DataAccess.HttpRepository.Api;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.DataAccess.HttpRepository;
@@ -17,7 +18,7 @@ internal sealed class EmployeeRepository : IRepository<Member>
     public Task DeleteAll() => throw new NotImplementedException();
     public async Task<Member?> Get(Guid id)
     {
-        var employeeApi = Locator.Current.GetRequiredService<IEmployeeApi>();
+        var employeeApi = RcsLocator.GetRequiredService<IEmployeeApi>();
 
         var employee = await employeeApi.GetMember(id);
 
@@ -35,7 +36,7 @@ internal sealed class EmployeeRepository : IRepository<Member>
     }
     public async Task<IEnumerable<Member>> GetAll()
     {
-        var employeeApi = Locator.Current.GetRequiredService<IEmployeeApi>();
+        var employeeApi = RcsLocator.GetRequiredService<IEmployeeApi>();
 
         var employees = await employeeApi.GetMembers();
 

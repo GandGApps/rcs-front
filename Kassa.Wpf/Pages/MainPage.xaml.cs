@@ -17,6 +17,8 @@ using System.Windows.Shapes;
 using Kassa.RxUI.Dialogs;
 using Kassa.RxUI.Pages;
 using Kassa.Shared;
+using Kassa.Shared.Logging;
+using Kassa.Shared.ServiceLocator;
 using Kassa.Wpf.Windows;
 using ReactiveUI;
 using Splat;
@@ -113,7 +115,7 @@ public partial class MainPage : ReactiveUserControl<MainPageVm>, IEnableLogger
 
         if (_konamiSequence.IsCompletedBy(e.Key.ToString()))
         {
-            var logger = Locator.Current.GetRequiredService<ObservableLogger>();
+            var logger = RcsLocator.GetRequiredService<ObservableLogger>();
 
             var observable = logger.Select(x => x.Message);
 

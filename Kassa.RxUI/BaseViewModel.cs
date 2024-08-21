@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -103,7 +104,7 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
     /// </remarks>
     protected async ValueTask<T> GetInitializedServiceAndDisposeWithThis<T>() where T : class, IInitializableService
     {
-        var services = await Locator.GetInitializedService<T>();
+        var services = RcsLocator.Scoped.GetRequiredService<T>();
 
         services.DisposeWith(InternalDisposables);
 

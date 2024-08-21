@@ -5,13 +5,14 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Threading;
 using Kassa.BuisnessLogic.Services;
+using Kassa.Shared.ServiceLocator;
 using Microsoft.Extensions.Configuration;
 using Splat;
 
 namespace Kassa.Wpf.Services.MagneticStripeReaders;
-internal static class MscReaderLibSplatExtensions
+internal static class MscReaderLibServices
 {
-    public static void AddMsrReaderPosLib(this IMutableDependencyResolver services, IConfiguration configuration)
+    public static void RegisterMsrReaderPosLib(IConfiguration configuration)
     {
         var msrReaderLibString = configuration.GetValue<string>(nameof(MsrReaderLib));
         var msrReaderLib = Enum.TryParse<MsrReaderLib>(msrReaderLibString, true, out var pos) ? pos : MsrReaderLib.MsrPos;
@@ -22,11 +23,11 @@ internal static class MscReaderLibSplatExtensions
                 var msrPos = new WndPosMagneticStripeReader();
                 Dispatcher.CurrentDispatcher.InvokeAsync(async () => await msrPos.TryClaim());
                 LogHost.Default.Info("MsrPos reader is used");
-                services.RegisterConstant<IMagneticStripeReader>(msrPos);
+                RcsLocatorBuilder.AddSingleton<IMagneticStripeReader>(msrPos);
                 break;
             case MsrReaderLib.MsrKeyboard:
                 LogHost.Default.Info("MsrKeyboard reader is used");
-                services.RegisterConstant<IMagneticStripeReader>(MsrKeyboard.Instance);
+                RcsLocatorBuilder.AddSingleton<IMagneticStripeReader>(MsrKeyboard.Instance);
                 break;
         }
     }

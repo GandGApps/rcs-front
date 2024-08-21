@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
 internal sealed class CashierPaymentService: BaseInitializableService, IPaymentService
@@ -71,14 +72,14 @@ internal sealed class CashierPaymentService: BaseInitializableService, IPaymentS
 
         if (receiptBehavior == ReceiptBehavior.PrintReceipt)
         {
-            var printer = Splat.Locator.Current.GetRequiredService<IPrinter>();
+            var printer = RcsLocator.GetRequiredService<IPrinter>();
 
             await printer.PrintAsync(order);
         }
 
         if (Cash > 0)
         {
-            var cashDrawer = Splat.Locator.Current.GetRequiredService<ICashDrawer>();
+            var cashDrawer = RcsLocator.GetRequiredService<ICashDrawer>();
 
             await cashDrawer.Open();
         }

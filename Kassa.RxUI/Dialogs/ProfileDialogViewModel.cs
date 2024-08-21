@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Pages;
+using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -23,7 +24,7 @@ public class ProfileDialogViewModel : DialogViewModel
     {
         GoToPersonalPageCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var shiftSerivce = await Locator.GetInitializedService<IShiftService>();
+            var shiftSerivce = RcsLocator.Scoped.GetRequiredService<IShiftService>();
 
             var personnelPage = new PersonalPageVm(shiftSerivce);
 
@@ -41,7 +42,7 @@ public class ProfileDialogViewModel : DialogViewModel
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        var shiftService = await Locator.GetInitializedService<IShiftService>();
+        var shiftService = RcsLocator.Scoped.GetRequiredService<IShiftService>();
 
         shiftService.CurrentShift.Subscribe(async shift =>
         {

@@ -2,6 +2,7 @@
 using Avalonia.ReactiveUI;
 using Kassa.Launcher.Services;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using KassaLauncher.Services;
 using Microsoft.Extensions.Configuration;
 using ReactiveUI;
@@ -68,7 +69,7 @@ internal sealed class Program
         Locator.CurrentMutable.RegisterConstant(new Remover(), typeof(IRemover));
         Locator.CurrentMutable.RegisterConstant(new SelfProccesUpdater(repoInfo), typeof(ISelfUpdater));
 
-        Locator.CurrentMutable.AddLoggers();
+        SharedServices.AddLoggers();
 
         try
         {

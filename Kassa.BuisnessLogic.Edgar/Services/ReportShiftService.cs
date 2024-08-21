@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
@@ -22,7 +23,7 @@ internal sealed class ReportShiftService : IReportShiftService
 
     public void ClearCurrentReportShift()
     {
-        var printer = Locator.Current.GetRequiredService<IPrinter>();
+        var printer = RcsLocator.GetRequiredService<IPrinter>();
         var currentReportShift = _currentReportShift.Value;
 
         if (currentReportShift == null)

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using Serilog.Events;
 using Splat;
 
-namespace Kassa.Shared;
+namespace Kassa.Shared.Logging;
 public sealed class ObservableLogger : ILogger, IObservable<LogInfo>, Serilog.ILogger
 {
     private static readonly Subject<LogInfo> _subject = new();
@@ -61,6 +61,6 @@ public sealed class ObservableLogger : ILogger, IObservable<LogInfo>, Serilog.IL
         LogEventLevel.Fatal => LogLevel.Fatal,
         _ => LogLevel.Debug
     };
-    
+
 }
 

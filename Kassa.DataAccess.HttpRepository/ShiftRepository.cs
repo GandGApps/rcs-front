@@ -9,6 +9,7 @@ using Kassa.DataAccess.HttpRepository.Api;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.DataAccess.HttpRepository;
@@ -37,7 +38,7 @@ internal sealed class ShiftRepository : IShiftRepository, IEnableLogger
     }
     public async Task<IEnumerable<Shift>> GetAll()
     {
-        var api = Locator.Current.GetRequiredService<IEmployeePostApi>();
+        var api = RcsLocator.GetRequiredService<IEmployeePostApi>();
 
         var shiftsResponse = await api.GetPosts();
 
@@ -51,7 +52,7 @@ internal sealed class ShiftRepository : IShiftRepository, IEnableLogger
 
     public async Task<IEnumerable<Shift>> GetShiftsForMember(Member member)
     {
-        var api = Locator.Current.GetRequiredService<IEmployeePostApi>();
+        var api = RcsLocator.GetRequiredService<IEmployeePostApi>();
 
         var shiftsResponse = await api.GetPostsByEmployeeId(member.Id);
 

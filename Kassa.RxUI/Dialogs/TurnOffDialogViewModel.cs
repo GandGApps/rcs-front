@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Pages;
+using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 
 namespace Kassa.RxUI.Dialogs;
@@ -17,7 +18,7 @@ public class TurnOffDialogViewModel : DialogViewModel
     {
         LogoutCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var shiftService = await Locator.GetInitializedService<IShiftService>();
+            var shiftService = RcsLocator.GetRequiredService<IShiftService>();
 
             if (shiftService.CurrentShift.Value == null)
             {

@@ -4,16 +4,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using Kassa.Wpf.Services;
 using Splat;
 
 namespace Kassa.Wpf;
-internal static class SplatExtensions
+internal static class PresentationLayerServices
 {
 
-    public static void AddDispatherAdapter(this IMutableDependencyResolver services)
+    public static void RegisterDispatherAdapter()
     {
-        services.RegisterConstant<IDispatcher>(new DispatherAdapter());
+        RcsLocatorBuilder.AddSingleton<IDispatcher, DispatherAdapter>();
     }
 
 }

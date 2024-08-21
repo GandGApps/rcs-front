@@ -4,14 +4,17 @@ using System.Linq;
 using System.Reactive.Concurrency;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.Shared.Logging;
+using Kassa.Shared.ServiceLocator;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 using Splat;
 using Splat.Serilog;
 
 namespace Kassa.Shared;
-public static class SplatExtensions
+public static class SharedServices
 {
     /// <summary>
     /// Retrieves a required service of a specified type.
@@ -30,7 +33,7 @@ public static class SplatExtensions
         return (T?)serviceProvider.GetService(typeof(T)) ?? throw new InvalidOperationException($"The service of type {typeof(T)} is not registered.");
     }
 
-    public static void AddLoggers(this IMutableDependencyResolver services, string? path = null, LogEventLevel logEventLevel = LogEventLevel.Debug)
+    public static void AddLoggers(string? path = null, LogEventLevel logEventLevel = LogEventLevel.Debug)
     {
         path ??= Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs", "Logs.txt");
 
@@ -43,7 +46,10 @@ public static class SplatExtensions
             .WriteTo.Logger(new ObservableLogger())
             .CreateLogger();
 
-        services.UseSerilogFullLogger();
+
+
+
+        Locator.CurrentMutable.UseSerilogFullLogger();
     }
 
     public static async void RegisterConstantAndDiagnose<T>(this IMutableDependencyResolver services, T service)
@@ -66,7 +72,7 @@ public static class SplatExtensions
     /// </summary>
     /// <param name="initialJsonFileName">In that json file the key "Environment"</param>
     /// <returns></returns>
-    public static IConfiguration AddConfiguration(this IMutableDependencyResolver services, string initialJsonFileName, Action<ConfigurationBuilder>? builder = null)
+    public static IConfiguration AddConfiguration(string initialJsonFileName, Action<ConfigurationBuilder>? builder = null)
     {
         var basePath = AppDomain.CurrentDomain.BaseDirectory;
         var configurationBuilder = new ConfigurationBuilder();
@@ -85,7 +91,8 @@ public static class SplatExtensions
 
         var config = configurationBuilder.Build();
 
-        services.RegisterConstant<IConfiguration>(config);
+        ServiceLocatorBuilder.AddService<IConfiguration>(() => config);
+        Locator.CurrentMutable.RegisterConstant<IConfiguration>(config);
 
         return config;
     }

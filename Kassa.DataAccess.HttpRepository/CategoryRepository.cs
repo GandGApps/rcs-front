@@ -8,6 +8,7 @@ using Kassa.DataAccess.HttpRepository.Api;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.DataAccess.HttpRepository;
@@ -33,7 +34,7 @@ internal sealed class CategoryRepository : IRepository<Category>, IEnableLogger
 
     public async Task<IEnumerable<Category>> GetAll()
     {
-        var categoryApi = Locator.Current.GetRequiredService<IDishGroupApi>();
+        var categoryApi = RcsLocator.GetRequiredService<IDishGroupApi>();
 
         var response = await categoryApi.GetDishGroups();
 

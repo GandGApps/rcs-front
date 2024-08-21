@@ -5,15 +5,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Services;
+using Kassa.Shared.ServiceLocator;
 using Kassa.Wpf.Services.PosPrinters;
 using Microsoft.Extensions.Configuration;
 using Splat;
 
 namespace Kassa.Wpf.Services.CashDrawers;
-internal static class CashDrawerPosLibSplatExtensions
+internal static class CashDrawerPosLibServices
 {
 
-    public static void AddCashDrawerPosLib(this IMutableDependencyResolver services, IConfiguration config)
+    public static void RegisterCashDrawerPosLib(IConfiguration config)
     {
 
         var cashDrawerPosLibString = config.GetValue<string>(nameof(CashDrawerPosLib));
@@ -24,14 +25,14 @@ internal static class CashDrawerPosLibSplatExtensions
         {
 
             case CashDrawerPosLib.WndPosLib:
-                services.RegisterConstant<ICashDrawer>(new WndPosCashDrawer());
+                RcsLocatorBuilder.AddSingleton<ICashDrawer>(new WndPosCashDrawer());
                 break;
             case CashDrawerPosLib.RawSerialPort:
                 var rawBytesString = config.GetValue($"{nameof(RawSerialPort)}.RawBytes", "00")!;
-
+                byte[] rawBytes;
                 try
                 {
-                    var rawBytes = Convert.FromHexString(rawBytesString);
+                    rawBytes = Convert.FromHexString(rawBytesString);
                 }
                 catch (Exception exc)
                 {
@@ -46,6 +47,7 @@ internal static class CashDrawerPosLibSplatExtensions
                     LogHost.Default.Error($"Port {port} not found");
                     return;
                 }
+                RcsLocatorBuilder.AddSingleton<ICashDrawer>(new RawSerialPort(rawBytes, port));
 
                 break;
             case CashDrawerPosLib.EscposUsb:
@@ -58,7 +60,7 @@ internal static class CashDrawerPosLibSplatExtensions
                     return;
                 }
 
-                services.RegisterConstant<ICashDrawer>(new EscposUsb());
+                RcsLocatorBuilder.AddSingleton<ICashDrawer>(new EscposUsb());
                 break;
             default:
                 break;

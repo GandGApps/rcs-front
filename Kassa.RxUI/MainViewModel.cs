@@ -6,6 +6,7 @@ using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Dialogs;
 using Kassa.RxUI.Pages;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -209,9 +210,9 @@ public class MainViewModel : ReactiveObject, IScreen
                 }
             });
 
-        var authService = Locator.Current.GetRequiredService<IAuthService>();
-        var shiftService = Locator.Current.GetNotInitializedService<IShiftService>();
-        var reportShiftService = Locator.Current.GetRequiredService<IReportShiftService>();
+        var authService = RcsLocator.GetRequiredService<IAuthService>();
+        var shiftService = RcsLocator.GetRequiredService<IShiftService>();
+        var reportShiftService = RcsLocator.GetRequiredService<IReportShiftService>();
 
         authService.CurrentAuthenticationContext.CombineLatest(shiftService.CurrentShift, reportShiftService.CurrentReportShift, (authContext, shift, report) => (authContext, shift, report))
             .Subscribe(async x =>

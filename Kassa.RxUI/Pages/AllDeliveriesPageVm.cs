@@ -16,6 +16,7 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
 using Kassa.RxUI.Dialogs;
+using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -33,7 +34,7 @@ public sealed class AllDeliveriesPageVm : PageViewModel
 
         GoToPickUpCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var clientService = await Locator.GetInitializedService<IClientService>();
+            var clientService = RcsLocator.Scoped.GetRequiredService<IClientService>();
 
             var allClientsDialogViewModel = new AllClientsDialogViewModel(clientService)
             {
@@ -46,7 +47,7 @@ public sealed class AllDeliveriesPageVm : PageViewModel
         GoToDeliveryCommand = ReactiveCommand.CreateFromTask(async () =>
         {
 
-            var clientService = await Locator.GetInitializedService<IClientService>();
+            var clientService = RcsLocator.Scoped.GetRequiredService<IClientService>();
 
             var allClientsDialogViewModel = new AllClientsDialogViewModel(clientService)
             {
@@ -58,16 +59,16 @@ public sealed class AllDeliveriesPageVm : PageViewModel
 
         EditOrderCommand = ReactiveCommand.CreateFromTask<OrderDto>(async order =>
         {
-            var cashierService = await Locator.GetInitializedService<ICashierService>();
-            var additiveService = await Locator.GetInitializedService<IAdditiveService>();
-            var clientService = await Locator.GetInitializedService<IClientService>();
-            var courierService = await Locator.GetInitializedService<ICourierService>();
-            var districtService = await Locator.GetInitializedService<IDistrictService>();
-            var streetService = await Locator.GetInitializedService<IStreetService>();
-            var productService = await Locator.GetInitializedService<IProductService>();
-            var receiptService = await Locator.GetInitializedService<IReceiptService>();
-            var ingridientsService = await Locator.GetInitializedService<IIngridientsService>();
-            var categoryService = await Locator.GetInitializedService<ICategoryService>();
+            var cashierService = RcsLocator.Scoped.GetRequiredService<ICashierService>();
+            var additiveService = RcsLocator.Scoped.GetRequiredService<IAdditiveService>();
+            var clientService = RcsLocator.Scoped.GetRequiredService<IClientService>();
+            var courierService = RcsLocator.Scoped.GetRequiredService<ICourierService>();
+            var districtService = RcsLocator.Scoped.GetRequiredService<IDistrictService>();
+            var streetService = RcsLocator.Scoped.GetRequiredService<IStreetService>();
+            var productService = RcsLocator.Scoped.GetRequiredService<IProductService>();
+            var receiptService = RcsLocator.Scoped.GetRequiredService<IReceiptService>();
+            var ingridientsService = RcsLocator.Scoped.GetRequiredService<IIngridientsService>();
+            var categoryService = RcsLocator.Scoped.GetRequiredService<ICategoryService>();
 
             var client = order.ClientId.HasValue ? await clientService.GetClientById(order.ClientId.Value) : null;
             var courier = order.CourierId.HasValue ? await courierService.GetCourierById(order.CourierId.Value) : null;
@@ -182,7 +183,7 @@ public sealed class AllDeliveriesPageVm : PageViewModel
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
 
-        var orderService = await Locator.GetInitializedService<IOrdersService>();
+        var orderService = RcsLocator.Scoped.GetRequiredService<IOrdersService>();
         var filter = this.WhenAnyValue(x => x.IsPickup, x => x.IsDelivery, x => x.Date, x => x.SearchedText)
             .Select<(bool isPickup, bool isDelivery, DateTime date, string searchedText), Func<OrderDto, bool>>(x =>
             {
@@ -214,9 +215,9 @@ public sealed class AllDeliveriesPageVm : PageViewModel
                 return WithSearchedText(model => model.CreatedAt.Date == x.date.Date);
             });
 
-        var streetService = await Locator.GetInitializedService<IStreetService>();
-        var courierService = await Locator.GetInitializedService<ICourierService>();
-        var clientService = await Locator.GetInitializedService<IClientService>();
+        var streetService = RcsLocator.Scoped.GetRequiredService<IStreetService>();
+        var courierService = RcsLocator.Scoped.GetRequiredService<ICourierService>();
+        var clientService = RcsLocator.Scoped.GetRequiredService<IClientService>();
 
         orderService.RuntimeOrders.BindAndFilter(filter,
             x => new OrderRowViewModel(x, streetService, courierService, clientService),

@@ -10,6 +10,7 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Edgar.Api;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using Microsoft.Extensions.Configuration;
 using Splat;
 
@@ -30,9 +31,9 @@ internal partial class AuthService : IAuthService, IEnableLogger
     public async Task<bool> AuthenticateAsync(string username, string password)
     {
         var loginRequest = new LoginTerminalRequest(username, password);
-        var config = Locator.Current.GetRequiredService<IConfiguration>();
+        var config = RcsLocator.GetRequiredService<IConfiguration>();
 
-        var terminalApi = Locator.Current.GetRequiredService<ITerminalApi>();
+        var terminalApi = RcsLocator.GetRequiredService<ITerminalApi>();
 
         var response = await terminalApi.Login(loginRequest);
 
@@ -63,7 +64,7 @@ internal partial class AuthService : IAuthService, IEnableLogger
     {
         var pincodeRequest = new EnterPincodeRequest(pincode);
 
-        var terminalApi = Locator.Current.GetRequiredService<ITerminalApi>();
+        var terminalApi = RcsLocator.GetRequiredService<ITerminalApi>();
 
         var response = await terminalApi.IsManagerPincode(pincodeRequest);
 
@@ -93,7 +94,7 @@ internal partial class AuthService : IAuthService, IEnableLogger
     {
         var pincodeRequest = new LoginEmployeeRequest(pincode, DateTime.UtcNow);
 
-        var terminalApi = Locator.Current.GetRequiredService<ITerminalApi>();
+        var terminalApi = RcsLocator.GetRequiredService<ITerminalApi>();
 
         var reponse = await terminalApi.EnterPincode(pincodeRequest);
 
@@ -101,7 +102,7 @@ internal partial class AuthService : IAuthService, IEnableLogger
         {
             var pincodeResponse = reponse.Content!;
 
-            var config = Locator.Current.GetRequiredService<IConfiguration>();
+            var config = RcsLocator.GetRequiredService<IConfiguration>();
             config["MemberAuthToken"] = pincodeResponse.Token;
 
             var handler = new JwtSecurityTokenHandler();
@@ -109,7 +110,7 @@ internal partial class AuthService : IAuthService, IEnableLogger
 
             var employeeId = token.Claims.First(claim => claim.Type == "employee_id").Value;
 
-            var memberService = await Locator.Current.GetInitializedService<IMemberService>();
+            var memberService = RcsLocator.Scoped.GetRequiredService<IMemberService>();
 
             var member = await memberService.GetMember(Guid.Parse(employeeId));
 
