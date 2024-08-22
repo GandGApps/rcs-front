@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Dto;
-public class DepositActDto: IGuidId
+public class ContributionActDto: IGuidId
 {
     public Guid Id
     {
@@ -28,7 +28,7 @@ public class DepositActDto: IGuidId
         get; set;
     }
 
-    public Guid DepositReasonId
+    public Guid ContributionReasonId
     {
         get; set;
     }

@@ -109,7 +109,7 @@ public sealed class ServicePageVm : PageViewModel
 
         DepositMoneyCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var dialog = new DepositReasonDialogViewModel();
+            var dialog = new ContributionReasonDialogViewModel();
 
             await MainViewModel.ShowDialogAndWaitClose(dialog);
         });

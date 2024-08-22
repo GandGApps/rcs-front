@@ -47,7 +47,7 @@
                     </Setter>
                 </DataTrigger>
 
-                <DataTrigger Binding="{Binding HeaderTemplateKey}" Value="DepositReasonDialog">
+                <DataTrigger Binding="{Binding HeaderTemplateKey}" Value="ContributionReasonDialog">
                     <Setter Property="local:WidePrimaryDialog.HeaderTemplate">
                         <Setter.Value>
                             <DataTemplate>

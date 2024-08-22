@@ -74,8 +74,8 @@ public static class DependencyResolverExtensions
         SplatRegistrations.Register<IMemberService, MemberService>();
         RegisterInitializableServiceFactory<IMemberService>(services);
 
-        SplatRegistrations.Register<IDepositReasonService, DepositReasonService>();
-        RegisterInitializableServiceFactory<IDepositReasonService>(services);
+        SplatRegistrations.Register<IContributionReasonService, ContributionReasonService>();
+        RegisterInitializableServiceFactory<IContributionReasonService>(services);
 
         services.Register<IReceiptService>(() =>
         {

@@ -86,8 +86,8 @@ public static partial class Mapper
     public static partial User MapDtoToUser(UserDto user);
     public static partial UserDto MapUserToDto(User user);
 
-    public static partial WithdrawalReason MapDtoToWithdrawalReason(SeizureReasonDto withdrawalReason);
-    public static partial SeizureReasonDto MapWithdrawalReasonToDto(WithdrawalReason withdrawalReason);
+    public static partial SeizureReason MapDtoToWithdrawalReason(SeizureReasonDto withdrawalReason);
+    public static partial SeizureReasonDto MapWithdrawalReasonToDto(SeizureReason withdrawalReason);
 
     public static partial Member MapDtoToMember(MemberDto member);
     public static partial MemberDto MapMemberToDto(Member member);
@@ -101,6 +101,6 @@ public static partial class Mapper
 
     public static partial OrderDto MapOrderEditDtoToOrderDto(OrderEditDto orderEditDto);
 
-    public static partial DepositReasonDto MapDepositReasonToDto(DepositReason depositReason);
-    public static partial DepositReason MapDtoToDepositReason(DepositReasonDto depositReason);
+    public static partial ContributionReasonDto MapContributionReasonToDto(ContributionReason ContributionReason);
+    public static partial ContributionReason MapDtoToContributionReason(ContributionReasonDto ContributionReason);
 }

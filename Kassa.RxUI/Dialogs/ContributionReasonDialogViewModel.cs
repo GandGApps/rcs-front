@@ -10,11 +10,11 @@ using Kassa.BuisnessLogic.Services;
 using ReactiveUI;
 
 namespace Kassa.RxUI.Dialogs;
-public sealed class DepositReasonDialogViewModel: ApplicationManagedModelSearchableDialogViewModel<DepositReasonDto, DepositReasonVm>
+public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSearchableDialogViewModel<ContributionReasonDto, ContributionReasonVm>
 {
-    public DepositReasonDialogViewModel()
+    public ContributionReasonDialogViewModel()
     {
-        SelectCommand = ReactiveCommand.CreateFromTask<DepositReasonVm>(async x =>
+        SelectCommand = ReactiveCommand.CreateFromTask<ContributionReasonVm>(async x =>
         {
             SelectedItem = x;
 
@@ -23,7 +23,7 @@ public sealed class DepositReasonDialogViewModel: ApplicationManagedModelSearcha
                 var fundActDialog = new FundActDialogViewModel
                 {
                     ApplyButtonText = "Внести",
-                    HeaderTemplateKey = "DepositReasonDialog",
+                    HeaderTemplateKey = "ContributionReasonDialog",
                     Reason = x.Name,
                     Member = member.Name,
                 };
@@ -31,7 +31,7 @@ public sealed class DepositReasonDialogViewModel: ApplicationManagedModelSearcha
                 return fundActDialog;
             })
             {
-                HeaderTemplateKey = "DepositReasonDialog"
+                HeaderTemplateKey = "ContributionReasonDialog"
             };
 
             await MainViewModel.ShowDialogAndWaitClose(memberSelectViewModel);
@@ -41,12 +41,12 @@ public sealed class DepositReasonDialogViewModel: ApplicationManagedModelSearcha
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        var withdrawalReasons = await Locator.GetInitializedService<IDepositReasonService>();
+        var withdrawalReasons = await Locator.GetInitializedService<IContributionReasonService>();
 
-        Filter(withdrawalReasons.RuntimeDepositReasons, x => new DepositReasonVm(x, this), disposables);
+        Filter(withdrawalReasons.RuntimeContributionReasons, x => new ContributionReasonVm(x, this), disposables);
     }
 
-    protected override bool IsMatch(string searchText, DepositReasonDto item)
+    protected override bool IsMatch(string searchText, ContributionReasonDto item)
     {
         return item.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase);
     }

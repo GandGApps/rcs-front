@@ -14,6 +14,6 @@ namespace Kassa.BuisnessLogic.Services;
 /// </summary>
 public interface IFundsService
 {
-    public Task<ResultSeizure> Withdrawal(double amount, Guid? memberId, SeizureReasonDto withdrawalReason);
-    public Task<DepositActDto> Deposit(double amount, Guid? memberId, DepositReasonDto depositReason);
+    public Task<ResultSeizure> Seize(double amount, Guid? memberId, SeizureReasonDto withdrawalReason);
+    public Task<ContributionActDto> Contribute(double amount, Guid? memberId, ContributionReasonDto ContributionReason);
 }

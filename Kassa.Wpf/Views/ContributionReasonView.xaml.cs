@@ -19,14 +19,12 @@ using ReactiveUI;
 
 namespace Kassa.Wpf.Views;
 /// <summary>
-/// Interaction logic for DepositReasonView.xaml
+/// Interaction logic for ContributionReasonView.xaml
 /// </summary>
-public partial class DepositReasonView : ReactiveUserControl<DepositReasonVm>
+public partial class ContributionReasonView : ReactiveUserControl<ContributionReasonVm>
 {
-    public DepositReasonView()
+    public ContributionReasonView()
     {
-        InitializeComponent();
-
         InitializeComponent();
 
         this.WhenActivated(disposables =>
