@@ -64,6 +64,9 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
         await _receiptService.Initialize();
         await _ordersService.Initialize();
         await _shiftService.Initialize();
+
+        // small trick to init IFundsService
+        var funds = await Locator.GetInitializedService<IFundsService>();
     }
 
     protected async override ValueTask DisposeAsyncCore()

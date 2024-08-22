@@ -28,7 +28,7 @@ public sealed class SeizureActDto: IGuidId
         get; set;
     }
 
-    public Guid WithdrawalReasonId
+    public Guid SeizureReasonId
     {
         get; set;
     }

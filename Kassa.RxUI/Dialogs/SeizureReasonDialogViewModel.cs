@@ -29,6 +29,13 @@ public sealed class SeizureReasonDialogViewModel: ApplicationManagedModelSearcha
                     Member = member.Name,
                 };
 
+                fundActDialog.ApplyCommand.Subscribe(async _ =>
+                {
+                    var fundsService = await Locator.GetInitializedService<IFundsService>();
+
+                    await fundsService.Seize(fundActDialog.Amount, fundActDialog.Comment, member.Id, "1111", x.SeizureReason!);
+                });
+
                 return fundActDialog;
             })
             {

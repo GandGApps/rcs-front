@@ -84,6 +84,9 @@ public static class EdgarDependencyResolverExntesions
         });
         services.RegisterInitializableServiceFactory<IIngridientsService>();
 
+        services.Register<IFundsService>(() => new FundsService());
+        services.RegisterInitializableServiceFactory<IFundsService>();
+
         SplatRegistrations.SetupIOC();
     }
 
@@ -93,5 +96,6 @@ public static class EdgarDependencyResolverExntesions
         services.AddApi<IEmployeePostsApi>();
         services.AddApi<IEmployeeApi>();
         services.AddApi<ITerminalPostApi>();
+        services.AddApi<IFundApi>();
     }
 }

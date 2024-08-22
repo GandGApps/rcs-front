@@ -19,6 +19,11 @@ public sealed class ContributionReasonVm: ReactiveObject, IApplicationModelPrese
     {
         get;
     }
+    
+    public ContributionReasonDto? ContributionReason
+    {
+        get; private set;
+    }
 
     public ContributionReasonVm(ContributionReasonDto ContributionReason, ContributionReasonDialogViewModel dialogViewModel) : this(ContributionReason)
     {
@@ -26,10 +31,11 @@ public sealed class ContributionReasonVm: ReactiveObject, IApplicationModelPrese
 
     }
 
-    public ContributionReasonVm(ContributionReasonDto ContributionReason)
+    public ContributionReasonVm(ContributionReasonDto contributionReason)
     {
-        Id = ContributionReason.Id;
-        Name = ContributionReason.Name;
+        Id = contributionReason.Id;
+        Name = contributionReason.Name;
+        ContributionReason = contributionReason;
 
         SelectCommand = ReactiveCommand.Create(() =>
         {
@@ -52,6 +58,7 @@ public sealed class ContributionReasonVm: ReactiveObject, IApplicationModelPrese
     {
         var model = change.Current;
 
+        ContributionReason = model;
         Name = model.Name;
     }
 

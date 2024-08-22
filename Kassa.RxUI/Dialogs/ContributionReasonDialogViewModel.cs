@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Text;
+using System.Reactive;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
@@ -28,6 +29,12 @@ public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSe
                     Member = member.Name,
                 };
 
+                fundActDialog.ApplyCommand.Subscribe(async _ =>
+                {
+                    var fundsService = await Locator.GetInitializedService<IFundsService>();
+
+                    await fundsService.Contribute(fundActDialog.Amount, fundActDialog.Comment, member.Id, "1111", x.ContributionReason!);
+                });
                 return fundActDialog;
             })
             {
