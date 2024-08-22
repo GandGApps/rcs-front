@@ -135,9 +135,20 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
         return orderEdit;
     }
 
-    public ValueTask<IPaymentService> CreatePayment(OrderEditDto order)
+    public ValueTask<IPaymentService> CreatePayment(OrderEditDto orderEdit)
     {
-        var paymentService = new CashierPaymentService(order, _ordersService, _paymentInfoService);
+        var paymentService = new CashierPaymentService(orderEdit, _ordersService, _paymentInfoService);
+
+        paymentService.Payed += (order) =>
+        {
+            var shiftId = _shiftService.CurrentShift.Value!.CreateDto().Id;
+            var cashierShiftId = _shiftService.CurrentCashierShift.Value!.CreateDto().Id;
+
+            order.ShiftId = shiftId;
+            order.CashierShiftId = cashierShiftId;
+
+            _ordersService.AddOrder(order);
+        };
 
         return ValueTask.FromResult<IPaymentService>(paymentService);
     }

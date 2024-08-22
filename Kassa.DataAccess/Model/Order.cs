@@ -184,4 +184,9 @@ public class Order : IGuidId
     {
         get; set;
     }
+
+    public string CardType
+    {
+        get; set;
+    }
 }

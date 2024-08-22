@@ -20,11 +20,11 @@ using ReactiveUI;
 namespace Kassa.Wpf.Views;
 
 /// <summary>
-/// Interaction logic for WithdrawalReasonView.xaml
+/// Interaction logic for SeizureReasonView.xaml
 /// </summary>
-public partial class WithdrawalReasonView : ReactiveUserControl<WithdrawalReasonVm>
+public partial class SeizureReasonView : ReactiveUserControl<SeizureReasonVm>
 {
-    public WithdrawalReasonView()
+    public SeizureReasonView()
     {
         InitializeComponent();
 

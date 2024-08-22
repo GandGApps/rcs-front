@@ -6,20 +6,31 @@ using System.Threading.Tasks;
 using Kassa.DataAccess.Model;
 
 namespace Kassa.BuisnessLogic.Dto;
-public class WithdrawalReasonDto : IGuidId
+public sealed class SeizureActDto: IGuidId
 {
     public Guid Id
     {
         get; set;
     }
 
-    public string Name
-    {
-        get; set;
-    } = string.Empty;
-
-    public bool IsRequiredComment
+    public double Amount
     {
         get; set;
     }
+
+    public DateTime Date
+    {
+        get; set;
+    }
+
+    public Guid? MemberId
+    {
+        get; set;
+    }
+
+    public Guid WithdrawalReasonId
+    {
+        get; set;
+    }
+
 }

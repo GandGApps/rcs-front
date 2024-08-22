@@ -11,11 +11,11 @@ using Kassa.DataAccess.Model;
 using ReactiveUI;
 
 namespace Kassa.RxUI.Dialogs;
-public sealed class WithdrawReasonDialogViewModel: ApplicationManagedModelSearchableDialogViewModel<WithdrawalReasonDto, WithdrawalReasonVm>
+public sealed class SeizureReasonDialogViewModel: ApplicationManagedModelSearchableDialogViewModel<SeizureReasonDto, SeizureReasonVm>
 {
-    public WithdrawReasonDialogViewModel()
+    public SeizureReasonDialogViewModel()
     {
-        SelectCommand = ReactiveCommand.CreateFromTask<WithdrawalReasonVm>(async x =>
+        SelectCommand = ReactiveCommand.CreateFromTask<SeizureReasonVm>(async x =>
         {
             SelectedItem = x;
 
@@ -24,7 +24,7 @@ public sealed class WithdrawReasonDialogViewModel: ApplicationManagedModelSearch
                 var fundActDialog = new FundActDialogViewModel
                 {
                     ApplyButtonText = "Изъять",
-                    HeaderTemplateKey = "WithdrawReasonDialog",
+                    HeaderTemplateKey = "SeizureReasonDialog",
                     Reason = x.Name,
                     Member = member.Name,
                 };
@@ -32,7 +32,7 @@ public sealed class WithdrawReasonDialogViewModel: ApplicationManagedModelSearch
                 return fundActDialog;
             })
             {
-                HeaderTemplateKey = "WithdrawReasonDialog"
+                HeaderTemplateKey = "SeizureReasonDialog"
             };
 
             await MainViewModel.ShowDialogAndWaitClose(memberSelectViewModel);
@@ -44,10 +44,10 @@ public sealed class WithdrawReasonDialogViewModel: ApplicationManagedModelSearch
     {
         var withdrawalReasons = await Locator.GetInitializedService<IWithdrawReasonService>();
 
-        Filter(withdrawalReasons.RuntimeWithdrawReasouns, x => new WithdrawalReasonVm(x, this), disposables);
+        Filter(withdrawalReasons.RuntimeWithdrawReasouns, x => new SeizureReasonVm(x, this), disposables);
     }
 
-    protected override bool IsMatch(string searchText, WithdrawalReasonDto item)
+    protected override bool IsMatch(string searchText, SeizureReasonDto item)
     {
         return item.Name.Contains(searchText, StringComparison.OrdinalIgnoreCase);
     }

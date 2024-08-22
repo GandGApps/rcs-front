@@ -86,8 +86,8 @@ public static partial class Mapper
     public static partial User MapDtoToUser(UserDto user);
     public static partial UserDto MapUserToDto(User user);
 
-    public static partial WithdrawalReason MapDtoToWithdrawalReason(WithdrawalReasonDto withdrawalReason);
-    public static partial WithdrawalReasonDto MapWithdrawalReasonToDto(WithdrawalReason withdrawalReason);
+    public static partial WithdrawalReason MapDtoToWithdrawalReason(SeizureReasonDto withdrawalReason);
+    public static partial SeizureReasonDto MapWithdrawalReasonToDto(WithdrawalReason withdrawalReason);
 
     public static partial Member MapDtoToMember(MemberDto member);
     public static partial MemberDto MapMemberToDto(Member member);

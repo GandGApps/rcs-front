@@ -9,14 +9,14 @@ using Kassa.BuisnessLogic.Dto;
 namespace Kassa.BuisnessLogic.Services;
 public interface IWithdrawReasonService: IInitializableService
 {
-    public IApplicationModelManager<WithdrawalReasonDto> RuntimeWithdrawReasouns
+    public IApplicationModelManager<SeizureReasonDto> RuntimeWithdrawReasouns
     {
         get;
     }
 
-    public Task AddWithdrawReasoun(WithdrawalReasonDto withdrawalReason);
+    public Task AddWithdrawReasoun(SeizureReasonDto withdrawalReason);
     public Task DeleteWithdrawalReason(Guid id);
-    public Task<IEnumerable<WithdrawalReasonDto>> GetAll();
-    public ValueTask<WithdrawalReasonDto?> GetWithdrawalReasonById(Guid id);
-    public Task UpdateWithdrawalReason(WithdrawalReasonDto withdrawalReason);
+    public Task<IEnumerable<SeizureReasonDto>> GetAll();
+    public ValueTask<SeizureReasonDto?> GetWithdrawalReasonById(Guid id);
+    public Task UpdateWithdrawalReason(SeizureReasonDto withdrawalReason);
 }
