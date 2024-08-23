@@ -14,9 +14,9 @@ namespace Kassa.RxUI.Dialogs;
 public sealed class FundActDialogViewModel: DialogViewModel
 {
 
-    public FundActDialogViewModel()
+    public FundActDialogViewModel(ReactiveCommand<Unit, Unit>? applyCommand = null)
     {
-        ApplyCommand = ReactiveCommand.Create(() => { });
+        ApplyCommand = applyCommand ?? ReactiveCommand.Create(() => { });
 
         this.WhenAnyValue(x => x.Amount)
             .Select(x => x.ToString("0.##", SharedConstants.RuCulture))
@@ -66,8 +66,9 @@ public sealed class FundActDialogViewModel: DialogViewModel
         get;
     }
 
+    [Reactive]
     public ReactiveCommand<Unit, Unit> ApplyCommand
     {
-        get;
+        get; set;
     }
 }

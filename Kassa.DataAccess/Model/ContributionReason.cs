@@ -9,7 +9,13 @@ public class ContributionReason : IGuidId
     {
         get; set;
     }
+
     public string Name
+    {
+        get; set;
+    }
+
+    public bool IsRequiredComment
     {
         get; set;
     }

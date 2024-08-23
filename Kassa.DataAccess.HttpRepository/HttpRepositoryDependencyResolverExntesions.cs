@@ -45,5 +45,6 @@ public static class HttpRepositoryDependencyResolverExntesions
         services.AddApi<ITechcardApi>();
         services.AddApi<IAdditiveApi>();
         services.AddApi<IEmployeePostApi>();
+        services.AddApi<IFundApi>();
     }
 }

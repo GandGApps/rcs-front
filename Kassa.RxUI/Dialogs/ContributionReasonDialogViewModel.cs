@@ -9,6 +9,7 @@ using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using ReactiveUI;
+using Kassa.Shared;
 
 namespace Kassa.RxUI.Dialogs;
 public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSearchableDialogViewModel<ContributionReasonDto, ContributionReasonVm>
@@ -29,9 +30,24 @@ public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSe
                     Member = member.Name,
                 };
 
-                fundActDialog.ApplyCommand.Subscribe(async _ =>
+                fundActDialog.ApplyCommand = ReactiveCommand.CreateFromTask(async _ =>
                 {
+                    var enterPincodeDialog = new EnterPincodeDialogViewModel();
+
+                    await MainViewModel.ShowDialogAndWaitClose(enterPincodeDialog);
+
+                    var authService = Locator.GetRequiredService<IAuthService>();
+
+                    if (string.IsNullOrWhiteSpace(enterPincodeDialog.Result))
+                    {
+                        return;
+                    }
+
+                    await authService.CheckPincode(member, enterPincodeDialog.Result);
+
                     var fundsService = await Locator.GetInitializedService<IFundsService>();
+
+
 
                     await fundsService.Contribute(fundActDialog.Amount, fundActDialog.Comment, member.Id, "1111", x.ContributionReason!);
                 });
