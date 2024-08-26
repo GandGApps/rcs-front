@@ -22,7 +22,7 @@ internal sealed class ReportShiftService : IReportShiftService
 
     public void ClearCurrentReportShift()
     {
-        var printer = Locator.Current.GetRequiredService<IPrinter>();
+        var printer = Locator.Current.GetService<IPrinter>();
         var currentReportShift = _currentReportShift.Value;
 
         if (currentReportShift == null)
@@ -31,6 +31,11 @@ internal sealed class ReportShiftService : IReportShiftService
         }
 
         _currentReportShift.OnNext(null);
+
+        if (printer is null)
+        {
+            return;
+        }
 
         printer.PrintAsync(currentReportShift);
     }

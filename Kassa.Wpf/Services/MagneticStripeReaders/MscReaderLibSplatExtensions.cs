@@ -28,6 +28,8 @@ internal static class MscReaderLibSplatExtensions
                 LogHost.Default.Info("MsrKeyboard reader is used");
                 services.RegisterConstant<IMagneticStripeReader>(MsrKeyboard.Instance);
                 break;
+            default:
+                break;
         }
     }
 }

@@ -9,6 +9,7 @@ using Kassa.Wpf.Services.PosPrinters;
 namespace Kassa.Wpf.Services.CashDrawers;
 public enum CashDrawerPosLib
 {
+    None,
     /// <summary>
     /// <see cref="ICashDrawer"/> implementation is <see cref="WndPosCashDrawer"/>
     /// </summary>

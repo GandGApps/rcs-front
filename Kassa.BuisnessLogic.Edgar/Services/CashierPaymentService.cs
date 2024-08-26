@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
+using Splat;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
 internal sealed class CashierPaymentService: BaseInitializableService, IPaymentService
@@ -69,16 +70,31 @@ internal sealed class CashierPaymentService: BaseInitializableService, IPaymentS
       
         if (receiptBehavior == ReceiptBehavior.PrintReceipt)
         {
-            var printer = Splat.Locator.Current.GetRequiredService<IPrinter>();
+            var printer = Splat.Locator.Current.GetService<IPrinter>();
 
-            await printer.PrintAsync(order);
+            if (printer != null)
+            {
+                await printer.PrintAsync(order);
+            }
+            else
+            {
+                this.Log().Error("IPrinter not registered");
+            }
+            
         }
 
         if (Cash > 0)
         {
-            //var cashDrawer = Splat.Locator.Current.GetRequiredService<ICashDrawer>();
+            var cashDrawer = Splat.Locator.Current.GetService<ICashDrawer>();
 
-            //await cashDrawer.Open();
+            if (cashDrawer is null)
+            {
+                this.Log().Error("ICashDrawer not registered");
+            }
+            else
+            {
+                await cashDrawer.Open();
+            }
         }
 
         var paymentInfo = new PaymentInfoDto
