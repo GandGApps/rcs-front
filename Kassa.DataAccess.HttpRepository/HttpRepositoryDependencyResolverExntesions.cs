@@ -23,6 +23,8 @@ public static class HttpRepositoryDependencyResolverExntesions
         services.RegisterConstant<IRepository<Category>>(new CategoryRepository());
         services.RegisterConstant<IRepository<Ingredient>>(new IngridientRepository());
         services.RegisterConstant<IRepository<Receipt>>(new ReceiptRepository());
+        services.RegisterConstant<IRepository<SeizureReason>>(new SeizureRepository());
+        services.RegisterConstant<IRepository<ContributionReason>>(new ContributionReasonRepository());
 
         var additiveRepository = new AdditiveRepository();
         

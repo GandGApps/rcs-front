@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using System.Text;
@@ -20,9 +21,10 @@ public abstract class DialogViewModel : BaseViewModel, IRoutableViewModel
         HostScreen = null!;
         _taskCompletionSource = new();
     
-        CloseCommand = ReactiveCommand.Create(SetCloseResult, _onClose);
+        CloseCommand = ReactiveCommand.Create(SetCloseResult, _onClose).DisposeWith(InternalDisposables);
     
         _onClose.OnNext(true);
+        _onClose.DisposeWith(InternalDisposables);
     }
 
     public virtual ReactiveCommand<Unit,Unit> CloseCommand

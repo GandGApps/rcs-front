@@ -20,7 +20,9 @@ public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSe
         {
             SelectedItem = x;
 
-            var memberSelectViewModel = new MemberSelectDialogViewModel(member =>
+            MemberSelectDialogViewModel memberSelectViewModel = null!;
+
+            memberSelectViewModel = new MemberSelectDialogViewModel(member =>
             {
                 var fundActDialog = new FundActDialogViewModel
                 {
@@ -43,13 +45,27 @@ public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSe
                         return;
                     }
 
-                    await authService.CheckPincode(member, enterPincodeDialog.Result);
+                    var check = await MainViewModel.RunTaskWithLoadingDialog("Проверка пинкода", authService.CheckPincode(member, enterPincodeDialog.Result));
+
+                    if (!check)
+                    {
+                        await MainViewModel.OkMessage("Неверный пинкод");
+
+                        await fundActDialog.CloseAsync();
+                        await memberSelectViewModel.CloseAsync();
+                        await CloseAsync();
+
+                        return;
+                    }
 
                     var fundsService = await Locator.GetInitializedService<IFundsService>();
 
+                    await MainViewModel.RunTaskWithLoadingDialog("Проводиться внесение", fundsService.Contribute(fundActDialog.Amount, fundActDialog.Comment, member.Id, enterPincodeDialog.Result, x.ContributionReason!));
 
+                    await fundActDialog.CloseAsync();
+                    await memberSelectViewModel.CloseAsync();
+                    await CloseAsync();
 
-                    await fundsService.Contribute(fundActDialog.Amount, fundActDialog.Comment, member.Id, "1111", x.ContributionReason!);
                 });
                 return fundActDialog;
             })

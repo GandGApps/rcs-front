@@ -4,10 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using Kassa.Shared.DelegatingHandlers;
 using Refit;
 
 namespace Kassa.DataAccess.HttpRepository.Api;
-internal interface IFundApi
+internal interface IFundApi: IUseMemberToken
 {
     [Get("/terminal/fund/contribution-reasons")]
     public Task<ContributionResponse[]> GetContributions();

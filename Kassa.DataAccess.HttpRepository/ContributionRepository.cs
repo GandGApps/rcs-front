@@ -44,7 +44,7 @@ internal sealed class ContributionReasonRepository : IRepository<ContributionRea
         {
             Id = x.Id,
             Name = x.Name ?? string.Empty,
-            IsRequiredComment = x.IsRequiredComment ?? false
+            IsRequiredComment = x.IsRequiredComment is true
         }).ToArray();
 
         _contributionReasons = contributionReasons.ToFrozenDictionary(x => x.Id);

@@ -14,4 +14,9 @@ public class SeizureReason : IGuidId
     {
         get; set;
     }
+
+    public bool IsRequiredComment
+    {
+        get; set;
+    }
 }

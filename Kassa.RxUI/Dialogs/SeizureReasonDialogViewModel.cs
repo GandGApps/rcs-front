@@ -8,6 +8,7 @@ using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
+using Kassa.Shared;
 using ReactiveUI;
 
 namespace Kassa.RxUI.Dialogs;
@@ -19,7 +20,9 @@ public sealed class SeizureReasonDialogViewModel: ApplicationManagedModelSearcha
         {
             SelectedItem = x;
 
-            var memberSelectViewModel = new MemberSelectDialogViewModel(member =>
+            MemberSelectDialogViewModel memberSelectViewModel = null!;
+
+            memberSelectViewModel = new MemberSelectDialogViewModel(member =>
             {
                 var fundActDialog = new FundActDialogViewModel
                 {
@@ -29,13 +32,41 @@ public sealed class SeizureReasonDialogViewModel: ApplicationManagedModelSearcha
                     Member = member.Name,
                 };
 
-                fundActDialog.ApplyCommand.Subscribe(async _ =>
+                fundActDialog.ApplyCommand = ReactiveCommand.CreateFromTask(async _ =>
                 {
+                    var enterPincodeDialog = new EnterPincodeDialogViewModel();
+
+                    await MainViewModel.ShowDialogAndWaitClose(enterPincodeDialog);
+
+                    var authService = Locator.GetRequiredService<IAuthService>();
+
+                    if (string.IsNullOrWhiteSpace(enterPincodeDialog.Result))
+                    {
+                        return;
+                    }
+
+                    var check = await MainViewModel.RunTaskWithLoadingDialog("Проверка пинкода", authService.CheckPincode(member, enterPincodeDialog.Result));
+
+                    if (!check)
+                    {
+                        await MainViewModel.OkMessage("Неверный пинкод");
+
+                        await fundActDialog.CloseAsync();
+                        await memberSelectViewModel.CloseAsync();
+                        await CloseAsync();
+
+                        return;
+                    }
+
                     var fundsService = await Locator.GetInitializedService<IFundsService>();
 
-                    await fundsService.Seize(fundActDialog.Amount, fundActDialog.Comment, member.Id, "1111", x.SeizureReason!);
-                });
+                    await MainViewModel.RunTaskWithLoadingDialog("Проводится изъятие", fundsService.Seize(fundActDialog.Amount, fundActDialog.Comment, member.Id, enterPincodeDialog.Result, x.SeizureReason!));
 
+                    await fundActDialog.CloseAsync();
+                    await memberSelectViewModel.CloseAsync();
+                    await CloseAsync();
+
+                });
                 return fundActDialog;
             })
             {
