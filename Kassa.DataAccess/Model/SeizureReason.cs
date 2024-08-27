@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 
 namespace Kassa.DataAccess.Model;
-public class WithdrawalReason : IGuidId
+public class SeizureReason : IGuidId
 {
     public Guid Id
     {
@@ -11,6 +11,11 @@ public class WithdrawalReason : IGuidId
     }
 
     public string Name
+    {
+        get; set;
+    }
+
+    public bool IsRequiredComment
     {
         get; set;
     }

@@ -11,7 +11,7 @@ using Kassa.Shared.ServiceLocator;
 namespace Kassa.BuisnessLogic.Edgar.Services;
 internal sealed class CashierPaymentService: BaseInitializableService, IPaymentService
 {
-    public event Action? Payed;
+    public event Action<OrderDto>? Payed;
     private readonly OrderEditDto _orderEditDto;
     private readonly IOrdersService _ordersService;
     private readonly IPaymentInfoService _paymentInfoService;
@@ -67,25 +67,39 @@ internal sealed class CashierPaymentService: BaseInitializableService, IPaymentS
     {
         var order = await _ordersService.CreateOrderAsync(_orderEditDto);
 
-        // It's need for CashierService
-        Payed?.Invoke();
-
+      
         if (receiptBehavior == ReceiptBehavior.PrintReceipt)
         {
-            var printer = RcsLocator.GetRequiredService<IPrinter>();
+            var printer = RcsLocator.GetService<IPrinter>();
 
-            await printer.PrintAsync(order);
+            if (printer != null)
+            {
+                await printer.PrintAsync(order);
+            }
+            else
+            {
+                this.Log().Error("IPrinter not registered");
+            }
+            
         }
 
         if (Cash > 0)
         {
-            var cashDrawer = RcsLocator.GetRequiredService<ICashDrawer>();
+            var cashDrawer = RcsLocator.GetService<ICashDrawer>();
 
-            await cashDrawer.Open();
+            if (cashDrawer is null)
+            {
+                this.Log().Error("ICashDrawer not registered");
+            }
+            else
+            {
+                await cashDrawer.Open();
+            }
         }
 
         var paymentInfo = new PaymentInfoDto
         {
+            Id = Guid.NewGuid(),
             OrderId = order.Id,
             Cash = Cash,
             BankСard = BankСard,
@@ -96,8 +110,16 @@ internal sealed class CashierPaymentService: BaseInitializableService, IPaymentS
             WithSalesReceipt = WithSalesReceipt
         };
 
+        order.PaymentInfoId = paymentInfo.Id;
+        order.PaymentInfo = paymentInfo;
+
+
         await _paymentInfoService.AddPaymentInfo(paymentInfo);
-         
+
+        // It's need for CashierService
+        Payed?.Invoke(order);
+
+
         Dispose(); // Nothing to dispose, and doesn't need to be called, but it's here for consistency
     }
 

@@ -40,7 +40,7 @@ public sealed class SimpleRouter : ContentControl
             [typeof(Kassa.RxUI.ProductViewModel)] = () => new Kassa.Wpf.Views.ProductView(),
             [typeof(Kassa.RxUI.ProductShoppingListItemViewModel)] = () => new Kassa.Wpf.Views.ShoppingListItemView(),
             [typeof(Kassa.RxUI.StreetViewModel)] = () => new Kassa.Wpf.Views.StreetView(),
-            [typeof(Kassa.RxUI.WithdrawalReasonVm)] = () => new Kassa.Wpf.Views.WithdrawalReasonView(),
+            [typeof(Kassa.RxUI.SeizureReasonVm)] = () => new Kassa.Wpf.Views.SeizureReasonView(),
             [typeof(Kassa.RxUI.Pages.AllDeliveriesPageVm)] = () => new Kassa.Wpf.Pages.AllDeliveriesPage(),
             [typeof(Kassa.RxUI.Pages.AutorizationPageVm)] = () => new Kassa.Wpf.Pages.AutorizationPage(),
             [typeof(Kassa.RxUI.Pages.CashierPaymentPageVm)] = () => new Kassa.Wpf.Pages.CashierPaymentPage(),
@@ -83,10 +83,10 @@ public sealed class SimpleRouter : ContentControl
             [typeof(Kassa.RxUI.Dialogs.ServicesDialogViewModel)] = () => new Kassa.Wpf.Dialogs.ServicesDialog(),
             [typeof(Kassa.RxUI.Dialogs.StreetsDialogViewModel)] = () => new Kassa.Wpf.Dialogs.StreetsDialog(),
             [typeof(Kassa.RxUI.Dialogs.TurnOffDialogViewModel)] = () => new Kassa.Wpf.Dialogs.TurnOffDialog(),
-            [typeof(Kassa.RxUI.Dialogs.WithdrawReasonDialogViewModel)] = () => new Kassa.Wpf.Dialogs.WithdrawReasonDialog(),
+            [typeof(Kassa.RxUI.Dialogs.SeizureReasonDialogViewModel)] = () => new Kassa.Wpf.Dialogs.SeizureReasonDialog(),
             [typeof(Kassa.RxUI.Dialogs.MemberSelectDialogViewModel)] = () => new Kassa.Wpf.Dialogs.MemberSelectDialog(),
             [typeof(Kassa.RxUI.Dialogs.FundActDialogViewModel)] = () => new Kassa.Wpf.Dialogs.FundActDialog(),
-            [typeof(Kassa.RxUI.Dialogs.DepositReasonDialogViewModel)] = () => new Kassa.Wpf.Dialogs.DepositReasonDialog(),
+            [typeof(Kassa.RxUI.Dialogs.ContributionReasonDialogViewModel)] = () => new Kassa.Wpf.Dialogs.ContributionReasonDialog(),
         };
 
         ViewsFor = viewsFor.ToFrozenDictionary();

@@ -29,6 +29,8 @@ internal static class MscReaderLibServices
                 LogHost.Default.Info("MsrKeyboard reader is used");
                 RcsLocatorBuilder.AddSingleton<IMagneticStripeReader>(MsrKeyboard.Instance);
                 break;
+            default:
+                break;
         }
     }
 }

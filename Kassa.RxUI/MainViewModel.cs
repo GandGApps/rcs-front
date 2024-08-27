@@ -295,4 +295,26 @@ public class MainViewModel : ReactiveObject, IScreen
     {
         await GoToPageAndResetCommand.Execute(pageVm).FirstAsync();
     }
+
+    public async Task<T> RunTaskWithLoadingDialog<T>(string text, Func<LoadingDialogViewModel, Task<T>> task)
+    {
+        var dialog = ShowLoadingDialog(text);
+
+        var result = await task(dialog);
+
+        await dialog.CloseAsync();
+
+        return result;
+    }
+
+    public async Task<T> RunTaskWithLoadingDialog<T>(string text, Task<T> task)
+    {
+        var dialog = ShowLoadingDialog(text);
+
+        var result = await task;
+
+        await dialog.CloseAsync();
+
+        return result;
+    }
 }

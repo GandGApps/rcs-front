@@ -12,6 +12,7 @@ public record ProductShoppingListItemDto : IShoppingListItemDto
 
     public ProductShoppingListItemDto(ProductDto product)
     {
+        Id = Guid.NewGuid();
         ItemId = product.Id;
         Name = product.Name;
         Price = product.Price;

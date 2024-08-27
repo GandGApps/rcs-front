@@ -10,13 +10,13 @@ using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 
 namespace Kassa.BuisnessLogic.Services;
-internal class WithdrawReasounService(IRepository<WithdrawalReason> repository) : BaseInitializableService, IWithdrawReasonService
+internal class WithdrawReasounService(IRepository<SeizureReason> repository) : BaseInitializableService, IWithdrawReasonService
 {
-    private readonly HostModelManager<WithdrawalReasonDto> _hostModelManager = new();
+    private readonly HostModelManager<SeizureReasonDto> _hostModelManager = new();
 
-    public IApplicationModelManager<WithdrawalReasonDto> RuntimeWithdrawReasouns => _hostModelManager;
+    public IApplicationModelManager<SeizureReasonDto> RuntimeWithdrawReasouns => _hostModelManager;
 
-    public async Task AddWithdrawReasoun(WithdrawalReasonDto withdrawalReason)
+    public async Task AddWithdrawReasoun(SeizureReasonDto withdrawalReason)
     {
         var model = Mapper.MapDtoToWithdrawalReason(withdrawalReason);
 
@@ -41,7 +41,7 @@ internal class WithdrawReasounService(IRepository<WithdrawalReason> repository) 
         _hostModelManager.Remove(id);
     }
 
-    public async ValueTask<WithdrawalReasonDto?> GetWithdrawalReasonById(Guid id)
+    public async ValueTask<SeizureReasonDto?> GetWithdrawalReasonById(Guid id)
     {
         var withdrawalReason = await repository.Get(id);
 
@@ -56,7 +56,7 @@ internal class WithdrawReasounService(IRepository<WithdrawalReason> repository) 
         return dto;
     }
 
-    public async Task UpdateWithdrawalReason(WithdrawalReasonDto withdrawalReason)
+    public async Task UpdateWithdrawalReason(SeizureReasonDto withdrawalReason)
     {
         var model = Mapper.MapDtoToWithdrawalReason(withdrawalReason);
 
@@ -67,7 +67,7 @@ internal class WithdrawReasounService(IRepository<WithdrawalReason> repository) 
         _hostModelManager.AddOrUpdate(dto);
     }
 
-    public async Task<IEnumerable<WithdrawalReasonDto>> GetAll()
+    public async Task<IEnumerable<SeizureReasonDto>> GetAll()
     {
         var withdrawalReasons = (await repository.GetAll()).Select(Mapper.MapWithdrawalReasonToDto);
 

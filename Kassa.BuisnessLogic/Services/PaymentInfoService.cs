@@ -75,6 +75,8 @@ internal class PaymentInfoService(IRepository<PaymentInfo> repository) : BaseIni
 
     public async Task AddPaymentInfo(PaymentInfoDto paymentInfo)
     {
+        paymentInfo.Id = paymentInfo.Id == Guid.Empty ? Guid.NewGuid() : paymentInfo.Id;
+
         var model = Mapper.MapDtoToPaymentInfo(paymentInfo);
 
         await repository.Add(model);

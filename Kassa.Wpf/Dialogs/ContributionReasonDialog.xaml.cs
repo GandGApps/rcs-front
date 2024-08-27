@@ -16,11 +16,11 @@ using Kassa.RxUI.Dialogs;
 
 namespace Kassa.Wpf.Dialogs;
 /// <summary>
-/// Interaction logic for DepositReasonDialog.xaml
+/// Interaction logic for ContributionReasonDialog.xaml
 /// </summary>
-public sealed partial class DepositReasonDialog : SelectionDialogBase<DepositReasonDialogViewModel>
+public sealed partial class ContributionReasonDialog : SelectionDialogBase<ContributionReasonDialogViewModel>
 {
-    public DepositReasonDialog()
+    public ContributionReasonDialog()
     {
         InitializeComponent();
     }

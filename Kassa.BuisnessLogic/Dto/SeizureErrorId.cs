@@ -1,6 +1,6 @@
 ﻿namespace Kassa.BuisnessLogic.Dto;
 
-public enum WithdrawalErrorId
+public enum SeizureErrorId
 {
     None = 0,
 
@@ -16,7 +16,7 @@ public enum WithdrawalErrorId
 
     /// <summary>
     /// An unspecified error occurred during the withdrawal process, 
-    /// and a <see cref="ResultWithdrawal.ErrorMessage"/> will be received from the server.
+    /// and a <see cref="ResultSeizure.ErrorMessage"/> will be received from the server.
     /// </summary>
     AnotherError = 1 << 2,
 }

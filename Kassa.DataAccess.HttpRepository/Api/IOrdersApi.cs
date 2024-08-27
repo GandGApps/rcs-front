@@ -8,7 +8,7 @@ using Kassa.Shared.DelegatingHandlers;
 using Refit;
 
 namespace Kassa.DataAccess.HttpRepository.Api;
-internal interface IOrdersApi: IUseMemberToken
+internal interface IOrdersApi : IUseMemberToken
 {
     [Get("/orders")]
     public Task<IEnumerable<EdgarOrderInfoResponse>> GetOrders();
@@ -442,6 +442,12 @@ internal sealed record OrderEdgarModel
     public Guid EmployeePostId
     {
         get; init;
+    }
+
+    [JsonPropertyName("cardType")]
+    public string CardType
+    {
+        get; set;
     }
 }
 

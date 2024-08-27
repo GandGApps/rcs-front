@@ -57,7 +57,7 @@
                 <Grid
                     Margin="10"
                     ColumnDefinitions="*,*"
-                    RowDefinitions="Auto, Auto, Auto">
+                    RowDefinitions="Auto, Auto, Auto, Auto">
 
                     <TextBlock
                         Grid.ColumnSpan="2"
@@ -68,13 +68,10 @@
                     <suki:GlassCard
                         Grid.Row="1"
                         Margin="5"
-                        Classes.Accent="{Binding !IsOposOrEscPosUsbCashDrawer}"
-                        Command="{Binding SelectCashDrawerMethodCommand}"
+                        Classes.Accent="{Binding EscPosUsbCashDrawer.IsSelected}"
+                        Command="{Binding SelectCashDrawerCommand}"
+                        CommandParameter="{Binding EscPosUsbCashDrawer, Mode=OneTime}"
                         IsInteractive="True">
-
-                        <suki:GlassCard.CommandParameter>
-                            <st:Boolean>False</st:Boolean>
-                        </suki:GlassCard.CommandParameter>
 
                         <StackPanel Margin="5">
                             <TextBlock Classes="h3" Text="Через принтер" />
@@ -87,13 +84,10 @@
                         Grid.Row="1"
                         Grid.Column="1"
                         Margin="5"
-                        Classes.Accent="{Binding IsOposOrEscPosUsbCashDrawer}"
-                        Command="{Binding SelectCashDrawerMethodCommand}"
+                        Classes.Accent="{Binding OposCashDrawer.IsSelected}"
+                        Command="{Binding SelectCashDrawerCommand}"
+                        CommandParameter="{Binding OposCashDrawer, Mode=OneTime}"
                         IsInteractive="True">
-
-                        <suki:GlassCard.CommandParameter>
-                            <st:Boolean>True</st:Boolean>
-                        </suki:GlassCard.CommandParameter>
 
                         <StackPanel Margin="5">
                             <TextBlock Classes="h3" Text="Через OPOS" />
@@ -101,6 +95,12 @@
                         </StackPanel>
 
                     </suki:GlassCard>
+
+                    <TextBlock
+                        Grid.Row="3"
+                        Text="{Binding SelectedCashDrawer, StringFormat='Выбран принтер:{0}'}"
+                        TextWrapping="Wrap" />
+
                 </Grid>
             </TabItem>
             <TabItem Header="Кард ридер">

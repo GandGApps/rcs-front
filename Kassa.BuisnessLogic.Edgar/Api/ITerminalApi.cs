@@ -19,6 +19,9 @@ internal interface ITerminalApi: IUseTerminalToken
 
     [Post("/terminal/is-manager-pincode")]
     public Task<IApiResponse<string>> IsManagerPincode(EnterPincodeRequest request);
+
+    [Post("/terminal/check-pincode")]
+    public Task<IApiResponse<bool>> CheckPincode([AliasAs("pincode")] string pincode, [AliasAs("memberId")] Guid memberId);
 }
 
 internal sealed record LoginTerminalRequest(string Login, string Password);

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Text;
@@ -28,6 +29,13 @@ public sealed partial class FundActDialog : WidePrimaryDialogBase<FundActDialogV
         InitializeComponent();
 
         SetValue(WidePrimaryDialog.CurrentTextBoxProperty, InputComment);
+
+        this.WhenActivated(dispposables =>
+        {
+            Debug.Assert(ViewModel != null);
+
+            Accent.Command = ViewModel.ApplyCommand;
+        });
     }
 
     private void InputCommentGotFocus(object sender, RoutedEventArgs e)

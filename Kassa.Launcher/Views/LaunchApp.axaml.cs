@@ -25,7 +25,8 @@ public partial class LaunchApp : ReactiveUserControl<LaunchAppVm>
         var optionsManager = Locator.Current.GetService<IOptionManager>()!;
 
         window.ViewModel.SelectedPrinter = window.ViewModel.Printers.FirstOrDefault(p => p.Name == optionsManager.GetOption<string>("PrinterName"), window.ViewModel.Printers[0]);
-        window.ViewModel.IsOposOrEscPosUsbCashDrawer = optionsManager.GetOption<string>("CashDrawerPosLib") == "WndPosLib";
+        window.ViewModel.OposCashDrawer.IsSelected = optionsManager.GetOption<string>("CashDrawerPosLib") == "WndPosLib";
+        window.ViewModel.EscPosUsbCashDrawer.IsSelected = optionsManager.GetOption<string>("CashDrawerPosLib") == "EscposUsb";
         window.ViewModel.IsOposOrKeyboardCardReader = optionsManager.GetOption<string>("MsrReaderLib") == "WndPosLib";
         window.ViewModel.SuffixCardReaderKeyboard = optionsManager.GetOption<string>("MsrReaderLibKeyboardSuffix");
         window.ViewModel.PrefixCardReaderKeyboard = optionsManager.GetOption<string>("MsrReaderLibKeyboardPrefix");

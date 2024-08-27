@@ -11,25 +11,31 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI;
-public sealed class DepositReasonVm: ReactiveObject, IApplicationModelPresenter<DepositReasonDto>
+public sealed class ContributionReasonVm: ReactiveObject, IApplicationModelPresenter<ContributionReasonDto>
 {
-    private readonly DepositReasonDialogViewModel? _dialogViewModel;
+    private readonly ContributionReasonDialogViewModel? _dialogViewModel;
 
     public Guid Id
     {
         get;
     }
+    
+    public ContributionReasonDto? ContributionReason
+    {
+        get; private set;
+    }
 
-    public DepositReasonVm(DepositReasonDto depositReason, DepositReasonDialogViewModel dialogViewModel) : this(depositReason)
+    public ContributionReasonVm(ContributionReasonDto ContributionReason, ContributionReasonDialogViewModel dialogViewModel) : this(ContributionReason)
     {
         _dialogViewModel = dialogViewModel;
 
     }
 
-    public DepositReasonVm(DepositReasonDto depositReason)
+    public ContributionReasonVm(ContributionReasonDto contributionReason)
     {
-        Id = depositReason.Id;
-        Name = depositReason.Name;
+        Id = contributionReason.Id;
+        Name = contributionReason.Name;
+        ContributionReason = contributionReason;
 
         SelectCommand = ReactiveCommand.Create(() =>
         {
@@ -48,10 +54,11 @@ public sealed class DepositReasonVm: ReactiveObject, IApplicationModelPresenter<
         get;
     }
 
-    public void ModelChanged(Change<DepositReasonDto> change)
+    public void ModelChanged(Change<ContributionReasonDto> change)
     {
         var model = change.Current;
 
+        ContributionReason = model;
         Name = model.Name;
     }
 

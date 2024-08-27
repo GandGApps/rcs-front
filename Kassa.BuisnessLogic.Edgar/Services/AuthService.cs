@@ -125,4 +125,13 @@ internal partial class AuthService : IAuthService, IEnableLogger
 
         return false;
     }
+
+    public async Task<bool> CheckPincode(MemberDto member, string pincode)
+    {
+        var terminalApi = Locator.Current.GetRequiredService<ITerminalApi>();
+
+        var result = await terminalApi.CheckPincode(pincode, member.Id);
+
+        return result.Content;
+    }
 }

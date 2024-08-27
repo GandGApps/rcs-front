@@ -8,6 +8,7 @@ using Kassa.BuisnessLogic.Services;
 namespace Kassa.Wpf.Services.PosPrinters;
 public enum PrinterPosLib
 {
+    None,
     /// <summary>
     /// <see cref="IPrinter"/> implementation is <see cref="WndPrinter"/>
     /// </summary>

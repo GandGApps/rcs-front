@@ -4,6 +4,8 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Kassa.Launcher.Vms;
 using SukiUI.Controls;
+using System.Reactive;
+using ReactiveUI;
 
 namespace Kassa.Launcher;
 

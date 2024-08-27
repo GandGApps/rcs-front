@@ -1,18 +1,17 @@
 ﻿<local:SelectionDialogBase
-    x:Class="Kassa.Wpf.Dialogs.WithdrawReasonDialog"
+    x:Class="Kassa.Wpf.Dialogs.ContributionReasonDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:behaviors="clr-namespace:Kassa.Wpf.Behaviors"
-    xmlns:controls="clr-namespace:Kassa.Wpf.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialogs="clr-namespace:Kassa.RxUI.Dialogs;assembly=Kassa.RxUI"
-    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:Kassa.Wpf.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
     xmlns:view="clr-namespace:Kassa.Wpf.Views"
-    d:DataContext="{d:DesignInstance Type=dialogs:WithdrawReasonDialogViewModel}"
-    x:TypeArguments="dialogs:WithdrawReasonDialogViewModel"
+    d:DataContext="{d:DesignInstance Type=dialogs:ContributionReasonDialogViewModel}"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:TypeArguments="dialogs:ContributionReasonDialogViewModel"
     Style="{StaticResource SelectionDialog}"
     mc:Ignorable="d">
 
@@ -39,7 +38,7 @@
 
     <local:WidePrimaryDialog.ItemTemplate>
         <DataTemplate>
-            <view:WithdrawalReasonView ViewModel="{Binding ., Mode=OneTime}" />
+            <view:ContributionReasonView ViewModel="{Binding ., Mode=OneTime}" />
         </DataTemplate>
     </local:WidePrimaryDialog.ItemTemplate>
 

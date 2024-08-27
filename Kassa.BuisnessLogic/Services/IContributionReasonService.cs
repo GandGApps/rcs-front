@@ -7,10 +7,10 @@ using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 
 namespace Kassa.BuisnessLogic.Services;
-public interface IDepositReasonService : IInitializableService
+public interface IContributionReasonService : IInitializableService
 {
 
-    public IApplicationModelManager<DepositReasonDto> RuntimeDepositReasons
+    public IApplicationModelManager<ContributionReasonDto> RuntimeContributionReasons
     {
         get;
     }

@@ -48,7 +48,14 @@ public class PincodePageVm : PageViewModel
             await MainViewModel.DialogOpenCommand.Execute(new PincodeTurnOffDialogViewModel()).FirstAsync();
         });
 
-        Locator.GetRequiredService<IMagneticStripeReader>().CardData
+        var magneticStripeReader = Locator.GetService<IMagneticStripeReader>();
+
+        if (magneticStripeReader is null)
+        {
+            return;
+        }
+
+        magneticStripeReader.CardData
             .ObserveOn(RxApp.MainThreadScheduler)
             .Subscribe(async x =>
             {

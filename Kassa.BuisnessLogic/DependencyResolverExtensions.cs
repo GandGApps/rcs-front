@@ -4,7 +4,7 @@ using Kassa.DataAccess;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 using Kassa.Shared;
-using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.BuisnessLogic;
@@ -77,8 +77,8 @@ public static class DependencyResolverExtensions
         SplatRegistrations.Register<IMemberService, MemberService>();
         RegisterInitializableServiceFactory<IMemberService>(services);
 
-        SplatRegistrations.Register<IDepositReasonService, DepositReasonService>();
-        RegisterInitializableServiceFactory<IDepositReasonService>(services);
+        SplatRegistrations.Register<IContributionReasonService, ContributionReasonService>();
+        RegisterInitializableServiceFactory<IContributionReasonService>(services);
 
         services.Register<IReceiptService>(() =>
         {

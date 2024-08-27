@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Kassa.Wpf.Services.MagneticStripeReaders;
 internal enum MsrReaderLib
 {
+    None,
     MsrPos,
     MsrKeyboard
 }

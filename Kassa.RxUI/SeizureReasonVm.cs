@@ -6,30 +6,36 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
+using Kassa.DataAccess.Model;
 using Kassa.RxUI.Dialogs;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI;
-public sealed class WithdrawalReasonVm : ReactiveObject, IApplicationModelPresenter<WithdrawalReasonDto>
+public sealed class SeizureReasonVm : ReactiveObject, IApplicationModelPresenter<SeizureReasonDto>
 {
-    private readonly WithdrawReasonDialogViewModel? _dialogViewModel;
+    private readonly SeizureReasonDialogViewModel? _dialogViewModel;
 
     public Guid Id
     {
         get;
     }
 
-    public WithdrawalReasonVm(WithdrawalReasonDto withdrawalReason, WithdrawReasonDialogViewModel dialogViewModel) : this(withdrawalReason)
+    public SeizureReasonDto SeizureReason
     {
-        _dialogViewModel = dialogViewModel;
-
+        get; private set;
     }
 
-    public WithdrawalReasonVm(WithdrawalReasonDto withdrawalReason)
+    public SeizureReasonVm(SeizureReasonDto seizureReason, SeizureReasonDialogViewModel dialogViewModel) : this(seizureReason)
     {
-        Id = withdrawalReason.Id;
-        Name = withdrawalReason.Name;
+        _dialogViewModel = dialogViewModel;
+    }
+
+    public SeizureReasonVm(SeizureReasonDto seizureReason)
+    {
+        Id = seizureReason.Id;
+        Name = seizureReason.Name;
+        SeizureReason = seizureReason;
 
         SelectCommand = ReactiveCommand.Create(() =>
         {
@@ -48,9 +54,11 @@ public sealed class WithdrawalReasonVm : ReactiveObject, IApplicationModelPresen
         get;
     }
 
-    public void ModelChanged(Change<WithdrawalReasonDto> change)
+    public void ModelChanged(Change<SeizureReasonDto> change)
     {
         var model = change.Current;
+
+        SeizureReason = model; 
 
         Name = model.Name;
     }

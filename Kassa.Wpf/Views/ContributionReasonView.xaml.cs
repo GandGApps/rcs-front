@@ -18,13 +18,12 @@ using Kassa.RxUI;
 using ReactiveUI;
 
 namespace Kassa.Wpf.Views;
-
 /// <summary>
-/// Interaction logic for WithdrawalReasonView.xaml
+/// Interaction logic for ContributionReasonView.xaml
 /// </summary>
-public partial class WithdrawalReasonView : ReactiveUserControl<WithdrawalReasonVm>
+public partial class ContributionReasonView : ReactiveUserControl<ContributionReasonVm>
 {
-    public WithdrawalReasonView()
+    public ContributionReasonView()
     {
         InitializeComponent();
 
