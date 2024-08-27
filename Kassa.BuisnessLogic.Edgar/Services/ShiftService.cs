@@ -16,6 +16,7 @@ using Kassa.DataAccess.Repositories;
 using Microsoft.Extensions.Configuration;
 using System.Runtime.CompilerServices;
 using System.Net.WebSockets;
+using Kassa.Shared.ServiceLocator;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
 internal sealed class ShiftService : BaseInitializableService, IShiftService

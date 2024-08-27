@@ -54,10 +54,11 @@ internal sealed partial class AuthService : IAuthService, IEnableLogger
         return false;
     }
 
-    public Task<bool> LogoutAsync()
+    public async Task<bool> LogoutAsync()
     {
+        await RcsLocator.DisposeScope();
         _currentAuthenticationContext.OnNext(JwtAuthenticationContext.NotAuthenticated);
-        return Task.FromResult(true);
+        return true;
     }
 
     public async Task<bool> IsManagerPincode(string pincode)

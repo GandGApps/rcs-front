@@ -236,6 +236,7 @@ public class MainViewModel : ReactiveObject, IScreen
                 }
                 else
                 {
+                    await RcsLocator.ActivateScope();
                     await GoToPageAndReset(new MainPageVm());
                 }
             });

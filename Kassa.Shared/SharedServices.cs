@@ -46,9 +46,7 @@ public static class SharedServices
             .WriteTo.Logger(new ObservableLogger())
             .CreateLogger();
 
-
-
-
+        // Note: use self logger instead splat logger
         Locator.CurrentMutable.UseSerilogFullLogger();
     }
 
