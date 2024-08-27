@@ -20,9 +20,7 @@ public static class BuisnessLogicServices
         RcsLocatorBuilder.AddScoped<IStreetService, StreetService>();
         RcsLocatorBuilder.AddScoped<IDistrictService, DistrictService>();
         RcsLocatorBuilder.AddScoped<ICourierService, CourierService>();
-        RcsLocatorBuilder.AddScoped<IWithdrawReasonService, WithdrawReasounService>();
         RcsLocatorBuilder.AddScoped<IMemberService, MemberService>();
-        RcsLocatorBuilder.AddScoped<IDepositReasonService, DepositReasonService>();
         RcsLocatorBuilder.AddScoped<IReceiptService, ReceiptService>();
 
         RcsLocatorBuilder.AddSingleton<IShiftService, ShiftService>();

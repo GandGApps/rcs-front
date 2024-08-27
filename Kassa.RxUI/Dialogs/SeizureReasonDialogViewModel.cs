@@ -80,9 +80,9 @@ public sealed class SeizureReasonDialogViewModel: ApplicationManagedModelSearcha
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        var withdrawalReasons = await Locator.GetInitializedService<IWithdrawReasonService>();
+        var withdrawalReasons = await Locator.GetInitializedService<ISeizureReasonService>();
 
-        Filter(withdrawalReasons.RuntimeWithdrawReasouns, x => new SeizureReasonVm(x, this), disposables);
+        Filter(withdrawalReasons.RuntimeSeizureReasons, x => new SeizureReasonVm(x, this), disposables);
     }
 
     protected override bool IsMatch(string searchText, SeizureReasonDto item)

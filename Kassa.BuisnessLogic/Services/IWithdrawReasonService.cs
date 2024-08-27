@@ -7,16 +7,10 @@ using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 
 namespace Kassa.BuisnessLogic.Services;
-public interface IWithdrawReasonService: IInitializableService
+public interface ISeizureReasonService: IInitializableService
 {
-    public IApplicationModelManager<SeizureReasonDto> RuntimeWithdrawReasouns
+    public IApplicationModelManager<SeizureReasonDto> RuntimeSeizureReasons
     {
         get;
     }
-
-    public Task AddWithdrawReasoun(SeizureReasonDto withdrawalReason);
-    public Task DeleteWithdrawalReason(Guid id);
-    public Task<IEnumerable<SeizureReasonDto>> GetAll();
-    public ValueTask<SeizureReasonDto?> GetWithdrawalReasonById(Guid id);
-    public Task UpdateWithdrawalReason(SeizureReasonDto withdrawalReason);
 }

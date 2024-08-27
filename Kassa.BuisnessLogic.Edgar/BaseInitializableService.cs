@@ -75,9 +75,11 @@ internal abstract class BaseInitializableService: IInitializableService, IEnable
         IsInitialized = true;
     }
 
-    protected virtual ValueTask InitializeAsync(CompositeDisposable disposables) => ValueTask.CompletedTask;
+    protected virtual ValueTask InitializeAsync(CompositeDisposable disposables) => InitializeAsync();
+    protected virtual ValueTask InitializeAsync() => ValueTask.CompletedTask;
 
-    protected virtual void Initialize(CompositeDisposable disposables)
+    protected virtual void Initialize(CompositeDisposable disposables) => Initialize();
+    protected virtual void Initialize()
     {
 
     }

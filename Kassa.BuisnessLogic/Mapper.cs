@@ -103,4 +103,7 @@ public static partial class Mapper
 
     public static partial ContributionReasonDto MapContributionReasonToDto(ContributionReason ContributionReason);
     public static partial ContributionReason MapDtoToContributionReason(ContributionReasonDto ContributionReason);
+
+    public static partial SeizureReasonDto MapSeizureReasonToDto(SeizureReason SeizureReason);
+    public static partial SeizureReason MapDtoToSeizureReason(SeizureReasonDto SeizureReason);
 }

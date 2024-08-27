@@ -24,6 +24,8 @@ public static class BuisnessLogicEdgarServices
         RcsLocatorBuilder.AddScoped<IAdditiveService, AdditiveService>();
         RcsLocatorBuilder.AddScoped<ICategoryService, CategoryService>();
         RcsLocatorBuilder.AddScoped<IIngridientsService, IngridientsService>();
+        RcsLocatorBuilder.AddScoped<IContributionReasonService, ContributionReasonService>();
+        RcsLocatorBuilder.AddScoped<ISeizureReasonService, SeizureReasonService>();
 
         RcsLocatorBuilder.AddToBuilder();
     }
