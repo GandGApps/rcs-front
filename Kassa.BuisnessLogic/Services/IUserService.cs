@@ -8,6 +8,10 @@ using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 
 namespace Kassa.BuisnessLogic.Services;
+/// <summary>
+/// Obsolete: Use <see cref="IMemberService"/> instead
+/// </summary>
+[Obsolete("Use IMemberService instead")]
 public interface IUserService: IInitializableService
 {
     public IApplicationModelManager<UserDto> RuntimeUsers

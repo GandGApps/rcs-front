@@ -111,7 +111,12 @@ internal sealed partial class AuthService : IAuthService, IEnableLogger
 
             var employeeId = token.Claims.First(claim => claim.Type == "employee_id").Value;
 
-            var memberService = RcsLocator.Scoped.GetRequiredService<IMemberService>();
+            var memberService = RcsLocator.GetRequiredService<IMemberService>();
+
+            if (!memberService.IsInitialized)
+            {
+                await memberService.Initialize();
+            }
 
             var member = await memberService.GetMember(Guid.Parse(employeeId));
 

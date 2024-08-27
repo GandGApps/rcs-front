@@ -89,7 +89,7 @@ public class PincodePageVm : PageViewModel
 
                 try
                 {
-                    var shiftService = RcsLocator.Scoped.GetRequiredService<IShiftService>();
+                    var shiftService = RcsLocator.GetRequiredService<IShiftService>();
                     var authService = RcsLocator.GetRequiredService<IAuthService>();
 
                     if (await authService.EnterPincode(x))

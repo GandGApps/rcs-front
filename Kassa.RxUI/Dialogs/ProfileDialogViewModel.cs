@@ -24,7 +24,7 @@ public class ProfileDialogViewModel : DialogViewModel
     {
         GoToPersonalPageCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var shiftSerivce = RcsLocator.Scoped.GetRequiredService<IShiftService>();
+            var shiftSerivce = RcsLocator.GetRequiredService<IShiftService>();
 
             var personnelPage = new PersonalPageVm(shiftSerivce);
 
@@ -42,7 +42,7 @@ public class ProfileDialogViewModel : DialogViewModel
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        var shiftService = RcsLocator.Scoped.GetRequiredService<IShiftService>();
+        var shiftService = RcsLocator.GetRequiredService<IShiftService>();
 
         shiftService.CurrentShift.Subscribe(async shift =>
         {

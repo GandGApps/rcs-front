@@ -18,6 +18,7 @@ public static class BuisnessLogicEdgarServices
 
         RcsLocatorBuilder.AddSingleton<IAuthService, AuthService>();
         RcsLocatorBuilder.AddSingleton<IShiftService, ShiftService>();
+        RcsLocatorBuilder.AddSingleton<IReportShiftService, ReportShiftService>();
 
         RcsLocatorBuilder.AddScoped<IProductService, ProductService>();
         RcsLocatorBuilder.AddScoped<ICashierService, CashierService>();

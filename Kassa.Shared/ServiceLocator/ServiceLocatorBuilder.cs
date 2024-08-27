@@ -57,14 +57,17 @@ public static class ServiceLocatorBuilder
             .Where(x => x.Count() > 1)
             .Select(x => x.Key);
 
+        var duplicateServices = new Dictionary<Type, Func<object>>();
+
         foreach (var type in duplicateTypes)
         {
-            services[type] = () => _services
+            duplicateServices[type] = () => _services
                 .Where(x => x.Item1 == type)
                 .Select(x => x.Item2())
                 .ToArray();
         }
 
+        services[typeof(DuplicateTypesProvider)] = () => new DuplicateTypesProvider(duplicateServices.ToFrozenDictionary());
 
         RcsLocator.SetLocator(services.ToFrozenDictionary());
         RcsLocator.SetScopeFactory(() => _scopedServices);

@@ -37,22 +37,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
         CurrentShift = new(_currentShift);
         CurrentCashierShift = new(_currentCashierShift);
         _authService = authService;
-    }
 
-    public IApplicationModelManager<ShiftDto> RuntimeShifts => _hostModelManager;
-
-    public ObservableOnlyBehaviourSubject<IShift?> CurrentShift
-    {
-        get;
-    }
-
-    public ObservableOnlyBehaviourSubject<ITerminalShift?> CurrentCashierShift
-    {
-        get;
-    }
-
-    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
-    {
         _authService.CurrentAuthenticationContext.Subscribe(async context =>
         {
 
@@ -65,7 +50,19 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
                 await GetShifts();
             }
 
-        }).DisposeWith(disposables);
+        }).DisposeWith(InternalDisposables);
+    }
+
+    public IApplicationModelManager<ShiftDto> RuntimeShifts => _hostModelManager;
+
+    public ObservableOnlyBehaviourSubject<IShift?> CurrentShift
+    {
+        get;
+    }
+
+    public ObservableOnlyBehaviourSubject<ITerminalShift?> CurrentCashierShift
+    {
+        get;
     }
 
     public async ValueTask<ShiftDto?> GetShiftById(Guid id)

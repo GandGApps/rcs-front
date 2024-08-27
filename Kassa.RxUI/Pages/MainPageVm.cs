@@ -67,7 +67,7 @@ public class MainPageVm : PageViewModel
 
         OpenProfileDialog = ReactiveCommand.CreateFromTask(async () =>
         {
-            var shiftService = RcsLocator.Scoped.GetRequiredService<IShiftService>();
+            var shiftService = RcsLocator.GetRequiredService<IShiftService>();
 
             if (!await TryAuthorizePageAccess<PersonalPageVm>(shiftService))
             {
@@ -80,7 +80,7 @@ public class MainPageVm : PageViewModel
 
         OpenDocumnetsDialog = ReactiveCommand.CreateFromTask(async () =>
         {
-            var shiftService = RcsLocator.Scoped.GetRequiredService<IShiftService>();
+            var shiftService = RcsLocator.GetRequiredService<IShiftService>();
 
             if (!await TryAuthorizePageAccess<PageViewModel>(shiftService))
             {
@@ -92,7 +92,7 @@ public class MainPageVm : PageViewModel
 
         OpenPersonnelDialog = ReactiveCommand.CreateFromTask(async () =>
         {
-            var shiftService = RcsLocator.Scoped.GetRequiredService<IShiftService>();
+            var shiftService = RcsLocator.GetRequiredService<IShiftService>();
 
             if (!await TryAuthorizePageAccess<PageViewModel>(shiftService))
             {
@@ -104,7 +104,7 @@ public class MainPageVm : PageViewModel
 
         OpenDeliviryDialog = ReactiveCommand.CreateFromTask(async () =>
         {
-            var shiftService = RcsLocator.Scoped.GetRequiredService<IShiftService>();
+            var shiftService = RcsLocator.GetRequiredService<IShiftService>();
 
             if (!await TryAuthorizePageAccess<AllDeliveriesPageVm>(shiftService))
             {
@@ -119,7 +119,7 @@ public class MainPageVm : PageViewModel
             BusyText = "Загрузка данных...";
 
             var cashierService = RcsLocator.Scoped.GetRequiredService<ICashierService>();
-            var shiftService = RcsLocator.Scoped.GetRequiredService<IShiftService>();
+            var shiftService = RcsLocator.GetRequiredService<IShiftService>();
             var orderService = RcsLocator.Scoped.GetRequiredService<IOrdersService>();
             var productService = RcsLocator.Scoped.GetRequiredService<IProductService>();
 
@@ -140,7 +140,7 @@ public class MainPageVm : PageViewModel
             var additiveService = RcsLocator.Scoped.GetRequiredService<IAdditiveService>();
             var productServise = RcsLocator.Scoped.GetRequiredService<IProductService>();
             var ingredientService = RcsLocator.Scoped.GetRequiredService<IIngridientsService>();
-            var shiftService = RcsLocator.Scoped.GetRequiredService<IShiftService>();
+            var shiftService = RcsLocator.GetRequiredService<IShiftService>();
             var categoryService = RcsLocator.Scoped.GetRequiredService<ICategoryService>();
             var receiptService = RcsLocator.Scoped.GetRequiredService<IReceiptService>();
             var scope = ingredientService.CreateStorageScope();
@@ -167,7 +167,7 @@ public class MainPageVm : PageViewModel
             var order = cashierService.CurrentOrder;
             var productServise = RcsLocator.Scoped.GetRequiredService<IProductService>();
             var ingredientService = RcsLocator.Scoped.GetRequiredService<IIngridientsService>();
-            var shiftService = RcsLocator.Scoped.GetRequiredService<IShiftService>();
+            var shiftService = RcsLocator.GetRequiredService<IShiftService>();
             var categoryService = RcsLocator.Scoped.GetRequiredService<ICategoryService>();
             var receiptService = RcsLocator.Scoped.GetRequiredService<IReceiptService>();
             var scope = ingredientService.CreateStorageScope();
@@ -203,7 +203,7 @@ public class MainPageVm : PageViewModel
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        var shiftService = RcsLocator.Scoped.GetRequiredService<IShiftService>();
+        var shiftService = RcsLocator.GetRequiredService<IShiftService>();
 
         shiftService.CurrentShift.Subscribe(async shift =>
         {
