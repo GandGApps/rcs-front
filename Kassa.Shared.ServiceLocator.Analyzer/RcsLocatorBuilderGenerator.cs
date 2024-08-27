@@ -235,9 +235,9 @@ public sealed class RcsLocatorBuilderGenerator : IIncrementalGenerator
     }
 
     private static void SortByDependencyCount(
-        ImmutableArray<ServiceDescriptor> serviceDescriptors,
-        ImmutableArrayBuilder<ServiceDescriptor> sortedDescriptors,
-        Func<ServiceDescriptor, bool> filter)
+     ImmutableArray<ServiceDescriptor> serviceDescriptors,
+     ImmutableArrayBuilder<ServiceDescriptor> sortedDescriptors,
+     Func<ServiceDescriptor, bool> filter)
     {
         var count = serviceDescriptors.Length;
         var pool = ArrayPool<ServiceDescriptor>.Shared;
@@ -255,17 +255,20 @@ public sealed class RcsLocatorBuilderGenerator : IIncrementalGenerator
                 }
             }
 
-            // Sort by the number of dependencies (constructor parameters)
-            for (var i = 0; i < filteredCount - 1; i++)
+            // Calculate dependency count with cycle detection
+            var dependencyCounts = new Dictionary<ServiceDescriptor, int>();
+            for (var i = 0; i < filteredCount; i++)
             {
-                for (var j = i + 1; j < filteredCount; j++)
-                {
-                    if (tempArray[i]!.Constructor.Parameters.Length > tempArray[j]!.Constructor.Parameters.Length)
-                    {
-                        (tempArray[j], tempArray[i]) = (tempArray[i], tempArray[j]);
-                    }
-                }
+                CalculateDependencyCount(tempArray[i], serviceDescriptors, dependencyCounts, []);
             }
+
+            // Sort by the calculated dependency count
+            Array.Sort(tempArray, 0, filteredCount, Comparer<ServiceDescriptor>.Create((x, y) =>
+            {
+                var xCount = dependencyCounts[x];
+                var yCount = dependencyCounts[y];
+                return xCount.CompareTo(yCount);
+            }));
 
             // Add to the final list
             for (var i = 0; i < filteredCount; i++)
@@ -278,6 +281,38 @@ public sealed class RcsLocatorBuilderGenerator : IIncrementalGenerator
             // Return the array to the pool
             pool.Return(tempArray, clearArray: true);
         }
+    }
+
+    private static int CalculateDependencyCount(
+        ServiceDescriptor descriptor,
+        ImmutableArray<ServiceDescriptor> serviceDescriptors,
+        Dictionary<ServiceDescriptor, int> dependencyCounts,
+        HashSet<ServiceDescriptor> visitedDescriptors)
+    {
+        if (dependencyCounts.TryGetValue(descriptor, out var count))
+        {
+            return count;
+        }
+
+        // Check for cycles
+        if (!visitedDescriptors.Add(descriptor))
+        {
+            return 0; // Cycle detected, stop counting
+        }
+
+        count = 0;
+        foreach (var parameter in descriptor.Constructor.Parameters)
+        {
+            var dependencyDescriptor = serviceDescriptors.FirstOrDefault(d => d.ServiceType.Equals(parameter.Type, SymbolEqualityComparer.Default));
+            if (dependencyDescriptor != null)
+            {
+                count += 1 + CalculateDependencyCount(dependencyDescriptor, serviceDescriptors, dependencyCounts, visitedDescriptors);
+            }
+        }
+
+        visitedDescriptors.Remove(descriptor);
+        dependencyCounts[descriptor] = count;
+        return count;
     }
 
     /// <summary>
