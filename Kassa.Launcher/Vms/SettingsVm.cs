@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.Launcher.Services;
@@ -30,6 +31,9 @@ public sealed class SettingsVm: ReactiveObject
 
     public SettingsVm()
     {
+        EscPosUsbCashDrawer = CashDrawerVm.EscPosUsbCashDrawer;
+        OposCashDrawer = CashDrawerVm.OposCashDrawer;
+
         Printers = new ReadOnlyObservableCollection<PrinterVm>(_printers);
 
         foreach (string printer in System.Drawing.Printing.PrinterSettings.InstalledPrinters)
@@ -38,6 +42,14 @@ public sealed class SettingsVm: ReactiveObject
         }
 
         SelectedPrinter = _printers[0];
+
+        this.WhenAnyValue(x => x.EscPosUsbCashDrawer.IsSelected, x => x.OposCashDrawer.IsSelected)
+            .Select<(bool IsEscPosUsbCashDrawer, bool IsOposCashDrawer), string> (selectedCashDrawer => selectedCashDrawer.IsEscPosUsbCashDrawer 
+            ? "Через принтер" 
+            : selectedCashDrawer.IsOposCashDrawer 
+                ? "Через Opos"
+                : "Без денежного ящика")
+            .ToPropertyEx(this, x => x.SelectedCashDrawer);
 
         SelectPrinterCommand = ReactiveCommand.Create<PrinterVm>(printer =>
         {
@@ -51,9 +63,18 @@ public sealed class SettingsVm: ReactiveObject
             SelectedPrinter = printer;
         });
 
-        SelectCashDrawerMethodCommand = ReactiveCommand.Create<bool>(isOposOrEscPosUsb =>
+        SelectCashDrawerCommand = ReactiveCommand.Create<CashDrawerVm>(cashDrawer =>
         {
-            IsOposOrEscPosUsbCashDrawer = isOposOrEscPosUsb;
+            var isSelected = cashDrawer.IsSelected;
+
+            // unselect all
+            OposCashDrawer.IsSelected = false;
+            EscPosUsbCashDrawer.IsSelected = false;
+
+            if (!isSelected)
+            {
+                cashDrawer.IsSelected = true;
+            }
         });
 
         SelectCardReaderMethodCommand = ReactiveCommand.Create<bool>(isOposOrKeyboard =>
@@ -70,14 +91,22 @@ public sealed class SettingsVm: ReactiveObject
                 optionManager.SaveOption("PrinterPosLib", "EscposUsb");
                 optionManager.SaveOption("EscposUsbPrinterName", SelectedPrinter.Name);
             }
+            else
+            {
+                optionManager.SaveOption("PrinterPosLib", "None");
+            }
 
-            if (IsOposOrEscPosUsbCashDrawer)
+            if (EscPosUsbCashDrawer.IsSelected)
             {
                 optionManager.SaveOption("CashDrawerPosLib", "WndPosLib");
             }
-            else
+            else if (OposCashDrawer.IsSelected)
             {
                 optionManager.SaveOption("CashDrawerPosLib", "EscposUsb");
+            }
+            else
+            {
+                optionManager.SaveOption("CashDrawerPosLib", "None");
             }
 
             if (IsOposOrKeyboardCardReader)
@@ -98,12 +127,12 @@ public sealed class SettingsVm: ReactiveObject
         get;
     }
 
-    public ReactiveCommand<bool, Unit> SelectCashDrawerMethodCommand
+    public ReactiveCommand<bool, Unit> SelectCardReaderMethodCommand
     {
         get;
     }
 
-    public ReactiveCommand<bool, Unit> SelectCardReaderMethodCommand
+    public ReactiveCommand<CashDrawerVm, Unit> SelectCashDrawerCommand
     {
         get;
     }
@@ -113,11 +142,16 @@ public sealed class SettingsVm: ReactiveObject
         get;
     }
 
-    [Reactive]
-    public bool IsOposOrEscPosUsbCashDrawer
+    public CashDrawerVm EscPosUsbCashDrawer
     {
-        get; set;
+        get;
     }
+
+    public CashDrawerVm OposCashDrawer
+    {
+        get;
+    }
+
 
     [Reactive]
     public bool IsOposOrKeyboardCardReader
@@ -137,4 +171,9 @@ public sealed class SettingsVm: ReactiveObject
         get; set;
     }
 
+    public extern string SelectedCashDrawer
+    {
+        [ObservableAsProperty]
+        get;
+    }
 }
