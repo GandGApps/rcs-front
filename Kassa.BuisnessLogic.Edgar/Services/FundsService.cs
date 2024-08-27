@@ -25,8 +25,8 @@ internal sealed class FundsService: BaseInitializableService, IFundsService
     
     public async Task<ContributionActDto> Contribute(double amount, string comment, Guid memberId, string pincode, ContributionReasonDto contributionReason)
     {
-        var fundsApi = Locator.GetRequiredService<IFundApi>();
-        var shiftService = await Locator.GetInitializedService<IShiftService>();
+        var fundsApi = RcsLocator.GetRequiredService<IFundApi>();
+        var shiftService = RcsLocator.Scoped.GetRequiredService<IShiftService>();
         var cashierShiftId = shiftService.CurrentCashierShift.Value!.CreateDto().Id;
 
         var contributeRequest = new ContributeRequest(cashierShiftId, comment, amount, memberId, pincode, contributionReason.Id);
@@ -40,8 +40,8 @@ internal sealed class FundsService: BaseInitializableService, IFundsService
 
     public async Task<ResultSeizure> Seize(double amount, string comment, Guid memberId, string pincode, SeizureReasonDto seizureReason)
     {
-        var fundsApi = Locator.GetRequiredService<IFundApi>();
-        var shiftService = await Locator.GetInitializedService<IShiftService>();
+        var fundsApi = RcsLocator.GetRequiredService<IFundApi>();
+        var shiftService = RcsLocator.Scoped.GetRequiredService<IShiftService>();
         var cashierShiftId = shiftService.CurrentCashierShift.Value!.CreateDto().Id;
 
         var contributeRequest = new SeizureRequest(cashierShiftId, comment, amount, memberId, pincode, seizureReason.Id);
@@ -55,8 +55,8 @@ internal sealed class FundsService: BaseInitializableService, IFundsService
 
     public async Task GetCashBalance()
     {
-        var fundsApi = Locator.GetRequiredService<IFundApi>();
-        var shiftService = await Locator.GetInitializedService<IShiftService>();
+        var fundsApi = RcsLocator.GetRequiredService<IFundApi>();
+        var shiftService = RcsLocator.Scoped.GetRequiredService<IShiftService>();
         var cashierShiftId = shiftService.CurrentCashierShift.Value!.CreateDto().Id;
 
         var fund = await fundsApi.GetFunds(cashierShiftId);

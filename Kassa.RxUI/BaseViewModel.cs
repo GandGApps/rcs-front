@@ -30,6 +30,13 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
         get; protected set;
     }
 
+    /// <summary>
+    /// Shortcut for <see cref="Splat.Locator.Current"/>.
+    /// </summary>
+    /// <remarks>
+    /// Please use this property if you need Mutable Ioc container. If you need readonly container, use <see cref="RcsLocator"/>.
+    /// 
+    /// </remarks>
     protected static IReadonlyDependencyResolver Locator => Splat.Locator.Current;
 
     public MainViewModel MainViewModel

@@ -36,7 +36,7 @@ internal sealed class ContributionReasonRepository : IRepository<ContributionRea
 
     public async Task<IEnumerable<ContributionReason>> GetAll()
     {
-        var fundApi = Locator.Current.GetRequiredService<IFundApi>();
+        var fundApi = RcsLocator.GetRequiredService<IFundApi>();
 
         var reasons = await fundApi.GetContributions();
 

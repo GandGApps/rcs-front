@@ -10,6 +10,7 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using ReactiveUI;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 
 namespace Kassa.RxUI.Dialogs;
 public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSearchableDialogViewModel<ContributionReasonDto, ContributionReasonVm>
@@ -38,7 +39,7 @@ public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSe
 
                     await MainViewModel.ShowDialogAndWaitClose(enterPincodeDialog);
 
-                    var authService = Locator.GetRequiredService<IAuthService>();
+                    var authService = RcsLocator.GetRequiredService<IAuthService>();
 
                     if (string.IsNullOrWhiteSpace(enterPincodeDialog.Result))
                     {
@@ -58,7 +59,7 @@ public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSe
                         return;
                     }
 
-                    var fundsService = await Locator.GetInitializedService<IFundsService>();
+                    var fundsService = RcsLocator.Scoped.GetRequiredService<IFundsService>();
 
                     await MainViewModel.RunTaskWithLoadingDialog("Проводиться внесение", fundsService.Contribute(fundActDialog.Amount, fundActDialog.Comment, member.Id, enterPincodeDialog.Result, x.ContributionReason!));
 
@@ -80,7 +81,7 @@ public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSe
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        var withdrawalReasons = await Locator.GetInitializedService<IContributionReasonService>();
+        var withdrawalReasons = RcsLocator.Scoped.GetRequiredService<IContributionReasonService>();
 
         Filter(withdrawalReasons.RuntimeContributionReasons, x => new ContributionReasonVm(x, this), disposables);
     }

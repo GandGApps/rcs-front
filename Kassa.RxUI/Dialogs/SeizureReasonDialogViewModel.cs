@@ -38,7 +38,7 @@ public sealed class SeizureReasonDialogViewModel: ApplicationManagedModelSearcha
 
                     await MainViewModel.ShowDialogAndWaitClose(enterPincodeDialog);
 
-                    var authService = Locator.GetRequiredService<IAuthService>();
+                    var authService = RcsLocator.GetRequiredService<IAuthService>();
 
                     if (string.IsNullOrWhiteSpace(enterPincodeDialog.Result))
                     {
@@ -58,7 +58,7 @@ public sealed class SeizureReasonDialogViewModel: ApplicationManagedModelSearcha
                         return;
                     }
 
-                    var fundsService = await Locator.GetInitializedService<IFundsService>();
+                    var fundsService = RcsLocator.Scoped.GetRequiredService<IFundsService>();
 
                     await MainViewModel.RunTaskWithLoadingDialog("Проводится изъятие", fundsService.Seize(fundActDialog.Amount, fundActDialog.Comment, member.Id, enterPincodeDialog.Result, x.SeizureReason!));
 
@@ -80,7 +80,7 @@ public sealed class SeizureReasonDialogViewModel: ApplicationManagedModelSearcha
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        var withdrawalReasons = await Locator.GetInitializedService<ISeizureReasonService>();
+        var withdrawalReasons = RcsLocator.Scoped.GetRequiredService<ISeizureReasonService>();
 
         Filter(withdrawalReasons.RuntimeSeizureReasons, x => new SeizureReasonVm(x, this), disposables);
     }

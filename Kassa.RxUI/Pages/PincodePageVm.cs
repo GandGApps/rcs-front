@@ -48,7 +48,7 @@ public class PincodePageVm : PageViewModel
             await MainViewModel.DialogOpenCommand.Execute(new PincodeTurnOffDialogViewModel()).FirstAsync();
         });
 
-        var magneticStripeReader = Locator.GetService<IMagneticStripeReader>();
+        var magneticStripeReader = RcsLocator.GetService<IMagneticStripeReader>();
 
         if (magneticStripeReader is null)
         {

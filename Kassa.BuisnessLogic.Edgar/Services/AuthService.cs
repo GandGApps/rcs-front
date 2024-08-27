@@ -15,7 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Splat;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
-internal partial class AuthService : IAuthService, IEnableLogger
+internal sealed partial class AuthService : IAuthService, IEnableLogger
 {
     private readonly BehaviorSubject<IAuthenticationContext> _currentAuthenticationContext = new(JwtAuthenticationContext.NotAuthenticated);
     private readonly ObservableOnlyBehaviourSubject<IAuthenticationContext> _observableOnly;
@@ -128,7 +128,7 @@ internal partial class AuthService : IAuthService, IEnableLogger
 
     public async Task<bool> CheckPincode(MemberDto member, string pincode)
     {
-        var terminalApi = Locator.Current.GetRequiredService<ITerminalApi>();
+        var terminalApi = RcsLocator.GetRequiredService<ITerminalApi>();
 
         var result = await terminalApi.CheckPincode(pincode, member.Id);
 

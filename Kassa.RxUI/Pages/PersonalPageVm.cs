@@ -13,6 +13,7 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Dialogs;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -30,7 +31,7 @@ public class PersonalPageVm : PageViewModel
         TakeBreakCommand = CreatePageBusyCommand(async () =>
         {
             var pincodeDialog = new EnterPincodeDialogViewModel();
-            var authentificationService = Locator.GetRequiredService<IAuthService>();
+            var authentificationService = RcsLocator.GetRequiredService<IAuthService>();
 
             await MainViewModel.ShowDialogAndWaitClose(pincodeDialog);
 
@@ -97,7 +98,7 @@ public class PersonalPageVm : PageViewModel
             BusyText = "Закрытие смены";
 
             var pincodeDialog = new EnterPincodeDialogViewModel();
-            var authentificationService = Locator.GetRequiredService<IAuthService>();
+            var authentificationService = RcsLocator.GetRequiredService<IAuthService>();
 
             await MainViewModel.ShowDialogAndWaitClose(pincodeDialog);
 
@@ -246,7 +247,7 @@ public class PersonalPageVm : PageViewModel
 
         _shiftService.CurrentShift.Subscribe(async shift =>
         {
-            var memberService = Locator.GetNotInitializedService<IMemberService>();
+            var memberService = RcsLocator.Scoped.GetRequiredService<IMemberService>();
             if (shift is null)
             {
                 ManagerName = "???";

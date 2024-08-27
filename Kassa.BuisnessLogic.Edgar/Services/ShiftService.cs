@@ -135,7 +135,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
     private async Task FetchShiftDetails(MemberDto member, EdgarTerminalShift edgarTerminalShift)
     {
-        var employeePostsApi = Locator.GetRequiredService<IEmployeePostsApi>();
+        var employeePostsApi = RcsLocator.GetRequiredService<IEmployeePostsApi>();
         var managerShift = edgarTerminalShift.CreateDto();
 
         var exist = await employeePostsApi.PostExists(new(DateTime.Now, managerShift.Id));
@@ -157,9 +157,9 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
     private async Task<EdgarTerminalShift> FetchCashierShiftDetails(MemberDto member)
     {
-        var config = Locator.GetRequiredService<IConfiguration>();
+        var config = RcsLocator.GetRequiredService<IConfiguration>();
 
-        var terminalApi = Locator.GetRequiredService<ITerminalPostApi>();
+        var terminalApi = RcsLocator.GetRequiredService<ITerminalPostApi>();
 
         var postExists = await terminalApi.PostExists(new(DateTime.Now));
 

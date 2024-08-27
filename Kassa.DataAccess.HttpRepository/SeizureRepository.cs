@@ -34,7 +34,7 @@ internal sealed class SeizureRepository : IRepository<SeizureReason>
     }
     public async Task<IEnumerable<SeizureReason>> GetAll()
     {
-        var fundApi = Locator.Current.GetRequiredService<IFundApi>();
+        var fundApi = RcsLocator.GetRequiredService<IFundApi>();
 
         var reasons = await fundApi.GetSeizures();
 

@@ -127,7 +127,7 @@ public class PageViewModel : BaseViewModel, IRoutableViewModel
 
     public static async ValueTask<bool> TryAuthorizePageAccess<T>(IShiftService shiftservice) where T : PageViewModel
     {
-        var mainViewModel = Locator.GetRequiredService<MainViewModel>();
+        var mainViewModel = RcsLocator.GetRequiredService<MainViewModel>();
         var pageType = typeof(T);
 
         // Не впускать работника в сервис

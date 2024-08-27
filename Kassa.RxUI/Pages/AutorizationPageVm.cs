@@ -25,7 +25,7 @@ public class AutorizationPageVm : PageViewModel
 
         LoginCommand = CreatePageBusyCommand(async () =>
         {
-            var authService = Locator.GetRequiredService<IAuthService>();
+            var authService = RcsLocator.GetRequiredService<IAuthService>();
 
             if (string.IsNullOrWhiteSpace(Login) || string.IsNullOrWhiteSpace(Password))
             {

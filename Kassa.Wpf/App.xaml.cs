@@ -85,7 +85,7 @@ public partial class App : Application, IEnableLogger
         CashDrawerPosLibServices.RegisterCashDrawerPosLib(config);
 
         Locator.CurrentMutable.InitializeReactiveUI(RegistrationNamespace.Wpf);
-        Locator.CurrentMutable.RegisterMockDataAccess(); // TODO: Replace with real data access
+        //Locator.CurrentMutable.RegisterMockDataAccess(); // TODO: Replace with real data access
         //Locator.CurrentMutable.RegisterBuisnessLogic(); // TODO: Replace with real buisness logic
         BuisnessLogicServices.RegisterMockBuisnessLogic(); // TODO: Replace with real buisness logic
 

@@ -55,31 +55,6 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
         _shiftService = shiftService;
     }
 
-
-    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
-    {
-        await _categoryService.Initialize();
-        await _productService.Initialize();
-        await _additiveService.Initialize();
-        await _receiptService.Initialize();
-        await _ordersService.Initialize();
-        await _shiftService.Initialize();
-
-        // small trick to init IFundsService
-        var funds = await Locator.GetInitializedService<IFundsService>();
-    }
-
-    protected async override ValueTask DisposeAsyncCore()
-    {
-        await _categoryService.DisposeAsync();
-        await _productService.DisposeAsync();
-        await _additiveService.DisposeAsync();
-        await _receiptService.DisposeAsync();
-        await _ordersService.DisposeAsync();
-
-        // ShiftService created before this service, so it will be disposed after this service
-    }
-
     public ValueTask<OrderEditDto> CreateOrder(bool isDelivery)
     {
         var order = new OrderEditDto()

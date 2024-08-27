@@ -2,7 +2,7 @@
 using Kassa.BuisnessLogic.Services;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
-internal partial class AuthService
+internal sealed partial class AuthService
 {
     private class JwtAuthenticationContext : IAuthenticationContext
     {
