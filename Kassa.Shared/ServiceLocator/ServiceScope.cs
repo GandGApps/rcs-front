@@ -44,7 +44,7 @@ public readonly struct ServiceScope: IServiceProvider, IAsyncDisposable, IDispos
         return new(services.ToFrozenDictionary());
     }
 
-    public object? GetService(Type serviceType)
+    public readonly object? GetService(Type serviceType)
     {
         if (_services.TryGetValue(serviceType, out var service))
         {
@@ -54,7 +54,7 @@ public readonly struct ServiceScope: IServiceProvider, IAsyncDisposable, IDispos
         return null;
     }
 
-    public T? GetService<T>() where T : class
+    public readonly T? GetService<T>() where T : class
     {
         var service = GetService(typeof(T));
 
@@ -67,7 +67,7 @@ public readonly struct ServiceScope: IServiceProvider, IAsyncDisposable, IDispos
         return Unsafe.As<T>(service);
     }
 
-    public T GetRequiredService<T>() where T : class
+    public readonly T GetRequiredService<T>() where T : class
     {
         var service = GetService<T>();
 
@@ -79,7 +79,7 @@ public readonly struct ServiceScope: IServiceProvider, IAsyncDisposable, IDispos
         return service;
     }
 
-    public void Dispose()
+    public readonly void Dispose()
     {
         if (IsEmpty)
         {
@@ -95,7 +95,7 @@ public readonly struct ServiceScope: IServiceProvider, IAsyncDisposable, IDispos
         }
     }
 
-    public async ValueTask DisposeAsync()
+    public async readonly ValueTask DisposeAsync()
     {
         if (IsEmpty)
         {

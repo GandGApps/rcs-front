@@ -23,17 +23,38 @@ public static class RcsLocator
 
     public static object? GetService(Type serviceType)
     {
-        return _serviceLocator.GetService(serviceType);
+        var service = _serviceLocator.GetService(serviceType);
+
+        if (!_currentScope.IsEmpty && service is null)
+        {
+            service = _currentScope.GetService(serviceType);
+        }
+
+        return service;
     }
 
     public static T? GetService<T>() where T : class
     {
-        return _serviceLocator.GetService<T>();
+        var service = _serviceLocator.GetService<T>();
+
+        if (!_currentScope.IsEmpty && service is null)
+        {
+            service = _currentScope.GetService<T>();
+        }
+
+        return service;
     }
 
     public static T GetRequiredService<T>() where T : class
     {
-        return _serviceLocator.GetRequiredService<T>();
+        var service = GetService<T>();
+
+        if (!_currentScope.IsEmpty && service is null)
+        {
+            service = _currentScope.GetService<T>();
+        }
+
+        return service ?? throw new InvalidOperationException($"Service of type {typeof(T)} not found");
     }
 
     public static async ValueTask ActivateScope()
