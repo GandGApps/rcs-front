@@ -246,7 +246,23 @@ public sealed class MainViewModel : ReactiveObject, IScreen
                 }
                 else
                 {
-                    await RcsLocator.ActivateScope();
+
+                    var loading = ShowLoadingDialog("Загрузка данных");
+                    try
+                    {
+                        await RcsLocator.ActivateScope();
+                    }
+                    catch (Exception exc)
+                    {
+                        this.Log().Error(exc, "Error on activate scope");
+                        await RcsLocator.DisposeScope();
+                        throw;
+                    }
+                    finally
+                    {
+                        await loading.CloseAsync();
+                    }
+                    
                     await GoToPageAndReset(new MainPageVm());
                 }
             });

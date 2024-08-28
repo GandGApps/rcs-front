@@ -5,9 +5,10 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using Splat;
 
 namespace Kassa.Shared.ServiceLocator;
-public readonly struct ServiceScope: IServiceProvider, IAsyncDisposable, IDisposable
+public readonly struct ServiceScope: IServiceProvider, IAsyncDisposable, IDisposable, IEnableLogger
 {
 
     public static ServiceScope Empty
@@ -31,11 +32,23 @@ public readonly struct ServiceScope: IServiceProvider, IAsyncDisposable, IDispos
 
         foreach (var (type, factory) in scopedServices)
         {
+            if (services.ContainsKey(type))
+            {
+                continue;
+            }
+
             var service = factory(tempServiceProvider);
 
             if (service is IInitializable initializable)
             {
                 await initializable.Initialize();
+            }
+
+            var needToInits = tempServiceProvider.GetNeedToInits();
+
+            foreach (var needToInit in needToInits)
+            {
+                await needToInit.Initialize();
             }
 
             services[type] = service;
@@ -104,10 +117,19 @@ public readonly struct ServiceScope: IServiceProvider, IAsyncDisposable, IDispos
 
         foreach (var service in _services.Values)
         {
-            if (service is IAsyncDisposable asyncDisposable)
+            try
             {
-                await asyncDisposable.DisposeAsync();
+                if (service is IAsyncDisposable asyncDisposable)
+                {
+                    await asyncDisposable.DisposeAsync();
+                }
             }
+            catch (Exception exc)
+            {
+                // Log exception
+                this.Log().Error(exc, $"Error disposing service {service.GetType()}");
+            }
+            
         }
     }
 
@@ -115,6 +137,7 @@ public readonly struct ServiceScope: IServiceProvider, IAsyncDisposable, IDispos
     {
         private readonly Dictionary<Type, object> _services = services;
         private readonly List<(Type, Func<IServiceProvider, object>)> _scopedServices = scopedServices;
+        private readonly List<IInitializable> _needToInit = [];
 
         public object? GetService(Type serviceType)
         {
@@ -127,10 +150,24 @@ public readonly struct ServiceScope: IServiceProvider, IAsyncDisposable, IDispos
             {
                 _services[serviceType] = _scopedServices.First(x => x.Item1 == serviceType).Item2(this);
 
+                if (_services[serviceType] is IInitializable initializable)
+                {
+                    _needToInit.Add(initializable);
+                }
+
                 return _services[serviceType];
             }
 
             return RcsLocator.GetService(serviceType);
+        }
+
+        public IInitializable[] GetNeedToInits()
+        {
+            var result = _needToInit.ToArray();
+
+            _needToInit.Clear();
+
+            return result;
         }
     }
 }
