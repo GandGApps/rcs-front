@@ -22,6 +22,8 @@ public static class HttpRepositoryServices
         RcsLocatorBuilder.AddSingleton<IRepository<Category>, CategoryRepository>();
         RcsLocatorBuilder.AddSingleton<IRepository<Ingredient>, IngridientRepository>();
         RcsLocatorBuilder.AddSingleton<IRepository<Receipt>, ReceiptRepository>();
+        RcsLocatorBuilder.AddSingleton<IRepository<SeizureReason>, SeizureRepository>();
+        RcsLocatorBuilder.AddSingleton<IRepository<ContributionReason>, ContributionReasonRepository>();
 
         var additiveRepository = new AdditiveRepository();
 
@@ -46,5 +48,6 @@ public static class HttpRepositoryServices
         ApiServiceRegistration.AddApi<ITechcardApi>();
         ApiServiceRegistration.AddApi<IAdditiveApi>();
         ApiServiceRegistration.AddApi<IEmployeePostApi>();
+        ApiServiceRegistration.AddApi<IFundApi>();
     }
 }

@@ -96,6 +96,10 @@ public partial class App : Application, IEnableLogger
 
         MainViewModel.RegsiterMainViewModel();
 
+        // Replace with view locator
+        Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
+
+
         typeof(SimpleRouter).TypeInitializer!.Invoke(null, null);
 
         ApiServiceRegistration.BuildServices();

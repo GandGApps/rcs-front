@@ -68,17 +68,21 @@ internal abstract class BaseInitializableService: IInitializableService, IEnable
         this.Log().Info($"[{id}] Initializing service " + GetType()) ;
 
         Initialize(InternalDisposables);
+        Initialize();
         await InitializeAsync(InternalDisposables).ConfigureAwait(false);
+        await InitializeAsync().ConfigureAwait(false);
 
         this.Log().Info($"[{id}] Service initialized " + GetType());
 
         IsInitialized = true;
     }
 
-    protected virtual ValueTask InitializeAsync(CompositeDisposable disposables) => InitializeAsync();
+    protected virtual ValueTask InitializeAsync(CompositeDisposable disposables) => ValueTask.CompletedTask;
     protected virtual ValueTask InitializeAsync() => ValueTask.CompletedTask;
 
-    protected virtual void Initialize(CompositeDisposable disposables) => Initialize();
+    protected virtual void Initialize(CompositeDisposable disposables)
+    {
+    }
     protected virtual void Initialize()
     {
 

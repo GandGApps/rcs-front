@@ -111,9 +111,6 @@ internal sealed class ProductService : BaseInitializableService, IProductService
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        await _ingridientsService.Initialize();
-        await _receiptService.Initialize();
-
         var products = await _productRepository.GetAll();
 
         foreach (var product in products)
