@@ -12,9 +12,6 @@ public static class BuisnessLogicServices
     public static void RegisterMockBuisnessLogic()
     {
         RcsLocatorBuilder.AddScoped<IReceiptService, ReceiptService>();
-        RcsLocatorBuilder.AddScoped<ICategoryService, CategoryService>();
-        RcsLocatorBuilder.AddScoped<IProductService, ProductService>();
-        RcsLocatorBuilder.AddScoped<IAdditiveService, AdditiveService>();
         //RcsLocatorBuilder.AddScoped<IUserService, UserService>();
         RcsLocatorBuilder.AddScoped<IClientService, ClientService>();
         RcsLocatorBuilder.AddScoped<IPaymentInfoService, PaymentInfoService>();
@@ -23,7 +20,6 @@ public static class BuisnessLogicServices
         RcsLocatorBuilder.AddScoped<ICourierService, CourierService>();
         
 
-        RcsLocatorBuilder.AddSingleton<IShiftService, ShiftService>();
         RcsLocatorBuilder.AddSingleton<IMemberService, MemberService>();
 
         RcsLocatorBuilder.AddToBuilder();

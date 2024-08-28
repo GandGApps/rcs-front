@@ -27,7 +27,7 @@ public readonly struct ServiceScope: IServiceProvider, IAsyncDisposable, IDispos
     public static async ValueTask<ServiceScope> CreateScope(List<(Type, Func<IServiceProvider,object>)> scopedServices)
     {
         var services = new Dictionary<Type, object>();
-        var tempServiceProvider = new TempServiceProvider(services);
+        var tempServiceProvider = new TempServiceProvider(services, scopedServices);
 
         foreach (var (type, factory) in scopedServices)
         {
@@ -111,15 +111,23 @@ public readonly struct ServiceScope: IServiceProvider, IAsyncDisposable, IDispos
         }
     }
 
-    private sealed class TempServiceProvider(Dictionary<Type, object> services) : IServiceProvider
+    private sealed class TempServiceProvider(Dictionary<Type, object> services, List<(Type, Func<IServiceProvider, object>)> scopedServices) : IServiceProvider
     {
         private readonly Dictionary<Type, object> _services = services;
+        private readonly List<(Type, Func<IServiceProvider, object>)> _scopedServices = scopedServices;
 
         public object? GetService(Type serviceType)
         {
             if (_services.TryGetValue(serviceType, out var value))
             {
                 return value;
+            }
+
+            if(_scopedServices.Any(x => x.Item1 == serviceType))
+            {
+                _services[serviceType] = _scopedServices.First(x => x.Item1 == serviceType).Item2(this);
+
+                return _services[serviceType];
             }
 
             return RcsLocator.GetService(serviceType);
