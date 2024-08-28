@@ -25,7 +25,7 @@ public sealed class ShiftRowViewModel : ReactiveObject, IApplicationModelPresent
 
     public ShiftRowViewModel(ShiftDto shiftDto)
     {
-        _memberService = RcsLocator.Scoped.GetRequiredService<IMemberService>();
+        _memberService = RcsLocator.GetRequiredService<IMemberService>();
 
         Id = shiftDto.Id;
         Number = shiftDto.Number;

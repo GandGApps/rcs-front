@@ -85,7 +85,7 @@ public sealed partial class ShoppingListPanel : UserControl
     {
         InitializeComponent();
 
-        var shiftService = RcsLocator.Scoped.GetRequiredService<IShiftService>();
+        var shiftService = RcsLocator.GetRequiredService<IShiftService>();
         var currentShift = shiftService.CurrentShift.Value;
 
         Shift = currentShift;

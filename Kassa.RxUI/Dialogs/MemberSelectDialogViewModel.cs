@@ -72,7 +72,7 @@ public sealed class MemberSelectDialogViewModel : ApplicationManagedModelSearcha
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        var memberService = RcsLocator.Scoped.GetRequiredService<IMemberService>();
+        var memberService = RcsLocator.GetRequiredService<IMemberService>();
 
         Filter(memberService.RuntimeMembers, x => new MemberVm(x, this), disposables);
     }

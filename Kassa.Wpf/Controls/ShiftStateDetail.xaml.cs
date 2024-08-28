@@ -45,8 +45,8 @@ public sealed partial class ShiftStateDetail : UserControl, IApplicationModelPre
     {
         shiftStateDetail._subcribeToDtoChanging?.Dispose();
 
-        var shiftService = RcsLocator.Scoped.GetRequiredService<IShiftService>();
-        var memberService = RcsLocator.Scoped.GetRequiredService<IMemberService>();
+        var shiftService = RcsLocator.GetRequiredService<IShiftService>();
+        var memberService = RcsLocator.GetRequiredService<IMemberService>();
 
         if (dto is null)
         {
@@ -95,7 +95,7 @@ public sealed partial class ShiftStateDetail : UserControl, IApplicationModelPre
     {
         InitializeComponent();
 
-        var shiftService = RcsLocator.Scoped.GetRequiredService<IShiftService>();
+        var shiftService = RcsLocator.GetRequiredService<IShiftService>();
 
         this.WhenActivated(disposables =>
         {

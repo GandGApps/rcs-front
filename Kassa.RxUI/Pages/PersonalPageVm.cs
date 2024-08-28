@@ -247,7 +247,7 @@ public class PersonalPageVm : PageViewModel
 
         _shiftService.CurrentShift.Subscribe(async shift =>
         {
-            var memberService = RcsLocator.Scoped.GetRequiredService<IMemberService>();
+            var memberService = RcsLocator.GetRequiredService<IMemberService>();
             if (shift is null)
             {
                 ManagerName = "???";
