@@ -19,18 +19,18 @@
         <DataTemplate>
             <StackPanel Orientation="Horizontal">
                 <Path
-                    Width="{mx:AdaptiveSize 32}"
-                    Height="{mx:AdaptiveSize 27}"
+                    Width="{mx:AdaptiveSize 36}"
+                    Height="{mx:AdaptiveSize 31}"
                     Margin="{mx:AdaptiveSize Thickness='22,0,0,10'}"
                     VerticalAlignment="Center"
-                    Data="{StaticResource WithdrawalIcon}"
+                    Data="{StaticResource DepositIcon}"
                     Fill="{DynamicResource SecondaryForeground}" />
                 <TextBlock
                     Margin="{mx:AdaptiveSize Thickness='16,0,0,0'}"
                     VerticalAlignment="Center"
                     FontWeight="Normal"
                     Style="{DynamicResource Header}">
-                    <Run Text="Выберите тип " /><Run Foreground="{DynamicResource DangerBrush}" Text="изъятия" />
+                    <Run Text="Выберите тип для " /><Run Foreground="{DynamicResource AccentBrush2}" Text="внесения" />
                 </TextBlock>
             </StackPanel>
         </DataTemplate>

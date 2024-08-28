@@ -31,6 +31,7 @@ public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSe
                     HeaderTemplateKey = "ContributionReasonDialog",
                     Reason = x.Name,
                     Member = member.Name,
+                    IsRequiredComment = x.ContributionReason.IsRequiredComment
                 };
 
                 fundActDialog.ApplyCommand = ReactiveCommand.CreateFromTask(async _ =>

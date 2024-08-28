@@ -31,6 +31,7 @@ public sealed class SeizureReasonDialogViewModel: ApplicationManagedModelSearcha
                     HeaderTemplateKey = "SeizureReasonDialog",
                     Reason = x.Name,
                     Member = member.Name,
+                    IsRequiredComment = x.SeizureReason.IsRequiredComment
                 };
 
                 fundActDialog.ApplyCommand = ReactiveCommand.CreateFromTask(async _ =>

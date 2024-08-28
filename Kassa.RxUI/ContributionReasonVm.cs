@@ -20,7 +20,7 @@ public sealed class ContributionReasonVm: ReactiveObject, IApplicationModelPrese
         get;
     }
     
-    public ContributionReasonDto? ContributionReason
+    public ContributionReasonDto ContributionReason
     {
         get; private set;
     }

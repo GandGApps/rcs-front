@@ -20,7 +20,7 @@
         <Style BasedOn="{StaticResource WidePrimaryDialogBaseStyle}" TargetType="UserControl">
             <Style.Triggers>
 
-                <DataTrigger Binding="{Binding HeaderTemplateKey}" Value="WithdrawReasounDialog">
+                <DataTrigger Binding="{Binding HeaderTemplateKey}" Value="SeizureReasonDialog">
                     <Setter Property="local:WidePrimaryDialog.HeaderTemplate">
                         <Setter.Value>
                             <DataTemplate>
@@ -46,7 +46,21 @@
                                         VerticalAlignment="Center"
                                         FontWeight="Normal"
                                         Style="{DynamicResource Header}">
-                                        <Run Text="Выберите тип " /><Run Foreground="{DynamicResource DangerBrush}" Text="изъятия" />
+                                        <Run Foreground="{DynamicResource DangerBrush}" Text="Изъятия" />
+                                        <Run>
+                                            <Run.Style>
+                                                <Style TargetType="Run">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ViewModel.IsRequiredComment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FundActDialog}}}" Value="True">
+                                                            <Setter Property="Text" Value="с обязательным комментарием" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ViewModel.IsRequiredComment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FundActDialog}}}" Value="False">
+                                                            <Setter Property="Text" Value="" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Run.Style>
+                                        </Run>
                                     </TextBlock>
 
                                     <StackPanel Grid.Column="2">
@@ -68,6 +82,70 @@
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>
+
+                <DataTrigger Binding="{Binding HeaderTemplateKey}" Value="ContributionReasonDialog">
+                    <Setter Property="local:WidePrimaryDialog.HeaderTemplate">
+                        <Setter.Value>
+                            <DataTemplate>
+                                <Grid>
+
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+
+                                    <Path
+                                        Width="{mx:AdaptiveSize 36}"
+                                        Height="{mx:AdaptiveSize 31}"
+                                        Margin="{mx:AdaptiveSize Thickness='22,0,0,10'}"
+                                        VerticalAlignment="Center"
+                                        Data="{StaticResource DepositIcon}"
+                                        Fill="{DynamicResource SecondaryForeground}" />
+
+                                    <TextBlock
+                                        Grid.Column="1"
+                                        Margin="{mx:AdaptiveSize Thickness='16,0,0,0'}"
+                                        VerticalAlignment="Center"
+                                        FontWeight="Normal"
+                                        Style="{DynamicResource Header}">
+                                        <Run Foreground="{DynamicResource AccentBrush2}" Text="Внесение " />
+                                        <Run>
+                                            <Run.Style>
+                                                <Style TargetType="Run">
+                                                    <Style.Triggers>
+                                                        <DataTrigger Binding="{Binding ViewModel.IsRequiredComment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FundActDialog}}}" Value="True">
+                                                            <Setter Property="Text" Value="с обязательным комментарием" />
+                                                        </DataTrigger>
+                                                        <DataTrigger Binding="{Binding ViewModel.IsRequiredComment, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FundActDialog}}}" Value="False">
+                                                            <Setter Property="Text" Value="" />
+                                                        </DataTrigger>
+                                                    </Style.Triggers>
+                                                </Style>
+                                            </Run.Style>
+                                        </Run>
+                                    </TextBlock>
+
+                                    <StackPanel Grid.Column="2">
+                                        <TextBlock
+                                            HorizontalAlignment="Right"
+                                            FontSize="{mx:AdaptiveSize 15}"
+                                            Foreground="{StaticResource AccentBrush2}"
+                                            Text="Кассир"
+                                            TextAlignment="Right" />
+                                        <TextBlock
+                                            HorizontalAlignment="Right"
+                                            FontSize="{mx:AdaptiveSize 15}"
+                                            Text="{Binding ViewModel.Member, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type local:FundActDialog}}}"
+                                            TextAlignment="Right" />
+                                    </StackPanel>
+
+                                </Grid>
+                            </DataTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+
 
             </Style.Triggers>
         </Style>

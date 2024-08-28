@@ -60,6 +60,12 @@ public sealed class FundActDialogViewModel: DialogViewModel
         get; set;
     }
 
+    [Reactive]
+    public bool IsRequiredComment
+    {
+        get; set;
+    }
+
     public extern string AmountText
     {
         [ObservableAsProperty]
