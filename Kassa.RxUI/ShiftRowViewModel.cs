@@ -8,6 +8,7 @@ using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -24,7 +25,7 @@ public sealed class ShiftRowViewModel : ReactiveObject, IApplicationModelPresent
 
     public ShiftRowViewModel(ShiftDto shiftDto)
     {
-        _memberService = Locator.Current.GetNotInitializedService<IMemberService>();
+        _memberService = RcsLocator.Scoped.GetRequiredService<IMemberService>();
 
         Id = shiftDto.Id;
         Number = shiftDto.Number;

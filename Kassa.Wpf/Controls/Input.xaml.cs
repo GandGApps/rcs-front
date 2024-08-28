@@ -146,8 +146,7 @@ public partial class Input : UserControl, ICommandSource
                 name = Placeholder ?? string.Empty;
             }
 
-            // Todo, refactor this with custom factory
-            var mainViewModel = Locator.Current.GetRequiredService<MainViewModel>();
+            var mainViewModel = RcsLocator.GetRequiredService<MainViewModel>();
 
             if (Command is not null)
             {

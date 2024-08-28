@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Pages;
+using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using Splat;
 
@@ -84,7 +85,7 @@ public sealed partial class ShoppingListPanel : UserControl
     {
         InitializeComponent();
 
-        var shiftService = Locator.Current.GetNotInitializedService<IShiftService>();
+        var shiftService = RcsLocator.Scoped.GetRequiredService<IShiftService>();
         var currentShift = shiftService.CurrentShift.Value;
 
         Shift = currentShift;

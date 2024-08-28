@@ -21,6 +21,7 @@ using Kassa.Wpf.Services.MagneticStripeReaders;
 using Kassa.Wpf.Services.CashDrawers;
 using Kassa.Wpf.Controls;
 using Kassa.Shared.ServiceLocator;
+using Kassa.RxUI;
 
 namespace Kassa.Wpf;
 /// <summary>
@@ -92,6 +93,8 @@ public partial class App : Application, IEnableLogger
 
         HttpRepositoryServices.RegisterServices();
         BuisnessLogicEdgarServices.RegisterBuisnessLogic();
+
+        MainViewModel.RegsiterMainViewModel();
 
         typeof(SimpleRouter).TypeInitializer!.Invoke(null, null);
 

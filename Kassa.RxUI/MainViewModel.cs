@@ -13,8 +13,17 @@ using Splat;
 
 namespace Kassa.RxUI;
 
-public class MainViewModel : ReactiveObject, IScreen
+public sealed class MainViewModel : ReactiveObject, IScreen
 {
+    public static void RegsiterMainViewModel()
+    {
+        ServiceLocatorBuilder.AddService<IMainViewModelProvider>(new MainViewModelProvider());
+        ServiceLocatorBuilder.AddService<MainViewModel>(() =>
+        {
+            return RcsLocator.GetRequiredService<IMainViewModelProvider>().MainViewModel;
+        });
+    }
+
     /// <summary>
     /// Don't use directly for routing, use <see cref="GoToPageCommand"/> instead.
     /// </summary>
@@ -79,7 +88,8 @@ public class MainViewModel : ReactiveObject, IScreen
 
     public MainViewModel()
     {
-        Locator.CurrentMutable.RegisterConstant(this);
+        var mainViewModelProvider = RcsLocator.GetRequiredService<IMainViewModelProvider>();
+        mainViewModelProvider.MainViewModel = this;
 
         Router = new();
         Router.Navigate.Execute(new AutorizationPageVm());

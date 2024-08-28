@@ -11,6 +11,11 @@ public static class ServiceLocatorBuilder
     internal static List<(Type, Func<object>)> _services = [];
     internal static List<(Type, Func<IServiceProvider, object>)> _scopedServices = [];
 
+    public static void AddService<TService>(TService service) where TService : class
+    {
+        _services.Add((typeof(TService), () => service));
+    }
+
     public static void AddService(Type type, Func<object> service)
     {
         _services.Add((type, service));

@@ -26,7 +26,7 @@ public class PageViewModel : BaseViewModel, IRoutableViewModel
         });
     }
 
-    public PageViewModel() : this(Locator.GetRequiredService<MainViewModel>())
+    public PageViewModel(): this(RcsLocator.GetRequiredService<MainViewModel>())
     {
 
     }
