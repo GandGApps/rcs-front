@@ -134,14 +134,14 @@ public class PageViewModel : BaseViewModel, IRoutableViewModel
         // Не впускать работника в сервис
         if (shiftservice.CurrentShift.Value is IShift shift && !shift.Member.IsManager && pageType == typeof(ServicePageVm))
         {
-            await mainViewModel.OkMessage("Этот раздел только для менеджеров", "JustFailed");
+            await mainViewModel.OkMessageAsync("Этот раздел только для менеджеров", "JustFailed");
             return false;
         }
 
         // Не впускать никуда кроме сервиса если не начата кассовая смена
         if (!shiftservice.IsCashierShiftStarted() && pageType != typeof(ServicePageVm))
         {
-            await mainViewModel.OkMessage("Кассовая смена не открыта", "JustFailed");
+            await mainViewModel.OkMessageAsync("Кассовая смена не открыта", "JustFailed");
             return false;
         }
 
@@ -149,7 +149,7 @@ public class PageViewModel : BaseViewModel, IRoutableViewModel
         // не начата обычная смена
         if (shiftservice.CurrentCashierShift.Value == null && !shiftservice.IsShiftStarted() && pageType != typeof(PersonalPageVm))
         {
-            await mainViewModel.OkMessage("Смена не открыта", "JustFailed");
+            await mainViewModel.OkMessageAsync("Смена не открыта", "JustFailed");
             return false;
         }
 
@@ -158,21 +158,21 @@ public class PageViewModel : BaseViewModel, IRoutableViewModel
         /*// Не впускать работника в сервис
         if (shiftservice.CurrentShift.Value != null && pageType == typeof(ServicePageVm))
         {
-            await mainViewModel.OkMessage("Этот раздел только для менеджеров", "JustFailed");
+            await mainViewModel.OkMessageAsync("Этот раздел только для менеджеров", "JustFailed");
             return false;
         }
 
         // Не впускать никуда кроме сервиса если не начата кассовая смена
         if (!shiftservice.IsCashierShiftStarted() && pageType != typeof(ServicePageVm))
         {
-            await mainViewModel.OkMessage("Кассовая смена не открыта", "JustFailed");
+            await mainViewModel.OkMessageAsync("Кассовая смена не открыта", "JustFailed");
             return false;
         }
 
         // Не впускать менеджера никуда кроме сервиса
         if (shiftservice.CurrentCashierShift.Value != null && shiftservice.CurrentShift.Value == null && pageType != typeof(ServicePageVm))
         {
-            await mainViewModel.OkMessage("Этот раздел только для работников", "JustFailed");
+            await mainViewModel.OkMessageAsync("Этот раздел только для работников", "JustFailed");
             return false;
         }
 
@@ -180,7 +180,7 @@ public class PageViewModel : BaseViewModel, IRoutableViewModel
         // не начата обычная смена
         if (shiftservice.CurrentCashierShift.Value == null && !shiftservice.IsShiftStarted() && pageType != typeof(PersonalPageVm))
         {
-            await mainViewModel.OkMessage("Смена не открыта", "JustFailed");
+            await mainViewModel.OkMessageAsync("Смена не открыта", "JustFailed");
             return false;
         }
 

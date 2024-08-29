@@ -94,14 +94,14 @@ public class PincodePageVm : PageViewModel
 
                     if (await authService.EnterPincode(x))
                     {
-                        await MainViewModel.ShowDialog(new OkMessageDialogViewModel()
+                        await MainViewModel.ShowDialogAsync(new OkMessageDialogViewModel()
                         {
                             Message = "Подключение успешно"
                         });
                     }
                     else
                     {
-                        await MainViewModel.ShowDialog(new OkMessageDialogViewModel()
+                        await MainViewModel.ShowDialogAsync(new OkMessageDialogViewModel()
                         {
                             Message = "Подключение не удалось"
                         });
@@ -109,11 +109,11 @@ public class PincodePageVm : PageViewModel
                 }
                 catch (InvalidUserOperatationException e)
                 {
-                    await MainViewModel.OkMessage(e.Message, e.Description, e.Icon);
+                    await MainViewModel.OkMessageAsync(e.Message, e.Description, e.Icon);
                 }
                 catch (Exception e)
                 {
-                    await MainViewModel.ShowDialog(new OkMessageDialogViewModel()
+                    await MainViewModel.ShowDialogAsync(new OkMessageDialogViewModel()
                     {
                         Message = e.Message
                     });

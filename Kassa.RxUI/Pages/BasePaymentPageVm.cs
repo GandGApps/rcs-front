@@ -282,10 +282,10 @@ public abstract class BasePaymentPageVm: PageViewModel, IPaymentVm
 
             if (Change - 0.001 >= 0)
             {
-                await MainViewModel.OkMessage("Сдача \n" + Change + " " + CurrencySymbol, "");
+                await MainViewModel.OkMessageAsync("Сдача \n" + Change + " " + CurrencySymbol, "");
             }
 
-            await MainViewModel.OkMessage("Оплата прошла успешно", "");
+            await MainViewModel.OkMessageAsync("Оплата прошла успешно", "");
 
             var order = await _cashierService.CreateOrder(false);
 

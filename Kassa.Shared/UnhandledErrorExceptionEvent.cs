@@ -5,4 +5,4 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Kassa.Shared;
-public delegate ValueTask UnhandledErrorExceptionEvent(object? sender, UnhandledErrorExceptionEventArgs args);
+public delegate void UnhandledErrorExceptionEvent(object? sender, UnhandledErrorExceptionEventArgs args);

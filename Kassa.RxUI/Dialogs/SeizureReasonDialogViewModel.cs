@@ -51,7 +51,7 @@ public sealed class SeizureReasonDialogViewModel: ApplicationManagedModelSearcha
 
                     if (!check)
                     {
-                        await MainViewModel.OkMessage("Неверный пинкод");
+                        await MainViewModel.OkMessageAsync("Неверный пинкод");
 
                         await fundActDialog.CloseAsync();
                         await memberSelectViewModel.CloseAsync();

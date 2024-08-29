@@ -75,7 +75,7 @@ public class MainPageVm : PageViewModel
                 return;
             }
 
-            await MainViewModel.ShowDialog(new ProfileDialogViewModel());
+            await MainViewModel.ShowDialogAsync(new ProfileDialogViewModel());
         });
 
         OpenDocumnetsDialog = ReactiveCommand.CreateFromTask(async () =>
@@ -87,7 +87,7 @@ public class MainPageVm : PageViewModel
                 return;
             }
 
-            await MainViewModel.ShowDialog(new DocumentsDialogViewModel());
+            await MainViewModel.ShowDialogAsync(new DocumentsDialogViewModel());
         });
 
         OpenPersonnelDialog = ReactiveCommand.CreateFromTask(async () =>
@@ -99,7 +99,7 @@ public class MainPageVm : PageViewModel
                 return;
             }
 
-            await MainViewModel.ShowDialog(new PersonnelDialogViewModel());
+            await MainViewModel.ShowDialogAsync(new PersonnelDialogViewModel());
         });
 
         OpenDeliviryDialog = ReactiveCommand.CreateFromTask(async () =>
@@ -179,7 +179,7 @@ public class MainPageVm : PageViewModel
 
             if (order == null)
             {
-                await MainViewModel.OkMessage("Нет текущего заказа", "JustFailed");
+                await MainViewModel.OkMessageAsync("Нет текущего заказа", "JustFailed");
                 return;
             }
 

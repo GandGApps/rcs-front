@@ -157,19 +157,19 @@ public sealed class EditDeliveryPageVm : PageViewModel
         {
             if (!IsPickup && CourierViewModel is null)
             {
-                await MainViewModel.OkMessage("Не выбран курьер");
+                await MainViewModel.OkMessageAsync("Не выбран курьер");
                 return;
             }
 
             if (IsDelivery && (District is null || Street is null))
             {
-                await MainViewModel.OkMessage("Не выбран район или улица");
+                await MainViewModel.OkMessageAsync("Не выбран район или улица");
                 return;
             }
 
             if (!PaymentPageVm.IsExactAmount)
             {
-                await MainViewModel.OkMessage("Необходимо ввести сумму оплаты");
+                await MainViewModel.OkMessageAsync("Необходимо ввести сумму оплаты");
                 return;
             }
 
@@ -177,19 +177,19 @@ public sealed class EditDeliveryPageVm : PageViewModel
 
             if (orderEdit.Products.Count == 0)
             {
-                await MainViewModel.OkMessage("Не выбраны товары");
+                await MainViewModel.OkMessageAsync("Не выбраны товары");
                 return;
             }
 
             if (!IsAllClientInfoFilled())
             {
-                await MainViewModel.OkMessage("Не все данные клиента заполнены");
+                await MainViewModel.OkMessageAsync("Не все данные клиента заполнены");
                 return;
             }
 
             if (!IsAllAddressInfoFilled() && IsDelivery)
             {
-                await MainViewModel.OkMessage("Не все данные адреса заполнены");
+                await MainViewModel.OkMessageAsync("Не все данные адреса заполнены");
                 return;
             }
 
@@ -230,7 +230,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
 
             await loading.CloseAsync();
 
-            await MainViewModel.OkMessage("Заказ сохранен");
+            await MainViewModel.OkMessageAsync("Заказ сохранен");
             await BackButtonCommand.Execute().FirstAsync();
 
         }).DisposeWith(InternalDisposables);

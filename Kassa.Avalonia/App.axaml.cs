@@ -5,7 +5,9 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Avalonia.Threading;
 using Kassa.RxUI;
+using Kassa.Shared;
 using Kassa.Shared.ServiceLocator;
+using ReactiveUI;
 
 namespace Kassa.Avalonia;
 public sealed partial class App : Application
@@ -18,13 +20,15 @@ public sealed partial class App : Application
 
         Dispatcher.UIThread.UnhandledException += (object sender, DispatcherUnhandledExceptionEventArgs e) =>
         {
+
+            if (e.Exception is FatalException)
+            {
+                return;
+            }
+
             var vm = RcsLocator.GetRequiredService<MainViewModel>();
-            e.Handled = true;
-        };
 
-        Dispatcher.UIThread.UnhandledExceptionFilter += (object sender, DispatcherUnhandledExceptionFilterEventArgs e) =>
-        {
-
+            e.Handled = vm.TryHandleUnhandled(Dispatcher.UIThread, e.Exception);
         };
     }
 

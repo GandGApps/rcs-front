@@ -40,7 +40,7 @@ internal class Program
             // De nos corps dans le sombre animés lentement
         };
 
-        TaskScheduler.UnobservedTaskException += async (s, e) =>
+        TaskScheduler.UnobservedTaskException += (s, e) =>
         {
             var mainViewModel = RcsLocator.GetRequiredService<MainViewModel>();
             var exceptions = e.Exception.InnerExceptions;
@@ -48,7 +48,7 @@ internal class Program
 
             foreach(var exception in exceptions)
             {
-                handled = await mainViewModel.TryHandleUnhandled("TaskScheduler.UnobservedTaskException", exception);
+                handled = mainViewModel.TryHandleUnhandled("TaskScheduler.UnobservedTaskException", exception);
 
                 if (!handled)
                 {

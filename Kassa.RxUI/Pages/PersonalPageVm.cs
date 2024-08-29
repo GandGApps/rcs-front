@@ -50,11 +50,11 @@ public class PersonalPageVm : PageViewModel
 
             if (!isCorrect)
             {
-                await MainViewModel.OkMessage("Неверный пинкод");
+                await MainViewModel.OkMessageAsync("Неверный пинкод");
             }
             else
             {
-                await MainViewModel.OkMessage("Перерыв получен");
+                await MainViewModel.OkMessageAsync("Перерыв получен");
 
                 var shift = _shiftService.CurrentShift.Value;
 
@@ -117,11 +117,11 @@ public class PersonalPageVm : PageViewModel
 
             if (!isCorrect)
             {
-                await MainViewModel.OkMessage("Неверный пинкод");
+                await MainViewModel.OkMessageAsync("Неверный пинкод");
             }
             else
             {
-                await MainViewModel.OkMessage("Смена завершена");
+                await MainViewModel.OkMessageAsync("Смена завершена");
 
                 var shift = _shiftService.CurrentShift.Value;
 

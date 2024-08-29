@@ -1,6 +1,7 @@
 using System;
 using Avalonia;
 using Avalonia.Controls;
+using Kassa.RxUI;
 
 namespace Kassa.Avalonia;
 public sealed partial class MainWindow : Window
@@ -8,7 +9,7 @@ public sealed partial class MainWindow : Window
 
     public MainWindow()
     {
-        DataContext = new MainWindow();
+        DataContext = new MainViewModel();
 
         InitializeComponent();
 

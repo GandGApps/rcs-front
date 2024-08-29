@@ -51,7 +51,7 @@ public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSe
 
                     if (!check)
                     {
-                        await MainViewModel.OkMessage("Неверный пинкод");
+                        await MainViewModel.OkMessageAsync("Неверный пинкод");
 
                         await fundActDialog.CloseAsync();
                         await memberSelectViewModel.CloseAsync();

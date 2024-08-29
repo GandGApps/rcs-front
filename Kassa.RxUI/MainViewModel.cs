@@ -280,13 +280,13 @@ public sealed class MainViewModel : ReactiveObject, IScreen
         UnhandledErrorExceptionEvent += DefaultUnhandler;
         RxApp.DefaultExceptionHandler = Observer.Create<Exception>(async ex =>
         {
-            await TryHandleUnhandled("RxApp.DefaultExceptionHandler", ex);
+            TryHandleUnhandled("RxApp.DefaultExceptionHandler", ex);
         });
 
 
     }
 
-    private async ValueTask DefaultUnhandler(object? sender, UnhandledErrorExceptionEventArgs e)
+    private void DefaultUnhandler(object? sender, UnhandledErrorExceptionEventArgs e)
     {
         var extractedException = e.Exception;
 
@@ -295,21 +295,21 @@ public sealed class MainViewModel : ReactiveObject, IScreen
         if (extractedException is DeveloperException developerException)
         {
             e.Handled = true;
-            await OkMessage(developerException.Message, "JustFailed");
+            OkMessage(developerException.Message, "JustFailed");
             return;
         }
 
         if (extractedException is InvalidUserOperatationException invalidUserOperatationException)
         {
             e.Handled = true;
-            await OkMessage(invalidUserOperatationException.Message, invalidUserOperatationException.Description, invalidUserOperatationException.Icon);
+            OkMessage(invalidUserOperatationException.Message, invalidUserOperatationException.Description, invalidUserOperatationException.Icon);
             return;
         }
 
         if (IsHttpTimeoutException(extractedException, out _))
         {
             e.Handled = true;
-            await OkMessage("Проблема с интернетом", "Повторите попытку позже", "JustFailed");
+            OkMessage("Проблема с интернетом", "Повторите попытку позже", "JustFailed");
             return;
         }
 
@@ -317,19 +317,28 @@ public sealed class MainViewModel : ReactiveObject, IScreen
         if (extractedException is not NotImplementedException)
         {
             e.Handled = true;
-            await OkMessage("Произошла ошибка", e.Exception.Message, "JustFailed");
+            OkMessage("Произошла ошибка", e.Exception.Message, "JustFailed");
             return;
         }
         else
         {
             e.Handled = true;
-            await OkMessage("Функция еще не реализована", "JustFailed");
+            OkMessage("Функция еще не реализована", "JustFailed");
             return;
         }
 #endif
     }
 
-    public async Task OkMessage(string message, string icon = "JustOk")
+    public void OkMessage(string message, string icon = "JustOk")
+    {
+        OkMessageDialogCommand.Execute(new OkMessage
+        {
+            Icon = icon,
+            Message = message
+        }).Subscribe();
+    }
+
+    public async Task OkMessageAsync(string message, string icon = "JustOk")
     {
         await OkMessageDialogCommand.Execute(new OkMessage
         {
@@ -338,7 +347,17 @@ public sealed class MainViewModel : ReactiveObject, IScreen
         }).FirstAsync();
     }
 
-    public async Task OkMessage(string message, string description, string icon = "JustOk")
+    public void OkMessage(string message, string description, string icon = "JustOk")
+    {
+        OkMessageDialogCommand.Execute(new OkMessage
+        {
+            Icon = icon,
+            Message = message,
+            Description = description
+        }).Subscribe();
+    }
+
+    public async Task OkMessageAsync(string message, string description, string icon = "JustOk")
     {
 
         await OkMessageDialogCommand.Execute(new OkMessage
@@ -349,7 +368,7 @@ public sealed class MainViewModel : ReactiveObject, IScreen
         }).FirstAsync();
     }
 
-    public async Task ShowDialog(DialogViewModel dialog)
+    public async Task ShowDialogAsync(DialogViewModel dialog)
     {
         await DialogOpenCommand.Execute(dialog).FirstAsync();
     }
@@ -408,13 +427,13 @@ public sealed class MainViewModel : ReactiveObject, IScreen
     /// <summary>
     /// Use this method in Presentation Layer to handle unhandled exceptions.
     /// </summary>
-    public async ValueTask<bool> TryHandleUnhandled(object? sender, Exception exception)
+    public bool TryHandleUnhandled(object? sender, Exception exception)
     {
         var args = new UnhandledErrorExceptionEventArgs(exception);
 
         foreach (var handler in _unhandledErrorExceptionhandlers)
         {
-            await handler(sender, args);
+            handler(sender, args);
 
             if (args.Handled)
             {
