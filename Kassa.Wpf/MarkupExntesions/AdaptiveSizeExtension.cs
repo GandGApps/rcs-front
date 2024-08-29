@@ -12,7 +12,7 @@ using System.Windows.Markup;
 
 namespace Kassa.Wpf.MarkupExntesions;
 
-public class AdaptiveSizeExtension : MarkupExtension
+public sealed class AdaptiveSizeExtension : MarkupExtension
 {
     public AdaptiveSizeExtension()
     {

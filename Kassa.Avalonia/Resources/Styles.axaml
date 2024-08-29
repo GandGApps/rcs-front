@@ -1,0 +1,16 @@
+<Styles
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mx="using:Kassa.Avalonia.MarkupExtensions">
+    <Design.PreviewWith>
+        <Border Padding="20">
+            <!--  Add Controls for Previewer Here  -->
+        </Border>
+    </Design.PreviewWith>
+
+    <Style Selector="Border.adaptive">
+        <Setter Property="Width" Value="{mx:AdaptiveSize 150}" />
+        <Setter Property="Height" Value="{mx:AdaptiveSize 150}" />
+    </Style>
+
+</Styles>
