@@ -9,26 +9,25 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
+using Kassa.Shared;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI.Dialogs;
 public class QuantityVolumeDialogVewModel : DialogViewModel
 {
-    public static readonly CultureInfo RuCultureInfo = new("ru-RU");
-
     public QuantityVolumeDialogVewModel(ProductShoppingListItemViewModel productShoppingListItemDto)
     {
         ProductShoppingListItem = productShoppingListItemDto;
-        IncorrectPosiblePortionText = productShoppingListItemDto.Count.ToString("0.##", RuCultureInfo);
-        CorrectedPortionText = productShoppingListItemDto.Count.ToString("0.##", RuCultureInfo);
+        IncorrectPosiblePortionText = productShoppingListItemDto.Count.ToString("0.##", RcsKassa.RuCulture);
+        CorrectedPortionText = productShoppingListItemDto.Count.ToString("0.##", RcsKassa.RuCulture);
 
         AddPortionCommand = ReactiveCommand.Create<double>(x =>
         {
-            var count = double.Parse(CorrectedPortionText, RuCultureInfo);
+            var count = double.Parse(CorrectedPortionText, RcsKassa.RuCulture);
             count += x;
 
-            CorrectedPortionText = count.ToString("0.##", RuCultureInfo);
+            CorrectedPortionText = count.ToString("0.##", RcsKassa.RuCulture);
             IncorrectPosiblePortionText = CorrectedPortionText;
         });
 
@@ -36,7 +35,7 @@ public class QuantityVolumeDialogVewModel : DialogViewModel
         { 
             await CloseAsync();
 
-            return double.Parse(CorrectedPortionText, RuCultureInfo);
+            return double.Parse(CorrectedPortionText, RcsKassa.RuCulture);
         });
 
         CancelCommand = ReactiveCommand.CreateFromTask(CloseAsync);
@@ -56,9 +55,9 @@ public class QuantityVolumeDialogVewModel : DialogViewModel
                     IncorrectPosiblePortionText = "1";
                     return;
                 }
-                if (double.TryParse(x, RuCultureInfo, out var correct))
+                if (double.TryParse(x, RcsKassa.RuCulture, out var correct))
                 {
-                    CorrectedPortionText = correct.ToString("0.##", RuCultureInfo);
+                    CorrectedPortionText = correct.ToString("0.##", RcsKassa.RuCulture);
                 }
                 else
                 {

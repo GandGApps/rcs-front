@@ -16,6 +16,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Kassa.RxUI.Dialogs;
 using Kassa.RxUI.Pages;
+using Kassa.Shared;
 using ReactiveUI;
 
 namespace Kassa.Wpf.Pages;
@@ -95,7 +96,7 @@ public partial class NewDeliveryPage : ReactiveUserControl<NewDeliveryPageVm>
             this.OneWayBind(ViewModel, vm => vm.Street, v => v.StreetName.Text, s => s is null || string.IsNullOrWhiteSpace(s.Name) ? "Не задана" : s.Name)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, vm => vm.OrderEditPageVm.ShoppingList.Total, v => v.Price.Text, x => $"{x.ToString("0.##", QuantityVolumeDialogVewModel.RuCultureInfo)} ₽")
+            this.OneWayBind(ViewModel, vm => vm.OrderEditPageVm.ShoppingList.Total, v => v.Price.Text, x => $"{x.ToString("0.##", RcsKassa.RuCulture)} ₽")
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, x => x.OrderEditPageVm.ShoppingList.ProductShoppingListItems, x => x.ShoppingListItems.ItemsSource)

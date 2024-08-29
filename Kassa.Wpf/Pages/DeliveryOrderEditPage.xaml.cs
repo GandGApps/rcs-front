@@ -18,6 +18,7 @@ using System.Windows.Shapes;
 using Kassa.RxUI;
 using Kassa.RxUI.Dialogs;
 using Kassa.RxUI.Pages;
+using Kassa.Shared;
 using ReactiveUI;
 
 namespace Kassa.Wpf.Pages;
@@ -49,10 +50,10 @@ public partial class DeliveryOrderEditPage : ReactiveUserControl<DeliveryOrderEd
             this.BindCommand(ViewModel, x => x.ShoppingList.DecreaseSelectedCommand, x => x.DecreaseButton)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.ShoppingList.Subtotal, x => x.SubtotalCost.Text, x => $"{x.ToString("0.##", QuantityVolumeDialogVewModel.RuCultureInfo)} ₽")
+            this.OneWayBind(ViewModel, x => x.ShoppingList.Subtotal, x => x.SubtotalCost.Text, x => $"{x.ToString("0.##", RcsKassa.RuCulture)} ₽")
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.ShoppingList.Total, x => x.TotalCost.Text, x => $"{x.ToString("0.##", QuantityVolumeDialogVewModel.RuCultureInfo)} ₽")
+            this.OneWayBind(ViewModel, x => x.ShoppingList.Total, x => x.TotalCost.Text, x => $"{x.ToString("0.##", RcsKassa.RuCulture)} ₽")
                 .DisposeWith(disposables);
 
             this.BindCommand(ViewModel, x => x.ShoppingList.RemoveSelectedCommand, x => x.RemoveButton)
