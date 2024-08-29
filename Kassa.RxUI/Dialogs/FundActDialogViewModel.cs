@@ -19,7 +19,7 @@ public sealed class FundActDialogViewModel: DialogViewModel
         ApplyCommand = applyCommand ?? ReactiveCommand.Create(() => { });
 
         this.WhenAnyValue(x => x.Amount)
-            .Select(x => x.ToString("0.##", SharedConstants.RuCulture))
+            .Select(x => x.ToString("0.##", RcsKassa.RuCulture))
             .ToPropertyEx(this, x => x.AmountText)
             .DisposeWith(InternalDisposables);
     }

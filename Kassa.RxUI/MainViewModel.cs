@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Reflection;
 using System.Windows.Input;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Services;

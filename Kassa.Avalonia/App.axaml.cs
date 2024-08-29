@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.CompilerServices;
 using Avalonia;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
@@ -7,8 +8,10 @@ using Kassa.RxUI;
 using Kassa.Shared.ServiceLocator;
 
 namespace Kassa.Avalonia;
-public partial class App : Application
+public sealed partial class App : Application
 {
+    public static new App Current => Unsafe.As<App>(Application.Current!);
+
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);

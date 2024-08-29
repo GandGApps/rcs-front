@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kassa.Shared;
 using ReactiveUI;
 
 namespace Kassa.Wpf.Views;
@@ -103,7 +104,7 @@ public partial class DateSelector : UserControl, IActivatableView
         this.WhenActivated(disposables =>
         {
             this.WhenAnyValue(x => x.DateTime)
-                .Select(x => x.ToString("d MMMM yyyy", App.RuCulture))
+                .Select(x => x.ToString("d MMMM yyyy", RcsKassa.RuCulture))
                 .BindTo(this, x => x.CurrentDate.Text)
                 .DisposeWith(disposables);
 

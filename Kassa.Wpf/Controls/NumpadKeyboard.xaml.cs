@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kassa.Shared;
 using Splat;
 
 namespace Kassa.Wpf.Controls;
@@ -60,7 +61,7 @@ public sealed partial class NumpadKeyboard : UserControl
             get
             {
                 var buildedAmount = _amountBuilder.ToString();
-                if (double.TryParse(buildedAmount, App.RuCulture, out var result))
+                if (double.TryParse(buildedAmount, RcsKassa.RuCulture, out var result))
                 {
                     return result;
                 }
@@ -134,7 +135,7 @@ public sealed partial class NumpadKeyboard : UserControl
             var formatString = $"0.{new string('#', DigitAfterComma)}";
 
             // Convert the amount to a string using Russian culture and the specified format
-            var newAmountString = newAmount.ToString(formatString, App.RuCulture);
+            var newAmountString = newAmount.ToString(formatString, RcsKassa.RuCulture);
 
             // Clear the builder and append the formatted amount
             _amountBuilder.Clear();

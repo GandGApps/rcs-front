@@ -189,7 +189,7 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
 
     private static StringCollection GetLogs()
     {
-        var path = App.BasePath;
+        var path = RcsKassa.BasePath;
 
         var stringCollection = new StringCollection();
 

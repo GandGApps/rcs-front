@@ -3,6 +3,7 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
     <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
@@ -18,6 +19,9 @@
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="11.1.3" />
     <PackageReference Include="ReactiveUI" Version="20.1.1" />
     <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
+    <PackageReference Include="System.IO.Ports" Version="6.0.0" />
+    <PackageReference Include="ESC-POS-USB-NET" Version="1.1.3" />
+    <PackageReference Include="ESCPOS_NET" Version="3.0.0" />
   </ItemGroup>
 
   <ItemGroup>
@@ -26,7 +30,14 @@
     <ProjectReference Include="..\Kassa.DataAccess.HttpRepository\Kassa.DataAccess.HttpRepository.csproj" />
     <ProjectReference Include="..\Kassa.DataAccess\Kassa.DataAccess.csproj" />
     <ProjectReference Include="..\Kassa.RxUI\Kassa.RxUI.csproj" />
-    <ProjectReference Include="..\Kassa.Shared.ServiceLocator.Analyzer\Kassa.Shared.ServiceLocator.Analyzer.csproj" />
+    <ProjectReference Include="..\Kassa.Shared.ServiceLocator.Analyzer\Kassa.Shared.ServiceLocator.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
     <ProjectReference Include="..\Kassa.Shared\Kassa.Shared.csproj" />
+    
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>

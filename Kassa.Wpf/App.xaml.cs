@@ -29,8 +29,6 @@ namespace Kassa.Wpf;
 /// </summary>
 public partial class App : Application, IEnableLogger
 {
-    public static readonly CultureInfo RuCulture = new("ru-RU");
-
     /// <summary>
     /// I dislike always having to use <see cref="Application.Current"/> to get the current instance of <see cref="App"/>.
     /// I always need to cast, which is why I created this property.
@@ -38,19 +36,6 @@ public partial class App : Application, IEnableLogger
     public static new App Current => Unsafe.As<App>(Application.Current); // using Unsafe.As is safe here because App is a singleton
 
     public static FontFamily LucidaConsoleFont => Current.LucidaConsoleFontFamily;
-
-    public static bool IsDevelopment => string.Equals(EnvironmentName, "Development", StringComparison.InvariantCultureIgnoreCase); // using Unsafe.As is safe here because App is a singleton
-
-    public static bool IsProduction => string.Equals(EnvironmentName, "Production", StringComparison.InvariantCultureIgnoreCase); // using Unsafe.As is safe here because App is a singleton
-
-    public static string EnvironmentName
-    {
-        get; private set;
-    } = null!;
-
-    public static string BasePath => AppDomain.CurrentDomain.BaseDirectory;
-
-    public static string LogsPath => Path.Combine(BasePath, "logs", "Logs.txt");
 
     public static object GetThemeResource(string key)
     {
@@ -67,9 +52,7 @@ public partial class App : Application, IEnableLogger
     {
         var config = SharedServices.AddConfiguration("appsettings");
 
-        EnvironmentName = config.GetValue<string>("Environment") ?? "Production";
-
-        if (IsDevelopment)
+        if (RcsKassa.IsDevelopment)
         {
             Dispatcher.InvokeAsync(() => DeviceHelper.LogAllDevices());
         }
@@ -79,7 +62,7 @@ public partial class App : Application, IEnableLogger
 
         PresentationLayerServices.RegisterDispatherAdapter();
 
-        SharedServices.AddLoggers(LogsPath);
+        SharedServices.AddLoggers(RcsKassa.LogsPath);
 
         PrinterPosLibServices.RegisterPrinterPosLib(config);
         MscReaderLibServices.RegisterMsrReaderPosLib(config);

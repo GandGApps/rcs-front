@@ -15,13 +15,13 @@ namespace Kassa.Wpf.Controls;
 public sealed class SimpleRouter : ContentControl
 {
     public static readonly DependencyProperty RouterProperty =
-        DependencyProperty.Register("Router", typeof(RoutingState), typeof(SimpleRouter), new PropertyMetadata(RouterChanged));
+        DependencyProperty.Register(nameof(Router), typeof(RoutingState), typeof(SimpleRouter), new PropertyMetadata(RouterChanged));
 
     /// <summary>
     /// The default content property.
     /// </summary>
     public static readonly DependencyProperty DefaultContentProperty =
-        DependencyProperty.Register("DefaultContent", typeof(object), typeof(SimpleRouter), new PropertyMetadata("not found"));
+        DependencyProperty.Register(nameof(DefaultContent), typeof(object), typeof(SimpleRouter), new PropertyMetadata("not found"));
 
 
     public static readonly FrozenDictionary<Type, Func<FrameworkElement>> ViewsFor;
