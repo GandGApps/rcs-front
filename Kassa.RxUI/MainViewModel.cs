@@ -1,4 +1,5 @@
-﻿using System.Reactive;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Reactive;
 using System.Reactive.Linq;
 using System.Windows.Input;
 using Kassa.BuisnessLogic;
@@ -84,6 +85,14 @@ public sealed class MainViewModel : ReactiveObject, IScreen
     public ReactiveCommand<OkMessage, Unit> OkMessageDialogCommand
     {
         get;
+    }
+
+    private readonly List<UnhandledErrorExceptionEvent> _unhandledErrorExceptionhandlers = [];
+
+    public event UnhandledErrorExceptionEvent UnhandledErrorExceptionEvent
+    {
+        remove => _unhandledErrorExceptionhandlers.Remove(value);
+        add => _unhandledErrorExceptionhandlers.Add(value);
     }
 
     public MainViewModel()
@@ -267,6 +276,56 @@ public sealed class MainViewModel : ReactiveObject, IScreen
                 }
             });
 
+        UnhandledErrorExceptionEvent += DefaultUnhandler;
+        RxApp.DefaultExceptionHandler = Observer.Create<Exception>(async ex =>
+        {
+            await TryHandleUnhandled("RxApp.DefaultExceptionHandler", ex);
+        });
+
+
+    }
+
+    private async ValueTask DefaultUnhandler(object? sender, UnhandledErrorExceptionEventArgs e)
+    {
+        var extractedException = e.Exception;
+
+        this.Log().Error(extractedException, "Unhandled exception");
+
+        if (extractedException is DeveloperException developerException)
+        {
+            e.Handled = true;
+            await OkMessage(developerException.Message, "JustFailed");
+            return;
+        }
+
+        if (extractedException is InvalidUserOperatationException invalidUserOperatationException)
+        {
+            e.Handled = true;
+            await OkMessage(invalidUserOperatationException.Message, invalidUserOperatationException.Description, invalidUserOperatationException.Icon);
+            return;
+        }
+
+        if (IsHttpTimeoutException(extractedException, out _))
+        {
+            e.Handled = true;
+            await OkMessage("Проблема с интернетом", "Повторите попытку позже", "JustFailed");
+            return;
+        }
+
+#if RELEASE
+        if (extractedException is not NotImplementedException)
+        {
+            e.Handled = true;
+            await OkMessage("Произошла ошибка", e.Exception.Message, "JustFailed");
+            return;
+        }
+        else
+        {
+            e.Handled = true;
+            await OkMessage("Функция еще не реализована", "JustFailed");
+            return;
+        }
+#endif
     }
 
     public async Task OkMessage(string message, string icon = "JustOk")
@@ -343,5 +402,48 @@ public sealed class MainViewModel : ReactiveObject, IScreen
         await dialog.CloseAsync();
 
         return result;
+    }
+
+    /// <summary>
+    /// Use this method in Presentation Layer to handle unhandled exceptions.
+    /// </summary>
+    public async ValueTask<bool> TryHandleUnhandled(object? sender, Exception exception)
+    {
+        var args = new UnhandledErrorExceptionEventArgs(exception);
+
+        foreach (var handler in _unhandledErrorExceptionhandlers)
+        {
+            await handler(sender, args);
+
+            if (args.Handled)
+            {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /// <summary>
+    /// Try find inner exception of HttpRequestException
+    /// </summary>
+    /// <param name="exception"></param>
+    /// <param name="httpRequestException"></param>
+    /// <returns></returns>
+    private static bool IsHttpTimeoutException(Exception exception, [NotNullWhen(true)] out HttpRequestException? httpRequestException)
+    {
+        if (exception is HttpRequestException { HttpRequestError: HttpRequestError.ConnectionError or HttpRequestError.NameResolutionError } requestException)
+        {
+            httpRequestException = requestException;
+            return true;
+        }
+
+        if (exception.InnerException != null)
+        {
+            return IsHttpTimeoutException(exception.InnerException, out httpRequestException);
+        }
+
+        httpRequestException = null;
+        return false;
     }
 }

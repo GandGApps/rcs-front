@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Globalization;
 using System.Reactive;
+using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
+using Avalonia.Animation;
 using Avalonia.Data.Converters;
 using Avalonia.ReactiveUI;
+using Avalonia.Threading;
+using Kassa.RxUI;
+using Kassa.Shared;
+using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using Serilog;
 using Splat;
@@ -22,21 +28,34 @@ internal class Program
 
         AppDomain.CurrentDomain.UnhandledException += (s, e) =>
         {
+            // This is end.
+            // there's nothing we can do.
             LogHost.Default.Fatal((Exception)e.ExceptionObject, "An unhandled exception occurred");
+
+            // Dans mon esprit tout divague, je me perds dans tes yeux
+            // Je me noie dans la vague de ton regard amoureux
+            // Je ne veux que ton âme divaguant sur ma peau
+            // Une fleur, une femme dans ton cœur Roméo
+            // Je ne suis que ton nom, le souffle lancinant
+            // De nos corps dans le sombre animés lentement
         };
 
-        RxApp.DefaultExceptionHandler = Observer.Create<Exception>(ex =>
+        TaskScheduler.UnobservedTaskException += async (s, e) =>
         {
-            LogHost.Default.Error(ex, "An unhandled exception occurred");
-        });
+            var mainViewModel = RcsLocator.GetRequiredService<MainViewModel>();
+            var exceptions = e.Exception.InnerExceptions;
+            var handled = false;
 
-        TaskScheduler.UnobservedTaskException += (s, e) =>
-        {
-            e.Exception.Handle(ex =>
+            foreach(var exception in exceptions)
             {
-                LogHost.Default.Error(ex, "An unobserved exception occurred");
-                return true;
-            });
+                handled = await mainViewModel.TryHandleUnhandled("TaskScheduler.UnobservedTaskException", exception);
+
+                if (!handled)
+                {
+                    return;
+                }
+            }
+
             e.SetObserved();
         };
 
@@ -48,7 +67,7 @@ internal class Program
         catch (Exception e)
         {
             LogHost.Default.Fatal(e, "An unhandled exception occurred");
-            return;
+            throw;
         }
         finally
         {
@@ -62,5 +81,6 @@ internal class Program
             .UsePlatformDetect()
             .WithInterFont()
             .UseReactiveUI()
+            .UseRcs()
             .LogToTrace();
 }

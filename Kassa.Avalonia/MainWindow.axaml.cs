@@ -1,3 +1,4 @@
+using System;
 using Avalonia;
 using Avalonia.Controls;
 
@@ -7,7 +8,14 @@ public sealed partial class MainWindow : Window
 
     public MainWindow()
     {
+        DataContext = new MainWindow();
+
         InitializeComponent();
+
+        TextInput += (_, _) =>
+        {
+            throw new Exception("Test exception");
+        };
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)

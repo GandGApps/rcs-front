@@ -148,45 +148,7 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
                 extractedException = e.Exception;
             }
 
-            LogHost.Default.Error(extractedException, "Unhandled exception");
-
-            if (extractedException is DeveloperException developerException)
-            {
-                e.Handled = true;
-                await ViewModel.OkMessage(developerException.Message, "JustFailed");
-                return;
-            }
-
-            if (extractedException is InvalidUserOperatationException invalidUserOperatationException)
-            {
-                e.Handled = true;
-                await ViewModel.OkMessage(invalidUserOperatationException.Message, invalidUserOperatationException.Description, invalidUserOperatationException.Icon);
-                return;
-            }
-
-            if (IsHttpTimeoutException(extractedException, out var httpRequestException))
-            {
-                e.Handled = true;
-                await ViewModel.OkMessage("Проблема с интернетом", "Повторите попытку позже", "JustFailed");
-                return;
-            }
-
-#if RELEASE
-            if (extractedException is not NotImplementedException)
-            {
-                e.Handled = true;
-                MessageBox.Show(extractedException.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-
-                DeveloperWindow.Instance?.AddMessage(FormatException(extractedException));
-                return;
-            }
-            else
-            {
-                e.Handled = true;
-                await ViewModel.OkMessage("Функция еще не реализована", "JustFailed");
-                return;
-            }
-#endif
+            e.Handled = await ViewModel.TryHandleUnhandled(sender, extractedException);
         };
 
         KeyDown += CopyLogsToClipboard;
