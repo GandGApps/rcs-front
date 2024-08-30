@@ -1,11 +1,21 @@
 using System;
+using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Media;
+using Avalonia.Media.Imaging;
+using Avalonia.Platform;
+using Avalonia.Rendering.SceneGraph;
+using Avalonia.Skia;
+using Avalonia.Threading;
 using Kassa.RxUI;
+using SkiaSharp;
 
 namespace Kassa.Avalonia;
 public sealed partial class MainWindow : Window
 {
+
+    private readonly BlurEffect _blurEffect = new();
 
     public MainWindow()
     {
@@ -13,10 +23,8 @@ public sealed partial class MainWindow : Window
 
         InitializeComponent();
 
-        TextInput += (_, _) =>
-        {
-            throw new Exception("Test exception");
-        };
+        RootBody.Effect = _blurEffect;
+        
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)

@@ -40,4 +40,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Effects\" />
+    <Folder Include="Shaders\" />
+  </ItemGroup>
 </Project>

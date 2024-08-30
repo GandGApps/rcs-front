@@ -148,7 +148,7 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
                 extractedException = e.Exception;
             }
 
-            e.Handled = await ViewModel.TryHandleUnhandled(sender, extractedException);
+            e.Handled =  ViewModel.TryHandleUnhandled(sender, extractedException);
         };
 
         KeyDown += CopyLogsToClipboard;
