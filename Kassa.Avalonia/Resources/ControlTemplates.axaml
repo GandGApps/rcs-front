@@ -1,0 +1,195 @@
+<ResourceDictionary
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mx="using:Kassa.Avalonia.MarkupExtensions">
+
+    <Design.PreviewWith>
+        <Border Background="Black">
+            <StackPanel Margin="10" Spacing="10">
+                <Button Content="Default Button" />
+                <Button Content="Default Button" Theme="{StaticResource SecondaryButton}" />
+                <CheckBox Content="Default CheckBox" />
+                <CheckBox Content="BorderToggleCheckbox CheckBox" Theme="{StaticResource BorderToggleCheckbox}" />
+                <CheckBox Width="50" Theme="{StaticResource BackToMain}" />
+            </StackPanel>
+        </Border>
+
+    </Design.PreviewWith>
+
+    <ControlTemplate x:Key="DefaultButtonControlTemplate" TargetType="Button">
+        <Border
+            Width="{TemplateBinding Width}"
+            Height="{TemplateBinding Height}"
+            MinWidth="{TemplateBinding MinWidth}"
+            Padding="{TemplateBinding Padding}"
+            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+            VerticalAlignment="{TemplateBinding VerticalAlignment}"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            ClipToBounds="True"
+            CornerRadius="{TemplateBinding Border.CornerRadius}">
+            <ContentPresenter
+                HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                Content="{TemplateBinding Content}"
+                ContentTemplate="{TemplateBinding ContentTemplate}"
+                RecognizesAccessKey="True" />
+        </Border>
+    </ControlTemplate>
+
+    <ControlTheme x:Key="{x:Type Button}" TargetType="Button">
+        <Setter Property="FontFamily" Value="{DynamicResource Montseratt}" />
+        <Setter Property="Background" Value="{DynamicResource DefaultButtonBackground}" />
+        <Setter Property="MinWidth" Value="{mx:AdaptiveSize 200}" />
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='10'}" />
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 20}" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="Foreground" Value="{DynamicResource DefaultButtonForeground}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource DefaultButtonBackground}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="Border.CornerRadius" Value="{mx:AdaptiveSize CornerRadius='20'}" />
+        <Setter Property="Template" Value="{StaticResource DefaultButtonControlTemplate}" />
+
+        <Style Selector="^:pressed">
+            <Setter Property="Background" Value="{DynamicResource DefaultPressedButtonBackground}" />
+        </Style>
+
+    </ControlTheme>
+
+    <ControlTheme
+        x:Key="SecondaryButton"
+        BasedOn="{StaticResource {x:Type Button}}"
+        TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource ClickableBg}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SecondaryButtonBorderBrush}" />
+    </ControlTheme>
+
+    <ControlTheme
+        x:Key="IconButton"
+        BasedOn="{StaticResource {x:Type Button}}"
+        TargetType="Button">
+        <Setter Property="Background" Value="{StaticResource ClickableBg}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Border.CornerRadius" Value="0" />
+    </ControlTheme>
+
+    <ControlTemplate x:Key="CheckBoxWithShadow" TargetType="CheckBox">
+        <Grid>
+            <Border
+                x:Name="_topShadow"
+                BorderThickness="2,2,0,0"
+                CornerRadius="{mx:AdaptiveSize CornerRadius=6.4}">
+                <Border.Effect>
+                    <BlurEffect Radius="{DynamicResource TopShadowBlurEffectRadius}" />
+                </Border.Effect>
+            </Border>
+            <Border
+                x:Name="_bottomShadow"
+                BorderThickness="0,0,2,2"
+                CornerRadius="{mx:AdaptiveSize CornerRadius=6.4}">
+                <Border.Effect>
+                    <BlurEffect Radius="{DynamicResource BottomShadowBlurEffectRadius}" />
+                </Border.Effect>
+            </Border>
+            <Border
+                x:Name="_border"
+                Padding="{TemplateBinding Padding}"
+                Background="{TemplateBinding Background}"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                CornerRadius="{mx:AdaptiveSize CornerRadius=6.4}">
+                <ContentPresenter
+                    Grid.Column="1"
+                    Content="{TemplateBinding Content}"
+                    ContentTemplate="{TemplateBinding ContentTemplate}"
+                    TextBlock.FontSize="{TemplateBinding FontSize}"
+                    TextBlock.Foreground="{TemplateBinding Foreground}" />
+            </Border>
+        </Grid>
+
+    </ControlTemplate>
+
+    <ControlTheme x:Key="{x:Type CheckBox}" TargetType="CheckBox">
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 14}" />
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness=10}" />
+        <Setter Property="Background" Value="{DynamicResource ClickableBg}" />
+        <Setter Property="BorderThickness" Value="{DynamicResource BackToMenuBorderThickness}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource BackToMenuBorderBrush}" />
+        <Setter Property="Template" Value="{StaticResource CheckBoxWithShadow}" />
+
+
+        <!--  Chekced variant  -->
+        <Style Selector="^:checked /template/ Border#_topShadow">
+            <Setter Property="BorderBrush" Value="{DynamicResource TopShadowBrush}" />
+        </Style>
+        <Style Selector="^:checked /template/ Border#_bottomShadow">
+            <Setter Property="BorderBrush" Value="{DynamicResource BottomShadowBrush}" />
+        </Style>
+
+        <!--  Unchecked variant  -->
+        <Style Selector="^:unchecked /template/ Border#_topShadow">
+            <Setter Property="BorderBrush" Value="{DynamicResource BottomShadowBrush}" />
+        </Style>
+        <Style Selector="^:unchecked /template/ Border#_bottomShadow">
+            <Setter Property="BorderBrush" Value="{DynamicResource TopShadowBrush}" />
+        </Style>
+
+    </ControlTheme>
+
+    <ControlTemplate x:Key="TogableBorderCheckbox" TargetType="CheckBox">
+
+        <Border
+            x:Name="_border"
+            Width="{TemplateBinding Width}"
+            Height="{TemplateBinding Height}"
+            MinWidth="{TemplateBinding MinWidth}"
+            Padding="{TemplateBinding Padding}"
+            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+            VerticalAlignment="{TemplateBinding VerticalAlignment}"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            ClipToBounds="True"
+            CornerRadius="{TemplateBinding CornerRadius}">
+            <ContentPresenter
+                Grid.Column="1"
+                Content="{TemplateBinding Content}"
+                ContentTemplate="{TemplateBinding ContentTemplate}"
+                TextBlock.FontSize="{TemplateBinding FontSize}"
+                TextBlock.Foreground="{TemplateBinding Foreground}" />
+        </Border>
+
+    </ControlTemplate>
+
+    <ControlTheme
+        x:Key="BorderToggleCheckbox"
+        BasedOn="{StaticResource {x:Type CheckBox}}"
+        TargetType="CheckBox">
+        <Setter Property="Template" Value="{StaticResource TogableBorderCheckbox}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource AlternateForeground}" />
+        <Setter Property="BorderThickness" Value="{mx:AdaptiveSize Thickness='1.4'}" />
+        <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius='6.4'}" />
+
+        <Style Selector="^:checked">
+            <Setter Property="BorderBrush" Value="Transparent" />
+        </Style>
+
+    </ControlTheme>
+
+    <ControlTheme
+        x:Key="BackToMain"
+        BasedOn="{StaticResource {x:Type CheckBox}}"
+        TargetType="CheckBox">
+        <Style Selector="^:checked">
+            <Setter Property="ContentTemplate" Value="{DynamicResource PressedMainMenuIcon}" />
+            <Setter Property="Background" Value="{DynamicResource PressedBackToMenuBackground}" />
+        </Style>
+        <Style Selector="^:unchecked">
+            <Setter Property="ContentTemplate" Value="{DynamicResource MainMenuIcon}" />
+            <Setter Property="Background" Value="{DynamicResource ClickableBg}" />
+        </Style>
+    </ControlTheme>
+
+
+</ResourceDictionary>

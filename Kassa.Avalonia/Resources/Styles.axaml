@@ -3,19 +3,26 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:mx="using:Kassa.Avalonia.MarkupExtensions">
     <Design.PreviewWith>
-        <StackPanel Margin="20" Spacing="10">
-            <TextBlock Text="Default TextBlock" />
-            <TextBox Text="Default TextBox" />
-        </StackPanel>
-    </Design.PreviewWith>
+        <Border Padding="10" Background="Black">
+            <StackPanel Spacing="10">
+                <TextBlock Text="Default TextBlock" />
+                <TextBox Text="Default TextBox" />
+                <TextBox Classes="SearchTextBox" Text="SearchTextBox TextBox" />
+                <TextBlock Classes="Header" Text="Header TextBox" />
+                <TextBlock Classes="Header2" Text="Header TextBox" />
+                <TextBlock Classes="SubHeader" Text="SubHeader TextBox" />
+                <TextBlock Classes="Large" Text="Large TextBox" />
+                <TextBlock Classes="ExtraLarge" Text="ExtraLarge TextBox" />
+                <Button Content="Default Button" />
+                <Button Content="Secondary Button" Theme="{StaticResource SecondaryButton}" />
+            </StackPanel>
+        </Border>
 
-    <Style Selector="Border.adaptive">
-        <Setter Property="Width" Value="{mx:AdaptiveSize 150}" />
-        <Setter Property="Height" Value="{mx:AdaptiveSize 150}" />
-    </Style>
+    </Design.PreviewWith>
 
     <Style Selector="TextBlock">
         <Setter Property="FontFamily" Value="{DynamicResource Montseratt}" />
+        <Setter Property="Foreground" Value="{DynamicResource SecondaryForeground}" />
     </Style>
 
     <Style Selector="TextBox">
@@ -23,6 +30,43 @@
         <Setter Property="Foreground" Value="{DynamicResource SecondaryForeground}" />
     </Style>
 
-    <ControlTemplate x:Key="{x:Type Button}" TargetType="Button" />
+    <Style Selector="Path">
+        <Setter Property="Stretch" Value="Uniform" />
+    </Style>
+
+    <Style Selector="TextBlock.Header">
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 26}" />
+        <Setter Property="FontWeight" Value="Medium" />
+    </Style>
+
+    <Style Selector="TextBlock.Header2">
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 20}" />
+        <Setter Property="FontWeight" Value="Medium" />
+        <Setter Property="LineHeight" Value="{mx:AdaptiveSize 28}" />
+    </Style>
+
+    <Style Selector="TextBlock.SubHeader">
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 14.4}" />
+        <Setter Property="Foreground" Value="{DynamicResource SurfaceBrush}" />
+    </Style>
+
+    <Style Selector="TextBlock.Large">
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 16}" />
+    </Style>
+
+    <Style Selector="TextBlock.ExtraLarge">
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 23}" />
+    </Style>
+
+    <Style Selector="TextBlock.SmallTextBlock">
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 12}" />
+    </Style>
+
+    <Style Selector="TextBox.SearchTextBox">
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="FontSize" Value="{mx:AdaptiveSize 20}" />
+    </Style>
+
 
 </Styles>

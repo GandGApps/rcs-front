@@ -167,5 +167,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </AvaloniaResource>
   </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Resources\ControlTemplates.axaml" />
+  </ItemGroup>
   
 </Project>
