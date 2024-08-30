@@ -15,7 +15,10 @@ namespace Kassa.Avalonia;
 public sealed partial class MainWindow : Window
 {
 
-    private readonly BlurEffect _blurEffect = new();
+    private readonly BlurEffect _blurEffect = new()
+    {
+        Radius = 0
+    };
 
     public MainWindow()
     {

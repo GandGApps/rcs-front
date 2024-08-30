@@ -45,4 +45,127 @@
     <Folder Include="Effects\" />
     <Folder Include="Shaders\" />
   </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Include="Assets\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Assets\auto.png" />
+    <None Remove="Assets\CalendarIcon.png" />
+    <None Remove="Assets\Delivery.png" />
+    <None Remove="Assets\Documents.png" />
+    <None Remove="Assets\Fonts\LucidaConsole\lucidaconsole.ttf" />
+    <None Remove="Assets\Fonts\Montseratt\Montserrat-Black.ttf" />
+    <None Remove="Assets\Fonts\Montseratt\Montserrat-BlackItalic.ttf" />
+    <None Remove="Assets\Fonts\Montseratt\Montserrat-Bold.ttf" />
+    <None Remove="Assets\Fonts\Montseratt\Montserrat-BoldItalic.ttf" />
+    <None Remove="Assets\Fonts\Montseratt\Montserrat-ExtraBold.ttf" />
+    <None Remove="Assets\Fonts\Montseratt\Montserrat-ExtraBoldItalic.ttf" />
+    <None Remove="Assets\Fonts\Montseratt\Montserrat-ExtraLight.ttf" />
+    <None Remove="Assets\Fonts\Montseratt\Montserrat-ExtraLightItalic.ttf" />
+    <None Remove="Assets\Fonts\Montseratt\Montserrat-Italic.ttf" />
+    <None Remove="Assets\Fonts\Montseratt\Montserrat-Light.ttf" />
+    <None Remove="Assets\Fonts\Montseratt\Montserrat-LightItalic.ttf" />
+    <None Remove="Assets\Fonts\Montseratt\Montserrat-Medium.ttf" />
+    <None Remove="Assets\Fonts\Montseratt\Montserrat-MediumItalic.ttf" />
+    <None Remove="Assets\Fonts\Montseratt\Montserrat-Regular.ttf" />
+    <None Remove="Assets\Fonts\Montseratt\Montserrat-SemiBold.ttf" />
+    <None Remove="Assets\Fonts\Montseratt\Montserrat-SemiBoldItalic.ttf" />
+    <None Remove="Assets\Fonts\Montseratt\Montserrat-Thin.ttf" />
+    <None Remove="Assets\Fonts\Montseratt\Montserrat-ThinItalic.ttf" />
+    <None Remove="Assets\Kassa.png" />
+    <None Remove="Assets\loading.gif" />
+    <None Remove="Assets\Personal.png" />
+    <None Remove="Assets\Profile.png" />
+    <None Remove="Assets\Service.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <AvaloniaResource Update="Assets\auto.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\CalendarIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Delivery.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Documents.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Fonts\LucidaConsole\lucidaconsole.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Fonts\Montseratt\Montserrat-Black.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Fonts\Montseratt\Montserrat-BlackItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Fonts\Montseratt\Montserrat-Bold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Fonts\Montseratt\Montserrat-BoldItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Fonts\Montseratt\Montserrat-ExtraBold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Fonts\Montseratt\Montserrat-ExtraBoldItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Fonts\Montseratt\Montserrat-ExtraLight.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Fonts\Montseratt\Montserrat-ExtraLightItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Fonts\Montseratt\Montserrat-Italic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Fonts\Montseratt\Montserrat-Light.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Fonts\Montseratt\Montserrat-LightItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Fonts\Montseratt\Montserrat-Medium.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Fonts\Montseratt\Montserrat-MediumItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Fonts\Montseratt\Montserrat-Regular.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Fonts\Montseratt\Montserrat-SemiBold.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Fonts\Montseratt\Montserrat-SemiBoldItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Fonts\Montseratt\Montserrat-Thin.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Fonts\Montseratt\Montserrat-ThinItalic.ttf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Kassa.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\loading.gif">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Personal.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Profile.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+    <AvaloniaResource Update="Assets\Service.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </AvaloniaResource>
+  </ItemGroup>
+  
 </Project>

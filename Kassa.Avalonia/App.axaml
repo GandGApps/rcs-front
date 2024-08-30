@@ -8,6 +8,10 @@
     <Application.Resources>
 
         <ResourceDictionary>
+
+            <FontFamily x:Key="Montseratt">avares://Kassa.Avalonia/Assets/Fonts/Montseratt#Montserrat</FontFamily>
+            <FontFamily x:Key="LucidaConsole">avares://Kassa.Avalonia/Assets/Fonts/LucidaConsole#lucidaconsole</FontFamily>
+
             <ResourceDictionary.MergedDictionaries>
                 <MergeResourceInclude Source="/Themes/PornhubTheme.axaml" />
             </ResourceDictionary.MergedDictionaries>
