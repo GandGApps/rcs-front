@@ -13,7 +13,7 @@ using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
-internal class EdgarTerminalShift : ITerminalShift
+internal sealed class EdgarTerminalShift : ITerminalShift
 {
     private CashierShiftDto? _cashierShift;
 
