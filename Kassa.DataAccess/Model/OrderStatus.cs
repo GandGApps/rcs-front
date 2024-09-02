@@ -32,6 +32,10 @@ public enum OrderStatus
     Canceled,
     /// <summary>
     /// Доставлен
+    /// ПРИМЕЧАНИЕ, БЫЛО РЕШЕНО УДАЛИТЬ ЭТОТ СТАТУС, ТАК КАК ТЕХНИЧЕСКИ 
+    /// ЭТО ТОЖЕ САМОЕ ЧТО И ЗАКРЫТЫЙ. А ОПРЕДЕЛИТЬ БЫЛА ЛИ ЭТО ДОСТАВКА ИЛИ 
+    /// САМОВЫВОЗ МОЖНО ПО CВОЙСТВУ <see cref="Order.IsDelivery"/> и <see cref="Order.IsForHere"/>.
     /// </summary>
-    Delivered,
+    /*[Obsolete("Use Completed")]
+    Delivered,*/
 }

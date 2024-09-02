@@ -245,57 +245,8 @@ public abstract class BasePaymentPageVm: PageViewModel, IPaymentVm
             .DisposeWith(InternalDisposables);
 
         // TODO: Replace with page busy command
-        PayCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            var loading = new LoadingDialogViewModel()
-            {
-                Message = "Оплата..."
-            };
-
-            MainViewModel.DialogOpenCommand.Execute(loading).Subscribe();
-
-            var receiptBehavior = ReceiptBehavior.NoPrintReceipt;
-
-            if (WithReceipt)
-            {
-                if (IsEmail)
-                {
-                    receiptBehavior |= ReceiptBehavior.SendToEmail;
-                }
-
-                if (IsPrinter)
-                {
-                    receiptBehavior |= ReceiptBehavior.PrintReceipt;
-                }
-            }
-
-            
-
-            paymentService.Cash = CashVm.Entered;
-            paymentService.BankСard = BankCardVm.Entered;
-            paymentService.CashlessPayment = CashlessPaymentVm.Entered;
-            paymentService.WithoutRevenue = WithoutRevenueVm.Entered;
-
-            await paymentService.PayAndSaveOrderThenDispose(receiptBehavior);
-
-            await loading.CloseAsync();
-
-            if (Change - 0.001 >= 0)
-            {
-                await MainViewModel.OkMessage("Сдача \n" + Change + " " + CurrencySymbol, "");
-            }
-
-            await MainViewModel.OkMessage("Оплата прошла успешно", "");
-
-            var order = await _cashierService.CreateOrder(false);
-
-            await _cashierService.SelectCurrentOrder(order);
-
-            var orderEditPageVm = new OrderEditPageVm(order, _ingridientsService.CreateStorageScope(), _cashierService, _additiveService, _productService, _categoryService, _receiptService, _ingridientsService);
-
-            await MainViewModel.GoToPageAndResetButNotMainCommand.Execute(orderEditPageVm);
-
-        }, this.WhenAnyValue(x => x.IsExactAmount));
+        
+        PayCommand = ReactiveCommand.CreateFromTask(PayCommandExecute, this.WhenAnyValue(x => x.IsExactAmount));
     }
 
     public IPaymentService PaymentService
@@ -567,6 +518,67 @@ public abstract class BasePaymentPageVm: PageViewModel, IPaymentVm
         _isFloat = IsFloat(value);
         _afterSeparatorDigitCount = (byte)(_isFloat ? CountDigitAfterSeparator(text) : 0);
         CurrentPaymentSumText = text;
+    }
+
+    protected async virtual Task PayCommandExecute()
+    {
+        var loading = new LoadingDialogViewModel()
+        {
+            Message = "Оплата..."
+        };
+
+        MainViewModel.DialogOpenCommand.Execute(loading).Subscribe();
+
+        var receiptBehavior = ReceiptBehavior.NoPrintReceipt;
+
+        if (WithReceipt)
+        {
+            if (IsEmail)
+            {
+                receiptBehavior |= ReceiptBehavior.SendToEmail;
+            }
+
+            if (IsPrinter)
+            {
+                receiptBehavior |= ReceiptBehavior.PrintReceipt;
+            }
+        }
+
+        
+
+        PaymentService.Cash = CashVm.Entered;
+        PaymentService.BankСard = BankCardVm.Entered;
+        PaymentService.CashlessPayment = CashlessPaymentVm.Entered;
+        PaymentService.WithoutRevenue = WithoutRevenueVm.Entered;
+
+        PaymentService.OrderEditDto.Status = OrderStatus.Completed;
+
+        await PaymentService.PayAndSaveOrderThenDispose(receiptBehavior);
+
+        await loading.CloseAsync();
+
+        if (Change - 0.001 >= 0)
+        {
+            await MainViewModel.OkMessage("Сдача \n" + Change + " " + CurrencySymbol, "");
+        }
+
+        await MainViewModel.OkMessage("Оплата прошла успешно", "");
+
+        var order = await _cashierService.CreateOrder(false);
+
+        await _cashierService.SelectCurrentOrder(order);
+
+        var orderEditPageVm = new OrderEditPageVm(order, _ingridientsService.CreateStorageScope(), _cashierService, _additiveService, _productService, _categoryService, _receiptService, _ingridientsService);
+
+        await MainViewModel.GoToPageAndResetButNotMainCommand.Execute(orderEditPageVm);
+
+    }
+
+    protected async override ValueTask DisposeAsyncCore()
+    {
+        await base.DisposeAsyncCore();
+
+        await PaymentService.DisposeAsync();
     }
 
     protected static byte CountDigitAfterSeparator(string value)

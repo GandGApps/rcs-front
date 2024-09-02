@@ -20,9 +20,8 @@ internal sealed class OrdersService(IRepository<Order> repository, IRepository<P
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-
-        await GetOrders();
-
+        var orders = await GetOrders();
+        RuntimeOrders.AddOrUpdate(orders);
     }
 
     public async Task AddOrder(OrderDto order)

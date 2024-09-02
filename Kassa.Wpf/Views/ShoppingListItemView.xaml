@@ -101,7 +101,7 @@
                 </TextBlock>
 
                 <TextBlock Grid.Column="2" FontSize="{mx:AdaptiveSize 16}">
-                    <Run Text="{Binding Price}" /> <Run Text="{Binding CurrencySymbol}" />
+                    <Run Text="{Binding PositionPrice, Mode=OneWay}" /> <Run Text="{Binding CurrencySymbol, Mode=OneWay}" />
                 </TextBlock>
 
             </Grid>

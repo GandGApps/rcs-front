@@ -44,9 +44,8 @@ public sealed class OrderRowViewModel : ReactiveObject, IApplicationModelPresent
             OrderStatus.InCooking => "Готовится",
             OrderStatus.Ready => "Готов",
             OrderStatus.OnTheWay => "В пути",
-            OrderStatus.Completed => "Закрытый",
+            OrderStatus.Completed => order.IsDelivery ? "Доставлен" : order.IsForHere ? "Получен" : "Закрыт",
             OrderStatus.Canceled => "Отменен",
-            OrderStatus.Delivered => "Доставлен",
             _ => throw new NotImplementedException()
         };
 
@@ -161,9 +160,8 @@ public sealed class OrderRowViewModel : ReactiveObject, IApplicationModelPresent
             OrderStatus.InCooking => "Готовится",
             OrderStatus.Ready => "Готов",
             OrderStatus.OnTheWay => "В пути",
-            OrderStatus.Completed => "Закрытый",
+            OrderStatus.Completed => order.IsDelivery ? "Доставлен" : order.IsForHere ? "Получен" : "Закрыт",
             OrderStatus.Canceled => "Отменен",
-            OrderStatus.Delivered => "Доставлен",
             _ => throw new NotImplementedException()
         };
 

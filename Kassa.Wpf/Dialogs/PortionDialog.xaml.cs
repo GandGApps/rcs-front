@@ -21,7 +21,7 @@ namespace Kassa.Wpf.Dialogs;
 /// <summary>
 /// Interaction logic for PortionDialog.xaml
 /// </summary>
-public partial class PortionDialog : ClosableDialog<PortionDialogVm>
+public sealed partial class PortionDialog : ClosableDialog<PortionDialogVm>
 {
     public PortionDialog()
     {

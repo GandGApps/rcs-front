@@ -123,7 +123,7 @@ public partial class EditDeliveryPage : ReactiveUserControl<EditDeliveryPageVm>
             this.OneWayBind(ViewModel, x => x.OrderStatus, x => x.SendStatusButton.IsChecked, x => x == OrderStatus.OnTheWay)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.OrderStatus, x => x.DeliveredStatusButton.IsChecked, x => x == OrderStatus.Delivered)
+            this.OneWayBind(ViewModel, x => x.OrderStatus, x => x.DeliveredStatusButton.IsChecked, x => x == OrderStatus.Completed)
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, x => x.OrderStatus, x => x.CompleatedStatusButton.IsChecked, x => x == OrderStatus.Completed)
