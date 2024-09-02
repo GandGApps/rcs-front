@@ -15,6 +15,7 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
 using Kassa.RxUI.Dialogs;
+using Kassa.Shared;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -247,6 +248,8 @@ public abstract class BasePaymentPageVm: PageViewModel, IPaymentVm
         // TODO: Replace with page busy command
         
         PayCommand = ReactiveCommand.CreateFromTask(PayCommandExecute, this.WhenAnyValue(x => x.IsExactAmount));
+        Number = orderEditVm.OrderId.GuidToPrettyInt().ToString();
+        WhenOrderStarted = orderEditVm.WhenOrderStarted.ToString("d MMMM yyyy", SharedConstants.RuCulture);
     }
 
     public IPaymentService PaymentService
@@ -423,6 +426,18 @@ public abstract class BasePaymentPageVm: PageViewModel, IPaymentVm
     {
         [ObservableAsProperty]
         get;
+    }
+
+    [Reactive]
+    public string Number
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public string WhenOrderStarted
+    {
+        get; set;
     }
 
     protected override ValueTask InitializeAsync(CompositeDisposable disposables)

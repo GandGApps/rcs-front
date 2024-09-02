@@ -37,7 +37,59 @@
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
-            <controls:ShoppingListPanel x:Name="ShoppingListPanel" Height="{Binding ActualHeight, ElementName=CashierTabPanel}" />
+            <controls:ShoppingListPanel x:Name="ShoppingListPanel" />
+            <Border
+                x:Name="OrderInfo"
+                Height="{Binding ActualHeight, ElementName=CashierTabPanel}"
+                Padding="12"
+                Background="{DynamicResource ShoppingListTopMenu}"
+                ClipToBounds="True"
+                CornerRadius="{mx:AdaptiveSize CornerRadius=11}"
+                TextBlock.Foreground="White">
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="{mx:AdaptiveSize GridLength=136}" />
+                        <ColumnDefinition />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.ColumnSpan="3" Style="{StaticResource Header2}"><Run Text="Оплата заказа №" /><Run
+                            x:Name="OrderId"
+                            d:Text="2345"
+                            Text="{Binding Number, Mode=OneTime}" /></TextBlock>
+
+                    <TextBlock
+                        Grid.Row="1"
+                        VerticalAlignment="Bottom"
+                        Foreground="{DynamicResource AlternateForeground}"
+                        Style="{StaticResource SmallTextBlock}"><Run Text="Открыт " /><Run
+                            x:Name="OpenedAt"
+                            d:Text="14:55"
+                            Text="{Binding WhenOrderStarted, Mode=OneTime}" /></TextBlock>
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        VerticalAlignment="Bottom"
+                        Foreground="{DynamicResource AlternateForeground}"
+                        Style="{StaticResource SmallTextBlock}"><Run Text="Стол № " /><Run x:Name="TableNumber" d:Text="5" /></TextBlock>
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="2"
+                        VerticalAlignment="Bottom"
+                        Foreground="{DynamicResource AlternateForeground}"
+                        Style="{StaticResource SmallTextBlock}"
+                        TextAlignment="Right"><Run Text="Официант:" /><LineBreak /><Run x:Name="Waiter" d:Text="Григор" /></TextBlock>
+
+                </Grid>
+            </Border>
 
             <ScrollViewer
                 Grid.Row="1"
