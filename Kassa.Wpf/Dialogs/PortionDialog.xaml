@@ -57,9 +57,39 @@
                     <RowDefinition Height="1*" />
                 </Grid.RowDefinitions>
 
+                <Grid.Resources>
 
-                <StackPanel Orientation="Horizontal">
-                    <TextBox />
+                    <Style
+                        x:Key="DivisionPart"
+                        BasedOn="{StaticResource {x:Type TextBox}}"
+                        TargetType="TextBox">
+                        <Setter Property="FontSize" Value="{mx:AdaptiveSize 28}" />
+                        <Setter Property="FontWeight" Value="Medium" />
+                    </Style>
+
+                    <Style
+                        x:Key="TextBlockDivisionPart"
+                        BasedOn="{StaticResource {x:Type TextBlock}}"
+                        TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="{mx:AdaptiveSize 28}" />
+                        <Setter Property="FontWeight" Value="Medium" />
+                    </Style>
+
+                </Grid.Resources>
+
+
+                <StackPanel
+                    x:Name="IntoSeveralEqualParts"
+                    Grid.ColumnSpan="2"
+                    Margin="{mx:AdaptiveSize 25}"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBox Style="{StaticResource DivisionPart}" Text="{Binding IntoSeveralEqualParts.TotalServing}" />
+                    <TextBlock Style="{StaticResource TextBlockDivisionPart}" Text=" = " />
+                    <TextBox Style="{StaticResource DivisionPart}" Text="{Binding IntoSeveralEqualParts.CountOfServing}" />
+                    <TextBlock Style="{StaticResource TextBlockDivisionPart}" Text=" x " />
+                    <TextBox Style="{StaticResource DivisionPart}" Text="{Binding IntoSeveralEqualParts.ServingDivider}" />
+
                 </StackPanel>
 
                 <controls:Keyboard

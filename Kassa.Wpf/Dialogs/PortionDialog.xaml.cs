@@ -37,12 +37,10 @@ public sealed partial class PortionDialog : ClosableDialog<PortionDialogVm>
             this.BindCommand(ViewModel, x => x.CurrentMethodOfDivision.ApplyCommand, x => x.OkButton)
                 .DisposeWith(disposables);
 
-            ViewModel.WhenAnyValue(x => x.IsIntoSeveralEqualParts)
-                .Subscribe(x =>
-                {
-
-                })
+            this.OneWayBind(ViewModel, vm => vm.IsIntoSeveralEqualParts, v => v.IntoSeveralEqualParts.Visibility, x => x ? Visibility.Visible : Visibility.Collapsed)
                 .DisposeWith(disposables);
+
+
         });
     }
 }
