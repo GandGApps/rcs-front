@@ -9,6 +9,8 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
+using Kassa.Shared.ServiceLocator;
+using Splat;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
 internal sealed class OrdersService(IRepository<Order> repository, IRepository<PaymentInfo> paymentInfos) : BaseInitializableService, IOrdersService
@@ -137,5 +139,41 @@ internal sealed class OrdersService(IRepository<Order> repository, IRepository<P
         var orderDto = Mapper.MapOrderEditDtoToOrderDto(orderEditDto);
 
         return orderDto;
+    }
+
+    public Task<IEnumerable<OrderDto>> GetOrdersOfCurrentCashierShiftAsync()
+    {
+        var shiftService = RcsLocator.GetRequiredService<IShiftService>();
+
+        var currentCashierShift = shiftService.CurrentShift.Value;
+
+        if (currentCashierShift == null)
+        {
+            this.Log().Error("No current cashier shift found");
+            throw new InvalidOperationException("No current cashier shift found");
+        }
+
+        var dto = currentCashierShift.CreateDto();
+        var orders = RuntimeOrders.Values.Where(x => x.CashierShiftId == dto.Id).ToList();
+
+        return Task.FromResult<IEnumerable<OrderDto>>(orders);
+    }
+
+    public Task<IEnumerable<OrderDto>> GetOrdersOfCurrentShiftAsync()
+    {
+        var shiftService = RcsLocator.GetRequiredService<IShiftService>();
+
+        var currentShift = shiftService.CurrentShift.Value;
+
+        if (currentShift == null)
+        {
+            this.Log().Error("No current shift found");
+            throw new InvalidOperationException("No current shift found");
+        }
+
+        var dto = currentShift.CreateDto();
+        var orders = RuntimeOrders.Values.Where(x => x.ShiftId == dto.Id).ToList();
+
+        return Task.FromResult<IEnumerable<OrderDto>>(orders);
     }
 }

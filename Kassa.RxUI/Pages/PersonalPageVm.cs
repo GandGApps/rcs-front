@@ -11,6 +11,7 @@ using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
+using Kassa.DataAccess.Model;
 using Kassa.RxUI.Dialogs;
 using Kassa.Shared;
 using Kassa.Shared.ServiceLocator;
@@ -121,8 +122,6 @@ public class PersonalPageVm : PageViewModel
             }
             else
             {
-                await MainViewModel.OkMessage("Смена завершена");
-
                 var shift = _shiftService.CurrentShift.Value;
 
                 if (shift is null)
@@ -130,6 +129,16 @@ public class PersonalPageVm : PageViewModel
                     throw new InvalidOperationException("Shift is not started");
                 }
 
+                var ordersService = RcsLocator.GetRequiredService<IOrdersService>();
+                var orders = await ordersService.GetOrdersOfCurrentShiftAsync();
+
+                if (orders.Any(x => x.Status is not OrderStatus.Completed and not OrderStatus.Canceled))
+                {
+                    await MainViewModel.OkMessage("Нельзя закрыть смену, пока есть не завершенные заказы",  "JustFailed");
+                    return false;
+                }
+
+                await MainViewModel.OkMessage("Смена завершена");
                 await shift.End(pincode);
             }
 

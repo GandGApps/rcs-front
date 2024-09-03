@@ -11,3 +11,4 @@
 ## Немного информации
 
 Kassa.BuisnessLogin.Fody - просто инстурмент для определннной кодогенерации
+Kassa.Shared.ServiceLocator.Analyzer - тоже нужен для кодогенерации которая использует RcsLocatorBuilder

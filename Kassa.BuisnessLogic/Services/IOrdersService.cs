@@ -15,6 +15,9 @@ public interface IOrdersService: IInitializableService
         get;
     }
 
+    public Task<IEnumerable<OrderDto>> GetOrdersOfCurrentCashierShiftAsync();
+    public Task<IEnumerable<OrderDto>> GetOrdersOfCurrentShiftAsync();
+
     public Task<OrderDto> CreateOrderAsync(OrderEditDto orderEditDto);
 
     /// <summary>

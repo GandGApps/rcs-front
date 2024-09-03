@@ -52,6 +52,18 @@ public sealed class ServicePageVm : PageViewModel
             BusyText = "Закрытие смены";
             try
             {
+
+                var orders = await _ordersService.GetOrdersOfCurrentCashierShiftAsync();
+
+                if (orders.Any(x => x.Status is not OrderStatus.Completed and not OrderStatus.Canceled ))
+                {
+                    this.Log().Error("There are not completed orders in the current cashier shift");
+
+                    await MainViewModel.OkMessage("Не все заказы закрыты или завершены!", "JustFailed");
+
+                    return false;
+                }
+
                 if (_shiftService.IsCashierShiftStarted())
                 {
                     // if shift started, then it's not null
