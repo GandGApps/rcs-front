@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="64e0e9ae-0650-4c1d-82ef-57dfdbea9b96" name="runneradmin@fv-az836-201 2024-09-03 12:22:26" runUser="fv-az836-201\runneradmin" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2024-09-03T12:22:26.8514116+00:00" queuing="2024-09-03T12:22:26.8514118+00:00" start="2024-09-03T12:22:25.2884386+00:00" finish="2024-09-03T12:22:26.8562547+00:00" />
+  <TestSettings name="default" id="c4c8ed62-873b-4a4f-83bb-9be186856c51">
+    <Deployment runDeploymentRoot="runneradmin_fv-az836-201_2024-09-03_12_22_26" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="152e7b7b-25fa-4883-81ea-2b49fdd3a372" testId="b85b9cd0-1bcf-2c09-696c-ba58ea2c8960" testName="MockRepositoryTests2" computerName="fv-az836-201" duration="00:00:00.0103514" startTime="2024-09-03T12:22:26.0598398+00:00" endTime="2024-09-03T12:22:26.0703275+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="152e7b7b-25fa-4883-81ea-2b49fdd3a372" />
+    <UnitTestResult executionId="3be80084-c4a5-45e7-88bb-a11652ae1431" testId="84b67449-b2d8-2fdc-fbf6-70dc0749c3d7" testName="IntoSeveralEqualPartTest" computerName="fv-az836-201" duration="00:00:00.1394441" startTime="2024-09-03T12:22:25.8465955+00:00" endTime="2024-09-03T12:22:26.0146131+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3be80084-c4a5-45e7-88bb-a11652ae1431">
+      <Output>
+        <StdOut>Debug Trace:&#xD;
+LogHost: *** Detected Unit Test Runner, setting MainThreadScheduler to CurrentThread *** (.cctor)&#xD;
+LogHost: If we are not actually in a test runner, please file a bug
+
+ (.cctor)&#xD;
+LogHost: ReactiveUI acts differently under a test runner, see the docs
+ (.cctor)&#xD;
+LogHost: for more info about what to expect (.cctor)</StdOut>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="e06f6059-07c1-4fa0-b8a8-88f93f5811e2" testId="2486bace-5605-762b-c0ee-d108e8300ef5" testName="MockRepositoryTests4" computerName="fv-az836-201" duration="00:00:00.0030081" startTime="2024-09-03T12:22:26.0755894+00:00" endTime="2024-09-03T12:22:26.0795158+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="e06f6059-07c1-4fa0-b8a8-88f93f5811e2" />
+    <UnitTestResult executionId="aa1d57f1-0429-410f-84f6-7682a13d6fba" testId="0605805d-d351-459d-0d69-eb18696cb82e" testName="MockRepositoryTests" computerName="fv-az836-201" duration="00:00:00.0383202" startTime="2024-09-03T12:22:26.0212948+00:00" endTime="2024-09-03T12:22:26.0597925+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="aa1d57f1-0429-410f-84f6-7682a13d6fba" />
+    <UnitTestResult executionId="57d5b41a-cfdb-44c7-8920-6e26aed8f444" testId="42517f55-819d-1745-5aff-9e87da2cf069" testName="IntoSeveralEqualPartChangingTotalTest" computerName="fv-az836-201" duration="00:00:00.0011744" startTime="2024-09-03T12:22:26.0188497+00:00" endTime="2024-09-03T12:22:26.0201939+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="57d5b41a-cfdb-44c7-8920-6e26aed8f444" />
+    <UnitTestResult executionId="16f0a87c-b0b0-4084-99a6-e82c03392692" testId="4d9a623e-042e-c9ac-b488-194bbf075b36" testName="MockRepositoryTests3" computerName="fv-az836-201" duration="00:00:00.0050458" startTime="2024-09-03T12:22:26.0703812+00:00" endTime="2024-09-03T12:22:26.0755578+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="16f0a87c-b0b0-4084-99a6-e82c03392692" />
+    <UnitTestResult executionId="3e2255f4-391d-461f-bec4-247c0dd49498" testId="dc1388c2-cdbe-63f3-c39a-1ba8dd07596e" testName="IntoSeveralEqualPartChangingServingDividerTest" computerName="fv-az836-201" duration="00:00:00.0002595" startTime="2024-09-03T12:22:26.0208196+00:00" endTime="2024-09-03T12:22:26.0212680+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="3e2255f4-391d-461f-bec4-247c0dd49498" />
+    <UnitTestResult executionId="f1c5390a-8678-4e64-9972-134cb9bf62d5" testId="b14ed372-5092-16be-ef0f-a37705e5b90e" testName="IntoSeveralEqualPartChangingCountOfServingTest" computerName="fv-az836-201" duration="00:00:00.0002671" startTime="2024-09-03T12:22:26.0204391+00:00" endTime="2024-09-03T12:22:26.0207930+00:00" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="f1c5390a-8678-4e64-9972-134cb9bf62d5" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="MockRepositoryTests4" storage="d:\a\rcs-front\rcs-front\kassa.tests\bin\debug\net8.0\kassa.tests.dll" id="2486bace-5605-762b-c0ee-d108e8300ef5">
+      <Execution id="e06f6059-07c1-4fa0-b8a8-88f93f5811e2" />
+      <TestMethod codeBase="D:\a\rcs-front\rcs-front\Kassa.Tests\bin\Debug\net8.0\Kassa.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Kassa.Tests.MockTests" name="MockRepositoryTests4" />
+    </UnitTest>
+    <UnitTest name="MockRepositoryTests2" storage="d:\a\rcs-front\rcs-front\kassa.tests\bin\debug\net8.0\kassa.tests.dll" id="b85b9cd0-1bcf-2c09-696c-ba58ea2c8960">
+      <Execution id="152e7b7b-25fa-4883-81ea-2b49fdd3a372" />
+      <TestMethod codeBase="D:\a\rcs-front\rcs-front\Kassa.Tests\bin\Debug\net8.0\Kassa.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Kassa.Tests.MockTests" name="MockRepositoryTests2" />
+    </UnitTest>
+    <UnitTest name="IntoSeveralEqualPartTest" storage="d:\a\rcs-front\rcs-front\kassa.tests\bin\debug\net8.0\kassa.tests.dll" id="84b67449-b2d8-2fdc-fbf6-70dc0749c3d7">
+      <Execution id="3be80084-c4a5-45e7-88bb-a11652ae1431" />
+      <TestMethod codeBase="D:\a\rcs-front\rcs-front\Kassa.Tests\bin\Debug\net8.0\Kassa.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Kassa.Tests.MethodOfDivisionTests" name="IntoSeveralEqualPartTest" />
+    </UnitTest>
+    <UnitTest name="IntoSeveralEqualPartChangingServingDividerTest" storage="d:\a\rcs-front\rcs-front\kassa.tests\bin\debug\net8.0\kassa.tests.dll" id="dc1388c2-cdbe-63f3-c39a-1ba8dd07596e">
+      <Execution id="3e2255f4-391d-461f-bec4-247c0dd49498" />
+      <TestMethod codeBase="D:\a\rcs-front\rcs-front\Kassa.Tests\bin\Debug\net8.0\Kassa.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Kassa.Tests.MethodOfDivisionTests" name="IntoSeveralEqualPartChangingServingDividerTest" />
+    </UnitTest>
+    <UnitTest name="MockRepositoryTests3" storage="d:\a\rcs-front\rcs-front\kassa.tests\bin\debug\net8.0\kassa.tests.dll" id="4d9a623e-042e-c9ac-b488-194bbf075b36">
+      <Execution id="16f0a87c-b0b0-4084-99a6-e82c03392692" />
+      <TestMethod codeBase="D:\a\rcs-front\rcs-front\Kassa.Tests\bin\Debug\net8.0\Kassa.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Kassa.Tests.MockTests" name="MockRepositoryTests3" />
+    </UnitTest>
+    <UnitTest name="IntoSeveralEqualPartChangingTotalTest" storage="d:\a\rcs-front\rcs-front\kassa.tests\bin\debug\net8.0\kassa.tests.dll" id="42517f55-819d-1745-5aff-9e87da2cf069">
+      <Execution id="57d5b41a-cfdb-44c7-8920-6e26aed8f444" />
+      <TestMethod codeBase="D:\a\rcs-front\rcs-front\Kassa.Tests\bin\Debug\net8.0\Kassa.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Kassa.Tests.MethodOfDivisionTests" name="IntoSeveralEqualPartChangingTotalTest" />
+    </UnitTest>
+    <UnitTest name="IntoSeveralEqualPartChangingCountOfServingTest" storage="d:\a\rcs-front\rcs-front\kassa.tests\bin\debug\net8.0\kassa.tests.dll" id="b14ed372-5092-16be-ef0f-a37705e5b90e">
+      <Execution id="f1c5390a-8678-4e64-9972-134cb9bf62d5" />
+      <TestMethod codeBase="D:\a\rcs-front\rcs-front\Kassa.Tests\bin\Debug\net8.0\Kassa.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Kassa.Tests.MethodOfDivisionTests" name="IntoSeveralEqualPartChangingCountOfServingTest" />
+    </UnitTest>
+    <UnitTest name="MockRepositoryTests" storage="d:\a\rcs-front\rcs-front\kassa.tests\bin\debug\net8.0\kassa.tests.dll" id="0605805d-d351-459d-0d69-eb18696cb82e">
+      <Execution id="aa1d57f1-0429-410f-84f6-7682a13d6fba" />
+      <TestMethod codeBase="D:\a\rcs-front\rcs-front\Kassa.Tests\bin\Debug\net8.0\Kassa.Tests.dll" adapterTypeName="executor://mstestadapter/v2" className="Kassa.Tests.MockTests" name="MockRepositoryTests" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="b85b9cd0-1bcf-2c09-696c-ba58ea2c8960" executionId="152e7b7b-25fa-4883-81ea-2b49fdd3a372" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="84b67449-b2d8-2fdc-fbf6-70dc0749c3d7" executionId="3be80084-c4a5-45e7-88bb-a11652ae1431" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="2486bace-5605-762b-c0ee-d108e8300ef5" executionId="e06f6059-07c1-4fa0-b8a8-88f93f5811e2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="0605805d-d351-459d-0d69-eb18696cb82e" executionId="aa1d57f1-0429-410f-84f6-7682a13d6fba" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="42517f55-819d-1745-5aff-9e87da2cf069" executionId="57d5b41a-cfdb-44c7-8920-6e26aed8f444" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="4d9a623e-042e-c9ac-b488-194bbf075b36" executionId="16f0a87c-b0b0-4084-99a6-e82c03392692" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="dc1388c2-cdbe-63f3-c39a-1ba8dd07596e" executionId="3e2255f4-391d-461f-bec4-247c0dd49498" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b14ed372-5092-16be-ef0f-a37705e5b90e" executionId="f1c5390a-8678-4e64-9972-134cb9bf62d5" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Completed">
+    <Counters total="8" executed="8" passed="8" failed="0" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+  </ResultSummary>
+</TestRun>
