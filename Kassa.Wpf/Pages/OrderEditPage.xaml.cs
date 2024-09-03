@@ -12,7 +12,7 @@ namespace Kassa.Wpf.Pages;
 /// <summary>
 /// Логика взаимодействия для OrderEditPage.xaml
 /// </summary>
-public partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
+public sealed partial class OrderEditPage : ReactiveUserControl<OrderEditPageVm>
 {
     public OrderEditPage()
     {
