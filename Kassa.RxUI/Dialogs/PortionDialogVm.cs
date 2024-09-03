@@ -123,14 +123,20 @@ public sealed class PortionDialogVm : DialogViewModel
             this.WhenAnyValue(x => x.CountOfServing, x => x.ServingDivider)
                 .Where(x => x.Item2 != 0) // Избегаем деления на ноль
                 .Select(x => x.Item1 * x.Item2)
-                .BindTo(this, x => x.TotalServing)
+                .Subscribe(x =>
+                {
+                })
+                //.BindTo(this, x => x.TotalServing)
                 .DisposeWith(_disposables);
 
             // Когда TotalServing меняется, обновляем ServingDivider
             this.WhenAnyValue(x => x.TotalServing, x => x.CountOfServing)
                 .Where(x => x.Item2 != 0) // Избегаем деления на ноль
                 .Select(x => x.Item1 / x.Item2)
-                .BindTo(this, x => x.ServingDivider)
+                .Subscribe(x =>
+                {
+                })
+                //.BindTo(this, x => x.ServingDivider)
                 .DisposeWith(_disposables);
 
             ApplyCommand = ReactiveCommand.CreateFromTask(async () =>
