@@ -40,7 +40,27 @@ public sealed partial class PortionDialog : ClosableDialog<PortionDialogVm>
             this.OneWayBind(ViewModel, vm => vm.IsIntoSeveralEqualParts, v => v.IntoSeveralEqualParts.Visibility, x => x ? Visibility.Visible : Visibility.Collapsed)
                 .DisposeWith(disposables);
 
-
+            this.OneWayBind(ViewModel, vm => vm.IsIntoSeveralEqualParts, v => v.IntoTwoUnequalParts.Visibility, x => !x ? Visibility.Visible : Visibility.Collapsed)
+                .DisposeWith(disposables);
         });
+    }
+
+    private void PartGotFocus(object sender, RoutedEventArgs e)
+    {
+        if(sender is TextBox textBox)
+        {
+            Numpad.TextBox = textBox;
+        }
+    }
+
+    private void PartLostFocus(object sender, RoutedEventArgs e)
+    {
+        if(sender is TextBox textBox)
+        {
+            if(Numpad.TextBox == textBox)
+            {
+                Numpad.TextBox = null;
+            }
+        }
     }
 }

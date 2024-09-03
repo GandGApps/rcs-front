@@ -274,12 +274,7 @@ public sealed class PortionDialogVm : DialogViewModel
 
                 if (receipt is null)
                 {
-#if DEBUG
-                    ThrowHelper.ThrowInvalidOperationException("Receipt is null");
-#elif RELEASE
-                    this.Log().Error("Receipt is null");
-                    return;
-#endif
+                    this.Log().Error($"Receipt for product {{{vm.ProductDto.Id}}} is null");
                 }
 
                 for (var i = 0; i < numberItems - 1; i++)
@@ -290,8 +285,13 @@ public sealed class PortionDialogVm : DialogViewModel
                     // since I'm not certain if all ingredients are accounted for
                     _orderEditVm.ShoppingList.AddProductShoppingListItemUnsafe(copyOfVm);
 
-                    // Need to spend ingrdients
-                    await _orderEditVm.StorageScope.SpendIngredients(receipt, amountOfProduct);
+                    if (receipt is not null)
+                    {
+                        // Need to spend ingrdients
+                        await _orderEditVm.StorageScope.SpendIngredients(receipt, amountOfProduct);
+                    }
+
+                    
 
                     //await _orderEditVm.AddProductToShoppingList(dto);
                 }
@@ -373,8 +373,61 @@ public sealed class PortionDialogVm : DialogViewModel
         {
             // FirstPart + SecondPart = TotalServing
 
+            this.WhenAnyValue(x => x.FirstPart)
+                .Subscribe(x =>
+                {
+                    if(x < 0)
+                    {
+                        FirstPart = .1;
+                        return;
+                    }
+
+                    FirstPart = Math.Round(x, 3);
+                })
+                .DisposeWith(_disposables);
+
+            this.WhenAnyValue(x => x.SecondPart)
+                .Subscribe(x =>
+                {
+                    if (x < 0)
+                    {
+                        SecondPart = .1;
+                        return;
+                    }
+
+                    SecondPart = Math.Round(x, 3);
+                })
+                .DisposeWith(_disposables);
+
+            this.WhenAnyValue(x => x.TotalServing)
+                .Subscribe(x =>
+                {
+                    if (x < 0)
+                    {
+                        TotalServing = .1;
+                        return;
+                    }
+
+                    var dif = x - (FirstPart + SecondPart);
+
+                    if (dif == 0)
+                    {
+                        return;
+                    }
+
+                    if (dif > 0)
+                    {
+                        SecondPart = Math.Round(SecondPart + dif, 3);
+                    }
+                    else
+                    {
+                        SecondPart = Math.Round(SecondPart + dif, 3);
+                    }
+                })
+                .DisposeWith(_disposables);
+
             this.WhenAnyValue(x => x.FirstPart, x => x.SecondPart)
-                .Select(x => x.Item1 + x.Item2)
+                .Select(x => Math.Round(x.Item1 + x.Item2, 3))
                 .BindTo(this, x => x.TotalServing)
                 .DisposeWith(_disposables);
 
@@ -385,26 +438,35 @@ public sealed class PortionDialogVm : DialogViewModel
                 // we are just separating the existing one
 
                 var source = productShoppingListItemVm;
+                var currentCount = source.Count;
 
-                var dif = source.Count - FirstPart;
+                var dif = currentCount - (FirstPart+SecondPart);
+
+                var receipt = await _receiptService.GetReceipt(source.ProductDto.ReceiptId);
+
+                if (receipt is null)
+                {
+                    this.Log().Error($"Receipt for product {{{source.ProductDto.Id}}} is null");
+                }
+                else
+                {
+                    if (dif > 0)
+                    {
+                        await _orderEditVm.StorageScope.SpendIngredients(receipt, Math.Abs(FirstPart + SecondPart));
+                    }
+                    else if (dif < 0)
+                    {
+                        await _orderEditVm.StorageScope.ReturnIngredients(receipt, Math.Abs(FirstPart + SecondPart));
+                    }
+                }
 
                 source.Count = FirstPart;
 
                 var vm = source.CreateCopyWithoutAdditive();
 
-                var receipt = await _receiptService.GetReceipt(vm.ProductDto.ReceiptId);
-
-                if (receipt is null)
-                {
-#if DEBUG
-                    ThrowHelper.ThrowInvalidOperationException("Receipt is null");
-#elif RELEASE
-                    this.Log().Error("Receipt is null");
-                    return; 
-#endif
-                }
-
                 vm.Count = SecondPart;
+
+                _orderEditVm.ShoppingList.AddProductShoppingListItemUnsafe(vm);
             });
         }
     }

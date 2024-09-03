@@ -2,9 +2,11 @@
     x:Class="Kassa.Wpf.Dialogs.PortionDialog"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:behaviors="clr-namespace:Kassa.Wpf.Behaviors"
     xmlns:controls="clr-namespace:Kassa.Wpf.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:dialogs="clr-namespace:Kassa.RxUI.Dialogs;assembly=Kassa.RxUI"
+    xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
     xmlns:local="clr-namespace:Kassa.Wpf.Dialogs"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
@@ -65,6 +67,7 @@
                         TargetType="TextBox">
                         <Setter Property="FontSize" Value="{mx:AdaptiveSize 28}" />
                         <Setter Property="FontWeight" Value="Medium" />
+                        <Setter Property="BorderThickness" Value="0" />
                     </Style>
 
                     <Style
@@ -81,18 +84,82 @@
                 <StackPanel
                     x:Name="IntoSeveralEqualParts"
                     Grid.ColumnSpan="2"
-                    Margin="{mx:AdaptiveSize 25}"
+                    Margin="{mx:AdaptiveSize Thickness=22}"
                     HorizontalAlignment="Center"
                     Orientation="Horizontal">
-                    <TextBlock Style="{StaticResource TextBlockDivisionPart}" Text="{Binding IntoSeveralEqualParts.TotalServing}" />
+                    <TextBox
+                        GotFocus="PartGotFocus"
+                        Language="Ru-ru"
+                        LostFocus="PartLostFocus"
+                        Style="{StaticResource DivisionPart}"
+                        Text="{Binding IntoSeveralEqualParts.TotalServing}">
+                        <i:Interaction.Behaviors>
+                            <behaviors:TextBoxEnterKeyUpdateBehavior />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
                     <TextBlock Style="{StaticResource TextBlockDivisionPart}" Text=" = " />
                     <TextBox
-                        
+                        GotFocus="PartGotFocus"
+                        Language="Ru-ru"
+                        LostFocus="PartLostFocus"
                         Style="{StaticResource DivisionPart}"
-                        Text="{Binding IntoSeveralEqualParts.CountOfServing}" />
+                        Text="{Binding IntoSeveralEqualParts.CountOfServing}">
+                        <i:Interaction.Behaviors>
+                            <behaviors:TextBoxEnterKeyUpdateBehavior />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
                     <TextBlock Style="{StaticResource TextBlockDivisionPart}" Text=" x " />
-                    <TextBlock Style="{StaticResource TextBlockDivisionPart}" Text="{Binding IntoSeveralEqualParts.ServingDivider}" />
+                    <TextBox
+                        GotFocus="PartGotFocus"
+                        Language="Ru-ru"
+                        LostFocus="PartLostFocus"
+                        Style="{StaticResource DivisionPart}"
+                        Text="{Binding IntoSeveralEqualParts.ServingDivider}">
+                        <i:Interaction.Behaviors>
+                            <behaviors:TextBoxEnterKeyUpdateBehavior />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
 
+                </StackPanel>
+
+                <StackPanel
+                    x:Name="IntoTwoUnequalParts"
+                    Grid.ColumnSpan="2"
+                    Margin="{mx:AdaptiveSize Thickness=22}"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <TextBox
+                        GotFocus="PartGotFocus"
+                        Language="Ru-ru"
+                        LostFocus="PartLostFocus"
+                        Style="{StaticResource DivisionPart}"
+                        Text="{Binding IntoTwoUnequalParts.TotalServing}">
+                        <i:Interaction.Behaviors>
+                            <behaviors:TextBoxEnterKeyUpdateBehavior />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+                    <TextBlock Style="{StaticResource TextBlockDivisionPart}" Text=" = " />
+                    <TextBox
+                        GotFocus="PartGotFocus"
+                        Language="Ru-ru"
+                        LostFocus="PartLostFocus"
+                        Style="{StaticResource DivisionPart}"
+                        Text="{Binding IntoTwoUnequalParts.FirstPart}">
+                        <i:Interaction.Behaviors>
+                            <behaviors:TextBoxEnterKeyUpdateBehavior />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
+                    <TextBlock Style="{StaticResource TextBlockDivisionPart}" Text=" + " />
+                    <TextBox
+                        GotFocus="PartGotFocus"
+                        Language="Ru-ru"
+                        LostFocus="PartLostFocus"
+                        Style="{StaticResource DivisionPart}"
+                        Text="{Binding IntoTwoUnequalParts.SecondPart}">
+                        <i:Interaction.Behaviors>
+                            <behaviors:TextBoxEnterKeyUpdateBehavior />
+                        </i:Interaction.Behaviors>
+                    </TextBox>
                 </StackPanel>
 
                 <controls:Keyboard
