@@ -84,11 +84,14 @@
                     Margin="{mx:AdaptiveSize 25}"
                     HorizontalAlignment="Center"
                     Orientation="Horizontal">
-                    <TextBox Style="{StaticResource DivisionPart}" Text="{Binding IntoSeveralEqualParts.TotalServing}" />
+                    <TextBlock Style="{StaticResource TextBlockDivisionPart}" Text="{Binding IntoSeveralEqualParts.TotalServing}" />
                     <TextBlock Style="{StaticResource TextBlockDivisionPart}" Text=" = " />
-                    <TextBox Style="{StaticResource DivisionPart}" Text="{Binding IntoSeveralEqualParts.CountOfServing}" />
+                    <TextBox
+                        
+                        Style="{StaticResource DivisionPart}"
+                        Text="{Binding IntoSeveralEqualParts.CountOfServing}" />
                     <TextBlock Style="{StaticResource TextBlockDivisionPart}" Text=" x " />
-                    <TextBox Style="{StaticResource DivisionPart}" Text="{Binding IntoSeveralEqualParts.ServingDivider}" />
+                    <TextBlock Style="{StaticResource TextBlockDivisionPart}" Text="{Binding IntoSeveralEqualParts.ServingDivider}" />
 
                 </StackPanel>
 

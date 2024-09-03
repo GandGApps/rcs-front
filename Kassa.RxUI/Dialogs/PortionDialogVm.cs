@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -13,6 +14,7 @@ using Kassa.RxUI.Pages;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
+using static Kassa.RxUI.Dialogs.PortionDialogVm;
 
 namespace Kassa.RxUI.Dialogs;
 public sealed class PortionDialogVm : DialogViewModel
@@ -29,7 +31,7 @@ public sealed class PortionDialogVm : DialogViewModel
         _productShoppingListItemVm = productShoppingListItemVm;
 
         IntoSeveralEqualParts = new IntoSeveralEqualPartsVm(orderEditVm, receiptService, productShoppingListItemVm).DisposeWith(InternalDisposables);
-        IntoTwoUnequalParts = new IntoTwoUnequalPartsVm(orderEditVm,receiptService, productShoppingListItemVm).DisposeWith(InternalDisposables);
+        IntoTwoUnequalParts = new IntoTwoUnequalPartsVm(orderEditVm, receiptService, productShoppingListItemVm).DisposeWith(InternalDisposables);
 
         this.WhenAnyValue(x => x.IsIntoSeveralEqualParts)
             .Select<bool, MethodOfDivisionVm>(x => x ? IntoSeveralEqualParts : IntoTwoUnequalParts)
@@ -38,6 +40,10 @@ public sealed class PortionDialogVm : DialogViewModel
 
         IntoSeveralEqualParts.ApplyCommand.Subscribe(_ => CloseCommand.Execute().Subscribe());
         IntoTwoUnequalParts.ApplyCommand.Subscribe(_ => CloseCommand.Execute().Subscribe());
+
+        IntoSeveralEqualParts.TotalServing = productShoppingListItemVm.Count;
+        IntoSeveralEqualParts.CountOfServing = 1;
+        IntoSeveralEqualParts.ServingDivider = productShoppingListItemVm.Count;
 
         IsIntoSeveralEqualParts = true;
     }
@@ -92,19 +98,27 @@ public sealed class PortionDialogVm : DialogViewModel
 #pragma warning disable CA1816 // Dispose methods should call SuppressFinalize
         public void Dispose() => _disposables.Dispose();
 #pragma warning restore CA1816 // Dispose methods should call SuppressFinalize
+
+        protected static bool IsInteger(double value, double eps = 1000) => Math.Abs(value % 1) <= (double.Epsilon * eps);
     }
 
     /// <summary>
-    /// CountOfServing / ServingDivider = TotalServing
+    /// TotalServing = CountOfServing * ServingDivider
     /// </summary>
     public sealed class IntoSeveralEqualPartsVm : MethodOfDivisionVm
     {
+        /// <summary>
+        /// The number of items in the list
+        /// </summary>
         [Reactive]
-        public double CountOfServing
+        public int CountOfServing
         {
             get; set;
         }
 
+        /// <summary>
+        /// The amount of product in each item
+        /// </summary>
         [Reactive]
         public double ServingDivider
         {
@@ -118,30 +132,171 @@ public sealed class PortionDialogVm : DialogViewModel
 
         public IntoSeveralEqualPartsVm(IOrderEditVm orderEditVm, IReceiptService receiptService, ProductShoppingListItemViewModel productShoppingListItemVm) : base(orderEditVm, receiptService, productShoppingListItemVm)
         {
-            // CountOfServing / ServingDivider = TotalServing
-            // Когда CountOfServing или ServingDivider меняются, обновляем TotalServing
-            this.WhenAnyValue(x => x.CountOfServing, x => x.ServingDivider)
-                .Where(x => x.Item2 != 0) // Избегаем деления на ноль
-                .Select(x => x.Item1 * x.Item2)
+            // TotalServing = CountOfServing * ServingDivider
+
+            // Если меняется TotalServing, обновляем CountOfServing
+            this.WhenAnyValue(x => x.TotalServing)
+                .Select(x => Math.Round(x, 3))
                 .Subscribe(x =>
                 {
+                    if (ServingDivider == 0)
+                    {
+                        return;
+                    }
+
+                    var currentTotal = CountOfServing * ServingDivider;
+                    currentTotal = Math.Round(currentTotal, 3);
+
+                    if (currentTotal == x)
+                    {
+                        TotalServing = x;
+                        return;
+                    }
+
+                    // Меняем CountOfServing
+                    // TotalServing = CountOfServing * ServingDivider
+                    // CountOfServing = TotalServing / ServingDivider
+
+                    if (IsInteger(TotalServing / ServingDivider))
+                    {
+                        CountOfServing = (int)(TotalServing / ServingDivider);
+                    }
+                    else
+                    {
+                        // we should change TotalServing
+                        // WARNING STACKOVERFLOW 
+
+                        TotalServing = x;
+                        ServingDivider = Math.Round(x / CountOfServing, 3);
+                    }
+
+
                 })
-                //.BindTo(this, x => x.TotalServing)
                 .DisposeWith(_disposables);
 
-            // Когда TotalServing меняется, обновляем ServingDivider
-            this.WhenAnyValue(x => x.TotalServing, x => x.CountOfServing)
-                .Where(x => x.Item2 != 0) // Избегаем деления на ноль
-                .Select(x => x.Item1 / x.Item2)
+            this.WhenAnyValue(x => x.ServingDivider)
                 .Subscribe(x =>
                 {
+                    var currentTotal = CountOfServing * x;
+                    currentTotal = Math.Round(currentTotal, 3);
+
+                    if (currentTotal == Math.Round(TotalServing, 3))
+                    {
+                        return;
+                    }
+
+                    // TotalServing = CountOfServing * ServingDivider
+                    // CountOfServing = TotalServing / ServingDivider
+                    var countOfServing = Math.Round(TotalServing / x, 3);
+
+                    if (IsInteger(countOfServing))
+                    {
+                        CountOfServing = (int)countOfServing;
+                    }
+                    else
+                    {
+                        // we should change TotalServing
+                        // WARNING STACKOVERFLOW 
+
+                        TotalServing = currentTotal;
+                    }
                 })
-                //.BindTo(this, x => x.ServingDivider)
                 .DisposeWith(_disposables);
+
+            this.WhenAnyValue(x => x.CountOfServing)
+                .Subscribe(x =>
+                {
+                    if (CountOfServing == 0)
+                    {
+                        return;
+                    }
+
+                    var currentTotal = x * ServingDivider;
+                    currentTotal = Math.Round(currentTotal, 3);
+
+                    if (currentTotal == Math.Round(TotalServing, 3))
+                    {
+                        return;
+                    }
+
+                    // TotalServing = CountOfServing * ServingDivider
+                    // ServingDivider = TotalServing / CountOfServing
+                    ServingDivider = Math.Round(TotalServing / x, 3);
+                });
+
+
+            /*// Когда TotalServing меняется, обновляем ServingDivider
+            this.WhenAnyValue(x => x.TotalServing, x => x.CountOfServing)
+                .Where(x => x.Item2 != 0) // Избегаем деления на ноль
+                .Select(x => Math.Round(x.Item1 / x.Item2, 3))
+                .Subscribe(x =>
+                {
+                    var currentTotal = CountOfServing * x;
+                    currentTotal = Math.Round(currentTotal, 3);
+
+                    if (currentTotal == TotalServing)
+                    {
+                        return;
+                    }
+
+                    ServingDivider = Math.Round(x, 3);
+                })
+                
+                //.BindTo(this, x => x.ServingDivider)
+                .DisposeWith(_disposables);*/
 
             ApplyCommand = ReactiveCommand.CreateFromTask(async () =>
             {
-                var positionCount = CountOfServing; // Нужно узнать количество продукта в позиции
+                var numberItems = CountOfServing;
+                var amountOfProduct = ServingDivider;
+
+                var source = productShoppingListItemVm;
+
+                var dif = source.Count - amountOfProduct;
+
+                if (dif > 0)
+                {
+                    await _orderEditVm.ShoppingList.DecreaseProductShoppingListItemViewModel(source, Math.Abs(amountOfProduct));
+                }
+                else if (dif < 0)
+                {
+                    await _orderEditVm.ShoppingList.IncreaseProductShoppingListItemViewModel(source, Math.Abs(amountOfProduct));
+                }
+
+                if (numberItems == 1)
+                {
+                    return;
+                }
+
+                var vm = source.CreateCopyWithoutAdditive();
+
+                var receipt = await _receiptService.GetReceipt(vm.ProductDto.ReceiptId);
+
+                if (receipt is null)
+                {
+#if DEBUG
+                    ThrowHelper.ThrowInvalidOperationException("Receipt is null");
+#elif RELEASE
+                    this.Log().Error("Receipt is null");
+                    return;
+#endif
+                }
+
+                for (var i = 0; i < numberItems - 1; i++)
+                {
+                    var copyOfVm = vm.CreateCopyUnsafe();
+
+                    // I'm not sure about this line
+                    // since I'm not certain if all ingredients are accounted for
+                    _orderEditVm.ShoppingList.AddProductShoppingListItemUnsafe(copyOfVm);
+
+                    // Need to spend ingrdients
+                    await _orderEditVm.StorageScope.SpendIngredients(receipt, amountOfProduct);
+
+                    //await _orderEditVm.AddProductToShoppingList(dto);
+                }
+
+                /*var positionCount = CountOfServing; // Нужно узнать количество продукта в позиции
                 var totalPositions = ServingDivider; // Нужно узнать количество позиций в заказе
 
                 var source = productShoppingListItemVm;
@@ -188,7 +343,7 @@ public sealed class PortionDialogVm : DialogViewModel
                     await _orderEditVm.StorageScope.SpendIngredients(receipt, positionCount);
 
                     //await _orderEditVm.AddProductToShoppingList(dto);
-                }
+                }*/
             }).DisposeWith(_disposables);
         }
 
