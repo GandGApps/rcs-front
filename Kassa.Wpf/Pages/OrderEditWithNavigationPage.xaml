@@ -42,16 +42,31 @@
 
             <Grid.Resources>
 
-                <ControlTemplate x:Key="Elipse">
-                    
+                <ControlTemplate x:Key="ElipseButton" TargetType="Button">
+                    <Border
+                        Width="{TemplateBinding Width}"
+                        Height="{TemplateBinding Height}"
+                        BorderBrush="{StaticResource AlternateForeground}"
+                        BorderThickness="1"
+                        CornerRadius="90">
+                        <ContentPresenter />
+                    </Border>
+
                 </ControlTemplate>
 
-                <Style x:Key="ArrowButton" TargetType="Button" BasedOn="{StaticResource IconButton}">
-                    <Setter Property="ContentTemplate">
-                        <ControlTe
-                    </Setter>
+                <Style
+                    x:Key="ArrowButton"
+                    BasedOn="{StaticResource IconButton}"
+                    TargetType="Button">
+                    <Setter Property="ContentTemplate" Value="{StaticResource ElipseButton}" />
+
+                    <Style.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.1" />
+                        </Trigger>
+                    </Style.Triggers>
                 </Style>
-                
+
             </Grid.Resources>
 
             <controls:ButtonWithCornerRaduis Command="{Binding MainViewModel.GoBackCommand}" Style="{StaticResource BackButton}" />
@@ -87,25 +102,24 @@
 
             <Button
                 Grid.Column="4"
-                Command="{Binding PreviousOrderEditCommand}">
-                
-                
-                <Border
-                    BorderBrush="{StaticResource AlternateForeground}"
-                    BorderThickness="1"
-                    CornerRadius="90">
-                    <Path
-                        Width="{mx:AdaptiveSize 32}"
-                        Height="{mx:AdaptiveSize 32}"
-                        Data="{StaticResource LeftArrowIcon}" />
-                </Border>
-            </Button>
-
-            <Button Grid.Column="6" Style="{StaticResource IconButton}">
+                Command="{Binding PreviousOrderEditCommand}"
+                Style="{StaticResource ArrowButton}">
                 <Path
                     Width="{mx:AdaptiveSize 32}"
                     Height="{mx:AdaptiveSize 32}"
-                    Data="{StaticResource LeftArrowIcon}" />
+                    Data="{StaticResource LeftArrowIcon}"
+                    Fill="{DynamicResource AlternateForeground}" />
+            </Button>
+
+            <Button
+                Grid.Column="6"
+                Command="{Binding NextOrderEditCommand}"
+                Style="{StaticResource ArrowButton}">
+                <Path
+                    Width="{mx:AdaptiveSize 32}"
+                    Height="{mx:AdaptiveSize 32}"
+                    Data="{StaticResource RightArraowIcon}"
+                    Fill="{DynamicResource AlternateForeground}" />
             </Button>
 
             <controls:ButtonWithIcon

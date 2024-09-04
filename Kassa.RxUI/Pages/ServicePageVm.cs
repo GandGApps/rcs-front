@@ -263,6 +263,21 @@ public sealed class ServicePageVm : PageViewModel
         get;
     }
 
+    public ReactiveCommand<ServiceOrderRowViewModel, Unit> OpenOpenOrderCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<ServiceOrderRowViewModel, Unit> OpenClosedOrderCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<ServiceOrderRowViewModel, Unit> OpenClosedShiftOrderCommand
+    {
+        get;
+    }
+
     public extern string CashierShiftButtonText
     {
         [ObservableAsProperty]
@@ -273,11 +288,6 @@ public sealed class ServicePageVm : PageViewModel
     {
         [ObservableAsProperty]
         get;
-    }
-
-    private IDisposable BindOpenOrders(IOrdersService ordersService, ObservableCollection<ServiceOrderRowViewModel> target)
-    {
-        throw new NotImplementedException();
     }
 
 

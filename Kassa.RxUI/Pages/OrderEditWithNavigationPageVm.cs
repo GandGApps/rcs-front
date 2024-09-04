@@ -49,13 +49,20 @@ public sealed class OrderEditWithNavigationPageVm : PageViewModel
             .ToPropertyEx(this, x => x.Current)
             .DisposeWith(InternalDisposables);
 
+        var previousOrderEditCommandValidation = this.WhenAnyValue(x => x.CurrentIndex)
+            .Select(index => index > 0);
+
+
         PreviousOrderEditCommand = ReactiveCommand.Create(() =>
         {
             if (CurrentIndex > 0)
             {
                 CurrentIndex--;
             }
-        }).DisposeWith(InternalDisposables);
+        }, previousOrderEditCommandValidation).DisposeWith(InternalDisposables);
+
+        var nextOrderEditCommandValidation = this.WhenAnyValue(x => x.CurrentIndex)
+            .Select(index => index < _orderEditDtos.Count - 1);
 
         NextOrderEditCommand = ReactiveCommand.Create(() =>
         {
@@ -63,7 +70,7 @@ public sealed class OrderEditWithNavigationPageVm : PageViewModel
             {
                 CurrentIndex++;
             }
-        }).DisposeWith(InternalDisposables);
+        }, nextOrderEditCommandValidation).DisposeWith(InternalDisposables);
 
         InternalDisposables.Add(Disposable.Create(() =>
         {
