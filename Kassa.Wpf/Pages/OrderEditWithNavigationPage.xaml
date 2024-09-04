@@ -10,19 +10,22 @@
     xmlns:local="clr-namespace:Kassa.Wpf"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:mx="clr-namespace:Kassa.Wpf.MarkupExntesions"
-    xmlns:pages="clr-namespace:Kassa.RxUI.Pages;assembly=Kassa.RxUI"
+    xmlns:pages="clr-namespace:Kassa.Wpf.Pages"
+    xmlns:rxpages="clr-namespace:Kassa.RxUI.Pages;assembly=Kassa.RxUI"
     xmlns:rxui="http://reactiveui.net"
     xmlns:sys="clr-namespace:System;assembly=mscorlib"
     xmlns:views="clr-namespace:Kassa.Wpf.Views"
     xmlns:vm="clr-namespace:Kassa.RxUI;assembly=Kassa.RxUI"
     x:Name="Root"
     Padding="{mx:AdaptiveSize Thickness={StaticResource PagePaddingWithFooterSize}}"
-    d:DataContext="{d:DesignInstance Type=pages:OrderEditWithNavigationPageVm}"
+    d:DataContext="{d:DesignInstance Type=rxpages:OrderEditWithNavigationPageVm}"
     d:DesignHeight="450"
     d:DesignWidth="800"
-    x:TypeArguments="pages:OrderEditWithNavigationPageVm"
+    x:TypeArguments="rxpages:OrderEditWithNavigationPageVm"
     Background="{DynamicResource Theme}"
     mc:Ignorable="d">
+
+    <pages:OrderEditWithNavigationPageItem ViewModel="{Binding Current, Mode=OneWay}" />
 
     <local:MainWindow.PageFooter>
 
@@ -30,13 +33,31 @@
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <controls:ButtonWithCornerRaduis Command="{Binding MainViewModel.GoBackCommand}" Style="{StaticResource BackButton}" />
 
-            <controls:ButtonWithIcon
+            <CheckBox
+                x:Name="HasReceipt"
                 Grid.Column="1"
+                Width="{mx:AdaptiveSize 175}"
+                Margin="{mx:AdaptiveSize Thickness='10,0,0,0'}"
+                HorizontalAlignment="Right"
+                IsChecked="{Binding Current.IsOutOfTurn}"
+                Style="{StaticResource BorderToggleCheckbox}">
+                <StackPanel Orientation="Horizontal">
+                    <Path Data="{StaticResource StarIcon}" Fill="{StaticResource AlternateForeground}" />
+                    <TextBlock
+                        Margin="{mx:AdaptiveSize Thickness='12,0,0,0'}"
+                        Style="{StaticResource EllipseStatusTextBlock}"
+                        Text="Вне очереди" />
+                </StackPanel>
+            </CheckBox>
+
+            <controls:ButtonWithIcon
+                Grid.Column="2"
                 Margin="{mx:AdaptiveSize Thickness='50,0,0,0'}"
                 HorizontalAlignment="Right"
                 VerticalContentAlignment="Center"
@@ -48,7 +69,7 @@
                 Style="{StaticResource ToggableBorderIconButton}" />
 
             <controls:ButtonWithIcon
-                Grid.Column="2"
+                Grid.Column="3"
                 HorizontalAlignment="Right"
                 VerticalContentAlignment="Center"
                 BorderBrush="{DynamicResource AlternateForeground}"

@@ -54,6 +54,8 @@ public sealed class SimpleRouter : ContentControl
             [typeof(Kassa.RxUI.Pages.PersonalPageVm)] = () => new Kassa.Wpf.Pages.PersonalPage(),
             [typeof(Kassa.RxUI.Pages.PincodePageVm)] = () => new Kassa.Wpf.Pages.PincodePage(),
             [typeof(Kassa.RxUI.Pages.ServicePageVm)] = () => new Kassa.Wpf.Pages.ServicePage(),
+            [typeof(Kassa.RxUI.Pages.OrderEditWithNavigationPageVm)] = () => new Kassa.Wpf.Pages.OrderEditWithNavigationPage(),
+            [typeof(Kassa.RxUI.Pages.OrderEditWithNavigationPageItemVm)] = () => new Kassa.Wpf.Pages.OrderEditWithNavigationPageItem(),
             [typeof(Kassa.RxUI.Dialogs.AllClientsDialogViewModel)] = () => new Kassa.Wpf.Dialogs.AllClientsDialog(),
             [typeof(Kassa.RxUI.Dialogs.AllDistrictsDialogViewModel)] = () => new Kassa.Wpf.Dialogs.AllDistrictsDialog(),
             [typeof(Kassa.RxUI.Dialogs.AreYouSureToTurnOffDialogViewModel)] = () => new Kassa.Wpf.Dialogs.AreYouSureToTurnOffDialog(),

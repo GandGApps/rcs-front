@@ -65,6 +65,14 @@ public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
             .Subscribe(x => ShoppingList.Subtotal = x)
             .DisposeWith(InternalDisposables);
 
+        this.WhenAnyValue(x => x.IsOutOfTurn)
+            .BindTo(orderEditDto, x => x.IsOutOfTurn)
+            .DisposeWith(InternalDisposables);
+
+        this.WhenAnyValue(x => x.TotalComment)
+            .BindTo(orderEditDto, x => x.Comment)
+            .DisposeWith(InternalDisposables);
+
         CreateTotalCommentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             var dialog = new CommentDialogViewModel(this)
@@ -485,6 +493,12 @@ public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
 
     [Reactive]
     public bool IsShowPrice
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public bool IsOutOfTurn
     {
         get; set;
     }
