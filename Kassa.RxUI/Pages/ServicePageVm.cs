@@ -126,6 +126,65 @@ public sealed class ServicePageVm : PageViewModel
             await MainViewModel.ShowDialogAndWaitClose(dialog);
         });
 
+        OpenClosedOrderCommand = CreatePageBusyCommand<ServiceOrderRowViewModel, Unit>(async x =>
+        {
+            BusyText = "Открытие заказа";
+
+            var closedOrders = new ServiceOrderRowViewModel[ClosedOrders!.Count];
+            ClosedOrders!.CopyTo(closedOrders, 0);
+
+            var orderEdits = new OrderEditDto[closedOrders.Length];
+
+            for(var i = 0; i < closedOrders.Length; i++)
+            {
+                orderEdits[i] = await _cashierService.CreateOrder(closedOrders[i].Order!);
+            }
+
+            var closedOrder = orderEdits.First(x => x.Id == x.Id);
+            var orderEditWithNavigationPageVm = new OrderEditWithNavigationPageVm(new(orderEdits), closedOrder);
+
+            await MainViewModel.GoToPage(orderEditWithNavigationPageVm);
+
+            return Unit.Default;
+        });
+
+        OpenOfClosedShiftOrderCommand = CreatePageBusyCommand<ServiceOrderRowViewModel, Unit>(async x =>
+        {
+            BusyText = "Открытие заказа";
+
+            var closedOrders = new ServiceOrderRowViewModel[OrdersOfClosedCashShifts!.Count];
+            OrdersOfClosedCashShifts!.CopyTo(closedOrders, 0);
+
+            var orderEdits = new OrderEditDto[closedOrders.Length];
+
+            for (var i = 0; i < closedOrders.Length; i++)
+            {
+                orderEdits[i] = await _cashierService.CreateOrder(closedOrders[i].Order!);
+            }
+
+            var closedOrder = orderEdits.First(x => x.Id == x.Id);
+            var orderEditWithNavigationPageVm = new OrderEditWithNavigationPageVm(new(orderEdits), closedOrder);
+
+            await MainViewModel.GoToPage(orderEditWithNavigationPageVm);
+
+            return Unit.Default;
+        });
+
+        OpenOpenOrderCommand = CreatePageBusyCommand<ServiceOrderRowViewModel, Unit>(async x =>
+        {
+            BusyText = "Открытие заказа";
+
+            var openOrders = new OrderEditDto[_cashierService.Orders.Count];
+            _cashierService.Orders.CopyTo(openOrders, 0);
+
+            var orderEdit = openOrders.First(x => x.Id == x.Id);
+            var orderEditWithNavigationPageVm = new OrderEditWithNavigationPageVm(new(openOrders), orderEdit);
+
+            await MainViewModel.GoToPage(orderEditWithNavigationPageVm);
+
+            return Unit.Default;
+        });
+
         _shiftService.IsCashierShiftStartedObservable()
             .ToPropertyEx(this, x => x.IsShiftOpenned)
             .DisposeWith(InternalDisposables);
@@ -273,7 +332,7 @@ public sealed class ServicePageVm : PageViewModel
         get;
     }
 
-    public ReactiveCommand<ServiceOrderRowViewModel, Unit> OpenClosedShiftOrderCommand
+    public ReactiveCommand<ServiceOrderRowViewModel, Unit> OpenOfClosedShiftOrderCommand
     {
         get;
     }

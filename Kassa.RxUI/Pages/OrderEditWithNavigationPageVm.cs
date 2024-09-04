@@ -8,6 +8,8 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Dto;
+using Kassa.BuisnessLogic.Services;
+using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
@@ -39,37 +41,65 @@ public sealed class OrderEditWithNavigationPageVm : PageViewModel
         get;
     }
 
-    public OrderEditWithNavigationPageVm(ReadOnlyCollection<OrderEditDto> orderEditDtos)
+    public OrderEditWithNavigationPageVm(ReadOnlyCollection<OrderEditDto> orderEditDtos, OrderEditDto orderEditDto)
     {
         _orderEditDtos = orderEditDtos;
 
+        var index = orderEditDtos.IndexOf(orderEditDto);
+        if (index == -1)
+        {
+            throw new ArgumentException("Order edit not found in the list", nameof(orderEditDto));
+        }
 
-        this.WhenAnyValue(x => x.CurrentIndex)
-            .Select(index => _navigationItems[_orderEditDtos[index]])
-            .ToPropertyEx(this, x => x.Current)
-            .DisposeWith(InternalDisposables);
+        CurrentIndex = index;
+
+        _navigationItems[orderEditDto] = CreateOrderEditWithNavigationPageItemVm(orderEditDto);
 
         var previousOrderEditCommandValidation = this.WhenAnyValue(x => x.CurrentIndex)
             .Select(index => index > 0);
 
 
-        PreviousOrderEditCommand = ReactiveCommand.Create(() =>
+        PreviousOrderEditCommand = CreatePageBusyCommand(async () =>
         {
-            if (CurrentIndex > 0)
+            BusyText = "Загрузка...";
+            if (CurrentIndex <= 0)
             {
-                CurrentIndex--;
+                return;
             }
+            var i = CurrentIndex - 1;
+            var orderEdit = _orderEditDtos[i];
+
+            if (!_navigationItems.TryGetValue(orderEdit, out var item))
+            {
+                item = CreateOrderEditWithNavigationPageItemVm(orderEdit);
+                await item.InitializeAsync();
+                _navigationItems[orderEdit] = item;
+            }
+
+            CurrentIndex = i;
+
         }, previousOrderEditCommandValidation).DisposeWith(InternalDisposables);
 
         var nextOrderEditCommandValidation = this.WhenAnyValue(x => x.CurrentIndex)
             .Select(index => index < _orderEditDtos.Count - 1);
 
-        NextOrderEditCommand = ReactiveCommand.Create(() =>
+        NextOrderEditCommand = CreatePageBusyCommand(async() =>
         {
-            if (CurrentIndex < _orderEditDtos.Count - 1)
+            if (CurrentIndex >= _orderEditDtos.Count - 1)
             {
-                CurrentIndex++;
+                return;
             }
+            var i = CurrentIndex + 1;
+            var orderEdit = _orderEditDtos[i];
+
+            if (!_navigationItems.TryGetValue(orderEdit, out var item))
+            {
+                item = CreateOrderEditWithNavigationPageItemVm(orderEdit);
+                await item.InitializeAsync();
+                _navigationItems[orderEdit] = item;
+            }
+
+            CurrentIndex = i;
         }, nextOrderEditCommandValidation).DisposeWith(InternalDisposables);
 
         InternalDisposables.Add(Disposable.Create(() =>
@@ -79,6 +109,34 @@ public sealed class OrderEditWithNavigationPageVm : PageViewModel
                 navigationItem.Dispose();
             }
         }));
+    }
+
+    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    {
+        await base.InitializeAsync(disposables);
+
+        var currentOrderEdit = _orderEditDtos[CurrentIndex];
+
+        await _navigationItems[currentOrderEdit].InitializeAsync();
+
+        this.WhenAnyValue(x => x.CurrentIndex)
+            .Select(index => _navigationItems[_orderEditDtos[index]])
+            .ToPropertyEx(this, x => x.Current)
+            .DisposeWith(InternalDisposables);
+    }
+
+    private static OrderEditWithNavigationPageItemVm CreateOrderEditWithNavigationPageItemVm(OrderEditDto orderEdit)
+    {
+        // TODO: use constructor injection
+        var ingridientsService = RcsLocator.GetRequiredService<IIngridientsService>();
+        var storageScope = ingridientsService.CreateStorageScope();
+        var cashierService = RcsLocator.GetRequiredService<ICashierService>();
+        var additiveService = RcsLocator.GetRequiredService<IAdditiveService>();
+        var productService = RcsLocator.GetRequiredService<IProductService>();
+        var categoryService = RcsLocator.GetRequiredService<ICategoryService>();
+        var receiptService = RcsLocator.GetRequiredService<IReceiptService>();
+
+        return new OrderEditWithNavigationPageItemVm(orderEdit, storageScope, cashierService, additiveService, productService, categoryService, receiptService, ingridientsService);
     }
 
 }

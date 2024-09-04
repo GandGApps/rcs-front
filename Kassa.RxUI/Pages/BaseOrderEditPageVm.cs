@@ -16,6 +16,7 @@ using System.Reactive.Linq;
 using DynamicData.Binding;
 using DynamicData;
 using Kassa.Shared.ServiceLocator;
+using Splat;
 
 namespace Kassa.RxUI.Pages;
 public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
@@ -55,6 +56,21 @@ public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
         CurrentHostedItems = new(_currentCategoryItems);
 
         ShoppingList = new(this, _productService, _receiptService, _additiveService);
+
+        foreach(var productShoppingListItem in orderEditDto.Products)
+        {
+
+            if(!_productService.RuntimeProducts.TryGetValue(productShoppingListItem.ItemId, out var productDto))
+            {
+                this.Log().Error($"Product with id {productShoppingListItem.ItemId} not found");
+                continue;
+            }
+
+            var productVm = new ProductShoppingListItemViewModel(productShoppingListItem, productDto, _productService.RuntimeProducts, this, _receiptService, _additiveService);
+
+            ShoppingList.AddProductShoppingListItemUnsafe(productVm);
+        }
+
         ShoppingList.DisposeWith(InternalDisposables);
 
         ShoppingList.ProductShoppingListItems

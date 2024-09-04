@@ -222,6 +222,7 @@
                 IsReadOnly="True"
                 RowStyle="{DynamicResource DataGridRowStyle}"
                 Style="{StaticResource PrimaryDataGrid}">
+
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Width="*"
@@ -304,7 +305,9 @@
                 ColumnHeaderStyle="{DynamicResource PrimaryDataGridColumnHeader}"
                 IsReadOnly="True"
                 RowStyle="{DynamicResource DataGridRowStyle}"
+                SelectedCellsChanged="OpenClosedOrdersOfClosedShifts"
                 Style="{StaticResource PrimaryDataGrid}">
+
                 <DataGrid.Columns>
                     <DataGridTextColumn
                         Width="*"
@@ -396,6 +399,7 @@
                 IsReadOnly="True"
                 ItemsSource="{Binding SelectedOrders}"
                 RowStyle="{DynamicResource DataGridRowStyle}"
+                SelectedCellsChanged="OpenClosedOrdersOfClosedShifts"
                 Style="{StaticResource PrimaryDataGrid}">
                 <DataGrid.Columns>
                     <DataGridTextColumn
