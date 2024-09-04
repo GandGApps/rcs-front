@@ -75,17 +75,7 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
 
     public async ValueTask<OrderEditDto> CreateOrder(OrderDto order)
     {
-        var orderEdit = new OrderEditDto()
-        {
-            Id = order.Id,
-            CreatedAt = order.CreatedAt,
-            Status = order.Status,
-            IsForHere = order.IsForHere,
-            IsDelivery = order.IsDelivery,
-            DeliveryTime = order.DeliveryTime,
-            CourierId = order.CourierId,
-            Comment = order.Comment,
-        };
+        var orderEdit = Mapper.MapOrderDtoToOrderEditDto(order);
 
         if (order.Products is not null)
         {
@@ -108,7 +98,10 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
             }
         }
 
-        _orders.Add(orderEdit);
+
+        // We don't need to add order to the list of orders
+        // because it is use to read data from the database
+        //_orders.Add(orderEdit);
 
         return orderEdit;
     }

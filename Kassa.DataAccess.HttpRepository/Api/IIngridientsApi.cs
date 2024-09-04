@@ -18,14 +18,14 @@ internal interface IIngridientsApi : IUseMemberToken
 }
 
 internal sealed record IngridientRequest(
-    [property: JsonPropertyName("ingr_id")] Guid Id,
+    [property: JsonPropertyName("id")] Guid Id,
     [property: JsonPropertyName("title")] string Title,
     [property: JsonPropertyName("count")] double Count);
 
 
 internal sealed record IngredientResponse
 {
-    [JsonPropertyName("ingridients_id")]
+    [JsonPropertyName("id")]
     public Guid IngredientsId
     {
         get; init;
