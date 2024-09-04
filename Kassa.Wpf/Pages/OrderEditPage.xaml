@@ -755,8 +755,6 @@
                 IsEnabled="True"
                 Style="{StaticResource ToggableBorderIconButton}" />
 
-
-
             <controls:ButtonWithIcon
                 Grid.Column="3"
                 HorizontalAlignment="Right"
