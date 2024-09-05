@@ -28,7 +28,7 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
     {
         try
         {
-            return new Printer(printerName);
+            return new Printer(printerName, "utf-8");
         }
         catch (Exception ex)
         {

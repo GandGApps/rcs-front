@@ -15,6 +15,10 @@ public sealed class FrozenMemoryCache<T>(TimeSpan cacheDuration) : IReadOnlyDict
     private readonly TimeSpan _cacheDuration = cacheDuration;
     private DateTime _lastRefreshTime = DateTime.MinValue;
 
+    public FrozenMemoryCache() : this(TimeSpan.FromMinutes(15))
+    {
+    }
+
     public void Refresh(IEnumerable<T> items)
     {
         _cache = items.ToFrozenDictionary(x => x.Id);
