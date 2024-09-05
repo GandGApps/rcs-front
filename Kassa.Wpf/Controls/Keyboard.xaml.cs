@@ -149,12 +149,14 @@ public partial class Keyboard : UserControl, IActivatableView
             Text = "Ru",
         };
         var ruKeyboardInfo = KeyboardInfo.RuKeyboard(changeToEnKeyInfo);
+        ruKeyboardInfo.PercentageKeyHeight = 0.60;
 
         var changeToRuKeyInfo = new KeyInfo()
         {
             Text = "En",
         };
         var enKeyboardInfo = KeyboardInfo.EnKeyboard(changeToRuKeyInfo);
+        enKeyboardInfo.PercentageKeyHeight = 0.60;
 
         changeToEnKeyInfo.Command = ReactiveCommand.Create(() =>
         {
@@ -167,6 +169,33 @@ public partial class Keyboard : UserControl, IActivatableView
         });
 
         KeyboardInfo = ruKeyboardInfo;
+
+        Loaded += (s, e) =>
+        {
+            // Подписываемся на изменение размера родителя
+            if (Parent is FrameworkElement parent && KeyboardInfo.PercentageKeyHeight.HasValue)
+            {
+
+                // Вычисляем 70% от высоты родителя
+                var height = parent.ActualHeight * KeyboardInfo.PercentageKeyHeight.Value;
+
+                // Устанавливаем высоту UserControl
+                Height = height;
+
+                parent.SizeChanged += (_, _) =>
+                {
+                    if (Parent is FrameworkElement parent && KeyboardInfo.PercentageKeyHeight.HasValue)
+                    {
+                        // Вычисляем 70% от высоты родителя
+                        var height = parent.ActualHeight * KeyboardInfo.PercentageKeyHeight.Value;
+
+                        // Устанавливаем высоту UserControl
+                        Height = height;
+                    }
+                };
+            }
+
+        };
 
         this.WhenActivated(disposables =>
         {
@@ -188,6 +217,10 @@ public partial class Keyboard : UserControl, IActivatableView
                             HorizontalAlignment = HorizontalAlignment.Center,
                             Focusable = false,
                         };
+
+                        var lineDisposable = new CompositeDisposable();
+
+                        lineGrid.Unloaded += (_, _) => lineDisposable.Dispose();
 
                         var size = 0d;
                         Thickness margin;
@@ -351,11 +384,25 @@ public partial class Keyboard : UserControl, IActivatableView
                         var targetWidth = ActualWidth / x.LineStarWidth * (size);
                         Debug.WriteLine($"Target width for the keyboard {targetWidth}");
 
-                        var adaptiveHeight = new AdaptiveSizeExtension(x.KeyHeight + 4);
-                        var bindingHeight = (BindingBase)adaptiveHeight.ProvideValue(null!);
+                        if (x.PercentageKeyHeight is not null)
+                        {
+                            this.WhenAnyValue(x => x.ActualHeight)
+                                .Subscribe(_ =>
+                                {
+                                    lineGrid.Height = ActualHeight / x.Lines.Count;
+                                })
+                                .DisposeWith(lineDisposable);
+                        }
+                        else
+                        {
+                            var adaptiveHeight = new AdaptiveSizeExtension(x.KeyHeight + 4);
+                            var bindingHeight = (BindingBase)adaptiveHeight.ProvideValue(null!);
+
+                            lineGrid.SetBinding(HeightProperty, bindingHeight);
+                        }
 
                         lineGrid.Width = targetWidth;
-                        lineGrid.SetBinding(HeightProperty, bindingHeight);
+
 
                         stack.Children.Add(lineGrid);
                     }
@@ -428,7 +475,6 @@ public partial class Keyboard : UserControl, IActivatableView
                 .DisposeWith(disposables);
         });
     }
-
     private void RemoveLastCharacter()
     {
         if (SelectionLength > 0)

@@ -61,6 +61,12 @@ internal sealed record TerminalPostDetails
         get; init;
     }
 
+    [JsonPropertyName("manager")]
+    public Guid? ManagerId
+    {
+        get; init;
+    }
+
     [JsonPropertyName("openDate")]
     public DateTime? OpenDate
     {
@@ -93,6 +99,12 @@ internal sealed record TerminalPostDetails
 
     [JsonPropertyName("createdAt")]
     public DateTime CreatedAt
+    {
+        get; init;
+    }
+
+    [JsonPropertyName("post_number")]
+    public int Number
     {
         get; init;
     }

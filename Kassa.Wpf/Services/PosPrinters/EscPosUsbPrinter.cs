@@ -15,6 +15,7 @@ using System.Windows.Controls;
 using System.Drawing;
 using System.IO;
 using System.Windows.Media.Media3D;
+using System.Windows;
 
 namespace Kassa.Wpf.Services.PosPrinters;
 
@@ -126,6 +127,9 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
         }
 
         // Добавляем бумагу для отрыва */
+        stackPanel.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
+        stackPanel.Arrange(new Rect(0, 0, stackPanel.Width, stackPanel.Height));
+        stackPanel.UpdateLayout();
 
         var renderTargetBitmap = new RenderTargetBitmap(48*3, (int)stackPanel.ActualHeight, 96, 96, System.Windows.Media.PixelFormats.Pbgra32);
         renderTargetBitmap.Render(stackPanel);

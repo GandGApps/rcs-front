@@ -89,7 +89,8 @@ internal sealed class EdgarTerminalShift : ITerminalShift
             IsStarted = _postExistsResponse.Posts.IsOpen,
             MemberId = _manager.Id,
             Start = _start,
-            Number = _postExistsResponse.Posts.PostId.GuidToPrettyInt(),
+            Number = _postExistsResponse.Posts.Number,
+            ManagerId = _postExistsResponse.Posts.ManagerId ?? Guid.Empty,
         };
 
         return _cashierShift;
