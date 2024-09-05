@@ -16,6 +16,11 @@ using System.Drawing;
 using System.IO;
 using System.Windows.Media.Media3D;
 using System.Windows;
+using System.Windows.Documents;
+using System.Reflection.Metadata;
+using System.Windows.Media;
+using System.Xml.Linq;
+using System.Drawing.Imaging;
 
 namespace Kassa.Wpf.Services.PosPrinters;
 
@@ -76,36 +81,51 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
         var productService = RcsLocator.Scoped.GetRequiredService<IProductService>();
         var additiveService = RcsLocator.Scoped.GetRequiredService<IAdditiveService>();
 
-        var stackPanel = new StackPanel()
-        {
-            Width = 48 * 3,
-        };
-
-        var textBlock = new TextBlock() { FontFamily = App.LucidaConsoleFont, FontSize = 12, Text = "Кто проитает тот л" };
-
-        stackPanel.Children.Add(textBlock);
+        var document = new FlowDocument();
 
         foreach (var orderedProduct in order.Products)
         {
-            productIndex++;
-            var product = productService.RuntimeProducts[orderedProduct.ProductId];
-            stackPanel.Children.Add(new TextBlock()
+
+            var product = await productService.GetProductById(orderedProduct.ProductId);
+
+            if (product is null)
             {
-                FontFamily = App.LucidaConsoleFont,
+                continue;
+            }
+
+            var productText = new TextBlock
+            {
+                Text = $"{product.Name} {orderedProduct.Count}x{product.Price}",
                 FontSize = 12,
-                Text = $"{productIndex}){product.Name} {orderedProduct.Count}{product.Measure} {orderedProduct.TotalPrice}{product.CurrencySymbol}"
-            });
+                Margin = new Thickness(0, 0, 0, 0),
+                FontFamily = App.LucidaConsoleFont
+            };
+
+            document.Blocks.Add(new BlockUIContainer(productText));
 
             foreach (var orderedAdditive in orderedProduct.Additives)
             {
-                var additive = additiveService.RuntimeAdditives[orderedAdditive.AdditiveId];
-                stackPanel.Children.Add(new TextBlock()
+
+                var additive = await additiveService.GetAdditiveById(orderedAdditive.AdditiveId);
+
+                if (additive is null)
                 {
-                    FontFamily = App.LucidaConsoleFont,
-                    FontSize = 12,
-                    Text = $"    {additive.Name} {orderedAdditive.Count}{orderedAdditive.Measure} {orderedAdditive.TotalPrice}{additive.CurrencySymbol}"
-                });
+                    continue;
+                }
+
+                var additiveText = new TextBlock
+                {
+
+                    Text = $"  {additive.Name} {orderedAdditive.Count}x{additive.Price}",
+                    FontSize = 10,
+                    Margin = new Thickness(0, 0, 0, 0),
+                    FontFamily = App.LucidaConsoleFont
+                };
+
+                document.Blocks.Add(new BlockUIContainer(additiveText));
             }
+
+            productIndex++;
         }
 
         /*printer.Append("Кто прочитает тот л");
@@ -127,26 +147,8 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
         }
 
         // Добавляем бумагу для отрыва */
-        stackPanel.Measure(new System.Windows.Size(double.PositiveInfinity, double.PositiveInfinity));
-        stackPanel.Arrange(new Rect(0, 0, stackPanel.Width, stackPanel.Height));
-        stackPanel.UpdateLayout();
 
-        var renderTargetBitmap = new RenderTargetBitmap(48*3, (int)stackPanel.ActualHeight, 96, 96, System.Windows.Media.PixelFormats.Pbgra32);
-        renderTargetBitmap.Render(stackPanel);
-
-        Bitmap bitmap;
-
-        using (var stream = new MemoryStream())
-        {
-            // Сохраните изображение в формате PNG
-            var pngBitmapEncoder = new PngBitmapEncoder();
-            pngBitmapEncoder.Frames.Add(BitmapFrame.Create(renderTargetBitmap));
-            pngBitmapEncoder.Save(stream);
-
-            // Преобразуйте поток в Bitmap
-            stream.Seek(0, SeekOrigin.Begin);
-            bitmap = new Bitmap(stream);
-        }
+        var bitmap = Render(document, 48*3);
 
         printer.Image(bitmap);
 
@@ -167,5 +169,35 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
         printer.Append(new byte[] { 0x1B, 0x07, 0x00 });*/
 
         printer.PrintDocument();
+    }
+
+    private static Bitmap Render(FlowDocument flowDocument, double width)
+    {
+        var documentPaginatorSource = (IDocumentPaginatorSource)flowDocument;
+
+        var viewer = new FlowDocumentPageViewer
+        {
+            Document = documentPaginatorSource,
+            Width = width,  // Устанавливаем ширину, высота будет автоматически подстроена
+        };
+
+        // Принудительно измеряем и устраиваем визуализацию контента
+        viewer.Measure(new System.Windows.Size(width, double.PositiveInfinity));
+        viewer.Arrange(new Rect(new System.Windows.Size(width, viewer.DesiredSize.Height)));
+
+        // Теперь захватываем рендер как изображение
+        var rtb = new RenderTargetBitmap((int)viewer.ActualWidth, (int)viewer.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+        rtb.Render(viewer);
+
+        return ConvertBitmapSourceToBitmap(rtb);
+    }
+
+    private static Bitmap ConvertBitmapSourceToBitmap(BitmapSource bitmapSource)
+    {
+        var bmp = new Bitmap(bitmapSource.PixelWidth, bitmapSource.PixelHeight, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+        var data = bmp.LockBits(new Rectangle(System.Drawing.Point.Empty, bmp.Size), ImageLockMode.WriteOnly, System.Drawing.Imaging.PixelFormat.Format32bppPArgb);
+        bitmapSource.CopyPixels(Int32Rect.Empty, data.Scan0, data.Height * data.Stride, data.Stride);
+        bmp.UnlockBits(data);
+        return bmp;
     }
 }

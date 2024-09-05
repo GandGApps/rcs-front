@@ -89,7 +89,7 @@ internal sealed class EscPosPrinter : BuisnessLogic.Services.IPrinter, IEnableLo
             e.PrintLine(LeftAndRightText("Инкассация", "0", 48)),
             e.PrintLine(string.Empty),
             e.PrintLine("Внимание! Приведенные суммы могут отличаться от сумм фискального регистратора!"),
-            e.FullCut()
+            e.FullCut(),
         };
 
         _printer.Write(commands.ToArray());
