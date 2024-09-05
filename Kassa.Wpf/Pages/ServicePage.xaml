@@ -305,7 +305,6 @@
                 ColumnHeaderStyle="{DynamicResource PrimaryDataGridColumnHeader}"
                 IsReadOnly="True"
                 RowStyle="{DynamicResource DataGridRowStyle}"
-                SelectedCellsChanged="OpenClosedOrdersOfClosedShifts"
                 Style="{StaticResource PrimaryDataGrid}">
 
                 <DataGrid.Columns>
@@ -397,9 +396,8 @@
                 CellStyle="{DynamicResource DataGridCellStyle}"
                 ColumnHeaderStyle="{DynamicResource PrimaryDataGridColumnHeader}"
                 IsReadOnly="True"
-                ItemsSource="{Binding SelectedOrders}"
+                MouseDoubleClick="OpenClosedOrdersOfClosedShifts"
                 RowStyle="{DynamicResource DataGridRowStyle}"
-                SelectedCellsChanged="OpenClosedOrdersOfClosedShifts"
                 Style="{StaticResource PrimaryDataGrid}">
                 <DataGrid.Columns>
                     <DataGridTextColumn

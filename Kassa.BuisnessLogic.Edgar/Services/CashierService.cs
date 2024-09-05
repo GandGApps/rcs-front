@@ -62,7 +62,7 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
             Id = Guid.NewGuid(),
             CreatedAt = DateTime.Now,
             Status = OrderStatus.New,
-            IsForHere = !isDelivery,
+            IsPickup = !isDelivery,
             ShowPrice = true,
             IsStopList = false,
             IsDelivery = isDelivery,

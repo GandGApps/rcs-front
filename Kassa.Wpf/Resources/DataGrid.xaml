@@ -101,7 +101,8 @@
                                             <ScrollBar
                                                 x:Name="PART_VerticalScrollBar"
                                                 Grid.Row="1"
-                                                Grid.Column="2"
+                                                Grid.ColumnSpan="2"
+                                                HorizontalAlignment="Right"
                                                 Maximum="{TemplateBinding ScrollableHeight}"
                                                 Orientation="Vertical"
                                                 Style="{StaticResource PrimaryScrollBar}"

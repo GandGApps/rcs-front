@@ -35,9 +35,6 @@
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
             </Grid.ColumnDefinitions>
 
             <Grid.Resources>
@@ -94,36 +91,39 @@
                 Margin="{mx:AdaptiveSize Thickness='50,0,0,0'}"
                 HorizontalAlignment="Right"
                 VerticalContentAlignment="Center"
-                Command="{Binding GoToAllOrdersCommand}"
+                Command="{Binding MainViewModel.GoBackCommand}"
                 Content="ВСЕ ЗАКАЗЫ"
                 Foreground="{DynamicResource AlternateForeground}"
                 Icon="{StaticResource AllOrdersIcon}"
                 IsEnabled="True"
                 Style="{StaticResource ToggableBorderIconButton}" />
 
-            <Button
-                Grid.Column="4"
-                Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
-                Command="{Binding PreviousOrderEditCommand}"
-                Style="{StaticResource ArrowButton}">
-                <Path
-                    Width="{mx:AdaptiveSize 32}"
-                    Height="{mx:AdaptiveSize 32}"
-                    Data="{StaticResource LeftArrowIcon}"
-                    Fill="{DynamicResource AlternateForeground}" />
-            </Button>
+            <StackPanel
+                Grid.ColumnSpan="5"
+                HorizontalAlignment="Center"
+                Orientation="Horizontal">
+                <Button
+                    Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
+                    Command="{Binding PreviousOrderEditCommand}"
+                    Style="{StaticResource ArrowButton}">
+                    <Path
+                        Width="{mx:AdaptiveSize 32}"
+                        Height="{mx:AdaptiveSize 32}"
+                        Data="{StaticResource LeftArrowIcon}"
+                        Fill="{DynamicResource AlternateForeground}" />
+                </Button>
 
-            <Button
-                Grid.Column="5"
-                Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
-                Command="{Binding NextOrderEditCommand}"
-                Style="{StaticResource ArrowButton}">
-                <Path
-                    Width="{mx:AdaptiveSize 32}"
-                    Height="{mx:AdaptiveSize 32}"
-                    Data="{StaticResource RightArraowIcon}"
-                    Fill="{DynamicResource AlternateForeground}" />
-            </Button>
+                <Button
+                    Width="{Binding ActualHeight, RelativeSource={RelativeSource Self}}"
+                    Command="{Binding NextOrderEditCommand}"
+                    Style="{StaticResource ArrowButton}">
+                    <Path
+                        Width="{mx:AdaptiveSize 32}"
+                        Height="{mx:AdaptiveSize 32}"
+                        Data="{StaticResource RightArraowIcon}"
+                        Fill="{DynamicResource AlternateForeground}" />
+                </Button>
+            </StackPanel>
 
             <controls:ButtonWithIcon
                 Grid.Column="8"

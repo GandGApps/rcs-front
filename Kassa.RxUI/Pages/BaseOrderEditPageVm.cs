@@ -89,6 +89,10 @@ public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
             .BindTo(orderEditDto, x => x.Comment)
             .DisposeWith(InternalDisposables);
 
+        this.WhenAnyValue(x => x.IsForHere)
+            .BindTo(orderEditDto, x => x.IsForHere)
+            .DisposeWith(InternalDisposables);
+
         CreateTotalCommentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             var dialog = new CommentDialogViewModel(this)
@@ -304,9 +308,14 @@ public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
             await MainViewModel.ShowDialogAndWaitClose(dialog);
         });
 
-        GoToAllOrdersCommand = ReactiveCommand.CreateFromTask(() =>
+        GoToAllOrdersCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            return Task.CompletedTask;
+            var shiftService = RcsLocator.GetRequiredService<IShiftService>();  
+            var ordersServcice = RcsLocator.GetRequiredService<IOrdersService>();
+
+            var servicePage = new ServicePageVm(_cashierService, shiftService, ordersServcice, _productService);
+
+            await MainViewModel.GoToPage(servicePage);
         });
 
         GoToAllDeliveriesPageCommand = ReactiveCommand.CreateFromTask(async () =>
