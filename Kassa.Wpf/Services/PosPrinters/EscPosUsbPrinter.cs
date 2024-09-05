@@ -10,6 +10,11 @@ using Splat;
 using Kassa.BuisnessLogic;
 using Kassa.Shared;
 using Kassa.Shared.ServiceLocator;
+using System.Windows.Media.Imaging;
+using System.Windows.Controls;
+using System.Drawing;
+using System.IO;
+using System.Windows.Media.Media3D;
 
 namespace Kassa.Wpf.Services.PosPrinters;
 
@@ -70,7 +75,40 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
         var productService = RcsLocator.Scoped.GetRequiredService<IProductService>();
         var additiveService = RcsLocator.Scoped.GetRequiredService<IAdditiveService>();
 
-        printer.Append("Кто прочитает тот л");
+        var stackPanel = new StackPanel()
+        {
+            Width = 48 * 3,
+        };
+
+        var textBlock = new TextBlock() { FontFamily = App.LucidaConsoleFont, FontSize = 12, Text = "Кто проитает тот л" };
+
+        stackPanel.Children.Add(textBlock);
+
+        foreach (var orderedProduct in order.Products)
+        {
+            productIndex++;
+            var product = productService.RuntimeProducts[orderedProduct.ProductId];
+            stackPanel.Children.Add(new TextBlock()
+            {
+                FontFamily = App.LucidaConsoleFont,
+                FontSize = 12,
+                Text = $"{productIndex}){product.Name} {orderedProduct.Count}{product.Measure} {orderedProduct.TotalPrice}{product.CurrencySymbol}"
+            });
+
+            foreach (var orderedAdditive in orderedProduct.Additives)
+            {
+                var additive = additiveService.RuntimeAdditives[orderedAdditive.AdditiveId];
+                stackPanel.Children.Add(new TextBlock()
+                {
+                    FontFamily = App.LucidaConsoleFont,
+                    FontSize = 12,
+                    Text = $"    {additive.Name} {orderedAdditive.Count}{orderedAdditive.Measure} {orderedAdditive.TotalPrice}{additive.CurrencySymbol}"
+                });
+            }
+        }
+
+        /*printer.Append("Кто прочитает тот л");
+
 
         foreach (var orderedProduct in order.Products)
         {
@@ -87,21 +125,42 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
             }
         }
 
-        // Добавляем бумагу для отрыва
+        // Добавляем бумагу для отрыва */
+
+        var renderTargetBitmap = new RenderTargetBitmap(48*3, (int)stackPanel.ActualHeight, 96, 96, System.Windows.Media.PixelFormats.Pbgra32);
+        renderTargetBitmap.Render(stackPanel);
+
+        Bitmap bitmap;
+
+        using (var stream = new MemoryStream())
+        {
+            // Сохраните изображение в формате PNG
+            var pngBitmapEncoder = new PngBitmapEncoder();
+            pngBitmapEncoder.Frames.Add(BitmapFrame.Create(renderTargetBitmap));
+            pngBitmapEncoder.Save(stream);
+
+            // Преобразуйте поток в Bitmap
+            stream.Seek(0, SeekOrigin.Begin);
+            bitmap = new Bitmap(stream);
+        }
+
+        printer.Image(bitmap);
+
         printer.Append("\n");
         printer.Append("\n");
         printer.Append("\n");
         printer.Append("\n");
         printer.Append("\n");
 
-        // ESC i C 2 - отрыв бумаги
+
+        /*// ESC i C 2 - отрыв бумаги
         printer.Append(new byte[] { 0x1B, 0x69, 0x43, 0x02 });
 
         // Отключая звук ESC B NUL
         printer.Append(new byte[] { 0x1B, 0x42, 0x00 });
 
         // Отключаем звук ESC BEL NUL
-        printer.Append(new byte[] { 0x1B, 0x07, 0x00 });
+        printer.Append(new byte[] { 0x1B, 0x07, 0x00 });*/
 
         printer.PrintDocument();
     }
