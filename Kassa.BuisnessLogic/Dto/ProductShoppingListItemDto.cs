@@ -96,7 +96,7 @@ public record ProductShoppingListItemDto : IShoppingListItemDto
     {
         get; set;
     }
-    public double TotalSum => SubtotalSum * Discount;
+    public double TotalSum => SubtotalSum - Discount;
 
     public string? Comment
     {

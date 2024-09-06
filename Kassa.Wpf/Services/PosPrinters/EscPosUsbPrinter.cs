@@ -96,8 +96,9 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
 
         var whoReadIs = new TextBlock
         {
-            Text = "Кто прочитает тот л",
-            FontSize = 12,
+            Text = "Внимание! Данный чек лишь демонстрация. Менять верстку чека можно будет чуть позже. А пока дефолтный вариант!",
+            FontSize = 16,
+            FontWeight = FontWeights.Bold,
             Margin = new Thickness(0, 0, 0, 20),
             FontFamily = App.LucidaConsoleFont,
             TextWrapping = TextWrapping.Wrap
@@ -115,16 +116,52 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
                 continue;
             }
 
+            var line = new Grid
+            {
+                ColumnDefinitions =
+                {
+                    new ColumnDefinition() { Width = new GridLength(1, GridUnitType.Star) },
+                    new ColumnDefinition() { Width = GridLength.Auto },
+                }
+            };
+
+
             var productText = new TextBlock
             {
-                Text = $"{product.Name} {orderedProduct.Count}x{product.Price}",
+                Text = $"{productIndex + 1}) {product.Name}",
                 FontSize = 12,
                 Margin = new Thickness(0, 0, 0, 0),
                 FontFamily = App.LucidaConsoleFont,
                 TextWrapping = TextWrapping.Wrap
             };
 
-            document.Children.Add(productText);
+            var productCount = new TextBlock
+            {
+                Text = $" {orderedProduct.Count}x{product.Price} = ",
+                FontSize = 12,
+                TextAlignment = TextAlignment.Right,
+                FontFamily = App.LucidaConsoleFont,
+                TextWrapping = TextWrapping.Wrap
+            };
+
+            Grid.SetColumn(productCount, 1);
+
+            line.Children.Add(productText);
+            line.Children.Add(productCount);
+
+            var totalProductPrice = new TextBlock
+            {
+                Text = $"{orderedProduct.TotalPrice}",
+                FontSize = 12.3,
+                Margin = new Thickness(0, 0, 0, 0),
+                FontWeight = FontWeights.SemiBold,
+                FontFamily = App.LucidaConsoleFont,
+                TextWrapping = TextWrapping.Wrap,
+                TextAlignment = TextAlignment.Right
+            };
+
+            document.Children.Add(line);
+            document.Children.Add(totalProductPrice);
 
             foreach (var orderedAdditive in orderedProduct.Additives)
             {
@@ -138,7 +175,6 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
 
                 var additiveText = new TextBlock
                 {
-
                     Text = $"  {additive.Name} {orderedAdditive.Count}x{additive.Price}",
                     FontSize = 10,
                     Margin = new Thickness(0, 0, 0, 0),
@@ -152,16 +188,28 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
             productIndex++;
         }
 
-        var subText = new TextBlock
+        var subtotal = new TextBlock
         {
-            Text = $"Итого: {order.TotalSum}",
-            FontSize = 12,
+            Text = $"Под итог: {order.SubtotalSum}",
+            FontSize = 13,
+            FontWeight = FontWeights.SemiBold,
             Margin = new Thickness(0, 20, 0, 0),
             FontFamily = App.LucidaConsoleFont,
             TextWrapping = TextWrapping.Wrap
         };
 
-        document.Children.Add(subText);
+        var total = new TextBlock
+        {
+            Text = $"Итого: {order.TotalSum}",
+            FontSize = 14,
+            FontWeight = FontWeights.Bold,
+            Margin = new Thickness(0, 5, 0, 0),
+            FontFamily = App.LucidaConsoleFont,
+            TextWrapping = TextWrapping.Wrap
+        };
+
+        document.Children.Add(subtotal);
+        document.Children.Add(total);
 
         /*printer.Append("Кто прочитает тот л");
 
@@ -183,7 +231,7 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
 
         // Добавляем бумагу для отрыва */
 
-        var bitmap = Render(border, 48 * 10);
+        var bitmap = Render(border, 48 * 7);
 
         bitmap.Save(Path.Combine(App.BasePath, "hi.png"), ImageFormat.Png);
 

@@ -93,6 +93,7 @@ public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
             .BindTo(orderEditDto, x => x.IsForHere)
             .DisposeWith(InternalDisposables);
 
+
         CreateTotalCommentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             var dialog = new CommentDialogViewModel(this)
