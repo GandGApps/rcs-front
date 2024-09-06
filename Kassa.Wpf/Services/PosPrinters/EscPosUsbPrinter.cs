@@ -128,7 +128,7 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
 
             var productText = new TextBlock
             {
-                Text = $"{productIndex + 1}) {product.Name}",
+                Text = $"{productIndex + 1}) {product.Name} {orderedProduct.Count}x{product.Price} = {orderedProduct.TotalPrice}",
                 FontSize = 12,
                 Margin = new Thickness(0, 0, 0, 0),
                 FontFamily = App.LucidaConsoleFont,
@@ -147,9 +147,9 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
             Grid.SetColumn(productCount, 1);
 
             line.Children.Add(productText);
-            line.Children.Add(productCount);
+            //line.Children.Add(productCount);
 
-            var totalProductPrice = new TextBlock
+            /*var totalProductPrice = new TextBlock
             {
                 Text = $"{orderedProduct.TotalPrice}",
                 FontSize = 12.3,
@@ -158,10 +158,10 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
                 FontFamily = App.LucidaConsoleFont,
                 TextWrapping = TextWrapping.Wrap,
                 TextAlignment = TextAlignment.Right
-            };
+            };*/
 
             document.Children.Add(line);
-            document.Children.Add(totalProductPrice);
+            //document.Children.Add(totalProductPrice);
 
             foreach (var orderedAdditive in orderedProduct.Additives)
             {
@@ -232,8 +232,6 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
         // Добавляем бумагу для отрыва */
 
         var bitmap = Render(border, 48 * 7);
-
-        bitmap.Save(Path.Combine(App.BasePath, "hi.png"), ImageFormat.Png);
 
         printer.Image(bitmap);
 
