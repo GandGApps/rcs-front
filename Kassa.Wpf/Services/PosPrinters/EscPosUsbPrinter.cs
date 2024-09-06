@@ -81,7 +81,29 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
         var productService = RcsLocator.Scoped.GetRequiredService<IProductService>();
         var additiveService = RcsLocator.Scoped.GetRequiredService<IAdditiveService>();
 
-        var document = new FlowDocument();
+        var border = new Border
+        {
+            Background = System.Windows.Media.Brushes.White,
+            Padding = new(20)
+        };
+
+        var document = new StackPanel
+        {
+            
+        };
+
+        border.Child = document;
+
+        var whoReadIs = new TextBlock
+        {
+            Text = "Кто прочитает тот л",
+            FontSize = 12,
+            Margin = new Thickness(0, 0, 0, 20),
+            FontFamily = App.LucidaConsoleFont,
+            TextWrapping = TextWrapping.Wrap
+        };
+
+        document.Children.Add(whoReadIs);
 
         foreach (var orderedProduct in order.Products)
         {
@@ -98,10 +120,11 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
                 Text = $"{product.Name} {orderedProduct.Count}x{product.Price}",
                 FontSize = 12,
                 Margin = new Thickness(0, 0, 0, 0),
-                FontFamily = App.LucidaConsoleFont
+                FontFamily = App.LucidaConsoleFont,
+                TextWrapping = TextWrapping.Wrap
             };
 
-            document.Blocks.Add(new BlockUIContainer(productText));
+            document.Children.Add(productText);
 
             foreach (var orderedAdditive in orderedProduct.Additives)
             {
@@ -119,14 +142,26 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
                     Text = $"  {additive.Name} {orderedAdditive.Count}x{additive.Price}",
                     FontSize = 10,
                     Margin = new Thickness(0, 0, 0, 0),
-                    FontFamily = App.LucidaConsoleFont
+                    FontFamily = App.LucidaConsoleFont,
+                    TextWrapping = TextWrapping.Wrap
                 };
 
-                document.Blocks.Add(new BlockUIContainer(additiveText));
+                document.Children.Add(additiveText);
             }
 
             productIndex++;
         }
+
+        var subText = new TextBlock
+        {
+            Text = $"Итого: {order.TotalSum}",
+            FontSize = 12,
+            Margin = new Thickness(0, 20, 0, 0),
+            FontFamily = App.LucidaConsoleFont,
+            TextWrapping = TextWrapping.Wrap
+        };
+
+        document.Children.Add(subText);
 
         /*printer.Append("Кто прочитает тот л");
 
@@ -148,9 +183,9 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
 
         // Добавляем бумагу для отрыва */
 
-        var bitmap = Render(document, 48*3);
+        var bitmap = Render(border, 48 * 10);
 
-        bitmap = new Bitmap(Path.Combine(App.BasePath, "Assets", "auto.png"));
+        bitmap.Save(Path.Combine(App.BasePath, "hi.png"), ImageFormat.Png);
 
         printer.Image(bitmap);
 
@@ -171,6 +206,19 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
         printer.Append(new byte[] { 0x1B, 0x07, 0x00 });*/
 
         printer.PrintDocument();
+    }
+
+    private static Bitmap Render(FrameworkElement visual, double width)
+    {
+        visual.Width = width;
+
+        visual.Measure(new System.Windows.Size(width, double.PositiveInfinity));
+        visual.Arrange(new Rect(new System.Windows.Size(width, visual.DesiredSize.Height)));
+
+        var rtb = new RenderTargetBitmap((int)visual.ActualWidth, (int)visual.ActualHeight, 96, 96, PixelFormats.Pbgra32);
+        rtb.Render(visual);
+
+        return ConvertBitmapSourceToBitmap(rtb);
     }
 
     private static Bitmap Render(FlowDocument flowDocument, double width)
