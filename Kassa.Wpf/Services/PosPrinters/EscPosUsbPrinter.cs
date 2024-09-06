@@ -150,6 +150,8 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
 
         var bitmap = Render(document, 48*3);
 
+        bitmap = new Bitmap(Path.Combine(App.BasePath, "Assets", "auto.png"));
+
         printer.Image(bitmap);
 
         printer.Append("\n");
@@ -159,10 +161,10 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
         printer.Append("\n");
 
 
-        /*// ESC i C 2 - отрыв бумаги
+        // ESC i C 2 - отрыв бумаги
         printer.Append(new byte[] { 0x1B, 0x69, 0x43, 0x02 });
 
-        // Отключая звук ESC B NUL
+        /*// Отключая звук ESC B NUL
         printer.Append(new byte[] { 0x1B, 0x42, 0x00 });
 
         // Отключаем звук ESC BEL NUL
