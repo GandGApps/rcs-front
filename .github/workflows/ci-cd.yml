@@ -37,7 +37,7 @@ jobs:
         fail-on-error: true
 
     - name: Publish project
-      run: dotnet publish --configuration Release --output ./output ./Kassa.Wpf/Kassa.Wpf.csproj
+      run: dotnet publish --configuration Release --output ./output --self-contained --runtime win-x64 -p:PublishReadyToRun=true ./Kassa.Wpf/Kassa.Wpf.csproj
 
     - name: Commit and Push binaries
       env:
