@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Layout;
 
-namespace Kassa.Wpf.Controls;
-
-
+namespace Kassa.Avalonia.Controls;
 public sealed class FixedColumnsPanel : WrapPanel
 {
-    public static readonly DependencyProperty ColumnsProperty =
-        DependencyProperty.Register("Columns", typeof(int), typeof(FixedColumnsPanel), new PropertyMetadata(default(int)));
+
+    public static StyledProperty<int> ColumnsProperty =
+        AvaloniaProperty.Register<FixedColumnsPanel, int>(nameof(Columns), defaultValue: 0);
 
     public int Columns
     {
-        get => (int)GetValue(ColumnsProperty);
+        get => GetValue(ColumnsProperty);
         set => SetValue(ColumnsProperty, value);
     }
 
@@ -27,26 +27,28 @@ public sealed class FixedColumnsPanel : WrapPanel
     /// <returns></returns>
     protected override Size MeasureOverride(Size availableSize)
     {
-        var children = InternalChildren;
+        base.MeasureOverride(availableSize);
+
+        var children = Children;
         var count = children.Count;
         var rows = count / Columns + (count % Columns > 0 ? 1 : 0);
         var width = availableSize.Width / Columns;
         var height = 80d;
-        foreach (UIElement child in children)
+        foreach (Layoutable child in children)
         {
             var size = new Size(width, availableSize.Height);
             child.Measure(size);
             height = child.DesiredSize.Height;
         }
 
-        return new(availableSize.Width, height*rows);
+        return new(availableSize.Width, height * rows);
     }
 
     protected override Size ArrangeOverride(Size finalSize)
     {
         base.ArrangeOverride(finalSize);
 
-        var children = InternalChildren;
+        var children = Children;
         var count = children.Count;
         /*var rows = count / Columns + (count % Columns > 0 ? 1 : 0);*/
         var width = finalSize.Width / Columns;
@@ -62,6 +64,5 @@ public sealed class FixedColumnsPanel : WrapPanel
         }
         return finalSize;
     }
-
 
 }

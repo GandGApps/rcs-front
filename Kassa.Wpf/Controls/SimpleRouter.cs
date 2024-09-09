@@ -93,9 +93,6 @@ public sealed class SimpleRouter : ContentControl
 
         ViewsFor = viewsFor.ToFrozenDictionary();
 
-        // It's `Kostyl` for logging all views
-        // because I am to lazy to write it manually
-
         /*foreach (var ti in Assembly.GetCallingAssembly().DefinedTypes
                                    .Where(ti => ti.ImplementedInterfaces.Contains(typeof(IViewFor)) && !ti.IsAbstract))
         {

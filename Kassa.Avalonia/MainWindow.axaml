@@ -30,7 +30,9 @@
 
         <!--  Grayscale effect  -->
 
-        <Border Grid.RowSpan="2">
+        <ctrl:GrayscaleBorder Grid.RowSpan="2" Child="{Binding #BorderRootBody}" />
+
+        <Border x:Name="BorderRootBody" Grid.RowSpan="2">
 
             <!--  TODO create grayscale effect  -->
 
