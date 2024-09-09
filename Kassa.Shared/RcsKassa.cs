@@ -13,17 +13,17 @@ public static class RcsKassa
     public const string ProductionName = "Production";
     public const string DevelopmentName = "Development";
 
+    private static IConfiguration? _configuration;
+    public static IConfiguration Configuration
+    {
+        get => _configuration ??= RcsLocator.GetRequiredService<IConfiguration>();
+        set => _configuration = value;
+
+    }
+
     public static readonly CultureInfo RuCulture = new("ru-RU");
 
-    public static string EnvironmentName
-    {
-        get
-        {
-            var config = RcsLocator.GetRequiredService<IConfiguration>();
-
-            return config.GetValue<string>("Environment") ?? ProductionName;
-        }
-    } 
+    public static string EnvironmentName => Configuration.GetValue<string>("Environment") ?? ProductionName;
 
     public static string BasePath => AppDomain.CurrentDomain.BaseDirectory;
 

@@ -134,11 +134,11 @@ public class PersonalPageVm : PageViewModel
 
                 if (orders.Any(x => x.Status is not OrderStatus.Completed and not OrderStatus.Canceled))
                 {
-                    await MainViewModel.OkMessage("Нельзя закрыть смену, пока есть не завершенные заказы",  "JustFailed");
+                    await MainViewModel.OkMessageAsync("Нельзя закрыть смену, пока есть не завершенные заказы",  "JustFailed");
                     return false;
                 }
 
-                await MainViewModel.OkMessage("Смена завершена");
+                await MainViewModel.OkMessageAsync("Смена завершена");
                 await shift.End(pincode);
             }
 

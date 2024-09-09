@@ -93,6 +93,8 @@ public static class SharedServices
         ServiceLocatorBuilder.AddService<IConfiguration>(() => config);
         Locator.CurrentMutable.RegisterConstant<IConfiguration>(config);
 
+        RcsKassa.Configuration = config;
+
         return config;
     }
 }

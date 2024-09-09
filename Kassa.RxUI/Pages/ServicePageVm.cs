@@ -59,7 +59,7 @@ public sealed class ServicePageVm : PageViewModel
                 {
                     this.Log().Error("There are not completed orders in the current cashier shift");
 
-                    await MainViewModel.OkMessage("Не все заказы закрыты или завершены!", "JustFailed");
+                    await MainViewModel.OkMessageAsync("Не все заказы закрыты или завершены!", "JustFailed");
 
                     return false;
                 }

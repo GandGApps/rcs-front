@@ -249,7 +249,7 @@ public abstract class BasePaymentPageVm: PageViewModel, IPaymentVm
         
         PayCommand = ReactiveCommand.CreateFromTask(PayCommandExecute, this.WhenAnyValue(x => x.IsExactAmount));
         Number = orderEditVm.OrderId.GuidToPrettyInt().ToString();
-        WhenOrderStarted = orderEditVm.WhenOrderStarted.ToString("d MMMM yyyy", SharedConstants.RuCulture);
+        WhenOrderStarted = orderEditVm.WhenOrderStarted.ToString("d MMMM yyyy", RcsKassa.RuCulture);
     }
 
     public IPaymentService PaymentService
@@ -574,10 +574,10 @@ public abstract class BasePaymentPageVm: PageViewModel, IPaymentVm
 
         if (Change - 0.001 >= 0)
         {
-            await MainViewModel.OkMessage("Сдача \n" + Change + " " + CurrencySymbol, "");
+            await MainViewModel.OkMessageAsync("Сдача \n" + Change + " " + CurrencySymbol, "");
         }
 
-        await MainViewModel.OkMessage("Оплата прошла успешно", "");
+        await MainViewModel.OkMessageAsync("Оплата прошла успешно", "");
 
         var order = await _cashierService.CreateOrder(false);
 
