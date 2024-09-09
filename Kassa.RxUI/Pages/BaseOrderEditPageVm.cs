@@ -16,6 +16,7 @@ using System.Reactive.Linq;
 using DynamicData.Binding;
 using DynamicData;
 using Kassa.Shared.ServiceLocator;
+using Splat;
 
 namespace Kassa.RxUI.Pages;
 public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
@@ -55,6 +56,21 @@ public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
         CurrentHostedItems = new(_currentCategoryItems);
 
         ShoppingList = new(this, _productService, _receiptService, _additiveService);
+
+        foreach(var productShoppingListItem in orderEditDto.Products)
+        {
+
+            if(!_productService.RuntimeProducts.TryGetValue(productShoppingListItem.ItemId, out var productDto))
+            {
+                this.Log().Error($"Product with id {productShoppingListItem.ItemId} not found");
+                continue;
+            }
+
+            var productVm = new ProductShoppingListItemViewModel(productShoppingListItem, productDto, _productService.RuntimeProducts, this, _receiptService, _additiveService);
+
+            ShoppingList.AddProductShoppingListItemUnsafe(productVm);
+        }
+
         ShoppingList.DisposeWith(InternalDisposables);
 
         ShoppingList.ProductShoppingListItems
@@ -64,6 +80,19 @@ public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
             .Select(x => x.Sum(x => x.SubtotalSum))
             .Subscribe(x => ShoppingList.Subtotal = x)
             .DisposeWith(InternalDisposables);
+
+        this.WhenAnyValue(x => x.IsOutOfTurn)
+            .BindTo(orderEditDto, x => x.IsOutOfTurn)
+            .DisposeWith(InternalDisposables);
+
+        this.WhenAnyValue(x => x.TotalComment)
+            .BindTo(orderEditDto, x => x.Comment)
+            .DisposeWith(InternalDisposables);
+
+        this.WhenAnyValue(x => x.IsForHere)
+            .BindTo(orderEditDto, x => x.IsForHere)
+            .DisposeWith(InternalDisposables);
+
 
         CreateTotalCommentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -280,9 +309,14 @@ public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
             await MainViewModel.ShowDialogAndWaitClose(dialog);
         });
 
-        GoToAllOrdersCommand = ReactiveCommand.CreateFromTask(() =>
+        GoToAllOrdersCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            return Task.CompletedTask;
+            var shiftService = RcsLocator.GetRequiredService<IShiftService>();  
+            var ordersServcice = RcsLocator.GetRequiredService<IOrdersService>();
+
+            var servicePage = new ServicePageVm(_cashierService, shiftService, ordersServcice, _productService);
+
+            await MainViewModel.GoToPage(servicePage);
         });
 
         GoToAllDeliveriesPageCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -485,6 +519,12 @@ public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
 
     [Reactive]
     public bool IsShowPrice
+    {
+        get; set;
+    }
+
+    [Reactive]
+    public bool IsOutOfTurn
     {
         get; set;
     }

@@ -29,6 +29,12 @@ public class KeyboardInfo: ReactiveObject
     } = 60;
 
     [Reactive]
+    public double? PercentageKeyHeight
+    {
+        get; set;
+    }
+
+    [Reactive]
     public double LineStarWidth
     {
         get; set;

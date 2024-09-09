@@ -22,6 +22,11 @@ public interface ICashierService : IInitializableService
 
 
     public ValueTask<OrderEditDto> CreateOrder(bool isDelivery);
+    /// <summary>
+    /// Does not add order to the list of orders
+    /// </summary>
+    /// <param name="order"></param>
+    /// <returns></returns>
     public ValueTask<OrderEditDto> CreateOrder(OrderDto order);
     public ValueTask<IPaymentService> CreatePayment(OrderEditDto order);
 

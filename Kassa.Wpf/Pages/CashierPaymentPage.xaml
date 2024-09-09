@@ -36,6 +36,8 @@
                 <RowDefinition />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
+
+            <controls:ShoppingListPanel x:Name="ShoppingListPanel" />
             <Border
                 x:Name="OrderInfo"
                 Height="{Binding ActualHeight, ElementName=CashierTabPanel}"
@@ -47,7 +49,7 @@
                 <Grid>
 
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="{mx:AdaptiveSize GridLength=136}" />
+                        <ColumnDefinition Width="{mx:AdaptiveSize GridLength=200}" />
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
@@ -57,13 +59,19 @@
                         <RowDefinition Height="Auto" />
                     </Grid.RowDefinitions>
 
-                    <TextBlock Grid.ColumnSpan="3" Style="{StaticResource Header2}"><Run Text="Оплата заказа №" /><Run x:Name="OrderId" d:Text="2345" /></TextBlock>
+                    <TextBlock Grid.ColumnSpan="3" Style="{StaticResource Header2}"><Run Text="Оплата заказа №" /><Run
+                            x:Name="OrderId"
+                            d:Text="2345"
+                            Text="{Binding Number, Mode=OneTime}" /></TextBlock>
 
                     <TextBlock
                         Grid.Row="1"
                         VerticalAlignment="Bottom"
                         Foreground="{DynamicResource AlternateForeground}"
-                        Style="{StaticResource SmallTextBlock}"><Run Text="Открыт " /><Run x:Name="OpenedAt" d:Text="14:55" /></TextBlock>
+                        Style="{StaticResource SmallTextBlock}"><Run Text="Открыт " /><Run
+                            x:Name="OpenedAt"
+                            d:Text="14:55"
+                            Text="{Binding WhenOrderStarted, Mode=OneTime}" /></TextBlock>
 
                     <TextBlock
                         Grid.Row="1"

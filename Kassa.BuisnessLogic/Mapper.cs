@@ -98,8 +98,10 @@ public static partial class Mapper
     [return:NotNullIfNotNull("category")]
     public static partial CategoryDto? MapCategoryToDto(Category? category);
 
-
+    
     public static partial OrderDto MapOrderEditDtoToOrderDto(OrderEditDto orderEditDto);
+    [MapperIgnoreSource(nameof(OrderEditDto.Products))]
+    public static partial OrderEditDto MapOrderDtoToOrderEditDto(OrderDto orderDto);
 
     public static partial ContributionReasonDto MapContributionReasonToDto(ContributionReason ContributionReason);
     public static partial ContributionReason MapDtoToContributionReason(ContributionReasonDto ContributionReason);

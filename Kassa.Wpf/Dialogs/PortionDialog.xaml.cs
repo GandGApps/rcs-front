@@ -21,7 +21,7 @@ namespace Kassa.Wpf.Dialogs;
 /// <summary>
 /// Interaction logic for PortionDialog.xaml
 /// </summary>
-public partial class PortionDialog : ClosableDialog<PortionDialogVm>
+public sealed partial class PortionDialog : ClosableDialog<PortionDialogVm>
 {
     public PortionDialog()
     {
@@ -37,12 +37,30 @@ public partial class PortionDialog : ClosableDialog<PortionDialogVm>
             this.BindCommand(ViewModel, x => x.CurrentMethodOfDivision.ApplyCommand, x => x.OkButton)
                 .DisposeWith(disposables);
 
-            ViewModel.WhenAnyValue(x => x.IsIntoSeveralEqualParts)
-                .Subscribe(x =>
-                {
+            this.OneWayBind(ViewModel, vm => vm.IsIntoSeveralEqualParts, v => v.IntoSeveralEqualParts.Visibility, x => x ? Visibility.Visible : Visibility.Collapsed)
+                .DisposeWith(disposables);
 
-                })
+            this.OneWayBind(ViewModel, vm => vm.IsIntoSeveralEqualParts, v => v.IntoTwoUnequalParts.Visibility, x => !x ? Visibility.Visible : Visibility.Collapsed)
                 .DisposeWith(disposables);
         });
+    }
+
+    private void PartGotFocus(object sender, RoutedEventArgs e)
+    {
+        if(sender is TextBox textBox)
+        {
+            Numpad.TextBox = textBox;
+        }
+    }
+
+    private void PartLostFocus(object sender, RoutedEventArgs e)
+    {
+        if(sender is TextBox textBox)
+        {
+            if(Numpad.TextBox == textBox)
+            {
+                Numpad.TextBox = null;
+            }
+        }
     }
 }

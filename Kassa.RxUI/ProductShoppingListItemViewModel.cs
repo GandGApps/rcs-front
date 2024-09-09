@@ -105,6 +105,9 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
             .Subscribe(x => AddictiveTotalSum = x)
             .DisposeWith(_disposables);
 
+        this.WhenAnyValue(x => x.Price, x => x.Count, (price, count) => price*count)
+            .ToPropertyEx(this, x => x.PositionPrice)
+            .DisposeWith(_disposables);
 
         RemoveCommand = ReactiveCommand.CreateFromTask(() =>
         {
@@ -165,6 +168,10 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
         get; set;
     } = null!;
 
+    /// <summary>
+    /// The base price of a single product unit without any multipliers, additives, or discounts applied.
+    /// This value represents the standard price per unit.
+    /// </summary>
     [Reactive]
     public double Price
     {
@@ -193,6 +200,20 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
     {
         get; set;
     }
+
+    /// <summary>
+    /// Be careful with this property. It is not the actual price of the product.
+    /// This is the price of the product multiplied by <see cref="Count"/>.
+    /// Do not confuse it with the <see cref="Price"/> property, which is the price of a single product.
+    /// Do not confuse it with the <see cref="SubtotalSum"/> property, which is the sum of the product and all additives.
+    /// Do not confuse it with the <see cref="TotalSum"/> property, which is the sum of the product and all additives after applying discounts.
+    /// </summary>
+    public extern double PositionPrice
+    {
+        [ObservableAsProperty]
+        get;
+    }
+
     [Reactive]
     public bool IsSelected
     {
@@ -211,12 +232,20 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
         get; set;
     }
 
+    /// <summary>
+    /// The total sum of the product's base price multiplied by the quantity, including the cost of any additives.
+    /// This value does not include any discounts.
+    /// </summary>
     [Reactive]
     public double SubtotalSum
     {
         get; set;
     }
 
+    /// <summary>
+    /// The total sum of the product's base price multiplied by the quantity, including the cost of any additives, with all applicable discounts applied.
+    /// This value represents the final price to be paid for the product.
+    /// </summary>
     [Reactive]
     public double TotalSum
     {

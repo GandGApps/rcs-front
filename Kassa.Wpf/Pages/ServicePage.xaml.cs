@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kassa.RxUI;
 using Kassa.RxUI.Pages;
 using ReactiveUI;
 
@@ -34,7 +35,7 @@ public partial class ServicePage : ReactiveUserControl<ServicePageVm>
             this.BindCommand(ViewModel, vm => vm.GoBackCommand, v => v.BackButton)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, vm =>  vm.CashierShiftButtonText, v => v.CloseShiftButtonText.Text)
+            this.OneWayBind(ViewModel, vm => vm.CashierShiftButtonText, v => v.CloseShiftButtonText.Text)
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, vm => vm.DepositMoneyCommand, v => v.DepositMoneyButton.Command)
@@ -51,5 +52,22 @@ public partial class ServicePage : ReactiveUserControl<ServicePageVm>
             DataGridClosedShiftClosedOrder.ItemsSource = ViewModel.OrdersOfClosedCashShifts;
 
         });
+    }
+
+
+    /*    private void OpenClosedOrdersOfClosedShifts(object sender, SelectedCellsChangedEventArgs e)
+        {
+            if (DataGridClosedShiftClosedOrder.SelectedItem is ServiceOrderRowViewModel serviceOrderRowViewModel)
+            {
+               ViewModel!.OpenOfClosedShiftOrderCommand.Execute(serviceOrderRowViewModel).Subscribe();
+            }
+        }*/
+
+    private void OpenClosedOrdersOfClosedShifts(object sender, MouseButtonEventArgs e)
+    {
+        if (DataGridClosedShiftClosedOrder.SelectedItem is ServiceOrderRowViewModel serviceOrderRowViewModel)
+        {
+            ViewModel!.OpenOfClosedShiftOrderCommand.Execute(serviceOrderRowViewModel).Subscribe();
+        }
     }
 }

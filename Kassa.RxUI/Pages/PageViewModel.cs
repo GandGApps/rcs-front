@@ -126,6 +126,30 @@ public class PageViewModel : BaseViewModel, IRoutableViewModel
         });
     }
 
+    protected ReactiveCommand<Unit, Unit> CreatePageBusyCommand(Func<Task> execute, IObservable<bool> canExecute)
+    {
+        return ReactiveCommand.CreateFromTask(async () =>
+        {
+            var loading = MainViewModel.ShowLoadingDialog(BusyText);
+
+            try
+            {
+                var disposable = this.WhenAnyValue(d => d.BusyText).Subscribe(text => loading.Message = text);
+
+                using (disposable)
+                {
+                    await execute();
+
+                    BusyText = null;
+                }
+            }
+            finally
+            {
+                await loading.CloseAsync();
+            }
+        }, canExecute);
+    }
+
     public static async ValueTask<bool> TryAuthorizePageAccess<T>(IShiftService shiftservice) where T : PageViewModel
     {
         var mainViewModel = RcsLocator.GetRequiredService<MainViewModel>();

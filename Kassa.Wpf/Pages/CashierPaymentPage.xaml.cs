@@ -9,7 +9,7 @@ namespace Kassa.Wpf.Pages;
 /// <summary>
 /// Логика взаимодействия для CashierPaymentPage.xaml
 /// </summary>
-public partial class CashierPaymentPage : ReactiveUserControl<CashierPaymentPageVm>
+public sealed partial class CashierPaymentPage : ReactiveUserControl<CashierPaymentPageVm>
 {
     public CashierPaymentPage()
     {
@@ -88,6 +88,7 @@ public partial class CashierPaymentPage : ReactiveUserControl<CashierPaymentPage
 
             this.BindCommand(ViewModel, x => x.ExactAmountCommand, x => x.ExactAmount)
                 .DisposeWith(disposables);
+
         });
     }
 }

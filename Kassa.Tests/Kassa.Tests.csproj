@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Kassa.DataAccess\Kassa.DataAccess.csproj" />
+    <ProjectReference Include="..\Kassa.RxUI\Kassa.RxUI.csproj" />
   </ItemGroup>
 
 </Project>

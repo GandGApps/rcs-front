@@ -52,6 +52,18 @@ public sealed class ServicePageVm : PageViewModel
             BusyText = "Закрытие смены";
             try
             {
+
+                var orders = await _ordersService.GetOrdersOfCurrentCashierShiftAsync();
+
+                if (orders.Any(x => x.Status is not OrderStatus.Completed and not OrderStatus.Canceled ))
+                {
+                    this.Log().Error("There are not completed orders in the current cashier shift");
+
+                    await MainViewModel.OkMessage("Не все заказы закрыты или завершены!", "JustFailed");
+
+                    return false;
+                }
+
                 if (_shiftService.IsCashierShiftStarted())
                 {
                     // if shift started, then it's not null
@@ -112,6 +124,65 @@ public sealed class ServicePageVm : PageViewModel
             var dialog = new ContributionReasonDialogViewModel();
 
             await MainViewModel.ShowDialogAndWaitClose(dialog);
+        });
+
+        OpenClosedOrderCommand = CreatePageBusyCommand<ServiceOrderRowViewModel, Unit>(async x =>
+        {
+            BusyText = "Открытие заказа";
+
+            var closedOrders = new ServiceOrderRowViewModel[ClosedOrders!.Count];
+            ClosedOrders!.CopyTo(closedOrders, 0);
+
+            var orderEdits = new OrderEditDto[closedOrders.Length];
+
+            for(var i = 0; i < closedOrders.Length; i++)
+            {
+                orderEdits[i] = await _cashierService.CreateOrder(closedOrders[i].Order!);
+            }
+
+            var closedOrder = orderEdits.First(x => x.Id == x.Id);
+            var orderEditWithNavigationPageVm = new OrderEditWithNavigationPageVm(new(orderEdits), closedOrder);
+
+            await MainViewModel.GoToPage(orderEditWithNavigationPageVm);
+
+            return Unit.Default;
+        });
+
+        OpenOfClosedShiftOrderCommand = CreatePageBusyCommand<ServiceOrderRowViewModel, Unit>(async x =>
+        {
+            BusyText = "Открытие заказа";
+
+            var closedOrders = new ServiceOrderRowViewModel[OrdersOfClosedCashShifts!.Count];
+            OrdersOfClosedCashShifts!.CopyTo(closedOrders, 0);
+
+            var orderEdits = new OrderEditDto[closedOrders.Length];
+
+            for (var i = 0; i < closedOrders.Length; i++)
+            {
+                orderEdits[i] = await _cashierService.CreateOrder(closedOrders[i].Order!);
+            }
+
+            var closedOrder = orderEdits.First(x => x.Id == x.Id);
+            var orderEditWithNavigationPageVm = new OrderEditWithNavigationPageVm(new(orderEdits), closedOrder);
+
+            await MainViewModel.GoToPage(orderEditWithNavigationPageVm);
+
+            return Unit.Default;
+        });
+
+        OpenOpenOrderCommand = CreatePageBusyCommand<ServiceOrderRowViewModel, Unit>(async x =>
+        {
+            BusyText = "Открытие заказа";
+
+            var openOrders = new OrderEditDto[_cashierService.Orders.Count];
+            _cashierService.Orders.CopyTo(openOrders, 0);
+
+            var orderEdit = openOrders.First(x => x.Id == x.Id);
+            var orderEditWithNavigationPageVm = new OrderEditWithNavigationPageVm(new(openOrders), orderEdit);
+
+            await MainViewModel.GoToPage(orderEditWithNavigationPageVm);
+
+            return Unit.Default;
         });
 
         _shiftService.IsCashierShiftStartedObservable()
@@ -251,6 +322,21 @@ public sealed class ServicePageVm : PageViewModel
         get;
     }
 
+    public ReactiveCommand<ServiceOrderRowViewModel, Unit> OpenOpenOrderCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<ServiceOrderRowViewModel, Unit> OpenClosedOrderCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<ServiceOrderRowViewModel, Unit> OpenOfClosedShiftOrderCommand
+    {
+        get;
+    }
+
     public extern string CashierShiftButtonText
     {
         [ObservableAsProperty]
@@ -261,11 +347,6 @@ public sealed class ServicePageVm : PageViewModel
     {
         [ObservableAsProperty]
         get;
-    }
-
-    private IDisposable BindOpenOrders(IOrdersService ordersService, ObservableCollection<ServiceOrderRowViewModel> target)
-    {
-        throw new NotImplementedException();
     }
 
 

@@ -23,6 +23,11 @@ public sealed class ServiceOrderRowViewModel : ReactiveObject, IGuidId, IApplica
         get;
     }
 
+    public OrderDto? Order
+    {
+        get; private set;
+    }
+
     public ServiceOrderRowViewModel(OrderEditDto order, IShiftService shiftService, IProductService productService, ICashierService cashierService)
     {
         _shiftService = shiftService;
@@ -53,6 +58,7 @@ public sealed class ServiceOrderRowViewModel : ReactiveObject, IGuidId, IApplica
 
     public ServiceOrderRowViewModel(OrderDto order, IShiftService shiftService, IProductService productService, ICashierService cashierService)
     {
+        Order = order;
         _shiftService = shiftService;
         _productService = productService;
 
@@ -118,6 +124,7 @@ public sealed class ServiceOrderRowViewModel : ReactiveObject, IGuidId, IApplica
     public void ModelChanged(Change<OrderDto> change)
     {
         var order = change.Current;
+        Order = order;
 
         Debug.Assert(_shiftService.CurrentShift.Value != null);
 
