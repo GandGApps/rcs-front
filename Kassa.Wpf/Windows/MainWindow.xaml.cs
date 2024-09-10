@@ -54,6 +54,7 @@ public sealed partial class MainWindow : ReactiveWindow<MainViewModel>
 
         ViewModel = new();
 
+
         InitializeComponent();
 
         RoutedViewHost.Router = ViewModel.Router;

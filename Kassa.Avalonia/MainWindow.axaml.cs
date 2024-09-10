@@ -27,6 +27,36 @@ public sealed partial class MainWindow : Window
     public static readonly AttachedProperty<bool> IsGrayscaleEffectOnDialogProperty =
         AvaloniaProperty.RegisterAttached<MainWindow, Control, bool>("IsGrayscaleEffectOnDialog");
 
+    public static void GetIsHasFooter(Control control)
+    {
+        control.GetValue(IsHasFooterProperty);
+    }
+
+    public static void SetIsHasFooter(Control control, bool value)
+    {
+        control.SetValue(IsHasFooterProperty, value);
+    }
+
+    public static void GetIsGrayscaleEffectOnDialog(Control control)
+    {
+        control.GetValue(IsGrayscaleEffectOnDialogProperty);
+    }
+
+    public static void SetIsGrayscaleEffectOnDialog(Control control, bool value)
+    {
+        control.SetValue(IsGrayscaleEffectOnDialogProperty, value);
+    }
+
+    public static void GetPageFooter(Control control)
+    {
+        control.GetValue(PageFooterProperty);
+    }
+
+    public static void SetPageFooter(Control control, Visual value)
+    {
+        control.SetValue(PageFooterProperty, value);
+    }
+
     public static Control? Root
     {
         get; private set;

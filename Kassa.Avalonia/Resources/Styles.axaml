@@ -13,6 +13,7 @@
                 <TextBlock Classes="SubHeader" Text="SubHeader TextBox" />
                 <TextBlock Classes="Large" Text="Large TextBox" />
                 <TextBlock Classes="ExtraLarge" Text="ExtraLarge TextBox" />
+                <TextBlock Classes="SearchTextBox" Text="SearchTextBox" />
                 <Button Content="Default Button" />
                 <Button Content="Secondary Button" Theme="{StaticResource SecondaryButton}" />
             </StackPanel>
@@ -62,7 +63,7 @@
         <Setter Property="FontSize" Value="{mx:AdaptiveSize 12}" />
     </Style>
 
-    <Style Selector="TextBox.SearchTextBox">
+    <Style Selector=":is(TextBox).SearchTextBox">
         <Setter Property="VerticalAlignment" Value="Center" />
         <Setter Property="BorderThickness" Value="0" />
         <Setter Property="FontSize" Value="{mx:AdaptiveSize 20}" />

@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Controls;
+using Kassa.Avalonia.Pages;
 using ReactiveUI;
 using Splat;
 

@@ -1,6 +1,7 @@
 <ResourceDictionary
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Kassa.Avalonia.Controls"
     xmlns:mx="using:Kassa.Avalonia.MarkupExtensions">
 
     <Design.PreviewWith>
@@ -11,6 +12,7 @@
                 <CheckBox Content="Default CheckBox" />
                 <CheckBox Content="BorderToggleCheckbox CheckBox" Theme="{StaticResource BorderToggleCheckbox}" />
                 <CheckBox Width="50" Theme="{StaticResource BackToMain}" />
+                <Input Placeholder="Input" />
             </StackPanel>
         </Border>
 
@@ -191,5 +193,58 @@
         </Style>
     </ControlTheme>
 
+    <ControlTemplate x:Key="InputTemplate" TargetType="Input">
+        <Border
+            Width="{TemplateBinding Width}"
+            Height="{TemplateBinding Height}"
+            MinWidth="{TemplateBinding MinWidth}"
+            Padding="{TemplateBinding Padding}"
+            HorizontalAlignment="{TemplateBinding HorizontalAlignment}"
+            VerticalAlignment="{TemplateBinding VerticalAlignment}"
+            Background="{TemplateBinding Background}"
+            BorderBrush="{TemplateBinding BorderBrush}"
+            BorderThickness="{TemplateBinding BorderThickness}"
+            CornerRadius="{TemplateBinding CornerRadius}">
+
+            <Grid VerticalAlignment="Center">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <ContentPresenter
+                    Grid.Column="0"
+                    Margin="{mx:AdaptiveSize Thickness='0,0,8,0'}"
+                    Content="{TemplateBinding Label}" />
+
+                <TextBoxWithoutVirtualKeyboard
+                    x:Name="Input"
+                    Grid.Column="1"
+                    Classes="SearchTextBox"
+                    Text="{TemplateBinding Text}" />
+
+                <TextBlock
+                    x:Name="Placeholder"
+                    Grid.Column="1"
+                    VerticalAlignment="Center"
+                    IsHitTestVisible="False"
+                    Text="{TemplateBinding Placeholder}" />
+
+            </Grid>
+        </Border>
+    </ControlTemplate>
+
+    <ControlTheme x:Key="{x:Type Input}" TargetType="Input">
+
+        <Setter Property="Width" Value="{mx:AdaptiveSize 430}" />
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='20,14,13,14'}" />
+        <Setter Property="Background" Value="{DynamicResource PrimaryInputBackground}" />
+        <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius=28}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource PrimaryInputBorderBrush}" />
+        <Setter Property="BorderThickness" Value="{mx:AdaptiveSize Thickness='1'}" />
+        <Setter Property="Template" Value="{StaticResource InputTemplate}" />
+
+    </ControlTheme>
 
 </ResourceDictionary>
