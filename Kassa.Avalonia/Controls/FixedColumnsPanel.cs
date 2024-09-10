@@ -11,7 +11,7 @@ namespace Kassa.Avalonia.Controls;
 public sealed class FixedColumnsPanel : WrapPanel
 {
 
-    public static StyledProperty<int> ColumnsProperty =
+    public static readonly StyledProperty<int> ColumnsProperty =
         AvaloniaProperty.Register<FixedColumnsPanel, int>(nameof(Columns), defaultValue: 0);
 
     public int Columns

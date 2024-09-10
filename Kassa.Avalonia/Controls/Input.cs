@@ -17,8 +17,8 @@ using ReactiveUI;
 namespace Kassa.Avalonia.Controls;
 public sealed class Input: Button
 {
-    public static readonly StyledProperty<string> TextProperty =
-        AvaloniaProperty.Register<Input, string>(nameof(Text), string.Empty);
+    public static readonly StyledProperty<string?> TextProperty =
+        AvaloniaProperty.Register<Input, string?>(nameof(Text), string.Empty);
 
     public static readonly StyledProperty<string> PlaceholderProperty =
         AvaloniaProperty.Register<Input, string>(nameof(Placeholder), string.Empty);
@@ -31,10 +31,10 @@ public sealed class Input: Button
 
     static Input()
     {
-        TextProperty.Changed.AddClassHandler<Input, string>(TextChangedCallback);
+        TextProperty.Changed.AddClassHandler<Input, string?>(TextChangedCallback);
     }
 
-    public string Text
+    public string? Text
     {
         get => GetValue(TextProperty);
         set => SetValue(TextProperty, value);
@@ -165,7 +165,7 @@ public sealed class Input: Button
         };
     }
 
-    public static void TextChangedCallback(Input input, AvaloniaPropertyChangedEventArgs<string> e)
+    public static void TextChangedCallback(Input input, AvaloniaPropertyChangedEventArgs<string?> e)
     {
         if (input._placeholder == null)
         {

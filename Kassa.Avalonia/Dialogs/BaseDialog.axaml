@@ -56,8 +56,8 @@
         x:Key="WideDialog"
         BasedOn="{StaticResource PrimaryMenu}"
         TargetType="Border">
-        <Setter Property="Width" Value="Nan" />
-        <Setter Property="Height" Value="Nan" />
+        <Setter Property="Width" Value="NaN" />
+        <Setter Property="Height" Value="NaN" />
         <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='17,24,17,0'}" />
         <Setter Property="VerticalAlignment" Value="Stretch" />
     </ControlTheme>
@@ -216,6 +216,7 @@
         <Setter Property="Grid.Column" Value="2" />
     </ControlTheme>
 
+    <!--
   <ControlTemplate x:Key="WidePrimaryDialogBaseTemplate" TargetType="UserControl">
     <Border Margin="{mx:AdaptiveSize Thickness='76,0,0,76'}" Padding="{TemplateBinding Padding}">
       <Grid HorizontalAlignment="Center" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
@@ -333,5 +334,6 @@
     </Border>
 
   </ControlTemplate>
+    -->
 
 </ResourceDictionary>

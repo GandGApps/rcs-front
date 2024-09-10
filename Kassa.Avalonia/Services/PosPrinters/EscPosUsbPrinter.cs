@@ -52,18 +52,18 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
         }
     }
 
-    public async Task PrintAsync(ReportShiftDto reportShift)
+    public Task PrintAsync(ReportShiftDto reportShift)
     {
-
+        return Task.CompletedTask;
     }
 
-    public async Task PrintAsync(OrderDto order)
+    public Task PrintAsync(OrderDto order)
     {
         var printer = GetPrinter(_printerName);
 
         if (printer == null)
         {
-            return;
+            return Task.CompletedTask;
         }
 
         var productIndex = 0;
@@ -104,5 +104,6 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
         printer.Append([0x1B, 0x07, 0x00]);
 
         printer.PrintDocument();
+        return Task.CompletedTask;
     }
 }

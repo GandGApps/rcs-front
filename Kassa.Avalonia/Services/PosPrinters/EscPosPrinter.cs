@@ -37,12 +37,12 @@ internal sealed class EscPosPrinter : BuisnessLogic.Services.IPrinter, IEnableLo
 
     }
 
-    public async Task PrintAsync(ReportShiftDto reportShift)
+    public Task PrintAsync(ReportShiftDto reportShift)
     {
         if (_printer == null)
         {
             this.Log().Warn("No printer found");
-            return;
+            return Task.CompletedTask;
         }
 
         var e = new EPSON();
@@ -93,14 +93,15 @@ internal sealed class EscPosPrinter : BuisnessLogic.Services.IPrinter, IEnableLo
         };
 
         _printer.Write(commands.ToArray());
+        return Task.CompletedTask;
     }
 
-    public async Task PrintAsync(OrderDto order)
+    public Task PrintAsync(OrderDto order)
     {
         if (_printer == null)
         {
             this.Log().Warn("No printer found");
-            return;
+            return Task.CompletedTask;
         }
 
         var e = new EPSON();
@@ -130,6 +131,7 @@ internal sealed class EscPosPrinter : BuisnessLogic.Services.IPrinter, IEnableLo
 
         commands.Add(e.FullCut());
         _printer.Write(commands.ToArray());
+        return Task.CompletedTask;
     }
 
     private static string CenterText(string text, int maxChars)
