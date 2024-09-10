@@ -178,5 +178,9 @@
   <ItemGroup>
     <UpToDateCheckInput Remove="Pages\AutorizationPage.axaml" />
   </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Resources\ScrollBar.axaml" />
+  </ItemGroup>
   
 </Project>
