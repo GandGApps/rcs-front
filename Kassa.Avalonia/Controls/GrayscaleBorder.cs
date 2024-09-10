@@ -11,6 +11,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Metadata;
 using Avalonia.Platform;
+using Avalonia.Threading;
 
 namespace Kassa.Avalonia.Controls;
 public sealed class GrayscaleBorder : Control
@@ -20,6 +21,9 @@ public sealed class GrayscaleBorder : Control
 
     public static readonly StyledProperty<Control?> ChildProperty =
         AvaloniaProperty.Register<GrayscaleBorder, Control?>(nameof(Child));
+
+    public static readonly DirectProperty<GrayscaleBorder, IImage?> RenderedProperty =
+        AvaloniaProperty.RegisterDirect<GrayscaleBorder, IImage?>(nameof(Rendered), x => x.Rendered);
 
     public bool IsGrayscale
     {
@@ -33,9 +37,32 @@ public sealed class GrayscaleBorder : Control
         set => SetValue(ChildProperty, value);
     }
 
+    private IImage? _rendered;
+    public IImage? Rendered
+    {
+        get => _rendered;
+        private set => SetAndRaise(RenderedProperty, ref _rendered, value);
+    }
+
+    static GrayscaleBorder()
+    {
+        AffectsRender<GrayscaleBorder>(IsGrayscaleProperty);
+        ChildProperty.Changed.AddClassHandler<GrayscaleBorder>((x, e) => x.OnChildChanged(e));
+    }
+
+    public GrayscaleBorder()
+    {
+        IsHitTestVisible = false;
+    }
+
     public override void Render(DrawingContext context)
     {
         base.Render(context);
+
+        if (!IsGrayscale)
+        {
+            return;
+        }
 
         if (Child is Control control)
         {
@@ -95,6 +122,8 @@ public sealed class GrayscaleBorder : Control
 
                     var bitmap = new Bitmap(PixelFormats.Bgra8888, AlphaFormat.Premul, bufferPtr, bitmapSource.PixelSize, bitmapSource.Dpi, stride);
 
+                    Rendered = bitmap;
+
                     context.DrawImage(bitmap, bounds);
                 }
             }
@@ -103,13 +132,12 @@ public sealed class GrayscaleBorder : Control
                 Marshal.FreeHGlobal(bufferPtr);
             }
         }
+
+        Dispatcher.UIThread.Post(() => InvalidateVisual(), DispatcherPriority.Background);
+
     }
 
-    static GrayscaleBorder()
-    {
-        AffectsRender<GrayscaleBorder>(IsGrayscaleProperty);
-        ChildProperty.Changed.AddClassHandler<GrayscaleBorder>((x, e) => x.OnChildChanged(e));
-    }
+    
 
     private void OnChildChanged(AvaloniaPropertyChangedEventArgs e)
     {
