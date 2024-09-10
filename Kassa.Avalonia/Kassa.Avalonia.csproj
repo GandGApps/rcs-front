@@ -44,7 +44,6 @@
 
   <ItemGroup>
     <Folder Include="Effects\" />
-    <Folder Include="Pages\" />
     <Folder Include="Shaders\" />
   </ItemGroup>
 
@@ -172,6 +171,10 @@
 
   <ItemGroup>
     <UpToDateCheckInput Remove="Resources\ControlTemplates.axaml" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <UpToDateCheckInput Remove="Pages\AutorizationPage.axaml" />
   </ItemGroup>
   
 </Project>

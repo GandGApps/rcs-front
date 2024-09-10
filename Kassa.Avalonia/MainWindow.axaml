@@ -31,6 +31,7 @@
         <!--  Grayscale effect  -->
 
         <ctrl:GrayscaleBorder
+            x:Name="GrayscaleEffect"
             Grid.RowSpan="2"
             Child="{Binding #BorderRootBody}"
             ZIndex="1000" />

@@ -2,18 +2,43 @@ using System;
 using System.Diagnostics;
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.Rendering.SceneGraph;
 using Avalonia.Skia;
 using Avalonia.Threading;
+using Kassa.Avalonia.Services.MagneticStripeReaders;
 using Kassa.RxUI;
 using SkiaSharp;
+using Splat;
 
 namespace Kassa.Avalonia;
 public sealed partial class MainWindow : Window
 {
+
+    public static readonly AttachedProperty<Visual> PageFooterProperty =
+        AvaloniaProperty.RegisterAttached<MainWindow, Control, Visual>("PageFooter");
+
+    public static readonly AttachedProperty<bool> IsHasFooterProperty =
+        AvaloniaProperty.RegisterAttached<MainWindow, Control, bool>("IsHasFooter", true);
+
+    public static readonly AttachedProperty<bool> IsGrayscaleEffectOnDialogProperty =
+        AvaloniaProperty.RegisterAttached<MainWindow, Control, bool>("IsGrayscaleEffectOnDialog");
+
+    public static Control? Root
+    {
+        get; private set;
+    }
+
+    public static MainWindow? Instance
+    {
+        get; private set;
+    } = null!;
+
+
+    private readonly MsrKeyboardDetector _msrKeyboardDetector = new();
 
     private readonly BlurEffect _blurEffect = new()
     {
@@ -27,7 +52,10 @@ public sealed partial class MainWindow : Window
         InitializeComponent();
 
         RootBody.Effect = _blurEffect;
-        
+
+        Root = RootBody;
+
+        TextInput += TryDetectMsr;
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
@@ -40,5 +68,17 @@ public sealed partial class MainWindow : Window
 
             BreakpointNotifier.Instance.Width = width;
         }
+    }
+
+    private void TryDetectMsr(object? sender, TextInputEventArgs e)
+    {
+        if (e.Handled)
+        {
+            return;
+        }
+
+        _msrKeyboardDetector.TryDetect(e.Text);
+
+        LogHost.Default.Debug($"TryDetectMsr: \n\t {e.Text} \n\t RoutingStrategy:{e.Route} \n\t IsHandled:{e.Handled}");
     }
 }

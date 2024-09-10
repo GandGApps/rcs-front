@@ -25,6 +25,11 @@ public sealed class SimpleRouter: ContentControl
     {
         RouterProperty.Changed.AddClassHandler<SimpleRouter>(RouterChanged);
 
+        var viewsFor = new Dictionary<Type, Func<StyledElement>>()
+        {
+            [typeof(Kassa.RxUI.Pages.AutorizationPageVm)] = () => new AutorizationPage(),
+        };
+
         // TODO: make generator
         /*var viewsFor = new Dictionary<Type, Func<StyledElement>>()
         {
@@ -86,7 +91,7 @@ public sealed class SimpleRouter: ContentControl
             [typeof(Kassa.RxUI.Dialogs.ContributionReasonDialogViewModel)] = () => new Kassa.Avalonia.Dialogs.ContributionReasonDialog(),
         };*/
 
-        //ViewsFor = viewsFor.ToFrozenDictionary();
+        ViewsFor = viewsFor.ToFrozenDictionary();
     }
 
     public static void RouterChanged(SimpleRouter d, AvaloniaPropertyChangedEventArgs e)

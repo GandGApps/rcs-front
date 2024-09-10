@@ -19,9 +19,8 @@ namespace Kassa.Wpf;
 /// <summary>
 /// Interaction logic for MainWindow.xaml
 /// </summary>
-public partial class MainWindow : ReactiveWindow<MainViewModel>
+public sealed partial class MainWindow : ReactiveWindow<MainViewModel>
 {
-
     public static readonly DependencyProperty PageFooterProperty =
         DependencyProperty.RegisterAttached("PageFooter", typeof(object), typeof(MainWindow));
 
@@ -151,7 +150,6 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
             e.Handled =  ViewModel.TryHandleUnhandled(sender, extractedException);
         };
 
-        KeyDown += CopyLogsToClipboard;
         TextInput += TryDetectMsr;
 
 #if SMALL_WINDOW_TEST
@@ -172,106 +170,6 @@ public partial class MainWindow : ReactiveWindow<MainViewModel>
         _msrKeyboardDetector.TryDetect(e.Text);
 
         LogHost.Default.Debug($"TryDetectMsr: \n\t {e.Text} \n\t RoutingStrategy:{e.RoutedEvent.RoutingStrategy} \n\t IsHandled:{e.Handled}");
-    }
-
-    private void CopyLogsToClipboard(object sender, KeyEventArgs e)
-    {
-
-        if (e.Key == Key.D && (Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
-        {
-            var stringCollection = GetLogs();
-
-            Clipboard.SetFileDropList(stringCollection);
-        }
-    }
-
-
-
-    private static StringCollection GetLogs()
-    {
-        var path = RcsKassa.BasePath;
-
-        var stringCollection = new StringCollection();
-
-        if (Directory.Exists(path))
-        {
-            foreach (var file in Directory.GetFiles(path))
-            {
-                var fullPath = System.IO.Path.GetFullPath(file);
-                stringCollection.Add(fullPath);
-            }
-        }
-
-        return stringCollection;
-    }
-
-    public static void SetPageFooter(UIElement element, object? value)
-    {
-        element.SetValue(PageFooterProperty, value);
-    }
-
-    public static object? GetPageFooter(UIElement element)
-    {
-        return element.GetValue(PageFooterProperty);
-    }
-
-    public static void SetIsHasFooter(UIElement element, bool value)
-    {
-        element.SetValue(IsHasFooterProperty, value);
-    }
-
-    public static bool GetIsHasFooter(UIElement element)
-    {
-        return (bool)element.GetValue(IsHasFooterProperty);
-    }
-
-    public static void SetIsGrayscaleEffectOnDialog(UIElement element, bool value)
-    {
-        element.SetValue(IsGrayscaleEffectOnDialogProperty, value);
-    }
-
-    public static bool GetIsGrayscaleEffectOnDialog(UIElement element)
-    {
-        return (bool)element.GetValue(IsGrayscaleEffectOnDialogProperty);
-    }
-
-    private static string FormatException(Exception exception)
-    {
-        var sb = new StringBuilder();
-
-        sb.AppendLine(exception.Message);
-        sb.AppendLine(exception.StackTrace);
-
-        if (exception.InnerException != null)
-        {
-            sb.AppendLine("Inner exception:");
-            sb.AppendLine(FormatException(exception.InnerException));
-        }
-
-        return sb.ToString();
-    }
-
-    /// <summary>
-    /// Try find inner exception of HttpRequestException
-    /// </summary>
-    /// <param name="exception"></param>
-    /// <param name="httpRequestException"></param>
-    /// <returns></returns>
-    private static bool IsHttpTimeoutException(Exception exception, [NotNullWhen(true)] out HttpRequestException? httpRequestException)
-    {
-        if (exception is HttpRequestException { HttpRequestError: HttpRequestError.ConnectionError or HttpRequestError.NameResolutionError } requestException)
-        {
-            httpRequestException = requestException;
-            return true;
-        }
-
-        if (exception.InnerException != null)
-        {
-            return IsHttpTimeoutException(exception.InnerException, out httpRequestException);
-        }
-
-        httpRequestException = null;
-        return false;
     }
 
 }

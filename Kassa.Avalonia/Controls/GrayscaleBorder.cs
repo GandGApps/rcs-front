@@ -55,7 +55,7 @@ public sealed class GrayscaleBorder : Control
         IsHitTestVisible = false;
     }
 
-    public override void Render(DrawingContext context)
+    public override sealed void Render(DrawingContext context)
     {
         base.Render(context);
 
