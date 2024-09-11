@@ -8,8 +8,8 @@ using System.Windows.Input;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
-namespace Kassa.Wpf.Controls;
-public class KeyboardInfo: ReactiveObject
+namespace Kassa.RxUI;
+public sealed class KeyboardInfo : ReactiveObject
 {
     public ObservableCollection<ObservableCollection<KeyInfo>> Lines
     {
@@ -89,7 +89,7 @@ public class KeyboardInfo: ReactiveObject
             KeyInfo.Char('д'),
             KeyInfo.Char('ж'),
             KeyInfo.Char('э'),
-            KeyInfo.Char('\\'), 
+            KeyInfo.Char('\\'),
         ];
 
         ObservableCollection<KeyInfo> line4 = [
@@ -112,7 +112,7 @@ public class KeyboardInfo: ReactiveObject
             KeyInfo.Char(' ', text: "ПРОБЕЛ", width:9),
             new() { Text = "Alt Gr"},
             new() { Text = "СТЕРЕТЬ ВСЕ", IsClear = true, Size = new(2) },
-        ];  
+        ];
 
 
         keyboard.Lines.Add(line1);

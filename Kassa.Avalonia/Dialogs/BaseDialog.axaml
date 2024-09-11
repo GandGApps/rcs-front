@@ -216,118 +216,110 @@
         <Setter Property="Grid.Column" Value="2" />
     </ControlTheme>
 
-  <ControlTemplate x:Key="WidePrimaryDialogBaseTemplate" TargetType="UserControl">
-    <Border Margin="{mx:AdaptiveSize Thickness='76,0,0,76'}" Padding="{TemplateBinding Padding}">
-      <Grid HorizontalAlignment="Center" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
+    <ControlTemplate x:Key="WidePrimaryDialogBaseTemplate" TargetType="UserControl">
+        <Border Margin="{mx:AdaptiveSize Thickness='76,0,0,76'}" Padding="{TemplateBinding Padding}">
+            <Grid HorizontalAlignment="Center" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
 
-        <Grid.ColumnDefinitions>
-          <ColumnDefinition Width="*" />
-          <ColumnDefinition Width="{mx:AdaptiveSize GridLength=76}" />
-        </Grid.ColumnDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="{mx:AdaptiveSize GridLength=76}" />
+                </Grid.ColumnDefinitions>
 
-        <Grid.RowDefinitions>
-          <RowDefinition Height="{mx:AdaptiveSize GridLength=76}" />
-          <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="{mx:AdaptiveSize GridLength=76}" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-        <Button
-            x:Name="CloseDialog"
-            Grid.Column="1"
-            Background="{StaticResource ClickableBg}"
-            BorderThickness="0">
-          <Button.Template>
-            <ControlTemplate TargetType="{x:Type ButtonBase}">
-              <Border
-                  x:Name="border"
-                  Background="{TemplateBinding Background}"
-                  BorderBrush="{TemplateBinding BorderBrush}"
-                  BorderThickness="{TemplateBinding BorderThickness}"
-                  SnapsToDevicePixels="true">
-                <ContentPresenter
-                    x:Name="contentPresenter"
-                    Margin="{TemplateBinding Padding}"
+                <Button
+                    x:Name="CloseDialog"
+                    Grid.Column="1"
+                    Background="{StaticResource ClickableBg}"
+                    BorderThickness="0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Border
+                                x:Name="border"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                                <ContentPresenter
+                                    x:Name="contentPresenter"
+                                    Margin="{TemplateBinding Padding}"
+                                    HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                    VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                    Focusable="False"
+                                    RecognizesAccessKey="True" />
+                            </Border>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <Path
+                        Width="{mx:AdaptiveSize 76}"
+                        Height="{mx:AdaptiveSize 76}"
+                        Data="{StaticResource Close}"
+                        Fill="{DynamicResource AlternateForeground}" />
+                </Button>
+
+
+                <Border
+                    Grid.Row="1"
                     HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
                     VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                    Focusable="False"
-                    RecognizesAccessKey="True"
-                    SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-              </Border>
-              <ControlTemplate.Triggers>
-                <Trigger Property="Button.IsDefaulted" Value="true">
-                  <Setter TargetName="border" Property="BorderBrush" Value="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" />
-                </Trigger>
-              </ControlTemplate.Triggers>
-            </ControlTemplate>
-          </Button.Template>
-          <Path
-              Width="{mx:AdaptiveSize 76}"
-              Height="{mx:AdaptiveSize 76}"
-              Data="{StaticResource Close}"
-              Fill="{DynamicResource AlternateForeground}" />
-        </Button>
+                    Theme="{StaticResource WideDialog}">
+                    <Grid>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+                        <ContentPresenter Content="{TemplateBinding WidePrimaryDialog.Header}" />
+
+                        <Border
+                            Grid.Row="1"
+                            Width="{mx:AdaptiveSize 1280}"
+                            Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
+                            Theme="{DynamicResource Separator}" />
+
+                        <ScrollViewer
+                            x:Name="ScrollViewer"
+                            Grid.Row="2"
+                            HorizontalContentAlignment="Stretch"
+                            HorizontalScrollBarVisibility="Disabled"
+                            Theme="{StaticResource PrimaryScrollViewer}">
+
+                            <ContentPresenter />
+
+                        </ScrollViewer>
+
+                        <Keyboard
+                            x:Name="Keyboard"
+                            Grid.Row="2"
+                            Margin="0,0,0,15"
+                            VerticalAlignment="Bottom"
+                            IsVisible="{TemplateBinding WidePrimaryDialog.IsKeyboardVisible}"
+                            Text="{Binding Path=(WidePrimaryDialog.SearchText), RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                            TextBox="{Binding Path=(WidePrimaryDialog.CurrentTextBox), RelativeSource={RelativeSource TemplatedParent}}" />
+
+                        <Border
+                            Grid.Row="4"
+                            Margin="{mx:AdaptiveSize Thickness='0,0,0,10'}"
+                            Theme="{StaticResource DialogFooter}">
+
+                            <ContentPresenter Content="{TemplateBinding WidePrimaryDialog.Footer}" />
 
 
-        <Border
-            Grid.Row="1"
-            HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-            VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-            Style="{StaticResource WideDialog}">
-          <Grid>
+                        </Border>
 
-            <Grid.RowDefinitions>
-              <RowDefinition Height="Auto" />
-              <RowDefinition Height="Auto" />
-              <RowDefinition Height="*" />
-              <RowDefinition Height="Auto" />
-              <RowDefinition Height="Auto" />
-            </Grid.RowDefinitions>
+                    </Grid>
 
-            <ContentPresenter ContentTemplate="{TemplateBinding dialogs:WidePrimaryDialog.HeaderTemplate}" />
+                </Border>
 
-            <Border
-                Grid.Row="1"
-                Width="{mx:AdaptiveSize 1280}"
-                Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
-                Theme="{DynamicResource Separator}" />
-
-            <ScrollViewer
-                x:Name="ScrollViewer"
-                Grid.Row="2"
-                HorizontalContentAlignment="Stretch"
-                HorizontalScrollBarVisibility="Disabled"
-                Theme="{StaticResource PrimaryScrollViewer}">
-
-              <ContentPresenter />
-
-            </ScrollViewer>
-
-            <controls:Keyboard
-                x:Name="Keyboard"
-                Grid.Row="2"
-                Margin="0,0,0,15"
-                VerticalAlignment="Bottom"
-                Text="{Binding Path=(dialogs:WidePrimaryDialog.SearchText), RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
-                TextBox="{Binding Path=(dialogs:WidePrimaryDialog.CurrentTextBox), RelativeSource={RelativeSource TemplatedParent}}"
-                Visibility="{TemplateBinding dialogs:WidePrimaryDialog.IsKeyboardEnabled,
-                                                         Converter={StaticResource BoolToVisibilityConverter}}" />
-
-            <Border
-                Grid.Row="4"
-                Margin="{mx:AdaptiveSize Thickness='0,0,0,10'}"
-                Style="{StaticResource DialogFooter}">
-
-              <ContentPresenter Content="{TemplateBinding dialogs:WidePrimaryDialog.Footer}" />
-
-
-            </Border>
-
-          </Grid>
-
+            </Grid>
         </Border>
 
-      </Grid>
-    </Border>
-
-  </ControlTemplate>
+    </ControlTemplate>
 
 </ResourceDictionary>

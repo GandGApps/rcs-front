@@ -1,7 +1,6 @@
 ﻿using System.Reactive.Disposables;
 using Kassa.RxUI;
 using Kassa.RxUI.Dialogs;
-using Kassa.Wpf.Controls;
 using ReactiveUI;
 
 namespace Kassa.Wpf.Dialogs;

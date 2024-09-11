@@ -16,6 +16,7 @@ using System.Windows.Shapes;
 using Kassa.RxUI.Dialogs;
 using System.Reactive.Disposables;
 using Kassa.Wpf.Controls;
+using Kassa.RxUI;
 
 namespace Kassa.Wpf.Dialogs;
 /// <summary>

@@ -1,11 +1,10 @@
 ﻿using System.Windows.Input;
-using Kassa.RxUI;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
-namespace Kassa.Wpf.Controls;
+namespace Kassa.RxUI;
 
-public class KeyInfo : ReactiveObject
+public sealed class KeyInfo : ReactiveObject
 {
     [Reactive]
     public ICommand? Command

@@ -13,8 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Kassa.RxUI;
 using Kassa.RxUI.Dialogs;
-using Kassa.Wpf.Controls;
 using ReactiveUI;
 
 namespace Kassa.Wpf.Dialogs;

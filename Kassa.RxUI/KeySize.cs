@@ -1,4 +1,4 @@
-﻿namespace Kassa.Wpf.Controls;
+﻿namespace Kassa.RxUI;
 
 public readonly struct KeySize(double size)
 {

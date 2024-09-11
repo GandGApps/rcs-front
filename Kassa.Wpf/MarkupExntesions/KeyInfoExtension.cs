@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using System.Windows.Markup;
-using Kassa.Wpf.Controls;
+using Kassa.RxUI;
 
 namespace Kassa.Wpf.MarkupExntesions;
 
