@@ -47,8 +47,6 @@
                     Grid.Row="0"
                     Grid.RowSpan="2" />
 
-                <CheckBox Content="BorderToggleCheckbox CheckBox" Theme="{StaticResource BorderToggleCheckbox}" />
-
                 <Border
                     x:Name="Footer"
                     Grid.Row="2"
@@ -79,7 +77,6 @@
 
                         <CheckBox
                             x:Name="IsMainPageCheckBox"
-                            Grid.Column="1"
                             Width="{mx:AdaptiveSize 50}"
                             Height="{mx:AdaptiveSize 50}"
                             HorizontalAlignment="Right"

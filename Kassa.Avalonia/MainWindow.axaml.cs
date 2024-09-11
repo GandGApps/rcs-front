@@ -1,5 +1,7 @@
 using System;
 using System.Diagnostics;
+using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
@@ -7,16 +9,19 @@ using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
+using Avalonia.ReactiveUI;
 using Avalonia.Rendering.SceneGraph;
 using Avalonia.Skia;
 using Avalonia.Threading;
 using Kassa.Avalonia.Services.MagneticStripeReaders;
 using Kassa.RxUI;
+using Kassa.RxUI.Dialogs;
+using ReactiveUI;
 using SkiaSharp;
 using Splat;
 
 namespace Kassa.Avalonia;
-public sealed partial class MainWindow : Window
+public sealed partial class MainWindow : ReactiveWindow<MainViewModel>
 {
 
     public static readonly AttachedProperty<Visual> PageFooterProperty =
@@ -76,9 +81,13 @@ public sealed partial class MainWindow : Window
         Radius = 0
     };
 
+    private bool _isGrayscaleEffectOnDialog;
+
     public MainWindow()
     {
-        DataContext = new MainViewModel();
+        var viewModel = new MainViewModel();
+        DataContext = viewModel;
+        ViewModel = viewModel;
 
         InitializeComponent();
 
@@ -87,6 +96,81 @@ public sealed partial class MainWindow : Window
         Root = RootBody;
 
         TextInput += TryDetectMsr;
+
+        RoutedViewHost.Router = viewModel.Router;
+        DialogHost.Router = new();
+
+        ViewModel.DialogOpenCommand = ReactiveCommand.CreateFromTask(async (DialogViewModel x) =>
+        {
+            await x.InitializeAsync();
+
+            DialogHost.Router.Navigate.Execute(x).Subscribe();
+
+            await x.CloseCommand.FirstAsync();
+
+            DialogHost.Router.NavigationStack.Remove(x);
+
+            await x.DisposeAsync();
+
+            return x;
+        });
+
+        this.WhenActivated(disposables =>
+        {
+            RoutedViewHost.WhenAnyValue(x => x.Content)
+                          .Subscribe(x =>
+                          {
+                              _isGrayscaleEffectOnDialog = false;
+                              if (x is Control element)
+                              {
+                                  _isGrayscaleEffectOnDialog = element.GetValue(IsGrayscaleEffectOnDialogProperty) is bool isGrayscaleEffectOnDialog && isGrayscaleEffectOnDialog;
+
+                                  if (element.GetValue(IsHasFooterProperty) is bool isHasFooter)
+                                  {
+                                      Footer.IsVisible = isHasFooter;
+                                  }
+                                  if (element.GetValue(PageFooterProperty) is Control footer)
+                                  {
+                                      PageFooterAdditionalContent.Content = footer;
+                                      footer.DataContext = viewModel.Router.GetCurrentViewModel();
+                                  }
+                              }
+                          })
+                          .DisposeWith(disposables);
+
+            DialogHost.Router.WhenAnyValue(x => x.NavigationStack.Count)
+                .Subscribe(x =>
+                {
+                    if (x == 0)
+                    {
+                        DialogOverlay.IsVisible = false;
+                        _blurEffect.Radius = 0;
+                        GrayscaleEffect.IsGrayscale = false;
+                    }
+                    else
+                    {
+                        DialogOverlay.IsVisible = true;
+                        _blurEffect.Radius = 10;
+                        GrayscaleEffect.IsGrayscale = _isGrayscaleEffectOnDialog;
+                    }
+                })
+                .DisposeWith(disposables);
+
+            ViewModel.CloseCommand
+                     .Subscribe(x =>
+                     {
+                         Close();
+                     })
+                     .DisposeWith(disposables);
+
+
+            this.Bind(ViewModel, vm => vm.IsMainPage, v => v.IsMainPageCheckBox.IsChecked)
+                .DisposeWith(disposables);
+
+            this.BindCommand(ViewModel, vm => vm.BackToMenuCommand, v => v.IsMainPageCheckBox)
+                .DisposeWith(disposables);
+
+        });
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
