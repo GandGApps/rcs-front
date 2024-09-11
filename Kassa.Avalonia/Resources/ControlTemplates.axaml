@@ -2,7 +2,8 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Kassa.Avalonia.Controls"
-    xmlns:mx="using:Kassa.Avalonia.MarkupExtensions">
+    xmlns:mx="using:Kassa.Avalonia.MarkupExtensions"
+    xmlns:system="using:System">
 
     <Design.PreviewWith>
         <Border Background="Black">
@@ -13,6 +14,7 @@
                 <CheckBox Content="BorderToggleCheckbox CheckBox" Theme="{StaticResource BorderToggleCheckbox}" />
                 <CheckBox Width="50" Theme="{StaticResource BackToMain}" />
                 <Input Placeholder="Input" />
+                <Button Theme="{StaticResource BackButton}" />
             </StackPanel>
         </Border>
 
@@ -244,6 +246,44 @@
         <Setter Property="BorderBrush" Value="{DynamicResource PrimaryInputBorderBrush}" />
         <Setter Property="BorderThickness" Value="{mx:AdaptiveSize Thickness='1'}" />
         <Setter Property="Template" Value="{StaticResource InputTemplate}" />
+
+    </ControlTheme>
+
+    <system:Double x:Key="FooterSize">75</system:Double>
+    <GridLength x:Key="FooterSizeAsGridLength">75</GridLength>
+
+    <Thickness x:Key="PagePaddingWithFooterSize">
+        5,5,5,80
+    </Thickness>
+
+    <ControlTheme x:Key="BackButton" TargetType="Button">
+        <Setter Property="Padding" Value="{mx:AdaptiveSize Thickness='0,15,0,15'}" />
+        <Setter Property="Background" Value="{StaticResource ClickableBg}" />
+
+        <Setter Property="Content">
+            <Setter.Value>
+                <Template>                
+                    <StackPanel Orientation="Horizontal">
+                        <Path
+                            Width="{mx:AdaptiveSize 13}"
+                            Height="{mx:AdaptiveSize 22.7}"
+                            Data="{StaticResource Arrow}"
+                            Fill="White" />
+                        <TextBlock
+                            Margin="{mx:AdaptiveSize Thickness='7,0,0,0'}"
+                            VerticalAlignment="Center"
+                            FontSize="{mx:AdaptiveSize 13}"
+                            Foreground="White"
+                            Text="Назад" />
+                    </StackPanel>
+                </Template>
+
+            </Setter.Value>
+        </Setter>
+
+        <Style Selector="^:pressed">
+            <Setter Property="Background" Value="{StaticResource ClickableBg}" />
+        </Style>
 
     </ControlTheme>
 

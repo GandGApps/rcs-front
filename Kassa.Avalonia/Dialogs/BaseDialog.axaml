@@ -139,10 +139,7 @@
         <Setter Property="CornerRadius" Value="{mx:AdaptiveSize CornerRadius=28}" />
     </ControlTheme>
 
-    <ControlTheme
-        x:Key="SearchTextBoxIcon"
-        BasedOn="{StaticResource {x:Type Path}}"
-        TargetType="Path">
+    <ControlTheme x:Key="SearchTextBoxIcon" TargetType="Path">
         <Setter Property="Height" Value="{mx:AdaptiveSize 34}" />
         <Setter Property="Data" Value="{DynamicResource SearchIcon}" />
         <Setter Property="Fill" Value="{DynamicResource SecondaryForeground}" />

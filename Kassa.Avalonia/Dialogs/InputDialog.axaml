@@ -8,9 +8,11 @@
     xmlns:vm="using:Kassa.RxUI.Dialogs"
     d:DesignHeight="450"
     d:DesignWidth="800"
+    x:DataType="vm:InputDialogViewModel"
     x:TypeArguments="vm:InputDialogViewModel"
+    Theme="{StaticResource WideDialogUserControl}"
     mc:Ignorable="d">
-    <Border Style="{StaticResource WideDialog}">
+    <Border Theme="{StaticResource WideDialog}">
         <Grid>
 
             <Grid.RowDefinitions>
@@ -31,8 +33,8 @@
                     x:Name="FieldName"
                     Grid.Column="0"
                     VerticalAlignment="Center"
+                    Classes="Header"
                     FontWeight="Normal"
-                    Style="{DynamicResource Header}"
                     Text="Добавки" />
 
             </Grid>
@@ -40,13 +42,13 @@
                 Grid.Row="1"
                 Width="{mx:AdaptiveSize 1280}"
                 Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
-                Style="{DynamicResource Separator}" />
+                Theme="{DynamicResource Separator}" />
 
             <ScrollViewer
                 Grid.Row="2"
                 HorizontalContentAlignment="Stretch"
                 HorizontalScrollBarVisibility="Disabled"
-                Style="{StaticResource PrimaryScrollViewer}">
+                Theme="{StaticResource PrimaryScrollViewer}">
                 <TextBoxWithoutVirtualKeyboard x:Name="Input" Theme="{StaticResource InputDialogStyle}" />
             </ScrollViewer>
 
@@ -56,12 +58,12 @@
                 Grid.Row="3"
                 Margin="{mx:AdaptiveSize Thickness='0,0,0,15'}"
                 VerticalAlignment="Bottom"
-                TextBox="{Binding ElementName=Input, Path=.}" />
+                TextBox="{Binding #Input}" />
 
             <Border
                 Grid.Row="4"
                 Margin="{mx:AdaptiveSize Thickness='0,0,0,10'}"
-                Style="{StaticResource DialogFooter}">
+                Theme="{StaticResource DialogFooter}">
                 <Grid>
 
                     <Grid.ColumnDefinitions>
@@ -70,7 +72,7 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
 
-                    <ButtonWithCornerRaduis x:Name="BackButton" Theme="{StaticResource BackButton}" />
+                    <Button x:Name="BackButton" Theme="{StaticResource BackButton}" />
 
                     <Button
                         x:Name="CancelButton"

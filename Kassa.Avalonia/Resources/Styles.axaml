@@ -69,5 +69,4 @@
         <Setter Property="FontSize" Value="{mx:AdaptiveSize 20}" />
     </Style>
 
-
 </Styles>
