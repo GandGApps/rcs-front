@@ -216,7 +216,6 @@
         <Setter Property="Grid.Column" Value="2" />
     </ControlTheme>
 
-    <!--
   <ControlTemplate x:Key="WidePrimaryDialogBaseTemplate" TargetType="UserControl">
     <Border Margin="{mx:AdaptiveSize Thickness='76,0,0,76'}" Padding="{TemplateBinding Padding}">
       <Grid HorizontalAlignment="Center" VerticalAlignment="{TemplateBinding VerticalContentAlignment}">
@@ -289,18 +288,14 @@
                 Grid.Row="1"
                 Width="{mx:AdaptiveSize 1280}"
                 Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
-                Style="{DynamicResource Separator}" />
+                Theme="{DynamicResource Separator}" />
 
             <ScrollViewer
                 x:Name="ScrollViewer"
                 Grid.Row="2"
                 HorizontalContentAlignment="Stretch"
                 HorizontalScrollBarVisibility="Disabled"
-                Style="{StaticResource PrimaryScrollViewer}">
-
-              <i:Interaction.Behaviors>
-                <behaviors:ScrollViewerFixingBehavior />
-              </i:Interaction.Behaviors>
+                Theme="{StaticResource PrimaryScrollViewer}">
 
               <ContentPresenter />
 
@@ -334,6 +329,5 @@
     </Border>
 
   </ControlTemplate>
-    -->
 
 </ResourceDictionary>
