@@ -8,6 +8,5 @@
     d:DesignWidth="800"
     Focusable="False"
     mc:Ignorable="d">
-
     <StackPanel x:Name="stack" Focusable="False" />
 </UserControl>

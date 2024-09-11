@@ -1,0 +1,101 @@
+<ClosableDialog
+    x:Class="Kassa.Avalonia.InputDialog"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mx="using:Kassa.Avalonia.MarkupExtensions"
+    xmlns:vm="using:Kassa.RxUI.Dialogs"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:TypeArguments="vm:InputDialogViewModel"
+    mc:Ignorable="d">
+    <Border Style="{StaticResource WideDialog}">
+        <Grid>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*" />
+                </Grid.ColumnDefinitions>
+
+                <TextBlock
+                    x:Name="FieldName"
+                    Grid.Column="0"
+                    VerticalAlignment="Center"
+                    FontWeight="Normal"
+                    Style="{DynamicResource Header}"
+                    Text="Добавки" />
+
+            </Grid>
+            <Border
+                Grid.Row="1"
+                Width="{mx:AdaptiveSize 1280}"
+                Margin="{mx:AdaptiveSize Thickness='0,0,0,12'}"
+                Style="{DynamicResource Separator}" />
+
+            <ScrollViewer
+                Grid.Row="2"
+                HorizontalContentAlignment="Stretch"
+                HorizontalScrollBarVisibility="Disabled"
+                Style="{StaticResource PrimaryScrollViewer}">
+                <TextBoxWithoutVirtualKeyboard x:Name="Input" Theme="{StaticResource InputDialogStyle}" />
+            </ScrollViewer>
+
+
+            <Keyboard
+                x:Name="Keyboard"
+                Grid.Row="3"
+                Margin="{mx:AdaptiveSize Thickness='0,0,0,15'}"
+                VerticalAlignment="Bottom"
+                TextBox="{Binding ElementName=Input, Path=.}" />
+
+            <Border
+                Grid.Row="4"
+                Margin="{mx:AdaptiveSize Thickness='0,0,0,10'}"
+                Style="{StaticResource DialogFooter}">
+                <Grid>
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+
+                    <ButtonWithCornerRaduis x:Name="BackButton" Theme="{StaticResource BackButton}" />
+
+                    <Button
+                        x:Name="CancelButton"
+                        Grid.Column="1"
+                        Width="{mx:AdaptiveSize 220}"
+                        Margin="{mx:AdaptiveSize Thickness='0,-1,5,-1'}"
+                        HorizontalAlignment="Right"
+                        Theme="{StaticResource SecondaryButton}">
+                        Отмена
+                    </Button>
+                    <Button
+                        x:Name="OkButton"
+                        Grid.Column="2"
+                        Width="{mx:AdaptiveSize 220}"
+                        Margin="{mx:AdaptiveSize Thickness='0,-1,0,-1'}"
+                        HorizontalAlignment="Right"
+                        Theme="{StaticResource PrimaryButton}">
+                        Ок
+                    </Button>
+
+                </Grid>
+
+            </Border>
+
+        </Grid>
+
+    </Border>
+</ClosableDialog>

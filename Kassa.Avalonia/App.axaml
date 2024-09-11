@@ -16,6 +16,10 @@
                 <MergeResourceInclude Source="/Themes/PornhubTheme.axaml" />
                 <MergeResourceInclude Source="/Resources/Icons.axaml" />
                 <MergeResourceInclude Source="/Resources/ControlTemplates.axaml" />
+
+                <MergeResourceInclude Source="/Dialogs/BaseDialog.axaml" />
+                <MergeResourceInclude Source="/Dialogs/ClosableDialog.axaml" />
+
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
 

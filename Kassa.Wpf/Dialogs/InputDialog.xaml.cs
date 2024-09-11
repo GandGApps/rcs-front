@@ -20,7 +20,7 @@ namespace Kassa.Wpf.Dialogs;
 /// <summary>
 /// Логика взаимодействия для InputDialog.xaml
 /// </summary>
-public partial class InputDialog : ClosableDialog<InputDialogViewModel>
+public sealed partial class InputDialog : ClosableDialog<InputDialogViewModel>
 {
     public InputDialog()
     {
