@@ -34,10 +34,22 @@
 
 
     <Grid>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
+
+        <TextBlock
+            x:Name="FpsCounter"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Panel.ZIndex="100000"
+            Background="Black"
+            FontFamily="{StaticResource LucidaConsole}"
+            Foreground="White"
+            Visibility="Collapsed" />
+
         <Border
             x:Name="DialogOverlay"
             Grid.RowSpan="2"

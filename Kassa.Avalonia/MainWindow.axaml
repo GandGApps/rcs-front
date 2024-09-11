@@ -18,6 +18,16 @@
 
     <Grid RowDefinitions="*,*">
 
+        <TextBlock
+            x:Name="FpsCounter"
+            Margin="0,30,0,0"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            Background="Black"
+            Foreground="White"
+            IsVisible="False"
+            ZIndex="10000" />
+
         <!--  Dialog  -->
         <Border
             x:Name="DialogOverlay"

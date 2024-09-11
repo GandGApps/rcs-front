@@ -159,6 +159,8 @@ public sealed partial class MainWindow : ReactiveWindow<MainViewModel>
         ResizeMode = ResizeMode.CanResize;
         WindowStartupLocation = WindowStartupLocation.CenterScreen;
 #endif
+
+        InitFpsCounter();
     }
 
     private void TryDetectMsr(object sender, TextCompositionEventArgs e)
@@ -171,6 +173,36 @@ public sealed partial class MainWindow : ReactiveWindow<MainViewModel>
         _msrKeyboardDetector.TryDetect(e.Text);
 
         LogHost.Default.Debug($"TryDetectMsr: \n\t {e.Text} \n\t RoutingStrategy:{e.RoutedEvent.RoutingStrategy} \n\t IsHandled:{e.Handled}");
+    }
+
+    public static void SetPageFooter(DependencyObject element, object value)
+    {
+        element.SetValue(PageFooterProperty, value);
+    }
+
+    public static object GetPageFooter(DependencyObject element)
+    {
+        return element.GetValue(PageFooterProperty);
+    }
+
+    public static void SetIsHasFooter(DependencyObject element, bool value)
+    {
+        element.SetValue(IsHasFooterProperty, value);
+    }
+
+    public static bool GetIsHasFooter(DependencyObject element)
+    {
+        return (bool)element.GetValue(IsHasFooterProperty);
+    }
+
+    public static void SetIsGrayscaleEffectOnDialog(DependencyObject element, bool value)
+    {
+        element.SetValue(IsGrayscaleEffectOnDialogProperty, value);
+    }
+
+    public static bool GetIsGrayscaleEffectOnDialog(DependencyObject element)
+    {
+        return (bool)element.GetValue(IsGrayscaleEffectOnDialogProperty);
     }
 
 }

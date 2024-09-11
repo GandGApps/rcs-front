@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Data.Converters;
+using Avalonia.Media;
 using Avalonia.ReactiveUI;
 using Avalonia.Threading;
 using Kassa.RxUI;
@@ -59,6 +60,7 @@ internal class Program
             e.SetObserved();
         };
 
+
         try
         {
             BuildAvaloniaApp()
@@ -82,5 +84,6 @@ internal class Program
             .WithInterFont()
             .UseReactiveUI()
             .UseRcs()
+            .UseWin32()
             .LogToTrace();
 }

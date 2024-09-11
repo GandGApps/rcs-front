@@ -10,6 +10,7 @@ using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using Avalonia.ReactiveUI;
+using Avalonia.Rendering;
 using Avalonia.Rendering.SceneGraph;
 using Avalonia.Skia;
 using Avalonia.Threading;
@@ -171,6 +172,13 @@ public sealed partial class MainWindow : ReactiveWindow<MainViewModel>
                 .DisposeWith(disposables);
 
         });
+
+        if (GetTopLevel(this) is TopLevel topLevel)
+        {
+            topLevel.RendererDiagnostics.DebugOverlays |= RendererDebugOverlays.Fps;
+        }
+
+        InitFpsCounter();
     }
 
     protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
