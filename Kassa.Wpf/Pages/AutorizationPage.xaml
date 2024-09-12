@@ -118,7 +118,7 @@
                         <TextBlock
                             Width="{mx:AdaptiveSize 320}"
                             FontSize="{mx:AdaptiveSize 24}"
-                            Text="Добро подаловать  в “Название организации”"
+                            Text="Добро пожаловать  в “Название организации”"
                             TextAlignment="Center"
                             TextWrapping="Wrap" />
 

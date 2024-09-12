@@ -18,6 +18,7 @@
     <UserControl.Styles>
 
         <Style Selector="StackPanel#Welcome.NextState">
+            <Setter Property="Opacity" Value="0" />
             <Style.Animations>
                 <Animation Duration="0:0:0.3">
                     <KeyFrame Cue="0%">
@@ -28,6 +29,39 @@
                     </KeyFrame>
                 </Animation>
             </Style.Animations>
+        </Style>
+
+        <Style Selector="Border#Logo">
+            <Setter Property="Width" Value="{mx:AdaptiveSize 265}" />
+        </Style>
+
+        <Style Selector="Border#Logo.NextState">
+
+            <Setter Property="Transitions">
+                <Transitions>
+                    <DoubleTransition
+                        Delay="0:0:0.32"
+                        Property="Width"
+                        Duration="0:0:0.3" />
+                </Transitions>
+            </Setter>
+            <Setter Property="Width" Value="{mx:AdaptiveSize 165}" />
+        </Style>
+
+        <Style Selector="Grid#Form">
+            <Setter Property="Opacity" Value="0" />
+        </Style>
+
+        <Style Selector="Grid#Form.NextState">
+            <Setter Property="Transitions">
+                <Transitions>
+                    <DoubleTransition
+                        Delay="0:0:1"
+                        Property="Width"
+                        Duration="0:0:0.3" />
+                </Transitions>
+            </Setter>
+            <Setter Property="Opacity" Value="1" />
         </Style>
 
     </UserControl.Styles>
@@ -81,7 +115,6 @@
                     <Border
                         x:Name="Logo"
                         Grid.Row="1"
-                        Width="{mx:AdaptiveSize 265}"
                         Height="{Binding Width, RelativeSource={RelativeSource Mode=Self}}"
                         Padding="{mx:AdaptiveSize Thickness=40}"
                         VerticalAlignment="Center"
@@ -98,7 +131,7 @@
                         <TextBlock
                             Width="{mx:AdaptiveSize 320}"
                             FontSize="{mx:AdaptiveSize 24}"
-                            Text="Добро подаловать  в “Название организации”"
+                            Text="Добро пожаловать  в “Название организации”"
                             TextAlignment="Center"
                             TextWrapping="Wrap" />
 
@@ -107,8 +140,8 @@
                             Width="{mx:AdaptiveSize 220}"
                             Margin="{mx:AdaptiveSize Thickness='40'}"
                             Padding="{mx:AdaptiveSize Thickness='10'}"
-                            Content="Далее"
-                            Theme="{StaticResource PrimaryButton}" />
+                            Click="NextClicked"
+                            Content="Далее" />
 
                     </StackPanel>
 
@@ -116,8 +149,7 @@
                         x:Name="Form"
                         Grid.Row="2"
                         Margin="{mx:AdaptiveSize Thickness='0,55,0,0'}"
-                        IsHitTestVisible="False"
-                        Opacity="0">
+                        IsHitTestVisible="False">
 
                         <Grid.RowDefinitions>
                             <RowDefinition Height="1*" />

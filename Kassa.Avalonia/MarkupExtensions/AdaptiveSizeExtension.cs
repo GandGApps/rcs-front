@@ -17,9 +17,10 @@ using Kassa.Shared;
 using Avalonia.Data.Core;
 using Avalonia.Markup.Xaml.MarkupExtensions;
 using static Kassa.Avalonia.MarkupExtensions.AdaptiveMarkupExtension;
+using System.Reflection.Metadata;
 
 namespace Kassa.Avalonia.MarkupExtensions;
-public sealed class AdaptiveSizeExtension: MarkupExtension
+public sealed class AdaptiveSizeExtension : MarkupExtension
 {
     public AdaptiveSizeExtension()
     {
@@ -53,6 +54,12 @@ public sealed class AdaptiveSizeExtension: MarkupExtension
         get; set;
     }
 
+    [DefaultValue(false)]
+    public bool IsOnce
+    {
+        get; set;
+    }
+
     public override object ProvideValue(IServiceProvider serviceProvider)
     {
         var valueTargetProvider = serviceProvider.GetRequiredService<IProvideValueTarget>();
@@ -73,7 +80,16 @@ public sealed class AdaptiveSizeExtension: MarkupExtension
             _ => Size
         };
 
-        
+
+
+#if ONCE_SIZE_ADAPT
+        IsOnce = true;
+#endif
+
+        if (IsOnce)
+        {
+            return AdaptiveSizeConverter.AdaptSize(value);
+        }
 
         if (Design.IsDesignMode)
         {
@@ -102,12 +118,9 @@ public sealed class AdaptiveSizeExtension: MarkupExtension
     {
         public static AdaptiveSizeConverter Instance = new();
 
-        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        public static object AdaptSize(object? parameter, AdaptiveBreakpoint? adaptiveBreakpoint = null)
         {
-            if (value is not AdaptiveBreakpoint breakpoint)
-            {
-                return parameter;
-            }
+            var breakpoint = adaptiveBreakpoint ?? BreakpointNotifier.Instance.Breakpoint;
 
             if (parameter is Thickness thickness)
             {
@@ -141,12 +154,22 @@ public sealed class AdaptiveSizeExtension: MarkupExtension
                 );
             }
 
-            if(parameter is double size)
+            if (parameter is double size)
             {
                 return GetAdaptiveSize(size, breakpoint);
             }
 
             return AvaloniaProperty.UnsetValue;
+        }
+
+        public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
+        {
+            if (value is not AdaptiveBreakpoint breakpoint)
+            {
+                return parameter;
+            }
+
+            return AdaptSize(parameter, breakpoint);
         }
         public object? ConvertBack(object? value, Type targetType, object? parameter, CultureInfo culture) => throw new NotImplementedException();
     }
