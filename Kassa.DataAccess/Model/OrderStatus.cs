@@ -36,6 +36,6 @@ public enum OrderStatus
     /// ЭТО ТОЖЕ САМОЕ ЧТО И ЗАКРЫТЫЙ. А ОПРЕДЕЛИТЬ БЫЛА ЛИ ЭТО ДОСТАВКА ИЛИ 
     /// САМОВЫВОЗ МОЖНО ПО CВОЙСТВУ <see cref="Order.IsDelivery"/> и <see cref="Order.IsForHere"/>.
     /// </summary>
-    /*[Obsolete("Use Completed")]
-    Delivered,*/
+    [Obsolete("Use Completed")]
+    Delivered,
 }
