@@ -38,6 +38,7 @@ public sealed class ProductShoppingListItemViewModel : ReactiveObject, IShopping
         IReceiptService receiptService,
         IAdditiveService additiveService): this(product, manager, orderEditVm, receiptService, additiveService)
     {
+        Count = 5;
         OrderedId = productShoppingListItem.Id;
         Comment = productShoppingListItem.Comment;
     }
