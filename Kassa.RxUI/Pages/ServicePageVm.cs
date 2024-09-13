@@ -126,7 +126,7 @@ public sealed class ServicePageVm : PageViewModel
             await MainViewModel.ShowDialogAndWaitClose(dialog);
         });
 
-        OpenClosedOrderCommand = CreatePageBusyCommand<ServiceOrderRowViewModel, Unit>(async x =>
+        OpenClosedOrderCommand = CreatePageBusyCommand<ServiceOrderRowViewModel, Unit>(async order =>
         {
             BusyText = "Открытие заказа";
 
@@ -140,7 +140,7 @@ public sealed class ServicePageVm : PageViewModel
                 orderEdits[i] = await _cashierService.CreateOrder(closedOrders[i].Order!);
             }
 
-            var closedOrder = orderEdits.First(x => x.Id == x.Id);
+            var closedOrder = orderEdits.First(x => order.Id == x.Id);
             var orderEditWithNavigationPageVm = new OrderEditWithNavigationPageVm(new(orderEdits), closedOrder);
 
             await MainViewModel.GoToPage(orderEditWithNavigationPageVm);
@@ -148,7 +148,7 @@ public sealed class ServicePageVm : PageViewModel
             return Unit.Default;
         });
 
-        OpenOfClosedShiftOrderCommand = CreatePageBusyCommand<ServiceOrderRowViewModel, Unit>(async x =>
+        OpenOfClosedShiftOrderCommand = CreatePageBusyCommand<ServiceOrderRowViewModel, Unit>(async order =>
         {
             BusyText = "Открытие заказа";
 
@@ -162,7 +162,7 @@ public sealed class ServicePageVm : PageViewModel
                 orderEdits[i] = await _cashierService.CreateOrder(closedOrders[i].Order!);
             }
 
-            var closedOrder = orderEdits.First(x => x.Id == x.Id);
+            var closedOrder = orderEdits.First(x => order.Id == x.Id);
             var orderEditWithNavigationPageVm = new OrderEditWithNavigationPageVm(new(orderEdits), closedOrder);
 
             await MainViewModel.GoToPage(orderEditWithNavigationPageVm);
@@ -170,14 +170,14 @@ public sealed class ServicePageVm : PageViewModel
             return Unit.Default;
         });
 
-        OpenOpenOrderCommand = CreatePageBusyCommand<ServiceOrderRowViewModel, Unit>(async x =>
+        OpenOpenOrderCommand = CreatePageBusyCommand<ServiceOrderRowViewModel, Unit>(async order =>
         {
             BusyText = "Открытие заказа";
 
             var openOrders = new OrderEditDto[_cashierService.Orders.Count];
             _cashierService.Orders.CopyTo(openOrders, 0);
 
-            var orderEdit = openOrders.First(x => x.Id == x.Id);
+            var orderEdit = openOrders.First(x => order.Id == x.Id);
             var orderEditWithNavigationPageVm = new OrderEditWithNavigationPageVm(new(openOrders), orderEdit);
 
             await MainViewModel.GoToPage(orderEditWithNavigationPageVm);

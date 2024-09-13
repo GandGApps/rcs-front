@@ -12,6 +12,7 @@ using Kassa.BuisnessLogic.Services;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.RxUI.Pages;
 using System.Reactive.Disposables;
+using System.Collections.Immutable;
 
 namespace Kassa.RxUI;
 
@@ -82,7 +83,7 @@ public sealed class ShoppingListViewModel : BaseViewModel
 
         RemoveSelectedCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var selectedProducts = orderEditVm.ShoppingList.SelectedItems.OfType<ProductShoppingListItemViewModel>();
+            var selectedProducts = orderEditVm.ShoppingList.SelectedItems.OfType<ProductShoppingListItemViewModel>().ToImmutableArray();
             var storageScope = orderEditVm.StorageScope;
 
             foreach (var product in selectedProducts)
@@ -92,12 +93,16 @@ public sealed class ShoppingListViewModel : BaseViewModel
                 if (receipt is null)
                 {
                     this.Log().Error("Receipt not found for product {0}", product.ProductDto.ReceiptId);
-                    continue;
+                }
+                else
+                {
+                    await storageScope.ReturnIngredients(receipt, product.Count);
                 }
 
-                await storageScope.ReturnIngredients(receipt, product.Count);
+               
 
                 _productShoppingListItems.Remove(product);
+                orderEditVm.ShoppingList.SelectedItems.Remove(product);
             }
         });
 
