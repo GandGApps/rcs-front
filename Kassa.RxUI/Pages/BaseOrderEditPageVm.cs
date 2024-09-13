@@ -235,38 +235,7 @@ public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
 
         GoToPaymentCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            _orderEditDto.Products.Clear();
-
-            foreach (var item in ShoppingList.ProductShoppingListItems)
-            {
-                // TODO: Use object pool
-                var productItem = new ProductShoppingListItemDto(item.ProductDto)
-                {
-                    Count = item.Count,
-                    Comment = item.Comment,
-                    SubtotalSum = item.SubtotalSum,
-                    Price = item.Price,
-                    Discount = item.Discount,
-                    HasDiscount = item.HasDiscount,
-                };
-
-                foreach (var additive in item.Additives)
-                {
-                    // TODO: Use object pool
-                    var additiveItem = new AdditiveShoppingListItemDto(productItem, additive.AdditiveDto)
-                    {
-                        Count = additive.Count,
-                        Price = additive.Price,
-                        Discount = additive.Discount,
-                        HasDiscount = additive.HasDiscount,
-                        SubtotalSum = additive.SubtotalSum,
-                    };
-
-                    productItem.Additives.Add(additiveItem);
-                }
-
-                _orderEditDto.Products.Add(productItem);
-            }
+            PrepateOrderEdit();
 
             var payment = await _cashierService.CreatePayment(orderEditDto);
             var paymentPage = new CashierPaymentPageVm(ShoppingList.ProductShoppingListItems, this, payment, cashierService, additiveService, productService, ingridientsService, receiptService, categoryService);
@@ -556,6 +525,55 @@ public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
         WhenOrderStarted = DateTime.Now;
 
         await ShoppingList.InitializeAsync();
+    }
+
+    protected internal override ValueTask OnPageLeaving(PageViewModel? nextPage)
+    {
+        if(nextPage is MainPageVm)
+        {
+            PrepateOrderEdit();
+
+            
+        }
+
+        return ValueTask.CompletedTask;
+
+    }
+
+    private void PrepateOrderEdit()
+    {
+        _orderEditDto.Products.Clear();
+
+        foreach (var item in ShoppingList.ProductShoppingListItems)
+        {
+            // TODO: Use object pool
+            var productItem = new ProductShoppingListItemDto(item.ProductDto)
+            {
+                Count = item.Count,
+                Comment = item.Comment,
+                SubtotalSum = item.SubtotalSum,
+                Price = item.Price,
+                Discount = item.Discount,
+                HasDiscount = item.HasDiscount,
+            };
+
+            foreach (var additive in item.Additives)
+            {
+                // TODO: Use object pool
+                var additiveItem = new AdditiveShoppingListItemDto(productItem, additive.AdditiveDto)
+                {
+                    Count = additive.Count,
+                    Price = additive.Price,
+                    Discount = additive.Discount,
+                    HasDiscount = additive.HasDiscount,
+                    SubtotalSum = additive.SubtotalSum,
+                };
+
+                productItem.Additives.Add(additiveItem);
+            }
+
+            _orderEditDto.Products.Add(productItem);
+        }
     }
 
     protected readonly struct HostHistory(Guid categoryId, int favourite, ProductHostItemVm[] items)

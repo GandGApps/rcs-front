@@ -13,7 +13,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI.Pages;
-public class PageViewModel : BaseViewModel, IRoutableViewModel
+public abstract class PageViewModel : BaseViewModel, IRoutableViewModel
 {
 
     public PageViewModel(MainViewModel MainViewModel) : base(MainViewModel)
@@ -148,6 +148,11 @@ public class PageViewModel : BaseViewModel, IRoutableViewModel
                 await loading.CloseAsync();
             }
         }, canExecute);
+    }
+
+    protected internal virtual ValueTask OnPageLeaving(PageViewModel? nextPage)
+    {
+        return ValueTask.CompletedTask;
     }
 
     public static async ValueTask<bool> TryAuthorizePageAccess<T>(IShiftService shiftservice) where T : PageViewModel

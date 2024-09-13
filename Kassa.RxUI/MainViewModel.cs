@@ -140,6 +140,13 @@ public sealed class MainViewModel : ReactiveObject, IScreen
 
         GoToPageCommand = ReactiveCommand.CreateFromTask(async (PageViewModel pageVm) =>
         {
+            var currentPage = Router.GetCurrentViewModel() as PageViewModel;
+
+            if(currentPage is not null)
+            {
+                await PreparePageToLeaving(currentPage, pageVm);
+            }
+
             await pageVm.InitializeAsync();
 
             await Router.Navigate.Execute(pageVm).FirstAsync();
@@ -153,6 +160,7 @@ public sealed class MainViewModel : ReactiveObject, IScreen
             {
                 if (vm is PageViewModel page)
                 {
+                    await PreparePageToLeaving(page, pageVm);
                     await page.DisposeAsync();
                 }
             }
@@ -181,9 +189,9 @@ public sealed class MainViewModel : ReactiveObject, IScreen
 
                 if (currentPage is PageViewModel pageViewModel)
                 {
-                    pageVm.Activator.Deactivate();
+                    await PreparePageToLeaving(pageViewModel, pageVm);
 
-                    await pageVm.DisposeAsync();
+                    await pageViewModel.DisposeAsync();
                 }
             }
 
@@ -194,6 +202,7 @@ public sealed class MainViewModel : ReactiveObject, IScreen
 
         GoBackCommand = ReactiveCommand.CreateFromTask(async () =>
         {
+
             if (Router.NavigationStack.Count > 1)
             {
                 var currentPage = Router.NavigationStack[^1];
@@ -201,7 +210,7 @@ public sealed class MainViewModel : ReactiveObject, IScreen
 
                 if (currentPage is PageViewModel pageVm)
                 {
-                    pageVm.Activator.Deactivate();
+                    await PreparePageToLeaving(pageVm, Router.NavigationStack[^1] as PageViewModel);
 
                     await pageVm.DisposeAsync();
                 }
@@ -422,6 +431,13 @@ public sealed class MainViewModel : ReactiveObject, IScreen
         await dialog.CloseAsync();
 
         return result;
+    }
+
+    private static async ValueTask PreparePageToLeaving(PageViewModel pageVm, PageViewModel? nextPage)
+    {
+        pageVm.Activator.Deactivate();
+
+        await pageVm.OnPageLeaving(nextPage);
     }
 
     /// <summary>
