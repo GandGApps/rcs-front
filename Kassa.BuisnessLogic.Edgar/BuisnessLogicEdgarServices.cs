@@ -34,6 +34,8 @@ public static class BuisnessLogicEdgarServices
 
     private static void AddApis()
     {
+        RcsKassa.AddContext(BlEdgarJsonSerializerContext.Default);
+
         ApiServiceRegistration.AddApi<ITerminalApi>();
         ApiServiceRegistration.AddApi<IEmployeePostsApi>();
         ApiServiceRegistration.AddApi<ITerminalPostApi>();
