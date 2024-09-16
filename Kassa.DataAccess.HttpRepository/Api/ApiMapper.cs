@@ -425,8 +425,8 @@ internal static partial class ApiMapper
             Measure = string.Empty, // Placeholder, update as needed
             ProductIds = edgarModel.Dishes is null ? [] : edgarModel.Dishes.Select(x => x.DishId).ToArray(),
             Portion = 0, // Placeholder, update as needed
-            IsAvailable = true, // Default value
-            IsEnoughIngredients = true, // Default value
+            IsAvailable = true, // RcsDefault value
+            IsEnoughIngredients = true, // RcsDefault value
             ReceiptId = edgarModel.TechcardId ?? Guid.Empty,
         };
     }

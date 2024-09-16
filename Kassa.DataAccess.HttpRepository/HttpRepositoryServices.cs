@@ -40,6 +40,9 @@ public static class HttpRepositoryServices
 
     public static void AddApis()
     {
+        RcsKassa.AddContext(DataAccessJsonSerializerContext.Default);
+        RcsKassa.AddContext(DataAccessHttpRepositoryJsonSerializerContext.Default);
+
         ApiServiceRegistration.AddApi<IEmployeeApi>();
         ApiServiceRegistration.AddApi<IOrdersApi>();
         ApiServiceRegistration.AddApi<IDishesApi>();

@@ -5,6 +5,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Kassa.DataAccess.Model;
+using Kassa.Shared;
 
 namespace Kassa.DataAccess.Repositories;
 public interface IRepository<T> where T : class, IGuidId
@@ -20,7 +21,7 @@ public interface IRepository<T> where T : class, IGuidId
     {
         var assembly = typeof(IRepository<>).Assembly;
         var json = assembly.GetManifestResourceStream($"Kassa.DataAccess.{jsonResourceName}");
-        var items = JsonSerializer.Deserialize<IEnumerable<T>>(json!);
+        var items = JsonSerializer.Deserialize<IEnumerable<T>>(json!, RcsKassa.JsonSerializerOptions);
         return new MockRepository(items?.ToDictionary(x => x.Id) ?? []);
     }
 

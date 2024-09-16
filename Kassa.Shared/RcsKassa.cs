@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Kassa.Shared.ServiceLocator;
 using Microsoft.Extensions.Configuration;
@@ -31,4 +33,30 @@ public static class RcsKassa
 
     public static bool IsDevelopment => string.Equals(EnvironmentName, DevelopmentName, StringComparison.InvariantCultureIgnoreCase);
     public static bool IsProduction => string.Equals(EnvironmentName, ProductionName, StringComparison.InvariantCultureIgnoreCase);
+
+    public static JsonSerializerOptions JsonSerializerOptions
+    {
+        get; private set;
+    } = new()
+    {
+        TypeInfoResolver = null,
+        Converters = {
+            new DefaultIfNullConverter<int>(), new DefaultIfNullConverter<double>(), new DefaultIfNullConverter<bool>()
+        }
+    };
+
+    public static void AddContext(JsonSerializerContext context)
+    {
+        if (JsonSerializerOptions.TypeInfoResolverChain.Contains(context))
+        {
+            return;
+        }
+
+        if (JsonSerializerOptions.IsReadOnly)
+        {
+            JsonSerializerOptions = new(JsonSerializerOptions);
+        }
+
+        JsonSerializerOptions.TypeInfoResolverChain.Add(context);
+    }
 }

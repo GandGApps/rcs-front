@@ -102,7 +102,7 @@ public sealed class SimpleRouter : ContentControl
             // need to check for null because some classes may implement IViewFor but not IViewFor<T> - we don't care about those
             if (ivf is not null)
             {
-                LogHost.Default.Debug($"Registering {ti.FullName} for {ivf.FullName}");
+                LogHost.RcsDefault.Debug($"Registering {ti.FullName} for {ivf.FullName}");
             }
         }*/
     }

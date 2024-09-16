@@ -4,41 +4,64 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Avalonia.Controls;
 using Avalonia.Threading;
 
 namespace Kassa.Avalonia;
 public partial class MainWindow
 {
-    private Stopwatch stopwatch;
-    private int frameCount;
-    private double lastRenderTime;
+    private readonly FpsCounterHelper fpsCounterHelper = new();
 
     private void InitFpsCounter()
     {
-        stopwatch = Stopwatch.StartNew();
+        fpsCounterHelper.Init();
         FpsCounter.IsVisible = true;
 
-        UpdateFpsCounter();
+        RequestAnimationFrame(Tick);
     }
 
-    private void UpdateFpsCounter()
+    public void Tick(TimeSpan time) 
     {
-        frameCount++;
+        var fps = fpsCounterHelper.UpdateFpsCounter();
 
-        var elapsedSeconds = stopwatch.Elapsed.TotalSeconds - lastRenderTime;
-
-        if (elapsedSeconds >= 0.5)
+        if (fps > 0)
         {
-            var fps = frameCount / elapsedSeconds;
-
-            FpsCounter.Text = $"FPS: {fps:F2}";
-
-            frameCount = 0;
-
-            lastRenderTime = stopwatch.Elapsed.TotalSeconds;
-
+            FpsCounter.Text = $"Renderer: {fps:F2} fps;";
         }
 
-        Dispatcher.UIThread.Post(UpdateFpsCounter, DispatcherPriority.Background);
+        RequestAnimationFrame(Tick);
+    }
+
+    private sealed class FpsCounterHelper
+    {
+        private Stopwatch stopwatch = null!;
+        private int frameCount;
+        private double lastRenderTime;
+
+        public void Init()
+        {
+            stopwatch = Stopwatch.StartNew();
+            lastRenderTime = stopwatch.Elapsed.TotalSeconds;
+        }
+
+        public double UpdateFpsCounter()
+        {
+            frameCount++;
+
+            var elapsedSeconds = stopwatch.Elapsed.TotalSeconds - lastRenderTime;
+
+            if (elapsedSeconds >= 1)
+            {
+                var fps = frameCount / elapsedSeconds;
+
+                frameCount = 0;
+
+                lastRenderTime = stopwatch.Elapsed.TotalSeconds;
+
+                return fps;
+            }
+
+            return 0;
+        }
     }
 }

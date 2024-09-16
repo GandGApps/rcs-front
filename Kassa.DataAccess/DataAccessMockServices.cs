@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
+using Kassa.Shared;
 using Kassa.Shared.ServiceLocator;
 
 namespace Kassa.DataAccess;
@@ -13,6 +14,8 @@ public static class DataAccessMockServices
 
     public static void RegisterMock()
     {
+        RcsKassa.AddContext(DataAccessJsonSerializerContext.Default);
+
         RcsLocatorBuilder.AddSingleton<IRepository<Product>>(IRepository<Product>.CreateMock("MockProducts.json"));
         RcsLocatorBuilder.AddSingleton<IRepository<Category>>(IRepository<Category>.CreateMock("MockCategories.json"));
         RcsLocatorBuilder.AddSingleton<IAdditiveRepository>(

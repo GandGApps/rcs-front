@@ -18,11 +18,7 @@ public static class ApiServiceRegistration
     private static readonly ServiceCollection _services = new();
     private static readonly RefitSettings _refitSettings = new()
     {
-        ContentSerializer = new SystemTextJsonContentSerializer(new JsonSerializerOptions()
-        {
-            PropertyNamingPolicy = LowerCaseNamingPolicy.Instance,
-            Converters = { new DefaultIfNullConverter<int>(), new DefaultIfNullConverter<double>(), new DefaultIfNullConverter<bool>() }
-        }),
+        ContentSerializer = new SystemTextJsonContentSerializer(RcsKassa.JsonSerializerOptions),
 
     };
 

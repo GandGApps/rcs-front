@@ -7,36 +7,61 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows;
 using System.Diagnostics;
+using System.Windows.Threading;
 
 namespace Kassa.Wpf;
 public partial class MainWindow
 {
-    private Stopwatch stopwatch;
-    private int frameCount;
-    private double lastRenderTime;
+    private readonly FpsCounterHelper rendererFpsCounterHelper = new();
 
     private void InitFpsCounter()
     {
-        stopwatch = Stopwatch.StartNew();
+        rendererFpsCounterHelper.Init();
         FpsCounter.Visibility = Visibility.Visible;
+
         CompositionTarget.Rendering += (_,_) => UpdateFpsCounter();
     }
 
     private void UpdateFpsCounter()
     {
-        frameCount++;
+        var fps = rendererFpsCounterHelper.UpdateFpsCounter();
 
-        var elapsedSeconds = stopwatch.Elapsed.TotalSeconds - lastRenderTime;
-
-        if (elapsedSeconds >= 1)
+        if (fps > 0)
         {
-            var fps = frameCount / elapsedSeconds;
+            FpsCounter.Text = $"Renderer: {fps:F2} fps";
+        }
+    }
 
-            FpsCounter.Text = $"FPS: {fps:F2}";
+    private sealed class FpsCounterHelper
+    {
+        private Stopwatch stopwatch = null!;
+        private int frameCount;
+        private double lastRenderTime;
 
-            frameCount = 0;
-
+        public void Init()
+        {
+            stopwatch = Stopwatch.StartNew();
             lastRenderTime = stopwatch.Elapsed.TotalSeconds;
+        }
+
+        public double UpdateFpsCounter()
+        {
+            frameCount++;
+
+            var elapsedSeconds = stopwatch.Elapsed.TotalSeconds - lastRenderTime;
+
+            if (elapsedSeconds >= 1)
+            {
+                var fps = frameCount / elapsedSeconds;
+
+                frameCount = 0;
+
+                lastRenderTime = stopwatch.Elapsed.TotalSeconds;
+
+                return fps;
+            }
+
+            return 0;
         }
     }
 }
