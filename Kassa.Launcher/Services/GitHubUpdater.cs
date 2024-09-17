@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace KassaLauncher.Services;
 
-internal sealed class GitHubUpdater : IUpdater, IInstaller
+internal sealed class GitHubUpdater : IUpdater, IInstaller, IEnableLogger
 {
     private readonly RepoInfo _repoInfo;
     private readonly GitHubClient _client;
@@ -44,7 +44,7 @@ internal sealed class GitHubUpdater : IUpdater, IInstaller
 
         var owner = ownerRepo[0];
         var repoName = ownerRepo[1];
-        
+
         var latestCommit = await _client.Repository.Commit.Get(owner, repoName, _repoInfo.Branch);
         var tree = await _client.Git.Tree.GetRecursive(owner, repoName, latestCommit.Sha);
 
@@ -60,7 +60,7 @@ internal sealed class GitHubUpdater : IUpdater, IInstaller
             })
             .ToList();
 
-        progress(1.0); 
+        progress(1.0);
 
         return changedFiles.Count > 0;
     }
@@ -69,17 +69,17 @@ internal sealed class GitHubUpdater : IUpdater, IInstaller
     {
         var fullPath = await _pathManager.GetApplicationPath();
 
-        if(string.IsNullOrWhiteSpace(fullPath))
+        if (string.IsNullOrWhiteSpace(fullPath))
         {
             return false;
         }
 
-        if(!Directory.Exists(fullPath))
+        if (!Directory.Exists(fullPath))
         {
             return false;
         }
 
-        if(Directory.GetFiles(fullPath).Length == 0)
+        if (Directory.GetFiles(fullPath).Length == 0)
         {
             return false;
         }
@@ -118,7 +118,7 @@ internal sealed class GitHubUpdater : IUpdater, IInstaller
 
         await _pathManager.SetApplicationPath(path);
 
-        
+
 #pragma warning disable CA1416 // Validate platform compatibility
         using var key = Registry.LocalMachine.CreateSubKey(LauncherConstants.RegistryKeyPath);
         if (key != null)
@@ -188,21 +188,52 @@ internal sealed class GitHubUpdater : IUpdater, IInstaller
 
     private async Task DownloadAndUpdate(string filePath, string downloadUrl, string installPath)
     {
-        // Построение правильного URL для скачивания
-        var rawUrl = $"https://raw.githubusercontent.com/{_repoInfo.Repo}/{_repoInfo.Branch}/{filePath}";
-        var fullPath = Path.Combine(installPath, filePath);
-        var fileDirectory = Path.GetDirectoryName(fullPath);
 
-        if (!Directory.Exists(fileDirectory))
+        this.Log().Debug($"Downloading {filePath} from {downloadUrl}");
+
+        const int maxRetries = 3;
+        var currentRetry = 0;
+
+    Download:
+        try
         {
-            Directory.CreateDirectory(fileDirectory);
+            // Построение правильного URL для скачивания
+            var rawUrl = $"https://raw.githubusercontent.com/{_repoInfo.Repo}/{_repoInfo.Branch}/{filePath}";
+            var fullPath = Path.Combine(installPath, filePath);
+            var fileDirectory = Path.GetDirectoryName(fullPath);
+
+            if (!Directory.Exists(fileDirectory))
+            {
+                Directory.CreateDirectory(fileDirectory);
+            }
+
+            using var httpClient = new HttpClient();
+            var response = await httpClient.GetAsync(rawUrl);
+            response.EnsureSuccessStatusCode();
+
+            using var fileStream = new FileStream(fullPath, System.IO.FileMode.Create, FileAccess.Write, FileShare.None);
+            await response.Content.CopyToAsync(fileStream);
+        }
+        catch (TaskCanceledException e)
+        {
+            if (currentRetry < maxRetries)
+            {
+                currentRetry++;
+                this.Log().Error(e, $"Download failed. Retrying {currentRetry} of {maxRetries}");
+                goto Download;
+            }
+            else
+            {
+                this.Log().Error(e, $"Download failed after {maxRetries} retries");
+                throw;
+            }
+        }
+        catch (Exception e)
+        {
+            this.Log().Error(e, "Download failed");
+            throw;
         }
 
-        using var httpClient = new HttpClient();
-        var response = await httpClient.GetAsync(rawUrl);
-        response.EnsureSuccessStatusCode();
 
-        using var fileStream = new FileStream(fullPath, System.IO.FileMode.Create, FileAccess.Write, FileShare.None);
-        await response.Content.CopyToAsync(fileStream);
     }
 }
