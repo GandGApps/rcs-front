@@ -105,6 +105,12 @@ internal sealed record CreatedPost
         get; init;
     }
 
+    [JsonPropertyName("post_number")]
+    public int? Number
+    {
+        get; init;
+    }
+
     public bool IsBreakNotEnded => BreakStart.HasValue && !BreakEnd.HasValue;
 
     [JsonPropertyName("manager")]

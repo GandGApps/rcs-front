@@ -41,5 +41,5 @@ internal sealed record ShiftResponse(
     [property: JsonPropertyName("breakEnd")] DateTime? BreakEnd,
     [property: JsonPropertyName("createdAt")] DateTime CreatedAt,
     [property: JsonPropertyName("updatedAt")] DateTime UpdatedAt,
-    [property: JsonPropertyName("post_number")] int Number
+    [property: JsonPropertyName("post_number")] int? Number
 );

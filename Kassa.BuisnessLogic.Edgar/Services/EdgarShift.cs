@@ -134,7 +134,7 @@ internal sealed class EdgarShift : IShift
             IsStarted = _postExistsResponse.CreatedPost.IsOpen,
             MemberId = _member.Id,
             Start = _start,
-            Number = _postExistsResponse.CreatedPost.PostId.GuidToPrettyInt(),
+            Number = _postExistsResponse.CreatedPost.Number ?? 0,
             BreakStart = _postExistsResponse.CreatedPost.BreakStart,
             BreakEnd = _postExistsResponse.CreatedPost.BreakEnd,
             ManagerId = _postExistsResponse.CreatedPost.ManagerId,

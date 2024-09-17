@@ -68,7 +68,15 @@ public sealed partial class ShiftStateDetail : UserControl, IApplicationModelPre
             : string.Empty;
         shiftStateDetail.ManagerName.Text = (await memberService.GetMember(dto.ManagerId ?? Guid.Empty))?.Name ?? "???";
         shiftStateDetail.CashierName.Text = (await memberService.GetMember(dto.MemberId))?.Name ?? "???";
-        shiftStateDetail.ShiftState.Text = dto.IsStarted ? " закрыта " : " открыто ";
+        shiftStateDetail.ShiftState.Text = dto.IsStarted
+            ? dto.Start is null
+                ? string.Empty 
+                : dto.End is null
+                    ? " В работе" // Смена начата, дата окончания не указана, а дата начала указана
+                    : " Завершена" // Смена начата, дата окончания указана, дата начала указана. (В теории этот код не должен выполняться)
+            : dto.Start is null
+                ? " Не начата"
+                : " Завершена";
 
         shiftStateDetail._subcribeToDtoChanging = shiftService.RuntimeShifts.AddPresenter(shiftStateDetail);
     }

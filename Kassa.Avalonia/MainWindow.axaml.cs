@@ -173,11 +173,6 @@ public sealed partial class MainWindow : ReactiveWindow<MainViewModel>
 
         });
 
-        if (GetTopLevel(this) is TopLevel topLevel)
-        {
-            topLevel.RendererDiagnostics.DebugOverlays |= RendererDebugOverlays.Fps;
-        }
-
         InitFpsCounter();
     }
 

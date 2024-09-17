@@ -437,7 +437,7 @@ internal static partial class ApiMapper
         {
             Id = shiftResponse.EmployeePostId,
             // Assuming Number is not available in ShiftResponse, you might need to handle it accordingly.
-            Number = shiftResponse.Number,
+            Number = shiftResponse.Number ?? 0,
             MemberId = shiftResponse.EmployeeId,
             CashierShiftId = shiftResponse.TerminalShiftId ?? Guid.Empty,
             Start = shiftResponse.OpenDate,

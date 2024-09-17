@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Avalonia.Controls;
+using Avalonia.Rendering;
 using Avalonia.Threading;
 
 namespace Kassa.Avalonia;
@@ -15,6 +17,11 @@ public partial class MainWindow
 
     private void InitFpsCounter()
     {
+        if (GetTopLevel(this) is TopLevel topLevel)
+        {
+            topLevel.RendererDiagnostics.DebugOverlays |= RendererDebugOverlays.Fps;
+        }
+
         stopwatch = Stopwatch.StartNew();
         FpsCounter.IsVisible = true;
 
