@@ -59,7 +59,7 @@ public class AutorizationPageVm : PageViewModel
     public string Error
     {
         get; set;
-    } = "Типа ошибка";
+    } 
 
     public ReactiveCommand<Unit, Unit> CloseCommand
     {
