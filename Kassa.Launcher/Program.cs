@@ -48,6 +48,8 @@ internal sealed class Program
 
         };
 
+        Environment.SetEnvironmentVariable("KASSA_LAUNCHER_PATH", App.BasePath, EnvironmentVariableTarget.Machine);
+
         var builder = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
             .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)

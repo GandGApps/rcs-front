@@ -3,6 +3,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
+using Avalonia.Rendering;
 using Avalonia.VisualTree;
 using Kassa.Launcher;
 using Kassa.Launcher.Services;

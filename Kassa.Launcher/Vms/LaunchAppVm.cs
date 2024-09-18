@@ -44,7 +44,8 @@ public sealed class LaunchAppVm : BaseVm
                 StartInfo = new ProcessStartInfo
                 {
                     FileName = path,
-                    UseShellExecute = true
+                    UseShellExecute = true,
+                    ArgumentList = { "--no-launcher" }
                 }
             };
 

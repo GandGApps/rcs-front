@@ -9,6 +9,8 @@
     <Platforms>AnyCPU;x64;x86</Platforms>
     <Configurations>Debug;Release;OptimizedSmallWindow;SmallWindow</Configurations>
     <ApplicationIcon>Logo.ico</ApplicationIcon>
+    <StartupObject>Kassa.Wpf.Program</StartupObject>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='OptimizedSmallWindow' Or '$(Configuration)'=='SmallWindow'">

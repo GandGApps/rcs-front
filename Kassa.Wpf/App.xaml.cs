@@ -29,6 +29,7 @@ namespace Kassa.Wpf;
 /// </summary>
 public partial class App : Application, IEnableLogger
 {
+
     /// <summary>
     /// I dislike always having to use <see cref="Application.Current"/> to get the current instance of <see cref="App"/>.
     /// I always need to cast, which is why I created this property.
@@ -97,5 +98,50 @@ public partial class App : Application, IEnableLogger
         LucidaConsoleFontFamily = (FontFamily)Resources["LucidaConsole"];
     }
 
+    #region Init
+
+   /* private bool _contentLoaded;
+
+    /// <summary>
+    /// InitializeComponent
+    /// </summary>
+    [System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "8.0.7.0")]
+    public void InitializeComponent()
+    {
+        if (_contentLoaded)
+        {
+            return;
+        }
+        _contentLoaded = true;
+
+#line 6 "..\..\..\App.xaml"
+        this.StartupUri = new System.Uri("Windows/MainWindow.xaml", System.UriKind.Relative);
+
+#line default
+#line hidden
+        System.Uri resourceLocater = new System.Uri("/Kassa.Wpf;component/app.xaml", System.UriKind.Relative);
+
+#line 1 "..\..\..\App.xaml"
+        System.Windows.Application.LoadComponent(this, resourceLocater);
+
+#line default
+#line hidden
+    }
+
+    /// <summary>
+    /// Application Entry Point.
+    /// </summary>
+    [System.STAThreadAttribute()]
+    [System.Diagnostics.DebuggerNonUserCodeAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("PresentationBuildTasks", "8.0.7.0")]
+    public static void Main()
+    {
+        Kassa.Wpf.App app = new Kassa.Wpf.App();
+        app.InitializeComponent();
+        app.Run();
+    }*/
+
+    #endregion
 }
 
