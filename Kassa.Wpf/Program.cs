@@ -12,7 +12,7 @@ public static class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        if (args.Contains("--no-laucner"))
+        if (args.Contains("--no-launcher", StringComparer.InvariantCultureIgnoreCase))
         {
             App.Main();
         }
