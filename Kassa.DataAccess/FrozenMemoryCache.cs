@@ -6,7 +6,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Kassa.DataAccess.Model;
+using Kassa.Shared;
 
 namespace Kassa.DataAccess;
 public sealed class FrozenMemoryCache<T>(TimeSpan cacheDuration) : IReadOnlyDictionary<Guid, T> where T : IGuidId

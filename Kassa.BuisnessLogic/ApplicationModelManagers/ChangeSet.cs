@@ -1,7 +1,7 @@
 ﻿// This file is ported and adapted from DynamicData reactivemarbles / DynamicData
 
 using System.Collections.Immutable;
-using Kassa.DataAccess.Model;
+using Kassa.Shared;
 
 namespace Kassa.BuisnessLogic.ApplicationModelManagers;
 public readonly struct ChangeSet<TModel> where TModel : class, IGuidId

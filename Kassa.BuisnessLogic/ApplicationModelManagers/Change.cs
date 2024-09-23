@@ -1,7 +1,7 @@
 ﻿// This file is ported and adapted from DynamicData reactivemarbles / DynamicData
 
 using DynamicData;
-using Kassa.DataAccess.Model;
+using Kassa.Shared;
 using Microsoft.VisualBasic;
 
 namespace Kassa.BuisnessLogic.ApplicationModelManagers;

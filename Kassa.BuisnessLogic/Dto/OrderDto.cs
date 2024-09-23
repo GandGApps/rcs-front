@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.DataAccess.Model;
+using Kassa.Shared;
 
 namespace Kassa.BuisnessLogic.Dto;
 public sealed class OrderDto : IGuidId

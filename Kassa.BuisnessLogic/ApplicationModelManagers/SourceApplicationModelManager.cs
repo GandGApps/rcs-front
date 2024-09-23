@@ -5,7 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Kassa.DataAccess.Model;
+using Kassa.Shared;
 
 namespace Kassa.BuisnessLogic.ApplicationModelManagers;
 internal sealed class SourceApplicationModelManager<TModel>(IApplicationModelManager<TModel> sourceManager, IObservable<ChangeSet<TModel>> observable) : IObservable<ChangeSet<TModel>>

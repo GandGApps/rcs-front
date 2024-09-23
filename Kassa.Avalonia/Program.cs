@@ -84,6 +84,6 @@ internal class Program
             .WithInterFont()
             .UseReactiveUI()
             .UseRcs()
-            .UseWin32()
+            .UseDirect2D1()
             .LogToTrace();
 }

@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Reactive.Disposables;
 using System.Reactive.Subjects;
 using DynamicData;
-using Kassa.DataAccess.Model;
+using Kassa.Shared;
 using Kassa.Shared.Collections;
 
 namespace Kassa.BuisnessLogic.ApplicationModelManagers;

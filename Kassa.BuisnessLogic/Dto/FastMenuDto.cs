@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Kassa.DataAccess.Model;
+using Kassa.Shared;
 
 namespace Kassa.BuisnessLogic.Dto;
 public class FastMenuDto : IGuidId

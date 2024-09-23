@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.DataAccess;
 using Kassa.DataAccess.Model;
+using Kassa.Shared;
 
 namespace Kassa.BuisnessLogic.Dto;
 public class CategoryDto : ICategoryItemDto, ICategoryDto, IGuidId

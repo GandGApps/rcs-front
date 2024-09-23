@@ -1,4 +1,6 @@
-﻿namespace Kassa.DataAccess.Model;
+﻿using Kassa.Shared;
+
+namespace Kassa.DataAccess.Model;
 /// <summary>
 /// Пока что, все что известно о курьере
 /// </summary>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Kassa.Shared;
 
 namespace Kassa.DataAccess.Model;
 public class SeizureReason : IGuidId

@@ -1,4 +1,4 @@
-﻿using Kassa.DataAccess.Model;
+﻿using Kassa.Shared;
 
 namespace Kassa.BuisnessLogic.Dto;
 

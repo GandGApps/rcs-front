@@ -7,11 +7,11 @@ using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
-using Kassa.DataAccess.Model;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI;
 using System.Reactive.Linq;
 using DynamicData;
+using Kassa.Shared;
 
 namespace Kassa.RxUI.Dialogs;
 public abstract class ApplicationManagedModelSearchableDialogViewModel<TItem, TVm>: BaseSelectDialogViewModel<TItem, TVm>

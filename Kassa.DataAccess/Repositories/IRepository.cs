@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Kassa.DataAccess.Model;
+using Kassa.Shared;
 
 namespace Kassa.DataAccess.Repositories;
 public interface IRepository<T> where T : class, IGuidId

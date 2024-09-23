@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Kassa.DataAccess.Model;
+using Kassa.Shared;
 
 namespace Kassa.BuisnessLogic.ApplicationModelManagers;
 public interface IApplicationModelManager<TModel> : IReadOnlyDictionary<Guid, TModel>, IObservable<ChangeSet<TModel>>, IDisposable

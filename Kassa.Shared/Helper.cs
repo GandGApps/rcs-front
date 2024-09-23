@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Kassa.Shared;
 public static class Helper
 {
+
     public static string ReplaceAt(this string str, int index, int length, string replace)
     {
         return str.Remove(index, Math.Min(length, str.Length - index))
@@ -26,4 +27,6 @@ public static class Helper
         }
         return stars.ToString().TrimEnd();
     }
+
+    public static IGuidId
 }
