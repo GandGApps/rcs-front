@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,5 +30,33 @@ public static class Helper
         return stars.ToString().TrimEnd();
     }
 
-    public static IGuidId
+    public static IGuidId AsIGuidId<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicProperties)] T>(this T guidIdContainable, Func<Guid>? getId = null)
+    {
+        if (guidIdContainable == null)
+        {
+            throw new ArgumentNullException(nameof(guidIdContainable));
+        }
+
+        if (getId is not null)
+        {
+            return new AnonymousGuidId(getId);
+        }
+
+        if (guidIdContainable is IGuidId guidId)
+        {
+            return guidId;
+        }
+
+        // check with reflection if object has Id property
+        // which return Guid
+
+        var idProperty = guidIdContainable.GetType().GetProperty("Id", BindingFlags.Public);
+
+        if (idProperty is not null && idProperty.PropertyType == typeof(Guid))
+        {
+            return new AnonymousGuidId(() => (Guid)idProperty.GetValue(guidIdContainable)!);
+        }
+
+        throw new Exception("Cannt create IGuidId from object without Guid Id");
+    }
 }

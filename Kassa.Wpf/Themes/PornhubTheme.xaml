@@ -308,5 +308,11 @@
 
     <!--#endregion-->
 
+    <!--#region ClientViewBackground-->
+
+    <StaticResource x:Key="CourierViewBackground" ResourceKey="Theme" />
+
+    <!--#endregion-->
+
 
 </ResourceDictionary>

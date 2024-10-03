@@ -12,3 +12,8 @@ public interface IGuidId
         get;
     }
 }
+
+public class AnonymousGuidId(Func<Guid> idGetter) : IGuidId
+{
+    public Guid Id => idGetter();
+}
