@@ -72,7 +72,7 @@ public sealed partial class ShiftStateDetail : UserControl, IApplicationModelPre
             ? dto.Start is null
                 ? string.Empty 
                 : dto.End is null
-                    ? " В работе" // Смена начата, дата окончания не указана, а дата начала указана
+                    ? " Не начата" // Смена начата, дата окончания не указана, а дата начала указана
                     : " Завершена" // Смена начата, дата окончания указана, дата начала указана. (В теории этот код не должен выполняться)
             : dto.Start is null
                 ? " Не начата"
