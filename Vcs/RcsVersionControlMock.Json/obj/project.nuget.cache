@@ -1,0 +1,13 @@
+{
+  "version": 2,
+  "dgSpecHash": "qEwS/CLPTgQ=",
+  "success": true,
+  "projectFilePath": "D:\\a\\rcs-front\\rcs-front\\Vcs\\RcsVersionControlMock.Json\\RcsVersionControlMock.Json.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\runneradmin\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.1\\microsoft.extensions.dependencyinjection.abstractions.8.0.1.nupkg.sha512",
+    "C:\\Users\\runneradmin\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.1\\microsoft.extensions.logging.abstractions.8.0.1.nupkg.sha512",
+    "C:\\Users\\runneradmin\\.nuget\\packages\\microsoft.net.illink.tasks\\8.0.8\\microsoft.net.illink.tasks.8.0.8.nupkg.sha512",
+    "C:\\Users\\runneradmin\\.nuget\\packages\\truepath\\1.5.0\\truepath.1.5.0.nupkg.sha512"
+  ],
+  "logs": []
+}
