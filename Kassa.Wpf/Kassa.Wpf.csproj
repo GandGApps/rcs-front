@@ -12,7 +12,7 @@
     <StartupObject>Kassa.Wpf.Program</StartupObject>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <InterceptorsPreviewNamespaces>$(InterceptorsPreviewNamespaces);Microsoft.Extensions.Configuration.Binder.SourceGeneration</InterceptorsPreviewNamespaces>
-    <AssemblyVersion>1.0.1.1230</AssemblyVersion>
+    <AssemblyVersion>1.0.1.1240</AssemblyVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='OptimizedSmallWindow' Or '$(Configuration)'=='SmallWindow'">
