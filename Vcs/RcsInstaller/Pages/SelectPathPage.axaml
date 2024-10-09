@@ -1,0 +1,40 @@
+<UserControl
+    x:Class="RcsInstaller.SelectPathPage"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:vm="using:RcsInstaller.Vms"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    x:DataType="vm:SelectPathVm"
+    mc:Ignorable="d">
+    <Grid>
+
+        <StackPanel Width="450" VerticalAlignment="Center">
+
+            <Grid Margin="0,0,0,20" ColumnDefinitions="*,Auto">
+                <TextBox
+                    HorizontalAlignment="Stretch"
+                    Text="{Binding InstallPath}"
+                    Watermark="Путь" />
+                <Button
+                    Grid.Column="1"
+                    Click="SelectPath"
+                    Content="Обзор" />
+            </Grid>
+
+            <CheckBox
+                Margin="0,0,0,20"
+                Content="Создать ярлык на рабочем столе"
+                IsChecked="{Binding IsShortcutNeeded}" />
+
+            <Button
+                Margin="0,0,0,20"
+                Command="{Binding InstallCommand}"
+                Content="Установить" />
+
+        </StackPanel>
+
+    </Grid>
+</UserControl>

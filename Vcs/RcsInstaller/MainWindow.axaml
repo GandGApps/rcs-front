@@ -1,0 +1,26 @@
+<sukiUi:SukiWindow
+    x:Class="RcsInstaller.MainWindow"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:app="using:RcsInstaller"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:rxui="http://reactiveui.net"
+    xmlns:skc="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+    xmlns:sukiUi="clr-namespace:SukiUI;assembly=SukiUI"
+    xmlns:vm="clr-namespace:RcsInstaller.Vms"
+    Title="RcsInstaller"
+    Width="600"
+    Height="400"
+    x:DataType="vm:MainVm"
+    WindowStartupLocation="CenterScreen"
+    mc:Ignorable="d">
+    <rxui:RoutedViewHost Margin="20" Router="{Binding Router}">
+        <rxui:RoutedViewHost.PageTransition>
+            <PageSlide Orientation="Horizontal" Duration="0:00:00.500" />
+        </rxui:RoutedViewHost.PageTransition>
+        <rxui:RoutedViewHost.ViewLocator>
+            <app:ViewLocator />
+        </rxui:RoutedViewHost.ViewLocator>
+    </rxui:RoutedViewHost>
+</sukiUi:SukiWindow>

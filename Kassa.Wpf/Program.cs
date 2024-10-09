@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 
 namespace Kassa.Wpf;
 public static class Program
@@ -12,6 +13,9 @@ public static class Program
     [STAThread]
     public static void Main(string[] args)
     {
+
+        var host = Host.CreateDefaultBuilder(args)
+
         if (args.Contains("--no-launcher", StringComparer.InvariantCultureIgnoreCase))
         {
             App.Main();

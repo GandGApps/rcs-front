@@ -1,0 +1,43 @@
+<UserControl
+    x:Class="RcsInstaller.Pages.WelcomePage"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:suki="clr-namespace:SukiUI.Theme;assembly=SukiUI"
+    xmlns:vm="using:RcsInstaller.Vms"
+    d:DesignHeight="400"
+    d:DesignWidth="600"
+    x:DataType="vm:WelcomeVm"
+    mc:Ignorable="d">
+
+    <Grid
+        Width="450"
+        HorizontalAlignment="Center"
+        VerticalAlignment="Center"
+        RowDefinitions="Auto, *, Auto, Auto">
+
+        <TextBlock
+            Classes="h2"
+            Text="Добро пожаловать!"
+            TextAlignment="Center" />
+
+        <Image
+            Grid.Row="1"
+            Width="150"
+            Margin="0,0,0,20"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            Source="{SvgImage /Assets/Logo.svg}" />
+
+        <Button
+            Grid.Row="2"
+            VerticalAlignment="Center"
+            Classes="Basic"
+            Command="{Binding GoNextCommand}"
+            Content="Дальше" />
+
+
+    </Grid>
+
+</UserControl>

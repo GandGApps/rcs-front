@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "RcsInstaller": {
+      "commandName": "Project"
+    },
+    "Test update": {
+      "commandName": "Project",
+      "commandLineArgs": "update -p \"D:\\repos\\RcsInstallerTestByCli\" -v \"1.0.0\""
+    }
+  }
+}

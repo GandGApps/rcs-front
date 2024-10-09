@@ -1,0 +1,26 @@
+<UserControl
+    x:Class="RcsInstaller.InstallingPage"
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:skc="clr-namespace:SukiUI.Controls;assembly=SukiUI"
+    xmlns:sukiUi="clr-namespace:SukiUI;assembly=SukiUI"
+    xmlns:vm="clr-namespace:RcsInstaller.Vms"
+    d:DesignHeight="400"
+    d:DesignWidth="600"
+    x:DataType="vm:InstallingVm"
+    mc:Ignorable="d">
+    <Grid RowDefinitions="*, Auto">
+
+        <skc:WaveProgress
+            Width="200"
+            HorizontalAlignment="Center"
+            VerticalAlignment="Center"
+            IsTextVisible="True"
+            Value="{Binding Progress}" />
+
+        <TextBlock Grid.Row="1" Text="{Binding State}" />
+
+    </Grid>
+</UserControl>

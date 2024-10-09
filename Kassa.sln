@@ -39,6 +39,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RcsVersionControlMock", "Vc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RcsVersionControlMock.Json", "Vcs\RcsVersionControlMock.Json\RcsVersionControlMock.Json.csproj", "{1FC85567-808C-40E4-BC45-741BA822E81E}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RcsInstaller", "Vcs\RcsInstaller\RcsInstaller.csproj", "{865DDA4C-C447-430F-951B-5E6D9513516F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -269,6 +271,22 @@ Global
 		{1FC85567-808C-40E4-BC45-741BA822E81E}.SmallWindow|Any CPU.Build.0 = Debug|Any CPU
 		{1FC85567-808C-40E4-BC45-741BA822E81E}.SmallWindow|x64.ActiveCfg = Debug|Any CPU
 		{1FC85567-808C-40E4-BC45-741BA822E81E}.SmallWindow|x64.Build.0 = Debug|Any CPU
+		{865DDA4C-C447-430F-951B-5E6D9513516F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{865DDA4C-C447-430F-951B-5E6D9513516F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{865DDA4C-C447-430F-951B-5E6D9513516F}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{865DDA4C-C447-430F-951B-5E6D9513516F}.Debug|x64.Build.0 = Debug|Any CPU
+		{865DDA4C-C447-430F-951B-5E6D9513516F}.OptimizedSmallWindow|Any CPU.ActiveCfg = Debug|Any CPU
+		{865DDA4C-C447-430F-951B-5E6D9513516F}.OptimizedSmallWindow|Any CPU.Build.0 = Debug|Any CPU
+		{865DDA4C-C447-430F-951B-5E6D9513516F}.OptimizedSmallWindow|x64.ActiveCfg = Debug|Any CPU
+		{865DDA4C-C447-430F-951B-5E6D9513516F}.OptimizedSmallWindow|x64.Build.0 = Debug|Any CPU
+		{865DDA4C-C447-430F-951B-5E6D9513516F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{865DDA4C-C447-430F-951B-5E6D9513516F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{865DDA4C-C447-430F-951B-5E6D9513516F}.Release|x64.ActiveCfg = Release|Any CPU
+		{865DDA4C-C447-430F-951B-5E6D9513516F}.Release|x64.Build.0 = Release|Any CPU
+		{865DDA4C-C447-430F-951B-5E6D9513516F}.SmallWindow|Any CPU.ActiveCfg = Debug|Any CPU
+		{865DDA4C-C447-430F-951B-5E6D9513516F}.SmallWindow|Any CPU.Build.0 = Debug|Any CPU
+		{865DDA4C-C447-430F-951B-5E6D9513516F}.SmallWindow|x64.ActiveCfg = Debug|Any CPU
+		{865DDA4C-C447-430F-951B-5E6D9513516F}.SmallWindow|x64.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -276,6 +294,7 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{8EA0B6FB-707C-4215-8226-378DAD068373} = {90796133-5A0C-4E9F-8958-0BD64D9B71BB}
 		{1FC85567-808C-40E4-BC45-741BA822E81E} = {90796133-5A0C-4E9F-8958-0BD64D9B71BB}
+		{865DDA4C-C447-430F-951B-5E6D9513516F} = {90796133-5A0C-4E9F-8958-0BD64D9B71BB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {B2F36608-E0AC-4FBD-A1E1-08FDC3489057}
