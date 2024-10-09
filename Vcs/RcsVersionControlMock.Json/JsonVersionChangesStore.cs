@@ -96,7 +96,7 @@ public sealed class JsonVersionChangesStore : IRcsVersionChangesStore
     public async Task SaveChanges(IEnumerable<VersionChanges> versionChanges)
     {
         using var file = File.Open(_filePath.Value, FileMode.Create);
-        await JsonSerializer.SerializeAsync(file, versionChanges, RcsVCConstants.JsonSerializerOptions);
+        await JsonSerializer.SerializeAsync(file, versionChanges, RcsJsonContext.Default.IEnumerableVersionChanges);
     }
 
     public async Task AddChanges(VersionChanges versionChanges)

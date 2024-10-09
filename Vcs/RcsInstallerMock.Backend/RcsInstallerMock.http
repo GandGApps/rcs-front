@@ -1,0 +1,11 @@
+@RcsInstallerMock_HostAddress = http://localhost:5229
+
+GET {{RcsInstallerMock_HostAddress}}/todos/
+Accept: application/json
+
+###
+
+GET {{RcsInstallerMock_HostAddress}}/todos/1
+Accept: application/json
+
+###

@@ -1,0 +1,6 @@
+RcsBin
+# Ignore temp guid folders and zips
+[A-Fa-f0-9]*-[A-Fa-f0-9]*-[A-Fa-f0-9]*-[A-Fa-f0-9]*-[A-Fa-f0-9]*/
+[A-Fa-f0-9]*-[A-Fa-f0-9]*-[A-Fa-f0-9]*-[A-Fa-f0-9]*-[A-Fa-f0-9]*.zip
+
+versions_zippath_pair.json
