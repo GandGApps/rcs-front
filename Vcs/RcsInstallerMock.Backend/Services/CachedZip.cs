@@ -1,9 +1,12 @@
 ﻿using System.Text.Json.Serialization;
 using System.Text.Json;
 using RcsInstallerMock.Backend.Models;
+using System.Diagnostics.CodeAnalysis;
 
 namespace RcsInstallerMock.Backend.Services;
 
+[SuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", Justification = "<Pending>")]
+[SuppressMessage("AOT", "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.", Justification = "<Pending>")]
 public sealed class CachedZips : ICachedZips
 {
     internal static readonly JsonSerializerOptions _jsonSerializerOptions = new()

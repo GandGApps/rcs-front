@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Text.Json;
@@ -10,6 +11,8 @@ using TruePath;
 
 namespace RcsVersionControlMock.Json;
 
+[SuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", Justification = "<Pending>")]
+[SuppressMessage("AOT", "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.", Justification = "<Pending>")]
 public sealed class JsonVersionChangesStore : IRcsVersionChangesStore
 {
     private readonly AbsolutePath _rcsPath;
@@ -96,7 +99,7 @@ public sealed class JsonVersionChangesStore : IRcsVersionChangesStore
     public async Task SaveChanges(IEnumerable<VersionChanges> versionChanges)
     {
         using var file = File.Open(_filePath.Value, FileMode.Create);
-        await JsonSerializer.SerializeAsync(file, versionChanges, RcsJsonContext.Default.IEnumerableVersionChanges);
+        await JsonSerializer.SerializeAsync(file, versionChanges, RcsVCConstants.JsonSerializerOptions);
     }
 
     public async Task AddChanges(VersionChanges versionChanges)
