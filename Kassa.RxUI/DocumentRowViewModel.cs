@@ -13,22 +13,22 @@ public class DocumentRowViewModel : ReactiveObject
         get; set;
     }
 
-    public string TypeOfDocument
+    public required string TypeOfDocument
     {
         get; set;
     }
 
-    public string Time
+    public required string Time
     {
         get; set;
     }
 
-    public string AuthorizedBy
+    public required string AuthorizedBy
     {
         get; set;
     }
 
-    public string Composition
+    public required string Composition
     {
         get; set;
     }

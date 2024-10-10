@@ -11,7 +11,7 @@ public class Ingredient : IGuidId
         get; set;
     }
 
-    public string Name
+    public required string Name
     {
         get; set;
     }
@@ -21,7 +21,7 @@ public class Ingredient : IGuidId
         get; set;
     }
 
-    public string Measure
+    public required string Measure
     {
         get; set;
     }

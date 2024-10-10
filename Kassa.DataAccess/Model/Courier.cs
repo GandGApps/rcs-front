@@ -11,22 +11,22 @@ public class Courier : IGuidId
         get; set;
     }
 
-    public string FirstName
+    public required string FirstName
     {
         get; set;
     }
 
-    public string LastName
+    public required string LastName
     {
         get; set;
     }
 
-    public string MiddleName
+    public required string MiddleName
     {
         get; set;
     }
 
-    public string Phone
+    public required string Phone
     {
         get; set;
     }

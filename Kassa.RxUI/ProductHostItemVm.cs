@@ -17,7 +17,7 @@ public abstract class ProductHostItemVm : ReactiveObject, IGuidId, IDisposable
     }
 
     [Reactive]
-    public string Name
+    public required string Name
     {
         get; protected set;
     }

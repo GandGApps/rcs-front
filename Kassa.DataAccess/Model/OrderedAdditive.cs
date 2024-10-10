@@ -45,7 +45,7 @@ public class OrderedAdditive : IGuidId
         get; set;
     }
 
-    public string Measure
+    public required string Measure
     {
         get; set;
     }

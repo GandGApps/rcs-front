@@ -14,5 +14,5 @@ public class Receipt : IGuidId
     public IngredientUsage[] IngredientUsages
     {
         get; set;
-    }
+    } = [];
 }

@@ -73,7 +73,7 @@ public record Product : ICategoryItem
         get; set;
     } = true;
 
-    public string Color
+    public required string Color
     {
         get; set;
     }

@@ -11,7 +11,7 @@ public class ContributionReason : IGuidId
         get; set;
     }
 
-    public string Name
+    public required string Name
     {
         get; set;
     }

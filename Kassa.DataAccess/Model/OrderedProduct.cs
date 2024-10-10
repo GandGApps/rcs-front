@@ -51,12 +51,12 @@ public class OrderedProduct : IGuidId
     /// <summary>
     /// Коментарий к заказу(типо без лука)
     /// </summary>
-    public string Comment
+    public required string Comment
     {
         get; set;
     }
 
-    public IEnumerable<OrderedAdditive> Additives
+    public required IEnumerable<OrderedAdditive> Additives
     {
         get; set;
     }

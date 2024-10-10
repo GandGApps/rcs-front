@@ -42,7 +42,7 @@ internal sealed record DishGroupRequest
     }
 
     [property: JsonPropertyName("title")]
-    public string Title
+    public required string Title
     {
         get; set;
     }
@@ -54,7 +54,7 @@ internal sealed record DishGroupRequest
     }
 
     [property: JsonPropertyName("category_color")]
-    public string Color
+    public required string Color
     {
         get; set;
     }

@@ -12,72 +12,72 @@ public class Client : IGuidId
         get; set;
     }
 
-    public string FirstName
+    public required string FirstName
     {
         get; set;
     }
 
-    public string LastName
+    public required string LastName
     {
         get; set;
     }
 
-    public string MiddleName
+    public required string MiddleName
     {
         get; set;
     }
 
-    public string Address
+    public required string Address
     {
         get; set;
     }
 
-    public string House
+    public required string House
     {
         get; set;
     }
 
-    public string Building
+    public required string Building
     {
         get; set;
     }
 
-    public string Entrance
+    public required string Entrance
     {
         get; set;
     }
 
-    public string Floor
+    public required string Floor
     {
         get; set;
     }
 
-    public string Apartment
+    public required string Apartment
     {
         get; set;
     }
 
-    public string Intercom
+    public required string Intercom
     {
         get; set;
     }
 
-    public string Phone
+    public required string Phone
     {
         get; set;
     }
 
-    public string Card
+    public required string Card
     {
         get; set;
     }
 
-    public string AddressNote
+    public required string AddressNote
     {
         get; set;
     }
 
-    public string Miscellaneous
+    public required string Miscellaneous
     {
         get; set;
     }

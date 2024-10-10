@@ -16,7 +16,7 @@ public class FastMenu : IGuidId
         get; set;
     }
 
-    public string ImageSource
+    public required string ImageSource
     {
         get; set;
     }
@@ -26,7 +26,7 @@ public class FastMenu : IGuidId
         get; set;
     }
 
-    public string Color
+    public required string Color
     {
         get; set;
     }

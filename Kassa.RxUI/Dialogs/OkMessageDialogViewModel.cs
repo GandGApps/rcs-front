@@ -21,7 +21,7 @@ public class OkMessageDialogViewModel : DialogViewModel
     } = "OK";
 
     [Reactive]
-    public string Description
+    public required string Description
     {
         get; set;
     }

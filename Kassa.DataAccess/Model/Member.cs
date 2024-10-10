@@ -11,7 +11,7 @@ public class Member : IGuidId
         get; set;
     }
 
-    public string Name
+    public required string Name
     {
         get; set;
     }
@@ -30,5 +30,5 @@ public class Member : IGuidId
     internal string Pincode
     {
         get; set;
-    }
+    } = string.Empty;
 }

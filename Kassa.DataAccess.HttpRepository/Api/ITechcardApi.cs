@@ -23,7 +23,7 @@ internal sealed record IngridientEdgarResponse
     }
 
     [JsonPropertyName("code")]
-    public string Code
+    public required string Code
     {
         get; init;
     }
@@ -35,7 +35,7 @@ internal sealed record IngridientEdgarResponse
     }
 
     [JsonPropertyName("name")]
-    public string Name
+    public required string Name
     {
         get; init;
     }
@@ -53,7 +53,7 @@ internal sealed record IngridientEdgarResponse
     }
 
     [JsonPropertyName("title")]
-    public string Title
+    public required string Title
     {
         get; init;
     }
@@ -65,7 +65,7 @@ internal sealed record IngridientEdgarResponse
     }
 
     [JsonPropertyName("article")]
-    public string Article
+    public required string Article
     {
         get; init;
     }
@@ -95,7 +95,7 @@ internal sealed record IngridientEdgarResponse
     }
 
     [JsonPropertyName("measureUnit")]
-    public string MeasureUnit
+    public required string MeasureUnit
     {
         get; init;
     }
@@ -155,7 +155,7 @@ internal sealed record IngridientEdgarResponse
     }
 
     [JsonPropertyName("packaging_unit")]
-    public string PackagingUnit
+    public required string PackagingUnit
     {
         get; init;
     }
@@ -170,10 +170,10 @@ internal sealed record TechcardEdgarResponse
     }
 
     [JsonPropertyName("ingridients")]
-    public IEnumerable<IngridientEdgarResponse> Ingridients
+    public required IEnumerable<IngridientEdgarResponse> Ingridients
     {
         get; init;
-    }
+    } 
 
     [JsonPropertyName("office_id")]
     public Guid OfficeId

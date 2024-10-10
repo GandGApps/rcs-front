@@ -23,19 +23,19 @@ internal sealed record AdditiveEdgarModel
     }
 
     [JsonPropertyName("name")]
-    public string Name
+    public required string Name
     {
         get; init;
     }
 
     [JsonPropertyName("nomenclatureType")]
-    public string NomenclatureType
+    public required string NomenclatureType
     {
         get; init;
     }
 
     [JsonPropertyName("accountingCategory")]
-    public string AccountingCategory
+    public required string AccountingCategory
     {
         get; init;
     }
