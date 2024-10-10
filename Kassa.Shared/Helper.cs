@@ -57,6 +57,6 @@ public static class Helper
             return new AnonymousGuidId(() => (Guid)idProperty.GetValue(guidIdContainable)!);
         }
 
-        throw new Exception("Cannt create IGuidId from object without Guid Id");
+        throw new Exception("Can't create IGuidId from object without Guid Id property");
     }
 }

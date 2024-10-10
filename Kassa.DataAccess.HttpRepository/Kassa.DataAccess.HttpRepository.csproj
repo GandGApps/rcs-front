@@ -13,7 +13,6 @@
   <ItemGroup>
     <ProjectReference Include="..\Kassa.DataAccess\Kassa.DataAccess.csproj" />
     <ProjectReference Include="..\Kassa.Shared\Kassa.Shared.csproj" />
-    <ProjectReference Include="..\Kassa.Shared.ServiceLocator.Analyzer\Kassa.Shared.ServiceLocator.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
 </Project>

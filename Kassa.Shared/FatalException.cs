@@ -5,10 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Kassa.Shared;
-public sealed class FatalException: Exception
+public sealed class FatalException(Exception exception) : Exception("An unhandled exception occurred", exception)
 {
-    public FatalException(Exception exception): base("An unhandled exception occurred", exception)
-    {
-
-    }
 }

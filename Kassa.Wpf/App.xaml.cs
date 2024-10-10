@@ -51,6 +51,11 @@ public partial class App : Application, IEnableLogger
 
     public App()
     {
+        AddServices();
+    }
+
+    public void AddServices()
+    {
         var config = SharedServices.AddConfiguration("appsettings");
 
         if (RcsKassa.IsDevelopment)
@@ -63,7 +68,6 @@ public partial class App : Application, IEnableLogger
 
         PresentationLayerServices.RegisterDispatherAdapter();
 
-        SharedServices.AddLoggers(RcsKassa.LogsPath);
 
         PrinterPosLibServices.RegisterPrinterPosLib(config);
         MscReaderLibServices.RegisterMsrReaderPosLib(config);

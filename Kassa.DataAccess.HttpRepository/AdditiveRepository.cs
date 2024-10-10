@@ -12,7 +12,7 @@ using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.DataAccess.HttpRepository;
-internal sealed class AdditiveRepository : IAdditiveRepository, IEnableLogger
+internal sealed class AdditiveRepository() : IAdditiveRepository, IEnableLogger
 {
     private FrozenDictionary<Guid, Additive>? _additives;
     public Task Add(Additive item) => throw new NotImplementedException();

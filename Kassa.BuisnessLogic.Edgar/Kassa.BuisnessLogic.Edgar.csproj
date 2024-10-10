@@ -8,21 +8,14 @@
 
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.2.2" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Refit" Version="7.0.0" />
     <PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
-    <PackageReference Include="Splat.Microsoft.Extensions.DependencyInjection" Version="15.0.1" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.5.1" />
-    <PackageReference Include="Splat.DependencyInjection.SourceGenerator" Version="1.2.3">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Kassa.BuisnessLogic\Kassa.BuisnessLogic.csproj" />
     <ProjectReference Include="..\Kassa.Shared\Kassa.Shared.csproj" />
-    <ProjectReference Include="..\Kassa.Shared.ServiceLocator.Analyzer\Kassa.Shared.ServiceLocator.Analyzer.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
   </ItemGroup>
 
 </Project>

@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.Shared;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace Kassa.Wpf;
@@ -13,8 +15,13 @@ public static class Program
     [STAThread]
     public static void Main(string[] args)
     {
+        var builder = Host.CreateApplicationBuilder(args);
 
-        var host = Host.CreateDefaultBuilder(args)
+        builder.Services.AddLogging();
+        builder.Services.AddRcsLoggers(RcsKassa.LogsPath);
+
+        var app = builder.Build();
+
 
         if (args.Contains("--no-launcher", StringComparer.InvariantCultureIgnoreCase))
         {
