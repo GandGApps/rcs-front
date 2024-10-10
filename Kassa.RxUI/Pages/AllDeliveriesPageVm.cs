@@ -180,9 +180,8 @@ public sealed class AllDeliveriesPageVm : PageViewModel
         get;
     }
 
-    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    protected override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-
         var orderService = RcsLocator.Scoped.GetRequiredService<IOrdersService>();
         var filter = this.WhenAnyValue(x => x.IsPickup, x => x.IsDelivery, x => x.Date, x => x.SearchedText)
             .Select<(bool isPickup, bool isDelivery, DateTime date, string searchedText), Func<OrderDto, bool>>(x =>
@@ -251,6 +250,8 @@ public sealed class AllDeliveriesPageVm : PageViewModel
 
 
         Orders = collection;
+
+        return ValueTask.CompletedTask;
     }
 
     private IDisposable CalculateOrderCountByStatusAndBind(

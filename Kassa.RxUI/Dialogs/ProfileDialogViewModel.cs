@@ -40,11 +40,11 @@ public class ProfileDialogViewModel : DialogViewModel
         get; set;
     }
 
-    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    protected override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
         var shiftService = RcsLocator.GetRequiredService<IShiftService>();
 
-        shiftService.CurrentShift.Subscribe(async shift =>
+        shiftService.CurrentShift.Subscribe(shift =>
         {
             if (shift == null)
             {
@@ -55,6 +55,9 @@ public class ProfileDialogViewModel : DialogViewModel
                 var dto = shift.CreateDto();
                 CurrentShiftOpennedDate = dto.Start;
             }
+
         }).DisposeWith(disposables);
+
+        return ValueTask.CompletedTask;
     }
 }

@@ -80,11 +80,13 @@ public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSe
     }
 
 
-    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    protected override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
         var withdrawalReasons = RcsLocator.Scoped.GetRequiredService<IContributionReasonService>();
 
         Filter(withdrawalReasons.RuntimeContributionReasons, x => new ContributionReasonVm(x, this), disposables);
+
+        return ValueTask.CompletedTask;
     }
 
     protected override bool IsMatch(string searchText, ContributionReasonDto item)

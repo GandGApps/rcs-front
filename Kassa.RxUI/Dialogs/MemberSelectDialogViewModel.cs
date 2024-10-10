@@ -70,11 +70,13 @@ public sealed class MemberSelectDialogViewModel : ApplicationManagedModelSearcha
         });
     }
 
-    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    protected override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
         var memberService = RcsLocator.GetRequiredService<IMemberService>();
 
         Filter(memberService.RuntimeMembers, x => new MemberVm(x, this), disposables);
+
+        return ValueTask.CompletedTask;
     }
 
     protected override bool IsMatch(string searchText, MemberDto item)

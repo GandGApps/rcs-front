@@ -80,11 +80,13 @@ public sealed class SeizureReasonDialogViewModel: ApplicationManagedModelSearcha
     }
 
 
-    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    protected override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
         var withdrawalReasons = RcsLocator.Scoped.GetRequiredService<ISeizureReasonService>();
 
         Filter(withdrawalReasons.RuntimeSeizureReasons, x => new SeizureReasonVm(x, this), disposables);
+
+        return ValueTask.CompletedTask;
     }
 
     protected override bool IsMatch(string searchText, SeizureReasonDto item)

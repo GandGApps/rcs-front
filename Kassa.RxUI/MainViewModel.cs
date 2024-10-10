@@ -287,7 +287,7 @@ public sealed class MainViewModel : ReactiveObject, IScreen
             });
 
         UnhandledErrorExceptionEvent += DefaultUnhandler;
-        RxApp.DefaultExceptionHandler = Observer.Create<Exception>(async ex =>
+        RxApp.DefaultExceptionHandler = Observer.Create<Exception>(ex =>
         {
             TryHandleUnhandled("RxApp.DefaultExceptionHandler", ex);
         });
