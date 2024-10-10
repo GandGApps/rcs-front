@@ -64,7 +64,7 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock
-            x:Name="Name"
+            x:Name="ModelName"
             Grid.Column="1"
             VerticalAlignment="Center"
             d:Text="Рикардо Григорович"

@@ -218,13 +218,13 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
         {
             productIndex++;
             var product = productService.RuntimeProducts[orderedProduct.ProductId];
-            var utf8 = Encoding.UTF8.GetBytes($"{productIndex}){product.Name} {orderedProduct.Count}{product.Measure} {orderedProduct.TotalPrice}{product.CurrencySymbol}");
+            var utf8 = Encoding.UTF8.GetBytes($"{productIndex}){product.ModelName} {orderedProduct.Count}{product.Measure} {orderedProduct.TotalPrice}{product.CurrencySymbol}");
             printer.Append(utf8);
 
             foreach (var orderedAdditive in orderedProduct.Additives)
             {
                 var additive = additiveService.RuntimeAdditives[orderedAdditive.AdditiveId];
-                utf8 = Encoding.UTF8.GetBytes($"    {additive.Name} {orderedAdditive.Count}{orderedAdditive.Measure} {orderedAdditive.TotalPrice}{additive.CurrencySymbol}");
+                utf8 = Encoding.UTF8.GetBytes($"    {additive.ModelName} {orderedAdditive.Count}{orderedAdditive.Measure} {orderedAdditive.TotalPrice}{additive.CurrencySymbol}");
                 printer.Append(utf8);
             }
         }

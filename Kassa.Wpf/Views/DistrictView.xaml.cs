@@ -51,7 +51,7 @@ public partial class DistrictView : ReactiveUserControl<DistrictViewModel>
             this.OneWayBind(ViewModel, x => x.SelectCommand, x => x.Command)
                 .DisposeWith(disposables);
 
-            this.OneWayBind(ViewModel, x => x.Name, x => x.Name.Text)
+            this.OneWayBind(ViewModel, x => x.Name, x => x.ModelName.Text)
                 .DisposeWith(disposables);
 
             this.OneWayBind(ViewModel, x => x.IsSelected, x => x.IsSelectedIcon.Visibility)

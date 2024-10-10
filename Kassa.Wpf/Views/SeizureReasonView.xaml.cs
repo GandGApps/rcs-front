@@ -32,7 +32,7 @@ public partial class SeizureReasonView : ReactiveUserControl<SeizureReasonVm>
         {
             Debug.Assert(ViewModel != null);
 
-            this.OneWayBind(ViewModel, vm => vm.Name, v => v.Name.Text)
+            this.OneWayBind(ViewModel, vm => vm.Name, v => v.ModelName.Text)
                 .DisposeWith(disposables);
 
             SetValue(Button.CommandProperty, ViewModel.SelectCommand);
