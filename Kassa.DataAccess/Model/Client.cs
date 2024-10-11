@@ -72,7 +72,7 @@ public class Client : IGuidId
         get; set;
     }
 
-    public required string AddressNote
+    public string? AddressNote
     {
         get; set;
     }

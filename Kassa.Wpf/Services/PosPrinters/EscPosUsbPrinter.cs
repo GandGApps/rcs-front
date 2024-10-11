@@ -24,7 +24,7 @@ using System.Drawing.Imaging;
 
 namespace Kassa.Wpf.Services.PosPrinters;
 
-internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDiagnostics
+internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger
 {
     internal readonly string _printerName;
 
@@ -45,21 +45,6 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger, IDevelopmentDi
         {
             LogHost.Default.Error(ex, $"Error on creating printer");
             return null;
-        }
-    }
-
-    public ValueTask<bool> CheckService()
-    {
-        try
-        {
-            var printer = new Printer(_printerName);
-
-            return new(true);
-        }
-        catch (Exception ex)
-        {
-            this.Log().Error(ex, $"Error on creating printer");
-            return new(false);
         }
     }
 

@@ -9,9 +9,11 @@ internal sealed class MainViewModelProvider: IMainViewModelProvider
 {
     private MainViewModel? _instance;
 
+
+
     public MainViewModel MainViewModel
     {
-        get => _instance ??= new MainViewModel();
+        get => _instance ??= new MainViewModel(this);
         set => _instance = value;
     }
 }

@@ -8,13 +8,14 @@ using Kassa.BuisnessLogic.Services;
 using Kassa.Shared.ServiceLocator;
 using Kassa.Wpf.Services.PosPrinters;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Splat;
 
 namespace Kassa.Wpf.Services.CashDrawers;
 internal static class CashDrawerPosLibServices
 {
 
-    public static void RegisterCashDrawerPosLib(IConfiguration config)
+    public static void AddCashDrawerPosLib(this IServiceCollection services, IConfiguration config)
     {
 
         var cashDrawerPosLibString = config.GetValue<string>(nameof(CashDrawerPosLib));

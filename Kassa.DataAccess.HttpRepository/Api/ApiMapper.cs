@@ -222,6 +222,7 @@ internal static partial class ApiMapper
             ParentGroupId = product.CategoryId,
             Image = product.Image,
             Color = product.Color,
+
         };
     }
 
@@ -261,7 +262,9 @@ internal static partial class ApiMapper
             Name = dishGroupRequest.Title,
             CategoryId = dishGroupRequest.ParentGroupId,
             Color = dishGroupRequest.Color,
-            Image = dishGroupRequest.Image ?? -1
+            Image = dishGroupRequest.Image ?? -1,
+            Categories = [],
+            Products = []
         };
 
         return category;

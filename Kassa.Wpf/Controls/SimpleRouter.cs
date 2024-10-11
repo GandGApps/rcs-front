@@ -8,6 +8,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using Kassa.RxUI;
+using Kassa.Shared;
+using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
 using Splat;
 

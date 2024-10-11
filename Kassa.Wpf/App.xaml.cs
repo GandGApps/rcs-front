@@ -51,13 +51,6 @@ public partial class App : Application, IEnableLogger
 
     public App()
     {
-        AddServices();
-    }
-
-    public void AddServices()
-    {
-        var config = SharedServices.AddConfiguration("appsettings");
-
         if (RcsKassa.IsDevelopment)
         {
             Dispatcher.InvokeAsync(() => DeviceHelper.LogAllDevices());
@@ -66,33 +59,8 @@ public partial class App : Application, IEnableLogger
         CultureInfo.CurrentCulture = CultureInfo.InvariantCulture;
         CultureInfo.CurrentUICulture = CultureInfo.InvariantCulture;
 
-        PresentationLayerServices.RegisterDispatherAdapter();
-
-
-        PrinterPosLibServices.RegisterPrinterPosLib(config);
-        MscReaderLibServices.RegisterMsrReaderPosLib(config);
-        CashDrawerPosLibServices.RegisterCashDrawerPosLib(config);
-
-        Locator.CurrentMutable.InitializeReactiveUI(RegistrationNamespace.Wpf);
-        //Locator.CurrentMutable.RegisterMockDataAccess(); // TODO: Replace with real data access
-        //Locator.CurrentMutable.RegisterBuisnessLogic(); // TODO: Replace with real buisness logic
-        BuisnessLogicServices.RegisterMockBuisnessLogic(); // TODO: Replace with real buisness logic
-        DataAccessMockServices.RegisterMock(); // TODO: Replace with real data access
-
-        HttpRepositoryServices.RegisterServices();
-        BuisnessLogicEdgarServices.RegisterBuisnessLogic();
-
-        MainViewModel.RegsiterMainViewModel();
-
-        // Replace with view locator
-        Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
-
-
         typeof(SimpleRouter).TypeInitializer!.Invoke(null, null);
-
-        ApiServiceRegistration.BuildServices();
-        RcsLocatorBuilder.AddToBuilder();
-        ServiceLocatorBuilder.SetLocator();
+        Locator.CurrentMutable.RegisterViewsForViewModels(Assembly.GetExecutingAssembly());
     }
 
     protected override void OnActivated(EventArgs e)

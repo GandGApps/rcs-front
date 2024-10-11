@@ -186,8 +186,8 @@ public class Order : IGuidId
         get; set;
     }
 
-    public required string CardType
+    public string? CardType
     {
         get; set;
-    }
+    } 
 }

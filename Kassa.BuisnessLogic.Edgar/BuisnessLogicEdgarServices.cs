@@ -8,14 +8,29 @@ using Kassa.BuisnessLogic.Edgar.Services;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
 using Kassa.Shared.ServiceLocator;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Kassa.BuisnessLogic.Edgar;
 public static class BuisnessLogicEdgarServices
 {
-    public static void RegisterBuisnessLogic()
+    public static void AddEdgarBuisnessLogic(this IServiceCollection services)
     {
-        AddApis();
+        services.AddApis();
 
+        services.AddSingleton<IAuthService, AuthService>();
+        services.AddSingleton<IShiftService, ShiftService>();
+        services.AddSingleton<IReportShiftService, ReportShiftService>();
+
+        services.AddScoped<IProductService, ProductService>();
+        services.AddScoped<ICashierService, CashierService>();
+        services.AddScoped<IAdditiveService, AdditiveService>();
+        services.AddScoped<ICategoryService, CategoryService>();
+        services.AddScoped<IIngridientsService, IngridientsService>();
+        services.AddScoped<IContributionReasonService, ContributionReasonService>();
+        services.AddScoped<ISeizureReasonService, SeizureReasonService>();
+        services.AddScoped<IOrdersService, OrdersService>();
+
+/*
         RcsLocatorBuilder.AddSingleton<IAuthService, AuthService>();
         RcsLocatorBuilder.AddSingleton<IShiftService, ShiftService>();
         RcsLocatorBuilder.AddSingleton<IReportShiftService, ReportShiftService>();
@@ -30,13 +45,14 @@ public static class BuisnessLogicEdgarServices
         RcsLocatorBuilder.AddScoped<IOrdersService, OrdersService>();
 
         RcsLocatorBuilder.AddToBuilder();
+*/
     }
 
-    private static void AddApis()
+    private static void AddApis(this IServiceCollection services)
     {
-        ApiServiceRegistration.AddApi<ITerminalApi>();
-        ApiServiceRegistration.AddApi<IEmployeePostsApi>();
-        ApiServiceRegistration.AddApi<ITerminalPostApi>();
-        ApiServiceRegistration.AddApi<IEmployeeApi>();
+        services.AddApi<ITerminalApi>();
+        services.AddApi<IEmployeePostsApi>();
+        services.AddApi<ITerminalPostApi>();
+        services.AddApi<IEmployeeApi>();
     }
 }

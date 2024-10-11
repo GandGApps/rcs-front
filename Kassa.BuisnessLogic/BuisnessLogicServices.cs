@@ -5,12 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared.ServiceLocator;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Kassa.BuisnessLogic;
 public static class BuisnessLogicServices
 {
-    public static void RegisterMockBuisnessLogic()
+    public static void AddMockBuisnessLogic(this IServiceCollection services)
     {
+        services.AddScoped<IReceiptService, ReceiptService>();
+        //services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IClientService, ClientService>();
+        services.AddScoped<IPaymentInfoService, PaymentInfoService>();
+        services.AddScoped<IStreetService, StreetService>();
+        services.AddScoped<IDistrictService, DistrictService>();
+        services.AddScoped<ICourierService, CourierService>();
+
+        services.AddSingleton<IMemberService, MemberService>();
+/*
         RcsLocatorBuilder.AddScoped<IReceiptService, ReceiptService>();
         //RcsLocatorBuilder.AddScoped<IUserService, UserService>();
         RcsLocatorBuilder.AddScoped<IClientService, ClientService>();
@@ -23,5 +34,6 @@ public static class BuisnessLogicServices
         RcsLocatorBuilder.AddSingleton<IMemberService, MemberService>();
 
         RcsLocatorBuilder.AddToBuilder();
+*/
     }
 }

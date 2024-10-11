@@ -17,7 +17,7 @@ public record Category : ICategoryItem
         get; set;
     }
 
-    public required string Color
+    public string? Color
     {
         get; set;
     }
@@ -27,15 +27,15 @@ public record Category : ICategoryItem
         get; set;
     }
 
-    public  virtual required ICollection<Category> Categories
+    public virtual ICollection<Category> Categories
     {
         get; set;
-    }
+    } = [];
 
-    public virtual required ICollection<Product> Products
+    public virtual ICollection<Product> Products
     {
         get; set;
-    }
+    } = [];
 
     public ICollection<ICategoryItem>? Items
     {

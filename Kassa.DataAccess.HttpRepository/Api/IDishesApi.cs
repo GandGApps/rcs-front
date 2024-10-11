@@ -39,7 +39,7 @@ internal sealed record DishRequest
     }
 
     [JsonPropertyName("nomenclatureType")]
-    public required string NomenclatureType
+    public string? NomenclatureType
     {
         get; init;
     }
@@ -69,7 +69,7 @@ internal sealed record DishRequest
     }
 
     [JsonPropertyName("techCard")]
-    public required string TechCard
+    public string? TechCard
     {
         get; init;
     }
@@ -78,7 +78,7 @@ internal sealed record DishRequest
         public List<string> Allergens { get; init; }*/
 
     [JsonPropertyName("cookTech")]
-    public required string CookTech
+    public string? CookTech
     {
         get; init;
     }
@@ -99,7 +99,7 @@ internal sealed record DishRequest
     }
 
     [JsonPropertyName("bulk")]
-    public required string Bulk
+    public string? Bulk
     {
         get; init;
     }
@@ -111,7 +111,7 @@ internal sealed record DishRequest
     }
 
     [JsonPropertyName("portions")]
-    public required List<string> Portions
+    public List<string>? Portions
     {
         get; init;
     }

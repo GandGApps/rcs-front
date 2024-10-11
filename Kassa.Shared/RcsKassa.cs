@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.Shared.ServiceLocator;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace Kassa.Shared;
 public static class RcsKassa
@@ -13,13 +15,12 @@ public static class RcsKassa
     public const string ProductionName = "Production";
     public const string DevelopmentName = "Development";
 
-    private static IConfiguration? _configuration;
-    public static IConfiguration Configuration
+    public static IHost Host
     {
-        get => _configuration ??= RcsLocator.GetRequiredService<IConfiguration>();
-        set => _configuration = value;
+        get; set;
+    } = null!;
 
-    }
+    public static IConfiguration Configuration => Host.Services.GetRequiredService<IConfiguration>();
 
     public static readonly CultureInfo RuCulture = new("ru-RU");
 

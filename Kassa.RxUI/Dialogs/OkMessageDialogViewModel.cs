@@ -21,10 +21,10 @@ public class OkMessageDialogViewModel : DialogViewModel
     } = "OK";
 
     [Reactive]
-    public required string Description
+    public string Description
     {
         get; set;
-    }
+    } = string.Empty;
 
     [Reactive]
     public string Icon

@@ -35,7 +35,7 @@ public static class SharedServices
     /// </summary>
     /// <param name="initialJsonFileName">In that json file the key "Environment"</param>
     /// <returns></returns>
-    public static IConfiguration AddConfiguration(IConfigurationBuilder configurationBuilder, string initialJsonFileName = "appsettings")
+    public static IConfiguration AddRcsConfiguration(this IConfigurationBuilder configurationBuilder, string initialJsonFileName = "appsettings")
     {
         var basePath = AppDomain.CurrentDomain.BaseDirectory;
 
@@ -44,10 +44,7 @@ public static class SharedServices
 
         var config = configurationBuilder.Build();
 
-        ServiceLocatorBuilder.AddService<IConfiguration>(() => config);
         Locator.CurrentMutable.RegisterConstant<IConfiguration>(config);
-
-        RcsKassa.Configuration = config;
 
         return config;
     }

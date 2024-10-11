@@ -17,15 +17,6 @@ namespace Kassa.RxUI;
 
 public sealed class MainViewModel : ReactiveObject, IScreen
 {
-    public static void RegsiterMainViewModel()
-    {
-        ServiceLocatorBuilder.AddService<IMainViewModelProvider>(new MainViewModelProvider());
-        ServiceLocatorBuilder.AddService<MainViewModel>(() =>
-        {
-            return RcsLocator.GetRequiredService<IMainViewModelProvider>().MainViewModel;
-        });
-    }
-
     /// <summary>
     /// Don't use directly for routing, use <see cref="GoToPageCommand"/> instead.
     /// </summary>
@@ -96,9 +87,8 @@ public sealed class MainViewModel : ReactiveObject, IScreen
         add => _unhandledErrorExceptionhandlers.Add(value);
     }
 
-    public MainViewModel()
+    public MainViewModel(IMainViewModelProvider mainViewModelProvider)
     {
-        var mainViewModelProvider = RcsLocator.GetRequiredService<IMainViewModelProvider>();
         mainViewModelProvider.MainViewModel = this;
 
         Router = new();

@@ -12,6 +12,7 @@ using Kassa.RxUI.Dialogs;
 using Kassa.Shared;
 using Kassa.Wpf.Services.MagneticStripeReaders;
 using Kassa.Wpf.Windows;
+using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
 using Splat;
 
@@ -52,8 +53,7 @@ public sealed partial class MainWindow : ReactiveWindow<MainViewModel>
 
         Root = RootBody;
 
-        ViewModel = new();
-
+        ViewModel = RcsKassa.Host.Services.GetRequiredService<MainViewModel>();
 
         InitializeComponent();
 
@@ -148,7 +148,7 @@ public sealed partial class MainWindow : ReactiveWindow<MainViewModel>
                 extractedException = e.Exception;
             }
 
-            e.Handled =  ViewModel.TryHandleUnhandled(sender, extractedException);
+            e.Handled = ViewModel.TryHandleUnhandled(sender, extractedException);
         };
 
         TextInput += TryDetectMsr;

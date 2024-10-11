@@ -6,15 +6,16 @@ using System.Threading.Tasks;
 using Kassa.Shared;
 using Kassa.Shared.ServiceLocator;
 using Kassa.Wpf.Services;
+using Microsoft.Extensions.DependencyInjection;
 using Splat;
 
 namespace Kassa.Wpf;
 internal static class PresentationLayerServices
 {
 
-    public static void RegisterDispatherAdapter()
+    public static void AddDispatherAdapter(this IServiceCollection services)
     {
-        RcsLocatorBuilder.AddSingleton<IDispatcher, DispatherAdapter>();
+        services.AddSingleton<IDispatcher, DispatherAdapter>();
     }
 
 }
