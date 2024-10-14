@@ -59,13 +59,15 @@ public class MainPageVm : PageViewModel
         get;
     }
 
-    private readonly ICashierShiftService _cashierShiftService;
+    private readonly ICashierService _cashierService;
     private readonly IShiftService _shiftService;
+    private readonly IIngridientsService _ingridientsService;
 
-    public MainPageVm(ICashierShiftService cashierShiftService, IShiftService shiftService)
+    public MainPageVm(ICashierService cashierService,IShiftService shiftService, IIngridientsService ingridientsService)
     {
-        _cashierShiftService = cashierShiftService;
+        _cashierService = cashierService;
         _shiftService = shiftService;
+        _ingridientsService = ingridientsService;
 
         CloseCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -128,15 +130,8 @@ public class MainPageVm : PageViewModel
         {
             BusyText = "Загрузка данных...";
 
-            var cashierService = RcsLocator.Scoped.GetRequiredService<ICashierService>();
-            var order = await cashierService.CreateOrder(false);
-            var additiveService = RcsLocator.Scoped.GetRequiredService<IAdditiveService>();
-            var productServise = RcsLocator.Scoped.GetRequiredService<IProductService>();
-            var ingredientService = RcsLocator.Scoped.GetRequiredService<IIngridientsService>();
-            var shiftService = RcsLocator.GetRequiredService<IShiftService>();
-            var categoryService = RcsLocator.Scoped.GetRequiredService<ICategoryService>();
-            var receiptService = RcsLocator.Scoped.GetRequiredService<IReceiptService>();
-            var scope = ingredientService.CreateStorageScope();
+            var order = await _cashierService.CreateOrder(false);
+            var scope = _ingridientsService.CreateStorageScope();
 
             if (!await TryAuthorizePageAccess<OrderEditPageVm>(shiftService))
             {
@@ -145,25 +140,15 @@ public class MainPageVm : PageViewModel
 
             await cashierService.SelectCurrentOrder(order);
 
-
-            var orderEditPageVm = new OrderEditPageVm(order, scope, cashierService, additiveService, productServise, categoryService, receiptService, ingredientService);
-
-            await MainViewModel.GoToPageCommand.Execute(orderEditPageVm).FirstAsync();
+            await MainViewModel.GoToPage<OrderEditPageVm>(order, scope);
         });
 
         OpenCurrentOrderCommand = CreatePageBusyCommand(async () =>
         {
             BusyText = "Загрузка данных...";
 
-            var cashierService = RcsLocator.Scoped.GetRequiredService<ICashierService>();
-            var additiveService = RcsLocator.Scoped.GetRequiredService<IAdditiveService>();
-            var order = cashierService.CurrentOrder;
-            var productServise = RcsLocator.Scoped.GetRequiredService<IProductService>();
-            var ingredientService = RcsLocator.Scoped.GetRequiredService<IIngridientsService>();
-            var shiftService = RcsLocator.GetRequiredService<IShiftService>();
-            var categoryService = RcsLocator.Scoped.GetRequiredService<ICategoryService>();
-            var receiptService = RcsLocator.Scoped.GetRequiredService<IReceiptService>();
-            var scope = ingredientService.CreateStorageScope();
+            var order = _cashierService.CurrentOrder;
+            var scope = _ingridientsService.CreateStorageScope();
 
             if (!await TryAuthorizePageAccess<OrderEditPageVm>(shiftService))
             {
@@ -176,10 +161,10 @@ public class MainPageVm : PageViewModel
                 return;
             }
 
-            var orderEditPageVm = new OrderEditPageVm(order, scope, cashierService, additiveService, productServise, categoryService, receiptService, ingredientService);
-
-            await MainViewModel.GoToPageCommand.Execute(orderEditPageVm).FirstAsync();
+            await MainViewModel.GoToPage<OrderEditPageVm>(order, scope);
         });
+
+        CurrentShiftMemberName = null!;
     }
 
     [Reactive]
@@ -194,11 +179,9 @@ public class MainPageVm : PageViewModel
         get; set;
     }
 
-    protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
+    protected override void Initialize(CompositeDisposable disposables)
     {
-        var shiftService = RcsLocator.GetRequiredService<IShiftService>();
-
-        shiftService.CurrentShift.Subscribe(async shift =>
+        _shiftService.CurrentShift.Subscribe(shift =>
         {
             if (shift == null)
             {

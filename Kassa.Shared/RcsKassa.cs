@@ -59,6 +59,16 @@ public static class RcsKassa
         return ActivatorUtilities.CreateInstance<T>(ServiceProvider);
     }
 
+    public static T CreateAndInject<T>(params object[] objects)
+    {
+        if (ScopedServices is IServiceScope scope)
+        {
+            return ActivatorUtilities.CreateInstance<T>(scope.ServiceProvider, objects);
+        }
+
+        return ActivatorUtilities.CreateInstance<T>(ServiceProvider, objects);
+    }
+
     public static async ValueTask DisposeScope()
     {
         if (ScopedServices is ScopeActivator scopeActivator)

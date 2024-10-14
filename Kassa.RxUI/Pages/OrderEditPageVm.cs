@@ -23,14 +23,15 @@ using Splat;
 namespace Kassa.RxUI.Pages;
 public sealed class OrderEditPageVm : BaseOrderEditPageVm
 {
-    public OrderEditPageVm(OrderEditDto orderEditDto,
-        IStorageScope storageScope,
+    public OrderEditPageVm(
         ICashierService cashierService,
         IAdditiveService additiveService,
         IProductService productService,
         ICategoryService categoryService,
         IReceiptService receiptService,
-        IIngridientsService ingridientsService) : base(orderEditDto, storageScope, cashierService, additiveService, productService, categoryService, receiptService, ingridientsService)
+        IIngridientsService ingridientsService,
+        IStorageScope storageScope,
+        OrderEditDto orderEditDto) : base(orderEditDto, storageScope, cashierService, additiveService, productService, categoryService, receiptService, ingridientsService)
     {
     }
 }

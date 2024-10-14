@@ -14,6 +14,15 @@ using Kassa.Shared.ServiceLocator;
 namespace Kassa.BuisnessLogic.Edgar.Services;
 internal sealed class FundsService: BaseInitializableService, IFundsService
 {
+    private readonly IFundApi _fundApi;
+    private readonly IShiftService _shiftService;
+
+    public FundsService(IFundApi fundApi, IShiftService shiftService)
+    {
+        _fundApi = fundApi;
+        _shiftService = shiftService;
+    }
+
     private double CashBalanceValue
     {
         get => _cashBalance.Value;
@@ -26,13 +35,11 @@ internal sealed class FundsService: BaseInitializableService, IFundsService
     
     public async Task<ContributionActDto> Contribute(double amount, string comment, Guid memberId, string pincode, ContributionReasonDto contributionReason)
     {
-        var fundsApi = RcsLocator.GetRequiredService<IFundApi>();
-        var shiftService = RcsLocator.GetRequiredService<IShiftService>();
-        var cashierShiftId = shiftService.CurrentCashierShift.Value!.CreateDto().Id;
+        var cashierShiftId = _shiftService.CurrentCashierShift.Value!.CreateDto().Id;
 
         var contributeRequest = new ContributeRequest(cashierShiftId, comment, amount, memberId, pincode, contributionReason.Id);
 
-        await fundsApi.Contribute(contributeRequest);
+        await _fundApi.Contribute(contributeRequest);
 
         CashBalanceValue += amount;
 
@@ -41,13 +48,11 @@ internal sealed class FundsService: BaseInitializableService, IFundsService
 
     public async Task<ResultSeizure> Seize(double amount, string comment, Guid memberId, string pincode, SeizureReasonDto seizureReason)
     {
-        var fundsApi = RcsLocator.GetRequiredService<IFundApi>();
-        var shiftService = RcsLocator.GetRequiredService<IShiftService>();
-        var cashierShiftId = shiftService.CurrentCashierShift.Value!.CreateDto().Id;
+        var cashierShiftId = _shiftService.CurrentCashierShift.Value!.CreateDto().Id;
 
         var contributeRequest = new SeizureRequest(cashierShiftId, comment, amount, memberId, pincode, seizureReason.Id);
 
-        await fundsApi.Seizure(contributeRequest);
+        await _fundApi.Seizure(contributeRequest);
 
         CashBalanceValue -= amount;
 
@@ -56,11 +61,9 @@ internal sealed class FundsService: BaseInitializableService, IFundsService
 
     public async Task GetCashBalance()
     {
-        var fundsApi = RcsLocator.GetRequiredService<IFundApi>();
-        var shiftService = RcsLocator.GetRequiredService<IShiftService>();
-        var cashierShiftId = shiftService.CurrentCashierShift.Value!.CreateDto().Id;
+        var cashierShiftId = _shiftService.CurrentCashierShift.Value!.CreateDto().Id;
 
-        var fund = await fundsApi.GetFunds(cashierShiftId);
+        var fund = await _fundApi.GetFunds(cashierShiftId);
 
         CashBalanceValue = fund.Funds ?? 0;
     }

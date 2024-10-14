@@ -30,14 +30,14 @@ public sealed class NewDeliveryPageVm : PageViewModel
     private readonly IStorageScope _storageScope;
 
     public NewDeliveryPageVm(
-        OrderEditDto orderEditDto,
         ICashierService cashierService,
         IAdditiveService additiveService,
         IProductService productService,
         IOrdersService ordersService,
         ICategoryService categoryService,
         IReceiptService receiptService,
-        IIngridientsService ingridientsService) :
+        IIngridientsService ingridientsService,
+        OrderEditDto orderEditDto) :
         this(orderEditDto, cashierService, additiveService, null, productService, ordersService, categoryService, receiptService, ingridientsService)
     {
         IsNewClient = true;

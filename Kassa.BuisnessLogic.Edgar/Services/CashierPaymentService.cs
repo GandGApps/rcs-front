@@ -16,12 +16,16 @@ internal sealed class CashierPaymentService: BaseInitializableService, IPaymentS
     private readonly OrderEditDto _orderEditDto;
     private readonly IOrdersService _ordersService;
     private readonly IPaymentInfoService _paymentInfoService;
+    private readonly IPrinter? _printer;
+    private readonly ICashDrawer? _cashDrawer;
 
-    public CashierPaymentService(OrderEditDto orderEditService, IOrdersService ordersService, IPaymentInfoService paymentInfoService)
+    public CashierPaymentService(IOrdersService ordersService, IPaymentInfoService paymentInfoService, IPrinter? printer, ICashDrawer? cashDrawer, OrderEditDto orderEditService)
     {
         _orderEditDto = orderEditService;
         _ordersService = ordersService;
         _paymentInfoService = paymentInfoService;
+        _printer = printer;
+        _cashDrawer = cashDrawer;
     }
 
     public OrderEditDto OrderEditDto => _orderEditDto;
@@ -71,11 +75,9 @@ internal sealed class CashierPaymentService: BaseInitializableService, IPaymentS
       
         if (receiptBehavior == ReceiptBehavior.PrintReceipt)
         {
-            var printer = RcsLocator.GetService<IPrinter>();
-
-            if (printer != null)
+            if (_printer != null)
             {
-                await printer.PrintAsync(order);
+                await _printer.PrintAsync(order);
             }
             else
             {
@@ -86,15 +88,13 @@ internal sealed class CashierPaymentService: BaseInitializableService, IPaymentS
 
         if (Cash > 0)
         {
-            var cashDrawer = RcsLocator.GetService<ICashDrawer>();
-
-            if (cashDrawer is null)
+            if (_cashDrawer is null)
             {
                 this.Log().Error("ICashDrawer not registered");
             }
             else
             {
-                await cashDrawer.Open();
+                await _cashDrawer.Open();
             }
         }
 

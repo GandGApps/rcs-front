@@ -13,8 +13,19 @@ using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
-internal sealed class OrdersService(IRepository<Order> repository, IRepository<PaymentInfo> paymentInfos) : BaseInitializableService, IOrdersService
+internal sealed class OrdersService: BaseInitializableService, IOrdersService
 {
+    private readonly IRepository<Order> _repository;
+    private readonly IRepository<PaymentInfo> _paymentInfos;
+    private readonly IShiftService _shiftService;
+
+    public OrdersService(IRepository<Order> repository, IRepository<PaymentInfo> paymentInfos, IShiftService shiftService)
+    {
+        _repository = repository;
+        _paymentInfos = paymentInfos;
+        _shiftService = shiftService;
+    }
+
     public IApplicationModelManager<OrderDto> RuntimeOrders
     {
         get;
@@ -30,7 +41,7 @@ internal sealed class OrdersService(IRepository<Order> repository, IRepository<P
     {
         var model = Mapper.MapDtoToOrder(order);
 
-        // This was supposed to be implemented by the repository, not the service,
+        // This was supposed to be implemented by the _repository, not the service,
         // but since it's a mock interface, we have to do it here.
         if (order.Id == Guid.Empty)
         {
@@ -44,31 +55,31 @@ internal sealed class OrdersService(IRepository<Order> repository, IRepository<P
             order.PaymentInfo = paymentInfo;
             order.PaymentInfoId = paymentInfo.Id;
 
-            await paymentInfos.Add(Mapper.MapDtoToPaymentInfo(paymentInfo));
+            await _paymentInfos.Add(Mapper.MapDtoToPaymentInfo(paymentInfo));
         }
 
         // TODO:We need to remove the code above.
 
-        await repository.Add(model);
+        await _repository.Add(model);
 
         RuntimeOrders.AddOrUpdate(order);
     }
     public async Task DeleteOrder(Guid id)
     {
-        var model = await repository.Get(id);
+        var model = await _repository.Get(id);
 
         if (model == null)
         {
             return;
         }
 
-        await repository.Delete(model);
+        await _repository.Delete(model);
         RuntimeOrders.Remove(id);
     }
 
     public async ValueTask<OrderDto?> GetOrderById(Guid id)
     {
-        var model = await repository.Get(id);
+        var model = await _repository.Get(id);
 
         if (model == null)
         {
@@ -83,7 +94,7 @@ internal sealed class OrdersService(IRepository<Order> repository, IRepository<P
 
     public async Task<IEnumerable<OrderDto>> GetOrders()
     {
-        var models = await repository.GetAll();
+        var models = await _repository.GetAll();
 
         var dtos = models.Select(Mapper.MapOrderToDto).ToList();
 
@@ -96,7 +107,7 @@ internal sealed class OrdersService(IRepository<Order> repository, IRepository<P
     {
         var model = Mapper.MapDtoToOrder(order);
 
-        // This was supposed to be implemented by the repository, not the service,
+        // This was supposed to be implemented by the _repository, not the service,
         // but since it's a mock interface, we have to do it here.
         if (order.PaymentInfo is PaymentInfoDto paymentInfo)
         {
@@ -109,18 +120,18 @@ internal sealed class OrdersService(IRepository<Order> repository, IRepository<P
                 paymentInfoModel.Id = paymentInfo.Id;
                 order.PaymentInfoId = paymentInfo.Id;
 
-                await paymentInfos.Add(paymentInfoModel);
+                await _paymentInfos.Add(paymentInfoModel);
             }
             else
             {
-                await paymentInfos.Update(paymentInfoModel);
+                await _paymentInfos.Update(paymentInfoModel);
             }
         }
         // TODO:We need to remove the code above.
 
         RuntimeOrders.AddOrUpdate(order);
 
-        await repository.Update(model);
+        await _repository.Update(model);
     }
 
 
@@ -129,7 +140,7 @@ internal sealed class OrdersService(IRepository<Order> repository, IRepository<P
     {
         var orderDto = CreateOrderUnsafe(orderEditDto);
 
-        // Maybe we should add the order to the repository here?
+        // Maybe we should add the order to the _repository here?
         return Task.FromResult(orderDto);
     }
 
@@ -143,9 +154,7 @@ internal sealed class OrdersService(IRepository<Order> repository, IRepository<P
 
     public Task<IEnumerable<OrderDto>> GetOrdersOfCurrentCashierShiftAsync()
     {
-        var shiftService = RcsLocator.GetRequiredService<IShiftService>();
-
-        var currentCashierShift = shiftService.CurrentShift.Value;
+        var currentCashierShift = _shiftService.CurrentShift.Value;
 
         if (currentCashierShift == null)
         {
@@ -161,9 +170,7 @@ internal sealed class OrdersService(IRepository<Order> repository, IRepository<P
 
     public Task<IEnumerable<OrderDto>> GetOrdersOfCurrentShiftAsync()
     {
-        var shiftService = RcsLocator.GetRequiredService<IShiftService>();
-
-        var currentShift = shiftService.CurrentShift.Value;
+        var currentShift = _shiftService.CurrentShift.Value;
 
         if (currentShift == null)
         {

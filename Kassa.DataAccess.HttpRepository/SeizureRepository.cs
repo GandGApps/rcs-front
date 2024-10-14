@@ -14,19 +14,25 @@ using Splat;
 namespace Kassa.DataAccess.HttpRepository;
 internal sealed class SeizureRepository : IRepository<SeizureReason>
 {
-    private FrozenDictionary<Guid, SeizureReason> _seizures = FrozenDictionary<Guid, SeizureReason>.Empty;
+    private readonly FrozenMemoryCache<SeizureReason> _cache = new();
+    private readonly IFundApi _api;
+
+    public SeizureRepository(IFundApi api)
+    {
+        _api = api;
+    }
 
     public Task Add(SeizureReason item) => throw new NotImplementedException();
     public Task Delete(SeizureReason item) => throw new NotImplementedException();
     public Task DeleteAll() => throw new NotImplementedException();
     public async Task<SeizureReason?> Get(Guid id)
     {
-        if (_seizures.Count == 0)
+        if (_cache.IsEmpty)
         {
             await GetAll();
         }
 
-        if (_seizures.TryGetValue(id, out var seizure))
+        if (_cache.TryGetValue(id, out var seizure))
         {
             return seizure;
         }
@@ -35,9 +41,7 @@ internal sealed class SeizureRepository : IRepository<SeizureReason>
     }
     public async Task<IEnumerable<SeizureReason>> GetAll()
     {
-        var fundApi = RcsLocator.GetRequiredService<IFundApi>();
-
-        var reasons = await fundApi.GetSeizures();
+        var reasons = await _api.GetSeizures();
 
         var seizures = reasons.Select(x => new SeizureReason()
         {
@@ -46,7 +50,7 @@ internal sealed class SeizureRepository : IRepository<SeizureReason>
             IsRequiredComment = x.IsRequiredComment is true
         }).ToArray();
 
-        _seizures = seizures.ToFrozenDictionary(x => x.Id);
+        _cache.Refresh(seizures);
 
         return seizures;
     }

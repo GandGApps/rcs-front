@@ -14,12 +14,12 @@ public interface IShiftService : IInitializableService
         get;
     }
 
-    public ObservableOnlyBehaviourSubject<IShift?> CurrentShift
+    public IObservableOnlyBehaviourSubject<IShift?> CurrentShift
     {
         get;
     }
 
-    public ObservableOnlyBehaviourSubject<ITerminalShift?> CurrentCashierShift
+    public IObservableOnlyBehaviourSubject<ITerminalShift?> CurrentCashierShift
     {
         get;
     }

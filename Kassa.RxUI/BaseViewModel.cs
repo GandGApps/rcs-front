@@ -9,6 +9,7 @@ using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
 using Kassa.Shared.ServiceLocator;
+using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
@@ -40,7 +41,7 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
         get;
     }
 
-    public BaseViewModel() : this(RcsLocator.GetRequiredService<MainViewModel>())
+    public BaseViewModel() : this(RcsKassa.ServiceProvider.GetRequiredService<MainViewModel>())
     {
 
     }
@@ -88,25 +89,6 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
     protected virtual void OnActivated(CompositeDisposable disposables)
     {
 
-    }
-
-    /// <summary>
-    /// Retrieves an initialized service of the specified type. Note that you should not use <see cref="DisposableMixins.DisposeWith"/> 
-    /// for services returned by this method.
-    /// </summary>
-    /// <typeparam name="T">The type of the initializable service to retrieve.</typeparam>
-    /// <returns>An initialized service of type T.</returns>
-    /// <remarks>
-    /// The service is automatically added to InternalDisposables, which handles its disposal. Manually 
-    /// calling <see cref="DisposableMixins.DisposeWith"/> on these services may lead to unexpected behavior or errors.
-    /// </remarks>
-    protected ValueTask<T> GetInitializedServiceAndDisposeWithThis<T>() where T : class, IInitializableService
-    {
-        var services = RcsLocator.Scoped.GetRequiredService<T>();
-
-        services.DisposeWith(InternalDisposables);
-
-        return ValueTask.FromResult(services);
     }
 
     public void Dispose()

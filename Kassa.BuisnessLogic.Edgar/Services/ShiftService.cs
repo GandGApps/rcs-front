@@ -23,20 +23,26 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 {
     private readonly IRepository<Shift> _repository;
     private readonly IMemberService _memberService;
-    internal readonly BehaviorSubject<IShift?> _currentShift = new(null);
-    internal readonly BehaviorSubject<ITerminalShift?> _currentCashierShift = new(null);
-    private readonly HostModelManager<ShiftDto> _hostModelManager = new();
     private readonly IAuthService _authService;
+    private readonly IEmployeePostsApi _employeePostsApi;
+    private readonly ITerminalPostApi _terminalPostApi;
 
-    public ShiftService(IRepository<Shift> repository, IMemberService memberService, IAuthService authService)
+    internal readonly AdapterBehaviorSubject<IShift?> _currentShift = new(null);
+    internal readonly AdapterBehaviorSubject<ITerminalShift?> _currentCashierShift = new(null);
+    private readonly HostModelManager<ShiftDto> _hostModelManager = new();
+    
+
+    public ShiftService(IRepository<Shift> repository, IMemberService memberService, IAuthService authService, IEmployeePostsApi employeePostsApi, ITerminalPostApi terminalPostApi)
     {
-        _hostModelManager.DisposeWith(InternalDisposables);
-        _currentShift.DisposeWith(InternalDisposables);
         _repository = repository;
         _memberService = memberService;
-        CurrentShift = new(_currentShift);
-        CurrentCashierShift = new(_currentCashierShift);
         _authService = authService;
+        _employeePostsApi = employeePostsApi;
+        _terminalPostApi = terminalPostApi;
+
+        _hostModelManager.DisposeWith(InternalDisposables);
+        _currentShift.DisposeWith(InternalDisposables);
+        
 
         _authService.CurrentAuthenticationContext.Subscribe(async context =>
         {
@@ -55,15 +61,8 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
     public IApplicationModelManager<ShiftDto> RuntimeShifts => _hostModelManager;
 
-    public ObservableOnlyBehaviourSubject<IShift?> CurrentShift
-    {
-        get;
-    }
-
-    public ObservableOnlyBehaviourSubject<ITerminalShift?> CurrentCashierShift
-    {
-        get;
-    }
+    public IObservableOnlyBehaviourSubject<IShift?> CurrentShift => _currentShift;
+    public IObservableOnlyBehaviourSubject<ITerminalShift?> CurrentCashierShift => _currentCashierShift;
 
     public async ValueTask<ShiftDto?> GetShiftById(Guid id)
     {
@@ -133,10 +132,9 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
     private async Task FetchShiftDetails(MemberDto member, EdgarTerminalShift edgarTerminalShift)
     {
-        var employeePostsApi = RcsLocator.GetRequiredService<IEmployeePostsApi>();
         var managerShift = edgarTerminalShift.CreateDto();
 
-        var exist = await employeePostsApi.PostExists(new(DateTime.Now, managerShift.Id));
+        var exist = await _employeePostsApi.PostExists(new(DateTime.Now, managerShift.Id));
 
         if (!this.IsCashierShiftStarted() && !member.IsManager)
         {
@@ -155,17 +153,12 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
     private async Task<EdgarTerminalShift> FetchCashierShiftDetails(MemberDto member)
     {
-        var config = RcsLocator.GetRequiredService<IConfiguration>();
+        var postExists = await _terminalPostApi.PostExists(new(DateTime.Now));
 
-        var terminalApi = RcsLocator.GetRequiredService<ITerminalPostApi>();
-
-        var postExists = await terminalApi.PostExists(new(DateTime.Now));
-
-        var managerShift = new EdgarTerminalShift(member, postExists, this);
+        var managerShift = RcsKassa.CreateAndInject<EdgarTerminalShift>(member, postExists, this);
 
         if (!this.IsCashierShiftStarted() && !member.IsManager)
         {
-
             throw new InvalidUserOperatationException("Кассовая смена не открыта") { Description = "Дождитесь менеджера" };
         }
 

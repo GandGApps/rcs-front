@@ -197,7 +197,7 @@ public sealed class MainViewModel : ReactiveObject, IScreen
                         await loading.CloseAsync();
                     }
                     
-                    await GoToPageAndReset(new MainPageVm());
+                    await GoToPageAndReset<MainPageVm>();
                 }
             });
 
@@ -398,9 +398,23 @@ public sealed class MainViewModel : ReactiveObject, IScreen
         await GoToPage(pageVm);
     }
 
+    public async Task GoToPage<T>(params object[] args) where T : PageViewModel
+    {
+        var pageVm = RcsKassa.CreateAndInject<T>(args);
+
+        await GoToPage(pageVm);
+    }
+
     public async Task GoToPageAndReset(PageViewModel pageVm)
     {
         await GoToPageAndResetCommand.Execute(pageVm).FirstAsync();
+    }
+
+    public async Task GoToPageAndReset<T>() where T : PageViewModel
+    {
+        var pageViewModel = RcsKassa.CreateAndInject<T>();
+
+        await GoToPageAndReset(pageViewModel);
     }
 
     public async Task<T> RunTaskWithLoadingDialog<T>(string text, Func<LoadingDialogViewModel, Task<T>> task)

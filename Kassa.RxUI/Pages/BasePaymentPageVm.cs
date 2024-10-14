@@ -580,10 +580,11 @@ public abstract class BasePaymentPageVm: PageViewModel, IPaymentVm
         await MainViewModel.OkMessageAsync("Оплата прошла успешно", "");
 
         var order = await _cashierService.CreateOrder(false);
+        var storageScope = _ingridientsService.CreateStorageScope();
 
         await _cashierService.SelectCurrentOrder(order);
 
-        var orderEditPageVm = new OrderEditPageVm(order, _ingridientsService.CreateStorageScope(), _cashierService, _additiveService, _productService, _categoryService, _receiptService, _ingridientsService);
+        var orderEditPageVm = RcsKassa.CreateAndInject<OrderEditPageVm>(order, storageScope);
 
         await MainViewModel.GoToPageAndResetButNotMainCommand.Execute(orderEditPageVm);
 

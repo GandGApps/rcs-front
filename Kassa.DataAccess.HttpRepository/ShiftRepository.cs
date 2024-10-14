@@ -15,46 +15,51 @@ using Splat;
 namespace Kassa.DataAccess.HttpRepository;
 internal sealed class ShiftRepository : IShiftRepository, IEnableLogger
 {
-    private FrozenDictionary<Guid, Shift>? _shifts;
+    private readonly FrozenMemoryCache<Shift> _cache = new();
+    private readonly IEmployeePostApi _api;
+
+    public ShiftRepository(IEmployeePostApi api)
+    {
+        _api = api;
+    }
 
     public Task Add(Shift item) => throw new NotImplementedException();
     public Task Delete(Shift item) => throw new NotImplementedException();
     public Task DeleteAll() => throw new NotImplementedException();
-    public Task<Shift?> Get(Guid id)
+    public async Task<Shift?> Get(Guid id)
     {
-        if (_shifts == null)
+        if (_cache.IsExpired)
         {
-            this.Log().Error("Shifts are not loaded");
-
-            return Task.FromResult<Shift?>(null);
+            await GetAll();
         }
 
-        if (_shifts.TryGetValue(id, out var shift))
+        if (_cache.TryGetValue(id, out var shift))
         {
-            return Task.FromResult<Shift?>(shift);
+            return shift;
         }
 
-        return Task.FromResult<Shift?>(null);
+        return null;
     }
     public async Task<IEnumerable<Shift>> GetAll()
     {
-        var api = RcsLocator.GetRequiredService<IEmployeePostApi>();
+        if (!_cache.IsExpired)
+        {
+            return _cache.Values;
+        }
 
-        var shiftsResponse = await api.GetPosts();
+        var shiftsResponse = await _api.GetPosts();
 
-        var shifts = shiftsResponse.Select(ApiMapper.MapShiftResponseToShift).ToFrozenDictionary(x => x.Id);
+        var shifts = shiftsResponse.Select(ApiMapper.MapShiftResponseToShift).ToList();
 
-        _shifts = shifts;
+        _cache.Refresh(shifts);
 
-        return shifts.Values;
+        return shifts;
 
     }
 
     public async Task<IEnumerable<Shift>> GetShiftsForMember(Member member)
     {
-        var api = RcsLocator.GetRequiredService<IEmployeePostApi>();
-
-        var shiftsResponse = await api.GetPostsByEmployeeId(member.Id);
+        var shiftsResponse = await _api.GetPostsByEmployeeId(member.Id);
 
         var shifts = shiftsResponse.Select(ApiMapper.MapShiftResponseToShift).ToArray();
 

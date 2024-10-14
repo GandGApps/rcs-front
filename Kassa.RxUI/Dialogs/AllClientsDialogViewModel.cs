@@ -12,6 +12,7 @@ using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Pages;
+using Kassa.Shared;
 using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -20,9 +21,9 @@ namespace Kassa.RxUI.Dialogs;
 public class AllClientsDialogViewModel : SearchableDialogViewModel<ClientDto, ClientViewModel>
 {
     private readonly IClientService _clientService;
-    
+    private readonly ICashierService _cashierService;
 
-    public AllClientsDialogViewModel(IClientService clientService)
+    public AllClientsDialogViewModel(IClientService clientService, ICashierService cashierService)
     {
         _clientService = clientService;
 
@@ -33,21 +34,11 @@ public class AllClientsDialogViewModel : SearchableDialogViewModel<ClientDto, Cl
 
         SkipCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var cashierService = RcsLocator.Scoped.GetRequiredService<ICashierService>();
-            var additiveService = RcsLocator.Scoped.GetRequiredService<IAdditiveService>();
-            var productService = RcsLocator.Scoped.GetRequiredService<IProductService>();
-            var ordersService = RcsLocator.Scoped.GetRequiredService<IOrdersService>();
-            var categoryService = RcsLocator.Scoped.GetRequiredService<ICategoryService>();
-            var receiptService = RcsLocator.Scoped.GetRequiredService<IReceiptService>();
-            var ingridientsService = RcsLocator.Scoped.GetRequiredService<IIngridientsService>();
-
             var orderEditDto = await cashierService.CreateOrder(true);
 
-            var newDeliveryPageVm = new NewDeliveryPageVm(orderEditDto, cashierService, additiveService, productService, ordersService, categoryService, receiptService, ingridientsService)
-            {
-                IsPickup = IsPickup,
-                IsDelivery = IsDelivery
-            };
+            var newDeliveryPageVm = RcsKassa.CreateAndInject<NewDeliveryPageVm>(orderEditDto);
+            newDeliveryPageVm.IsPickup = IsPickup;
+            newDeliveryPageVm.IsDelivery = IsDelivery;
 
             await CloseAsync();
 
@@ -100,7 +91,6 @@ public class AllClientsDialogViewModel : SearchableDialogViewModel<ClientDto, Cl
 
             await MainViewModel.GoToPageCommand.Execute(newDeliveryPageVm).FirstAsync();
         });
-
     }
 
     [Reactive]

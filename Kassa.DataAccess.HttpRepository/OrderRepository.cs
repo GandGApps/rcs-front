@@ -13,22 +13,24 @@ using Splat;
 namespace Kassa.DataAccess.HttpRepository;
 internal sealed class OrderRepository : IRepository<Order>
 {
+    private readonly IOrdersApi _ordersApi;
+    public OrderRepository(IOrdersApi ordersApi)
+    {
+        _ordersApi = ordersApi;
+    }
+
     public async Task Add(Order item)
     {
-        var orderApi = RcsLocator.GetRequiredService<IOrdersApi>();
-
         var request = ApiMapper.MapOrderToEdgarModel(item);
 
-        await orderApi.AddOrder(request);
+        await _ordersApi.AddOrder(request);
     }
     public Task Delete(Order item) => throw new NotImplementedException();
     public Task DeleteAll() => throw new NotImplementedException();
     public Task<Order?> Get(Guid id) => throw new NotImplementedException();
     public async Task<IEnumerable<Order>> GetAll()
     {
-        var orderApi = RcsLocator.GetRequiredService<IOrdersApi>();
-
-        var orders = await orderApi.GetOrders();
+        var orders = await _ordersApi.GetOrders();
 
         if (orders == null)
         {

@@ -22,8 +22,10 @@ internal sealed class EdgarTerminalShift : ITerminalShift
     private readonly BehaviorSubject<bool> _isStarted;
     private readonly DateTime? _start;
     private readonly ShiftService _shiftService;
+    private readonly ITerminalPostApi _terminalPostApi;
+    private readonly IReportShiftService _reportShiftService;
 
-    public EdgarTerminalShift(MemberDto manager, TerminalPostExistsResponse postExistsResponse, ShiftService shiftService)
+    public EdgarTerminalShift(ITerminalPostApi terminalPostApi, IReportShiftService reportShiftService, MemberDto manager, TerminalPostExistsResponse postExistsResponse, ShiftService shiftService)
     {
         _manager = manager;
 
@@ -35,6 +37,8 @@ internal sealed class EdgarTerminalShift : ITerminalShift
         _isStarted = new(postExistsResponse.Posts.IsOpen);
 
         IsStarted = new(_isStarted);
+        _terminalPostApi = terminalPostApi;
+        _reportShiftService = reportShiftService;
     }
 
     public MemberDto Manager => _manager;
@@ -48,10 +52,9 @@ internal sealed class EdgarTerminalShift : ITerminalShift
     {
         var shift = CreateDto();
 
-        var terminalPostApi = RcsLocator.GetRequiredService<ITerminalPostApi>();
         var openShiftRequest = new TerminalOpenPostRequest(DateTime.Now, shift.Id, 0);
 
-        await terminalPostApi.OpenPost(openShiftRequest);
+        await _terminalPostApi.OpenPost(openShiftRequest);
 
         _isStarted.OnNext(true);
     }
@@ -60,12 +63,9 @@ internal sealed class EdgarTerminalShift : ITerminalShift
     {
         var shift = CreateDto();
 
-        var terminalPostApi = RcsLocator.GetRequiredService<ITerminalPostApi>();
         var closeShiftRequest = new TerminalClosePostRequest(DateTime.Now, shift.Id);
 
-        var reportShiftService = RcsLocator.GetRequiredService<IReportShiftService>();
-
-        await terminalPostApi.ClosePost(closeShiftRequest);
+        await _terminalPostApi.ClosePost(closeShiftRequest);
 
         if (_shiftService.CurrentShift.Value is EdgarShift edgarShift)
         {
@@ -73,7 +73,7 @@ internal sealed class EdgarTerminalShift : ITerminalShift
         }
 
         //TODO: Add report shift
-        reportShiftService.AddCurrentReportShift(new ReportShiftDto()
+        _reportShiftService.AddCurrentReportShift(new ReportShiftDto()
         {
         });
 

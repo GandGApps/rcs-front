@@ -17,33 +17,35 @@ using Splat;
 namespace Kassa.BuisnessLogic.Edgar.Services;
 internal sealed partial class AuthService : IAuthService, IEnableLogger
 {
-    private readonly BehaviorSubject<IAuthenticationContext> _currentAuthenticationContext = new(JwtAuthenticationContext.NotAuthenticated);
-    private readonly ObservableOnlyBehaviourSubject<IAuthenticationContext> _observableOnly;
-    public AuthService()
+    private readonly AdapterBehaviorSubject<IAuthenticationContext> _adapterBehaviorSubject = new(JwtAuthenticationContext.NotAuthenticated);
+    private readonly IConfiguration _configuration;
+    private readonly ITerminalApi _terminalApi;
+    private readonly IMemberService _memberService;
+
+    public AuthService(IConfiguration configuration, ITerminalApi terminalApi, IMemberService memberService)
     {
-        _observableOnly = new(_currentAuthenticationContext);
+        _configuration = configuration;
+        _terminalApi = terminalApi;
+        _memberService = memberService;
     }
 
-    public IObservableOnlyBehaviourSubject<IAuthenticationContext> CurrentAuthenticationContext => _observableOnly;
+    public IObservableOnlyBehaviourSubject<IAuthenticationContext> CurrentAuthenticationContext => _adapterBehaviorSubject;
 
-    public bool IsAuthenticated => _currentAuthenticationContext.Value.IsAuthenticated;
+    public bool IsAuthenticated => _adapterBehaviorSubject.Value.IsAuthenticated;
 
     public async Task<bool> AuthenticateAsync(string username, string password)
     {
         var loginRequest = new LoginTerminalRequest(username, password);
-        var config = RcsLocator.GetRequiredService<IConfiguration>();
 
-        var terminalApi = RcsLocator.GetRequiredService<ITerminalApi>();
-
-        var response = await terminalApi.Login(loginRequest);
+        var response = await _terminalApi.Login(loginRequest);
 
         if (response.IsSuccessStatusCode)
         {
             var token = response.Content!;
             token = token.Trim('"');
-            config["TerminalAuthToken"] = token;
+            _configuration["TerminalAuthToken"] = token;
 
-            _currentAuthenticationContext.OnNext(new JwtAuthenticationContext
+            _adapterBehaviorSubject.OnNext(new JwtAuthenticationContext
             {
                 Token = token
             });
@@ -56,8 +58,8 @@ internal sealed partial class AuthService : IAuthService, IEnableLogger
 
     public async Task<bool> LogoutAsync()
     {
-        await RcsLocator.DisposeScope();
-        _currentAuthenticationContext.OnNext(JwtAuthenticationContext.NotAuthenticated);
+        await RcsKassa.DisposeScope();
+        _adapterBehaviorSubject.OnNext(JwtAuthenticationContext.NotAuthenticated);
         return true;
     }
 
@@ -65,22 +67,20 @@ internal sealed partial class AuthService : IAuthService, IEnableLogger
     {
         var pincodeRequest = new EnterPincodeRequest(pincode);
 
-        var terminalApi = RcsLocator.GetRequiredService<ITerminalApi>();
-
-        var response = await terminalApi.IsManagerPincode(pincodeRequest);
+        var response = await _terminalApi.IsManagerPincode(pincodeRequest);
 
         return response.IsSuccessStatusCode;
     }
 
     public ValueTask<bool> LogoutAccount()
     {
-        var context = _currentAuthenticationContext.Value;
+        var context = _adapterBehaviorSubject.Value;
 
         if (context is JwtAuthenticationContext jwtContext)
         {
             jwtContext.Member = null;
 
-            _currentAuthenticationContext.OnNext(jwtContext);
+            _adapterBehaviorSubject.OnNext(jwtContext);
 
             return new(true);
         }
@@ -95,36 +95,31 @@ internal sealed partial class AuthService : IAuthService, IEnableLogger
     {
         var pincodeRequest = new LoginEmployeeRequest(pincode, DateTime.UtcNow);
 
-        var terminalApi = RcsLocator.GetRequiredService<ITerminalApi>();
-
-        var reponse = await terminalApi.EnterPincode(pincodeRequest);
+        var reponse = await _terminalApi.EnterPincode(pincodeRequest);
 
         if (reponse.IsSuccessStatusCode)
         {
             var pincodeResponse = reponse.Content!;
 
-            var config = RcsLocator.GetRequiredService<IConfiguration>();
-            config["MemberAuthToken"] = pincodeResponse.Token;
+            _configuration["MemberAuthToken"] = pincodeResponse.Token;
 
             var handler = new JwtSecurityTokenHandler();
             var token = handler.ReadJwtToken(pincodeResponse.Token);
 
             var employeeId = token.Claims.First(claim => claim.Type == "employee_id").Value;
 
-            var memberService = RcsLocator.GetRequiredService<IMemberService>();
-
-            if (!memberService.IsInitialized)
+            if (!_memberService.IsInitialized)
             {
-                await memberService.Initialize();
+                await _memberService.Initialize();
             }
 
-            var member = await memberService.GetMember(Guid.Parse(employeeId));
+            var member = await _memberService.GetMember(Guid.Parse(employeeId));
 
-            var jwtContext = Unsafe.As<JwtAuthenticationContext>(_currentAuthenticationContext.Value);
+            var jwtContext = Unsafe.As<JwtAuthenticationContext>(_adapterBehaviorSubject.Value);
 
             jwtContext.Member = member;
 
-            _currentAuthenticationContext.OnNext(jwtContext);
+            _adapterBehaviorSubject.OnNext(jwtContext);
 
             return true;
         }
@@ -134,9 +129,7 @@ internal sealed partial class AuthService : IAuthService, IEnableLogger
 
     public async Task<bool> CheckPincode(MemberDto member, string pincode)
     {
-        var terminalApi = RcsLocator.GetRequiredService<ITerminalApi>();
-
-        var result = await terminalApi.CheckPincode(pincode, member.Id);
+        var result = await _terminalApi.CheckPincode(pincode, member.Id);
 
         return result.Content;
     }

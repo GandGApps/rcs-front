@@ -10,9 +10,15 @@ using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
-internal sealed class ReportShiftService : IReportShiftService
+internal sealed class ReportShiftService : IReportShiftService, IEnableLogger
 {
     private readonly AdapterBehaviorSubject<ReportShiftDto?> _currentReportShift = new(null);
+    private readonly IPrinter? _printer;
+
+    public ReportShiftService(IPrinter? printer)
+    {
+        _printer = printer;
+    }
 
     public IObservableOnlyBehaviourSubject<ReportShiftDto?> CurrentReportShift => _currentReportShift;
 
@@ -23,7 +29,6 @@ internal sealed class ReportShiftService : IReportShiftService
 
     public void ClearCurrentReportShift()
     {
-        var printer = RcsLocator.GetService<IPrinter>();
         var currentReportShift = _currentReportShift.Value;
 
         if (currentReportShift == null)
@@ -33,11 +38,12 @@ internal sealed class ReportShiftService : IReportShiftService
 
         _currentReportShift.OnNext(null);
 
-        if (printer is null)
+        if (_printer is null)
         {
+            this.Log().Warn($"{nameof(IPrinter)} is not registered");
             return;
         }
 
-        printer.PrintAsync(currentReportShift);
+        _printer.PrintAsync(currentReportShift);
     }
 }

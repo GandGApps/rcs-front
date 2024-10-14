@@ -15,19 +15,25 @@ using Splat;
 namespace Kassa.DataAccess.HttpRepository;
 internal sealed class ReceiptRepository : IRepository<Receipt>, IEnableLogger
 {
-    private FrozenDictionary<Guid, Receipt>? _receipts;
+    private readonly FrozenMemoryCache<Receipt> _cache = new();
+    private readonly ITechcardApi _api;
+
+    public ReceiptRepository(ITechcardApi api)
+    {
+        _api = api;
+    }
 
     public Task Add(Receipt item) => throw new NotImplementedException();
     public Task Delete(Receipt item) => throw new NotImplementedException();
     public Task DeleteAll() => throw new NotImplementedException();
     public Task<Receipt?> Get(Guid id)
     {
-        if (_receipts is null)
+        if (_cache.IsEmpty)
         {
             return Task.FromResult<Receipt?>(null);
         }
 
-        if (_receipts.TryGetValue(id, out var receipt))
+        if (_cache.TryGetValue(id, out var receipt))
         {
 
             return Task.FromResult<Receipt?>(receipt);
@@ -37,13 +43,11 @@ internal sealed class ReceiptRepository : IRepository<Receipt>, IEnableLogger
     }
     public async Task<IEnumerable<Receipt>> GetAll()
     {
-        var techcardApi = RcsLocator.GetRequiredService<ITechcardApi>();
-
-        var techcards = await techcardApi.GetAllTechcards();
+        var techcards = await _api.GetAllTechcards();
 
         var receipts = techcards.Select(ApiMapper.MapTechcardToReceipt).ToList();
 
-        _receipts = receipts.ToDictionary(x => x.Id).ToFrozenDictionary();
+        _cache.Refresh(receipts);
 
         return receipts;
     }
