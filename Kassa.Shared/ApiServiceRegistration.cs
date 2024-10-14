@@ -7,7 +7,6 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Kassa.Shared.DelegatingHandlers;
 using Microsoft.Extensions.Configuration;
-using Kassa.Shared.ServiceLocator;
 using Microsoft.Extensions.DependencyInjection;
 using Refit;
 using Splat;
@@ -48,9 +47,9 @@ public static class ApiServiceRegistration
 
     public static IHttpClientBuilder AddBaseAddress(this IHttpClientBuilder builder)
     {
-        return builder.ConfigureHttpClient(httpClient =>
+        return builder.ConfigureHttpClient((serviceProvider, httpClient) =>
         {
-            var configuration = RcsLocator.GetRequiredService<IConfiguration>();
+            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
             var baseAddress = configuration["ApiConfiguration:BaseAddress"]!;
 

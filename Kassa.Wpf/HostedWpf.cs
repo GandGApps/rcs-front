@@ -8,7 +8,7 @@ using Microsoft.Extensions.Hosting;
 
 namespace Kassa.Wpf;
 
-public class HostedWpf : IHostedService
+public sealed class HostedWpf : IHostedService
 {
 
     [STAThread]

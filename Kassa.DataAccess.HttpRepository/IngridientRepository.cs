@@ -13,7 +13,13 @@ using Splat;
 namespace Kassa.DataAccess.HttpRepository;
 internal sealed class IngridientRepository : IRepository<Ingredient>, IEnableLogger
 {
-    private readonly FrozenMemoryCache<Ingredient> _cache = new(TimeSpan.FromMinutes(15));
+    private readonly FrozenMemoryCache<Ingredient> _cache = new();
+    private readonly IIngridientsApi _api;
+
+    public IngridientRepository(IIngridientsApi api)
+    {
+        _api = api;
+    }
 
     public Task Add(Ingredient item) => throw new NotImplementedException();
     public Task Delete(Ingredient item) => throw new NotImplementedException();
@@ -26,7 +32,7 @@ internal sealed class IngridientRepository : IRepository<Ingredient>, IEnableLog
             return _cache.Values;
         }
 
-        var ingridientsApi = RcsLocator.GetRequiredService<IIngridientsApi>();
+        var ingridientsApi = _api;
 
         var ingridinets = await ingridientsApi.GetIngridients();
 

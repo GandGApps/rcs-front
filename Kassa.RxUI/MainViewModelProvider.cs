@@ -13,7 +13,7 @@ internal sealed class MainViewModelProvider: IMainViewModelProvider
 
     public MainViewModel MainViewModel
     {
-        get => _instance ??= new MainViewModel(this);
+        get => _instance ??= new MainViewModel();
         set => _instance = value;
     }
 }

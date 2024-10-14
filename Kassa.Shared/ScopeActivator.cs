@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kassa.Shared;
-public sealed class ScopedServices: IServiceScope, IDisposable, IAsyncDisposable
+public sealed class ScopeActivator: IServiceScope, IDisposable, IAsyncDisposable
 {
     private readonly IServiceScope _serviceScope;
 
-    public ScopedServices(IServiceScope serviceScope)
+    public ScopeActivator(IServiceScope serviceScope)
     {
         _serviceScope = serviceScope;
     }

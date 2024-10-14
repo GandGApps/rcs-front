@@ -4,7 +4,6 @@ using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Kassa.Shared.ServiceLocator;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -30,6 +29,49 @@ public static class RcsKassa
 
     public static string LogsPath => Path.Combine(BasePath, "logs", "Logs.txt");
 
+    public static IServiceProvider ServiceProvider => Host.Services;
+    public static IServiceScope? ScopedServices
+    {
+        get;
+    }
+
     public static bool IsDevelopment => string.Equals(EnvironmentName, DevelopmentName, StringComparison.InvariantCultureIgnoreCase);
     public static bool IsProduction => string.Equals(EnvironmentName, ProductionName, StringComparison.InvariantCultureIgnoreCase);
+
+    public static async ValueTask ActivateScope()
+    {
+        var scope = ServiceProvider.CreateScope();
+
+        await DisposeScope();
+
+        var scopeActivator = new ScopeActivator(scope);
+
+        await scopeActivator.Activate();
+    }
+
+    public static T CreateAndInject<T>()
+    {
+        if (ScopedServices is IServiceScope scope)
+        {
+            return ActivatorUtilities.CreateInstance<T>(scope.ServiceProvider);
+        }
+
+        return ActivatorUtilities.CreateInstance<T>(ServiceProvider);
+    }
+
+    public static async ValueTask DisposeScope()
+    {
+        if (ScopedServices is ScopeActivator scopeActivator)
+        {
+            await scopeActivator.DisposeAsync();
+        }
+        else if (ScopedServices is IAsyncDisposable asyncDisposable)
+        {
+            await asyncDisposable.DisposeAsync();
+        }
+        else if (ScopedServices is IDisposable scopeDisposable)
+        {
+            scopeDisposable.Dispose();
+        }
+    }
 }

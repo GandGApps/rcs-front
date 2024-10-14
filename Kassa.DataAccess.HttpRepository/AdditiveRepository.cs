@@ -12,9 +12,17 @@ using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.DataAccess.HttpRepository;
-internal sealed class AdditiveRepository() : IAdditiveRepository, IEnableLogger
+internal sealed class AdditiveRepository : IAdditiveRepository, IEnableLogger
 {
+    private readonly IAdditiveApi _additiveApi;
+
     private FrozenDictionary<Guid, Additive>? _additives;
+
+    public AdditiveRepository(IAdditiveApi additiveApi)
+    {
+        _additiveApi = additiveApi;
+    }
+
     public Task Add(Additive item) => throw new NotImplementedException();
     public Task Delete(Additive item) => throw new NotImplementedException();
     public Task DeleteAll() => throw new NotImplementedException();
@@ -47,9 +55,8 @@ internal sealed class AdditiveRepository() : IAdditiveRepository, IEnableLogger
 
     public async Task<IEnumerable<Additive>> GetAll()
     {
-        var additiveApi = RcsLocator.GetRequiredService<IAdditiveApi>();
 
-        var additivesResponse = await additiveApi.GetAdditives();
+        var additivesResponse = await _additiveApi.GetAdditives();
 
         var additives = additivesResponse.Select(ApiMapper.MapAdditiveEdgarToAdditive).ToList();
 

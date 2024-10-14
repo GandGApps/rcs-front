@@ -14,21 +14,24 @@ using Splat;
 namespace Kassa.DataAccess.HttpRepository;
 internal sealed class DishesWithCacdedValueRepository : IRepository<Product>
 {
-    private FrozenDictionary<Guid, Product>? _products;
+    private readonly FrozenMemoryCache<Product> _cache = new();
+    private readonly IDishesApi _api;
+
+    public DishesWithCacdedValueRepository(IDishesApi api)
+    {
+        _api = api;
+    }
+
     public async Task Add(Product item)
     {
-        var dishesApi = RcsLocator.GetRequiredService<IDishesApi>();
-
         var dishRequest = ApiMapper.MapDishToRequest(item);
 
-        await dishesApi.AddDish(dishRequest);
+        await _api.AddDish(dishRequest);
     }
 
     public Task Delete(Product item)
     {
-        var dishesApi = RcsLocator.GetRequiredService<IDishesApi>();
-
-        return dishesApi.DeleteDish(item.Id);
+        return _api.DeleteDish(item.Id);
     }
 
     public Task DeleteAll() => throw new NotImplementedException();
@@ -36,9 +39,9 @@ internal sealed class DishesWithCacdedValueRepository : IRepository<Product>
     {
         Product? product = null;
 
-        if (_products is not null)
+        if (_cache is not null)
         {
-            _products.TryGetValue(id, out product);
+            _cache.TryGetValue(id, out product);
         }
 
         return Task.FromResult(product);
@@ -46,23 +49,19 @@ internal sealed class DishesWithCacdedValueRepository : IRepository<Product>
 
     public async Task<IEnumerable<Product>> GetAll()
     {
-        var dishesApi = RcsLocator.GetRequiredService<IDishesApi>();
-
-        var response = await dishesApi.GetDishes();
+        var response = await _api.GetDishes();
 
         var dishes = response.Select(ApiMapper.MapRequestToDish).ToList();
 
-        _products = dishes.ToFrozenDictionary(d => d.Id);
+        _cache.Refresh(dishes);
 
         return dishes;
     }
 
     public Task Update(Product item)
     {
-        var dishesApi = RcsLocator.GetRequiredService<IDishesApi>();
-
         var dishRequest = ApiMapper.MapDishToRequest(item);
 
-        return dishesApi.PutDish(dishRequest);
+        return _api.PutDish(dishRequest);
     }
 }

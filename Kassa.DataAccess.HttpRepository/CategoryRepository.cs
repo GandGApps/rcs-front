@@ -15,7 +15,13 @@ namespace Kassa.DataAccess.HttpRepository;
 internal sealed class CategoryRepository : IRepository<Category>, IEnableLogger
 {
 
-    private FrozenDictionary<Guid, Category>? _categories;
+    private readonly FrozenMemoryCache<Category> _cache = new();
+    private readonly IDishGroupApi _api;
+
+    public CategoryRepository(IDishGroupApi api)
+    {
+        _api = api;
+    }
 
     public Task Add(Category item) => throw new NotImplementedException();
 
@@ -23,24 +29,22 @@ internal sealed class CategoryRepository : IRepository<Category>, IEnableLogger
     public Task DeleteAll() => throw new NotImplementedException();
     public Task<Category?> Get(Guid id)
     {
-        if (_categories is null)
+        if (_cache.IsEmpty)
         {
             this.Log().Error("Categories is null");
             return Task.FromResult<Category?>(null);
         }
 
-        return Task.FromResult(_categories.TryGetValue(id, out var category) ? category : null);
+        return Task.FromResult(_cache.TryGetValue(id, out var category) ? category : null);
     }
 
     public async Task<IEnumerable<Category>> GetAll()
     {
-        var categoryApi = RcsLocator.GetRequiredService<IDishGroupApi>();
-
-        var response = await categoryApi.GetDishGroups();
+        var response = await _api.GetDishGroups();
 
         var categories = response.Select(ApiMapper.MapRequestToCategory).ToList();
 
-        _categories = categories.ToFrozenDictionary(x => x.Id);
+        _cache.Refresh(categories);
 
         return categories;
     }

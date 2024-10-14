@@ -17,80 +17,9 @@ namespace Kassa.RxUI;
 
 public sealed class MainViewModel : ReactiveObject, IScreen
 {
-    /// <summary>
-    /// Don't use directly for routing, use <see cref="GoToPageCommand"/> instead.
-    /// </summary>
-    /// <remarks>
-    /// It's public for binding to the view, but don't use it for routing.
-    /// </remarks>
-    public RoutingState Router
+    
+    public MainViewModel(IAuthService authService, IShiftService shiftService, IReportShiftService reportShiftService)
     {
-        get;
-    }
-
-    /// <summary>
-    /// Subcribe to this command, and implement close logic
-    /// TParam, and TResult it's dialog which called CloseCommand
-    /// </summary>
-    public ReactiveCommand<ReactiveObject, ReactiveObject> CloseCommand
-    {
-        get;
-    }
-
-    [Reactive]
-    public ReactiveCommand<DialogViewModel, DialogViewModel> DialogOpenCommand
-    {
-        get; set;
-    }
-
-    public ReactiveCommand<Unit, Unit> BackToMenuCommand
-    {
-        get;
-    }
-
-    public ReactiveCommand<PageViewModel, PageViewModel> GoToPageCommand
-    {
-        get;
-    }
-
-    public ReactiveCommand<PageViewModel, PageViewModel> GoToPageAndResetCommand
-    {
-        get;
-    }
-
-    public ReactiveCommand<PageViewModel, PageViewModel> GoToPageAndResetButNotMainCommand
-    {
-        get;
-    }
-
-    public ReactiveCommand<Unit, Unit> GoBackCommand
-    {
-        get;
-    }
-
-    [Reactive]
-    public bool IsMainPage
-    {
-        get; set;
-    }
-
-    public ReactiveCommand<OkMessage, Unit> OkMessageDialogCommand
-    {
-        get;
-    }
-
-    private readonly List<UnhandledErrorExceptionEvent> _unhandledErrorExceptionhandlers = [];
-
-    public event UnhandledErrorExceptionEvent UnhandledErrorExceptionEvent
-    {
-        remove => _unhandledErrorExceptionhandlers.Remove(value);
-        add => _unhandledErrorExceptionhandlers.Add(value);
-    }
-
-    public MainViewModel(IMainViewModelProvider mainViewModelProvider)
-    {
-        mainViewModelProvider.MainViewModel = this;
-
         Router = new();
         Router.Navigate.Execute(new AutorizationPageVm());
 
@@ -229,10 +158,6 @@ public sealed class MainViewModel : ReactiveObject, IScreen
                 }
             });
 
-        var authService = RcsLocator.GetRequiredService<IAuthService>();
-        var shiftService = RcsLocator.GetRequiredService<IShiftService>();
-        var reportShiftService = RcsLocator.GetRequiredService<IReportShiftService>();
-
         authService.CurrentAuthenticationContext.CombineLatest(shiftService.CurrentShift, reportShiftService.CurrentReportShift, (authContext, shift, report) => (authContext, shift, report))
             .Subscribe(async x =>
             {
@@ -259,12 +184,12 @@ public sealed class MainViewModel : ReactiveObject, IScreen
                     var loading = ShowLoadingDialog("Загрузка данных");
                     try
                     {
-                        await RcsLocator.ActivateScope();
+                        await RcsKassa.ActivateScope();
                     }
                     catch (Exception exc)
                     {
                         this.Log().Error(exc, "Error on activate scope");
-                        await RcsLocator.DisposeScope();
+                        await RcsKassa.DisposeScope();
                         throw;
                     }
                     finally
@@ -283,6 +208,76 @@ public sealed class MainViewModel : ReactiveObject, IScreen
         });
 
 
+    }
+
+    private readonly List<UnhandledErrorExceptionEvent> _unhandledErrorExceptionhandlers = [];
+
+    public event UnhandledErrorExceptionEvent UnhandledErrorExceptionEvent
+    {
+        remove => _unhandledErrorExceptionhandlers.Remove(value);
+        add => _unhandledErrorExceptionhandlers.Add(value);
+    }
+
+    /// <summary>
+    /// Don't use directly for routing, use <see cref="GoToPageCommand"/> instead.
+    /// </summary>
+    /// <remarks>
+    /// It's public for binding to the view, but don't use it for routing.
+    /// </remarks>
+    public RoutingState Router
+    {
+        get;
+    }
+
+    /// <summary>
+    /// Subcribe to this command, and implement close logic
+    /// TParam, and TResult it's dialog which called CloseCommand
+    /// </summary>
+    public ReactiveCommand<ReactiveObject, ReactiveObject> CloseCommand
+    {
+        get;
+    }
+
+    [Reactive]
+    public ReactiveCommand<DialogViewModel, DialogViewModel> DialogOpenCommand
+    {
+        get; set;
+    }
+
+    public ReactiveCommand<Unit, Unit> BackToMenuCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<PageViewModel, PageViewModel> GoToPageCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<PageViewModel, PageViewModel> GoToPageAndResetCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<PageViewModel, PageViewModel> GoToPageAndResetButNotMainCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> GoBackCommand
+    {
+        get;
+    }
+
+    [Reactive]
+    public bool IsMainPage
+    {
+        get; set;
+    }
+
+    public ReactiveCommand<OkMessage, Unit> OkMessageDialogCommand
+    {
+        get;
     }
 
     private void DefaultUnhandler(object? sender, UnhandledErrorExceptionEventArgs e)
@@ -394,6 +389,13 @@ public sealed class MainViewModel : ReactiveObject, IScreen
     public async Task GoToPage(PageViewModel pageVm)
     {
         await GoToPageCommand.Execute(pageVm).FirstAsync();
+    }
+
+    public async Task GoToPage<T>() where T : PageViewModel
+    {
+        var pageVm = RcsKassa.CreateAndInject<T>();
+
+        await GoToPage(pageVm);
     }
 
     public async Task GoToPageAndReset(PageViewModel pageVm)

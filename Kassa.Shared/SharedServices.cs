@@ -1,5 +1,4 @@
 ﻿using Kassa.Shared.Logging;
-using Kassa.Shared.ServiceLocator;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;

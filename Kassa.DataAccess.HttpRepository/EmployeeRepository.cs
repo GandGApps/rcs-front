@@ -13,7 +13,13 @@ using Splat;
 namespace Kassa.DataAccess.HttpRepository;
 internal sealed class EmployeeRepository : IRepository<Member>
 {
-    private readonly FrozenMemoryCache<Member> _frozenMemoryCache = new(TimeSpan.FromMinutes(15));
+    private readonly FrozenMemoryCache<Member> _frozenMemoryCache = new();
+    private readonly IEmployeeApi _api;
+
+    public EmployeeRepository(IEmployeeApi api)
+    {
+        _api = api;
+    }
 
     public Task Add(Member item) => throw new NotImplementedException();
     public Task Delete(Member item) => throw new NotImplementedException();
@@ -30,9 +36,7 @@ internal sealed class EmployeeRepository : IRepository<Member>
             return cachedItem;
         }
 
-        var employeeApi = RcsLocator.GetRequiredService<IEmployeeApi>();
-
-        var employee = await employeeApi.GetMember(id);
+        var employee = await _api.GetMember(id);
 
         if (employee == null)
         {
@@ -53,9 +57,7 @@ internal sealed class EmployeeRepository : IRepository<Member>
             return _frozenMemoryCache.Values;
         }
 
-        var employeeApi = RcsLocator.GetRequiredService<IEmployeeApi>();
-
-        var employees = await employeeApi.GetMembers();
+        var employees = await _api.GetMembers();
 
         if (employees == null)
         {

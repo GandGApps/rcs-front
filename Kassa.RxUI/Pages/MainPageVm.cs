@@ -10,6 +10,7 @@ using System.Windows.Input;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Dialogs;
+using Kassa.Shared;
 using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -58,8 +59,14 @@ public class MainPageVm : PageViewModel
         get;
     }
 
-    public MainPageVm()
+    private readonly ICashierShiftService _cashierShiftService;
+    private readonly IShiftService _shiftService;
+
+    public MainPageVm(ICashierShiftService cashierShiftService, IShiftService shiftService)
     {
+        _cashierShiftService = cashierShiftService;
+        _shiftService = shiftService;
+
         CloseCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             await MainViewModel.DialogOpenCommand.Execute(new TurnOffDialogViewModel()).FirstAsync();
@@ -67,11 +74,8 @@ public class MainPageVm : PageViewModel
 
         OpenProfileDialog = ReactiveCommand.CreateFromTask(async () =>
         {
-            var shiftService = RcsLocator.GetRequiredService<IShiftService>();
-
-            if (!await TryAuthorizePageAccess<PersonalPageVm>(shiftService))
+            if (!await TryAuthorizePageAccess<PersonalPageVm>(_shiftService))
             {
-
                 return;
             }
 
@@ -80,9 +84,7 @@ public class MainPageVm : PageViewModel
 
         OpenDocumnetsDialog = ReactiveCommand.CreateFromTask(async () =>
         {
-            var shiftService = RcsLocator.GetRequiredService<IShiftService>();
-
-            if (!await TryAuthorizePageAccess<PageViewModel>(shiftService))
+            if (!await TryAuthorizePageAccess<PageViewModel>(_shiftService))
             {
                 return;
             }
@@ -92,9 +94,7 @@ public class MainPageVm : PageViewModel
 
         OpenPersonnelDialog = ReactiveCommand.CreateFromTask(async () =>
         {
-            var shiftService = RcsLocator.GetRequiredService<IShiftService>();
-
-            if (!await TryAuthorizePageAccess<PageViewModel>(shiftService))
+            if (!await TryAuthorizePageAccess<PageViewModel>(_shiftService))
             {
                 return;
             }
@@ -104,9 +104,7 @@ public class MainPageVm : PageViewModel
 
         OpenDeliviryDialog = ReactiveCommand.CreateFromTask(async () =>
         {
-            var shiftService = RcsLocator.GetRequiredService<IShiftService>();
-
-            if (!await TryAuthorizePageAccess<AllDeliveriesPageVm>(shiftService))
+            if (!await TryAuthorizePageAccess<AllDeliveriesPageVm>(_shiftService))
             {
                 return;
             }
@@ -118,17 +116,12 @@ public class MainPageVm : PageViewModel
         {
             BusyText = "Загрузка данных...";
 
-            var cashierService = RcsLocator.Scoped.GetRequiredService<ICashierService>();
-            var shiftService = RcsLocator.GetRequiredService<IShiftService>();
-            var orderService = RcsLocator.Scoped.GetRequiredService<IOrdersService>();
-            var productService = RcsLocator.Scoped.GetRequiredService<IProductService>();
-
-            if (!await TryAuthorizePageAccess<ServicePageVm>(shiftService))
+            if (!await TryAuthorizePageAccess<ServicePageVm>(_shiftService))
             {
                 return;
             }
 
-            await MainViewModel.GoToPage(new ServicePageVm(cashierService, shiftService, orderService, productService));
+            await MainViewModel.GoToPage(RcsKassa.CreateAndInject<ServicePageVm>());
         });
 
         GoToCashier = CreatePageBusyCommand(async () =>
