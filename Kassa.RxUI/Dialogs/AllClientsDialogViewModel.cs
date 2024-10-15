@@ -26,6 +26,7 @@ public class AllClientsDialogViewModel : SearchableDialogViewModel<ClientDto, Cl
     public AllClientsDialogViewModel(IClientService clientService, ICashierService cashierService)
     {
         _clientService = clientService;
+        _cashierService = cashierService;
 
         CancelCommand = ReactiveCommand.CreateFromTask(CloseAsync);
 
@@ -34,62 +35,17 @@ public class AllClientsDialogViewModel : SearchableDialogViewModel<ClientDto, Cl
 
         SkipCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var orderEditDto = await cashierService.CreateOrder(true);
-
-            var newDeliveryPageVm = RcsKassa.CreateAndInject<NewDeliveryPageVm>(orderEditDto);
-            newDeliveryPageVm.IsPickup = IsPickup;
-            newDeliveryPageVm.IsDelivery = IsDelivery;
-
-            await CloseAsync();
-
-            await MainViewModel.GoToPageCommand.Execute(newDeliveryPageVm).FirstAsync();
+            await CreateOrderAndNavigate();
         });
 
         OkCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var cashierService = RcsLocator.Scoped.GetRequiredService<ICashierService>();
-            var additiveService = RcsLocator.Scoped.GetRequiredService<IAdditiveService>();
-            var productService = RcsLocator.Scoped.GetRequiredService<IProductService>();
-            var ordersService = RcsLocator.Scoped.GetRequiredService<IOrdersService>();
-            var categoryService = RcsLocator.Scoped.GetRequiredService<ICategoryService>();
-            var receiptService = RcsLocator.Scoped.GetRequiredService<IReceiptService>();
-            var ingridientsService = RcsLocator.Scoped.GetRequiredService<IIngridientsService>();
-
-            var orderEditDto = await cashierService.CreateOrder(true);
-
-            var newDeliveryPageVm = new NewDeliveryPageVm(orderEditDto, cashierService, additiveService, SelectedItem, productService, ordersService, categoryService, receiptService, ingridientsService)
-            {
-                IsPickup = IsPickup,
-                IsDelivery = IsDelivery
-            };
-
-            await CloseAsync();
-
-            await MainViewModel.GoToPageCommand.Execute(newDeliveryPageVm).FirstAsync();
-
+            await CreateOrderAndNavigate(SelectedItem!);
         }, okCommandValidator);
 
         NewGuestCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var cashierService = RcsLocator.Scoped.GetRequiredService<ICashierService>();
-            var additiveService = RcsLocator.Scoped.GetRequiredService<IAdditiveService>();
-            var productService = RcsLocator.Scoped.GetRequiredService<IProductService>();
-            var ordersService = RcsLocator.Scoped.GetRequiredService<IOrdersService>();
-            var categoryService = RcsLocator.Scoped.GetRequiredService<ICategoryService>();
-            var receiptService = RcsLocator.Scoped.GetRequiredService<IReceiptService>();
-            var ingridientsService = RcsLocator.Scoped.GetRequiredService<IIngridientsService>();
-
-            var orderEditDto = await cashierService.CreateOrder(true);
-
-            var newDeliveryPageVm = new NewDeliveryPageVm(orderEditDto, cashierService, additiveService, SelectedItem, productService, ordersService, categoryService, receiptService, ingridientsService)
-            {
-                IsPickup = IsPickup,
-                IsDelivery = IsDelivery
-            };
-
-            await CloseAsync();
-
-            await MainViewModel.GoToPageCommand.Execute(newDeliveryPageVm).FirstAsync();
+            await CreateOrderAndNavigate(SelectedItem!);
         });
     }
 
@@ -142,5 +98,20 @@ public class AllClientsDialogViewModel : SearchableDialogViewModel<ClientDto, Cl
                client.LastName.Contains(text, StringComparison.OrdinalIgnoreCase) ||
                client.MiddleName.Contains(text, StringComparison.OrdinalIgnoreCase) ||
                client.Phone.Contains(text, StringComparison.OrdinalIgnoreCase);
+    }
+
+    private async Task CreateOrderAndNavigate(object? selectedItem = null)
+    {
+        var orderEditDto = await _cashierService.CreateOrder(true);
+
+        var newDeliveryPageVm = selectedItem == null
+            ? RcsKassa.CreateAndInject<NewDeliveryPageVm>(orderEditDto)
+            : RcsKassa.CreateAndInject<NewDeliveryPageVm>(orderEditDto, selectedItem);
+
+        newDeliveryPageVm.IsPickup = IsPickup;
+        newDeliveryPageVm.IsDelivery = IsDelivery;
+
+        await CloseAsync();
+        await MainViewModel.GoToPageCommand.Execute(newDeliveryPageVm).FirstAsync();
     }
 }

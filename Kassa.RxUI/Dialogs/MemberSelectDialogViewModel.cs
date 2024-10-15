@@ -17,6 +17,7 @@ namespace Kassa.RxUI.Dialogs;
 public sealed class MemberSelectDialogViewModel : ApplicationManagedModelSearchableDialogViewModel<MemberDto, MemberVm>
 {
     private readonly Func<MemberDto, DialogViewModel?>? _afterSelectAction;
+    private readonly IMemberService _memberService;
 
     [Reactive]
     public object? HeaderTemplateKey
@@ -39,8 +40,9 @@ public sealed class MemberSelectDialogViewModel : ApplicationManagedModelSearcha
     /// 
     /// </summary>
     /// <param name="afterSelectAction">When a member is selected, you can return a new dialog instance, which will be displayed, or return null to close the dialog.</param>
-    public MemberSelectDialogViewModel(Func<MemberDto, DialogViewModel?>? afterSelectAction = null)
+    public MemberSelectDialogViewModel(IMemberService memberService, Func<MemberDto, DialogViewModel?>? afterSelectAction = null)
     {
+        _memberService = memberService;
         _afterSelectAction = afterSelectAction;
 
         SelectedMemberCommand = ReactiveCommand.Create<MemberDto, MemberDto>(x => x);
@@ -72,9 +74,7 @@ public sealed class MemberSelectDialogViewModel : ApplicationManagedModelSearcha
 
     protected override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        var memberService = RcsLocator.GetRequiredService<IMemberService>();
-
-        Filter(memberService.RuntimeMembers, x => new MemberVm(x, this), disposables);
+        Filter(_memberService.RuntimeMembers, x => new MemberVm(x, this), disposables);
 
         return ValueTask.CompletedTask;
     }

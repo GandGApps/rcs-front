@@ -128,8 +128,7 @@ public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
 
         SearchAddictiveCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var additiveService = RcsLocator.Scoped.GetRequiredService<IAdditiveService>();
-            var addictiveDialog = new SearchAddictiveDialogViewModel(additiveService, this);
+            var addictiveDialog = new SearchAddictiveDialogViewModel(_additiveService, this);
             var dialog = await MainViewModel.DialogOpenCommand.Execute(addictiveDialog).FirstAsync();
 
             await dialog.WaitDialogClose();

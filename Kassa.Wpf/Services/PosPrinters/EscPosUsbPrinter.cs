@@ -63,8 +63,8 @@ internal sealed class EscPosUsbPrinter : IPrinter, IEnableLogger
         }
 
         var productIndex = 0;
-        var productService = RcsLocator.Scoped.GetRequiredService<IProductService>();
-        var additiveService = RcsLocator.Scoped.GetRequiredService<IAdditiveService>();
+        var productService = RcsKassa.GetRequiredService<IProductService>();
+        var additiveService = RcsKassa.GetRequiredService<IAdditiveService>();
 
         var border = new Border
         {

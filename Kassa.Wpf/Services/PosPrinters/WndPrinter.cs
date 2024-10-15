@@ -14,6 +14,7 @@ using Splat;
 using Kassa.BuisnessLogic;
 using System.Windows;
 using Kassa.Shared.ServiceLocator;
+using Kassa.Shared;
 
 namespace Kassa.Wpf.Services.PosPrinters;
 
@@ -44,8 +45,8 @@ internal sealed class WndPrinter(bool useDefaultPrinter) : IPrinter, IEnableLogg
         var document = new FlowDocument();
 
         var productIndex = 0;
-        var productService = RcsLocator.Scoped.GetRequiredService<IProductService>();
-        var additiveService = RcsLocator.Scoped.GetRequiredService<IAdditiveService>();
+        var productService = RcsKassa.GetRequiredService<IProductService>();
+        var additiveService = RcsKassa.GetRequiredService<IAdditiveService>();
 
         foreach (var orderedProduct in order.Products)
         {

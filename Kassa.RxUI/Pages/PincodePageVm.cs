@@ -18,6 +18,53 @@ using Splat;
 namespace Kassa.RxUI.Pages;
 public class PincodePageVm : PageViewModel
 {
+    
+    private readonly IMagneticStripeReader? _magneticStripeReader;
+    private readonly IShiftService _shiftService;
+    private readonly IAuthService _authService;
+
+    public PincodePageVm(IMagneticStripeReader? magneticStripeReader, IShiftService shiftService, IAuthService authService)
+    {
+        _magneticStripeReader = magneticStripeReader;
+        _shiftService = shiftService;
+        _authService = authService;
+
+        RestoranName = "RestoranName";
+        LicenseEndDate = DateTime.Now;
+
+        CloseCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await MainViewModel.DialogOpenCommand.Execute(new PincodeTurnOffDialogViewModel()).FirstAsync();
+        });
+
+        if (magneticStripeReader is null)
+        {
+            this.Log().Warn("IMagneticStripeReader is not registered");
+            return;
+        }
+
+        magneticStripeReader.CardData
+            .ObserveOn(RxApp.MainThreadScheduler)
+            .Subscribe(async x =>
+            {
+                this.Log().Debug("CardData received: {data}", x);
+
+                var data = await x.ReadPincode();
+
+                this.Log().Debug("Pincode received: {data}", data);
+
+                if (data.Length > 4)
+                {
+                    Pincode = data[..4];
+                }
+                else if (data.Length == 4)
+                {
+                    Pincode = data;
+                }
+            })
+            .DisposeWith(InternalDisposables);
+    }
+
     [Reactive]
     public string Pincode
     {
@@ -38,45 +85,6 @@ public class PincodePageVm : PageViewModel
         get;
     }
 
-    public PincodePageVm()
-    {
-        RestoranName = "RestoranName";
-        LicenseEndDate = DateTime.Now;
-
-        CloseCommand = ReactiveCommand.CreateFromTask(async () =>
-        {
-            await MainViewModel.DialogOpenCommand.Execute(new PincodeTurnOffDialogViewModel()).FirstAsync();
-        });
-
-        var magneticStripeReader = RcsLocator.GetService<IMagneticStripeReader>();
-
-        if (magneticStripeReader is null)
-        {
-            return;
-        }
-
-        magneticStripeReader.CardData
-            .ObserveOn(RxApp.MainThreadScheduler)
-            .Subscribe(async x =>
-            {
-                this.Log().Debug("CardData received: {data}", x);
-
-                var data = await x.ReadPincode();
-
-                this.Log().Debug("Pincode received: {data}", data);
-
-                if (data.Length > 4)
-                {
-                    Pincode = data[..4];
-                }
-                else if(data.Length == 4)
-                {
-                    Pincode = data;
-                }
-            })
-            .DisposeWith(InternalDisposables);
-    }
-
     protected override void OnActivated(CompositeDisposable disposables)
     {
         base.OnActivated(disposables);
@@ -89,10 +97,7 @@ public class PincodePageVm : PageViewModel
 
                 try
                 {
-                    var shiftService = RcsLocator.GetRequiredService<IShiftService>();
-                    var authService = RcsLocator.GetRequiredService<IAuthService>();
-
-                    if (await authService.EnterPincode(x))
+                    if (await _authService.EnterPincode(x))
                     {
                         await MainViewModel.ShowDialogAsync(new OkMessageDialogViewModel()
                         {

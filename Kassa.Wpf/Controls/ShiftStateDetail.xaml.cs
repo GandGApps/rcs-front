@@ -17,6 +17,7 @@ using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
+using Kassa.Shared;
 using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using Splat;
@@ -45,8 +46,8 @@ public sealed partial class ShiftStateDetail : UserControl, IApplicationModelPre
     {
         shiftStateDetail._subcribeToDtoChanging?.Dispose();
 
-        var shiftService = RcsLocator.GetRequiredService<IShiftService>();
-        var memberService = RcsLocator.GetRequiredService<IMemberService>();
+        var shiftService = RcsKassa.GetRequiredService<IShiftService>();
+        var memberService = RcsKassa.GetRequiredService<IMemberService>();
 
         if (dto is null)
         {
@@ -107,14 +108,12 @@ public sealed partial class ShiftStateDetail : UserControl, IApplicationModelPre
 
     public ShiftStateDetail()
     {
-        InitializeComponent();
 
-        var shiftService = RcsLocator.GetRequiredService<IShiftService>();
+        InitializeComponent();
 
         this.WhenActivated(disposables =>
         {
-
-            shiftService.CurrentShift.Subscribe(async shift =>
+            RcsKassa.GetRequiredService<IShiftService>().CurrentShift.Subscribe(shift =>
             {
                 if (shift is null)
                 {
@@ -126,7 +125,5 @@ public sealed partial class ShiftStateDetail : UserControl, IApplicationModelPre
             }).DisposeWith(disposables);
 
         });
-
-        
     }
 }

@@ -23,16 +23,21 @@ namespace Kassa.RxUI.Pages;
 public class PersonalPageVm : PageViewModel
 {
     private readonly IShiftService _shiftService;
+    private readonly IAuthService _authService;
+    private readonly IOrdersService _ordersService;
+    private readonly IMemberService _memberService;
     private readonly ObservableCollection<ShiftRowViewModel> _opennedShift = [];
 
-    public PersonalPageVm(IShiftService shiftService)
+    public PersonalPageVm(IShiftService shiftService, IAuthService authService, IOrdersService ordersService, IMemberService memberService)
     {
         _shiftService = shiftService;
+        _authService = authService;
+        _ordersService = ordersService;
+        _memberService = memberService;
 
         TakeBreakCommand = CreatePageBusyCommand(async () =>
         {
             var pincodeDialog = new EnterPincodeDialogViewModel();
-            var authentificationService = RcsLocator.GetRequiredService<IAuthService>();
 
             await MainViewModel.ShowDialogAndWaitClose(pincodeDialog);
 
@@ -45,7 +50,7 @@ public class PersonalPageVm : PageViewModel
 
             var waitDialog = MainViewModel.ShowLoadingDialog("Проверка пинкода");
 
-            var isCorrect = await authentificationService.IsManagerPincode(pincode);
+            var isCorrect = await _authService.IsManagerPincode(pincode);
 
             await waitDialog.CloseAsync();
 
@@ -99,7 +104,6 @@ public class PersonalPageVm : PageViewModel
             BusyText = "Закрытие смены";
 
             var pincodeDialog = new EnterPincodeDialogViewModel();
-            var authentificationService = RcsLocator.GetRequiredService<IAuthService>();
 
             await MainViewModel.ShowDialogAndWaitClose(pincodeDialog);
 
@@ -112,7 +116,7 @@ public class PersonalPageVm : PageViewModel
 
             var waitDialog = MainViewModel.ShowLoadingDialog("Проверка пинкода");
 
-            var isCorrect = await authentificationService.IsManagerPincode(pincode);
+            var isCorrect = await _authService.IsManagerPincode(pincode);
 
             await waitDialog.CloseAsync();
 
@@ -129,8 +133,7 @@ public class PersonalPageVm : PageViewModel
                     throw new InvalidOperationException("Shift is not started");
                 }
 
-                var ordersService = RcsLocator.GetRequiredService<IOrdersService>();
-                var orders = await ordersService.GetOrdersOfCurrentShiftAsync();
+                var orders = await _ordersService.GetOrdersOfCurrentShiftAsync();
 
                 if (orders.Any(x => x.Status is not OrderStatus.Completed and not OrderStatus.Canceled))
                 {
@@ -256,7 +259,6 @@ public class PersonalPageVm : PageViewModel
 
         _shiftService.CurrentShift.Subscribe(async shift =>
         {
-            var memberService = RcsLocator.GetRequiredService<IMemberService>();
             if (shift is null)
             {
                 ManagerName = "???";
@@ -268,7 +270,7 @@ public class PersonalPageVm : PageViewModel
                 CashierName = shift.Member.Name;
                 var dto = shift.CreateDto();
                 ShiftNumber = dto.Id.GuidToPrettyString();
-                ManagerName = (await memberService.GetMember(dto.ManagerId ?? Guid.Empty))?.Name ?? "???";
+                ManagerName = (await _memberService.GetMember(dto.ManagerId ?? Guid.Empty))?.Name ?? "???";
                 OpennedShiftDate = dto.Start is null ? string.Empty : dto.Start.Value.ToString("dd.MM.yyyy | HH:mm");
             }
 

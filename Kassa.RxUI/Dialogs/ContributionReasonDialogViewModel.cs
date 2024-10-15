@@ -15,8 +15,16 @@ using Kassa.Shared.ServiceLocator;
 namespace Kassa.RxUI.Dialogs;
 public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSearchableDialogViewModel<ContributionReasonDto, ContributionReasonVm>
 {
-    public ContributionReasonDialogViewModel()
+    private readonly IAuthService _authService;
+    private readonly IFundsService _fundsService;
+    private readonly IContributionReasonService _contributionReasonService;
+
+    public ContributionReasonDialogViewModel(IAuthService authService, IFundsService fundsService, IContributionReasonService contributionReasonService)
     {
+        _authService = authService;
+        _fundsService = fundsService;
+        _contributionReasonService = contributionReasonService;
+
         SelectCommand = ReactiveCommand.CreateFromTask<ContributionReasonVm>(async x =>
         {
             SelectedItem = x;
@@ -40,14 +48,12 @@ public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSe
 
                     await MainViewModel.ShowDialogAndWaitClose(enterPincodeDialog);
 
-                    var authService = RcsLocator.GetRequiredService<IAuthService>();
-
                     if (string.IsNullOrWhiteSpace(enterPincodeDialog.Result))
                     {
                         return;
                     }
 
-                    var check = await MainViewModel.RunTaskWithLoadingDialog("Проверка пинкода", authService.CheckPincode(member, enterPincodeDialog.Result));
+                    var check = await MainViewModel.RunTaskWithLoadingDialog("Проверка пинкода", _authService.CheckPincode(member, enterPincodeDialog.Result));
 
                     if (!check)
                     {
@@ -60,9 +66,7 @@ public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSe
                         return;
                     }
 
-                    var fundsService = RcsLocator.Scoped.GetRequiredService<IFundsService>();
-
-                    await MainViewModel.RunTaskWithLoadingDialog("Проводиться внесение", fundsService.Contribute(fundActDialog.Amount, fundActDialog.Comment, member.Id, enterPincodeDialog.Result, x.ContributionReason!));
+                    await MainViewModel.RunTaskWithLoadingDialog("Проводиться внесение", _fundsService.Contribute(fundActDialog.Amount, fundActDialog.Comment, member.Id, enterPincodeDialog.Result, x.ContributionReason!));
 
                     await fundActDialog.CloseAsync();
                     await memberSelectViewModel.CloseAsync();
@@ -80,13 +84,9 @@ public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSe
     }
 
 
-    protected override ValueTask InitializeAsync(CompositeDisposable disposables)
+    protected override void Initialize(CompositeDisposable disposables)
     {
-        var withdrawalReasons = RcsLocator.Scoped.GetRequiredService<IContributionReasonService>();
-
-        Filter(withdrawalReasons.RuntimeContributionReasons, x => new ContributionReasonVm(x, this), disposables);
-
-        return ValueTask.CompletedTask;
+        Filter(_contributionReasonService.RuntimeContributionReasons, x => new ContributionReasonVm(x, this), disposables);
     }
 
     protected override bool IsMatch(string searchText, ContributionReasonDto item)

@@ -9,6 +9,8 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.RxUI.Dialogs;
 using Kassa.DataAccess.Model;
 using Kassa.Shared.ServiceLocator;
+using Kassa.Shared;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Kassa.RxUI.Pages;
 public sealed class EditDeliveryPageVm : PageViewModel
@@ -532,5 +534,29 @@ public sealed class EditDeliveryPageVm : PageViewModel
             && !string.IsNullOrWhiteSpace(Intercom)
             && (Street != null)
             && (District != null);
+    }
+
+    public static EditDeliveryPageVm CreatePage(ClientDto? client, CourierDto? courier, OrderDto order, DistrictDto? district, StreetDto? street)
+    {
+        var cashierService = RcsKassa.GetRequiredService<ICashierService>();
+        var additiveService = RcsKassa.GetRequiredService<IAdditiveService>();
+        var productService = RcsKassa.GetRequiredService<IProductService>();
+        var receiptService = RcsKassa.GetRequiredService<IReceiptService>();
+        var ingredientsService = RcsKassa.GetRequiredService<IIngridientsService>();
+        var categoryService = RcsKassa.GetRequiredService<ICategoryService>();
+
+        return new EditDeliveryPageVm(
+            cashierService,
+            additiveService,
+            client,
+            courier,
+            order,
+            district,
+            street,
+            productService,
+            receiptService,
+            ingredientsService,
+            categoryService
+        );
     }
 }

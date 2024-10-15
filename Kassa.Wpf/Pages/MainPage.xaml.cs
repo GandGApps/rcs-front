@@ -37,8 +37,6 @@ public partial class MainPage : ReactiveUserControl<MainPageVm>, IEnableLogger
     {
         InitializeComponent();
 
-
-
         this.WhenActivated(disposables =>
         {
             WeakEventManager<Window, KeyEventArgs>.AddHandler(Application.Current.MainWindow, "KeyUp", ReactiveUserControl_KeyDown);
@@ -107,7 +105,6 @@ public partial class MainPage : ReactiveUserControl<MainPageVm>, IEnableLogger
 
     private void ReactiveUserControl_KeyDown(object? sender, KeyEventArgs e)
     {
-
         if (DeveloperWindow.Instance is not null)
         {
             return;
@@ -115,7 +112,7 @@ public partial class MainPage : ReactiveUserControl<MainPageVm>, IEnableLogger
 
         if (_konamiSequence.IsCompletedBy(e.Key.ToString()))
         {
-            var logger = RcsLocator.GetRequiredService<ObservableLogger>();
+            var logger = RcsKassa.GetRequiredService<ObservableLogger>();
 
             var observable = logger.Select(x => x.Message);
 

@@ -15,18 +15,21 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Dialogs;
 public class ProfileDialogViewModel : DialogViewModel
 {
+
     public ReactiveCommand<Unit, Unit> GoToPersonalPageCommand
     {
         get;
     }
 
-    public ProfileDialogViewModel()
+    private readonly IShiftService _shiftService;
+
+    public ProfileDialogViewModel(IShiftService shiftService)
     {
+        _shiftService = shiftService;
+
         GoToPersonalPageCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var shiftSerivce = RcsLocator.GetRequiredService<IShiftService>();
-
-            var personnelPage = new PersonalPageVm(shiftSerivce);
+            var personnelPage = new PersonalPageVm(_shiftService);
 
             await MainViewModel.GoToPage(personnelPage);
 
@@ -40,11 +43,9 @@ public class ProfileDialogViewModel : DialogViewModel
         get; set;
     }
 
-    protected override ValueTask InitializeAsync(CompositeDisposable disposables)
+    protected override void Initialize(CompositeDisposable disposables)
     {
-        var shiftService = RcsLocator.GetRequiredService<IShiftService>();
-
-        shiftService.CurrentShift.Subscribe(shift =>
+        _shiftService.CurrentShift.Subscribe(shift =>
         {
             if (shift == null)
             {
@@ -57,7 +58,5 @@ public class ProfileDialogViewModel : DialogViewModel
             }
 
         }).DisposeWith(disposables);
-
-        return ValueTask.CompletedTask;
     }
 }

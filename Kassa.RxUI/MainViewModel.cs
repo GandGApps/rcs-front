@@ -367,6 +367,20 @@ public sealed class MainViewModel : ReactiveObject, IScreen
         await DialogOpenCommand.Execute(dialog).FirstAsync();
     }
 
+    public async Task ShowDialogAsync<T>() where T : DialogViewModel
+    {
+        var dialogVm = RcsKassa.CreateAndInject<T>();
+
+        await ShowDialogAsync(dialogVm);
+    }
+
+    public async Task ShowDialogAsync<T>(params object[] args) where T : DialogViewModel
+    {
+        var dialogVm = RcsKassa.CreateAndInject<T>(args);
+
+        await ShowDialogAsync(dialogVm);
+    }
+
     public async Task ShowDialogAndWaitClose(DialogViewModel dialog)
     {
         await DialogOpenCommand.Execute(dialog).FirstAsync();

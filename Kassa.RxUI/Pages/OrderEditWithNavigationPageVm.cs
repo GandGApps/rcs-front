@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
+using Kassa.Shared;
 using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -18,6 +19,7 @@ public sealed class OrderEditWithNavigationPageVm : PageViewModel
 {
     private readonly ReadOnlyCollection<OrderEditDto> _orderEditDtos;
     private readonly Dictionary<OrderEditDto, OrderEditWithNavigationPageItemVm> _navigationItems = [];
+    private readonly IIngridientsService _ingridientsService;
 
     public ReactiveCommand<Unit, Unit> PreviousOrderEditCommand
     {
@@ -41,8 +43,9 @@ public sealed class OrderEditWithNavigationPageVm : PageViewModel
         get;
     }
 
-    public OrderEditWithNavigationPageVm(ReadOnlyCollection<OrderEditDto> orderEditDtos, OrderEditDto orderEditDto)
+    public OrderEditWithNavigationPageVm(ReadOnlyCollection<OrderEditDto> orderEditDtos, OrderEditDto orderEditDto, IIngridientsService ingridientsService)
     {
+        _ingridientsService = ingridientsService;
         _orderEditDtos = orderEditDtos;
 
         var index = orderEditDtos.IndexOf(orderEditDto);
@@ -125,18 +128,12 @@ public sealed class OrderEditWithNavigationPageVm : PageViewModel
             .DisposeWith(InternalDisposables);
     }
 
-    private static OrderEditWithNavigationPageItemVm CreateOrderEditWithNavigationPageItemVm(OrderEditDto orderEdit)
+    private OrderEditWithNavigationPageItemVm CreateOrderEditWithNavigationPageItemVm(OrderEditDto orderEdit)
     {
         // TODO: use constructor injection
-        var ingridientsService = RcsLocator.GetRequiredService<IIngridientsService>();
-        var storageScope = ingridientsService.CreateStorageScope();
-        var cashierService = RcsLocator.GetRequiredService<ICashierService>();
-        var additiveService = RcsLocator.GetRequiredService<IAdditiveService>();
-        var productService = RcsLocator.GetRequiredService<IProductService>();
-        var categoryService = RcsLocator.GetRequiredService<ICategoryService>();
-        var receiptService = RcsLocator.GetRequiredService<IReceiptService>();
+        var storageScope = _ingridientsService.CreateStorageScope();
 
-        return new OrderEditWithNavigationPageItemVm(orderEdit, storageScope, cashierService, additiveService, productService, categoryService, receiptService, ingridientsService);
+        return RcsKassa.CreateAndInject<OrderEditWithNavigationPageItemVm>(orderEdit, storageScope);
     }
 
 }

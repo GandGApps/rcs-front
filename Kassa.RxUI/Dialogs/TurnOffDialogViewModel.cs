@@ -12,20 +12,23 @@ using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 
 namespace Kassa.RxUI.Dialogs;
-public class TurnOffDialogViewModel : DialogViewModel
+public sealed class TurnOffDialogViewModel : DialogViewModel
 {
-    public TurnOffDialogViewModel()
+    private readonly IShiftService _shiftService;
+
+    public TurnOffDialogViewModel(IShiftService shiftService)
     {
+        _shiftService = shiftService;
+
         LogoutCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var shiftService = RcsLocator.GetRequiredService<IShiftService>();
 
-            if (shiftService.CurrentShift.Value == null)
+            if (_shiftService.CurrentShift.Value == null)
             {
                 throw new InvalidOperationException("Shift is not started");
             }
 
-            await shiftService.CurrentShift.Value!.Exit();
+            await _shiftService.CurrentShift.Value!.Exit();
 
             await CloseAsync();
         });

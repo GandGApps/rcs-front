@@ -146,7 +146,7 @@ public partial class Input : UserControl, ICommandSource
                 name = Placeholder ?? string.Empty;
             }
 
-            var mainViewModel = RcsLocator.GetRequiredService<MainViewModel>();
+            var mainViewModel = RcsKassa.GetRequiredService<MainViewModel>();
 
             if (Command is not null)
             {

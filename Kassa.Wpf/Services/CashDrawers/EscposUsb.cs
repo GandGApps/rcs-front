@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Services;
+using Kassa.Shared;
 using Kassa.Shared.ServiceLocator;
 using Kassa.Wpf.Services.PosPrinters;
 using Splat;
@@ -11,10 +12,12 @@ using Splat;
 namespace Kassa.Wpf.Services.CashDrawers;
 internal sealed class EscposUsb : ICashDrawer, IEnableLogger
 {
+
+
     public Task Open()
     {
 
-        var printerImplementation = RcsLocator.GetService<IPrinter>();
+        var printerImplementation = RcsKassa.GetService<IPrinter>();
 
         // Simple way to test if the printer is EscPosUsbPrinter
         if (printerImplementation is not EscPosUsbPrinter usbPrinter)

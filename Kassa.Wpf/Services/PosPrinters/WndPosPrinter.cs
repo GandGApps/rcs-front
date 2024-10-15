@@ -8,6 +8,7 @@ using System.Windows.Threading;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
+using Kassa.Shared;
 using Kassa.Shared.ServiceLocator;
 using Splat;
 using Windows.Devices.Enumeration;
@@ -143,8 +144,8 @@ internal sealed class WndPosPrinter : IPrinter, IEnableLogger
         this.Log().Info("Job created");
 
         var productIndex = 0;
-        var productService = RcsLocator.Scoped.GetRequiredService<IProductService>();
-        var additiveService = RcsLocator.Scoped.GetRequiredService<IAdditiveService>();
+        var productService = RcsKassa.GetRequiredService<IProductService>();
+        var additiveService = RcsKassa.GetRequiredService<IAdditiveService>();
 
         foreach (var orderedProduct in order.Products)
         {

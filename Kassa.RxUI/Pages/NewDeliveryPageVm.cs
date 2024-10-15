@@ -38,21 +38,21 @@ public sealed class NewDeliveryPageVm : PageViewModel
         IReceiptService receiptService,
         IIngridientsService ingridientsService,
         OrderEditDto orderEditDto) :
-        this(orderEditDto, cashierService, additiveService, null, productService, ordersService, categoryService, receiptService, ingridientsService)
+        this(cashierService, additiveService, productService, ordersService, categoryService, receiptService, ingridientsService, orderEditDto, null)
     {
         IsNewClient = true;
     }
 
     public NewDeliveryPageVm(
-        OrderEditDto orderEditDto,
         ICashierService cashierService,
         IAdditiveService additiveService,
-        ClientViewModel? clientViewModel,
         IProductService productService,
         IOrdersService ordersService,
         ICategoryService categoryService,
         IReceiptService receiptService,
-        IIngridientsService ingridientsService)
+        IIngridientsService ingridientsService,
+        OrderEditDto orderEditDto,
+        ClientViewModel? clientViewModel)
     {
         _orderEdit = orderEditDto;
 

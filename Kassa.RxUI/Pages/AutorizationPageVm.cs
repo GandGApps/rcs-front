@@ -14,10 +14,14 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 
 namespace Kassa.RxUI.Pages;
-public class AutorizationPageVm : PageViewModel
+public sealed class AutorizationPageVm : PageViewModel
 {
-    public AutorizationPageVm()
+    private readonly IAuthService _authService;
+
+    public AutorizationPageVm(IAuthService authService)
     {
+        _authService = authService;
+
         CloseCommand = ReactiveCommand.CreateFromTask(async () =>
         {
             await MainViewModel.DialogOpenCommand.Execute(new AreYouSureToTurnOffDialogViewModel(MainViewModel)).FirstAsync();
@@ -26,8 +30,6 @@ public class AutorizationPageVm : PageViewModel
 
         LoginCommand = CreatePageBusyCommand(async () =>
         {
-            var authService = RcsLocator.GetRequiredService<IAuthService>();
-
             if (string.IsNullOrWhiteSpace(Login) || string.IsNullOrWhiteSpace(Password))
             {
                 Error = "Поля не могут быть пустыми";
@@ -36,7 +38,7 @@ public class AutorizationPageVm : PageViewModel
 
             BusyText = "Авторизация...";
 
-            if (await authService.AuthenticateAsync(Login, Password))
+            if (await _authService.AuthenticateAsync(Login, Password))
             {
                 return true;
             }
@@ -47,6 +49,7 @@ public class AutorizationPageVm : PageViewModel
 
         Login = string.Empty;
         Password = string.Empty;
+        Error = string.Empty;
     }
 
     [Reactive]

@@ -38,6 +38,26 @@ public static class RcsKassa
     public static bool IsDevelopment => string.Equals(EnvironmentName, DevelopmentName, StringComparison.InvariantCultureIgnoreCase);
     public static bool IsProduction => string.Equals(EnvironmentName, ProductionName, StringComparison.InvariantCultureIgnoreCase);
 
+    public static T? GetService<T>() where T : class
+    {
+        if (ScopedServices is IServiceScope serviceScope)
+        {
+            return serviceScope.ServiceProvider.GetService<T>();
+        }
+
+        return ServiceProvider.GetService<T>();
+    }
+
+    public static T GetRequiredService<T>() where T: notnull
+    {
+        if (ScopedServices is IServiceScope serviceScope)
+        {
+            return serviceScope.ServiceProvider.GetRequiredService<T>();
+        }
+
+        return ServiceProvider.GetRequiredService<T>();
+    }
+
     public static async ValueTask ActivateScope()
     {
         var scope = ServiceProvider.CreateScope();
@@ -53,10 +73,10 @@ public static class RcsKassa
     {
         if (ScopedServices is IServiceScope scope)
         {
-            return ActivatorUtilities.CreateInstance<T>(scope.ServiceProvider);
+            return ActivatorUtilities.GetServiceOrCreateInstance<T>(scope.ServiceProvider);
         }
 
-        return ActivatorUtilities.CreateInstance<T>(ServiceProvider);
+        return ActivatorUtilities.GetServiceOrCreateInstance<T>(ServiceProvider);
     }
 
     public static T CreateAndInject<T>(params object[] objects)

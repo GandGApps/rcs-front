@@ -9,6 +9,7 @@ using ESCPOS_NET.Emitters;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
+using Kassa.Shared;
 using Kassa.Shared.ServiceLocator;
 using Splat;
 
@@ -111,8 +112,8 @@ internal sealed class EscPosPrinter : BuisnessLogic.Services.IPrinter, IEnableLo
         };
 
         var productIndex = 0;
-        var productService = RcsLocator.Scoped.GetRequiredService<IProductService>();
-        var additiveService = RcsLocator.Scoped.GetRequiredService<IAdditiveService>();
+        var productService = RcsKassa.GetRequiredService<IProductService>();
+        var additiveService = RcsKassa.GetRequiredService<IAdditiveService>();
 
         foreach (var orderedProduct in order.Products)
         {

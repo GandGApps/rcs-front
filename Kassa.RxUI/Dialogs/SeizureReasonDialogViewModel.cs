@@ -15,15 +15,23 @@ using ReactiveUI;
 namespace Kassa.RxUI.Dialogs;
 public sealed class SeizureReasonDialogViewModel: ApplicationManagedModelSearchableDialogViewModel<SeizureReasonDto, SeizureReasonVm>
 {
-    public SeizureReasonDialogViewModel()
+    private readonly ISeizureReasonService _seizureReasonService;
+    private readonly IAuthService _authService;
+    private readonly IFundsService _fundsService;
+
+    public SeizureReasonDialogViewModel(ISeizureReasonService seizureReasonService,IAuthService authService, IFundsService fundsService)
     {
+        _seizureReasonService = seizureReasonService;
+        _authService = authService;
+        _fundsService = fundsService;
+
         SelectCommand = ReactiveCommand.CreateFromTask<SeizureReasonVm>(async x =>
         {
             SelectedItem = x;
 
             MemberSelectDialogViewModel memberSelectViewModel = null!;
 
-            memberSelectViewModel = new MemberSelectDialogViewModel(member =>
+            memberSelectViewModel = RcsKassa.CreateAndInject<MemberSelectDialogViewModel>(DialogViewModel (MemberDto member) =>
             {
                 var fundActDialog = new FundActDialogViewModel
                 {
@@ -40,14 +48,12 @@ public sealed class SeizureReasonDialogViewModel: ApplicationManagedModelSearcha
 
                     await MainViewModel.ShowDialogAndWaitClose(enterPincodeDialog);
 
-                    var authService = RcsLocator.GetRequiredService<IAuthService>();
-
                     if (string.IsNullOrWhiteSpace(enterPincodeDialog.Result))
                     {
                         return;
                     }
 
-                    var check = await MainViewModel.RunTaskWithLoadingDialog("Проверка пинкода", authService.CheckPincode(member, enterPincodeDialog.Result));
+                    var check = await MainViewModel.RunTaskWithLoadingDialog("Проверка пинкода", _authService.CheckPincode(member, enterPincodeDialog.Result));
 
                     if (!check)
                     {
@@ -60,9 +66,7 @@ public sealed class SeizureReasonDialogViewModel: ApplicationManagedModelSearcha
                         return;
                     }
 
-                    var fundsService = RcsLocator.Scoped.GetRequiredService<IFundsService>();
-
-                    await MainViewModel.RunTaskWithLoadingDialog("Проводится изъятие", fundsService.Seize(fundActDialog.Amount, fundActDialog.Comment, member.Id, enterPincodeDialog.Result, x.SeizureReason!));
+                    await MainViewModel.RunTaskWithLoadingDialog("Проводится изъятие", _fundsService.Seize(fundActDialog.Amount, fundActDialog.Comment, member.Id, enterPincodeDialog.Result, x.SeizureReason!));
 
                     await fundActDialog.CloseAsync();
                     await memberSelectViewModel.CloseAsync();
@@ -70,23 +74,18 @@ public sealed class SeizureReasonDialogViewModel: ApplicationManagedModelSearcha
 
                 });
                 return fundActDialog;
-            })
-            {
-                HeaderTemplateKey = "SeizureReasonDialog"
-            };
+            });
+
+            memberSelectViewModel.HeaderTemplateKey = "SeizureReasonDialog";
 
             await MainViewModel.ShowDialogAndWaitClose(memberSelectViewModel);
         });
     }
 
 
-    protected override ValueTask InitializeAsync(CompositeDisposable disposables)
+    protected override void Initialize(CompositeDisposable disposables)
     {
-        var withdrawalReasons = RcsLocator.Scoped.GetRequiredService<ISeizureReasonService>();
-
-        Filter(withdrawalReasons.RuntimeSeizureReasons, x => new SeizureReasonVm(x, this), disposables);
-
-        return ValueTask.CompletedTask;
+        Filter(_seizureReasonService.RuntimeSeizureReasons, x => new SeizureReasonVm(x, this), disposables);
     }
 
     protected override bool IsMatch(string searchText, SeizureReasonDto item)

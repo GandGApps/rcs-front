@@ -16,6 +16,7 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
 using Kassa.RxUI.Dialogs;
+using Kassa.Shared;
 using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -23,8 +24,20 @@ using ReactiveUI.Fody.Helpers;
 namespace Kassa.RxUI.Pages;
 public sealed class AllDeliveriesPageVm : PageViewModel
 {
-    public AllDeliveriesPageVm()
+    private readonly IClientService _clientService;
+    private readonly ICourierService _courierService;
+    private readonly IDistrictService _districtService;
+    private readonly IStreetService _streetService;
+    private readonly IOrdersService _ordersService;
+
+    public AllDeliveriesPageVm(IClientService clientService, ICourierService courierService, IDistrictService districtService, IStreetService streetService, IOrdersService ordersService)
     {
+        _clientService = clientService;
+        _courierService = courierService;
+        _districtService = districtService;
+        _streetService = streetService;
+        _ordersService = ordersService;
+
         Date = DateTime.UtcNow;
 
         MoveDateCommand = ReactiveCommand.Create<int>(x =>
@@ -34,50 +47,30 @@ public sealed class AllDeliveriesPageVm : PageViewModel
 
         GoToPickUpCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var clientService = RcsLocator.Scoped.GetRequiredService<IClientService>();
+            var allClientsDialogViewModel = RcsKassa.CreateAndInject<AllClientsDialogViewModel>();
+            allClientsDialogViewModel.IsPickup = true;
 
-            var allClientsDialogViewModel = new AllClientsDialogViewModel(clientService)
-            {
-                IsPickup = true
-            };
-
-            await MainViewModel.DialogOpenCommand.Execute(allClientsDialogViewModel).FirstAsync();
+            await MainViewModel.ShowDialogAsync(allClientsDialogViewModel);
         }).DisposeWith(InternalDisposables);
 
         GoToDeliveryCommand = ReactiveCommand.CreateFromTask(async () =>
         {
+            var allClientsDialogViewModel = RcsKassa.CreateAndInject<AllClientsDialogViewModel>();
+            allClientsDialogViewModel.IsDelivery = true;
 
-            var clientService = RcsLocator.Scoped.GetRequiredService<IClientService>();
-
-            var allClientsDialogViewModel = new AllClientsDialogViewModel(clientService)
-            {
-                IsDelivery = true
-            };
-
-            await MainViewModel.DialogOpenCommand.Execute(allClientsDialogViewModel).FirstAsync();
+            await MainViewModel.ShowDialogAsync(allClientsDialogViewModel);
         }).DisposeWith(InternalDisposables);
 
         EditOrderCommand = ReactiveCommand.CreateFromTask<OrderDto>(async order =>
         {
-            var cashierService = RcsLocator.Scoped.GetRequiredService<ICashierService>();
-            var additiveService = RcsLocator.Scoped.GetRequiredService<IAdditiveService>();
-            var clientService = RcsLocator.Scoped.GetRequiredService<IClientService>();
-            var courierService = RcsLocator.Scoped.GetRequiredService<ICourierService>();
-            var districtService = RcsLocator.Scoped.GetRequiredService<IDistrictService>();
-            var streetService = RcsLocator.Scoped.GetRequiredService<IStreetService>();
-            var productService = RcsLocator.Scoped.GetRequiredService<IProductService>();
-            var receiptService = RcsLocator.Scoped.GetRequiredService<IReceiptService>();
-            var ingridientsService = RcsLocator.Scoped.GetRequiredService<IIngridientsService>();
-            var categoryService = RcsLocator.Scoped.GetRequiredService<ICategoryService>();
+            var client = order.ClientId.HasValue ? await _clientService.GetClientById(order.ClientId.Value) : null;
+            var courier = order.CourierId.HasValue ? await _courierService.GetCourierById(order.CourierId.Value) : null;
+            var district = order.DistrictId.HasValue ? await _districtService.GetDistrictById(order.DistrictId.Value) : null;
+            var street = order.StreetId.HasValue ? await _streetService.GetStreetById(order.StreetId.Value) : null;
 
-            var client = order.ClientId.HasValue ? await clientService.GetClientById(order.ClientId.Value) : null;
-            var courier = order.CourierId.HasValue ? await courierService.GetCourierById(order.CourierId.Value) : null;
-            var district = order.DistrictId.HasValue ? await districtService.GetDistrictById(order.DistrictId.Value) : null;
-            var street = order.StreetId.HasValue ? await streetService.GetStreetById(order.StreetId.Value) : null;
+            var editPage = EditDeliveryPageVm.CreatePage(client, courier, order, district, street);
 
-            var editDeliveryPageVm = new EditDeliveryPageVm(cashierService, additiveService, client, courier, order, district, street, productService, receiptService, ingridientsService, categoryService);
-
-            MainViewModel.GoToPageCommand.Execute(editDeliveryPageVm).Subscribe();
+            await MainViewModel.GoToPage(editPage);
 
         }).DisposeWith(InternalDisposables);
     }
@@ -180,9 +173,8 @@ public sealed class AllDeliveriesPageVm : PageViewModel
         get;
     }
 
-    protected override ValueTask InitializeAsync(CompositeDisposable disposables)
+    protected override void Initialize(CompositeDisposable disposables)
     {
-        var orderService = RcsLocator.Scoped.GetRequiredService<IOrdersService>();
         var filter = this.WhenAnyValue(x => x.IsPickup, x => x.IsDelivery, x => x.Date, x => x.SearchedText)
             .Select<(bool isPickup, bool isDelivery, DateTime date, string searchedText), Func<OrderDto, bool>>(x =>
             {
@@ -214,16 +206,10 @@ public sealed class AllDeliveriesPageVm : PageViewModel
                 return WithSearchedText(model => model.CreatedAt.Date == x.date.Date);
             });
 
-        var streetService = RcsLocator.Scoped.GetRequiredService<IStreetService>();
-        var courierService = RcsLocator.Scoped.GetRequiredService<ICourierService>();
-        var clientService = RcsLocator.Scoped.GetRequiredService<IClientService>();
-
-        orderService.RuntimeOrders.BindAndFilter(filter,
-            x => new OrderRowViewModel(x, streetService, courierService, clientService),
+        _ordersService.RuntimeOrders.BindAndFilter(filter,
+            x => new OrderRowViewModel(x, _streetService, _courierService, _clientService),
             out var collection)
             .DisposeWith(disposables);
-
-        // Count all orders statuses
 
         var changeSet = collection.ToObservableChangeSet().RefCount();
 
@@ -250,11 +236,9 @@ public sealed class AllDeliveriesPageVm : PageViewModel
 
 
         Orders = collection;
-
-        return ValueTask.CompletedTask;
     }
 
-    private IDisposable CalculateOrderCountByStatusAndBind(
+    private ObservableAsPropertyHelper<int> CalculateOrderCountByStatusAndBind(
         IObservable<IChangeSet<OrderRowViewModel>> changeSet,
         OrderStatus orderStatus,
         Expression<Func<AllDeliveriesPageVm, int>> propertyExpression)
@@ -272,4 +256,5 @@ public sealed class AllDeliveriesPageVm : PageViewModel
                                                                  model.Phone.Contains(text, StringComparison.OrdinalIgnoreCase) ||
                                                                  model.House.Contains(text, StringComparison.OrdinalIgnoreCase) ||
                                                                  model.Id.ToString("N").Contains(text, StringComparison.OrdinalIgnoreCase);
+
 }
