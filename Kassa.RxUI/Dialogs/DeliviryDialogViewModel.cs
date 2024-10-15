@@ -6,6 +6,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.RxUI.Pages;
+using Kassa.Shared;
 using ReactiveUI;
 
 namespace Kassa.RxUI.Dialogs;
@@ -15,7 +16,7 @@ public class DeliviryDialogViewModel : DialogViewModel
     {
         GoToAllDeliveriesPage = ReactiveCommand.CreateFromTask(async () =>
         {
-            var page = new AllDeliveriesPageVm();
+            var page = RcsKassa.CreateAndInject<AllDeliveriesPageVm>();
 
             await CloseAsync();
 

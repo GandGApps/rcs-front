@@ -50,7 +50,7 @@ internal sealed class IngridientRepository : IRepository<Ingredient>, IEnableLog
         throw new DeveloperException("Логическая ошибка, обратитесь к Баястану");
 
 
-        /*var ingridientsApi = RcsLocator.GetRequiredService<IIngridientsApi>();
+        /*var ingridientsApi = RcsKassa.GetRequiredService<IIngridientsApi>();
 
         var ingridientRequest = ApiMapper.MapIngredientToEdgarModel(item);
 

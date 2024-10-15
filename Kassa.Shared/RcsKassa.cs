@@ -73,10 +73,10 @@ public static class RcsKassa
     {
         if (ScopedServices is IServiceScope scope)
         {
-            return ActivatorUtilities.GetServiceOrCreateInstance<T>(scope.ServiceProvider);
+            return ActivatorUtilities.CreateInstance<T>(scope.ServiceProvider);
         }
 
-        return ActivatorUtilities.GetServiceOrCreateInstance<T>(ServiceProvider);
+        return ActivatorUtilities.CreateInstance<T>(ServiceProvider);
     }
 
     public static T CreateAndInject<T>(params object[] objects)

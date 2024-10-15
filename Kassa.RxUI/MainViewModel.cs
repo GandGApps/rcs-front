@@ -21,7 +21,7 @@ public sealed class MainViewModel : ReactiveObject, IScreen
     public MainViewModel(IAuthService authService, IShiftService shiftService, IReportShiftService reportShiftService)
     {
         Router = new();
-        Router.Navigate.Execute(new AutorizationPageVm());
+        Router.Navigate.Execute(RcsKassa.CreateAndInject<AutorizationPageVm>());
 
         CloseCommand = ReactiveCommand.Create((ReactiveObject sender) => sender);
 
@@ -171,12 +171,12 @@ public sealed class MainViewModel : ReactiveObject, IScreen
 
                 if (!x.authContext.IsAuthenticated)
                 {
-                    await GoToPageAndReset(new AutorizationPageVm());
+                    await GoToPageAndReset(RcsKassa.CreateAndInject<AutorizationPageVm>());
                 }
                 else if (x.shift is null)
                 {
 
-                    await GoToPageAndReset(new PincodePageVm());
+                    await GoToPageAndReset(RcsKassa.CreateAndInject<PincodePageVm>());
                 }
                 else
                 {

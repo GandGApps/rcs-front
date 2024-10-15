@@ -115,14 +115,14 @@ public sealed class ServicePageVm : PageViewModel
 
         WithdrawMoneyCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var dialog = new SeizureReasonDialogViewModel();
+            var dialog = RcsKassa.CreateAndInject<SeizureReasonDialogViewModel>();
 
             await MainViewModel.ShowDialogAndWaitClose(dialog);
         });
 
         DepositMoneyCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var dialog = new ContributionReasonDialogViewModel();
+            var dialog = RcsKassa.CreateAndInject<ContributionReasonDialogViewModel>();
 
             await MainViewModel.ShowDialogAndWaitClose(dialog);
         });
@@ -142,7 +142,7 @@ public sealed class ServicePageVm : PageViewModel
             }
 
             var closedOrder = orderEdits.First(x => order.Id == x.Id);
-            var orderEditWithNavigationPageVm = new OrderEditWithNavigationPageVm(new(orderEdits), closedOrder);
+            var orderEditWithNavigationPageVm = RcsKassa.CreateAndInject<OrderEditWithNavigationPageVm>(new ReadOnlyCollection<OrderEditDto>(orderEdits), closedOrder);
 
             await MainViewModel.GoToPage(orderEditWithNavigationPageVm);
 
@@ -164,7 +164,7 @@ public sealed class ServicePageVm : PageViewModel
             }
 
             var closedOrder = orderEdits.First(x => order.Id == x.Id);
-            var orderEditWithNavigationPageVm = new OrderEditWithNavigationPageVm(new(orderEdits), closedOrder);
+            var orderEditWithNavigationPageVm = RcsKassa.CreateAndInject<OrderEditWithNavigationPageVm>(new ReadOnlyCollection<OrderEditDto>(orderEdits), closedOrder);
 
             await MainViewModel.GoToPage(orderEditWithNavigationPageVm);
 
@@ -179,7 +179,7 @@ public sealed class ServicePageVm : PageViewModel
             _cashierService.Orders.CopyTo(openOrders, 0);
 
             var orderEdit = openOrders.First(x => order.Id == x.Id);
-            var orderEditWithNavigationPageVm = new OrderEditWithNavigationPageVm(new(openOrders), orderEdit);
+            var orderEditWithNavigationPageVm = RcsKassa.CreateAndInject<OrderEditWithNavigationPageVm>(new ReadOnlyCollection<OrderEditDto>(openOrders), orderEdit);
 
             await MainViewModel.GoToPage(orderEditWithNavigationPageVm);
 

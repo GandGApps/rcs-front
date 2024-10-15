@@ -84,7 +84,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
 
         SelectDistrictAndStreetCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var districtService = RcsLocator.Scoped.GetRequiredService<IDistrictService>();
+            var districtService = RcsKassa.GetRequiredService<IDistrictService>();
 
             var districtDialog = new AllDistrictsDialogViewModel(districtService);
 
@@ -95,7 +95,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
                 return;
             }
 
-            var streetService = RcsLocator.Scoped.GetRequiredService<IStreetService>();
+            var streetService = RcsKassa.GetRequiredService<IStreetService>();
 
             var streetDialog = new StreetsDialogViewModel(districtDialog.SelectedItem, streetService);
 
@@ -143,7 +143,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
 
         SelectCourierCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var courierService = RcsLocator.Scoped.GetRequiredService<ICourierService>();
+            var courierService = RcsKassa.GetRequiredService<ICourierService>();
             var dialog = new SearchCourierDialogViewModel(courierService);
 
             dialog.OkCommand.Subscribe(x =>
@@ -224,7 +224,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
             orderEdit.CreatedAt = DateTime.UtcNow;
             orderEdit.Status = OrderStatus;
 
-            var ordersService = RcsLocator.Scoped.GetRequiredService<IOrdersService>();
+            var ordersService = RcsKassa.GetRequiredService<IOrdersService>();
 
             var order = await ordersService.CreateOrderAsync(orderEdit);
 
@@ -491,7 +491,7 @@ public sealed class EditDeliveryPageVm : PageViewModel
 
     protected async override ValueTask InitializeAsync(CompositeDisposable disposables)
     {
-        var cashierService = RcsLocator.Scoped.GetRequiredService<ICashierService>();
+        var cashierService = RcsKassa.GetRequiredService<ICashierService>();
 
         _orderEdit = await cashierService.CreateOrder(_orderDto);
 

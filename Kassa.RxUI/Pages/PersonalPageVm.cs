@@ -276,7 +276,7 @@ public class PersonalPageVm : PageViewModel
 
         }).DisposeWith(disposables);
 
-        _shiftService.RuntimeShifts.BindAndFilter(x => x.End.HasValue, dto => new ShiftRowViewModel(dto), out var cloesedShifts)
+        _shiftService.RuntimeShifts.BindAndFilter(x => x.End.HasValue, dto => new ShiftRowViewModel(dto, _memberService), out var cloesedShifts)
             .DisposeWith(disposables);
 
         ClosedShifts = cloesedShifts;
@@ -287,7 +287,7 @@ public class PersonalPageVm : PageViewModel
 
         if (_shiftService.CurrentShift.Value is IShift shift)
         {
-            CurrentShift = new ShiftRowViewModel(shift.CreateDto());
+            CurrentShift = new ShiftRowViewModel(shift.CreateDto(), _memberService);
         }
 
         IsOpennedShiftsVisible = true;

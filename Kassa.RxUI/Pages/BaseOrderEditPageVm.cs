@@ -17,6 +17,7 @@ using DynamicData.Binding;
 using DynamicData;
 using Kassa.Shared.ServiceLocator;
 using Splat;
+using Kassa.Shared;
 
 namespace Kassa.RxUI.Pages;
 public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
@@ -279,8 +280,8 @@ public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
 
         GoToAllOrdersCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var shiftService = RcsLocator.GetRequiredService<IShiftService>();  
-            var ordersServcice = RcsLocator.GetRequiredService<IOrdersService>();
+            var shiftService = RcsKassa.GetRequiredService<IShiftService>();  
+            var ordersServcice = RcsKassa.GetRequiredService<IOrdersService>();
 
             var servicePage = new ServicePageVm(_cashierService, shiftService, ordersServcice, _productService);
 
@@ -289,7 +290,7 @@ public abstract class BaseOrderEditPageVm : PageViewModel, IOrderEditVm
 
         GoToAllDeliveriesPageCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var allDeliveriesPage = new AllDeliveriesPageVm();
+            var allDeliveriesPage = RcsKassa.CreateAndInject<AllDeliveriesPageVm>();
 
             await MainViewModel.GoToPage(allDeliveriesPage);
         });

@@ -22,18 +22,18 @@ internal class ShiftService : BaseInitializableService, IShiftService
         _hostModelManager.DisposeWith(InternalDisposables);
         _currentShift.DisposeWith(InternalDisposables);
         _repository = repository;
-        CurrentShift = new(_currentShift);
+        CurrentShift = new ObservableOnlyBehaviourSubject<IShift?>(_currentShift);
         CurrentCashierShift = new ObservableOnlyBehaviourSubject<ITerminalShift?>((ITerminalShift?)null);
     }
 
     public IApplicationModelManager<ShiftDto> RuntimeShifts => _hostModelManager;
 
-    public ObservableOnlyBehaviourSubject<IShift?> CurrentShift
+    public IObservableOnlyBehaviourSubject<IShift?> CurrentShift
     {
         get;
     }
 
-    public ObservableOnlyBehaviourSubject<ITerminalShift?> CurrentCashierShift
+    public IObservableOnlyBehaviourSubject<ITerminalShift?> CurrentCashierShift
     {
         get;
     }

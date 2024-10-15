@@ -26,7 +26,7 @@ public abstract class PageViewModel : BaseViewModel, IRoutableViewModel
         });
     }
 
-    public PageViewModel(): this(RcsLocator.GetRequiredService<MainViewModel>())
+    public PageViewModel(): this(RcsKassa.GetRequiredService<MainViewModel>())
     {
 
     }
@@ -157,7 +157,7 @@ public abstract class PageViewModel : BaseViewModel, IRoutableViewModel
 
     public static async ValueTask<bool> TryAuthorizePageAccess<T>(IShiftService shiftservice) where T : PageViewModel
     {
-        var mainViewModel = RcsLocator.GetRequiredService<MainViewModel>();
+        var mainViewModel = RcsKassa.GetRequiredService<MainViewModel>();
         var pageType = typeof(T);
 
         // Не впускать работника в сервис

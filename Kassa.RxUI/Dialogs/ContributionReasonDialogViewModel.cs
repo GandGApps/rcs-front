@@ -31,7 +31,7 @@ public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSe
 
             MemberSelectDialogViewModel memberSelectViewModel = null!;
 
-            memberSelectViewModel = new MemberSelectDialogViewModel(member =>
+            memberSelectViewModel = RcsKassa.CreateAndInject<MemberSelectDialogViewModel>((MemberDto member) =>
             {
                 var fundActDialog = new FundActDialogViewModel
                 {
@@ -74,10 +74,8 @@ public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSe
 
                 });
                 return fundActDialog;
-            })
-            {
-                HeaderTemplateKey = "ContributionReasonDialog"
-            };
+            });
+            memberSelectViewModel.HeaderTemplateKey = "ContributionReasonDialog";
 
             await MainViewModel.ShowDialogAndWaitClose(memberSelectViewModel);
         });

@@ -108,7 +108,7 @@ internal sealed class CashierService : BaseInitializableService, ICashierService
 
     public ValueTask<IPaymentService> CreatePayment(OrderEditDto orderEdit)
     {
-        var paymentService = new CashierPaymentService(orderEdit, _ordersService, _paymentInfoService);
+        var paymentService = RcsKassa.CreateAndInject<CashierPaymentService>(orderEdit);
 
         paymentService.Payed += (order) =>
         {

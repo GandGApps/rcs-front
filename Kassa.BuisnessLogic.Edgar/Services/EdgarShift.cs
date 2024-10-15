@@ -43,7 +43,7 @@ internal sealed class EdgarShift : IShift
     public async Task Start()
     {
         var shiftDto = CreateDto();
-        var employeeApi = RcsLocator.GetRequiredService<IEmployeePostsApi>();
+        var employeeApi = RcsKassa.GetRequiredService<IEmployeePostsApi>();
 
         var openPostRequest = new EmployeeOpenPostRequest(DateTime.Now, shiftDto.Id, 0, shiftDto.CashierShiftId);
 
@@ -76,7 +76,7 @@ internal sealed class EdgarShift : IShift
     {
         var shiftDto = CreateDto();
 
-        var employeePostApi = RcsLocator.GetRequiredService<IEmployeePostsApi>();
+        var employeePostApi = RcsKassa.GetRequiredService<IEmployeePostsApi>();
 
         var now = DateTime.Now;
 
@@ -92,7 +92,7 @@ internal sealed class EdgarShift : IShift
     {
         var shiftDto = CreateDto();
 
-        var employeePostApi = RcsLocator.GetRequiredService<IEmployeePostsApi>();
+        var employeePostApi = RcsKassa.GetRequiredService<IEmployeePostsApi>();
 
         var now = DateTime.Now;
 
@@ -114,7 +114,7 @@ internal sealed class EdgarShift : IShift
     {
         var shiftDto = CreateDto();
 
-        var employeePostApi = RcsLocator.GetRequiredService<IEmployeePostsApi>();
+        var employeePostApi = RcsKassa.GetRequiredService<IEmployeePostsApi>();
 
         var now = DateTime.Now;
 

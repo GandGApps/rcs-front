@@ -71,7 +71,7 @@ public class MainPageVm : PageViewModel
 
         CloseCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await MainViewModel.DialogOpenCommand.Execute(new TurnOffDialogViewModel()).FirstAsync();
+            await MainViewModel.DialogOpenCommand.Execute(new TurnOffDialogViewModel(_shiftService)).FirstAsync();
         });
 
         OpenProfileDialog = ReactiveCommand.CreateFromTask(async () =>
@@ -81,7 +81,7 @@ public class MainPageVm : PageViewModel
                 return;
             }
 
-            await MainViewModel.ShowDialogAsync(new ProfileDialogViewModel());
+            await MainViewModel.ShowDialogAsync(new ProfileDialogViewModel(_shiftService));
         });
 
         OpenDocumnetsDialog = ReactiveCommand.CreateFromTask(async () =>
@@ -111,7 +111,7 @@ public class MainPageVm : PageViewModel
                 return;
             }
 
-            await MainViewModel.GoToPage(new AllDeliveriesPageVm());
+            await MainViewModel.GoToPage(RcsKassa.CreateAndInject<AllDeliveriesPageVm>());
         });
 
         OpenServicesDialog = CreatePageBusyCommand(async () =>
