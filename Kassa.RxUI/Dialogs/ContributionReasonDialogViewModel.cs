@@ -10,7 +10,6 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using ReactiveUI;
 using Kassa.Shared;
-using Kassa.Shared.ServiceLocator;
 
 namespace Kassa.RxUI.Dialogs;
 public sealed class ContributionReasonDialogViewModel: ApplicationManagedModelSearchableDialogViewModel<ContributionReasonDto, ContributionReasonVm>

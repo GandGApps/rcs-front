@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Services;
-using Kassa.Shared.ServiceLocator;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kassa.BuisnessLogic;

@@ -15,7 +15,6 @@ using Kassa.RxUI.Dialogs;
 using System.Reactive.Linq;
 using DynamicData.Binding;
 using DynamicData;
-using Kassa.Shared.ServiceLocator;
 using Splat;
 using Kassa.Shared;
 

@@ -8,7 +8,6 @@ using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Dialogs;
 using Kassa.RxUI.Pages;
 using Kassa.Shared;
-using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;

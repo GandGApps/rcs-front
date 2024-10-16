@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
-using Kassa.Shared.ServiceLocator;
 using Kassa.Wpf.Services.PosPrinters;
 using Splat;
 

@@ -5,7 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
-using Kassa.Shared.ServiceLocator;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kassa.DataAccess;

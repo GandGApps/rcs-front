@@ -11,7 +11,6 @@ using ReactiveUI;
 using System.Reactive;
 using ReactiveUI.Fody.Helpers;
 using System.Reactive.Linq;
-using Kassa.Shared.ServiceLocator;
 
 namespace Kassa.RxUI.Dialogs;
 public sealed class MemberSelectDialogViewModel : ApplicationManagedModelSearchableDialogViewModel<MemberDto, MemberVm>

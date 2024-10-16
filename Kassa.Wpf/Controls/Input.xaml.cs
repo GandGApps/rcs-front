@@ -19,7 +19,6 @@ using Kassa.BuisnessLogic;
 using Kassa.RxUI;
 using Kassa.RxUI.Dialogs;
 using Kassa.Shared;
-using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using Splat;
 
@@ -146,7 +145,7 @@ public partial class Input : UserControl, ICommandSource
                 name = Placeholder ?? string.Empty;
             }
 
-            var mainViewModel = RcsKassa.GetRequiredService<MainViewModel>();
+            var mainViewModel = RcsKassa.GetRequiredService<IMainViewModelProvider>().MainViewModel;
 
             if (Command is not null)
             {

@@ -13,7 +13,6 @@ using System.Windows.Documents;
 using Splat;
 using Kassa.BuisnessLogic;
 using System.Windows;
-using Kassa.Shared.ServiceLocator;
 using Kassa.Shared;
 
 namespace Kassa.Wpf.Services.PosPrinters;

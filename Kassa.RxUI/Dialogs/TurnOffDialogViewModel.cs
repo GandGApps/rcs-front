@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Pages;
-using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 
 namespace Kassa.RxUI.Dialogs;

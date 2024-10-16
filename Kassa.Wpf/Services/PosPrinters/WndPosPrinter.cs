@@ -9,7 +9,6 @@ using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
-using Kassa.Shared.ServiceLocator;
 using Splat;
 using Windows.Devices.Enumeration;
 using Windows.Devices.PointOfService;

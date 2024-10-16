@@ -17,7 +17,6 @@ using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
 using Kassa.RxUI.Dialogs;
 using Kassa.Shared;
-using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 

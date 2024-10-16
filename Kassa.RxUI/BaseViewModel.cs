@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
-using Kassa.Shared.ServiceLocator;
 using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -41,7 +40,7 @@ public class BaseViewModel : ReactiveObject, IActivatableViewModel, ICancelable,
         get;
     }
 
-    public BaseViewModel() : this(RcsKassa.ServiceProvider.GetRequiredService<MainViewModel>())
+    public BaseViewModel() : this(RcsKassa.GetRequiredService<IMainViewModelProvider>().MainViewModel)
     {
 
     }

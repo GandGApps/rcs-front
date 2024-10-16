@@ -7,7 +7,6 @@ using Kassa.BuisnessLogic.Edgar.Api;
 using Kassa.BuisnessLogic.Edgar.Services;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
-using Kassa.Shared.ServiceLocator;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kassa.BuisnessLogic.Edgar;

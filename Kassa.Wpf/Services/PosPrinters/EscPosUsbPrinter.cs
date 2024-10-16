@@ -9,7 +9,6 @@ using ESC_POS_USB_NET.Printer;
 using Splat;
 using Kassa.BuisnessLogic;
 using Kassa.Shared;
-using Kassa.Shared.ServiceLocator;
 using System.Windows.Media.Imaging;
 using System.Windows.Controls;
 using System.Drawing;

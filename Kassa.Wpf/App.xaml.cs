@@ -20,7 +20,6 @@ using Kassa.Wpf.Services.PosPrinters;
 using Kassa.Wpf.Services.MagneticStripeReaders;
 using Kassa.Wpf.Services.CashDrawers;
 using Kassa.Wpf.Controls;
-using Kassa.Shared.ServiceLocator;
 using Kassa.RxUI;
 
 namespace Kassa.Wpf;

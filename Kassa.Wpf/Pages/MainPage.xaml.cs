@@ -18,7 +18,6 @@ using Kassa.RxUI.Dialogs;
 using Kassa.RxUI.Pages;
 using Kassa.Shared;
 using Kassa.Shared.Logging;
-using Kassa.Shared.ServiceLocator;
 using Kassa.Wpf.Windows;
 using ReactiveUI;
 using Splat;

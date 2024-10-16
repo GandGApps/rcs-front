@@ -8,7 +8,6 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Edgar.Api;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
-using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;

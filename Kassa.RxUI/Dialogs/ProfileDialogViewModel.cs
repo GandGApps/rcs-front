@@ -9,7 +9,6 @@ using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Pages;
 using Kassa.Shared;
-using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 

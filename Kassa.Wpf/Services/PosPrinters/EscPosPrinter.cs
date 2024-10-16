@@ -10,7 +10,6 @@ using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
-using Kassa.Shared.ServiceLocator;
 using Splat;
 
 namespace Kassa.Wpf.Services.PosPrinters;

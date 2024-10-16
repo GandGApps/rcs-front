@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic.Services;
-using Kassa.Shared.ServiceLocator;
 using Kassa.Wpf.Services.PosPrinters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -26,7 +25,7 @@ internal static class CashDrawerPosLibServices
         {
 
             case CashDrawerPosLib.WndPosLib:
-                RcsLocatorBuilder.AddSingleton<ICashDrawer>(new WndPosCashDrawer());
+                services.AddSingleton<ICashDrawer>(new WndPosCashDrawer());
                 break;
             case CashDrawerPosLib.RawSerialPort:
                 var rawBytesString = config.GetValue($"{nameof(RawSerialPort)}.RawBytes", "00")!;
@@ -48,7 +47,7 @@ internal static class CashDrawerPosLibServices
                     LogHost.Default.Error($"Port {port} not found");
                     return;
                 }
-                RcsLocatorBuilder.AddSingleton<ICashDrawer>(new RawSerialPort(rawBytes, port));
+                services.AddSingleton<ICashDrawer>(new RawSerialPort(rawBytes, port));
 
                 break;
             case CashDrawerPosLib.EscposUsb:
@@ -61,7 +60,7 @@ internal static class CashDrawerPosLibServices
                     return;
                 }
 
-                RcsLocatorBuilder.AddSingleton<ICashDrawer>(new EscposUsb());
+                services.AddSingleton<ICashDrawer>(new EscposUsb());
                 break;
             default:
                 break;

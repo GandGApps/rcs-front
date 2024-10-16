@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
+using Kassa.BuisnessLogic.Edgar;
 using Kassa.DataAccess;
 using Kassa.DataAccess.HttpRepository;
 using Kassa.RxUI;
@@ -47,6 +48,7 @@ public static class Program
         builder.Services.AddMockBuisnessLogic();
         builder.Services.AddMockDataAccess();
 
+        builder.Services.AddEdgarBuisnessLogic();
         builder.Services.AddHttpRepositories();
 
         builder.Services.AddMainViewModelProvider();

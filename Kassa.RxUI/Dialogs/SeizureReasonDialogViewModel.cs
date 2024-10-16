@@ -9,7 +9,6 @@ using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess.Model;
 using Kassa.Shared;
-using Kassa.Shared.ServiceLocator;
 using ReactiveUI;
 
 namespace Kassa.RxUI.Dialogs;

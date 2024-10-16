@@ -7,7 +7,6 @@ using Kassa.DataAccess.HttpRepository.Api;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 using Kassa.Shared;
-using Kassa.Shared.ServiceLocator;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Kassa.DataAccess.HttpRepository;

@@ -8,7 +8,6 @@ using System.Reactive.Linq;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.RxUI.Dialogs;
 using Kassa.DataAccess.Model;
-using Kassa.Shared.ServiceLocator;
 using Kassa.Shared;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -53,7 +53,9 @@ public sealed partial class MainWindow : ReactiveWindow<MainViewModel>
 
         Root = RootBody;
 
-        ViewModel = RcsKassa.Host.Services.GetRequiredService<MainViewModel>();
+        var mainVmProvider = RcsKassa.Host.Services.GetRequiredService<IMainViewModelProvider>();
+
+        ViewModel = mainVmProvider.MainViewModel;
 
         InitializeComponent();
 

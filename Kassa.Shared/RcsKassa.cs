@@ -50,6 +50,7 @@ public static class RcsKassa
 
     public static T GetRequiredService<T>() where T: notnull
     {
+        var type = typeof(T);
         if (ScopedServices is IServiceScope serviceScope)
         {
             return serviceScope.ServiceProvider.GetRequiredService<T>();
