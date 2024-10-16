@@ -1797,6 +1797,7 @@
       },
       "Kassa.DataAccess/1.0.0": {
         "dependencies": {
+          "BeaKona.AutoInterfaceGenerator": "1.0.42",
           "Kassa.Shared": "1.0.0"
         },
         "runtime": {
