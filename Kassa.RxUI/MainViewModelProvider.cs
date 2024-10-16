@@ -20,7 +20,7 @@ internal sealed class MainViewModelProvider: IMainViewModelProvider
         _shiftService = shiftService;
         _reportShiftService = reportShiftService;
 
-        _instance = new(authService, shiftService, reportShiftService);
+        _instance = new(this, authService, shiftService, reportShiftService);
     }
 
 

@@ -11,5 +11,6 @@ public static class MainViewModelProviderServiceExtensions
     public static void AddMainViewModelProvider(this IServiceCollection services)
     {
         services.AddSingleton<IMainViewModelProvider,MainViewModelProvider>();
+        services.AddSingleton<MainViewModel>(sp => sp.GetRequiredService<IMainViewModelProvider>().MainViewModel);
     }
 }

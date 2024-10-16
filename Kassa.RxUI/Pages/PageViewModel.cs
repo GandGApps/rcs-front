@@ -25,7 +25,7 @@ public abstract class PageViewModel : BaseViewModel, IRoutableViewModel
         });
     }
 
-    public PageViewModel(): this(RcsKassa.GetRequiredService<MainViewModel>())
+    public PageViewModel(): this(RcsKassa.GetRequiredService<IMainViewModelProvider>().MainViewModel)
     {
 
     }

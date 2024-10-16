@@ -57,8 +57,6 @@ public static class Program
 
         builder.Configuration.AddRcsConfiguration();
 
-
-
         var app = builder.Build();
 
         RcsKassa.Host = app;

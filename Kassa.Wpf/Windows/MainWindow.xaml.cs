@@ -46,6 +46,7 @@ public sealed partial class MainWindow : ReactiveWindow<MainViewModel>
     } = null!;
 
     private readonly KeyConverter _keyConverter = new();
+    private readonly MainViewModel _mainViewModel;
 
     public MainWindow()
     {
@@ -53,9 +54,9 @@ public sealed partial class MainWindow : ReactiveWindow<MainViewModel>
 
         Root = RootBody;
 
-        var mainVmProvider = RcsKassa.Host.Services.GetRequiredService<IMainViewModelProvider>();
-
-        ViewModel = mainVmProvider.MainViewModel;
+        var mainVmProvider = RcsKassa.GetRequiredService<IMainViewModelProvider>();
+        _mainViewModel = mainVmProvider.MainViewModel;
+        ViewModel = _mainViewModel;
 
         InitializeComponent();
 
@@ -122,13 +123,6 @@ public sealed partial class MainWindow : ReactiveWindow<MainViewModel>
                 })
                 .DisposeWith(disposables);
 
-            ViewModel.CloseCommand
-                     .Subscribe(x =>
-                     {
-                         Close();
-                     })
-                     .DisposeWith(disposables);
-
             this.Bind(ViewModel, vm => vm.IsMainPage, v => v.IsMainPageCheckBox.IsChecked)
                 .DisposeWith(disposables);
 
@@ -163,6 +157,12 @@ public sealed partial class MainWindow : ReactiveWindow<MainViewModel>
 #endif
 
         InitFpsCounter();
+        InitMainVm();
+    }
+
+    public async void InitMainVm()
+    {
+        await _mainViewModel.Initialize();
     }
 
     private void TryDetectMsr(object sender, TextCompositionEventArgs e)

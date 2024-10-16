@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Reflection;
 using System.Windows.Input;
@@ -14,27 +15,40 @@ using Splat;
 
 namespace Kassa.RxUI;
 
-public sealed class MainViewModel : ReactiveObject, IScreen
+public sealed class MainViewModel : ReactiveObject, IScreen, IInitializable, IDisposable
 {
-    
-    public MainViewModel(IAuthService authService, IShiftService shiftService, IReportShiftService reportShiftService)
-    {
-        Router = new();
-        Router.Navigate.Execute(RcsKassa.CreateAndInject<AutorizationPageVm>());
 
-        CloseCommand = ReactiveCommand.Create((ReactiveObject sender) => sender);
+    private readonly CompositeDisposable _disposables = [];
+    private readonly IAuthService _authService;
+    private readonly IShiftService _shiftService;
+    private readonly IReportShiftService _reportShiftService;
+
+    public MainViewModel(IMainViewModelProvider mainViewModelProvider, IAuthService authService, IShiftService shiftService, IReportShiftService reportShiftService)
+    {
+        mainViewModelProvider.MainViewModel = this;
+        _authService = authService;
+        _shiftService = shiftService;
+        _reportShiftService = reportShiftService;
+
+        Router = new();
+
+        CloseCommand = ReactiveCommand.CreateFromTask(async (ReactiveObject sender) =>
+        {
+            await RcsKassa.Host.StopAsync();
+            return sender;
+        }).DisposeWith(_disposables);
 
         DialogOpenCommand = ReactiveCommand.CreateFromTask(async (DialogViewModel dialog) =>
         {
             await dialog.InitializeAsync();
 
             return dialog;
-        });
+        }).DisposeWith(_disposables);
 
         Router.CurrentViewModel.Subscribe(x =>
         {
             IsMainPage = x is MainPageVm;
-        });
+        }).DisposeWith(_disposables);
 
         BackToMenuCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -54,13 +68,13 @@ public sealed class MainViewModel : ReactiveObject, IScreen
             }
 
             IsMainPage = true;
-        });
+        }).DisposeWith(_disposables);
 
         GoToPageCommand = ReactiveCommand.CreateFromTask(async (PageViewModel pageVm) =>
         {
             var currentPage = Router.GetCurrentViewModel() as PageViewModel;
 
-            if(currentPage is not null)
+            if (currentPage is not null)
             {
                 await PreparePageToLeaving(currentPage, pageVm);
             }
@@ -70,7 +84,7 @@ public sealed class MainViewModel : ReactiveObject, IScreen
             await Router.Navigate.Execute(pageVm).FirstAsync();
 
             return pageVm;
-        });
+        }).DisposeWith(_disposables);
 
         GoToPageAndResetCommand = ReactiveCommand.CreateFromTask(async (PageViewModel pageVm) =>
         {
@@ -90,7 +104,7 @@ public sealed class MainViewModel : ReactiveObject, IScreen
             await Router.Navigate.Execute(pageVm).FirstAsync();
 
             return pageVm;
-        });
+        }).DisposeWith(_disposables);
 
         GoToPageAndResetButNotMainCommand = ReactiveCommand.CreateFromTask(async (PageViewModel pageVm) =>
         {
@@ -116,7 +130,7 @@ public sealed class MainViewModel : ReactiveObject, IScreen
             await GoToPage(pageVm);
 
             return pageVm;
-        });
+        }).DisposeWith(_disposables);
 
         GoBackCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -133,7 +147,7 @@ public sealed class MainViewModel : ReactiveObject, IScreen
                     await pageVm.DisposeAsync();
                 }
             }
-        });
+        }).DisposeWith(_disposables);
 
         OkMessageDialogCommand = ReactiveCommand.CreateFromTask<OkMessage>(async msg =>
         {
@@ -146,7 +160,7 @@ public sealed class MainViewModel : ReactiveObject, IScreen
             await DialogOpenCommand.Execute(okMessageDialog).FirstAsync();
 
             await okMessageDialog.WaitDialogClose();
-        });
+        }).DisposeWith(_disposables);
 
         this.WhenAnyValue(x => x.IsMainPage)
             .Subscribe(x =>
@@ -155,50 +169,8 @@ public sealed class MainViewModel : ReactiveObject, IScreen
                 {
                     IsMainPage = true;
                 }
-            });
-
-        authService.CurrentAuthenticationContext.CombineLatest(shiftService.CurrentShift, reportShiftService.CurrentReportShift, (authContext, shift, report) => (authContext, shift, report))
-            .Subscribe(async x =>
-            {
-                if (x.report is not null)
-                {
-                    await GoToPageAndReset(new CashierShiftReportPageVm(reportShiftService, x.report));
-
-                    return;
-                }
-
-
-                if (!x.authContext.IsAuthenticated)
-                {
-                    await GoToPageAndReset(RcsKassa.CreateAndInject<AutorizationPageVm>());
-                }
-                else if (x.shift is null)
-                {
-
-                    await GoToPageAndReset(RcsKassa.CreateAndInject<PincodePageVm>());
-                }
-                else
-                {
-
-                    var loading = ShowLoadingDialog("Загрузка данных");
-                    try
-                    {
-                        await RcsKassa.ActivateScope();
-                    }
-                    catch (Exception exc)
-                    {
-                        this.Log().Error(exc, "Error on activate scope");
-                        await RcsKassa.DisposeScope();
-                        throw;
-                    }
-                    finally
-                    {
-                        await loading.CloseAsync();
-                    }
-                    
-                    await GoToPageAndReset<MainPageVm>();
-                }
-            });
+            })
+            .DisposeWith(_disposables);
 
         UnhandledErrorExceptionEvent += DefaultUnhandler;
         RxApp.DefaultExceptionHandler = Observer.Create<Exception>(ex =>
@@ -278,6 +250,61 @@ public sealed class MainViewModel : ReactiveObject, IScreen
     {
         get;
     }
+    public bool IsInitialized
+    {
+        get;
+    }
+
+    public async ValueTask Initialize()
+    {
+        _authService.CurrentAuthenticationContext.CombineLatest(_shiftService.CurrentShift, _reportShiftService.CurrentReportShift, (authContext, shift, report) => (authContext, shift, report))
+            .Subscribe(async x =>
+            {
+                if (x.report is not null)
+                {
+                    await GoToPageAndReset(new CashierShiftReportPageVm(_reportShiftService, x.report));
+
+                    return;
+                }
+
+
+                if (!x.authContext.IsAuthenticated)
+                {
+                    await GoToPageAndReset(RcsKassa.CreateAndInject<AutorizationPageVm>());
+                }
+                else if (x.shift is null)
+                {
+
+                    await GoToPageAndReset(RcsKassa.CreateAndInject<PincodePageVm>());
+                }
+                else
+                {
+
+                    var loading = ShowLoadingDialog("Загрузка данных");
+                    try
+                    {
+                        await RcsKassa.ActivateScope();
+                    }
+                    catch (Exception exc)
+                    {
+                        this.Log().Error(exc, "Error on activate scope");
+                        await RcsKassa.DisposeScope();
+                        throw;
+                    }
+                    finally
+                    {
+                        await loading.CloseAsync();
+                    }
+
+                    await GoToPageAndReset<MainPageVm>();
+                }
+            })
+            .DisposeWith(_disposables);
+
+        await GoToPage<AutorizationPageVm>();
+    }
+
+    public void Dispose() => _disposables.Dispose();
 
     private void DefaultUnhandler(object? sender, UnhandledErrorExceptionEventArgs e)
     {
