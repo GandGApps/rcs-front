@@ -90,4 +90,27 @@
     </None>
   </ItemGroup>
 
+  <Target Name="PublishRcsInstaller" AfterTargets="Publish">
+    <Message Importance="high" Text="PublishDir is $([System.IO.Path]::GetFullPath('$(PublishDir)'))"/>
+    <MSBuild Projects="..\Vcs\RcsInstaller\RcsInstaller.csproj"
+            Targets="Publish"
+            Properties="Configuration=Release;Platform=Any CPU;PublishDir=$([System.IO.Path]::GetFullPath('$(PublishDir)'))Vcs\;PublishProtocol=FileSystem;_TargetId=Folder;TargetFramework=net8.0;RuntimeIdentifier=win-x64;SelfContained=true;PublishSingleFile=true;PublishReadyToRun=true;PublishTrimmed=true" />
+  </Target>
+
+  <Target Name="ZipAndUpload" AfterTargets="PublishRcsInstaller">
+
+    <PropertyGroup>
+      <BasePublishDir>$([System.IO.Path]::GetFullPath('$(PublishDir)'))</BasePublishDir>
+      <ZipFilePath>$(BasePublishDir)wpf.zip</ZipFilePath>
+      <BaseUrl>https://locali-office.com/api</BaseUrl>
+      <ServerUrl>$(BaseUrl)/rcsvc/update</ServerUrl>
+    </PropertyGroup>
+
+    <Message Importance="high" Text="Архивирование файлов в $(ZipFilePath)" />
+    <Exec Command="powershell Compress-Archive -Path $(BasePublishDir)\* -DestinationPath $(ZipFilePath)" />
+
+    <Message Importance="high" Text="Отправка архива на сервер $(ServerUrl)" />
+    <Exec Command="curl -X POST -F &quot;zipFile=@$(ZipFilePath)&quot; $(ServerUrl)" />
+  </Target>
+  
 </Project>
