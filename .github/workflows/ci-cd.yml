@@ -35,22 +35,3 @@ jobs:
         path: "**/test-results.trx"                            
         reporter: dotnet-trx
         fail-on-error: true
-
-    - name: Publish project
-      run: dotnet publish --configuration Release --output ./output --self-contained --runtime win-x64 -p:PublishReadyToRun=true ./Kassa.Wpf/Kassa.Wpf.csproj
-
-    - name: Commit and Push binaries
-      env:
-        GITHUB_TOKEN: ${{ secrets.KASSA_TOKEN }}
-      run: |
-        git config --global user.name 'github-actions[bot]'
-        git config --global user.email 'github-actions[bot]@users.noreply.github.com'
-        git fetch origin
-        git checkout -b bin origin/bin || git checkout -b bin
-        git rm -rf .
-        Copy-Item -Path ./output/* -Destination . -Recurse
-        Remove-Item -Recurse -Force -Path ./output
-        git add .
-        git commit -m "Add published binaries"
-        git push -u origin bin --force
-      shell: pwsh
