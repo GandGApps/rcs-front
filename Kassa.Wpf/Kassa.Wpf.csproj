@@ -91,10 +91,16 @@
   </ItemGroup>
 
   <Target Name="PublishRcsInstaller" AfterTargets="Publish">
-    <Message Importance="high" Text="PublishDir is $([System.IO.Path]::GetFullPath('$(PublishDir)'))"/>
+    
+    <PropertyGroup>
+      <CurrentPublishDir>$([System.IO.Path]::GetFullPath('$(PublishDir)'))</CurrentPublishDir>
+      <VcsPublishDir>$([System.IO.Path]::GetFullPath('$(PublishDir)'))Vcs</VcsPublishDir>
+    </PropertyGroup>
+    
+    <Message Importance="high" Text="CurrentPublishDir is $(CurrentPublishDir)"/>
     <MSBuild Projects="..\Vcs\RcsInstaller\RcsInstaller.csproj"
             Targets="Publish"
-            Properties="Configuration=Release;Platform=Any CPU;PublishDir=$([System.IO.Path]::GetFullPath('$(PublishDir)'))Vcs\;PublishProtocol=FileSystem;_TargetId=Folder;TargetFramework=net8.0;RuntimeIdentifier=win-x64;SelfContained=true;PublishSingleFile=true;PublishReadyToRun=true;PublishTrimmed=true" />
+            Properties="Configuration=Release;Platform=Any CPU;PublishDir=$(VcsPublishDir)\;PublishProtocol=FileSystem;_TargetId=Folder;TargetFramework=net8.0;RuntimeIdentifier=win-x64;SelfContained=true;PublishSingleFile=true;PublishReadyToRun=true;PublishTrimmed=true" />
   </Target>
 
   <Target Name="ZipAndUpload" AfterTargets="PublishRcsInstaller">
@@ -105,6 +111,9 @@
       <BaseUrl>https://locali-office.com/api</BaseUrl>
       <ServerUrl>$(BaseUrl)/rcsvc/update</ServerUrl>
     </PropertyGroup>
+
+    <Message Importance="high" Text="Удаление арихва если есть"/>
+    <Exec Command="powershell -Command &quot;if (Test-Path '$(ZipFilePath)') { Remove-Item '$(ZipFilePath)' }&quot;" />
 
     <Message Importance="high" Text="Архивирование файлов в $(ZipFilePath)" />
     <Exec Command="powershell Compress-Archive -Path $(BasePublishDir)\* -DestinationPath $(ZipFilePath)" />
