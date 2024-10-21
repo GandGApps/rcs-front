@@ -12,7 +12,21 @@
     <StartupObject>Kassa.Wpf.Program</StartupObject>
     <ApplicationManifest>app.manifest</ApplicationManifest>
     <InterceptorsPreviewNamespaces>$(InterceptorsPreviewNamespaces);Microsoft.Extensions.Configuration.Binder.SourceGeneration</InterceptorsPreviewNamespaces>
-    <AssemblyVersion>1.0.1.1240</AssemblyVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <_Major>$([System.DateTime]::Now.Year)</_Major>
+    <_Minor>$([System.DateTime]::Now.Month)</_Minor>
+    <_Build>$([System.DateTime]::Now.Day)</_Build>
+    <_Revision>$([System.DateTime]::Now.TimeOfDay.TotalMinutes.ToString("0"))</_Revision>
+
+    <AssemblyVersion>$(_Major).$(_Minor).$(_Build).$(_Revision)</AssemblyVersion>
+
+    <InformationalVersion>$(AssemblyVersion)</InformationalVersion>
+    <IncludeSourceRevisionInInformationalVersion>
+      false
+    </IncludeSourceRevisionInInformationalVersion>
+    
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='OptimizedSmallWindow' Or '$(Configuration)'=='SmallWindow'">
