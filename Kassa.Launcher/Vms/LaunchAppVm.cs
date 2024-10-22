@@ -13,7 +13,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KassaLauncher.Vms;
+namespace Kassa.Launcher.Vms;
 
 public sealed class LaunchAppVm : BaseVm
 {

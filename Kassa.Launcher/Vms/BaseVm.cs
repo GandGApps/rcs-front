@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KassaLauncher.Vms;
+namespace Kassa.Launcher.Vms;
 
 public class BaseVm : ReactiveObject, IRoutableViewModel
 {

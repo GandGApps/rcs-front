@@ -4,11 +4,11 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.Platform.Storage;
 using Avalonia.ReactiveUI;
-using KassaLauncher.Vms;
+using Kassa.Launcher.Vms;
 using ReactiveUI;
 using Tmds.DBus.Protocol;
 
-namespace KassaLauncher;
+namespace Kassa.Launcher;
 
 public partial class InstallerView : ReactiveUserControl<InstallerVm>
 {

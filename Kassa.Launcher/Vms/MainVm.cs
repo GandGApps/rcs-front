@@ -1,5 +1,5 @@
 ﻿using Kassa.Launcher.Services;
-using KassaLauncher.Services;
+using Kassa.Launcher.Services;
 using ReactiveUI;
 using Splat;
 using System;
@@ -9,7 +9,7 @@ using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KassaLauncher.Vms;
+namespace Kassa.Launcher.Vms;
 
 public sealed class MainVm : ReactiveObject, IScreen
 {

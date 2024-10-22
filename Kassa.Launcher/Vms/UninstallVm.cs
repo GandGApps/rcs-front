@@ -5,7 +5,7 @@ using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
 using Kassa.Launcher.Services;
-using KassaLauncher.Vms;
+using Kassa.Launcher.Vms;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 

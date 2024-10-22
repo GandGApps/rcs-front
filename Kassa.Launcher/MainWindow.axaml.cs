@@ -1,13 +1,13 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
-using KassaLauncher.Vms;
+using Kassa.Launcher.Vms;
 using SukiUI;
 using SukiUI.Controls;
 using System.Reactive;
 using System;
 using Avalonia.Controls.ApplicationLifetimes;
 
-namespace KassaLauncher;
+namespace Kassa.Launcher;
 
 public partial class MainWindow : SukiWindow
 {

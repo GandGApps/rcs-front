@@ -1,5 +1,5 @@
 ﻿using Kassa.Launcher.Services;
-using KassaLauncher.Services;
+using Kassa.Launcher.Services;
 using Octokit;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -14,7 +14,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KassaLauncher.Vms;
+namespace Kassa.Launcher.Vms;
 
 public sealed class InstallerVm : BaseVm
 {

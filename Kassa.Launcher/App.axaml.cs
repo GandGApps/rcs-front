@@ -9,13 +9,13 @@ using Avalonia.Markup.Xaml;
 using Kassa.Launcher.Services;
 using Kassa.Launcher.Vms;
 using Kassa.Shared;
-using KassaLauncher.Services;
-using KassaLauncher.Vms;
+using Kassa.Launcher.Services;
+using Kassa.Launcher.Vms;
 using Microsoft.Extensions.Configuration;
 using ReactiveUI;
 using Splat;
 
-namespace KassaLauncher;
+namespace Kassa.Launcher;
 
 public partial class App : Application, IEnableLogger
 {

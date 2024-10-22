@@ -13,7 +13,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KassaLauncher.Services;
+namespace Kassa.Launcher.Services;
 
 internal sealed class GitHubUpdater : IUpdater, IInstaller, IEnableLogger
 {

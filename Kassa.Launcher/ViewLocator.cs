@@ -1,5 +1,4 @@
 ﻿using Kassa.Launcher.Vms;
-using KassaLauncher.Vms;
 using ReactiveUI;
 using System;
 using System.Collections.Generic;
@@ -7,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace KassaLauncher;
+namespace Kassa.Launcher;
 
 public sealed class ViewLocator : IViewLocator
 {

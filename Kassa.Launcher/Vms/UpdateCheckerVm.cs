@@ -11,4 +11,4 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using System.Net.Http;
 
-namespace KassaLauncher.Vms;
+namespace Kassa.Launcher.Vms;

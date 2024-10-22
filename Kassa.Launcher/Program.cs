@@ -2,8 +2,6 @@
 using Avalonia.ReactiveUI;
 using Kassa.Launcher.Services;
 using Kassa.Shared;
-using Kassa.Shared.ServiceLocator;
-using KassaLauncher.Services;
 using Microsoft.Extensions.Configuration;
 using ReactiveUI;
 using Serilog;
@@ -13,12 +11,12 @@ using System.Diagnostics;
 using System.Reactive;
 using System.Threading.Tasks;
 
-namespace KassaLauncher;
+namespace Kassa.Launcher;
 
 internal sealed class Program
 {
 
-    private static  IConfiguration _configuration = null!;
+    private static IConfiguration _configuration = null!;
 
     // Initialization code. Don't use any Avalonia, third-party APIs or any
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
@@ -70,8 +68,6 @@ internal sealed class Program
         Locator.CurrentMutable.RegisterConstant(pathManager, typeof(IApplicationPathManager));
         Locator.CurrentMutable.RegisterConstant(new Remover(), typeof(IRemover));
         Locator.CurrentMutable.RegisterConstant(new SelfProccesUpdater(repoInfo), typeof(ISelfUpdater));
-
-        SharedServices.AddLoggers();
 
         try
         {

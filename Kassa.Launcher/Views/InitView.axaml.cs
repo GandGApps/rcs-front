@@ -2,9 +2,9 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
-using KassaLauncher.Vms;
+using Kassa.Launcher.Vms;
 
-namespace KassaLauncher;
+namespace Kassa.Launcher;
 
 public partial class InitView : ReactiveUserControl<InitVm>
 {

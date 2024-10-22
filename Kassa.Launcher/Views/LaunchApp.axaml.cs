@@ -7,10 +7,10 @@ using Avalonia.Rendering;
 using Avalonia.VisualTree;
 using Kassa.Launcher;
 using Kassa.Launcher.Services;
-using KassaLauncher.Vms;
+using Kassa.Launcher.Vms;
 using Splat;
 
-namespace KassaLauncher;
+namespace Kassa.Launcher;
 
 public partial class LaunchApp : ReactiveUserControl<LaunchAppVm>
 {

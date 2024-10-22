@@ -3,11 +3,11 @@ using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using Kassa.Launcher.Vms;
-using KassaLauncher.Vms;
+using Kassa.Launcher.Vms;
 using System;
 using ReactiveUI;
 
-namespace KassaLauncher;
+namespace Kassa.Launcher;
 
 public partial class UninstallView : ReactiveUserControl<UninstallVm>
 {
