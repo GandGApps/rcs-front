@@ -35,17 +35,13 @@ public sealed partial class App : Application
 
             if(result.Value is null)
             {
-                using (var key = Registry.LocalMachine.OpenSubKey(LauncherConstants.RegistryKeyPath))
+                using var key = Registry.LocalMachine.OpenSubKey(LauncherConstants.RegistryKeyPath);
+                if (key?.GetValue("InstallLocation") is string installLocation)
                 {
-                    var installLocation = key?.GetValue("InstallLocation") as string;
-
-                    if (installLocation != null)
-                    {
-                        // Remove last part
-                        installLocation = Path.GetDirectoryName(installLocation)!;
-                        desktop.MainWindow = new MainWindow(installLocation);
-                        return;
-                    }
+                    // Remove last part
+                    installLocation = Path.GetDirectoryName(installLocation)!;
+                    desktop.MainWindow = new MainWindow(installLocation);
+                    return;
                 }
             }
 

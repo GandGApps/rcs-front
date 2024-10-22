@@ -17,7 +17,7 @@ public sealed class InitVm : BaseVm
 
     private readonly IUpdater _updater;
     private readonly IInstaller _installer;
-    private readonly IApplicationPathManager _pathManager;
+    private readonly IApplicationPathAccessor _pathManager;
     private readonly ISelfUpdater _selfUpdater;
 
     [Reactive]
@@ -38,7 +38,7 @@ public sealed class InitVm : BaseVm
         get; private set;
     }
 
-    public InitVm(IUpdater updater, ISelfUpdater selfUpdater, IInstaller installer, IApplicationPathManager pathManager)
+    public InitVm(IUpdater updater, ISelfUpdater selfUpdater, IInstaller installer, IApplicationPathAccessor pathManager)
     {
         _updater = updater;
         _installer = installer;

@@ -5,9 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Kassa.Launcher.Services;
-public interface ISelfUpdater
+public interface IApplicationPathAccessor
 {
-    public Task<bool> HasUpdates(Action<double> progress);
-
-    public Task Update();
+    public Task<string> GetApplicationPath();
 }

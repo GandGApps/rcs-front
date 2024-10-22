@@ -29,7 +29,7 @@ public sealed class MainVm : ReactiveObject, IScreen
             Locator.Current.GetService<IUpdater>()!, 
             Locator.Current.GetService<ISelfUpdater>()!,
             Locator.Current.GetService<IInstaller>()!,
-            Locator.Current.GetService<IApplicationPathManager>()!);
+            Locator.Current.GetService<IApplicationPathAccessor>()!);
 
         
 

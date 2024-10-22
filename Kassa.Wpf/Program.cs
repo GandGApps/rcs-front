@@ -26,11 +26,11 @@ public static class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        /*if (!args.Contains("--no-launcher", StringComparer.InvariantCultureIgnoreCase))
+        if (!args.Contains("--no-launcher", StringComparer.InvariantCultureIgnoreCase))
         {
             LaunchLauncher();
             return;
-        }*/
+        }
 
         var builder = Host.CreateApplicationBuilder(args);
 

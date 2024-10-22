@@ -3,11 +3,13 @@ using Avalonia.ReactiveUI;
 using Kassa.Launcher.Services;
 using Kassa.Shared;
 using Microsoft.Extensions.Configuration;
+using RcsInstaller;
 using ReactiveUI;
 using Serilog;
 using Splat;
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reactive;
 using System.Threading.Tasks;
 
@@ -22,9 +24,9 @@ internal sealed class Program
     // SynchronizationContext-reliant code before AppMain is called: things aren't initialized
     // yet and stuff might break.
     [STAThread]
+    [DynamicDependency(DynamicallyAccessedMemberTypes.All, typeof(KassaLauncherOption))]
     public static void Main(string[] args)
     {
-
         AppDomain.CurrentDomain.UnhandledException += (s, e) =>
         {
             LogHost.Default.Fatal((Exception)e.ExceptionObject, "An unhandled exception occurred");
@@ -55,19 +57,10 @@ internal sealed class Program
 
         _configuration = builder.Build();
 
-        var repoInfo = _configuration.GetRequiredSection("RepoInfo").Get<RepoInfo>();
+        var pathManager = new PathConstantMaanager(args[0]);
 
-        Debug.Assert(repoInfo is not null);
-
-        var pathManager = new EnvironmentPathManager();
-        var githubUpdater = new GitHubUpdater(repoInfo, new WndShortcutCreator(), pathManager);
-
-        Locator.CurrentMutable.RegisterConstant(githubUpdater, typeof(IUpdater));
-        Locator.CurrentMutable.RegisterConstant(githubUpdater, typeof(IInstaller));
         Locator.CurrentMutable.RegisterConstant(new JsonAppsettingsSaver(), typeof(IOptionManager));
-        Locator.CurrentMutable.RegisterConstant(pathManager, typeof(IApplicationPathManager));
-        Locator.CurrentMutable.RegisterConstant(new Remover(), typeof(IRemover));
-        Locator.CurrentMutable.RegisterConstant(new SelfProccesUpdater(repoInfo), typeof(ISelfUpdater));
+        Locator.CurrentMutable.RegisterConstant(pathManager, typeof(IApplicationPathAccessor));
 
         try
         {

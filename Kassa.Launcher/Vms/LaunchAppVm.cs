@@ -20,7 +20,7 @@ public sealed class LaunchAppVm : BaseVm
 
     public LaunchAppVm()
     {
-        var pathManager = Locator.Current.GetService<IApplicationPathManager>()!;
+        var pathManager = Locator.Current.GetService<IApplicationPathAccessor>()!;
         var remover = Locator.Current.GetService<IRemover>()!;
 
         LaunchAppCommand = ReactiveCommand.CreateFromTask(async () =>
