@@ -14,11 +14,7 @@ namespace Kassa.Launcher.Vms;
 
 public sealed class InitVm : BaseVm
 {
-
-    private readonly IUpdater _updater;
-    private readonly IInstaller _installer;
     private readonly IApplicationPathAccessor _pathManager;
-    private readonly ISelfUpdater _selfUpdater;
 
     [Reactive]
     public bool IsInstalled
@@ -38,12 +34,9 @@ public sealed class InitVm : BaseVm
         get; private set;
     }
 
-    public InitVm(IUpdater updater, ISelfUpdater selfUpdater, IInstaller installer, IApplicationPathAccessor pathManager)
+    public InitVm(IApplicationPathAccessor pathManager)
     {
-        _updater = updater;
-        _installer = installer;
         _pathManager = pathManager;
-        _selfUpdater = selfUpdater;
     }
 
     public async Task InitAsync()

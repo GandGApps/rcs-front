@@ -109,10 +109,8 @@
       <VcsPublishDir>$([System.IO.Path]::GetFullPath('$(PublishDir)'))Vcs</VcsPublishDir>
     </PropertyGroup>
     
-    <Message Importance="high" Text="CurrentPublishDir is $(CurrentPublishDir)"/>
-    <MSBuild Projects="..\Vcs\RcsInstaller\RcsInstaller.csproj"
-            Targets="Publish"
-            Properties="Configuration=Release;Platform=Any CPU;PublishDir=$(VcsPublishDir)\;PublishProtocol=FileSystem;_TargetId=Folder;TargetFramework=net8.0;RuntimeIdentifier=win-x64;SelfContained=true;PublishSingleFile=true;PublishReadyToRun=true;PublishTrimmed=true" />
+    <Message Importance="high" Text="CurrentPublishDir is $(CurrentPublishDir)" />
+    <MSBuild Projects="..\Vcs\RcsInstaller\RcsInstaller.csproj" Targets="Publish" Properties="Configuration=Release;Platform=Any CPU;PublishDir=$(VcsPublishDir)\;PublishProtocol=FileSystem;_TargetId=Folder;TargetFramework=net8.0;RuntimeIdentifier=win-x64;SelfContained=true;PublishSingleFile=true;PublishReadyToRun=true;PublishTrimmed=true" />
   </Target>
 
   <Target Name="ZipAndUpload" AfterTargets="PublishRcsInstaller">
@@ -124,7 +122,7 @@
       <ServerUrl>$(BaseUrl)/rcsvc/update</ServerUrl>
     </PropertyGroup>
 
-    <Message Importance="high" Text="Удаление арихва если есть"/>
+    <Message Importance="high" Text="Удаление арихва если есть" />
     <Exec Command="powershell -Command &quot;if (Test-Path '$(ZipFilePath)') { Remove-Item '$(ZipFilePath)' }&quot;" />
 
     <Message Importance="high" Text="Архивирование файлов в $(ZipFilePath)" />
