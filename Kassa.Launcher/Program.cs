@@ -3,7 +3,6 @@ using Avalonia.ReactiveUI;
 using Kassa.Launcher.Services;
 using Kassa.Shared;
 using Microsoft.Extensions.Configuration;
-using RcsInstaller;
 using ReactiveUI;
 using Serilog;
 using Splat;

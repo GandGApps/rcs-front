@@ -48,56 +48,5 @@ public sealed class InitVm : BaseVm
             Dispatcher.UIThread.Invoke(() => IsInstalled = false);
             
         }
-        else
-        {
-            var result = await _updater.IsInstalled(installedPath); 
-            Dispatcher.UIThread.Invoke(() => IsInstalled = result);
-        }
-
-
-        if (!IsInstalled)
-        {
-            HostScreen.Router.Navigate.Execute(new InstallerVm(_updater, _installer));
-        }
-        else
-        {
-            Dispatcher.UIThread.Invoke(() => Status = "Проверка обновлений...");
-            var hasUpdates = await _updater.CheckForUpdatesAsync(progress => Dispatcher.UIThread.Invoke(() => Progress = progress * 100));
-            if (hasUpdates)
-            {
-                
-                Dispatcher.UIThread.Invoke(() => Status = "Загрузка обновлений...");
-
-                await _updater.UpdateAsync(progress => Dispatcher.UIThread.Invoke(() => Progress = progress * 100));
-
-                await Task.Delay(2000);
-
-                Dispatcher.UIThread.Invoke(() => Status = "Обновление загружено");
-            }
-
-            await Task.Delay(2000);
-
-            Dispatcher.UIThread.Invoke(() => Status = "Проверка обновлений лаунчера...");
-
-            var hasLauncherUpdates = await _selfUpdater.HasUpdates(progress =>
-            {
-                Dispatcher.UIThread.Invoke(void () => Progress = progress);
-            });
-
-            if (hasLauncherUpdates)
-            {
-                Dispatcher.UIThread.Invoke(() => Status = "Обнаружено обновление. Лаунчер будет закрыт");
-
-                await Task.Delay(3000);
-
-                await _selfUpdater.Update();
-
-                App.Exit();
-
-                return;
-            }
-
-            Dispatcher.UIThread.Invoke(() => HostScreen.Router.Navigate.Execute(new LaunchAppVm()));
-        }
     }
 }
