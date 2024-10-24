@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 using System.Threading.Tasks;
+using Splat;
 
 namespace Kassa.Launcher.Services;
 internal sealed class JsonAppsettingsSaver : IOptionManager
@@ -15,15 +16,10 @@ internal sealed class JsonAppsettingsSaver : IOptionManager
 
     public T GetOption<T>(string key)
     {
-        var filePath = Environment.GetEnvironmentVariable(EnvironmentVariableKassaInstallPath);
-
-        if (string.IsNullOrWhiteSpace(filePath))
-        {
-            throw new InvalidOperationException($"The environment variable {EnvironmentVariableKassaInstallPath} is not set.");
-        }
+        var appPath = Locator.Current.GetService<IApplicationPathAccessor>()!.GetApplicationPath();
 
         // get or create the appsettings.local.json file
-        var appSettingsLocalPath = Path.Combine(filePath, LocalAppSettingsPath);
+        var appSettingsLocalPath = Path.Combine(appPath, LocalAppSettingsPath);
 
         if (!File.Exists(appSettingsLocalPath))
         {
@@ -44,15 +40,15 @@ internal sealed class JsonAppsettingsSaver : IOptionManager
 
     public void SaveOption<T>(string key, T value)
     {
-        var filePath = Environment.GetEnvironmentVariable(EnvironmentVariableKassaInstallPath);
+        var appPath = Locator.Current.GetService<IApplicationPathAccessor>()!.GetApplicationPath();
 
-        if (string.IsNullOrWhiteSpace(filePath))
+        if (string.IsNullOrWhiteSpace(appPath))
         {
             throw new InvalidOperationException($"The environment variable {EnvironmentVariableKassaInstallPath} is not set.");
         }
 
         // get or create the appsettings.local.json file
-        var appSettingsLocalPath = Path.Combine(filePath, LocalAppSettingsPath);
+        var appSettingsLocalPath = Path.Combine(appPath, LocalAppSettingsPath);
 
         if (!File.Exists(appSettingsLocalPath))
         {

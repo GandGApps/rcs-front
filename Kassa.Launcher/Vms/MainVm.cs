@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reactive;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,10 +14,9 @@ namespace Kassa.Launcher.Vms;
 
 public sealed class MainVm : ReactiveObject, IScreen
 {
-    public static MainVm Default
-    {
-        get;
-    } = new();
+    public static MainVm Default => _mainVm ??= new();
+
+    private static MainVm? _mainVm = null;
 
     public RoutingState Router { get; }
 
@@ -25,14 +25,14 @@ public sealed class MainVm : ReactiveObject, IScreen
     {
         Router = new RoutingState();
 
-        var initVm = new InitVm(Locator.Current.GetService<IApplicationPathAccessor>()!);
+        
 
 
         Start = ReactiveCommand.CreateRunInBackground(async void () =>
         {
-            Router.Navigate.Execute(initVm).Subscribe();
+            var initVm = new LaunchAppVm();
 
-            await initVm.InitAsync();
+            await Router.Navigate.Execute(initVm).FirstAsync();
         });
         
     }

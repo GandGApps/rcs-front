@@ -101,19 +101,51 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
+<!--
+  <Target Name="BuildInstallerAndLauncher" AfterTargets="Build" Condition="'$(Publish)' != 'true'">
 
-  <Target Name="PublishRcsInstaller" AfterTargets="Publish">
+    <PropertyGroup>
+      <CurrentOutputPath>$([System.IO.Path]::GetFullPath('$(OutputPath)'))</CurrentOutputPath>
+      <VcsOutputPath>$([System.IO.Path]::GetFullPath('$(OutputPath)'))Vcs</VcsOutputPath>
+      <LauncherOutputPath>$([System.IO.Path]::GetFullPath('$(OutputPath)'))Launcher</LauncherOutputPath>
+    </PropertyGroup>
+
+    <Message Importance="high" Text="Current CurrentOutputPath is $(CurrentOutputPath)" />
+    <MSBuild Projects="..\Vcs\RcsInstaller\RcsInstaller.csproj" Targets="Build" Properties="
+             Configuration=$(Configuration);
+             Platform=Any CPU;
+             OutputPath=$(VcsOutputPath)\;
+             TargetFramework=net8.0;
+             AppendTargetFrameworkToOutputPath=false;
+             AppendRuntimeIdentifierToOutputPath=false;
+             RuntimeIdentifier=win-x64;" />
+    <MSBuild Projects="..\Kassa.Launcher\Kassa.Launcher.csproj" Targets="Build" Properties="
+             Configuration=$(Configuration);
+             Platform=Any CPU;
+             OutputPath=$(LauncherOutputPath)\;
+             TargetFramework=net8.0;
+             AppendTargetFrameworkToOutputPath=false;
+             AppendRuntimeIdentifierToOutputPath=false;
+             RuntimeIdentifier=win-x64;" />
+
+
+  </Target>
+  -->
+
+  <Target Name="PublishRcsInstallerAndLauncher" AfterTargets="Publish">
     
     <PropertyGroup>
       <CurrentPublishDir>$([System.IO.Path]::GetFullPath('$(PublishDir)'))</CurrentPublishDir>
       <VcsPublishDir>$([System.IO.Path]::GetFullPath('$(PublishDir)'))Vcs</VcsPublishDir>
+      <LauncherPublishDir>$([System.IO.Path]::GetFullPath('$(PublishDir)'))Launcher</LauncherPublishDir>
     </PropertyGroup>
     
     <Message Importance="high" Text="CurrentPublishDir is $(CurrentPublishDir)" />
     <MSBuild Projects="..\Vcs\RcsInstaller\RcsInstaller.csproj" Targets="Publish" Properties="Configuration=Release;Platform=Any CPU;PublishDir=$(VcsPublishDir)\;PublishProtocol=FileSystem;_TargetId=Folder;TargetFramework=net8.0;RuntimeIdentifier=win-x64;SelfContained=true;PublishSingleFile=true;PublishReadyToRun=true;PublishTrimmed=true" />
+    <MSBuild Projects="..\Kassa.Launcher\Kassa.Launcher.csproj" Targets="Publish" Properties="Configuration=Release;Platform=Any CPU;PublishDir=$(LauncherPublishDir)\;PublishProtocol=FileSystem;_TargetId=Folder;TargetFramework=net8.0;RuntimeIdentifier=win-x64;SelfContained=true;PublishSingleFile=true;PublishReadyToRun=true;PublishTrimmed=true" />
   </Target>
 
-  <Target Name="ZipAndUpload" AfterTargets="PublishRcsInstaller">
+  <Target Name="ZipAndUpload" AfterTargets="PublishRcsInstallerAndLauncher">
 
     <PropertyGroup>
       <BasePublishDir>$([System.IO.Path]::GetFullPath('$(PublishDir)'))</BasePublishDir>

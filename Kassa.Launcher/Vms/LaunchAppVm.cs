@@ -25,16 +25,16 @@ public sealed class LaunchAppVm : BaseVm
 
         LaunchAppCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var path = await pathManager.GetApplicationPath();
+            var path = pathManager.GetApplicationPath();
 
             if (string.IsNullOrWhiteSpace(path))
             {
                 ThrowHelper.ThrowInvalidOperationException("Kassa is not installed.");
             }
 
-            path = Path.Combine(path, "Kassa.Wpf.exe");
+            var  appPath = Path.Combine(path, "Kassa.Wpf.exe");
 
-            if (!File.Exists(path))
+            if (!File.Exists(appPath))
             {
                 ThrowHelper.ThrowInvalidOperationException("Kassa is not installed.");
             }
@@ -43,9 +43,10 @@ public sealed class LaunchAppVm : BaseVm
             {
                 StartInfo = new ProcessStartInfo
                 {
-                    FileName = path,
+                    FileName = appPath,
                     UseShellExecute = true,
-                    ArgumentList = { "--no-launcher" }
+                    ArgumentList = { "--no-launcher" },
+                    WorkingDirectory = path,
                 }
             };
 

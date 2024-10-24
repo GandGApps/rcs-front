@@ -10,8 +10,8 @@ internal sealed class PathConstantMaanager(string path): IApplicationPathAccesso
 {
     private readonly string _path = path;
 
-    public Task<string> GetApplicationPath()
+    public string GetApplicationPath()
     {
-        return Task.FromResult(_path);
+        return _path;
     }
 }

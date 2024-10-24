@@ -7,5 +7,5 @@ using System.Threading.Tasks;
 namespace Kassa.Launcher.Services;
 public interface IApplicationPathAccessor
 {
-    public Task<string> GetApplicationPath();
+    public string GetApplicationPath();
 }

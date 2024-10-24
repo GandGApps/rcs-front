@@ -14,6 +14,7 @@ using Kassa.Launcher.Vms;
 using Microsoft.Extensions.Configuration;
 using ReactiveUI;
 using Splat;
+using CommandLine;
 
 namespace Kassa.Launcher;
 
@@ -42,11 +43,23 @@ public partial class App : Application, IEnableLogger
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
+
+            var options = Parser.Default.ParseArguments<KassaLauncherOption>(desktop.Args);
+
+            if (options.Errors.Any() || options.Value is not KassaLauncherOption kassaLauncherOption)
+            {
+                Exit();
+                return;
+            }
+
             desktop.MainWindow = new MainWindow();
             desktop.ShutdownMode = ShutdownMode.OnMainWindowClose;
             var mainVm = (MainVm)desktop.MainWindow.DataContext!;
 
-            if (desktop.Args?.Length > 0 && desktop.Args.Contains("--remove"))
+            var pathManager = new PathConstantMaanager(kassaLauncherOption.Path);
+            Locator.CurrentMutable.RegisterConstant(pathManager, typeof(IApplicationPathAccessor));
+
+            if (kassaLauncherOption.Remove)
             {
                 var remover = Locator.Current.GetService<IRemover>()!;
 
@@ -56,6 +69,17 @@ public partial class App : Application, IEnableLogger
             {
                 mainVm.Start.Execute().Subscribe();
             }
+
+            /*if (desktop.Args?.Length > 0 && desktop.Args.Contains("--remove"))
+            {
+                var remover = Locator.Current.GetService<IRemover>()!;
+
+                mainVm.Router.NavigateAndReset.Execute(new UninstallVm(remover)).Subscribe();
+            }
+            else
+            {
+                mainVm.Start.Execute().Subscribe();
+            }*/
         }
 
         base.OnFrameworkInitializationCompleted();

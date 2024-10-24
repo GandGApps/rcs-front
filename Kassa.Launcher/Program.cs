@@ -3,6 +3,7 @@ using Avalonia.ReactiveUI;
 using Kassa.Launcher.Services;
 using Kassa.Shared;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using ReactiveUI;
 using Serilog;
 using Splat;
@@ -51,15 +52,17 @@ internal sealed class Program
 
         var builder = new ConfigurationBuilder()
             .SetBasePath(AppContext.BaseDirectory)
-            .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+            .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
             .AddJsonFile("appsettings.Development.json", optional: true, reloadOnChange: true);
 
         _configuration = builder.Build();
 
-        var pathManager = new PathConstantMaanager(args[0]);
-
         Locator.CurrentMutable.RegisterConstant(new JsonAppsettingsSaver(), typeof(IOptionManager));
-        Locator.CurrentMutable.RegisterConstant(pathManager, typeof(IApplicationPathAccessor));
+        var serviceCollention = new ServiceCollection();
+
+        // litle trick to something
+        SharedServices.AddRcsLoggers(serviceCollention);
+        
 
         try
         {

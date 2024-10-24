@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -66,16 +67,13 @@ public static class Program
 
     private static void LaunchLauncher()
     {
-        var launcherPath = Environment.GetEnvironmentVariable("KASSA_LAUNCHER_PATH", EnvironmentVariableTarget.Machine);
-
-        if (string.IsNullOrWhiteSpace(launcherPath))
-        {
-            throw new InvalidOperationException("KASSA_LAUNCHER_PATH environment variable is not set.");
-        }
-
+        var launcherPath = Path.Combine(RcsKassa.BasePath, "Launcher");
         var path = System.IO.Path.Combine(launcherPath, "Kassa.Launcher.exe");
+        var parameters = $"-p \"{RcsKassa.BasePath}\"";
 
-        Process.Start(path);
+        LogHost.Default.Info($"Start proccess:{path} {parameters}");
+
+        Process.Start(path, $"-p \"{RcsKassa.BasePath}\"");
     }
 
 }

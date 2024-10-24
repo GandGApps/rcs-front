@@ -39,14 +39,16 @@ public sealed class InitVm : BaseVm
         _pathManager = pathManager;
     }
 
-    public async Task InitAsync()
+    public Task InitAsync()
     {
-        var installedPath = await _pathManager.GetApplicationPath();
+        var installedPath = _pathManager.GetApplicationPath();
 
         if (string.IsNullOrEmpty(installedPath))
         {
             Dispatcher.UIThread.Invoke(() => IsInstalled = false);
             
         }
+
+        return Task.CompletedTask;
     }
 }
