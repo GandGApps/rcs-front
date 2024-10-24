@@ -1,11 +1,11 @@
 <UserControl
-    x:Class="KassaLauncher.LaunchApp"
+    x:Class="Kassa.Launcher.LaunchApp"
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:suki="clr-namespace:SukiUI.Theme;assembly=SukiUI"
-    xmlns:vm="using:KassaLauncher.Vms"
+    xmlns:vm="using:Kassa.Launcher.Vms"
     d:DesignHeight="500"
     d:DesignWidth="800"
     x:DataType="vm:LaunchAppVm"
