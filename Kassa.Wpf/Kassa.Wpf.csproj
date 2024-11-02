@@ -100,7 +100,10 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>
-<!--
+
+
+  <!-- Увы и ах, у меня не получилось сделать так, что бы в итоговом даже билде, строились эти проекты -->
+  <!--
   <Target Name="BuildInstallerAndLauncher" AfterTargets="Build" Condition="'$(Publish)' != 'true'">
 
     <PropertyGroup>
