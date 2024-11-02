@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Markup;
 
@@ -14,34 +15,44 @@ namespace Kassa.Wpf.MarkupExntesions;
 
 public sealed class AdaptiveSizeExtension : MarkupExtension
 {
+    private static readonly AdaptiveSizeConverter _adaptiveSizeConverter = new();
+    private static readonly PropertyPath _actualWidthPropertyPath = new(FrameworkElement.ActualWidthProperty);
+
+#if DEBUG
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("CodeQuality", "IDE0052:Remove unread private members", Justification = "<Pending>")]
+    private static int _counter = 0;
+#endif
+
     public AdaptiveSizeExtension()
     {
-        Size = 0;
+#if DEBUG
+
+        _counter++;
+#endif
     }
 
-    public AdaptiveSizeExtension(double size)
+    public AdaptiveSizeExtension(double size): this()
     {
         Size = size;
     }
 
     [ConstructorArgument("size")]
-    [DefaultValue(0)]
-    public double Size
+    public double? Size
     {
         get; set;
     }
 
-    public Thickness Thickness
+    public Thickness? Thickness
     {
         get; set;
     }
 
-    public GridLength GridLength
+    public GridLength? GridLength
     {
         get; set;
     }
 
-    public CornerRadius CornerRadius
+    public CornerRadius? CornerRadius
     {
         get; set;
     }
@@ -53,8 +64,8 @@ public sealed class AdaptiveSizeExtension : MarkupExtension
             var fallbackBinding = new Binding
             {
                 Source = GetSource(serviceProvider),
-                Path = new(FrameworkElement.ActualWidthProperty),
-                Converter = new AdaptiveSizeConverter(),
+                Path = _actualWidthPropertyPath,
+                Converter = _adaptiveSizeConverter,
                 ConverterParameter = Size,
                 FallbackValue = Size
             };
@@ -68,68 +79,45 @@ public sealed class AdaptiveSizeExtension : MarkupExtension
         var targetObject = valueTargetProvider?.TargetObject;
 
 
-        if (targetObject is DependencyObject dependencyObject)
+        if (targetObject is DependencyObject)
         {
-            if (DesignerProperties.GetIsInDesignMode(dependencyObject))
+            if (IsDesignMode(serviceProvider, targetObject, targetProperty))
             {
                 if (targetProperty is DependencyProperty dProperty)
                 {
                     if (dProperty.PropertyType == typeof(Thickness))
                     {
-                        return Thickness;
+                        return Thickness ?? new();
                     }
                     if (dProperty.PropertyType == typeof(GridLength))
                     {
-                        return GridLength;
+                        return GridLength ?? new();
                     }
                     if (dProperty.PropertyType == typeof(CornerRadius))
                     {
-                        return CornerRadius;
+                        return CornerRadius ?? new();
                     }
                 }
-                return Size;
+                return Size ?? 1;
             }
         }
-
-        if (MainWindow.Instance == null)
-        {
-            if (targetObject is Setter dSetter)
-            {
-                if (dSetter.Property.PropertyType == typeof(Thickness))
-                {
-                    return Thickness;
-                }
-
-                if (dSetter.Property.PropertyType == typeof(GridLength))
-                {
-                    return GridLength;
-                }
-
-                if (dSetter.Property.PropertyType == typeof(CornerRadius))
-                {
-                    return CornerRadius;
-                }
-
-                return Size;
-            }
-        }
-
+        
         Binding binding;
         var source = GetSource(serviceProvider);
 
         if (targetObject is Setter setter)
         {
-            if (setter.Property is null)
+            if (IsDesignMode(serviceProvider, targetObject, targetProperty))
             {
-                return null!;
+                return ReturnFirstNotNullProperty();
             }
             if (setter.Property.PropertyType == typeof(Thickness))
             {
                 binding = new Binding
                 {
                     Source = source,
-                    Path = new(FrameworkElement.ActualWidthProperty),
-                    Converter = new AdaptiveSizeConverter(),
+                    Path = _actualWidthPropertyPath,
+                    Converter = _adaptiveSizeConverter,
                     ConverterParameter = Thickness,
                     FallbackValue = Thickness
                 };
@@ -142,8 +130,8 @@ public sealed class AdaptiveSizeExtension : MarkupExtension
                 binding = new Binding
                 {
                     Source = source,
-                    Path = new(FrameworkElement.ActualWidthProperty),
-                    Converter = new AdaptiveSizeConverter(),
+                    Path = _actualWidthPropertyPath,
+                    Converter = _adaptiveSizeConverter,
                     ConverterParameter = GridLength,
                     FallbackValue = GridLength
                 };
@@ -156,8 +144,8 @@ public sealed class AdaptiveSizeExtension : MarkupExtension
                 binding = new Binding
                 {
                     Source = source,
-                    Path = new(FrameworkElement.ActualWidthProperty),
-                    Converter = new AdaptiveSizeConverter(),
+                    Path = _actualWidthPropertyPath,
+                    Converter = _adaptiveSizeConverter,
                     ConverterParameter = CornerRadius,
                     FallbackValue = CornerRadius
                 };
@@ -173,8 +161,8 @@ public sealed class AdaptiveSizeExtension : MarkupExtension
                 binding = new Binding
                 {
                     Source = source,
-                    Path = new(FrameworkElement.ActualWidthProperty),
-                    Converter = new AdaptiveSizeConverter(),
+                    Path = _actualWidthPropertyPath,
+                    Converter = _adaptiveSizeConverter,
                     ConverterParameter = Thickness,
                     FallbackValue = Thickness
                 };
@@ -187,8 +175,8 @@ public sealed class AdaptiveSizeExtension : MarkupExtension
                 binding = new Binding
                 {
                     Source = source,
-                    Path = new(FrameworkElement.ActualWidthProperty),
-                    Converter = new AdaptiveSizeConverter(),
+                    Path = _actualWidthPropertyPath,
+                    Converter = _adaptiveSizeConverter,
                     ConverterParameter = GridLength,
                     FallbackValue = GridLength
                 };
@@ -202,8 +190,8 @@ public sealed class AdaptiveSizeExtension : MarkupExtension
                 binding = new Binding
                 {
                     Source = source,
-                    Path = new(FrameworkElement.ActualWidthProperty),
-                    Converter = new AdaptiveSizeConverter(),
+                    Path = _actualWidthPropertyPath,
+                    Converter = _adaptiveSizeConverter,
                     ConverterParameter = CornerRadius,
                     FallbackValue = CornerRadius
                 };
@@ -217,10 +205,10 @@ public sealed class AdaptiveSizeExtension : MarkupExtension
         binding = new Binding
         {
             Source = source,
-            Path = new(FrameworkElement.ActualWidthProperty),
-            Converter = new AdaptiveSizeConverter(),
-            ConverterParameter = Size,
-            FallbackValue = Size
+            Path = _actualWidthPropertyPath,
+            Converter = _adaptiveSizeConverter,
+            ConverterParameter = ReturnFirstNotNullProperty(),
+            FallbackValue = ReturnFirstNotNullProperty()
         };
 
         return binding.ProvideValue(serviceProvider);
@@ -244,7 +232,59 @@ public sealed class AdaptiveSizeExtension : MarkupExtension
         return null!;
     }
 
-    internal class AdaptiveSizeConverter : IValueConverter
+    private  object ReturnFirstNotNullProperty()
+    {
+        if (Size is double size)
+        {
+            return size;
+        }
+
+        if(Thickness is Thickness thickness)
+        {
+            return thickness;
+        }
+
+        if (GridLength is GridLength gridLength)
+        {
+            return gridLength;
+        }
+
+        if (CornerRadius is CornerRadius cornerRadius)
+        {
+            return cornerRadius;
+        }
+
+        return 1;
+    }
+
+    [System.Diagnostics.CodeAnalysis.SuppressMessage("Style", "IDE0060:Remove unused parameter", Justification = "<Pending>")]
+    private static bool IsDesignMode(IServiceProvider? serviceProvider, object? targetObject, object? targetProperty)
+    {
+        var designerHost = serviceProvider?.GetService(typeof(IDesignerHost)) as IDesignerHost;
+
+        if (designerHost is not null)
+        {
+            return true;
+        }
+
+        if (targetObject is DependencyObject dependencyObject)
+        {
+            if (DesignerProperties.GetIsInDesignMode(dependencyObject))
+            {
+                return true;
+            }
+        }
+
+        // Очень спорное утверждение, но пока так
+        if (MainWindow.Instance is null)
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    internal sealed class AdaptiveSizeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {

@@ -12,7 +12,6 @@
     xmlns:rxui="http://reactiveui.net"
     xmlns:vm="clr-namespace:Kassa.RxUI;assembly=Kassa.RxUI"
     Title="MainWindow"
-    d:DataContext="{d:DesignInstance Type=vm:MainViewModel}"
     d:DesignHeight="860"
     d:DesignWidth="1530"
     x:TypeArguments="vm:MainViewModel"

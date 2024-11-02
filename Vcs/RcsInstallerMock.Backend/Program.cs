@@ -12,6 +12,12 @@ using RcsVersionControlMock.Json;
 
 var builder = WebApplication.CreateSlimBuilder(args);
 
+
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.Limits.MaxRequestBodySize = 500_000_000; // 500 MB
+});
+
 builder.Services.ConfigureHttpJsonOptions(options =>
 {
     options.SerializerOptions.TypeInfoResolverChain.Insert(0, AppJsonSerializerContext.Default);
@@ -37,87 +43,108 @@ builder.Services.AddSingleton<ICachedZips>(provider =>
     return new CachedZips(cacheFilePath);
 });
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
+{
+});
+
 var app = builder.Build();
 
 app.UseAntiforgery();
 
+app.UseSwagger(options =>
+{
+});
+app.UseSwaggerUI(options =>
+{
+});
+
 var rcsvcApi = app.MapGroup("api/rcsvc");
 
-rcsvcApi.MapPost("/update", [RequestSizeLimit(250_000_000), IgnoreAntiforgeryToken] async Task<IResult> (
+rcsvcApi.MapPost("/update", [RequestSizeLimit(350_000_000), IgnoreAntiforgeryToken] async Task<IResult> (
     [FromServices] IRcsVersionControl rcsVersionControl,
     [FromServices] IWebHostEnvironment webHostEnvironment,
     [FromServices] ILogger<Program> logger,
     IFormFile zipFile) =>
 {
-    if (zipFile is null || zipFile.Length == 0)
-    {
-        logger.LogWarning("No file was uploaded or the file is empty.");
-        return Results.BadRequest();
-    }
-
-    if (!zipFile.FileName.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
-    {
-        logger.LogWarning("The uploaded file is not a ZIP archive.");
-        return Results.BadRequest(new BadRequestWithMessage("File must be a ZIP archive."));
-    }
-
-    var zipFileName = $"{Guid.NewGuid()}.zip";
-
-    var rcsBinDirectory = Path.Combine(webHostEnvironment.WebRootPath, "RcsBin");
-    var zipFilePath = Path.Combine(rcsBinDirectory, zipFileName);
-
     try
     {
-        logger.LogInformation("Saving uploaded ZIP file to temporary path: {ZipFilePath}", zipFilePath);
 
-        // Ensure the RcsBin directory exists
-        if (!Directory.Exists(rcsBinDirectory))
+        if (zipFile is null || zipFile.Length == 0)
         {
-            Directory.CreateDirectory(rcsBinDirectory);
-            logger.LogInformation("Created directory: {RcsBinDirectory}", rcsBinDirectory);
+            logger.LogWarning("No file was uploaded or the file is empty.");
+            return Results.BadRequest(new BadRequestWithMessage("No file was uploaded or the file is empty."));
         }
 
-        // Save the uploaded file to a temporary location
-        using (var stream = new FileStream(zipFilePath, FileMode.Create))
+        if (!zipFile.FileName.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
         {
-            await zipFile.CopyToAsync(stream);
+            logger.LogWarning("The uploaded file is not a ZIP archive.");
+            return Results.BadRequest(new BadRequestWithMessage("File must be a ZIP archive."));
         }
-        logger.LogInformation("ZIP file saved: {ZipFilePath}", zipFilePath);
 
-        // Extract the ZIP file to the RcsBin directory
-        logger.LogInformation("Extracting ZIP file {ZipFilePath} to directory {RcsBinDirectory}", zipFilePath, rcsBinDirectory);
-        ZipFile.ExtractToDirectory(zipFilePath, rcsBinDirectory, overwriteFiles: true);
-        logger.LogInformation("Extraction completed.");
+        var zipFileName = $"{Guid.NewGuid()}.zip";
 
-        // Delete the temporary ZIP file
-        File.Delete(zipFilePath);
-        logger.LogInformation("Temporary ZIP file deleted: {ZipFilePath}", zipFilePath);
+        var rcsBinDirectory = Path.Combine(webHostEnvironment.WebRootPath, "RcsBin");
+        var zipFilePath = Path.Combine(rcsBinDirectory, zipFileName);
 
-        // Update the version control
-        logger.LogInformation("Updating version control via IRcsVersionControl.");
-        await rcsVersionControl.Update();
-        logger.LogInformation("Version control update completed.");
-    }
-    catch (Exception ex)
-    {
-        logger.LogError(ex, "An error occurred while processing the uploaded ZIP file.");
-        return Results.StatusCode(500);
-    }
-    finally
-    {
-        // Delete the temporary ZIP file if it still exists
-        if (File.Exists(zipFilePath))
+        try
         {
+            logger.LogInformation("Saving uploaded ZIP file to temporary path: {ZipFilePath}", zipFilePath);
+
+            // Ensure the RcsBin directory exists
+            if (!Directory.Exists(rcsBinDirectory))
+            {
+                Directory.CreateDirectory(rcsBinDirectory);
+                logger.LogInformation("Created directory: {RcsBinDirectory}", rcsBinDirectory);
+            }
+
+            // Save the uploaded file to a temporary location
+            using (var stream = new FileStream(zipFilePath, FileMode.Create))
+            {
+                await zipFile.CopyToAsync(stream);
+            }
+            logger.LogInformation("ZIP file saved: {ZipFilePath}", zipFilePath);
+
+            // Extract the ZIP file to the RcsBin directory
+            logger.LogInformation("Extracting ZIP file {ZipFilePath} to directory {RcsBinDirectory}", zipFilePath, rcsBinDirectory);
+            ZipFile.ExtractToDirectory(zipFilePath, rcsBinDirectory, overwriteFiles: true);
+            logger.LogInformation("Extraction completed.");
+
+            // Delete the temporary ZIP file
             File.Delete(zipFilePath);
-            logger.LogInformation("Temporary ZIP file deleted in finally block: {ZipFilePath}", zipFilePath);
-        }
-    }
+            logger.LogInformation("Temporary ZIP file deleted: {ZipFilePath}", zipFilePath);
 
-    logger.LogInformation("Update process completed successfully.");
-    return Results.Ok();
+            // Update the version control
+            logger.LogInformation("Updating version control via IRcsVersionControl.");
+            await rcsVersionControl.Update();
+            logger.LogInformation("Version control update completed.");
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(ex, "An error occurred while processing the uploaded ZIP file.");
+            return Results.StatusCode(500);
+        }
+        finally
+        {
+            // Delete the temporary ZIP file if it still exists
+            if (File.Exists(zipFilePath))
+            {
+                File.Delete(zipFilePath);
+                logger.LogInformation("Temporary ZIP file deleted in finally block: {ZipFilePath}", zipFilePath);
+            }
+        }
+
+        logger.LogInformation("Update process completed successfully.");
+        return Results.Ok();
+    }
+    catch (Exception exc)
+    {
+        logger.LogError(exc, "An error occurred during file processing.");
+        return Results.BadRequest("An error occurred during file processing.");
+    }
 }).DisableAntiforgery();
 
-rcsvcApi.MapGet("/install", [RequestSizeLimit(250_000_000), IgnoreAntiforgeryToken] async Task<IResult> (
+rcsvcApi.MapGet("/install", [RequestSizeLimit(350_000_000), IgnoreAntiforgeryToken] async Task<IResult> (
     [FromServices] IRcsVersionControl rcsVersionControl,
     [FromServices] IWebHostEnvironment webHostEnvironment,
     [FromServices] ILogger<Program> logger,

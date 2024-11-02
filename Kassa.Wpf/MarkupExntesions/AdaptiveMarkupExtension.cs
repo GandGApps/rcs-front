@@ -11,7 +11,7 @@ using System.Windows.Markup;
 
 namespace Kassa.Wpf.MarkupExntesions;
 [MarkupExtensionReturnType(typeof(object))]
-public class AdaptiveMarkupExtension : MarkupExtension
+public sealed class AdaptiveMarkupExtension : MarkupExtension
 {
     public const double LargeBreakpoint = 1300;
     public const double LargeCoeficient = 0.82;

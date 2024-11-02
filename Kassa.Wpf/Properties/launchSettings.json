@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Kassa.Wpf": {
+      "commandName": "Project"
+    },
+    "Kassa.Wpf --no-launcher": {
+      "commandName": "Project",
+      "commandLineArgs": "--no-launcher"
+    }
+  }
+}

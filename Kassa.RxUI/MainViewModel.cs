@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System.ComponentModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -22,6 +23,17 @@ public sealed class MainViewModel : ReactiveObject, IScreen, IInitializable, IDi
     private readonly IAuthService _authService;
     private readonly IShiftService _shiftService;
     private readonly IReportShiftService _reportShiftService;
+
+    /// <summary>
+    /// Only for designer
+    /// </summary>
+    [EditorBrowsable(EditorBrowsableState.Never)]
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+    public MainViewModel()
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+    {
+
+    }
 
     public MainViewModel(IMainViewModelProvider mainViewModelProvider, IAuthService authService, IShiftService shiftService, IReportShiftService reportShiftService)
     {
