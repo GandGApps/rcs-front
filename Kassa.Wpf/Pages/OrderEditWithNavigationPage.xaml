@@ -19,8 +19,8 @@
     x:Name="Root"
     Padding="{mx:AdaptiveSize Thickness={StaticResource PagePaddingWithFooterSize}}"
     d:DataContext="{d:DesignInstance Type=rxpages:OrderEditWithNavigationPageVm}"
-    d:DesignHeight="450"
-    d:DesignWidth="800"
+    d:DesignHeight="840"
+    d:DesignWidth="1440"
     x:TypeArguments="rxpages:OrderEditWithNavigationPageVm"
     Background="{DynamicResource Theme}"
     mc:Ignorable="d">

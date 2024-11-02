@@ -10,6 +10,7 @@ using Kassa.RxUI.Dialogs;
 using Kassa.DataAccess.Model;
 using Kassa.Shared;
 using Microsoft.Extensions.DependencyInjection;
+using System.ComponentModel;
 
 namespace Kassa.RxUI.Pages;
 public sealed class EditDeliveryPageVm : PageViewModel
@@ -23,6 +24,14 @@ public sealed class EditDeliveryPageVm : PageViewModel
     private readonly IIngridientsService _ingridientsService;
     private readonly ICategoryService _categoryService;
     private readonly OrderDto _orderDto;
+
+
+    [EditorBrowsable(EditorBrowsableState.Never)]
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+    public EditDeliveryPageVm()
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring as nullable.
+    {
+    }
 
     public EditDeliveryPageVm(
         ICashierService cashierService,

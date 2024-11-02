@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Reactive.Disposables;
@@ -29,6 +30,9 @@ public partial class EditDeliveryPage : ReactiveUserControl<EditDeliveryPageVm>
     public EditDeliveryPage()
     {
         InitializeComponent();
+
+        if(DesignerProperties.GetIsInDesignMode(this))
+            return;
 
         this.WhenActivated(disposables =>
         {

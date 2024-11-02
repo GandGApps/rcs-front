@@ -14,7 +14,8 @@
     xmlns:vm="clr-namespace:Kassa.RxUI.Pages;assembly=Kassa.RxUI"
     xmlns:wnd="clr-namespace:Kassa.Wpf"
     Padding="{mx:AdaptiveSize Thickness='0,0,0,60'}"
-    d:DataContext="{d:DesignInstance Type=vm:EditDeliveryPageVm}"
+    d:DataContext="{d:DesignInstance Type=vm:EditDeliveryPageVm,
+                                     IsDesignTimeCreatable=False}"
     d:DesignHeight="740"
     d:DesignWidth="1560"
     x:TypeArguments="vm:EditDeliveryPageVm"

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -84,6 +85,11 @@ public sealed partial class ShoppingListPanel : UserControl
     public ShoppingListPanel()
     {
         InitializeComponent();
+
+        if(DesignerProperties.GetIsInDesignMode(this))
+        {
+            return;
+        }
 
         var shiftService = RcsKassa.GetRequiredService<IShiftService>();
         var currentShift = shiftService.CurrentShift.Value;
