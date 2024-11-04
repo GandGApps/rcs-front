@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http.Features;
 using Microsoft.AspNetCore.Mvc;
 using RcsInstallerMock.Backend.Models;
 using RcsInstallerMock.Backend.Services;
@@ -10,7 +11,20 @@ using RcsVersionControlMock;
 using RcsVersionControlMock.DataAccess;
 using RcsVersionControlMock.Json;
 
+#if DEBUG
+
+var builder = WebApplication.CreateBuilder(args);
+
+#else
+
 var builder = WebApplication.CreateSlimBuilder(args);
+
+#endif
+
+builder.Services.Configure<FormOptions>(x =>
+{
+    x.MultipartBodyLengthLimit = 500_000_000; // 500 MB
+});
 
 
 builder.WebHost.ConfigureKestrel(options =>
@@ -43,14 +57,20 @@ builder.Services.AddSingleton<ICachedZips>(provider =>
     return new CachedZips(cacheFilePath);
 });
 
+#if DEBUG
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
 });
 
+#endif
+
 var app = builder.Build();
 
 app.UseAntiforgery();
+
+#if DEBUG
 
 app.UseSwagger(options =>
 {
@@ -58,6 +78,8 @@ app.UseSwagger(options =>
 app.UseSwaggerUI(options =>
 {
 });
+
+#endif
 
 var rcsvcApi = app.MapGroup("api/rcsvc");
 

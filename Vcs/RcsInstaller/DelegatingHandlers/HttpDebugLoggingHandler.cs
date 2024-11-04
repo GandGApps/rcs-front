@@ -109,6 +109,6 @@ public sealed class HttpDebugLoggingHandler : DelegatingHandler, IEnableLogger
 
         var header = string.Join(" ", values).ToLowerInvariant();
 
-        return types.Any(t => header.Contains(t));
+        return types.Any(header.Contains);
     }
 }

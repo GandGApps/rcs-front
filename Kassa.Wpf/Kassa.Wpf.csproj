@@ -152,7 +152,7 @@
     <PropertyGroup>
       <BasePublishDir>$([System.IO.Path]::GetFullPath('$(PublishDir)'))</BasePublishDir>
       <ZipFilePath>$(BasePublishDir)wpf.zip</ZipFilePath>
-      <BaseUrl>https://locali-office.com/api</BaseUrl>
+      <BaseUrl>http://localhost:8080</BaseUrl>
       <ServerUrl>$(BaseUrl)/rcsvc/update</ServerUrl>
     </PropertyGroup>
 
