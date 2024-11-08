@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Logging;
 using Splat;
 
 namespace RcsInstaller.DelegatingHandlers;
@@ -14,36 +15,44 @@ namespace RcsInstaller.DelegatingHandlers;
 public sealed class HttpDebugLoggingHandler : DelegatingHandler, IEnableLogger
 {
     private static readonly string[] types = ["html", "text", "xml", "json", "txt", "x-www-form-urlencoded"];
+    
+    private readonly ILogger<HttpDebugLoggingHandler> _logger;
+
+    public HttpDebugLoggingHandler(ILogger<HttpDebugLoggingHandler> logger)
+    {
+        _logger = logger;
+    }
 
     protected async override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
         var req = request;
         var id = Guid.NewGuid().ToString();
-        var msg = $"[{id} - Request]";
-        var logBuilder = new StringBuilder();
 
-        logBuilder.AppendLine($"Request start {msg}:");
-        logBuilder.AppendLine($"{req.Method} {req.RequestUri!.PathAndQuery} {req.RequestUri.Scheme}/{req.Version}");
-        logBuilder.AppendLine($"Host: {req.RequestUri.Scheme}://{req.RequestUri.Host}");
+        // Логируем начало запроса с параметрами
+        _logger.LogDebug("Request start [{Id} - Request]: {Method} {PathAndQuery} {Scheme}/{Version} Host: {Host}",
+                         id,
+                         req.Method,
+                         req.RequestUri!.PathAndQuery,
+                         req.RequestUri.Scheme,
+                         req.Version,
+                         $"{req.RequestUri.Scheme}://{req.RequestUri.Host}");
 
         foreach (var header in req.Headers)
         {
-            logBuilder.AppendLine($"{header.Key}: {string.Join(", ", header.Value)}");
+            _logger.LogDebug("Request Header [{Id}]: {HeaderKey}: {HeaderValue}", id, header.Key, string.Join(", ", header.Value));
         }
 
         if (req.Content != null)
         {
             foreach (var header in req.Content.Headers)
             {
-                logBuilder.AppendLine($"{header.Key}: {string.Join(", ", header.Value)}");
+                _logger.LogDebug("Request Content Header [{Id}]: {HeaderKey}: {HeaderValue}", id, header.Key, string.Join(", ", header.Value));
             }
 
-            if (req.Content is StringContent || IsTextBasedContentType(req.Headers) ||
-                IsTextBasedContentType(req.Content.Headers))
+            if (req.Content is StringContent || IsTextBasedContentType(req.Headers) || IsTextBasedContentType(req.Content.Headers))
             {
                 var result = await req.Content.ReadAsStringAsync(cancellationToken);
-                logBuilder.AppendLine($"Content:");
-                logBuilder.AppendLine($"{result}");
+                _logger.LogDebug("Request Content [{Id}]: {Content}", id, result);
             }
         }
 
@@ -53,49 +62,43 @@ public sealed class HttpDebugLoggingHandler : DelegatingHandler, IEnableLogger
 
         var end = DateTime.Now;
 
-        logBuilder.AppendLine($"Duration: {end - start}");
+        // Логируем время выполнения запроса
+        _logger.LogDebug("Request Duration [{Id}]: {Duration} ms", id, (end - start).TotalMilliseconds);
 
-        this.Log().Debug(logBuilder.ToString());
+        // Логируем окончание запроса с параметрами
+        _logger.LogDebug("Request end [{Id} - Response]: {Scheme}/{Version} {StatusCode} {ReasonPhrase}",
+                         id,
+                         req.RequestUri.Scheme.ToUpper(),
+                         response.Version,
+                         (int)response.StatusCode,
+                         response.ReasonPhrase);
 
-        msg = $"[{id} - Response]";
-        logBuilder.Clear();
-
-        logBuilder.AppendLine($"Request end {msg}:");
-
-        var resp = response;
-
-        logBuilder.AppendLine($"{req.RequestUri.Scheme.ToUpper()}/{resp.Version} {(int)resp.StatusCode} {resp.ReasonPhrase}");
-
-        foreach (var header in resp.Headers)
+        foreach (var header in response.Headers)
         {
-            logBuilder.AppendLine($"{header.Key}: {string.Join(", ", header.Value)}");
+            _logger.LogDebug("Response Header [{Id}]: {HeaderKey}: {HeaderValue}", id, header.Key, string.Join(", ", header.Value));
         }
 
-        if (resp.Content != null)
+        if (response.Content != null)
         {
-            foreach (var header in resp.Content.Headers)
+            foreach (var header in response.Content.Headers)
             {
-                logBuilder.AppendLine($"{header.Key}: {string.Join(", ", header.Value)}");
+                _logger.LogDebug("Response Content Header [{Id}]: {HeaderKey}: {HeaderValue}", id, header.Key, string.Join(", ", header.Value));
             }
 
-            if (resp.Content is StringContent || IsTextBasedContentType(resp.Headers) ||
-                IsTextBasedContentType(resp.Content.Headers))
+            if (response.Content is StringContent || IsTextBasedContentType(response.Headers) || IsTextBasedContentType(response.Content.Headers))
             {
                 start = DateTime.Now;
-                var result = await resp.Content.ReadAsStringAsync(cancellationToken);
+                var result = await response.Content.ReadAsStringAsync(cancellationToken);
                 end = DateTime.Now;
 
-                logBuilder.AppendLine($"Content:");
-                logBuilder.AppendLine($"{result}");
-                logBuilder.AppendLine($"Duration: {end - start}");
+                _logger.LogDebug("Response Content [{Id}]: {Content}", id, result);
+                _logger.LogDebug("Response Content Duration [{Id}]: {Duration} ms", id, (end - start).TotalMilliseconds);
             }
         }
 
-        this.Log().Debug(logBuilder.ToString());
-
         return response;
-
     }
+
 
 
     private static bool IsTextBasedContentType(HttpHeaders headers)

@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 using TruePath;
+using CommunityToolkit.Diagnostics;
 
 namespace RcsInstaller.Services;
 public sealed class WndShortcutCreator : IShortcutCreator
@@ -15,9 +16,13 @@ public sealed class WndShortcutCreator : IShortcutCreator
     public Task CreateSrotcut(AbsolutePath path, string name)
     {
         var shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{name}.lnk");
-        var directoryPath = Path.GetDirectoryName(path.Value);
+        
+        var directoryPath = Directory.Exists(path.Value) ? path.Value : Path.GetDirectoryName(name);
 
-        Debug.Assert(directoryPath is not null);
+        if (directoryPath is null)
+        {
+            ThrowHelper.ThrowArgumentException(nameof(path), $"The provided path '{path.Value}' is invalid. It must be a valid directory path or lead to an existing file.");
+        }
 
         var shell = new WshShell();
 

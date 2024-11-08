@@ -123,7 +123,7 @@ public sealed class CachedZips : ICachedZips
                 return entries;
             }
         }
-        return new List<ZipCacheEntry>();
+        return [];
     }
 
     private async Task SaveCacheAsync(List<ZipCacheEntry> entries)

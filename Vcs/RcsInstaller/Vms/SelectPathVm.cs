@@ -19,7 +19,7 @@ public sealed class SelectPathVm : PageVm
 
         InstallCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var vm = new InstallingVm(InstallPath, IsShortcutNeeded, null);
+            var vm = App.CreateInstance<InstallingVm>(InstallPath, IsShortcutNeeded, HelperExtensions.EmptyVersion);
             await HostScreen.Router.Navigate.Execute(vm).FirstAsync();
 
             await vm.StartInstallCommand.Execute().FirstAsync();

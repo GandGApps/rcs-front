@@ -1,4 +1,5 @@
 ﻿
+using CommunityToolkit.Diagnostics;
 using RcsInstaller.Pages;
 using RcsInstaller.Vms;
 using ReactiveUI;
@@ -15,6 +16,6 @@ public sealed class ViewLocator : IViewLocator
         SelectPathVm context => new SelectPathPage { DataContext = context },
         InstallingVm context => new InstallingPage { DataContext = context },
         CompleteVm context => new CompletePage { DataContext = context },
-        _ => throw new ArgumentOutOfRangeException(nameof(viewModel))
+        _ => ThrowHelper.ThrowArgumentOutOfRangeException<IViewFor>(nameof(viewModel))
     };
 }

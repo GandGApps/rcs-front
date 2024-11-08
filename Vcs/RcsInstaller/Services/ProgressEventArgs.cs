@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace RcsInstaller.Services;
 public sealed class ProgressEventArgs : EventArgs
 {
-    private double _progress;
+    private readonly double _progress;
 
     public ProgressEventArgs(double progress)
     {

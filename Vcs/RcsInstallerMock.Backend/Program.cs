@@ -286,7 +286,7 @@ rcsvcApi.MapGet("/install", [RequestSizeLimit(350_000_000), IgnoreAntiforgeryTok
         ZipFile.CreateFromDirectory(tempFolderPath, zipFilePath);
         logger.LogInformation("Zip file created at {ZipFilePath}", zipFilePath);
 
-        await cachedZips.SaveZip(a, b, zipFilePath, TimeSpan.FromDays(1));
+        await cachedZips.SaveZip(a, b, zipFilePath, TimeSpan.FromDays(5));
 
         Directory.Delete(tempFolderPath, true);
 

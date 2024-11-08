@@ -15,10 +15,12 @@ public static class HelperExtensions
 
     public static readonly Version EmptyVersion = new(0, 0);
 
+    /*
     public static T GetRequiredService<T>(this IReadonlyDependencyResolver dependencyResolver) where T : class
     {
         return dependencyResolver.GetService<T>() ?? throw new NullReferenceException($"Service {typeof(T)}");
     }
+    */
 
     public static IConfigurationBuilder AddEmbeddedJsonFile(this IConfigurationBuilder configuration, string resourceName)
     {

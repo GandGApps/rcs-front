@@ -3,6 +3,8 @@ using Avalonia.Markup.Xaml;
 using RcsInstaller.Vms;
 using SukiUI.Controls;
 using System;
+using System.ComponentModel;
+using TruePath;
 
 namespace RcsInstaller;
 
@@ -13,7 +15,9 @@ public sealed partial class MainWindow : SukiWindow
         get; private set;
     } = null!;
 
-    private MainWindow()
+    [EditorBrowsable(EditorBrowsableState.Never)]
+    [Browsable(false)]
+    public MainWindow()
     {
         AvaloniaXamlLoader.Load(this);
 
@@ -34,7 +38,7 @@ public sealed partial class MainWindow : SukiWindow
     {
         var mainVm = MainVm.Default;
 
-        mainVm.Router.Navigate.Execute(new CompleteVm(new(path)));
+        mainVm.Router.Navigate.Execute(App.CreateInstance<CompleteVm>(new AbsolutePath(path)));
 
         DataContext = mainVm;
     }
@@ -49,7 +53,7 @@ public sealed partial class MainWindow : SukiWindow
         }
         else
         {
-            var installingVm = new InstallingVm(updateOption.Path, false, Version.Parse(updateOption.Version));
+            var installingVm = App.CreateInstance<InstallingVm>(updateOption.Path, false, Version.Parse(updateOption.Version));
 
             mainVm.Router.Navigate.Execute(installingVm);
 

@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Configuration;
+﻿using CommunityToolkit.Diagnostics;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using RcsInstaller.DelegatingHandlers;
 using RcsVersionControlMock.Json;
 using Refit;
@@ -9,39 +11,23 @@ using System;
 namespace RcsInstaller;
 public static class ApiServiceRegistration
 {
-    private static readonly ServiceCollection _services = new();
     private static readonly RefitSettings _refitSettings = new()
     {
         ContentSerializer = new SystemTextJsonContentSerializer(RcsVCConstants.JsonSerializerOptions),
 
     };
 
-    private static IServiceProvider _serviceProvider = null!;
 
-    /// <summary>
-    /// Call this method at the end
-    /// </summary>
-    public static void BuildServices()
-    {
-        _services.AddTransient<SelectJwtDelegatingHandler>();
-        _services.AddTransient<HttpDebugLoggingHandler>();
-
-        _serviceProvider = _services.BuildServiceProvider();
-    }
-
-    public static void AddApi<T>(RefitSettings? settings = null) where T : class
+    public static void AddApi<T>(this IServiceCollection services, RefitSettings? settings = null) where T : class
     {
         settings ??= _refitSettings;
 
-        _services.AddBasicApi<T>(settings);
+        services.TryAddTransient<SelectJwtDelegatingHandler>();
+        services.TryAddTransient<HttpDebugLoggingHandler>();
 
-        Locator.CurrentMutable.Register<T>(() => _serviceProvider.GetRequiredService<T>());
+        services.AddBasicApi<T>(settings);
     }
 
-    public static T GetService<T>() where T : class
-    {
-        return _serviceProvider.GetRequiredService<T>();
-    }
 
     public static IHttpClientBuilder AddBasicApi<T>(this IServiceCollection services, RefitSettings? settings = null) where T : class
     {
@@ -53,15 +39,15 @@ public static class ApiServiceRegistration
 
     public static IHttpClientBuilder AddBaseAddress(this IHttpClientBuilder builder)
     {
-        return builder.ConfigureHttpClient(httpClient =>
+        return builder.ConfigureHttpClient((serviceProvider, httpClient) =>
         {
-            var configuration = Locator.Current.GetRequiredService<IConfiguration>();
+            var configuration = serviceProvider.GetRequiredService<IConfiguration>();
 
             var baseAddress = configuration["ApiConfiguration:BaseAddress"]!;
 
             if (string.IsNullOrWhiteSpace(baseAddress))
             {
-                throw new InvalidOperationException("Base address is not set");
+                ThrowHelper.ThrowInvalidOperationException("ApiConfiguration:BaseAddress is not set");
             }
 
             httpClient.BaseAddress = new Uri(baseAddress);

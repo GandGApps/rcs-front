@@ -3,10 +3,13 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using CommandLine;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using Microsoft.Win32;
 using RcsInstaller.Services;
 using Refit;
 using Splat;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
 
@@ -14,12 +17,26 @@ namespace RcsInstaller;
 
 public sealed partial class App : Application
 {
-
+    /// <summary>
+    /// I understand that the host does not typically use this approach, and the host will "contain" the app, not the other way around.
+    /// However, <see cref="Program.BuildAvaloniaApp"/> is needed for design-time purposes, so I need to store it here.
+    /// If I build the host in the <see cref="Program.Main"/> method, many pages will break.
+    /// </summary>
+    public static IHost Host { get; private set; } = null!;
     public static new App Current => Unsafe.As<App>(Application.Current)!;
 
     public override void Initialize()
     {
-        Program.AddServicesForLocator();
+
+        var builder = Microsoft.Extensions.Hosting.Host.CreateApplicationBuilder();
+
+        builder.Configuration.AddEmbeddedJsonFile("appsettings.json");
+
+        builder.Services.AddApi<IRcsApi>();
+        builder.Services.AddSingleton<IInstaller, RcsInstallerJson>();
+        builder.Services.AddSingleton<IShortcutCreator, WndShortcutCreator>();
+
+        Host = builder.Build();
 
         AvaloniaXamlLoader.Load(this);
     }
@@ -52,6 +69,17 @@ public sealed partial class App : Application
         }
 
         base.OnFrameworkInitializationCompleted();
+    }
+
+
+    public static T CreateInstance<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>()
+    {
+        return ActivatorUtilities.CreateInstance<T>(Host.Services);
+    }
+
+    public static T CreateInstance<[DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicConstructors)] T>(params object[] args)
+    {
+        return ActivatorUtilities.CreateInstance<T>(Host.Services, args);
     }
 
     public static void Exit()

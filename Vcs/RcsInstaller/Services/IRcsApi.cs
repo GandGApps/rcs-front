@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace RcsInstaller.Services;
 
-internal interface IRcsApi
+public interface IRcsApi
 {
     [Get("/api/rcsvc/install")]
     public Task<HttpContent> InstallLatest(string? version = null);

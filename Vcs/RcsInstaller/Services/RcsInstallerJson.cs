@@ -13,18 +13,28 @@ using System.IO;
 using Microsoft.Win32;
 using Avalonia.Input;
 using TruePath;
+using CommunityToolkit.Diagnostics;
+using Microsoft.Extensions.Logging;
 
 namespace RcsInstaller.Services;
-public sealed class RcsInstallerJson : IInstaller, IEnableLogger
+public sealed class RcsInstallerJson : IInstaller
 {
+    private readonly IRcsApi _api;
+    private readonly IShortcutCreator _shortcutCreator;
+    private readonly ILogger<RcsInstallerJson> _logger;
+
+    public RcsInstallerJson(IRcsApi api, IShortcutCreator shortcutCreator, ILogger<RcsInstallerJson> logger)
+    {
+        _api = api;
+        _shortcutCreator = shortcutCreator;
+        _logger = logger;
+    }
+
     public async Task InstallAsync(AbsolutePath path, Version version, bool createShortcut, Action<ProgressState> progress)
     {
-        var api = Locator.Current.GetRequiredService<IRcsApi>();
-
-
         var stringVersion = HelperExtensions.EmptyVersion == version ? null : version.ToString();
 
-        var httpContent = await api.InstallLatest(stringVersion);
+        var httpContent = await _api.InstallLatest(stringVersion);
 
         var zipStream = await httpContent.ReadAsStreamAsync();
 
@@ -43,7 +53,7 @@ public sealed class RcsInstallerJson : IInstaller, IEnableLogger
             ParseZip(zipArchive, path, progress);
         }
 
-        var loadedVersion = await api.GetVersion();
+        var loadedVersion = await _api.GetVersion();
 
         // Remove temp file
         try
@@ -52,14 +62,13 @@ public sealed class RcsInstallerJson : IInstaller, IEnableLogger
         }
         catch (Exception e)
         {
-            this.Log().Error(e, "Failed to delete temp file");
+            _logger.LogError(e, "Failed to delete temp file");
         }
 
         if (createShortcut)
         {
-            var shortcutCreator = Locator.Current.GetRequiredService<IShortcutCreator>();
 
-            await shortcutCreator.CreateSrotcut(path, "RCS");
+            await _shortcutCreator.CreateSrotcut(path, "RCS");
         }
 
         // Create app info in registry
@@ -78,7 +87,7 @@ public sealed class RcsInstallerJson : IInstaller, IEnableLogger
 
                     if (loadedVersion != currentVersion)
                     {
-                        this.Log().Info("Version changed from {CurrentVersion} to {NewVersion}, in registry", currentVersion, version);
+                        _logger.LogInformation("Version changed from {CurrentVersion} to {NewVersion}, in registry", currentVersion, version);
                         key.SetValue("DisplayVersion", loadedVersion.ToString());
                         return;
                     }
@@ -97,7 +106,7 @@ public sealed class RcsInstallerJson : IInstaller, IEnableLogger
         { 
             if (key != null)
             {
-                this.Log().Info("Creating registry key for RCS");
+                _logger.LogInformation("Creating registry key for RCS");
                 key.SetValue("DisplayName", "Супер мега касса с кодовым именем RCS");
                 key.SetValue("DisplayVersion", loadedVersion.ToString());
                 key.SetValue("Publisher", "Gang bang");
@@ -131,7 +140,10 @@ public sealed class RcsInstallerJson : IInstaller, IEnableLogger
 
             var path = destinationPath / change.Path;
 
-            if(Directory.Exists(path.Value))
+            // Sometimes, 'change' is a directory rather than a file.
+            // We need to skip it because this is a bug in changes.json.
+            // change.Path should always represent a file, not a directory.
+            if (Directory.Exists(path.Value))
             {
                 continue;
             }
@@ -159,7 +171,7 @@ public sealed class RcsInstallerJson : IInstaller, IEnableLogger
             }
             catch(Exception e)
             {
-                throw new Exception($"Failed to extract {change.Path}", e);
+                ThrowHelper.ThrowInvalidOperationException($"Failed to extract {change.Path}", e);
             }
         }
 
@@ -175,7 +187,7 @@ public sealed class RcsInstallerJson : IInstaller, IEnableLogger
 
             if (changes == null)
             {
-                throw new Exception("No changes.json found");
+                ThrowHelper.ThrowInvalidOperationException("Required file 'changes.json' not found in the archive. This file is necessary for processing changes.");
             }
 
             using var stream = changes.Open();

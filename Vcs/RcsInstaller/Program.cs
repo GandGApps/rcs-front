@@ -26,17 +26,4 @@ public static class Program
             .UseReactiveUI()
             .LogToTrace();
 
-    public static void AddServicesForLocator()
-    {
-        var configuration = new ConfigurationBuilder()
-            .AddEmbeddedJsonFile("appsettings.json")
-            .Build();
-
-        ApiServiceRegistration.AddApi<IRcsApi>();
-        ApiServiceRegistration.BuildServices();
-
-        Locator.CurrentMutable.RegisterLazySingleton<IConfiguration>(() => configuration);
-        Locator.CurrentMutable.RegisterLazySingleton<IInstaller>(() => new RcsInstallerJson());
-        Locator.CurrentMutable.RegisterLazySingleton<IShortcutCreator>(() => new WndShortcutCreator());
-    }
 }

@@ -18,18 +18,18 @@ public sealed class InstallingVm : PageVm
     private readonly AbsolutePath _path;
     private readonly bool _createShortcut;
     private readonly Version _version;
+    private readonly IInstaller _installer;
 
-    public InstallingVm(string path, bool createShortcut, Version? version)
+    public InstallingVm(string path, bool createShortcut, Version? version, IInstaller installer)
     {
         _path = new(path);
         _createShortcut = createShortcut;
         _version = version ?? HelperExtensions.EmptyVersion;
+        _installer = installer;
 
         StartInstallCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var installer = Locator.Current.GetRequiredService<IInstaller>();
-
-            await installer.InstallAsync(_path, _version, createShortcut, progress =>
+            await _installer.InstallAsync(_path, _version, _createShortcut, progress =>
             {
                 Dispatcher.UIThread.Post(() =>
                 {
@@ -43,7 +43,7 @@ public sealed class InstallingVm : PageVm
         {
             await Task.Delay(1200);
 
-            await HostScreen.Router.Navigate.Execute(new CompleteVm(_path)).FirstAsync();
+            await HostScreen.Router.Navigate.Execute(App.CreateInstance<CompleteVm>(_path)).FirstAsync();
         });
         
     }

@@ -13,10 +13,16 @@ using Splat;
 namespace RcsInstaller.DelegatingHandlers;
 public sealed class SelectJwtDelegatingHandler : DelegatingHandler
 {
+    private readonly IConfiguration _configuration;
+
+    public SelectJwtDelegatingHandler(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
+
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
-        var config = Locator.Current.GetRequiredService<IConfiguration>();
-
         if (request.Options.TryGetValue<Type>(new(HttpRequestMessageOptions.InterfaceType), out var type))
         {
 
