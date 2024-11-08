@@ -1,4 +1,5 @@
 using System.IO.Compression;
+using System.Reflection;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Components;
@@ -83,7 +84,12 @@ app.UseSwaggerUI(options =>
 
 var rcsvcApi = app.MapGroup("api/rcsvc");
 
-rcsvcApi.MapPost("/update", [RequestSizeLimit(350_000_000), IgnoreAntiforgeryToken] async Task<IResult> (
+rcsvcApi.MapGet("/latest-api-v", () =>
+{
+    return Assembly.GetExecutingAssembly().GetName().Version?.ToString() ?? "error";
+});
+
+rcsvcApi.MapPost("/update", [RequestSizeLimit(500_000_000), IgnoreAntiforgeryToken] async Task<IResult> (
     [FromServices] IRcsVersionControl rcsVersionControl,
     [FromServices] IWebHostEnvironment webHostEnvironment,
     [FromServices] ILogger<Program> logger,

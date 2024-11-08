@@ -10,17 +10,18 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TruePath;
 
 namespace RcsInstaller.Vms;
 public sealed class InstallingVm : PageVm
 {
-    private readonly string _path;
+    private readonly AbsolutePath _path;
     private readonly bool _createShortcut;
     private readonly Version _version;
 
     public InstallingVm(string path, bool createShortcut, Version? version)
     {
-        _path = path;
+        _path = new(path);
         _createShortcut = createShortcut;
         _version = version ?? HelperExtensions.EmptyVersion;
 
@@ -28,7 +29,7 @@ public sealed class InstallingVm : PageVm
         {
             var installer = Locator.Current.GetRequiredService<IInstaller>();
 
-            await installer.InstallAsync(path, _version, createShortcut, progress =>
+            await installer.InstallAsync(_path, _version, createShortcut, progress =>
             {
                 Dispatcher.UIThread.Post(() =>
                 {

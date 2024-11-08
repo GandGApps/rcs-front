@@ -12,11 +12,12 @@ using RcsInstaller;
 using System.IO;
 using Microsoft.Win32;
 using Avalonia.Input;
+using TruePath;
 
 namespace RcsInstaller.Services;
 public sealed class RcsInstallerJson : IInstaller, IEnableLogger
 {
-    public async Task InstallAsync(string path, Version version, bool createShortcut, Action<ProgressState> progress)
+    public async Task InstallAsync(AbsolutePath path, Version version, bool createShortcut, Action<ProgressState> progress)
     {
         var api = Locator.Current.GetRequiredService<IRcsApi>();
 
@@ -100,8 +101,8 @@ public sealed class RcsInstallerJson : IInstaller, IEnableLogger
                 key.SetValue("DisplayName", "Супер мега касса с кодовым именем RCS");
                 key.SetValue("DisplayVersion", loadedVersion.ToString());
                 key.SetValue("Publisher", "Gang bang");
-                key.SetValue("InstallLocation", Path.Combine(path, "Kassa.Wpf.exe"));
-                key.SetValue("UninstallString", Path.Combine(path, "Kassa.Launcher.exe --remove"));
+                key.SetValue("InstallLocation", path / "Kassa.Wpf.exe");
+                key.SetValue("UninstallString", path / "Kassa.Launcher.exe --remove");
                 key.SetValue("NoModify", 1, RegistryValueKind.DWord);
                 key.SetValue("NoRepair", 1, RegistryValueKind.DWord);
             }
@@ -110,7 +111,7 @@ public sealed class RcsInstallerJson : IInstaller, IEnableLogger
 #pragma warning restore CA1416 // Validate platform compatibility
     }
 
-    public static void ParseZip(ZipArchive zipArchive, string destinationPath, Action<ProgressState> progress)
+    public static void ParseZip(ZipArchive zipArchive, AbsolutePath destinationPath, Action<ProgressState> progress)
     {
         var helper = new ZipArchiveHelper(zipArchive);
 
@@ -128,31 +129,43 @@ public sealed class RcsInstallerJson : IInstaller, IEnableLogger
                 continue;
             }
 
-            var path = Path.Combine(destinationPath, change.Path);
+            var path = destinationPath / change.Path;
 
-            var directory = System.IO.Path.GetDirectoryName(path);
+            if(Directory.Exists(path.Value))
+            {
+                continue;
+            }
+
+            var directory = System.IO.Path.GetDirectoryName(path.Value);
 
             if (!string.IsNullOrEmpty(directory))
             {
                 System.IO.Directory.CreateDirectory(directory);
             }
 
-            using var stream = entry.Open();
+            try
+            {
+                using var stream = entry.Open();
 
-            using var fileStream = System.IO.File.Create(path);
+                using var fileStream = System.IO.File.Create(path.Value);
 
-            stream.CopyTo(fileStream);
+                stream.CopyTo(fileStream);
 
-            currentProgress++;
-            var progressValue = (double)currentProgress / totalProgress;
-            var progressState = new ProgressState("Установка...", 0.5 + (progressValue / 2));
+                currentProgress++;
+                var progressValue = (double)currentProgress / totalProgress;
+                var progressState = new ProgressState("Установка...", 0.5 + (progressValue / 2));
 
-            progress(progressState);
+                progress(progressState);
+            }
+            catch(Exception e)
+            {
+                throw new Exception($"Failed to extract {change.Path}", e);
+            }
         }
 
     }
 
-    internal readonly struct ZipArchiveHelper(ZipArchive zipArchive)
+    internal readonly ref struct ZipArchiveHelper(ZipArchive zipArchive)
     {
         private readonly ZipArchive _zipArchive = zipArchive;
 

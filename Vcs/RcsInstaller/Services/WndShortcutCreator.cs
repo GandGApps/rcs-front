@@ -7,14 +7,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml.Linq;
+using TruePath;
 
 namespace RcsInstaller.Services;
 public sealed class WndShortcutCreator : IShortcutCreator
 {
-    public Task CreateSrotcut(string path, string name)
+    public Task CreateSrotcut(AbsolutePath path, string name)
     {
         var shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{name}.lnk");
-        var directoryPath = Path.GetDirectoryName(path);
+        var directoryPath = Path.GetDirectoryName(path.Value);
 
         Debug.Assert(directoryPath is not null);
 
@@ -22,7 +23,7 @@ public sealed class WndShortcutCreator : IShortcutCreator
 
         var shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
         shortcut.IconLocation = Path.Combine(directoryPath, "Logo.ico");
-        shortcut.TargetPath = path;
+        shortcut.TargetPath = path.Value;
 
         shortcut.Save();
 

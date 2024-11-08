@@ -10,6 +10,21 @@
     <RootNamespace>RcsInstallerMock.Backend</RootNamespace>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <_Major>$([System.DateTime]::Now.Year)</_Major>
+    <_Minor>$([System.DateTime]::Now.Month)</_Minor>
+    <_Build>$([System.DateTime]::Now.Day)</_Build>
+    <_Revision>$([System.DateTime]::Now.TimeOfDay.TotalMinutes.ToString("0"))</_Revision>
+
+    <AssemblyVersion>$(_Major).$(_Minor).$(_Build).$(_Revision)</AssemblyVersion>
+
+    <InformationalVersion>$(AssemblyVersion)</InformationalVersion>
+    <IncludeSourceRevisionInInformationalVersion>
+      false
+    </IncludeSourceRevisionInInformationalVersion>
+
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.20.1" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.9.0" />

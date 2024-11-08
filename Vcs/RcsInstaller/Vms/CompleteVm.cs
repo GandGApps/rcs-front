@@ -8,11 +8,12 @@ using System.Linq;
 using System.Reactive;
 using System.Text;
 using System.Threading.Tasks;
+using TruePath;
 
 namespace RcsInstaller.Vms;
 public sealed class CompleteVm : PageVm
 {
-    public CompleteVm(string path)
+    public CompleteVm(AbsolutePath path)
     {
         CloseCommand = ReactiveCommand.Create(() =>
         {
@@ -24,9 +25,9 @@ public sealed class CompleteVm : PageVm
             var config = Locator.Current.GetRequiredService<IConfiguration>();
 
             var app = config["RcsBinName"]!;
-            var appPath = System.IO.Path.Combine(path, app);
+            var appPath = path / app;
 
-            Process.Start(appPath);
+            Process.Start(appPath.Value);
 
             App.Exit();
         });

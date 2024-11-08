@@ -34,7 +34,7 @@ public sealed partial class MainWindow : SukiWindow
     {
         var mainVm = MainVm.Default;
 
-        mainVm.Router.Navigate.Execute(new CompleteVm(path));
+        mainVm.Router.Navigate.Execute(new CompleteVm(new(path)));
 
         DataContext = mainVm;
     }
