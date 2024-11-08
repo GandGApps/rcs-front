@@ -9,12 +9,27 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using TruePath;
 using CommunityToolkit.Diagnostics;
+using Microsoft.Extensions.Configuration;
 
 namespace RcsInstaller.Services;
 public sealed class WndShortcutCreator : IShortcutCreator
 {
+    private readonly IConfiguration _configuration;
+
+    public WndShortcutCreator(IConfiguration configuration)
+    {
+        _configuration = configuration;
+    }
+
     public Task CreateSrotcut(AbsolutePath path, string name)
     {
+        var executablePath = _configuration["RcsBinName"];
+
+        if (string.IsNullOrWhiteSpace(executablePath) || System.IO.File.Exists(executablePath)) 
+        {
+            ThrowHelper.ThrowArgumentException(nameof(executablePath), "The executable path provided in the configuration (RcsBinName) is invalid or missing. It must be a valid path to an existing executable file.");
+        }
+
         var shortcutPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), $"{name}.lnk");
         
         var directoryPath = Directory.Exists(path.Value) ? path.Value : Path.GetDirectoryName(name);
@@ -28,7 +43,7 @@ public sealed class WndShortcutCreator : IShortcutCreator
 
         var shortcut = (IWshShortcut)shell.CreateShortcut(shortcutPath);
         shortcut.IconLocation = Path.Combine(directoryPath, "Logo.ico");
-        shortcut.TargetPath = path.Value;
+        shortcut.TargetPath = (path / executablePath).Value;
 
         shortcut.Save();
 

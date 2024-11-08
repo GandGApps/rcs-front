@@ -52,6 +52,8 @@ public partial class App : Application, IEnableLogger
                 return;
             }
 
+            LogHost.Default.Info($"Executable path is {kassaLauncherOption.Path}");
+
             desktop.MainWindow = new MainWindow();
             desktop.ShutdownMode = ShutdownMode.OnMainWindowClose;
             var mainVm = (MainVm)desktop.MainWindow.DataContext!;

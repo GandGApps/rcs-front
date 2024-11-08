@@ -32,12 +32,18 @@ public sealed class LaunchAppVm : BaseVm
                 ThrowHelper.ThrowInvalidOperationException("Kassa is not installed.");
             }
 
-            var  appPath = Path.Combine(path, "Kassa.Wpf.exe");
+            LogHost.Default.Info($"App folder path is {path}");
+
+            var appPath = Path.Combine(path, "Kassa.Wpf.exe");
+
+            LogHost.Default.Info($"App path is {appPath}");
 
             if (!File.Exists(appPath))
             {
                 ThrowHelper.ThrowInvalidOperationException("Kassa is not installed.");
             }
+
+            LogHost.Default.Info($"Launching Kassa from {appPath}");
 
             var process = new Process
             {

@@ -5,6 +5,7 @@ using CommandLine;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using RcsInstaller.Services;
 using Refit;
@@ -29,6 +30,8 @@ public sealed partial class App : Application
     {
 
         var builder = Microsoft.Extensions.Hosting.Host.CreateApplicationBuilder();
+
+        builder.Logging.AddEventLog();
 
         builder.Configuration.AddEmbeddedJsonFile("appsettings.json");
 
