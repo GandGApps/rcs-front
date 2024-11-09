@@ -5,6 +5,7 @@ using System.Reactive.Disposables;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
@@ -36,7 +37,7 @@ internal sealed class ProductService : BaseInitializableService, IProductService
 
         if (product == null)
         {
-            throw new InvalidOperationException($"Product with id {productId} not found");
+            ThrowHelper.ThrowInvalidOperationException($"Product with id {productId} not found");
         }
 
         var receipt = await _receiptService.GetReceipt(product.ReceiptId);
@@ -45,7 +46,7 @@ internal sealed class ProductService : BaseInitializableService, IProductService
         {
             if (!await _receiptService.HasEnoughIngridients(receipt, count))
             {
-                throw new InvalidOperationException($"Product with id {productId} has not enough count");
+                ThrowHelper.ThrowInvalidOperationException($"Product with id {productId} has not enough count");
             }
 
             await _receiptService.SpendIngridients(receipt, count);
@@ -80,7 +81,7 @@ internal sealed class ProductService : BaseInitializableService, IProductService
 
         if (product == null)
         {
-            throw new InvalidOperationException($"Product with id {productId} not found");
+            ThrowHelper.ThrowInvalidOperationException($"Product with id {productId} not found");
         }
 
         var receipt = await _receiptService.GetReceipt(product.ReceiptId);
@@ -126,7 +127,6 @@ internal sealed class ProductService : BaseInitializableService, IProductService
         }
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     private async Task CheckAllIngridients((Product product, ReceiptDto receipt)? existingModel)
     {
         var products = RuntimeProducts.Values;
@@ -153,7 +153,6 @@ internal sealed class ProductService : BaseInitializableService, IProductService
         }
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     private async ValueTask HasEnoughIngredients(ProductDto product, ReceiptDto? receipt, double count)
     {
         if (receipt is null)

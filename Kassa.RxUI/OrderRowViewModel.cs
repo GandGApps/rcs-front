@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
@@ -46,7 +47,7 @@ public sealed class OrderRowViewModel : ReactiveObject, IApplicationModelPresent
             OrderStatus.OnTheWay => "В пути",
             OrderStatus.Completed => order.IsDelivery ? "Доставлен" : order.IsForHere ? "Получен" : "Закрыт",
             OrderStatus.Canceled => "Отменен",
-            _ => throw new NotImplementedException()
+            _ => ThrowHelper.ThrowNotSupportedException<string>()
         };
 
         TimeToDelivery = order.DeliveryTime.HasValue ? (order.DeliveryTime.Value - DateTime.Now).ToString("hh\\:mm\\:ss") : "00:00:00";
@@ -87,7 +88,7 @@ public sealed class OrderRowViewModel : ReactiveObject, IApplicationModelPresent
 
             if (!clientOptional.HasValue)
             {
-                throw new NotImplementedException();
+                ThrowHelper.ThrowNotSupportedException();
             }
             var client = clientOptional.Value;
 
@@ -162,7 +163,7 @@ public sealed class OrderRowViewModel : ReactiveObject, IApplicationModelPresent
             OrderStatus.OnTheWay => "В пути",
             OrderStatus.Completed => order.IsDelivery ? "Доставлен" : order.IsForHere ? "Получен" : "Закрыт",
             OrderStatus.Canceled => "Отменен",
-            _ => throw new NotImplementedException()
+            _ => ThrowHelper.ThrowNotSupportedException<string>()
         };
 
         TimeToDelivery = order.DeliveryTime.HasValue ? (order.DeliveryTime.Value - DateTime.Now).ToString("hh\\:mm\\:ss") : "00:00:00";
@@ -203,7 +204,7 @@ public sealed class OrderRowViewModel : ReactiveObject, IApplicationModelPresent
 
             if (!clientOptional.HasValue)
             {
-                throw new NotImplementedException();
+                ThrowHelper.ThrowNotSupportedException();
             }
             var client = clientOptional.Value;
 

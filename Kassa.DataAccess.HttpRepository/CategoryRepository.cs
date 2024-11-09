@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.DataAccess.HttpRepository.Api;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
@@ -22,10 +23,10 @@ internal sealed class CategoryRepository : IRepository<Category>, IEnableLogger
         _api = api;
     }
 
-    public Task Add(Category item) => throw new NotImplementedException();
+    public Task Add(Category item) => ThrowHelper.ThrowNotSupportedException<Task>();
 
-    public Task Delete(Category item) => throw new NotImplementedException();
-    public Task DeleteAll() => throw new NotImplementedException();
+    public Task Delete(Category item) => ThrowHelper.ThrowNotSupportedException<Task>();
+    public Task DeleteAll() => ThrowHelper.ThrowNotSupportedException<Task>();
     public Task<Category?> Get(Guid id)
     {
         if (_cache.IsEmpty)
@@ -48,5 +49,5 @@ internal sealed class CategoryRepository : IRepository<Category>, IEnableLogger
         return categories;
     }
 
-    public Task Update(Category item) => throw new NotImplementedException();
+    public Task Update(Category item) => ThrowHelper.ThrowNotSupportedException<Task>();
 }

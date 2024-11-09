@@ -8,6 +8,7 @@ using System.Collections.Immutable;
 using System.Runtime.CompilerServices;
 using System.Diagnostics.CodeAnalysis;
 using System.Text;
+using CommunityToolkit.Diagnostics;
 
 namespace Kassa.Shared.Collections;
 public ref struct ImmutableArrayBuilder<T>
@@ -202,13 +203,13 @@ public ref struct ImmutableArrayBuilder<T>
         /// <inheritdoc/>
         void ICollection<T>.Clear()
         {
-            throw new NotSupportedException();
+            ThrowHelper.ThrowNotSupportedException();
         }
 
         /// <inheritdoc/>
         bool ICollection<T>.Contains(T item)
         {
-            throw new NotSupportedException();
+            return ThrowHelper.ThrowNotSupportedException<bool>();
         }
 
         /// <inheritdoc/>
@@ -238,7 +239,7 @@ public ref struct ImmutableArrayBuilder<T>
         /// <inheritdoc/>
         bool ICollection<T>.Remove(T item)
         {
-            throw new NotSupportedException();
+            return ThrowHelper.ThrowNotSupportedException<bool>();
         }
 
         /// <summary>

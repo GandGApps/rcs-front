@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 
 namespace Kassa.Shared;
 public static class Helper
@@ -34,7 +35,7 @@ public static class Helper
     {
         if (guidIdContainable == null)
         {
-            throw new ArgumentNullException(nameof(guidIdContainable));
+            ThrowHelper.ThrowArgumentNullException(nameof(guidIdContainable));
         }
 
         if (getId is not null)
@@ -57,6 +58,6 @@ public static class Helper
             return new AnonymousGuidId(() => (Guid)idProperty.GetValue(guidIdContainable)!);
         }
 
-        throw new Exception("Can't create IGuidId from object without Guid Id property");
+        return ThrowHelper.ThrowInvalidOperationException<IGuidId>("Can't create IGuidId from object without Guid Id property");
     }
 }

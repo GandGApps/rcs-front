@@ -7,9 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="CommunityToolkit.Diagnostics" Version="8.2.2" />
-    <PackageReference Include="Refit" Version="7.0.0" />
-    <PackageReference Include="Refit.HttpClientFactory" Version="7.0.0" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.5.1" />
   </ItemGroup>
 

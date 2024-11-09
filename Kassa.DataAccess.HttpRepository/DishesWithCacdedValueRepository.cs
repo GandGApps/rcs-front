@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.DataAccess.HttpRepository.Api;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
@@ -33,7 +34,7 @@ internal sealed class DishesWithCacdedValueRepository : IRepository<Product>
         return _api.DeleteDish(item.Id);
     }
 
-    public Task DeleteAll() => throw new NotImplementedException();
+    public Task DeleteAll() => ThrowHelper.ThrowNotSupportedException<Task>();
     public Task<Product?> Get(Guid id)
     {
         Product? product = null;

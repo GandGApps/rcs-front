@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.DataAccess.HttpRepository.Api;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
@@ -22,9 +23,9 @@ internal sealed class AdditiveRepository : IAdditiveRepository, IEnableLogger
         _additiveApi = additiveApi;
     }
 
-    public Task Add(Additive item) => throw new NotImplementedException();
-    public Task Delete(Additive item) => throw new NotImplementedException();
-    public Task DeleteAll() => throw new NotImplementedException();
+    public Task Add(Additive item) => ThrowHelper.ThrowNotSupportedException<Task>();
+    public Task Delete(Additive item) => ThrowHelper.ThrowNotSupportedException<Task>();
+    public Task DeleteAll() => ThrowHelper.ThrowNotSupportedException<Task>();
 
     public Task<Additive?> Get(Guid id)
     {

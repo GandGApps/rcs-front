@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.DataAccess.HttpRepository.Api;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
@@ -22,9 +23,9 @@ internal sealed class ReceiptRepository : IRepository<Receipt>, IEnableLogger
         _api = api;
     }
 
-    public Task Add(Receipt item) => throw new NotImplementedException();
-    public Task Delete(Receipt item) => throw new NotImplementedException();
-    public Task DeleteAll() => throw new NotImplementedException();
+    public Task Add(Receipt item) => ThrowHelper.ThrowNotSupportedException<Task>();
+    public Task Delete(Receipt item) => ThrowHelper.ThrowNotSupportedException<Task>();
+    public Task DeleteAll() => ThrowHelper.ThrowNotSupportedException<Task>();
     public Task<Receipt?> Get(Guid id)
     {
         if (_cache.IsEmpty)

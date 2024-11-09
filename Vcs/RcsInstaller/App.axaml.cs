@@ -28,8 +28,7 @@ public sealed partial class App : Application
 
     public override void Initialize()
     {
-
-        var builder = Microsoft.Extensions.Hosting.Host.CreateApplicationBuilder();
+        var builder = Microsoft.Extensions.Hosting.Host.CreateEmptyApplicationBuilder(null);
 
         builder.Logging.AddEventLog();
 

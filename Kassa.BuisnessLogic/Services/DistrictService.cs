@@ -4,8 +4,10 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using DynamicData;
 using Kassa.BuisnessLogic.Dto;
+using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 
 namespace Kassa.BuisnessLogic.Services;
@@ -47,13 +49,7 @@ internal class DistrictService : BaseInitializableService, IDistrictService
 
     public async ValueTask DeleteDistrict(Guid id)
     {
-        var district = await _repository.Get(id);
-
-        if (district is null)
-        {
-            throw new InvalidOperationException($"District with id {id} not found");
-        }
-
+        var district = await _repository.Get(id) ?? ThrowHelper.ThrowArgumentException<District>($"District with id {id} not found");
         await _repository.Delete(district);
         RuntimeDistricts.Remove(id);
     }

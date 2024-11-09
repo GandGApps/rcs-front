@@ -7,6 +7,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
 using Kassa.Shared;
@@ -50,7 +51,7 @@ public sealed class OrderEditWithNavigationPageVm : PageViewModel
         var index = orderEditDtos.IndexOf(orderEditDto);
         if (index == -1)
         {
-            throw new ArgumentException("Order edit not found in the list", nameof(orderEditDto));
+            ThrowHelper.ThrowArgumentException("Order edit not found in the list", nameof(orderEditDto));
         }
 
         CurrentIndex = index;

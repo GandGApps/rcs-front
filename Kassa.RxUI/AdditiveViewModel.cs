@@ -5,6 +5,7 @@ using System.Reactive;
 using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
@@ -28,14 +29,14 @@ public sealed class AdditiveViewModel : ReactiveObject, IReactiveToChangeSet<Gui
 
         if (orderEditVm is null)
         {
-            throw new InvalidOperationException("Order is not initialized");
+            ThrowHelper.ThrowInvalidOperationException("Order is not initialized");
         }
 
         var additiveDto =  additive._additiveDto;
 
         if (additiveDto is null)
         {
-            throw new InvalidOperationException("Additive not found");
+            ThrowHelper.ThrowInvalidOperationException("Additive not found");
         }
 
         additive.IsAdded = additive.IsAdditiveAdded();

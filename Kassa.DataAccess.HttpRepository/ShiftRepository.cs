@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.DataAccess.HttpRepository.Api;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
@@ -22,9 +23,9 @@ internal sealed class ShiftRepository : IShiftRepository, IEnableLogger
         _api = api;
     }
 
-    public Task Add(Shift item) => throw new NotImplementedException();
-    public Task Delete(Shift item) => throw new NotImplementedException();
-    public Task DeleteAll() => throw new NotImplementedException();
+    public Task Add(Shift item) => ThrowHelper.ThrowNotSupportedException<Task>();
+    public Task Delete(Shift item) => ThrowHelper.ThrowNotSupportedException<Task>();
+    public Task DeleteAll() => ThrowHelper.ThrowNotSupportedException<Task>();
     public async Task<Shift?> Get(Guid id)
     {
         if (_cache.IsExpired)
@@ -65,5 +66,5 @@ internal sealed class ShiftRepository : IShiftRepository, IEnableLogger
         return shifts;
     }
 
-    public Task Update(Shift item) => throw new NotImplementedException();
+    public Task Update(Shift item) => ThrowHelper.ThrowNotSupportedException<Task>();
 }

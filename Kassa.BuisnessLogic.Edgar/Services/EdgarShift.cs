@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive.Subjects;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Edgar.Api;
 using Kassa.BuisnessLogic.Services;
@@ -54,7 +55,7 @@ internal sealed class EdgarShift : IShift
         }
         else
         {
-            throw new DeveloperException("Не удалось начать смену");
+            DeveloperException.Throw("Не удалось начать смену");
         }
 
         shiftDto.Start = openPostRequest.OpenDate;

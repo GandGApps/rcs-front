@@ -15,6 +15,7 @@ using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 using Microsoft.Extensions.Configuration;
 using System.Runtime.CompilerServices;
+using CommunityToolkit.Diagnostics;
 
 namespace Kassa.BuisnessLogic.Edgar.Services;
 internal sealed class ShiftService : BaseInitializableService, IShiftService
@@ -91,13 +92,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
     public async Task DeleteShift(Guid id)
     {
-        var shift = await _repository.Get(id);
-
-        if (shift is null)
-        {
-            throw new InvalidOperationException($"Client with id {id} not found");
-        }
-
+        var shift = await _repository.Get(id) ?? ThrowHelper.ThrowInvalidOperationException<Shift>($"Client with id {id} not found");
         await _repository.Delete(shift);
 
         RuntimeShifts.Remove(id);
@@ -105,13 +100,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
     public async Task UpdateShift(ShiftDto shift)
     {
-        var foundedShift = await _repository.Get(shift.Id);
-
-        if (foundedShift is null)
-        {
-            throw new InvalidOperationException($"Shift with id {shift.Id} not found");
-        }
-
+        var foundedShift = await _repository.Get(shift.Id) ?? ThrowHelper.ThrowInvalidOperationException<Shift>($"Shift with id {shift.Id} not found");
         var updatedShift = Mapper.MapDtoToShift(shift);
 
         await _repository.Update(updatedShift);
@@ -136,7 +125,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
         if (!this.IsCashierShiftStarted() && !member.IsManager)
         {
-            throw new InvalidUserOperatationException("Кассовая смена не открыта") { Description = "Дождитесь менеджера" };
+            InvalidUserOperatationException.Throw("Кассовая смена не открыта", "Дождитесь менеджера");
         }
 
         var shift = new EdgarShift(this, member, exist.CreatedPost.IsOpen, exist);
@@ -157,7 +146,7 @@ internal sealed class ShiftService : BaseInitializableService, IShiftService
 
         if (!this.IsCashierShiftStarted() && !member.IsManager)
         {
-            throw new InvalidUserOperatationException("Кассовая смена не открыта") { Description = "Дождитесь менеджера" };
+            InvalidUserOperatationException.Throw("Кассовая смена не открыта", "Дождитесь менеджера");
         }
 
         _currentCashierShift.OnNext(managerShift);

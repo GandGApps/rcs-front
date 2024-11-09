@@ -6,6 +6,7 @@ using System.Reactive.Subjects;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Edgar.Api;
 using Kassa.BuisnessLogic.Services;
@@ -86,7 +87,7 @@ internal sealed partial class AuthService : IAuthService, IEnableLogger
         else
         {
             this.Log().Warn("Trying to logout from not authenticated account");
-            throw new InvalidOperationException("Trying to logout from not authenticated account");
+            ThrowHelper.ThrowInvalidOperationException("Trying to logout from not authenticated account");
         }
     }
 

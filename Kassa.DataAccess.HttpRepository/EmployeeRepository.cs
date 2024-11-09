@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.DataAccess.HttpRepository.Api;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
@@ -20,9 +21,9 @@ internal sealed class EmployeeRepository : IRepository<Member>
         _api = api;
     }
 
-    public Task Add(Member item) => throw new NotImplementedException();
-    public Task Delete(Member item) => throw new NotImplementedException();
-    public Task DeleteAll() => throw new NotImplementedException();
+    public Task Add(Member item) => ThrowHelper.ThrowNotSupportedException<Task>();
+    public Task Delete(Member item) => ThrowHelper.ThrowNotSupportedException<Task>();
+    public Task DeleteAll() => ThrowHelper.ThrowNotSupportedException<Task>();
     public async Task<Member?> Get(Guid id)
     {
         if (_frozenMemoryCache.IsExpired)
@@ -74,5 +75,5 @@ internal sealed class EmployeeRepository : IRepository<Member>
 
         return member;
     }
-    public Task Update(Member item) => throw new NotImplementedException();
+    public Task Update(Member item) => ThrowHelper.ThrowNotSupportedException<Task>();
 }

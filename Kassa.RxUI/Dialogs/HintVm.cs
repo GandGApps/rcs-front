@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 
 namespace Kassa.RxUI.Dialogs;
 public class HintVm(string hint, object target, object? root = null)
@@ -10,12 +11,12 @@ public class HintVm(string hint, object target, object? root = null)
     public string Hint
     {
         get; set;
-    } = hint ?? throw new ArgumentNullException(nameof(hint));
+    } = hint ?? ThrowHelper.ThrowArgumentNullException<string>(nameof(hint));
 
     public object Target
     {
         get; set;
-    } = target ?? throw new ArgumentNullException(nameof(target));
+    } = target ?? ThrowHelper.ThrowArgumentNullException<string>(nameof(target));
 
     public object? Root
     {

@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Refit;
 using Splat;
 using Microsoft.Extensions.DependencyInjection.Extensions;
+using CommunityToolkit.Diagnostics;
 
 namespace Kassa.Shared;
 public static class ApiServiceRegistration
@@ -55,7 +56,7 @@ public static class ApiServiceRegistration
 
             if (string.IsNullOrWhiteSpace(baseAddress))
             {
-                throw new InvalidOperationException("Base address is not set");
+                ThrowHelper.ThrowInvalidOperationException("Base address is not set");
             }
 
             httpClient.BaseAddress = new Uri(baseAddress);

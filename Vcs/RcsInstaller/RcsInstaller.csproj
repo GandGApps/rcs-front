@@ -11,6 +11,7 @@
     <IsAotCompatible>true</IsAotCompatible>
     <ApplicationIcon>Logo.ico</ApplicationIcon>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <TrimmerDefaultAction>link</TrimmerDefaultAction>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)'=='Release'">
@@ -61,17 +62,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Logo.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="appsettings.json" />
-  </ItemGroup>    
-  
-  
-
-
-  <ItemGroup Condition=" '$(OS)' == 'Windows_NT' ">
     <COMReference Include="IWshRuntimeLibrary">
       <WrapperTool>tlbimp</WrapperTool>
       <VersionMinor>0</VersionMinor>
@@ -81,6 +71,18 @@
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <TrimmerRootAssembly Include="Interop.IWshRuntimeLibrary" />
+  </ItemGroup>
+  
+  <ItemGroup>
+    <Content Include="Logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="appsettings.json" />
   </ItemGroup>    
 
   <ItemGroup>

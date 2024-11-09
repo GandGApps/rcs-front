@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using DynamicData;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
@@ -33,23 +34,18 @@ internal sealed class AdditiveService(IAdditiveRepository repository, IReceiptSe
         this.ThrowIfNotInitialized();
         ArgumentNullException.ThrowIfNull(additiveDto);
 
-        var receipt = await receiptService.GetReceipt(additiveDto.ReceiptId);
-
-        if (receipt == null)
-        {
-            throw new InvalidOperationException($"Receipt with id {additiveDto.ReceiptId} not found");
-        }
-
+        var receipt = await receiptService.GetReceipt(additiveDto.ReceiptId) ?? ThrowHelper.ThrowInvalidOperationException<ReceiptDto>($"Receipt with id {additiveDto.ReceiptId} not found");
+        
         if (!await receiptService.HasEnoughIngridients(receipt, count))
         {
-            throw new InvalidOperationException($"Additive with id {additiveDto.Id} has not enough count");
+            ThrowHelper.ThrowInvalidOperationException($"Additive with id {additiveDto.Id} has not enough count");
         }
 
         var foundedAdditive = await repository.Get(additiveDto.Id);
 
         if (foundedAdditive is null)
         {
-            throw new InvalidOperationException($"Additive with id {additiveDto.Id} not found");
+            ThrowHelper.ThrowInvalidOperationException($"Additive with id {additiveDto.Id} not found");
         }
 
         await receiptService.SpendIngridients(receipt, count);
@@ -104,23 +100,12 @@ internal sealed class AdditiveService(IAdditiveRepository repository, IReceiptSe
     {
         this.ThrowIfNotInitialized();
 
-        var foundedAdditive = await repository.Get(additiveDto.Id);
-
-        if (foundedAdditive is null)
-        {
-            throw new InvalidOperationException($"Additive with id {additiveDto.Id} not found");
-        }
-
-        var receipt = await receiptService.GetReceipt(additiveDto.ReceiptId);
-
-        if (receipt is null)
-        {
-            throw new InvalidOperationException($"Receipt with id {additiveDto.ReceiptId} not found");
-        }
-
+        var foundedAdditive = await repository.Get(additiveDto.Id) ?? ThrowHelper.ThrowInvalidOperationException<Additive>($"Additive with id {additiveDto.Id} not found");
+        var receipt = await receiptService.GetReceipt(additiveDto.ReceiptId) ?? ThrowHelper.ThrowInvalidOperationException<ReceiptDto>($"Receipt with id {additiveDto.ReceiptId} not found");
+        
         if (!await receiptService.HasEnoughIngridients(receipt, count))
         {
-            throw new InvalidOperationException($"Additive with id {additiveDto.Id} has not enough count");
+            ThrowHelper.ThrowInvalidOperationException($"Additive with id {additiveDto.Id} has not enough count");
         }
 
         await receiptService.ReturnIngridients(receipt, count);
@@ -153,7 +138,7 @@ internal sealed class AdditiveService(IAdditiveRepository repository, IReceiptSe
 
             if (receipt is null)
             {
-                throw new InvalidOperationException($"Receipt with id {additiveDto.ReceiptId} not found");
+                ThrowHelper.ThrowInvalidOperationException($"Receipt with id {additiveDto.ReceiptId} not found");
             }
 
             additiveDto.IsEnoughIngredients = await receiptService.HasEnoughIngridients(receipt, 1);
@@ -171,7 +156,7 @@ internal sealed class AdditiveService(IAdditiveRepository repository, IReceiptSe
 
         if (model is null)
         {
-            throw new ArgumentNullException(nameof(additiveDto));
+            ThrowHelper.ThrowInvalidOperationException($"Additive with id {additiveDto.Id} not found");
         }
 
         await repository.Update(Mapper.MapAdditiveDtoToAdditive(additiveDto));
@@ -197,13 +182,7 @@ internal sealed class AdditiveService(IAdditiveRepository repository, IReceiptSe
                 continue;
             }
 
-            var receipt = await receiptService.GetReceipt(product.ReceiptId);
-
-            if (receipt is null)
-            {
-                throw new InvalidOperationException($"Receipt with id {product.ReceiptId} not found");
-            }
-
+            var receipt = await receiptService.GetReceipt(product.ReceiptId) ?? ThrowHelper.ThrowInvalidOperationException<ReceiptDto>($"Receipt with id {product.ReceiptId} not found");
             product.IsEnoughIngredients = await receiptService.HasEnoughIngridients(receipt, 1);
 
             await UpdateAdditive(product);

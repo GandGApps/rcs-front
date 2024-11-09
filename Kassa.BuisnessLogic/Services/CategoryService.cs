@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using DynamicData;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
@@ -46,7 +47,7 @@ public sealed class CategoryService(IRepository<Category> repository) : ICategor
         }
         catch (Exception e)
         {
-            throw new InvalidOperationException("Failed to initialize repository", e);
+            ThrowHelper.ThrowInvalidOperationException("Failed to initialize repository", e);
         }
     }
 
@@ -121,12 +122,7 @@ public sealed class CategoryService(IRepository<Category> repository) : ICategor
     {
         var category = await repository.Get(id);
 
-        if (category == null)
-        {
-            throw new InvalidOperationException($"Category with id {id} not found");
-        }
-
-        return category;
+        return category ?? ThrowHelper.ThrowInvalidOperationException<Category>($"Category with id {id} not found");
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]

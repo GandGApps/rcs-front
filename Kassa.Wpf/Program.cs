@@ -74,7 +74,7 @@ public static class Program
         var path = System.IO.Path.Combine(launcherPath, "Kassa.Launcher.exe");
         var parameters = $"-p {RcsKassa.BasePath}";
 
-        logger.LogInformation($"Start proccess:{path} {parameters}");
+        logger.LogInformation("Start proccess:{path} {parameters}", path, parameters);
 
         Process.Start(path, parameters);
     }

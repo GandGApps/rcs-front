@@ -5,6 +5,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Services;
 using Kassa.RxUI.Pages;
@@ -24,7 +25,7 @@ public sealed class TurnOffDialogViewModel : DialogViewModel
 
             if (_shiftService.CurrentShift.Value == null)
             {
-                throw new InvalidOperationException("Shift is not started");
+                ThrowHelper.ThrowInvalidOperationException("Shift is not started");
             }
 
             await _shiftService.CurrentShift.Value!.Exit();

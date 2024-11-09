@@ -33,7 +33,6 @@ internal sealed class StorageScope(IngridientsService ingridientsService) : ISto
         Submit();
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public Task<bool> HasEnoughIngredients(IEnumerable<IngredientUsageDto> ingredientUsages, double count)
     {
         if (ThrowOrLogIfDisposed())
@@ -57,7 +56,6 @@ internal sealed class StorageScope(IngridientsService ingridientsService) : ISto
         return Task.FromResult(true);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public Task ReturnIngredients(IEnumerable<IngredientUsageDto> ingredientUsages, double count)
     {
         if (ThrowOrLogIfDisposed())
@@ -79,7 +77,6 @@ internal sealed class StorageScope(IngridientsService ingridientsService) : ISto
         return Task.CompletedTask;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public Task SpendIngredients(IEnumerable<IngredientUsageDto> ingredientUsages, double count)
     {
         if (ThrowOrLogIfDisposed())

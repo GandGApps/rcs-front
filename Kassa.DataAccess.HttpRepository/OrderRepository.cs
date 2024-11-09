@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.DataAccess.HttpRepository.Api;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
@@ -24,9 +25,9 @@ internal sealed class OrderRepository : IRepository<Order>
 
         await _ordersApi.AddOrder(request);
     }
-    public Task Delete(Order item) => throw new NotImplementedException();
-    public Task DeleteAll() => throw new NotImplementedException();
-    public Task<Order?> Get(Guid id) => throw new NotImplementedException();
+    public Task Delete(Order item) => ThrowHelper.ThrowNotSupportedException<Task>();
+    public Task DeleteAll() => ThrowHelper.ThrowNotSupportedException<Task>();
+    public Task<Order?> Get(Guid id) => ThrowHelper.ThrowNotSupportedException<Task<Order?>>();
     public async Task<IEnumerable<Order>> GetAll()
     {
         var orders = await _ordersApi.GetOrders();
@@ -38,5 +39,5 @@ internal sealed class OrderRepository : IRepository<Order>
 
         return orders.Select(ApiMapper.MapServerResponseToOrder).ToList();
     }
-    public Task Update(Order item) => throw new NotImplementedException();
+    public Task Update(Order item) => ThrowHelper.ThrowNotSupportedException<Task>();
 }

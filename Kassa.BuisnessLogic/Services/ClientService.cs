@@ -5,6 +5,7 @@ using System.Net;
 using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using DynamicData;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess.Model;
@@ -44,7 +45,7 @@ internal class ClientService : BaseInitializableService, IClientService
 
         if (client is null)
         {
-            throw new InvalidOperationException($"Client with id {id} not found");
+            ThrowHelper.ThrowInvalidOperationException($"Client with id {id} not found");
         }
 
         await _repository.Delete(client);
@@ -81,7 +82,7 @@ internal class ClientService : BaseInitializableService, IClientService
 
         if (foundedClient is null)
         {
-            throw new InvalidOperationException($"Client with id {client.Id} not found");
+            ThrowHelper.ThrowInvalidOperationException($"Client with id {client.Id} not found");
         }
 
         var updatedClient = Mapper.MapDtoToClient(client);

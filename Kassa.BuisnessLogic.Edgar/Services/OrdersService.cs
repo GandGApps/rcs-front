@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
@@ -158,7 +159,7 @@ internal sealed class OrdersService: BaseInitializableService, IOrdersService
         if (currentCashierShift == null)
         {
             this.Log().Error("No current cashier shift found");
-            throw new InvalidOperationException("No current cashier shift found");
+            ThrowHelper.ThrowInvalidOperationException("No current cashier shift found");
         }
 
         var dto = currentCashierShift.CreateDto();
@@ -174,7 +175,7 @@ internal sealed class OrdersService: BaseInitializableService, IOrdersService
         if (currentShift == null)
         {
             this.Log().Error("No current shift found");
-            throw new InvalidOperationException("No current shift found");
+            ThrowHelper.ThrowInvalidOperationException("No current shift found");
         }
 
         var dto = currentShift.CreateDto();

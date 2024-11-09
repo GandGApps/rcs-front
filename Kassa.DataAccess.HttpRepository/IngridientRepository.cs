@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.DataAccess.HttpRepository.Api;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
@@ -20,10 +21,10 @@ internal sealed class IngridientRepository : IRepository<Ingredient>, IEnableLog
         _api = api;
     }
 
-    public Task Add(Ingredient item) => throw new NotImplementedException();
-    public Task Delete(Ingredient item) => throw new NotImplementedException();
-    public Task DeleteAll() => throw new NotImplementedException();
-    public Task<Ingredient?> Get(Guid id) => throw new NotImplementedException();
+    public Task Add(Ingredient item) => ThrowHelper.ThrowNotSupportedException<Task>();
+    public Task Delete(Ingredient item) => ThrowHelper.ThrowNotSupportedException<Task>();
+    public Task DeleteAll() => ThrowHelper.ThrowNotSupportedException<Task>();
+    public Task<Ingredient?> Get(Guid id) => ThrowHelper.ThrowNotSupportedException<Task<Ingredient?>>();
     public async Task<IEnumerable<Ingredient>> GetAll()
     {
         if (!_cache.IsExpired)
@@ -46,7 +47,7 @@ internal sealed class IngridientRepository : IRepository<Ingredient>, IEnableLog
     {
         this.Log().Error("Update method is not implemented");
 
-        throw new DeveloperException("Логическая ошибка, обратитесь к Баястану");
+        return ThrowHelper.ThrowNotSupportedException<Task>();
 
 
         /*var ingridientsApi = RcsKassa.GetRequiredService<IIngridientsApi>();

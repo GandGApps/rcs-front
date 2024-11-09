@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using CommunityToolkit.Diagnostics;
 using Kassa.DataAccess.Model;
 using Kassa.DataAccess.Repositories;
 using Splat;
@@ -25,6 +26,6 @@ public static class InternalMockData
             return mockRepository._items.Values.FirstOrDefault(x => x.Pincode == pincode);
         }
 
-        throw new InvalidOperationException("This method can only be used with a mock repository");
+        return ThrowHelper.ThrowInvalidOperationException<Member>("This method can only be used with a mock repository");
     }
 }

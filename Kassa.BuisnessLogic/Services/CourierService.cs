@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive.Disposables;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.DataAccess.Model;
@@ -63,13 +64,7 @@ internal class CourierService(IRepository<Courier> repository) : BaseInitializab
 
     public async Task UpdateCourier(CourierDto courier)
     {
-        var model = await repository.Get(courier.Id);
-
-        if (model == null)
-        {
-            throw new InvalidOperationException($"Courier with id {courier.Id} not found");
-        }
-
+        var model = await repository.Get(courier.Id) ?? ThrowHelper.ThrowInvalidOperationException<Courier>($"Courier with id {courier.Id} not found");
         await repository.Update(Mapper.MapDtoToCourier(courier));
 
         RuntimeCouriers.AddOrUpdate(courier);

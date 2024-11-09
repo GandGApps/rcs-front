@@ -5,6 +5,7 @@ using System.Reactive.Disposables;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
 using Kassa.BuisnessLogic.Services;
@@ -41,13 +42,7 @@ internal sealed class IngridientsService(IRepository<Ingredient> repository) : B
     }
     public async Task DeleteIngridient(Guid id)
     {
-        var ingridient = await repository.Get(id);
-
-        if (ingridient is null)
-        {
-            throw new InvalidOperationException($"Ingridient with id {id} not found");
-        }
-
+        var ingridient = await repository.Get(id) ?? ThrowHelper.ThrowInvalidOperationException<Ingredient>($"Ingridient with id {id} not found");
         await repository.Delete(ingridient);
 
         RuntimeIngridients.Remove(id);
@@ -68,7 +63,6 @@ internal sealed class IngridientsService(IRepository<Ingredient> repository) : B
         return dto;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public Task<bool> HasEnoughIngredients(IEnumerable<IngredientUsageDto> ingredientUsages, double count)
     {
         foreach (var usage in ingredientUsages)
@@ -93,7 +87,6 @@ internal sealed class IngridientsService(IRepository<Ingredient> repository) : B
         return Task.FromResult(true);
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public Task ReturnIngridients(IEnumerable<IngredientUsageDto> ingredientUsages, double count = 1)
     {
         foreach (var usage in ingredientUsages)
@@ -105,14 +98,13 @@ internal sealed class IngridientsService(IRepository<Ingredient> repository) : B
             }
             else
             {
-                throw new InvalidOperationException($"Ingredient with id {usage.IngredientId} not found");
+                ThrowHelper.ThrowInvalidOperationException($"Ingredient with id {usage.IngredientId} not found");
             }
         }
 
         return Task.CompletedTask;
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveOptimization)]
     public Task SpendIngridients(IEnumerable<IngredientUsageDto> ingredientUsages, double count = 1)
     {
         foreach (var usage in ingredientUsages)
@@ -124,7 +116,7 @@ internal sealed class IngridientsService(IRepository<Ingredient> repository) : B
             }
             else
             {
-                throw new InvalidOperationException($"Ingredient with id {usage.IngredientId} not found");
+                ThrowHelper.ThrowInvalidOperationException($"Ingredient with id {usage.IngredientId} not found");
             }
         }
 

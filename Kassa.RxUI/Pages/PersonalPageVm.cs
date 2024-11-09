@@ -7,6 +7,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CommunityToolkit.Diagnostics;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.ApplicationModelManagers;
 using Kassa.BuisnessLogic.Dto;
@@ -61,13 +62,7 @@ public class PersonalPageVm : PageViewModel
             {
                 await MainViewModel.OkMessageAsync("Перерыв получен");
 
-                var shift = _shiftService.CurrentShift.Value;
-
-                if (shift is null)
-                {
-                    throw new InvalidOperationException("Shift is not started");
-                }
-
+                var shift = _shiftService.CurrentShift.Value ?? ThrowHelper.ThrowInvalidOperationException<IShift>("Shift is not started"); 
                 await shift.TakeBreak(pincode);
             }
 
@@ -125,13 +120,7 @@ public class PersonalPageVm : PageViewModel
             }
             else
             {
-                var shift = _shiftService.CurrentShift.Value;
-
-                if (shift is null)
-                {
-                    throw new InvalidOperationException("Shift is not started");
-                }
-
+                var shift = _shiftService.CurrentShift.Value ?? ThrowHelper.ThrowInvalidOperationException<IShift>("Shift is not started");
                 var orders = await _ordersService.GetOrdersOfCurrentShiftAsync();
 
                 if (orders.Any(x => x.Status is not OrderStatus.Completed and not OrderStatus.Canceled))
