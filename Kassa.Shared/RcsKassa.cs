@@ -32,7 +32,7 @@ public static class RcsKassa
     public static IServiceProvider ServiceProvider => Host.Services;
     public static IServiceScope? ScopedServices
     {
-        get;
+        get; private set;
     }
 
     public static bool IsDevelopment => string.Equals(EnvironmentName, DevelopmentName, StringComparison.InvariantCultureIgnoreCase);
@@ -51,6 +51,7 @@ public static class RcsKassa
     public static T GetRequiredService<T>() where T: notnull
     {
         var type = typeof(T);
+
         if (ScopedServices is IServiceScope serviceScope)
         {
             return serviceScope.ServiceProvider.GetRequiredService<T>();
@@ -68,6 +69,8 @@ public static class RcsKassa
         var scopeActivator = new ScopeActivator(scope);
 
         await scopeActivator.Activate();
+
+        ScopedServices = scopeActivator;
     }
 
     public static T CreateAndInject<T>()

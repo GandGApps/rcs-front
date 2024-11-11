@@ -51,6 +51,8 @@ public static class Program
 
         builder.Services.AddMainViewModelProvider();
 
+        builder.Services.AddScopedInitializablesFromServiceCollection();
+
         builder.Logging.AddSerilog();
 
         builder.Configuration.AddRcsConfiguration();

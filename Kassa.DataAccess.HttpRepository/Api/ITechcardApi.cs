@@ -23,7 +23,7 @@ internal sealed record IngridientEdgarResponse
     }
 
     [JsonPropertyName("code")]
-    public required string Code
+    public string Code
     {
         get; init;
     }
@@ -35,7 +35,7 @@ internal sealed record IngridientEdgarResponse
     }
 
     [JsonPropertyName("name")]
-    public required string Name
+    public string Name
     {
         get; init;
     }
@@ -53,7 +53,7 @@ internal sealed record IngridientEdgarResponse
     }
 
     [JsonPropertyName("title")]
-    public required string Title
+    public string Title
     {
         get; init;
     }
@@ -65,7 +65,7 @@ internal sealed record IngridientEdgarResponse
     }
 
     [JsonPropertyName("article")]
-    public required string Article
+    public string Article
     {
         get; init;
     }
@@ -95,7 +95,7 @@ internal sealed record IngridientEdgarResponse
     }
 
     [JsonPropertyName("measureUnit")]
-    public required string MeasureUnit
+    public string MeasureUnit
     {
         get; init;
     }
@@ -155,7 +155,7 @@ internal sealed record IngridientEdgarResponse
     }
 
     [JsonPropertyName("packaging_unit")]
-    public required string PackagingUnit
+    public string PackagingUnit
     {
         get; init;
     }

@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Kassa.Shared;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 
@@ -15,12 +16,11 @@ public sealed class HostedWpf(ILogger<HostedWpf> logger) : IHostedService
 
     [STAThread]
     [DebuggerNonUserCode]
-    public Task StartAsync(CancellationToken cancellationToken)
+    public async Task StartAsync(CancellationToken cancellationToken)
     {
         App.Main();
 
-
-        return Task.CompletedTask;
+        await RcsKassa.Host.StopAsync(default);
     }
 
     [STAThread]

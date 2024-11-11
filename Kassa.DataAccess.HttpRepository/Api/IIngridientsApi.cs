@@ -32,7 +32,7 @@ internal sealed record IngredientResponse
     }
 
     [JsonPropertyName("title")]
-    public required string Title
+    public string Title
     {
         get; init;
     }
@@ -68,7 +68,7 @@ internal sealed record IngredientResponse
     }
 
     [JsonPropertyName("packaging_unit")]
-    public required string PackagingUnit
+    public string PackagingUnit
     {
         get; init;
     }
@@ -80,13 +80,13 @@ internal sealed record IngredientResponse
     }
 
     [JsonPropertyName("code")]
-    public required string Code
+    public string Code
     {
         get; init;
     }
 
     [JsonPropertyName("article")]
-    public required string Article
+    public string Article
     {
         get; init;
     }

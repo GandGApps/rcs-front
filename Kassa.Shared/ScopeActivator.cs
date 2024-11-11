@@ -18,6 +18,7 @@ public sealed class ScopeActivator: IServiceScope, IDisposable, IAsyncDisposable
     public async ValueTask Activate()
     {
         var services = _serviceScope.ServiceProvider.GetServices<IInitializable>();
+        var collecction = _serviceScope.ServiceProvider.GetService<ServiceCollection>();
 
         foreach(var service in services)
         {

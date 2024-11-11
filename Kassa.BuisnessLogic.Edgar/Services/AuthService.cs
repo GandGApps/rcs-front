@@ -88,6 +88,7 @@ internal sealed partial class AuthService : IAuthService, IEnableLogger
         {
             this.Log().Warn("Trying to logout from not authenticated account");
             ThrowHelper.ThrowInvalidOperationException("Trying to logout from not authenticated account");
+            return new(false);
         }
     }
 
