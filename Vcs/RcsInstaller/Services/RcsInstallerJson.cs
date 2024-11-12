@@ -148,6 +148,11 @@ public sealed class RcsInstallerJson : IInstaller
                 continue;
             }
 
+            if (path.Value.Contains(".local."))
+            {
+                continue;
+            }
+
             var directory = System.IO.Path.GetDirectoryName(path.Value);
 
             if (!string.IsNullOrEmpty(directory))

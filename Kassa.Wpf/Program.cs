@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Kassa.BuisnessLogic;
 using Kassa.BuisnessLogic.Edgar;
+using Kassa.BuisnessLogic.Services;
 using Kassa.DataAccess;
 using Kassa.DataAccess.HttpRepository;
 using Kassa.RxUI;
@@ -32,9 +33,10 @@ public static class Program
 
         var builder = Host.CreateApplicationBuilder(args);
 
+        builder.Services.AddRcsvcApi();
+
         builder.Services.AddLogging();
         builder.Services.AddRcsLoggers(RcsKassa.LogsPath);
-        builder.Services.AddHostedService<HostedWpf>();
         builder.Services.AddDispatherAdapter();
 
         builder.Services.AddPrinterPosLib(builder.Configuration);
@@ -56,6 +58,8 @@ public static class Program
         builder.Logging.AddSerilog();
 
         builder.Configuration.AddRcsConfiguration();
+
+        builder.Services.AddHostedWpf();
 
         var app = builder.Build();
 

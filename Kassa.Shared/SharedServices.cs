@@ -43,6 +43,9 @@ public static class SharedServices
 
         var config = configurationBuilder.Build();
 
+        // Some services still rely on Splat.Locator, so we register IConfiguration here
+        // to ensure compatibility with those services that haven't been fully migrated to 
+        // Microsoft.DependencyInjection.
         Locator.CurrentMutable.RegisterConstant<IConfiguration>(config);
 
         return config;

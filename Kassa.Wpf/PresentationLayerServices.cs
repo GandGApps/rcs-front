@@ -17,4 +17,8 @@ internal static class PresentationLayerServices
         services.AddSingleton<IDispatcher, DispatherAdapter>();
     }
 
+    public static void AddHostedWpf(this IServiceCollection services)
+    {
+        services.AddHostedService<HostedWpf>();
+    }
 }

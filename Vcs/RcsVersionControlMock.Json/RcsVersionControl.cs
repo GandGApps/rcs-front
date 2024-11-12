@@ -131,6 +131,7 @@ public sealed class RcsVersionControl : IRcsVersionControl
             var changes = new List<VersionChangeNode>();
 
             var files = Directory.GetFiles(_appDirectory.Value, "*.*", SearchOption.AllDirectories)
+                                 .Where(file => !file.Contains(".local."))
                                  .Where(file => !file.StartsWith(_rcsDirectory.Value));
 
             var checkedChanged = allChanges.SelectMany(vc => vc.Changes).ToDictionary(vc => vc.Path, vc => false);

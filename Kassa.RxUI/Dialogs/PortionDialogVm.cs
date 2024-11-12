@@ -14,7 +14,6 @@ using Kassa.RxUI.Pages;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
-using static Kassa.RxUI.Dialogs.PortionDialogVm;
 
 namespace Kassa.RxUI.Dialogs;
 public sealed class PortionDialogVm : DialogViewModel
