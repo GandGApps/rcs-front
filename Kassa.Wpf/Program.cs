@@ -29,8 +29,6 @@ public static class Program
     [STAThread]
     public static void Main(string[] args)
     {
-        
-
         var builder = Host.CreateApplicationBuilder(args);
 
         builder.Services.AddRcsvcApi();
@@ -65,24 +63,9 @@ public static class Program
 
         RcsKassa.Host = app;
 
-        if (!args.Contains("--no-launcher", StringComparer.InvariantCultureIgnoreCase))
-        {
-            LaunchLauncher(app.Services.GetRequiredService<ILogger<App>>());
-            return;
-        }
-
         app.Run();
     }
 
-    private static void LaunchLauncher(ILogger<App> logger)
-    {
-        var launcherPath = Path.Combine(RcsKassa.BasePath, "Launcher");
-        var path = System.IO.Path.Combine(launcherPath, "Kassa.Launcher.exe");
-        var parameters = $"-p {RcsKassa.BasePath}";
-
-        logger.LogInformation("Start proccess:{path} {parameters}", path, parameters);
-
-        Process.Start(path, parameters);
-    }
+    
 
 }

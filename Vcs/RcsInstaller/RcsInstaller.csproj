@@ -72,10 +72,6 @@
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
   </ItemGroup>
-
-  <ItemGroup>
-    <TrimmerRootAssembly Include="Interop.IWshRuntimeLibrary" />
-  </ItemGroup>
   
   <ItemGroup>
     <Content Include="Logo.ico" />

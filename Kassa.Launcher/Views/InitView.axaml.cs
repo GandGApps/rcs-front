@@ -6,7 +6,7 @@ using Kassa.Launcher.Vms;
 
 namespace Kassa.Launcher;
 
-public partial class InitView : ReactiveUserControl<InitVm>
+public sealed partial class InitView : ReactiveUserControl<InitVm>
 {
     public InitView()
     {

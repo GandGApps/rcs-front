@@ -143,8 +143,29 @@
     </PropertyGroup>
     
     <Message Importance="high" Text="CurrentPublishDir is $(CurrentPublishDir)" />
-    <MSBuild Projects="..\Vcs\RcsInstaller\RcsInstaller.csproj" Targets="Publish" Properties="Configuration=Release;Platform=Any CPU;PublishDir=$(VcsPublishDir)\;PublishProtocol=FileSystem;_TargetId=Folder;TargetFramework=net8.0;RuntimeIdentifier=win-x64;SelfContained=true;PublishSingleFile=true;PublishReadyToRun=true;PublishTrimmed=true" />
-    <MSBuild Projects="..\Kassa.Launcher\Kassa.Launcher.csproj" Targets="Publish" Properties="Configuration=Release;Platform=Any CPU;PublishDir=$(LauncherPublishDir)\;PublishProtocol=FileSystem;_TargetId=Folder;TargetFramework=net8.0;RuntimeIdentifier=win-x64;SelfContained=true;PublishSingleFile=true;PublishReadyToRun=true;PublishTrimmed=true" />
+    <MSBuild Projects="..\Vcs\RcsInstaller\RcsInstaller.csproj" Targets="Publish" Properties="
+             Configuration=Release;
+             Platform=Any CPU;
+             PublishDir=$(VcsPublishDir)\;
+             PublishProtocol=FileSystem;
+             _TargetId=Folder;
+             TargetFramework=net8.0;
+             RuntimeIdentifier=win-x64;
+             SelfContained=true;
+             PublishSingleFile=true;
+             PublishReadyToRun=true" />
+    <MSBuild Projects="..\Kassa.Launcher\Kassa.Launcher.csproj" Targets="Publish" Properties="
+             Configuration=Release;
+             Platform=Any CPU;
+             PublishDir=$(LauncherPublishDir)\;
+             PublishProtocol=FileSystem;
+             _TargetId=Folder;
+             TargetFramework=net8.0;
+             RuntimeIdentifier=win-x64;
+             SelfContained=true;
+             PublishSingleFile=true;
+             PublishReadyToRun=true;
+             PublishTrimmed=true" />
   </Target>
 
   <Target Name="ZipAndUpload" AfterTargets="PublishRcsInstallerAndLauncher">

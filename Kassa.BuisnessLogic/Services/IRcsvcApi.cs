@@ -8,9 +8,9 @@ using Refit;
 namespace Kassa.BuisnessLogic.Services;
 public interface IRcsvcApi
 {
-    [Get("/api/rcsvc/install")]
+    [Get("/rcsvc/install")]
     public Task<HttpContent> InstallLatest(string? version = null);
 
-    [Get("/api/rcsvc/version")]
+    [Get("/rcsvc/version")]
     public Task<Version> GetVersion();
 }
