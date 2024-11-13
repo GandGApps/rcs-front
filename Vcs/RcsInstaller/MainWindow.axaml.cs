@@ -57,7 +57,7 @@ public sealed partial class MainWindow : SukiWindow
 
             mainVm.Router.Navigate.Execute(installingVm);
 
-            installingVm.StartInstallCommand.Execute().Subscribe();
+            installingVm.UpdateCommand.Execute().Subscribe();
         }
         
 

@@ -15,6 +15,9 @@ using Avalonia.Input;
 using TruePath;
 using CommunityToolkit.Diagnostics;
 using Microsoft.Extensions.Logging;
+using Avalonia.Controls.Shapes;
+using Avalonia.OpenGL;
+using System.Diagnostics;
 
 namespace RcsInstaller.Services;
 public sealed class RcsInstallerJson : IInstaller
@@ -32,42 +35,10 @@ public sealed class RcsInstallerJson : IInstaller
 
     public async Task InstallAsync(AbsolutePath path, Version version, bool createShortcut, Action<ProgressState> progress)
     {
-        var stringVersion = HelperExtensions.EmptyVersion == version ? null : version.ToString();
-
-        var httpContent = await _api.InstallLatest(stringVersion);
-
-        var zipStream = await httpContent.ReadAsStreamAsync();
-
-        var tempZipFilePath = Path.GetTempFileName();
-
-        await using (var progressStream = new ProgressStream(zipStream, httpContent.Headers.ContentLength))
-        {
-            progressStream.UpdateProgress += (s, e) => progress(new("Скачивание...", e.Progress / 2));
-
-            await using var tempZipStream = File.OpenWrite(tempZipFilePath);
-            await progressStream.CopyToAsync(tempZipStream);
-        }
-
-        using (var zipArchive = ZipFile.OpenRead(tempZipFilePath))
-        {
-            ParseZip(zipArchive, path, progress);
-        }
-
-        var loadedVersion = await _api.GetVersion();
-
-        // Remove temp file
-        try
-        {
-            File.Delete(tempZipFilePath);
-        }
-        catch (Exception e)
-        {
-            _logger.LogError(e, "Failed to delete temp file");
-        }
+        var loadedVersion = await LoadAndParseZip(path, version, progress);
 
         if (createShortcut)
         {
-
             await _shortcutCreator.CreateSrotcut(path, "RCS");
         }
 
@@ -120,7 +91,57 @@ public sealed class RcsInstallerJson : IInstaller
 #pragma warning restore CA1416 // Validate platform compatibility
     }
 
-    public static void ParseZip(ZipArchive zipArchive, AbsolutePath destinationPath, Action<ProgressState> progress)
+    public async Task UpdateAsync(AbsolutePath path, Version version, Action<ProgressState> value)
+    {
+        await LoadAndParseZip(path, version, value);
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="path"></param>
+    /// <param name="version"></param>
+    /// <param name="progress"></param>
+    /// <returns>return loaded version</returns>
+    private async Task<Version> LoadAndParseZip(AbsolutePath path, Version version, Action<ProgressState> progress)
+    {
+        var stringVersion = HelperExtensions.EmptyVersion == version ? null : version.ToString();
+
+        var httpContent = await _api.InstallLatest(stringVersion);
+
+        var zipStream = await httpContent.ReadAsStreamAsync();
+
+        var tempZipFilePath = System.IO.Path.GetTempFileName();
+
+        await using (var progressStream = new ProgressStream(zipStream, httpContent.Headers.ContentLength))
+        {
+            progressStream.UpdateProgress += (s, e) => progress(new("Скачивание...", e.Progress / 2));
+
+            await using var tempZipStream = File.OpenWrite(tempZipFilePath);
+            await progressStream.CopyToAsync(tempZipStream);
+        }
+
+        using (var zipArchive = ZipFile.OpenRead(tempZipFilePath))
+        {
+            ParseZip(zipArchive, path, progress);
+        }
+
+        var loadedVersion = await _api.GetVersion();
+
+        // Remove temp file
+        try
+        {
+            File.Delete(tempZipFilePath);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError(e, "Failed to delete temp file");
+        }
+
+        return loadedVersion;
+    }
+
+    private static void ParseZip(ZipArchive zipArchive, AbsolutePath destinationPath, Action<ProgressState> progress)
     {
         var helper = new ZipArchiveHelper(zipArchive);
 
@@ -148,7 +169,14 @@ public sealed class RcsInstallerJson : IInstaller
                 continue;
             }
 
+            // Skip local files
             if (path.Value.Contains(".local."))
+            {
+                continue;
+            }
+
+            // Skip the installer itself
+            if (path.Value.EndsWith("RcsInstaller.exe"))
             {
                 continue;
             }

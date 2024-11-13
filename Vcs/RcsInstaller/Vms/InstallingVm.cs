@@ -45,7 +45,25 @@ public sealed class InstallingVm : PageVm
 
             await HostScreen.Router.Navigate.Execute(App.CreateInstance<CompleteVm>(_path)).FirstAsync();
         });
-        
+
+        UpdateCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await _installer.UpdateAsync(_path, _version, progress =>
+            {
+                Dispatcher.UIThread.Post(() =>
+                {
+                    Progress = progress.Value * 100;
+                    State = progress.State;
+                });
+            });
+        });
+
+        UpdateCommand.Subscribe(async _ =>
+        {
+            await Task.Delay(1200);
+
+            await HostScreen.Router.Navigate.Execute(App.CreateInstance<CompleteVm>(_path)).FirstAsync();
+        });
     }
 
     [Reactive]
@@ -61,6 +79,11 @@ public sealed class InstallingVm : PageVm
     } = null!;
 
     public ReactiveCommand<Unit,Unit> StartInstallCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> UpdateCommand
     {
         get;
     }

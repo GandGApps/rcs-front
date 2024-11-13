@@ -24,10 +24,13 @@ public sealed class HostedWpf(ILogger<HostedWpf> logger, IRcsvcApi rcsvcApi) : I
 
         var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
 
-        if(currentVersion < latestVersion)
+        _logger.LogInformation("Current Version is {currentVersion}, latest is {latestVersion}", currentVersion, latestVersion);
+
+        if (currentVersion < latestVersion)
         {
             _logger.LogInformation("Detected new Version. Current is {currentVersion}, latest is {latestVersion}", currentVersion, latestVersion);
             LaunchUpdates(currentVersion);
+            await RcsKassa.Host.StopAsync(default);
             return;
         }
 
