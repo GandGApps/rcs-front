@@ -18,9 +18,10 @@ using Microsoft.Extensions.Logging;
 using Avalonia.Controls.Shapes;
 using Avalonia.OpenGL;
 using System.Diagnostics;
+using RcsInstaller.Vms;
 
 namespace RcsInstaller.Services;
-public sealed class RcsInstallerJson : IInstaller
+public sealed class RcsInstallerJson : IInstaller, IUpdater, IRepair
 {
     private readonly IRcsApi _api;
     private readonly IShortcutCreator _shortcutCreator;
@@ -94,6 +95,12 @@ public sealed class RcsInstallerJson : IInstaller
     public async Task UpdateAsync(AbsolutePath path, Version version, Action<ProgressState> value)
     {
         await LoadAndParseZip(path, version, value);
+    }
+
+    public Task RepairAsync(Action<ProgressState> value)
+    {
+        // Get current app
+
     }
 
     /// <summary>
@@ -210,10 +217,14 @@ public sealed class RcsInstallerJson : IInstaller
 
     }
 
+    
+
     internal readonly ref struct ZipArchiveHelper(ZipArchive zipArchive)
     {
         private readonly ZipArchive _zipArchive = zipArchive;
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", Justification = "<Pending>")]
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("AOT", "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.", Justification = "<Pending>")]
         public readonly IEnumerable<VersionChangeNode> GetChanges()
         {
             var changes = _zipArchive.GetEntry("changes.json");

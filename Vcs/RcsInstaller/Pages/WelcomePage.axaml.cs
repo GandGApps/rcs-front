@@ -6,7 +6,7 @@ using RcsInstaller.Vms;
 
 namespace RcsInstaller.Pages;
 
-public partial class WelcomePage : ReactiveUserControl<WelcomeVm>
+public sealed partial class WelcomePage : ReactiveUserControl<WelcomeVm>
 {
     public WelcomePage()
     {

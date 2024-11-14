@@ -6,7 +6,7 @@ using RcsInstaller.Vms;
 
 namespace RcsInstaller;
 
-public partial class CompletePage : ReactiveUserControl<CompleteVm>
+public sealed partial class CompletePage : ReactiveUserControl<CompleteVm>
 {
     public CompletePage()
     {

@@ -23,10 +23,11 @@ public sealed class SelectJwtDelegatingHandler : DelegatingHandler
 
     protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
     {
+        /*
         if (request.Options.TryGetValue<Type>(new(HttpRequestMessageOptions.InterfaceType), out var type))
         {
 
-            /*if (type.IsAssignableTo(typeof(IUseTerminalToken)))
+            if (type.IsAssignableTo(typeof(IUseTerminalToken)))
             {
 
                 if (!string.IsNullOrWhiteSpace(config["TerminalAuthToken"]))
@@ -44,8 +45,9 @@ public sealed class SelectJwtDelegatingHandler : DelegatingHandler
 
                     request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", config["MemberAuthToken"]);
                 }
-            }*/
+            }
         }
+        */
 
         return base.SendAsync(request, cancellationToken);
     }

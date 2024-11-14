@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
+using RcsInstaller.Dto;
 using RcsInstaller.Services;
 using Refit;
 using Splat;
@@ -30,12 +31,22 @@ public sealed partial class App : Application
     {
         var builder = Microsoft.Extensions.Hosting.Host.CreateEmptyApplicationBuilder(null);
 
+#pragma warning disable CA1416 // Validate platform compatibility
         builder.Logging.AddEventLog();
+#pragma warning restore CA1416 // Validate platform compatibility
 
         builder.Configuration.AddEmbeddedJsonFile("appsettings.json");
 
+#pragma warning disable IL2026 // Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code
+#pragma warning disable IL3050 // Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.
+        builder.Services.Configure<ApiConfiguration>(builder.Configuration);
+        builder.Services.Configure<TargetAppInfo>(builder.Configuration);
+#pragma warning restore IL3050 // Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.
+#pragma warning restore IL2026 // Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code
+
         builder.Services.AddApi<IRcsApi>();
         builder.Services.AddSingleton<IInstaller, RcsInstallerJson>();
+        builder.Services.AddSingleton<IUpdater>(sp => sp.GetRequiredService<RcsInstallerJson>());
         builder.Services.AddSingleton<IShortcutCreator, WndShortcutCreator>();
 
         Host = builder.Build();

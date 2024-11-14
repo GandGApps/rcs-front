@@ -19,13 +19,15 @@ public sealed class InstallingVm : PageVm
     private readonly bool _createShortcut;
     private readonly Version _version;
     private readonly IInstaller _installer;
+    private readonly IUpdater _updater;
 
-    public InstallingVm(string path, bool createShortcut, Version? version, IInstaller installer)
+    public InstallingVm(string path, bool createShortcut, Version? version, IInstaller installer, IUpdater updater)
     {
         _path = new(path);
         _createShortcut = createShortcut;
         _version = version ?? HelperExtensions.EmptyVersion;
         _installer = installer;
+        _updater = updater;
 
         StartInstallCommand = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -48,7 +50,7 @@ public sealed class InstallingVm : PageVm
 
         UpdateCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await _installer.UpdateAsync(_path, _version, progress =>
+            await _updater.UpdateAsync(_path, _version, progress =>
             {
                 Dispatcher.UIThread.Post(() =>
                 {
