@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 using TruePath;
 
 namespace RcsInstaller.Vms;
-public sealed class InstallingVm : PageVm
+public sealed class InstallingPageVm : PageVm
 {
     private readonly AbsolutePath _path;
     private readonly bool _createShortcut;
@@ -21,7 +21,7 @@ public sealed class InstallingVm : PageVm
     private readonly IInstaller _installer;
     private readonly IUpdater _updater;
 
-    public InstallingVm(string path, bool createShortcut, Version? version, IInstaller installer, IUpdater updater)
+    public InstallingPageVm(string path, bool createShortcut, Version? version, IInstaller installer, IUpdater updater)
     {
         _path = new(path);
         _createShortcut = createShortcut;
@@ -45,7 +45,7 @@ public sealed class InstallingVm : PageVm
         {
             await Task.Delay(1200);
 
-            await HostScreen.Router.Navigate.Execute(App.CreateInstance<CompleteVm>(_path)).FirstAsync();
+            await HostScreen.Router.Navigate.Execute(App.CreateInstance<CompletePageVm>(_path)).FirstAsync();
         });
 
         UpdateCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -64,7 +64,7 @@ public sealed class InstallingVm : PageVm
         {
             await Task.Delay(1200);
 
-            await HostScreen.Router.Navigate.Execute(App.CreateInstance<CompleteVm>(_path)).FirstAsync();
+            await HostScreen.Router.Navigate.Execute(App.CreateInstance<CompletePageVm>(_path)).FirstAsync();
         });
     }
 

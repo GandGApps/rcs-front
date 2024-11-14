@@ -15,6 +15,15 @@ namespace RcsInstaller.Services;
 public interface IAppRegistry
 {
     /// <summary>
+    /// Registers the application using an <see cref="AppRegistryProperties"/> object,
+    /// which contains the version, path, and additional properties for the application.
+    /// </summary>
+    /// <param name="appRegistryProperties">An object containing the version, path, 
+    /// and properties for the application's registration.</param>
+    /// <returns>An asynchronous operation with no return value.</returns>
+    public ValueTask Register(AppRegistryProperties appRegistryProperties) => Register(appRegistryProperties.Version, appRegistryProperties.Path, appRegistryProperties.Properties);
+
+    /// <summary>
     /// Registers the application with the specified version, path, and additional
     /// properties.
     /// </summary>

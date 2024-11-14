@@ -8,7 +8,7 @@ using System;
 
 namespace RcsInstaller;
 
-public sealed partial class SelectPathPage : ReactiveUserControl<SelectPathVm>
+public sealed partial class SelectPathPage : ReactiveUserControl<SelectPathPageVm>
 {
     public SelectPathPage()
     {

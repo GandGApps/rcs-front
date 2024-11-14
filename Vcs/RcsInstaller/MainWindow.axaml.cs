@@ -34,11 +34,16 @@ public sealed partial class MainWindow : SukiWindow
         MaxHeight = Height;
     }
 
+    public MainWindow(AbsolutePath absolutePath) : this(absolutePath.Value)
+    {
+
+    }
+
     public MainWindow(string path): this()
     {
         var mainVm = MainVm.Default;
 
-        mainVm.Router.Navigate.Execute(App.CreateInstance<CompleteVm>(new AbsolutePath(path)));
+        mainVm.Router.Navigate.Execute(App.CreateInstance<CompletePageVm>(new AbsolutePath(path)));
 
         DataContext = mainVm;
     }
@@ -49,11 +54,11 @@ public sealed partial class MainWindow : SukiWindow
 
         if(updateOption == null)
         {
-            mainVm.Router.Navigate.Execute(new WelcomeVm());
+            mainVm.Router.Navigate.Execute(new WelcomePageVm());
         }
         else
         {
-            var installingVm = App.CreateInstance<InstallingVm>(updateOption.Path, false, Version.Parse(updateOption.Version));
+            var installingVm = App.CreateInstance<InstallingPageVm>(updateOption.Path, false, Version.Parse(updateOption.Version));
 
             mainVm.Router.Navigate.Execute(installingVm);
 

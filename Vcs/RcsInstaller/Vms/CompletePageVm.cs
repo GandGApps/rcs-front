@@ -11,9 +11,9 @@ using System.Threading.Tasks;
 using TruePath;
 
 namespace RcsInstaller.Vms;
-public sealed class CompleteVm : PageVm
+public sealed class CompletePageVm : PageVm
 {
-    public CompleteVm(AbsolutePath path, IConfiguration configuration)
+    public CompletePageVm(AbsolutePath path, IConfiguration configuration)
     {
         CloseCommand = ReactiveCommand.Create(() =>
         {

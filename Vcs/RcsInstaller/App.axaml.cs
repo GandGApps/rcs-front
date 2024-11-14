@@ -11,9 +11,11 @@ using RcsInstaller.Dto;
 using RcsInstaller.Services;
 using Refit;
 using Splat;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.CompilerServices;
+using TruePath;
 
 namespace RcsInstaller;
 
@@ -27,13 +29,19 @@ public sealed partial class App : Application
     public static IHost Host { get; private set; } = null!;
     public static new App Current => Unsafe.As<App>(Application.Current)!;
 
+    public static string BasePath => AppDomain.CurrentDomain.BaseDirectory;
+
+    public static string CurrentPath => Path.Combine(BasePath, $"{nameof(RcsInstaller)}.exe");
+    public static AbsolutePath CurrentPathAbsolute => new(CurrentPath);
+
     public override void Initialize()
     {
         var builder = Microsoft.Extensions.Hosting.Host.CreateEmptyApplicationBuilder(null);
 
-#pragma warning disable CA1416 // Validate platform compatibility
-        builder.Logging.AddEventLog();
-#pragma warning restore CA1416 // Validate platform compatibility
+        if(OperatingSystem.IsWindows())
+        {
+            builder.Logging.AddEventLog();
+        }
 
         builder.Configuration.AddEmbeddedJsonFile("appsettings.json");
 
@@ -48,35 +56,33 @@ public sealed partial class App : Application
         builder.Services.AddSingleton<IInstaller, RcsInstallerJson>();
         builder.Services.AddSingleton<IUpdater>(sp => sp.GetRequiredService<RcsInstallerJson>());
         builder.Services.AddSingleton<IShortcutCreator, WndShortcutCreator>();
+        builder.Services.AddSingleton<IAppRegistry, WndAppRegistry>();
 
         Host = builder.Build();
 
         AvaloniaXamlLoader.Load(this);
     }
 
-    public override void OnFrameworkInitializationCompleted()
+    [STAThread]
+    public async override void OnFrameworkInitializationCompleted()
     {
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             var result = Parser.Default.ParseArguments<UpdateOption>(desktop.Args ?? []);
 
-            //open the registry and get the path of the installed app
-#pragma warning disable CA1416 // Validate platform compatibility
 
             if(result.Value is null)
             {
-                using var key = Registry.LocalMachine.OpenSubKey(LauncherConstants.RegistryKeyPath);
-                if (key?.GetValue("InstallLocation") is string installLocation)
+                var appRegistry = Host.Services.GetRequiredService<IAppRegistry>();
+
+                var properties = await appRegistry.GetProperties();
+
+                if (properties is AppRegistryProperties appRegistryProperties)
                 {
-                    // Remove last part
-                    installLocation = Path.GetDirectoryName(installLocation)!;
-                    desktop.MainWindow = new MainWindow(installLocation);
+                    desktop.MainWindow = new MainWindow(appRegistryProperties.Path);
                     return;
                 }
             }
-
-            
-#pragma warning restore CA1416 // Validate platform compatibility
 
             desktop.MainWindow = new MainWindow(result.Value);
         }

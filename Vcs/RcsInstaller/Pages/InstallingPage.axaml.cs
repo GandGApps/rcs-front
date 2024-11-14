@@ -6,7 +6,7 @@ using RcsInstaller.Vms;
 
 namespace RcsInstaller;
 
-public sealed partial class InstallingPage : ReactiveUserControl<InstallingVm>
+public sealed partial class InstallingPage : ReactiveUserControl<InstallingPageVm>
 {
     public InstallingPage()
     {

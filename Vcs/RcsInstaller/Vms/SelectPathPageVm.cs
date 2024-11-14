@@ -10,16 +10,16 @@ using System.Threading.Tasks;
 
 namespace RcsInstaller.Vms;
 
-public sealed class SelectPathVm : PageVm
+public sealed class SelectPathPageVm : PageVm
 {
 
-    public SelectPathVm()
+    public SelectPathPageVm()
     {
         InstallPath = Environment.GetFolderPath(Environment.SpecialFolder.ProgramFilesX86);
 
         InstallCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var vm = App.CreateInstance<InstallingVm>(InstallPath, IsShortcutNeeded, HelperExtensions.EmptyVersion);
+            var vm = App.CreateInstance<InstallingPageVm>(InstallPath, IsShortcutNeeded, HelperExtensions.EmptyVersion);
             await HostScreen.Router.Navigate.Execute(vm).FirstAsync();
 
             await vm.StartInstallCommand.Execute().FirstAsync();

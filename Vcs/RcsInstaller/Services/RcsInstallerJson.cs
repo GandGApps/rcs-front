@@ -21,19 +21,41 @@ using System.Diagnostics;
 using RcsInstaller.Vms;
 
 namespace RcsInstaller.Services;
+
+/// <summary>
+/// The RcsInstallerJson class provides functionality for installing, updating,
+/// and repairing the RCS application. It interacts with an API, manages shortcuts,
+/// and registers app information.
+/// </summary>
 public sealed class RcsInstallerJson : IInstaller, IUpdater, IRepair
 {
     private readonly IRcsApi _api;
     private readonly IShortcutCreator _shortcutCreator;
+    private readonly IAppRegistry _appRegistry;
     private readonly ILogger<RcsInstallerJson> _logger;
 
-    public RcsInstallerJson(IRcsApi api, IShortcutCreator shortcutCreator, ILogger<RcsInstallerJson> logger)
+    /// <summary>
+    /// Initializes a new instance of RcsInstallerJson with required dependencies.
+    /// </summary>
+    /// <param name="api">The API interface for managing installation processes.</param>
+    /// <param name="shortcutCreator">The shortcut creator instance.</param>
+    /// <param name="appRegistry">The app registry for managing app properties and registration.</param>
+    /// <param name="logger">The logger for recording installation logs.</param>
+    public RcsInstallerJson(IRcsApi api, IShortcutCreator shortcutCreator, IAppRegistry appRegistry, ILogger<RcsInstallerJson> logger)
     {
         _api = api;
         _shortcutCreator = shortcutCreator;
+        _appRegistry = appRegistry;
         _logger = logger;
     }
 
+    /// <summary>
+    /// Installs the application asynchronously, allowing for optional shortcut creation.
+    /// </summary>
+    /// <param name="path">The file path to install the application to.</param>
+    /// <param name="version">The version of the application to install.</param>
+    /// <param name="createShortcut">Indicates whether a shortcut should be created.</param>
+    /// <param name="progress">The action to report installation progress.</param>
     public async Task InstallAsync(AbsolutePath path, Version version, bool createShortcut, Action<ProgressState> progress)
     {
         var loadedVersion = await LoadAndParseZip(path, version, progress);
@@ -43,73 +65,43 @@ public sealed class RcsInstallerJson : IInstaller, IUpdater, IRepair
             await _shortcutCreator.CreateSrotcut(path, "RCS");
         }
 
-        // Create app info in registry
-#pragma warning disable CA1416 // Validate platform compatibility
-        var key = Registry.LocalMachine.OpenSubKey(LauncherConstants.RegistryKeyPath);
-
-        // Check is key exists
-        if (key != null)
-        {
-            try
-            {
-                var keyVersion = key.GetValue("DisplayVersion");
-                if (keyVersion is string versionString)
-                {
-                    var currentVersion = Version.Parse(versionString);
-
-                    if (loadedVersion != currentVersion)
-                    {
-                        _logger.LogInformation("Version changed from {CurrentVersion} to {NewVersion}, in registry", currentVersion, version);
-                        key.SetValue("DisplayVersion", loadedVersion.ToString());
-                        return;
-                    }
-                }
-            }
-            catch
-            {
-                // if something goes wrong, need to dispose
-                // but don't need to dispose if all is ok, not here
-                key?.Dispose();
-                throw;
-            }
-        }
-
-        using (key ??= Registry.LocalMachine.CreateSubKey(LauncherConstants.RegistryKeyPath))
-        { 
-            if (key != null)
-            {
-                _logger.LogInformation("Creating registry key for RCS");
-                key.SetValue("DisplayName", "Супер мега касса с кодовым именем RCS");
-                key.SetValue("DisplayVersion", loadedVersion.ToString());
-                key.SetValue("Publisher", "Gang bang");
-                key.SetValue("InstallLocation", path / "Kassa.Wpf.exe");
-                key.SetValue("UninstallString", path / "Kassa.Launcher.exe --remove");
-                key.SetValue("NoModify", 1, RegistryValueKind.DWord);
-                key.SetValue("NoRepair", 1, RegistryValueKind.DWord);
-            }
-        }
-
-#pragma warning restore CA1416 // Validate platform compatibility
+        await _appRegistry.Register(loadedVersion, path);
     }
 
+    /// <summary>
+    /// Updates the application to a specified version asynchronously.
+    /// </summary>
+    /// <param name="path">The file path to update the application.</param>
+    /// <param name="version">The version to update the application to.</param>
+    /// <param name="value">The action to report update progress.</param>
     public async Task UpdateAsync(AbsolutePath path, Version version, Action<ProgressState> value)
     {
         await LoadAndParseZip(path, version, value);
     }
 
-    public Task RepairAsync(Action<ProgressState> value)
+    /// <summary>
+    /// Repairs the application by reinstalling based on registry properties.
+    /// </summary>
+    /// <param name="value">The action to report repair progress.</param>
+    public async Task RepairAsync(Action<ProgressState> value)
     {
-        // Get current app
+        var appRegistryProperties = await _appRegistry.GetProperties();
 
+        if (appRegistryProperties is null)
+        {
+            ThrowHelper.ThrowInvalidOperationException("Failed to retrieve app registry properties. The app may not be installed.");
+        }
+
+        await InstallAsync(appRegistryProperties.Path, HelperExtensions.EmptyVersion, false, value);
     }
 
     /// <summary>
-    /// 
+    /// Loads and parses a ZIP archive from the specified path, extracting and processing contents.
     /// </summary>
-    /// <param name="path"></param>
-    /// <param name="version"></param>
-    /// <param name="progress"></param>
-    /// <returns>return loaded version</returns>
+    /// <param name="path">The destination path for the extracted files.</param>
+    /// <param name="version">The version of the archive to be loaded.</param>
+    /// <param name="progress">The action to report download and installation progress.</param>
+    /// <returns>Returns the loaded version after parsing the archive.</returns>
     private async Task<Version> LoadAndParseZip(AbsolutePath path, Version version, Action<ProgressState> progress)
     {
         var stringVersion = HelperExtensions.EmptyVersion == version ? null : version.ToString();
@@ -148,6 +140,12 @@ public sealed class RcsInstallerJson : IInstaller, IUpdater, IRepair
         return loadedVersion;
     }
 
+    /// <summary>
+    /// Parses a ZIP archive and extracts its contents to the specified path, updating progress.
+    /// </summary>
+    /// <param name="zipArchive">The ZIP archive to parse.</param>
+    /// <param name="destinationPath">The path to extract the contents to.</param>
+    /// <param name="progress">The action to report extraction progress.</param>
     private static void ParseZip(ZipArchive zipArchive, AbsolutePath destinationPath, Action<ProgressState> progress)
     {
         var helper = new ZipArchiveHelper(zipArchive);
@@ -183,7 +181,7 @@ public sealed class RcsInstallerJson : IInstaller, IUpdater, IRepair
             }
 
             // Skip the installer itself
-            if (path.Value.EndsWith("RcsInstaller.exe"))
+            if (path ==  App.CurrentPathAbsolute)
             {
                 continue;
             }
@@ -192,14 +190,14 @@ public sealed class RcsInstallerJson : IInstaller, IUpdater, IRepair
 
             if (!string.IsNullOrEmpty(directory))
             {
-                System.IO.Directory.CreateDirectory(directory);
+                Directory.CreateDirectory(directory);
             }
 
             try
             {
                 using var stream = entry.Open();
 
-                using var fileStream = System.IO.File.Create(path.Value);
+                using var fileStream = File.Create(path.Value);
 
                 stream.CopyTo(fileStream);
 
@@ -217,12 +215,18 @@ public sealed class RcsInstallerJson : IInstaller, IUpdater, IRepair
 
     }
 
-    
-
+    /// <summary>
+    /// A helper structure for managing ZIP archive operations, particularly for
+    /// retrieving and applying version changes.
+    /// </summary>
     internal readonly ref struct ZipArchiveHelper(ZipArchive zipArchive)
     {
         private readonly ZipArchive _zipArchive = zipArchive;
 
+        /// <summary>
+        /// Retrieves the list of changes from the "changes.json" file within the archive.
+        /// </summary>
+        /// <returns>A collection of version changes to be applied.</returns>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Trimming", "IL2026:Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code", Justification = "<Pending>")]
         [System.Diagnostics.CodeAnalysis.SuppressMessage("AOT", "IL3050:Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.", Justification = "<Pending>")]
         public readonly IEnumerable<VersionChangeNode> GetChanges()
@@ -240,6 +244,11 @@ public sealed class RcsInstallerJson : IInstaller, IUpdater, IRepair
             return jsonParsedChanges ?? [];
         }
 
+        /// <summary>
+        /// Retrieves a specific ZIP archive entry based on a change node, if the change action is AddOrModify.
+        /// </summary>
+        /// <param name="changeNode">The version change node indicating the file to retrieve.</param>
+        /// <returns>The corresponding ZIP archive entry, or null if not applicable.</returns>
         public readonly ZipArchiveEntry? GetChange(VersionChangeNode changeNode)
         {
             if (changeNode.ChangeType == VersionChangeNodeAction.AddOrModigy)

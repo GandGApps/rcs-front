@@ -8,13 +8,13 @@ using System.Threading.Tasks;
 
 namespace RcsInstaller.Vms;
 
-public sealed class WelcomeVm: PageVm
+public sealed class WelcomePageVm: PageVm
 {
-    public WelcomeVm()
+    public WelcomePageVm()
     {
         GoNextCommand = ReactiveCommand.Create(() =>
         {
-            HostScreen.Router.Navigate.Execute(new SelectPathVm());
+            HostScreen.Router.Navigate.Execute(new SelectPathPageVm());
         });
     }
 
