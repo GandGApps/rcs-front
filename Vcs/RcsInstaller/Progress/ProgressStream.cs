@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RcsInstaller.Services;
+namespace RcsInstaller.Progress;
 public sealed class ProgressStream(Stream input, long? length) : Stream
 {
     private readonly long _length = length ?? input.Length;
@@ -20,7 +20,10 @@ public sealed class ProgressStream(Stream input, long? length) : Stream
 
     public override long Length => input.Length;
 
-    public override long Position { get => input.Position; set => input.Position = value; }
+    public override long Position
+    {
+        get => input.Position; set => input.Position = value;
+    }
 
     public event EventHandler<ProgressEventArgs>? UpdateProgress;
 
@@ -31,9 +34,9 @@ public sealed class ProgressStream(Stream input, long? length) : Stream
 
     public override int Read(byte[] buffer, int offset, int count)
     {
-        int n = input.Read(buffer, offset, count);
+        var n = input.Read(buffer, offset, count);
         _position += n;
-        UpdateProgress?.Invoke(this, new ProgressEventArgs((1.0f * _position) / _length));
+        UpdateProgress?.Invoke(this, new ProgressEventArgs(1.0f * _position / _length));
         return n;
     }
 

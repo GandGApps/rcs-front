@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RcsInstaller.Services;
+namespace RcsInstaller.Progress;
 public sealed class ProgressEventArgs : EventArgs
 {
     private readonly double _progress;

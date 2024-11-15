@@ -19,6 +19,7 @@ using Avalonia.Controls.Shapes;
 using Avalonia.OpenGL;
 using System.Diagnostics;
 using RcsInstaller.Vms;
+using RcsInstaller.Progress;
 
 namespace RcsInstaller.Services;
 

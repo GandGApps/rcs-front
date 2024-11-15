@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
-using RcsInstaller.Services;
+using RcsInstaller.Progress;
 using TruePath;
 
 namespace RcsInstaller.Vms;

@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace RcsInstaller.Vms;
-public sealed class ProgressVm: PageVm
+public sealed class ProgressPageVm: PageVm
 {
+    public ProgressPageVm(Func<,Task>)
+    {
+    }
 }
