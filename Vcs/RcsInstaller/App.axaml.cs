@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
 using RcsInstaller.Dto;
 using RcsInstaller.Services;
+using RcsInstaller.Vms;
 using Refit;
 using Splat;
 using System;
@@ -53,8 +54,11 @@ public sealed partial class App : Application
 #pragma warning restore IL2026 // Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code
 
         builder.Services.AddApi<IRcsApi>();
-        builder.Services.AddSingleton<IInstaller, RcsInstallerJson>();
+
+        builder.Services.AddSingleton<RcsInstallerJson>();
+        builder.Services.AddSingleton<IInstaller, RcsInstallerJson>(sp => sp.GetRequiredService<RcsInstallerJson>());
         builder.Services.AddSingleton<IUpdater>(sp => sp.GetRequiredService<RcsInstallerJson>());
+        builder.Services.AddSingleton<IRepair>(sp => sp.GetRequiredService<RcsInstallerJson>());
         builder.Services.AddSingleton<IShortcutCreator, WndShortcutCreator>();
         builder.Services.AddSingleton<IAppRegistry, WndAppRegistry>();
 

@@ -7,13 +7,19 @@ using System.Threading.Tasks;
 namespace RcsInstaller.Progress;
 public sealed class ProgressEventArgs : EventArgs
 {
-    private readonly double _progress;
+    private readonly ProgressState _progressState;
 
-    public ProgressEventArgs(double progress)
+    public ProgressEventArgs(double progress): this(new ProgressState(string.Empty, progress))
     {
-        _progress = progress;
     }
 
-    public double Progress => _progress;
+    public ProgressEventArgs(ProgressState progressState)
+    {
+        _progressState = progressState;
+    }
+
+
+    public double Progress => _progressState.Value;
+    public ProgressState ProgressState => _progressState;
 
 }

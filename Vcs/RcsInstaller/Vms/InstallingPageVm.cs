@@ -45,7 +45,7 @@ public sealed class InstallingPageVm : PageVm
         {
             await Task.Delay(1200);
 
-            await HostScreen.Router.Navigate.Execute(App.CreateInstance<CompletePageVm>(_path)).FirstAsync();
+            await HostScreen.Router.Navigate.Execute(App.CreateInstance<CompletePageVm>(_path, _version)).FirstAsync();
         });
 
         UpdateCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -64,7 +64,7 @@ public sealed class InstallingPageVm : PageVm
         {
             await Task.Delay(1200);
 
-            await HostScreen.Router.Navigate.Execute(App.CreateInstance<CompletePageVm>(_path)).FirstAsync();
+            await HostScreen.Router.Navigate.Execute(App.CreateInstance<CompletePageVm>(_path, _version)).FirstAsync();
         });
     }
 

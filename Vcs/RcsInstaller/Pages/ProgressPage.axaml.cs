@@ -6,9 +6,9 @@ using RcsInstaller.Vms;
 
 namespace RcsInstaller;
 
-public sealed partial class InstallingPage : ReactiveUserControl<InstallingPageVm>
+public sealed partial class ProgressPage : ReactiveUserControl<ProgressPageVm>
 {
-    public InstallingPage()
+    public ProgressPage()
     {
         InitializeComponent();
     }

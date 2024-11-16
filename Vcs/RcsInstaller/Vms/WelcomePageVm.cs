@@ -14,7 +14,7 @@ public sealed class WelcomePageVm: PageVm
     {
         GoNextCommand = ReactiveCommand.Create(() =>
         {
-            HostScreen.Router.Navigate.Execute(new SelectPathPageVm());
+            HostScreen.Router.Navigate.Execute(App.CreateInstance<SelectPathPageVm>());
         });
     }
 

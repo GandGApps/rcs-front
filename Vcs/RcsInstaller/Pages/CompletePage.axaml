@@ -14,7 +14,7 @@
         Width="450"
         HorizontalAlignment="Center"
         VerticalAlignment="Center"
-        RowDefinitions="Auto, *, Auto, Auto, Auto">
+        RowDefinitions="Auto, *, Auto, Auto, Auto, Auto">
 
         <TextBlock
             Classes="h2"
@@ -31,17 +31,31 @@
 
         <Button
             Grid.Row="2"
-            Margin="0,0,0,20"
+            Margin="0,0,0,10"
             VerticalAlignment="Center"
             Command="{Binding StartAppCommand}"
             Content="Открыть приложение" />
 
         <Button
             Grid.Row="3"
+            Margin="0,0,0,10"
             VerticalAlignment="Center"
             Classes="Accent"
-            Command="{Binding CloseCommand}"
-            Content="Закрыть" />
+            Content="Обновить" />
+
+        <Button
+            Grid.Row="4"
+            Margin="0,0,0,10"
+            VerticalAlignment="Center"
+            Classes="Accent"
+            Content="Переустоновить" />
+
+        <Button
+            Grid.Row="5"
+            Margin="0,0,0,10"
+            VerticalAlignment="Center"
+            Classes="Accent"
+            Content="Удалить" />
 
 
     </Grid>

@@ -50,16 +50,10 @@ public sealed class RcsInstallerJson : IInstaller, IUpdater, IRepair
         _logger = logger;
     }
 
-    /// <summary>
-    /// Installs the application asynchronously, allowing for optional shortcut creation.
-    /// </summary>
-    /// <param name="path">The file path to install the application to.</param>
-    /// <param name="version">The version of the application to install.</param>
-    /// <param name="createShortcut">Indicates whether a shortcut should be created.</param>
-    /// <param name="progress">The action to report installation progress.</param>
-    public async Task InstallAsync(AbsolutePath path, Version version, bool createShortcut, Action<ProgressState> progress)
+    /// <inheritdoc/>
+    public async Task InstallAsync(AbsolutePath path, Version currentVersion, bool createShortcut, Action<ProgressState> progress)
     {
-        var loadedVersion = await LoadAndParseZip(path, version, progress);
+        var loadedVersion = await LoadAndParseZip(path, currentVersion, progress);
 
         if (createShortcut)
         {
@@ -69,22 +63,17 @@ public sealed class RcsInstallerJson : IInstaller, IUpdater, IRepair
         await _appRegistry.Register(loadedVersion, path);
     }
 
-    /// <summary>
-    /// Updates the application to a specified version asynchronously.
-    /// </summary>
-    /// <param name="path">The file path to update the application.</param>
-    /// <param name="version">The version to update the application to.</param>
-    /// <param name="value">The action to report update progress.</param>
-    public async Task UpdateAsync(AbsolutePath path, Version version, Action<ProgressState> value)
+    /// <inheritdoc/>
+    public async Task UpdateAsync(AbsolutePath path, Version currentVersion, Action<ProgressState> callback)
     {
-        await LoadAndParseZip(path, version, value);
+        await LoadAndParseZip(path, currentVersion, callback);
     }
 
     /// <summary>
     /// Repairs the application by reinstalling based on registry properties.
     /// </summary>
-    /// <param name="value">The action to report repair progress.</param>
-    public async Task RepairAsync(Action<ProgressState> value)
+    /// <param name="callback">The action to report repair progress.</param>
+    public async Task RepairAsync(Action<ProgressState> callback)
     {
         var appRegistryProperties = await _appRegistry.GetProperties();
 
@@ -93,19 +82,19 @@ public sealed class RcsInstallerJson : IInstaller, IUpdater, IRepair
             ThrowHelper.ThrowInvalidOperationException("Failed to retrieve app registry properties. The app may not be installed.");
         }
 
-        await InstallAsync(appRegistryProperties.Path, HelperExtensions.EmptyVersion, false, value);
+        await InstallAsync(appRegistryProperties.Path, HelperExtensions.EmptyVersion, false, callback);
     }
 
     /// <summary>
     /// Loads and parses a ZIP archive from the specified path, extracting and processing contents.
     /// </summary>
     /// <param name="path">The destination path for the extracted files.</param>
-    /// <param name="version">The version of the archive to be loaded.</param>
+    /// <param name="currentVersion">The current application version. If the application is not installed, the current version should be set to <see cref="HelperExtensions.EmptyVersion"/>.</param>
     /// <param name="progress">The action to report download and installation progress.</param>
     /// <returns>Returns the loaded version after parsing the archive.</returns>
-    private async Task<Version> LoadAndParseZip(AbsolutePath path, Version version, Action<ProgressState> progress)
+    private async Task<Version> LoadAndParseZip(AbsolutePath path, Version currentVersion, Action<ProgressState> progress)
     {
-        var stringVersion = HelperExtensions.EmptyVersion == version ? null : version.ToString();
+        var stringVersion = HelperExtensions.EmptyVersion == currentVersion ? null : currentVersion.ToString();
 
         var httpContent = await _api.InstallLatest(stringVersion);
 

@@ -14,8 +14,8 @@ public sealed class ViewLocator : IViewLocator
     {
         WelcomePageVm context => new WelcomePage { DataContext = context },
         SelectPathPageVm context => new SelectPathPage { DataContext = context },
-        InstallingPageVm context => new InstallingPage { DataContext = context },
         CompletePageVm context => new CompletePage { DataContext = context },
+        ProgressPageVm context => new ProgressPage { DataContext = context },
         _ => ThrowHelper.ThrowArgumentOutOfRangeException<IViewFor>(nameof(viewModel))
     };
 }
