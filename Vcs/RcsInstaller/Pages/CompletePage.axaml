@@ -72,7 +72,7 @@
             VerticalAlignment="Center"
             Classes="Accent"
             Command="{Binding RepairCommand}"
-            Content="Переустоновить" />
+            Content="Переустановить" />
 
         <Button
             Grid.Row="6"
