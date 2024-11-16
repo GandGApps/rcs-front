@@ -66,4 +66,11 @@ public interface IAppRegistry
     /// </summary>
     /// <returns>An asynchronous operation returning the registration properties object.</returns>
     public ValueTask<AppRegistryProperties?> GetProperties();
+
+
+    /// <summary>
+    /// Retrieves the base path where the application is registered.
+    /// </summary>
+    /// <returns>The base path of the application's registry entry.</returns>
+    public ValueTask<AbsolutePath?> GetBasePath();
 }

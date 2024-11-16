@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.Win32;
-using RcsInstaller.Dto;
+using RcsInstaller.Configurations;
 using TruePath;
 
 namespace RcsInstaller.Services;
@@ -32,11 +32,32 @@ internal sealed class WndAppRegistry : IAppRegistry
         _targetAppInfoOptions = targetAppInfoOptions;
     }
 
+    public async ValueTask<AbsolutePath?> GetBasePath()
+    {
+        var registryKeyPath = UninstallRegistryKeyPath + _targetAppInfoOptions.Value.Name;
+
+        if (!await IsRegistered())
+        {
+            return null;
+        }
+
+        using var key = Registry.LocalMachine.OpenSubKey(registryKeyPath)!;
+
+        var path = (string?)key.GetValue(InstallLocationKey);
+
+        if (path == null)
+        {
+            _logger.LogError("Install location not found in registry");
+        }
+
+        return path is not null ? new(path) : null;
+    }
+
     public async ValueTask<AppRegistryProperties?> GetProperties()
     {
         var registryKeyPath = UninstallRegistryKeyPath + _targetAppInfoOptions.Value.Name;
 
-        if (await IsRegistered())
+        if (!await IsRegistered())
         {
             return null;
         }

@@ -8,7 +8,7 @@
     xmlns:vm="using:RcsInstaller.Vms"
     d:DesignHeight="400"
     d:DesignWidth="600"
-    x:DataType="vm:CompleteVm"
+    x:DataType="vm:CompletePageVm"
     mc:Ignorable="d">
     <Grid
         Width="450"
@@ -40,14 +40,17 @@
             Grid.Row="3"
             Margin="0,0,0,10"
             VerticalAlignment="Center"
+            suki:ButtonExtensions.ShowProgress="{Binding IsUpdateButtonWorking}"
             Classes="Accent"
-            Content="Обновить" />
+            Command="{Binding UpdateCommand}"
+            Content="{Binding UpdateButtonText}" />
 
         <Button
             Grid.Row="4"
             Margin="0,0,0,10"
             VerticalAlignment="Center"
             Classes="Accent"
+            Command="{Binding RepairCommand}"
             Content="Переустоновить" />
 
         <Button

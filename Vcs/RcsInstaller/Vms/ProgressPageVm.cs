@@ -18,7 +18,8 @@ public sealed class ProgressPageVm: PageVm
         {
             await task((s, e) =>
             {
-                ProgressState = e.ProgressState;
+                var newProgressState = new ProgressState(e.ProgressState.State, e.Progress * 100);
+                ProgressState = newProgressState;
             });
         });
     }

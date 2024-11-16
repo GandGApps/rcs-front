@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using RcsInstaller.Dto;
+using RcsInstaller.Configurations;
 using RcsInstaller.Progress;
 using RcsInstaller.Services;
 using ReactiveUI;

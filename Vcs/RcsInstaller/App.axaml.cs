@@ -7,7 +7,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Win32;
-using RcsInstaller.Dto;
+using RcsInstaller.Configs;
+using RcsInstaller.Configurations;
 using RcsInstaller.Services;
 using RcsInstaller.Vms;
 using Refit;
@@ -45,11 +46,14 @@ public sealed partial class App : Application
         }
 
         builder.Configuration.AddEmbeddedJsonFile("appsettings.json");
+#if DEBUG
+        builder.Configuration.AddEmbeddedJsonFile("appsettings.Debug.json");
+#endif
 
 #pragma warning disable IL2026 // Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code
 #pragma warning disable IL3050 // Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.
-        builder.Services.Configure<ApiConfiguration>(builder.Configuration);
-        builder.Services.Configure<TargetAppInfo>(builder.Configuration);
+        builder.Services.Configure<ApiConfiguration>(builder.Configuration.GetSection(nameof(ApiConfiguration)));
+        builder.Services.Configure<TargetAppInfo>(builder.Configuration.GetSection(nameof(TargetAppInfo)));
 #pragma warning restore IL3050 // Calling members annotated with 'RequiresDynamicCodeAttribute' may break functionality when AOT compiling.
 #pragma warning restore IL2026 // Members annotated with 'RequiresUnreferencedCodeAttribute' require dynamic access otherwise can break functionality when trimming application code
 
@@ -59,6 +63,7 @@ public sealed partial class App : Application
         builder.Services.AddSingleton<IInstaller, RcsInstallerJson>(sp => sp.GetRequiredService<RcsInstallerJson>());
         builder.Services.AddSingleton<IUpdater>(sp => sp.GetRequiredService<RcsInstallerJson>());
         builder.Services.AddSingleton<IRepair>(sp => sp.GetRequiredService<RcsInstallerJson>());
+        builder.Services.AddSingleton<IRemover, SimpleRemover>();
         builder.Services.AddSingleton<IShortcutCreator, WndShortcutCreator>();
         builder.Services.AddSingleton<IAppRegistry, WndAppRegistry>();
 

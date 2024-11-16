@@ -8,7 +8,7 @@
     xmlns:vm="using:RcsInstaller.Vms"
     d:DesignHeight="400"
     d:DesignWidth="600"
-    x:DataType="vm:WelcomeVm"
+    x:DataType="vm:WelcomePageVm"
     mc:Ignorable="d">
 
     <Grid
