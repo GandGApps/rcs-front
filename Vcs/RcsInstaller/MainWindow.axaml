@@ -10,8 +10,8 @@
     xmlns:sukiUi="clr-namespace:SukiUI;assembly=SukiUI"
     xmlns:vm="clr-namespace:RcsInstaller.Vms"
     Title="RcsInstaller"
-    Width="600"
-    Height="400"
+    Width="650"
+    Height="450"
     x:DataType="vm:MainVm"
     WindowStartupLocation="CenterScreen"
     mc:Ignorable="d">

@@ -1,10 +1,16 @@
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
 using RcsInstaller.Vms;
+using ReactiveUI;
 using SukiUI.Controls;
 using System;
 using System.ComponentModel;
+using System.Threading.Tasks;
+using System.Reactive.Linq;
+using System.Reactive;
 using TruePath;
+using Microsoft.Extensions.DependencyInjection;
+using RcsInstaller.Services;
 
 namespace RcsInstaller;
 
@@ -34,19 +40,33 @@ public sealed partial class MainWindow : SukiWindow
         MaxHeight = Height;
     }
 
-    public MainWindow(AbsolutePath absolutePath) : this(absolutePath.Value)
-    {
-
-    }
-
-    public MainWindow(string path): this()
+    public MainWindow(AbsolutePath path): this()
     {
         var mainVm = MainVm.Default;
 
-        mainVm.Router.Navigate.Execute(App.CreateInstance<CompletePageVm>(new AbsolutePath(path)));
+        
+
+        Task.Run(async () =>
+        {
+            var appRegistry = App.Host.Services.GetRequiredService<IAppRegistry>();
+            var currentVersion = await appRegistry.GetVersion();
+
+            if (currentVersion is null)
+            {
+                throw new InvalidOperationException("Current version is null");
+            }
+
+            var completePageVm = App.CreateInstance<CompletePageVm>(path, currentVersion);
+
+            await mainVm.Router.Navigate.Execute(completePageVm);
+
+            await completePageVm.CheckForUpdates();
+
+        });
 
         DataContext = mainVm;
     }
+
 
     public MainWindow(UpdateOption? updateOption): this()
     {
@@ -64,8 +84,9 @@ public sealed partial class MainWindow : SukiWindow
 
             installingVm.UpdateCommand.Execute().Subscribe();
         }
-        
+
 
         DataContext = mainVm;
     }
+
 }

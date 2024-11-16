@@ -57,6 +57,8 @@ public sealed class CompletePageVm : PageVm
             var progressPageVm = new ProgressPageVm();
 
             await progressPageVm.StartTaskAndShowProgress(RepairTask);
+
+            await HostScreen.Router.NavigateBack.Execute();
         });
 
         var canExecuteUpdateCommand = this.WhenAnyValue(x => x.IsUpdateButtonWorking, x => x.CurrentVersion, x => x.LatestVersion)
@@ -83,6 +85,8 @@ public sealed class CompletePageVm : PageVm
             var progressPageVm = new ProgressPageVm();
 
             await progressPageVm.StartTaskAndShowProgress(UpdateTask);
+
+            await HostScreen.Router.NavigateBack.Execute();
         }, canExecute: canExecuteUpdateCommand);
 
         CurrentVersion = currentVersion;
@@ -96,7 +100,19 @@ public sealed class CompletePageVm : PageVm
                 }
 
                 return x.CurrentVersion < x.LatestVersion ? "Обновить" : "Обновление не требуется";
-            });
+            })
+            .ToPropertyEx(this, x => x.UpdateButtonText);
+
+        RemoveCommand = ReactiveCommand.CreateFromTask(async () =>
+        {
+            Task RemoveTask(ProgressCalback progress) => _remover.RemoveAsync(x => progress(this, new(x)));
+
+            var progressPageVm = new ProgressPageVm();
+
+            await progressPageVm.StartTaskAndShowProgress(RemoveTask);
+
+            App.Exit();
+        });
     }
 
     public async Task CheckForUpdates()
@@ -130,6 +146,11 @@ public sealed class CompletePageVm : PageVm
     }
 
     public ReactiveCommand<Unit, Unit> UpdateCommand
+    {
+        get;
+    }
+
+    public ReactiveCommand<Unit, Unit> RemoveCommand
     {
         get;
     }

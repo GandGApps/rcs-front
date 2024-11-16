@@ -50,7 +50,8 @@ internal sealed class WndAppRegistry : IAppRegistry
             _logger.LogError("Install location not found in registry");
         }
 
-        return path is not null ? new(path) : null;
+
+        return path is not null ? new AbsolutePath(path).Parent : null;
     }
 
     public async ValueTask<AppRegistryProperties?> GetProperties()

@@ -75,14 +75,9 @@ public sealed class RcsInstallerJson : IInstaller, IUpdater, IRepair
     /// <param name="callback">The action to report repair progress.</param>
     public async Task RepairAsync(Action<ProgressState> callback)
     {
-        var appRegistryProperties = await _appRegistry.GetProperties();
+        var basePath = (await _appRegistry.GetBasePath()) ?? ThrowHelper.ThrowInvalidOperationException<AbsolutePath>("Failed to retrieve app registry properties. The app may not be installed.");
 
-        if (appRegistryProperties is null)
-        {
-            ThrowHelper.ThrowInvalidOperationException("Failed to retrieve app registry properties. The app may not be installed.");
-        }
-
-        await InstallAsync(appRegistryProperties.Path, HelperExtensions.EmptyVersion, false, callback);
+        await InstallAsync(basePath, HelperExtensions.EmptyVersion, false, callback);
     }
 
     /// <summary>
@@ -178,7 +173,7 @@ public sealed class RcsInstallerJson : IInstaller, IUpdater, IRepair
 
             var directory = System.IO.Path.GetDirectoryName(path.Value);
 
-            if (!string.IsNullOrEmpty(directory))
+            if (!string.IsNullOrEmpty(directory) && !Directory.Exists(directory))
             {
                 Directory.CreateDirectory(directory);
             }
