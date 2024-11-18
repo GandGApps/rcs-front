@@ -15,5 +15,5 @@ public interface IUpdater
     /// <param name="path">The file path to update the application.</param>
     /// <param name="currentVersion">The current application version. If the application is not installed, the current version should be set to <see cref="HelperExtensions.EmptyVersion"/>.</param>
     /// <param name="callback">The action to report update progress.</param>
-    public Task UpdateAsync(AbsolutePath path, Version currentVersion, Action<ProgressState> callback);
+    public Task UpdateAsync(Action<ProgressState> callback);
 }

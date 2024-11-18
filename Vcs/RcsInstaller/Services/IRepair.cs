@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using RcsInstaller.Progress;
 using TruePath;
 
-namespace RcsInstaller.Vms;
+namespace RcsInstaller.Services;
 
 public interface IRepair
 {

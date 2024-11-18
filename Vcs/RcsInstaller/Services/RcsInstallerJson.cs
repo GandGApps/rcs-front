@@ -18,7 +18,6 @@ using Microsoft.Extensions.Logging;
 using Avalonia.Controls.Shapes;
 using Avalonia.OpenGL;
 using System.Diagnostics;
-using RcsInstaller.Vms;
 using RcsInstaller.Progress;
 
 namespace RcsInstaller.Services;
@@ -64,9 +63,14 @@ public sealed class RcsInstallerJson : IInstaller, IUpdater, IRepair
     }
 
     /// <inheritdoc/>
-    public async Task UpdateAsync(AbsolutePath path, Version currentVersion, Action<ProgressState> callback)
+    public async Task UpdateAsync(Action<ProgressState> callback)
     {
-        await LoadAndParseZip(path, currentVersion, callback);
+        var path = await _appRegistry.GetBasePath() ?? ThrowHelper.ThrowInvalidOperationException<AbsolutePath>("Base path is not setted");
+        var currentVersion = await _appRegistry.GetVersion() ?? ThrowHelper.ThrowInvalidOperationException<Version>("DisplayVersion is not set");
+
+        var loadedVersion = await LoadAndParseZip(path, currentVersion, callback);
+
+        await _appRegistry.Register(loadedVersion, path);
     }
 
     /// <summary>

@@ -19,35 +19,30 @@ using TruePath;
 namespace RcsInstaller.Vms;
 public sealed class CompletePageVm : PageVm
 {
-    private readonly IRcsApi _rcsApi;
     private readonly IAppRegistry _appRegistry;
+    private readonly IRcsApi _rcsApi;
+    private readonly ITargetAppRunner _targetAppRunner;
     private readonly IRepair _repair;
     private readonly IUpdater _updater;
     private readonly IRemover _remover;
-    private readonly IOptions<TargetAppInfo> _targetAppInfoOptions;
 
-    public CompletePageVm(AbsolutePath path, Version currentVersion, IRcsApi rcsApi, IAppRegistry appRegistry, IUpdater updater, IRepair repair, IRemover remover, IOptions<TargetAppInfo> targetAppInfoOptions)
+    public CompletePageVm(AbsolutePath path, Version currentVersion, IAppRegistry appRegistry, IRcsApi rcsApi, ITargetAppRunner targetAppRunner, IUpdater updater, IRepair repair, IRemover remover)
     {
-        _rcsApi = rcsApi;
         _appRegistry = appRegistry;
+        _rcsApi = rcsApi;
+        _targetAppRunner = targetAppRunner;
         _repair = repair;
         _updater = updater;
         _remover = remover;
-        _targetAppInfoOptions = targetAppInfoOptions;
 
         CloseCommand = ReactiveCommand.Create(() =>
         {
             App.Exit();
         });
 
-        StartAppCommand = ReactiveCommand.Create(() =>
+        StartAppCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            var app = _targetAppInfoOptions.Value.RcsBinName;
-            var appPath = path / app;
-
-            Process.Start(appPath.Value);
-
-            App.Exit();
+            await _targetAppRunner.Run();
         });
 
         RepairCommand = ReactiveCommand.CreateFromTask(async () =>
@@ -59,6 +54,8 @@ public sealed class CompletePageVm : PageVm
             await progressPageVm.StartTaskAndShowProgress(RepairTask);
 
             await HostScreen.Router.NavigateBack.Execute();
+
+            await AccessAppInformationRegisty();
         });
 
         var canExecuteUpdateCommand = this.WhenAnyValue(x => x.IsUpdateButtonWorking, x => x.CurrentVersion, x => x.LatestVersion)
@@ -80,13 +77,15 @@ public sealed class CompletePageVm : PageVm
 
         UpdateCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            Task UpdateTask(ProgressCalback progress) => _updater.UpdateAsync(path, HelperExtensions.EmptyVersion, x => progress(this, new(x)));
+            Task UpdateTask(ProgressCalback progress) => _updater.UpdateAsync(x => progress(this, new(x)));
 
             var progressPageVm = new ProgressPageVm();
 
             await progressPageVm.StartTaskAndShowProgress(UpdateTask);
 
             await HostScreen.Router.NavigateBack.Execute();
+
+            await AccessAppInformationRegisty();
         }, canExecute: canExecuteUpdateCommand);
 
         CurrentVersion = currentVersion;
@@ -113,6 +112,11 @@ public sealed class CompletePageVm : PageVm
 
             App.Exit();
         });
+    }
+
+    private async Task AccessAppInformationRegisty()
+    {
+        CurrentVersion = (await _appRegistry.GetVersion())!;
     }
 
     public async Task CheckForUpdates()

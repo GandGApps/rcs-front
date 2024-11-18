@@ -10,7 +10,6 @@ using Microsoft.Win32;
 using RcsInstaller.Configs;
 using RcsInstaller.Configurations;
 using RcsInstaller.Services;
-using RcsInstaller.Vms;
 using Refit;
 using Splat;
 using System;
@@ -66,6 +65,7 @@ public sealed partial class App : Application
         builder.Services.AddSingleton<IRemover, SimpleRemover>();
         builder.Services.AddSingleton<IShortcutCreator, WndShortcutCreator>();
         builder.Services.AddSingleton<IAppRegistry, WndAppRegistry>();
+        builder.Services.AddSingleton<ITargetAppRunner, TargetAppRunner>();
 
         Host = builder.Build();
 
@@ -84,11 +84,11 @@ public sealed partial class App : Application
             {
                 var appRegistry = Host.Services.GetRequiredService<IAppRegistry>();
 
-                var properties = await appRegistry.GetProperties();
+                var basePath = await appRegistry.GetBasePath();
 
-                if (properties is AppRegistryProperties appRegistryProperties)
+                if (basePath is not null)
                 {
-                    desktop.MainWindow = new MainWindow(appRegistryProperties.Path);
+                    desktop.MainWindow = new MainWindow(basePath.Value);
                     return;
                 }
             }

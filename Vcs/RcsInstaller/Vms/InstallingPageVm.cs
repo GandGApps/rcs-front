@@ -50,7 +50,7 @@ public sealed class InstallingPageVm : PageVm
 
         UpdateCommand = ReactiveCommand.CreateFromTask(async () =>
         {
-            await _updater.UpdateAsync(_path, _version, progress =>
+            await _updater.UpdateAsync(progress =>
             {
                 Dispatcher.UIThread.Post(() =>
                 {
