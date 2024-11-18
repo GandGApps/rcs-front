@@ -35,10 +35,10 @@
 
   <ItemGroup>
     <PackageReference Include="ESC-POS-USB-NET" Version="1.1.3" />
-    <PackageReference Include="ReactiveUI" Version="20.1.1" />
+    <PackageReference Include="ReactiveUI" Version="20.1.63" />
     <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
-    <PackageReference Include="ReactiveUI.Blend" Version="20.1.1" />
-    <PackageReference Include="ReactiveUI.WPF" Version="20.1.1" />
+    <PackageReference Include="ReactiveUI.Blend" Version="20.1.63" />
+    <PackageReference Include="ReactiveUI.WPF" Version="20.1.63" />
     <PackageReference Include="PixiEditor.ColorPicker" Version="3.4.1" />
     <PackageReference Include="WpfAnimatedGif" Version="2.0.2" />
     <PackageReference Include="ESCPOS_NET" Version="3.0.0" />
@@ -143,29 +143,8 @@
     </PropertyGroup>
     
     <Message Importance="high" Text="CurrentPublishDir is $(CurrentPublishDir)" />
-    <MSBuild Projects="..\Vcs\RcsInstaller\RcsInstaller.csproj" Targets="Publish" Properties="
-             Configuration=Release;
-             Platform=Any CPU;
-             PublishDir=$(VcsPublishDir)\;
-             PublishProtocol=FileSystem;
-             _TargetId=Folder;
-             TargetFramework=net8.0;
-             RuntimeIdentifier=win-x64;
-             SelfContained=true;
-             PublishSingleFile=true;
-             PublishReadyToRun=true" />
-    <MSBuild Projects="..\Kassa.Launcher\Kassa.Launcher.csproj" Targets="Publish" Properties="
-             Configuration=Release;
-             Platform=Any CPU;
-             PublishDir=$(LauncherPublishDir)\;
-             PublishProtocol=FileSystem;
-             _TargetId=Folder;
-             TargetFramework=net8.0;
-             RuntimeIdentifier=win-x64;
-             SelfContained=true;
-             PublishSingleFile=true;
-             PublishReadyToRun=true;
-             PublishTrimmed=true" />
+    <MSBuild Projects="..\Vcs\RcsInstaller\RcsInstaller.csproj" Targets="Publish" Properties="&#xD;&#xA;             Configuration=Release;&#xD;&#xA;             Platform=Any CPU;&#xD;&#xA;             PublishDir=$(VcsPublishDir)\;&#xD;&#xA;             PublishProtocol=FileSystem;&#xD;&#xA;             _TargetId=Folder;&#xD;&#xA;             TargetFramework=net8.0;&#xD;&#xA;             RuntimeIdentifier=win-x64;&#xD;&#xA;             SelfContained=true;&#xD;&#xA;             PublishSingleFile=true;&#xD;&#xA;             PublishReadyToRun=true" />
+    <MSBuild Projects="..\Kassa.Launcher\Kassa.Launcher.csproj" Targets="Publish" Properties="&#xD;&#xA;             Configuration=Release;&#xD;&#xA;             Platform=Any CPU;&#xD;&#xA;             PublishDir=$(LauncherPublishDir)\;&#xD;&#xA;             PublishProtocol=FileSystem;&#xD;&#xA;             _TargetId=Folder;&#xD;&#xA;             TargetFramework=net8.0;&#xD;&#xA;             RuntimeIdentifier=win-x64;&#xD;&#xA;             SelfContained=true;&#xD;&#xA;             PublishSingleFile=true;&#xD;&#xA;             PublishReadyToRun=true;&#xD;&#xA;             PublishTrimmed=true" />
   </Target>
 
   <Target Name="ZipAndUpload" AfterTargets="PublishRcsInstallerAndLauncher">

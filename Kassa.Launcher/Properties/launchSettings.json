@@ -1,8 +1,11 @@
 {
   "profiles": {
     "Kassa.Launcher": {
+      "commandName": "Project"
+    },
+    "Kassa.Launcher with path": {
       "commandName": "Project",
-      "commandLineArgs": "-p \"C:\\Users\\ASUS\\source\\repos\\ObsKassa\\Kassa.Wpf\\bin\\Release\\net8.0-windows10.0.17763.0\\publish\\win-x64\""
+      "commandLineArgs": "-p \"C:\\Users\\ASUS\\source\\repos\\ObsKassa\\Kassa.Wpf\\bin\\Release\\net8.0-windows10.0.17763.0\\publish\\win-x64\\\""
     }
   }
 }
